@@ -368,7 +368,7 @@ def main() -> None:
         results["train_seconds"] = round(time.time() - args._t0, 1)
 
     (args.out_dir / "metrics.json").write_text(
-        json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(results, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8"
     )
     print(json.dumps({"saved": str(args.out_dir / "metrics.json")}))
 
