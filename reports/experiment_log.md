@@ -56,3 +56,14 @@
 - E1 P 臂（qwen-max/qwen-plus x ATLAS/CARL 式提示词）——等有效 DashScope key。
 - E2 六臂同预算对照 + E3 消融链（A 去编译器 / B 去绑定 / C 对称罚 / D 去拒判 / E 去外部锚）。
 - E5 校准拒判（v2 数据无校准目标，需另行构造或如实降级）。
+
+### 2026-11-20 CPU 复核与运行状态
+- 运行中的任务：`python src/run_e1.py --model models/Qwen3-1.7B --eval-batch-size 8`，本机 RTX 4060 独占；日志已进入 LoRA 训练阶段，计划 9,000 optimizer steps。未启动并行 GPU 任务。
+- 独立数据复核：`python src/verify_dataset_v2.py --data-dir data/processed_v2`，15,000 条记录；witness 重放失败 0、schema 失败 0、E/I/N 配对失败 0、工具二元组合泄漏 0、模板泄漏 0，证据句 3-gram train/test Jaccard 0.0471，判定 `PASS`。
+- 代码语法复核：`src/*.py` 已逐文件编译检查；本次 PowerShell 通配符调用方式不兼容，未将该次报错作为代码失败，后续以逐文件编译结果为准。
+- 下一步：1.7B 结束后使用同一评测输出和 `src/analyze_e1_errors.py` 生成 type/state/params/scope/evidence 分解，再决定第二 seed 或 scope 消融；不把当前单 seed 结果写成稳定结论。
+- 0.6B 反事实字段修复诊断（`src/counterfactual_e1.py`；结果见 `outputs/counterfactual_e1_0.6b.json`）：只把预测 scope 替换为对应金标，strict F1 从 dev 0.729→0.979、template-held-out 0.630→0.834、tool-held-out 0.303→0.838；只修 params 时分别为 0.746、0.667、0.347。该诊断是 oracle 上界分解，不是模型结果。当前证据指向工具留出主要瓶颈为角色 scope 泛化，下一步优先补充角色语义/结构输入并做受控消融。
+- 远程 GPU 接入（19:40 更正）：SeetaCloud 服务器已连通，RTX 4080 SUPER 32GB、Ubuntu 22.04、Python 3.12.3、torch 2.12.1+cu130；代码与 15,000 条数据已同步到 `/root/consdag`，Qwen3-4B 权重下载完整，4B E1 已按 0.6B/1.7B 同一配置启动（seed 42、LoRA r16/a32、3 epoch、9000 steps）。密码仅通过环境变量传递，未写入仓库。
+- 4B zero-shot（服务器）：dev 900 条完成，约束 F1 0、三态准确率 0.3533，与 0.6B/1.7B 同样为 schema 提示照抄退化；test_tpl_ho/test_tool_ho 仍在生成。
+- 1.7B 进度（本机 4060）：训练 2700/9000 步，约 30%，近期约 14–15 秒/步，预计 2026-11-21 完成。
+- GRPO/E2 状态：仓库目前没有 planner rollout 环境、奖励实现或 GRPO trainer；只有实验方案。未把 E1 LoRA 训练误报为 GRPO，也未伪造 E2 启动。
