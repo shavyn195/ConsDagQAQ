@@ -1,0 +1,498 @@
+{
+  "meta": {
+    "file": "2609.00213_AggregationRewardHacking.pdf",
+    "page_count": 14,
+    "title": "Uncovering and Mitigating Aggregation-Induced Reward Hacking in Multi-Reward Reinforcement Learning",
+    "author": "Yu Yuan; Yaoyou Fan; Lili Zhao; Guangting Zheng; Kai Zhang; Lu Pan; Ke Zeng; Qi Liu",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:4af3385)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 11.0,
+    "heading_font_sizes": [
+      20.0,
+      14.3,
+      12.0
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "14.3": 2,
+      "12.0": 43,
+      "11.0": 1923,
+      "10.9": 797,
+      "10.8": 244,
+      "10.1": 713,
+      "10.0": 197,
+      "9.9": 91,
+      "9.8": 79,
+      "9.4": 20,
+      "9.0": 525,
+      "8.6": 117,
+      "8.5": 28,
+      "8.0": 414,
+      "7.2": 18,
+      "7.0": 12,
+      "6.9": 9,
+      "6.2": 27,
+      "6.0": 119,
+      "5.9": 4,
+      "5.7": 2,
+      "5.6": 5,
+      "5.5": 12,
+      "5.2": 6,
+      "5.0": 45,
+      "4.7": 23,
+      "4.6": 23,
+      "4.5": 12,
+      "4.4": 3,
+      "4.3": 8,
+      "4.2": 6,
+      "3.5": 2
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "Uncovering and Mitigating Aggregation-Induced Reward Hacking in",
+        "size": 14.3,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Multi-Reward Reinforcement Learning",
+        "size": 14.3,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Yu Yuan",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Yaoyou Fan",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Lili Zhao",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Guangting Zheng",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Kai Zhang",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Lu Pan",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Ke Zeng",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Qi Liu",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "University of Science and Technology of China",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "State Key Laboratory of Cognitive Intelligence",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Peking University",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Longcat-Interaction Team, Meituan",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "yyhappier@mail.ustc.edu.cn",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "zhaolili08@meituan.com",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "qiliuql@ustc.edu.cn",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Abstract",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2609.00213v1  [cs.CL]  31 Aug 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Related Work",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "3",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Aggregation-Induced Reward Hacking",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "4",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Adaptive Multi-Reward Projection",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "5",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Experiments",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "6",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Conclusion",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Limitations",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ethical Considerations",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Acknowledgments",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "References",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "A",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Additional Experimental Results and",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Analysis",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "B",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "Additional Implementation Details",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      }
+    ]
+  },
+  "images": [
+    {
+      "page": 1,
+      "filename": "page1_img1.png",
+      "width": 1672,
+      "height": 941,
+      "format": "png",
+      "size_bytes": 1112983
+    },
+    {
+      "page": 12,
+      "filename": "page12_img1.jpeg",
+      "width": 6144,
+      "height": 4096,
+      "format": "jpeg",
+      "size_bytes": 1630781
+    }
+  ],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3760,
+      "block_count": 12,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 4629,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 3,
+      "text_length": 3891,
+      "block_count": 43,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 4,
+      "text_length": 4365,
+      "block_count": 27,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 5,
+      "text_length": 3863,
+      "block_count": 26,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 6,
+      "text_length": 3845,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 4233,
+      "block_count": 43,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 4472,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 9,
+      "text_length": 4582,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 10,
+      "text_length": 4870,
+      "block_count": 21,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 11,
+      "text_length": 5180,
+      "block_count": 20,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 12,
+      "text_length": 3909,
+      "block_count": 46,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 13,
+      "text_length": 4347,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 14,
+      "text_length": 3178,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    }
+  ]
+}

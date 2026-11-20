@@ -1,0 +1,3504 @@
+文档: 2610.23190_LangNCO.pdf
+页数: 24
+图片: 0 张
+正文字体大小: 10.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) LangNCO: Compiling Natural-Language Constraints into Inference-Time
+  [L2] (p.1) Interventions for Neural Combinatorial Optimization
+    [L3] (p.1) Hironori Ohigashi
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+[L1] (p.1) arXiv:2610.23190v1  [cs.LG]  16 Oct 2026
+    [L3] (p.2) 2
+    [L3] (p.2) Related Work
+    [L3] (p.3) 3
+    [L3] (p.3) Method
+      [L4] (p.3) Problem Setting
+      [L4] (p.3) Compiling Natural-Language Constraints into
+      [L4] (p.3) State–Action Rules
+      [L4] (p.3) Rule Executor
+      [L4] (p.4) Critical-Offset Decoding
+    [L3] (p.5) 4
+    [L3] (p.5) Experiments
+      [L4] (p.5) Experimental Setup
+      [L4] (p.6) End-to-End Results
+      [L4] (p.6) Effectiveness of Critical-Offset Decoding
+      [L4] (p.6) Constraint Composition and Breadth
+    [L3] (p.7) 5
+    [L3] (p.7) Conclusion and Future Work
+    [L3] (p.9) References
+    [L3] (p.11) Technical Supplement
+    [L3] (p.11) A
+    [L3] (p.11) Dataset Construction and Evaluation
+    [L3] (p.11) Protocol
+      [L4] (p.11) A.1
+      [L4] (p.11) Base and Primary Constraint Datasets
+      [L4] (p.12) A.2
+      [L4] (p.12) Pairwise Constraint Datasets
+      [L4] (p.12) A.3
+      [L4] (p.12) Additional Constraint Datasets
+      [L4] (p.14) A.4
+      [L4] (p.14) Reference Solvers and Evaluation
+    [L3] (p.15) B
+    [L3] (p.15) LangNCO Implementation Details
+      [L4] (p.15) B.1
+      [L4] (p.15) DSL Schema, Validation, and Compilation
+      [L4] (p.15) B.2
+      [L4] (p.15) Rule Executor and Deadlock Handling
+      [L4] (p.16) B.3
+      [L4] (p.16) Critical-Node Extraction and Critical-Offset
+      [L4] (p.16) Decoding
+      [L4] (p.16) B.4
+      [L4] (p.16) Frozen RouteFinder and Input Audit
+    [L3] (p.17) C
+    [L3] (p.17) Experimental Settings and Reproducibility
+      [L4] (p.17) C.1
+      [L4] (p.17) Models and Baselines
+      [L4] (p.17) C.2
+      [L4] (p.17) Randomness and Number of Runs
+      [L4] (p.17) C.3
+      [L4] (p.17) Hardware, Software, and Timing Protocol
+    [L3] (p.17) D
+    [L3] (p.17) Additional Experimental Results
+      [L4] (p.18) D.1
+      [L4] (p.18) Unconstrained CVRP Sanity Check
+      [L4] (p.18) D.2
+      [L4] (p.18) Full End-to-End and Decoding Results
+      [L4] (p.20) D.3
+      [L4] (p.20) DSL versus Free-Form Python
+      [L4] (p.20) D.4
+      [L4] (p.20) Pairwise Constraint Results
+      [L4] (p.20) D.5
+      [L4] (p.20) Additional Constraints
+    [L3] (p.21) E
+    [L3] (p.21) Failure and Mechanistic Analyses
+      [L4] (p.21) E.1
+      [L4] (p.21) Free-Form Python Failures
+      [L4] (p.21) E.2
+      [L4] (p.21) Pairwise and Additional-Constraint Failures
+      [L4] (p.22) E.3
+      [L4] (p.22) Critical-Offset Sampling Case Study
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## LangNCO: Compiling Natural-Language Constraints into Inference-Time
+
+
+## Interventions for Neural Combinatorial Optimization
+
+
+### Hironori Ohigashi
+
+Panasonic Connect Co., Ltd.
+ohigashi.hironori@jp.panasonic.com
+Abstract
+Neural combinatorial optimization (NCO) rapidly produces
+high-quality solutions for problem structures encountered dur-
+ing training, but operational requirements may change af-
+ter deployment and be communicated in natural language.
+We propose LangNCO, a framework that compiles instance-
+specific requirements into structured inference-time interven-
+tions for a frozen NCO solver, without changing the pre-
+trained policy’s architecture, learned input representation, or
+parameters. A pretrained LLM serves as a replaceable se-
+mantic front end, translating each requirement into a schema-
+validated domain-specific language (DSL) rule set. A deter-
+ministic Rule Executor applies the rules as nonexpansive hard
+action masks. Because local masking prevents immediate vi-
+olations but does not ensure that a complete feasible contin-
+uation remains reachable, Critical-Offset Decoding extracts
+rule-referenced critical nodes and reallocates part of a fixed
+rollout budget to multi-strength biased rollouts. Using con-
+trolled task-specific language to isolate solver adaptation from
+open-ended language robustness, we evaluate a CVRP policy
+on road closures, time windows, vehicle assignments, visit-
+order requirements, all pairwise combinations, and twelve
+additional constraint types. LangNCO achieves 100% fea-
+sibility on the four primary datasets with mean reference
+gaps of 1.63–3.26%, 97.33–100% feasibility when separately
+generated rules are composed for pairwise constraints, and
+98.67% feasibility across the additional constraints. These re-
+sults demonstrate modular post-training adaptation of a frozen
+NCO solver through inspectable language-derived rules, with-
+out retraining.
+
+### 1
+
+
+### Introduction
+
+Combinatorial optimization underlies routing, scheduling,
+production planning, and robotic decision making. In these
+domains, high-quality discrete decisions often must be pro-
+duced repeatedly under tight time limits. Neural combinato-
+rial optimization (NCO) learns models that accelerate solu-
+tion generation for such problems on new instances (Bello
+et al. 2017; Bengio, Lodi, and Prouvost 2021). A central
+line of NCO research focuses on constructive policies that
+directly build complete solutions under problem structures
+specified during training, enabling fast inference after train-
+ing (Vinyals, Fortunato, and Jaitly 2015; Nazari et al. 2018;
+Kool, van Hoof, and Welling 2019; Kwon et al. 2020). In
+routing, these policies typically construct routes autoregres-
+sively by repeatedly selecting the next customer.
+Operational requirements, however, often change after de-
+ployment. Roads may close, customer time requirements
+may change, or temporary vehicle-assignment and visit-order
+rules may be introduced. Natural language provides a flexible
+interface for specifying such instance-specific requirements,
+but a standard pretrained solver cannot interpret constraints
+absent from its training-time problem definition. Retraining
+the policy, adding constraint-specific inputs, or redesigning
+the decoder for every transient requirement is impractical.
+We study inference-time adaptation to state-action-level
+constraints, whose effects can be evaluated during decoding
+from the current partial solution, candidate attributes, and
+exposed environment state. This class covers restrictions in-
+volving transitions, time, vehicle identity, visit history, capac-
+ity, depot access, and other state-dependent conditions. Con-
+straints requiring evaluation only after all routes are complete
+are outside this scope. Starting from a policy trained only on
+the standard capacitated vehicle routing problem (CVRP),
+our goal is to incorporate instance-specific natural-language
+requirements without constraint-specific policy inputs, archi-
+tecture changes, or weight updates.
+Recent multi-task and unified NCO systems generalize
+across routing variants through shared architectures and at-
+tribute representations (Liu et al. 2024a; Zhou et al. 2024;
+Berto et al. 2025b; Li et al. 2025; Goh et al. 2025; Zhou
+et al. 2026). Their zero-shot settings nevertheless assume
+that the relevant attributes, state interfaces, and feasibility
+mechanisms are defined before training; the unseen element
+is typically a problem variant or a combination of supported
+attributes within that interface. We instead address post-
+training requirements first specified in natural language for
+a concrete instance. LLM-based optimization methods have
+also generated solutions, mathematical formulations, solver
+programs, and heuristics (Yang et al. 2024; Liu et al. 2024b;
+Ahmaditeshnizi, Gao, and Udell 2024; Jiang et al. 2025b,a;
+Romera-Paredes et al. 2024). Rather than assigning combina-
+torial search to the LLM or reconstructing the base problem
+through a separate solver pipeline, we retain the pretrained
+NCO policy as the search engine and use the LLM only to
+specify state-dependent action interventions.
+To realize this division of labor, we propose LangNCO,
+an inference-time framework in which an LLM, serving as
+a replaceable semantic front end, translates each require-
+ment into a compact, schema-validatable domain-specific
+
+# arXiv:2610.23190v1  [cs.LG]  16 Oct 2026
+
+
+--- PAGE 2 ---
+
+language (DSL) that specifies state-dependent changes to
+the feasible action set. The validated rules are deterministi-
+cally compiled, and a Rule Executor applies them as action
+masks over the frozen decoder’s base feasibility mask. The
+NCO policy remains responsible for route construction and
+cost minimization. This design preserves the routing pol-
+icy’s inductive bias and fast inference, makes interventions
+inspectable, and avoids free-form tensor code generation.
+Hard masking ensures immediate action legality but not
+completion viability: a legal choice may consume capacity
+needed by an assigned customer, delay a time-window cus-
+tomer beyond recovery, or close a route before a prerequisite
+is served. We therefore introduce Critical-Offset Decoding,
+which extracts explicitly referenced critical nodes from the
+generated rules and reallocates part of a fixed rollout budget
+to multi-strength biased rollouts. It never revives a masked
+action and balances completion-oriented exploration with the
+original policy’s cost-oriented search.
+Our contributions are threefold. First, we formulate post-
+training request adaptation of a fixed CVRP policy and intro-
+duce a modular language-to-rule interface whose validated
+output drives deterministic, nonexpansive action interven-
+tion, without adding constraint-specific inputs to the NCO
+policy or changing its architecture or weights. Second, we
+propose Critical-Offset Decoding, which biases a subset of
+rollouts toward rule-derived critical nodes, reducing future
+deadlocks and improving solution quality without increas-
+ing the rollout budget. Third, we evaluate the framework on
+four primary constraint types, all pairwise combinations, and
+twelve additional types. The complete method attains 100%
+feasibility on all four primary datasets with mean reference
+gaps of 1.63–3.26%, 97.33–100% feasibility when separately
+generated rules are composed for pairwise constraints, and
+98.67% feasibility across the additional constraints. These
+results show that structured language-derived rules can ex-
+tend a frozen NCO solver beyond its training-time problem
+definition without retraining.
+
+### 2
+
+
+### Related Work
+
+NCO and generalization.
+Constructive NCO policies
+build solutions sequentially. Pointer Networks introduced
+attention-based permutation generation, while subsequent
+reinforcement-learning methods learned routing policies
+without optimal labels; the Attention Model and POMO
+further established Transformer-style encoders, feasibility
+masking, and multistart decoding (Vinyals, Fortunato, and
+Jaitly 2015; Bello et al. 2017; Nazari et al. 2018; Kool, van
+Hoof, and Welling 2019; Kwon et al. 2020). Later work
+improved scalability and decoder capacity and systematized
+NCO evaluation (Jin et al. 2023; Luo et al. 2023; Bengio,
+Lodi, and Prouvost 2021; Berto et al. 2025a). Generalist
+solvers instead share representations across routing prob-
+lems, constraint combinations, and distributions (Liu et al.
+2024a; Zhou et al. 2024; Berto et al. 2025b; Li et al. 2025;
+Goh et al. 2025); URS extends this direction with unified
+representations and model-agnostic feasibility masks for un-
+seen routing variants (Zhou et al. 2026), while other work
+studies distributional and size generalization (Jiang et al.
+2022; Zhou et al. 2023). These methods generalize within
+structured solver interfaces whose attributes and feasibility
+mechanisms are specified before training. In contrast, we
+freeze a policy trained only on standard CVRP and compose
+concrete target entities, state guards, and action effects from
+natural language at inference time. Our setting is therefore
+post-training request adaptation rather than cross-problem
+generalization of a pretrained generalist.
+LLMs for combinatorial optimization.
+LLMs have been
+used to propose complete or intermediate solutions (Yang
+et al. 2024; Liu et al. 2024b; Iklassov et al. 2024; Jiang
+et al. 2025a), translate natural-language descriptions into
+optimization formulations or solver programs (Ahmaditesh-
+nizi, Gao, and Udell 2024; Zhang et al. 2024; Jiang et al.
+2025b; Astorga et al. 2025; Ramamonjison et al. 2022), and
+search for reusable algorithms or heuristics (Romera-Paredes
+et al. 2024; Ye et al. 2024). These approaches either assign
+substantial combinatorial search to the LLM or construct a
+separate optimization pipeline. We instead generate only a
+compact action-intervention rule and retain the pretrained
+NCO policy as the route-construction and search compo-
+nent. The base CVRP formulation remains unchanged, while
+the request modifies only the admissibility or priority of af-
+fected actions. This separation keeps semantic interpretation
+distinct from combinatorial search for a low-cost feasible
+solution.
+Constraint-aware decoding and structured intervention.
+Action masks are standard in autoregressive routing, and
+related state-specific masks and safety layers suppress in-
+valid or unsafe actions (Wang et al. 2024; Krasowski et al.
+2023). Proactive Infeasibility Prevention masks actions using
+constraint-specific lookahead, while LazyMask combines
+lookahead with backtracking (Bi et al. 2024; Li et al. 2026).
+Our intervention is instead derived from an instance-specific
+language-generated rule and applied to a frozen standard-
+CVRP policy. The same representation provides both a de-
+terministic hard mask for local legality and a structural signal
+that directs inference-time search toward critical nodes.
+Constrained generation methods such as PICARD,
+grammar-constrained decoding, and grammar prompting im-
+prove formal validity (Scholak, Schucher, and Bahdanau
+2021; Geng et al. 2023; Wang et al. 2023), whereas code-
+generation studies show that syntactic validity does not pre-
+vent failures in API use, data shapes, or executable semantics
+(Chen et al. 2021; Li et al. 2022; Lai et al. 2023; Ni et al.
+2024). Our DSL therefore restricts generation to guarded tar-
+get/effect rules, while parsing, schema validation, compila-
+tion, and validation-feedback retries fix tensor operations,
+shape handling, and mask-composition semantics outside
+the LLM. The resulting rules remain inspectable, and their
+structured fields are reused for decoding bias. Our contri-
+bution is thus a shared intermediate representation connect-
+ing natural-language interpretation, deterministic action in-
+tervention, and inference-time search guidance for a fixed
+learned optimizer.
+
+--- PAGE 3 ---
+
+
+### 3
+
+
+### Method
+
+
+#### Problem Setting
+
+Let x be a capacitated vehicle routing problem (CVRP) in-
+stance on nodes V = {0, 1, . . . , n}, where node 0 is the
+depot, customer i has demand di, and vehicle capacity is Q.
+A solution τ consists of depot-to-depot routes that visit ev-
+ery customer exactly once without exceeding capacity. With
+edge cost cij, its travel cost is C(τ | x).
+A pretrained autoregressive NCO policy πθ selects the
+next node at from a partial state st. Its parameters θ remain
+fixed throughout this work.
+At inference time, the target instance is accompanied by a
+natural-language specification ℓ, which may contain one or
+more requirements. Let Ω(x, ℓ) denote the set of solutions
+satisfying the base CVRP constraints and the requirements
+expressed by ℓ. The ideal constrained objective is
+τ ⋆∈arg
+min
+τ∈Ω(x,ℓ) C(τ | x).
+(1)
+The LLM rule generator maps ℓto a validated DSL rule
+set r = G(ℓ). The set Ω(x, ℓ) is a conceptual definition of
+the target solutions and is not available to the solver. During
+inference, the solver operates only on the generated rule set
+r.
+The base decoder applies a CVRP feasibility mask
+mbase
+t
+(a), where a value of one denotes an admissible action.
+We derive an additional rule mask mrule
+t
+(a, r) and apply
+mt(a, r) = mbase
+t
+(a) ∧mrule
+t
+(a, r).
+(2)
+Thus, a generated rule may remove a base-feasible action
+but cannot re-enable an action prohibited by the CVRP envi-
+ronment. Figure 1 summarizes the resulting inference-time
+intervention pipeline.
+
+#### Compiling Natural-Language Constraints into
+
+
+#### State–Action Rules
+
+Rather than generating a final route or free-form code, the
+LLM translates each requirement into one or more instance-
+specific state–action rules in a JSON DSL. Each rule specifies
+candidate targets, optional state- and candidate-level condi-
+tions, and one of two nonexpansive effects: blocking matched
+actions or retaining only them.
+Targets may denote the depot, all customers, fixed node
+IDs, or attribute-defined customer sets. Conditions may ref-
+erence the current node, cumulative or vehicle-specific visit
+history, vehicle identity, capacity, route length, demand, coor-
+dinates, and auxiliary observations exposed by the simulator.
+The DSL fixes typed operators and state-access forms
+while allowing an extensible observation namespace. At in-
+ference time, the simulator may expose instance-specific at-
+tributes or pairwise matrices, such as elapsed time or travel
+times. These observations are used only by the Rule Executor
+and are not added to the pretrained NCO policy input.
+Rather than selecting from predefined VRP-specific rules
+or DSL templates, the system composes targets, constants,
+guards, and effects from shared primitives and available ob-
+servations. A request is supported when its required state
+quantities are exposed. Restricting generation to system-
+defined operations keeps execution semantics under compiler
+control.
+For a constraint c, let Tc be its target set, gc(st) its state-
+level condition, and hc(st, a) its candidate-level condition.
+An omitted condition evaluates to true. The matched actions
+are
+Mc(st) = {a ∈Tc | gc(st) ∧hc(st, a)} .
+(3)
+Given the current feasible set A, a constraint applies one of
+A ←A \ Mc(st)
+or
+A ←A ∩Mc(st).
+(4)
+Both operations are nonexpansive, so composing multiple
+constraints preserves
+Afinal
+t
+⊆Abase
+t
+.
+(5)
+A single natural-language requirement may compile into
+multiple constraints. For example, an undirected road clo-
+sure is represented by two symmetric transition constraints.
+Validation and compilation.
+After JSON parsing, the gen-
+erated rule set is validated against the DSL schema and
+checked by compilation using the same compiler that gen-
+erates the executable rules. Schema validation checks the
+rule-set structure and schema-defined expression forms. The
+compile check rejects expressions that cannot be translated
+under the supported DSL semantics, including unsupported
+operators, access patterns, and node-set forms, as well as
+candidate-indexed references used outside a candidate con-
+text.
+For each valid global or instance-scoped collection of
+constraints, the compiler emits a self-contained PyTorch
+mask function. It translates target sets into batched candi-
+date masks, state-level conditions into row-wise expressions,
+and candidate-level conditions into node-wise expressions.
+Where needed, the compiler reconciles original-unit quan-
+tities in the DSL with the normalized solver state and fixes
+state access, broadcasting, tensor-shape handling, and non-
+expansive mask composition.
+If JSON parsing, schema validation, or compilation fails,
+the resulting error is returned to the LLM for at most two
+repair attempts. These checks ensure that a rule is schema-
+conformant and executable under the supported DSL, but
+do not verify semantic agreement with the natural-language
+requirement. Additional details on the typed rule represen-
+tation, validation procedure, and compilation semantics are
+provided in the Technical Supplement.
+
+#### Rule Executor
+
+At decoding step t, the Rule Executor evaluates all compiled
+constraints for the target instance against the exposed rout-
+ing state and candidate actions. The state interface contains
+routing quantities rather than neural hidden representations,
+including the current node, visit histories, current vehicle,
+capacity usage, route length, time, coordinates, demand, and
+instance-specific auxiliary observations.
+The constraints are therefore independent of the internal
+architecture that produces the action logits, provided that
+
+--- PAGE 4 ---
+
+Natural-language constraint
+LLM rule generator
+DSL Validator & Compiler
+Problem instance
+Rule Executor
+Hard action masking
+Critical-Offset Decoding
+Soft bias over feasible actions
+Pretrained NCO decoder
+(parameters frozen)
+Constraint-aware
+solution
+Inference-time decoder intervention
+feasible actions
+compiled
+rule
+critical
+nodes
+Figure 1: Inference-time intervention. A natural-language specification is translated into a DSL rule set that is validated and
+compiled to drive hard action masking and critical-node-biased rollouts. The pretrained NCO policy’s parameters and learned
+input representation remain unchanged.
+the required state interface is exposed. If the NCO decoder
+produces logits zt(a), the combined mask gives
+�zt(a) =
+�zt(a),
+mt(a, r) = 1,
+−∞,
+mt(a, r) = 0.
+(6)
+The same executor can be used with greedy or sampling-
+based decoding.
+To avoid a degenerate all-false mask, the executor skips
+a retain-only update whose target contains neither the depot
+nor an unvisited customer; this implementation safeguard
+leaves the current mask unchanged but does not guarantee
+satisfaction of the skipped constraint.
+A rollout is recorded as deadlocked when unserved cus-
+tomers remain but the executed mask contains no available
+action. The method neither backtracks from a failed prefix
+nor regenerates its rules. For R compiled constraints and |V |
+candidate actions, vectorized rule evaluation costs O(R|V |)
+per decoding step.
+
+#### Critical-Offset Decoding
+
+From local legality to completion-oriented search.
+Hard
+masking guarantees only local legality with respect to the ex-
+ecuted base and DSL constraints: an allowed action may still
+eliminate all complete continuations. For example, delaying
+a time-window customer may make its deadline unreachable,
+another customer may consume the capacity needed by an as-
+signed customer, or a route may terminate before its ordering
+requirements are completed.
+Exactly determining whether each action preserves a com-
+plete continuation would require constraint-specific looka-
+head or solving a constrained completion problem for every
+candidate. Critical-Offset Decoding instead derives a low-
+cost, completion-oriented search prior from the structure of
+the generated DSL.
+Many such nonlocal failures are associated with nodes
+referenced by the generated constraints. A customer directly
+restricted by a constraint may lose its service opportunity if it
+is postponed until a deadline expires, the designated vehicle
+loses capacity, or the current route terminates. Likewise, the
+state of a node referenced by a constraint condition may
+determine whether another customer becomes or remains
+available.
+Subject and condition nodes.
+We call a node identified
+from a constraint target a subject node, because the constraint
+directly changes its availability. We call a node identified
+from a constraint condition a condition node, because its
+state can affect the future availability of a subject node.
+Let Ntar(c) and Ncond(c) denote the node IDs resolved
+from the target and conditions of constraint c, respectively.
+For a rule set r, we extract
+Sr =
+�
+c∈r
+Ntar(c),
+Gr =
+�
+c∈r
+Ncond(c),
+Cr = (Sr ∪Gr) \ {0},
+(7)
+where Sr, Gr, and Cr are the subject, condition, and critical-
+node sets, respectively. We exclude the depot in all experi-
+ments because prioritizing it may encourage premature route
+termination.
+The current implementation uses a lightweight syntax-
+directed extractor for statically resolvable node references.
+Supporting additional typed node accessors or resolving
+attribute-defined targets would require only extending this
+extraction step; the Rule Executor and Critical-Offset De-
+coding would remain unchanged.
+Critical-node extraction converts the compositional struc-
+ture of the generated DSL into a shared, completion-oriented
+search prior. Subject nodes identify actions whose future ser-
+vice opportunities may be lost, while condition nodes identify
+state changes that affect their future availability. Extraction
+is deterministic and requires neither a constraint-type label,
+a dataset annotation, nor an additional LLM call.
+State-dependent critical actions.
+The extracted set Cr re-
+mains fixed throughout a rollout, but only currently legal
+critical nodes receive an offset. After applying the base and
+rule masks, let
+At = {a ∈V | mt(a, r) = 1}
+(8)
+be the locally admissible actions, and define
+Ct = Cr ∩At.
+(9)
+Thus, the active critical set changes with the current state and
+hard mask, even though its DSL-derived source set is static.
+
+--- PAGE 5 ---
+
+Consider a same-route ordering constraint requiring every
+node in a prerequisite set B to be served before a subject
+node j. While the prerequisites remain incomplete, the Rule
+Executor masks j, so the offset cannot make it illegally se-
+lectable and instead acts on feasible condition nodes in B.
+After the prerequisites are completed, j is no longer blocked
+by the ordering constraint and may become feasible and re-
+ceive priority. Similarly, a time-window or vehicle-assigned
+subject receives additional weight only while it remains legal.
+Offset-guided action selection.
+Let
+pt(a) = softmax(�zt)a
+(10)
+denote the policy probability after hard masking, with
+pt(a) = 0 for a /∈At. For offset strength α ∈[0, 1], Critical-
+Offset Decoding defines the nonnormalized action weight
+q(α)
+t
+(a) =
+�(1 −α)pt(a) + α,
+a ∈Ct,
+pt(a),
+otherwise.
+(11)
+When α = 0, the original masked policy is recovered exactly.
+Increasing α assigns greater aggregate selection weight to
+currently feasible critical nodes and reduces policy-induced
+differences among them.
+For greedy decoding, the selected action is
+at = arg max
+a∈At q(α)
+t
+(a).
+(12)
+For sampling, the weights are normalized over the admissible
+actions:
+¯q(α)
+t
+(a) =
+q(α)
+t
+(a)
+�
+a′∈At q(α)
+t
+(a′)
+.
+(13)
+At α = 1, each feasible critical node receives an unnor-
+malized weight of one. Under sampling, this strongly prior-
+itizes critical nodes but does not strictly force their selec-
+tion because noncritical actions retain their original positive
+weights.
+Crucially, the offset is applied only to Ct = Cr ∩At. It
+therefore cannot assign positive weight to an action prohib-
+ited by either the base or rule mask. The hard mask de-
+termines legality, whereas Critical-Offset Decoding changes
+only the preference among actions that remain legal.
+Multiple offset strengths.
+The useful offset strength de-
+pends on the instance geometry, capacities, deadlines, route
+state, and original policy distribution. Strong priority can
+preserve a scarce service opportunity, but may also cause an
+unnecessary detour or serve a rule-related node earlier than
+needed. We therefore treat α as a rollout dimension rather
+than selecting one global value.
+For each POMO start and geometric augmentation, the
+total sampling budget remains 100 rollouts. Ninety use ordi-
+nary sampling with α = 0, and the remaining ten are divided
+equally across
+Λ = {0.2, 0.4, 0.6, 0.8, 1.0},
+(14)
+giving two rollouts per nonzero strength. Equivalently,
+B0 = 90,
+Bα = 2 (α ∈Λ),
+B0 +
+�
+α∈Λ
+Bα = 100.
+(15)
+All rollouts use the same frozen NCO network and gener-
+ated rule set. Ordinary rollouts preserve the original policy’s
+cost-oriented search, while offset rollouts explore several
+strengths of priority toward rule-related nodes.
+Rollout selection and scope.
+Let τb be the route produced
+by rollout b, and let Bcomp denote the rollouts that reach a
+complete base-CVRP terminal state. Incomplete and dead-
+locked rollouts are discarded, and completed rollouts are
+ranked solely by travel cost:
+b⋆∈arg
+min
+b∈Bcomp C(τb | x),
+τ ⋆= τb⋆.
+(16)
+If Bcomp = ∅, the solve is recorded as unsuccessful; this is
+not an infeasibility certificate for the constrained instance.
+Critical-Offset Decoding is a rule-derived rollout prior
+rather than an exact viability certificate. It neither simulates
+every successor action nor backtracks from a failed prefix.
+Its effect also depends on the constraint structure: locally
+enforced transition restrictions such as road closures may re-
+quire little additional directional guidance. Retaining mostly
+ordinary rollouts and using multiple offset strengths limits
+the effect of unnecessary directional priority.
+Because Equation 11 modifies only actions satisfying
+mt(a, r) = 1, the hard feasible set remains unchanged. Crit-
+ical weighting adds O(|V |) work per decoding step; together
+with vectorized evaluation of R compiled constraints, the
+intervention costs O(R|V |) per step. The number of pol-
+icy evaluations remains identical to the baseline with 100
+rollouts per POMO start and augmentation.
+
+### 4
+
+
+### Experiments
+
+
+#### Experimental Setup
+
+Base solver and data.
+We use RouteFinder (Berto et al.
+2025b) trained only on standard CVRP. The base test set
+contains 300 instances from the LLMCoSolver benchmark
+(Jiang et al. 2025a), with 10–100 customer nodes and LKH-3
+near-optimal routes supplied for the unconstrained instances.
+Decoding uses POMO-style multistarts and eight geometric
+augmentations. The RouteFinder architecture and parameters
+remain fixed in all experiments.
+Constraint-augmented datasets.
+We construct four pri-
+mary datasets by adding one hard constraint to each base
+instance and selecting its targets so that the original high-
+quality solution violates the new requirement. Road closes
+an adjacent non-depot edge in both directions. Time imposes
+a no-wait hard time window of width 18–20 on an early-route
+customer, using travel time ⌈0.1 × Euclidean distance⌉. Ve-
+hicle assigns two capacity-compatible, high-demand cus-
+tomers, selected from different reference routes when pos-
+sible, to the same vehicle. Order requires two prerequisite
+nodes to precede a target node on the same route, using a
+sandwich construction such that neither the original route
+nor its reversal satisfies the precedence constraint. Every re-
+tained primary instance has a constraint-feasible reference
+solution.
+The constraints are expressed using controlled, task-
+specific natural-language descriptions with instance-specific
+
+--- PAGE 6 ---
+
+entities and values. Our evaluation focuses on constraint-type
+and compositional breadth rather than systematic robustness
+to paraphrasing.
+Methods and metrics.
+LLMCoSolver and Direct GPT-
+5 serve as direct-solution baselines that generate com-
+plete routes from the problem description. NCO w/o In-
+tervention is the unmodified pretrained RouteFinder de-
+coder; it receives neither the natural-language constraint
+nor a derived rule mask. Our variants use either Gemma4
+(gemma4:31b-it-q8_0) or GPT-5 only to generate the
+DSL, after which both use the same Rule Executor and
+Critical-Offset Decoding.
+DSL generation uses an initial attempt and up to two
+validation-feedback retries after parsing, schema-validation,
+or compile-check failures. If no valid rule is obtained, the
+solver proceeds without an additional rule. After inference,
+an independently implemented evaluation-only constraint
+checker determines whether each returned route satisfies the
+base CVRP constraints and all applicable requirements in the
+natural-language specification. All feasibility rates reported
+throughout the experiments are computed using this post-hoc
+checker. The checker is not exposed to the inference pipeline
+and cannot affect rule generation, validation-feedback retries,
+action masking, decoding, completion filtering, or cost-based
+rollout selection. Unparseable route outputs, runtime failures,
+and decoding deadlocks count as infeasible. For feasible out-
+puts, the reference gap is (C−Cref)/Cref×100. Primary-task
+references use LKH-3 for Road (Helsgaun 2017) and OR-
+Tools for Time, Vehicle, and Order (Google 2026); pairwise
+references also use OR-Tools. None provides an optimality
+certificate.
+The Technical Supplement provides additional implemen-
+tation details, model versions and inference settings, solver
+configurations and time limits, random seeds, hardware de-
+tails, and complete experimental results.
+
+#### End-to-End Results
+
+Table 1 evaluates the complete language-to-route pipeline.
+Both proposed variants achieve 100% feasibility on all four
+datasets, with reference gaps of 1.63–3.26%. In contrast,
+NCO without intervention retains low route costs only on
+the few instances that accidentally satisfy the new constraint,
+reaching just 1.00–37.33% feasibility. Direct GPT-5 more of-
+ten satisfies the constraints but produces substantially worse
+routes, with gaps of 32.04–120.01%. LLMCoSolver reaches
+at most 13.67% feasibility on three of the four unseen con-
+straint types. These results support assigning language in-
+terpretation to the LLM while retaining the pretrained NCO
+policy as the combinatorial search engine.
+Rule-representation robustness.
+As an auxiliary compar-
+ison, we replace the DSL with free-form Python rule gener-
+ation while keeping the downstream solver and decoding
+strategy fixed. The DSL achieves 100% feasibility in all
+eight generator–constraint settings. Python generation falls
+below 100% in three settings, with a minimum feasibility of
+89.33%. Observed failures include tensor-shape mismatches,
+inconsistent device placement, and indexing operations that
+modify a copy rather than the original action mask. This aux-
+iliary comparison indicates that restricting rule generation to
+the DSL can mitigate low-level implementation failures ob-
+served with free-form Python. A per-task breakdown and
+representative generated-code failures are included in the
+Technical Supplement.
+
+#### Effectiveness of Critical-Offset Decoding
+
+To isolate rollout guidance from errors in generated hard
+masks, we replace the generated masks with independently
+implemented reference masks while retaining DSL-derived
+critical-node extraction. Critical nodes are still extracted
+from the DSL generated by LangNCO-Gemma4 and are
+not supplied through dataset labels. The greedy comparison
+holds the original greedy decoding fixed and compares one
+additional ordinary sample with one additional offset-guided
+rollout. For sampling, both standard sampling and Critical-
+Offset Decoding use the same budget of 100 rollouts per
+POMO start and augmentation.
+The greedy control shows that the gain cannot be explained
+by adding one more rollout alone. On Vehicle, adding
+one ordinary sample raises feasibility only from 75.33% to
+77.33%, whereas replacing that additional rollout with an
+offset-guided rollout raises it to 100%. On Order, the cor-
+responding feasibility values are 83.67% and 100%.
+Under the same budget of 100 rollouts per POMO start and
+augmentation, standard sampling fails to produce feasible so-
+lutions on 0.33%, 12.33%, and 3.00% of the Time, Vehicle,
+and Order instances, respectively, whereas Critical-Offset
+Decoding reaches 100% feasibility on all four datasets. The
+reported mean gaps are also lower, changing from 2.19%,
+3.33%, and 3.52% to 1.89%, 2.53%, and 2.85%, respectively.
+For this matched-budget comparison, the mean decoder time
+is nearly unchanged, increasing from 173.78 to 174.68 ms;
+language generation and rule compilation are excluded from
+this measurement.
+These results reflect the distinction between local legal-
+ity and completion viability described in Section 3. Ordi-
+nary sampling may postpone a currently feasible but low-
+probability critical node until a deadline expires, the desig-
+nated vehicle’s capacity is consumed, or the current route is
+closed. Offset-guided rollouts add trajectories that serve such
+nodes while the opportunity remains available. On Road, the
+negligible change is expected because the hard mask already
+captures the immediate violation.
+
+#### Constraint Composition and Breadth
+
+Pairwise constraint composition.
+We evaluate all six pair-
+wise combinations of the four primary constraints. The two
+natural-language constraints are translated separately, aggre-
+gated into a single rule set, and executed without pair-specific
+prompts or handlers. As a time-limited reference, we use OR-
+Tools with a single initial-solution strategy selected for the
+highest aggregate reference coverage among several stan-
+dard alternatives. The exact strategy, solver configuration,
+and time limit are provided in the Technical Supplement.
+Table 3 reports the numbers of feasible solutions returned
+by LangNCO-Gemma4 and the reference solver out of 300
+
+--- PAGE 7 ---
+
+Table 1: End-to-end performance. Gap is computed over feasible outputs only; “–” denotes no feasible output.
+Road
+Time
+Vehicle
+Order
+Method
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+LLMCoSolver
+36.33%
+5.70%
+13.67%
+4.42%
+2.00%
+0.58%
+0.00%
+–
+Direct GPT-5
+95.00%
+35.02%
+79.67%
+120.01%
+95.33%
+40.39%
+95.67%
+32.04%
+NCO w/o intervention
+37.33%
+2.65%
+11.00%
+1.63%
+1.00%
+2.56%
+1.33%
+1.47%
+LangNCO-Gemma4
+100.00%
+1.63%
+100.00%
+1.89%
+100.00%
+2.53%
+100.00%
+3.26%
+LangNCO-GPT-5
+100.00%
+1.63%
+100.00%
+1.89%
+100.00%
+2.68%
+100.00%
+2.97%
+Table 2: Effect of Critical-Offset Decoding. Gap is computed over each strategy’s feasible outputs only.
+Road
+Time
+Vehicle
+Order
+Strategy
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+Feas.↑
+Gap↓
+NCO greedy
+100.00%
+3.19%
+99.67%
+4.47%
+75.33%
+5.64%
+75.00%
+7.69%
+NCO greedy + 1 sample
+100.00%
+2.28%
+99.67%
+3.83%
+77.33%
+5.26%
+83.67%
+6.56%
+Critical-Offset greedy
+100.00%
+3.15%
+100.00%
+3.52%
+100.00%
+4.56%
+100.00%
+6.81%
+NCO sampling
+100.00%
+1.64%
+99.67%
+2.19%
+87.67%
+3.33%
+97.00%
+3.52%
+Critical-Offset sampling 100.00% 1.63% 100.00% 1.89% 100.00% 2.53% 100.00% 2.85%
+Table 3: Pairwise constraint composition for LangNCO-
+Gemma4. Counts are Ours / Ref. out of 300; gap is computed
+over jointly feasible instances.
+Combination
+Feasible (Ours / Ref.)
+Gap↓
+Road + Time
+300 / 300
+2.25%
+Road + Vehicle
+300 / 300
+3.14%
+Road + Order
+300 / 300
+3.94%
+Time + Vehicle
+300 / 300
+4.01%
+Time + Order
+292 / 289
+5.18%
+Vehicle + Order
+294 / 297
+6.77%
+instances. The reference gap is computed only over instances
+for which both return feasible solutions.
+LangNCO-Gemma4 returns feasible solutions for 292–
+300 of the 300 instances across all six combinations. It cov-
+ers every reference-feasible instance in five combinations
+and 294 of 297 instances for Vehicle + Order. For Time
++ Order, it additionally finds feasible solutions for three
+instances not solved by the time-limited reference. Because
+failure of the reference solver is not an infeasibility certifi-
+cate, this indicates complementary solution coverage rather
+than superiority over OR-Tools. The reference gaps range
+from 2.25% to 6.77%, with the largest gap occurring for
+Vehicle + Order, which jointly restricts route membership
+and within-route sequence.
+Additional constraint types.
+We further evaluate twelve
+additional constraint types with 50 instances each: first
+delivery, visit position, arrival capacity reserve, heavy-
+delivery limit, minimum service interval, depot closure,
+small-delivery assignment, return deadline, vehicle workload
+limit, consecutive deliveries, customer incompatibility, and
+restricted-area transition. Because these breadth-evaluation
+datasets do not have constraint-specific reference solutions,
+we report feasibility only. Without changing the pipeline,
+LangNCO-Gemma4 obtains 592 feasible solutions out of
+600 (98.67%), compared with 94 out of 600 (15.67%) for
+NCO without intervention. Ten constraint types reach 100%
+feasibility; small-delivery assignment reaches 96%, and re-
+turn deadline reaches 88%.
+These results indicate that the pipeline is not limited to the
+four primary constraint constructions. Nevertheless, the two
+lower-feasibility tasks reveal distinct limitations. For small-
+delivery assignment, the generated DSL is correct, but the
+critical-node extractor does not expand an attribute-defined
+target into a fixed node set. For return deadline, the LLM
+sometimes produces a structurally valid but semantically in-
+correct rule that restricts customer arrivals without constrain-
+ing depot return. These cases distinguish search-guidance
+limitations from semantic rule-generation errors.
+
+### 5
+
+
+### Conclusion and Future Work
+
+We introduced LangNCO, a framework for adapting a frozen
+NCO solver to instance-specific natural-language constraints
+at inference time. An LLM compiles each requirement into
+a schema-validated DSL rule, which a deterministic Rule
+Executor applies as an action mask. Critical-Offset Decod-
+ing further uses rule-derived critical nodes to mitigate future
+deadlocks within a fixed rollout budget. In the controlled de-
+coding evaluation with independently implemented reference
+rule masks, it achieved 100% feasibility on all four primary
+constraints under the same budget of 100 rollouts per POMO
+start and augmentation, compared with 87.67–100% for stan-
+dard sampling, while yielding lower mean reference gaps
+on the three nonlocal constraints. The complete LangNCO
+pipeline achieved 100% feasibility with mean reference gaps
+of 1.63–3.26% on the primary constraints, 97.33–100% fea-
+sibility when separately generated rules are composed for all
+pairwise combinations, and 98.67% feasibility across twelve
+
+--- PAGE 8 ---
+
+additional constraint types. These results show that a shared
+structured representation can connect natural-language inter-
+pretation, deterministic action intervention, and inference-
+time search guidance for a pretrained solver without retrain-
+ing. Future work will study robustness to paraphrased and
+noisier language, semantic rule verification, attribute-aware
+critical-node extraction, stronger completion-aware decod-
+ing, and broader optimization domains.
+Generative AI Use Disclosure.
+Generative AI tools as-
+sisted with editing, translation, restructuring, implementa-
+tion discussions, and code completion/generation. The au-
+thor reviewed all outputs, tested code where applicable, and
+takes full responsibility for the work.
+
+--- PAGE 9 ---
+
+
+### References
+
+Ahmaditeshnizi, A.; Gao, W.; and Udell, M. 2024. Opti-
+MUS: Scalable Optimization Modeling with (MI)LP Solvers
+and Large Language Models. In Proceedings of the 41st In-
+ternational Conference on Machine Learning, 577–596.
+Astorga, N.; Liu, T.; Xiao, Y.; and van der Schaar, M. 2025.
+Autoformulation of Mathematical Optimization Models Us-
+ing Large Language Models. In Proceedings of the 42nd
+International Conference on Machine Learning, 1864–1886.
+Bello, I.; Pham, H.; Le, Q. V.; Norouzi, M.; and Bengio, S.
+2017. Neural Combinatorial Optimization with Reinforce-
+ment Learning. In International Conference on Learning
+Representations Workshop.
+Bengio, Y.; Lodi, A.; and Prouvost, A. 2021. Machine Learn-
+ing for Combinatorial Optimization: A Methodological Tour
+d’Horizon.
+European Journal of Operational Research,
+290(2): 405–421.
+Berto, F.; Hua, C.; Park, J.; Luttmann, L.; Ma, Y.; Bu, F.;
+Wang, J.; Ye, H.; Kim, M.; Choi, S.; et al. 2025a. RL4CO: An
+Extensive Reinforcement Learning for Combinatorial Op-
+timization Benchmark.
+In Proceedings of the 31st ACM
+SIGKDD Conference on Knowledge Discovery and Data
+Mining, 5278–5289.
+Berto, F.; Hua, C.; Zepeda, N. G.; Hottung, A.; Wouda,
+N.; Lan, L.; Park, J.; Tierney, K.; and Park, J. 2025b.
+RouteFinder: Towards Foundation Models for Vehicle Rout-
+ing Problems. Transactions on Machine Learning Research.
+Bi, J.; Ma, Y.; Zhou, J.; Song, W.; Cao, Z.; Wu, Y.; and Zhang,
+J. 2024. Learning to Handle Complex Constraints for Vehi-
+cle Routing Problems. In Advances in Neural Information
+Processing Systems, volume 37.
+Chen, M.; Tworek, J.; Jun, H.; Yuan, Q.; Pinto, H. P. d. O.;
+Kaplan, J.; Edwards, H.; Burda, Y.; Joseph, N.; Brockman,
+G.; et al. 2021. Evaluating Large Language Models Trained
+on Code. arXiv preprint arXiv:2107.03374.
+Geng, S.; Josifoski, M.; Peyrard, M.; and West, R. 2023.
+Grammar-Constrained Decoding for Structured NLP Tasks
+without Finetuning.
+In Proceedings of the 2023 Confer-
+ence on Empirical Methods in Natural Language Processing,
+10932–10952.
+Goh, Y. L.; Cao, Z.; Ma, Y.; Zhou, J.; Dupty, M. H.; and Lee,
+W. S. 2025. SHIELD: Multi-Task Multi-Distribution Vehicle
+Routing Solver with Sparsity and Hierarchy. In Proceedings
+of the 42nd International Conference on Machine Learning,
+19679–19711.
+Google. 2026. OR-Tools: Operations Research Tools. Soft-
+ware documentation.
+Helsgaun, K. 2017. An Extension of the Lin–Kernighan–
+Helsgaun TSP Solver for Constrained Traveling Salesman
+and Vehicle Routing Problems. Technical report, Roskilde
+University.
+Iklassov, Z.; Du, Y.; Akimov, F.; and Takáč, M. 2024.
+Self-Guiding Exploration for Combinatorial Problems. In
+Advances in Neural Information Processing Systems, vol-
+ume 37.
+Jiang, X.; Wu, Y.; Li, M.; Cao, Z.; and Zhang, Y. 2025a. Large
+Language Models as End-to-End Combinatorial Optimiza-
+tion Solvers. In Advances in Neural Information Processing
+Systems, volume 38.
+Jiang, X.; Wu, Y.; Zhang, C.; and Zhang, Y. 2025b. DRoC:
+Elevating Large Language Models for Complex Vehicle
+Routing via Decomposed Retrieval of Constraints. In In-
+ternational Conference on Learning Representations.
+Jiang, Y.; Wu, Y.; Cao, Z.; and Zhang, J. 2022.
+Learn-
+ing to Solve Routing Problems via Distributionally Robust
+Optimization. In Proceedings of the AAAI Conference on
+Artificial Intelligence, volume 36, 9786–9794.
+Jin, Y.; Ding, Y.; Pan, X.; He, K.; Zhao, L.; Qin, T.; Song, L.;
+and Bian, J. 2023. Pointerformer: Deep Reinforced Multi-
+Pointer Transformer for the Traveling Salesman Problem.
+In Proceedings of the AAAI Conference on Artificial Intelli-
+gence, volume 37, 8132–8140.
+Kool, W.; van Hoof, H.; and Welling, M. 2019. Attention,
+Learn to Solve Routing Problems! In International Confer-
+ence on Learning Representations.
+Krasowski, H.; Thumm, J.; Müller, M.; Schäfer, L.; Wang,
+X.; and Althoff, M. 2023.
+Provably Safe Reinforcement
+Learning: Conceptual Analysis, Survey, and Benchmarking.
+Transactions on Machine Learning Research.
+Kwon, Y.-D.; Choo, J.; Kim, B.; Yoon, I.; Gwon, Y.; and
+Min, S. 2020. POMO: Policy Optimization with Multiple
+Optima for Reinforcement Learning. In Advances in Neural
+Information Processing Systems, volume 33, 179–190.
+Lai, Y.; Li, C.; Wang, Y.; Zhang, T.; Zhong, R.; Zettlemoyer,
+L.; Yih, W.-t.; Fried, D.; Wang, S.; and Yu, T. 2023. DS-
+1000: A Natural and Reliable Benchmark for Data Science
+Code Generation. In Proceedings of the 40th International
+Conference on Machine Learning, 18319–18345.
+Li, H.; Liu, F.; Zheng, Z.; Zhang, Y.; and Wang, Z. 2025.
+CaDA: Cross-Problem Routing Solver with Constraint-
+Aware Dual-Attention. In Proceedings of the 42nd Inter-
+national Conference on Machine Learning, 35438–35456.
+Li, T.; Zou, H.; Wu, J.; and Wen, Z. 2026. LMask: Learn to
+Solve Constrained Routing Problems with Lazy Masking. In
+International Conference on Learning Representations.
+Li, Y.; Choi, D.; Chung, J.; Kushman, N.; Schrittwieser, J.;
+Leblond, R.; Eccles, T.; Keeling, J.; Gimeno, F.; Dal Lago,
+A.; et al. 2022. Competition-Level Code Generation with
+AlphaCode. Science, 378(6624): 1092–1097.
+Liu, F.; Lin, X.; Wang, Z.; Zhang, Q.; Tong, X.; and Yuan,
+M. 2024a. Multi-Task Learning for Routing Problem with
+Cross-Problem Zero-Shot Generalization. In Proceedings of
+the 30th ACM SIGKDD Conference on Knowledge Discovery
+and Data Mining, 1898–1908.
+Liu, S.; Chen, C.; Qu, X.; Tang, K.; and Ong, Y.-S. 2024b.
+Large Language Models as Evolutionary Optimizers. In 2024
+IEEE Congress on Evolutionary Computation, 1–8.
+Luo, F.; Lin, X.; Liu, F.; Zhang, Q.; and Wang, Z. 2023.
+Neural Combinatorial Optimization with Heavy Decoder:
+Toward Large Scale Generalization. In Advances in Neural
+Information Processing Systems, volume 36, 8845–8864.
+
+--- PAGE 10 ---
+
+Nazari, M.; Oroojlooy, A.; Snyder, L. V.; and Takáč, M.
+2018. Reinforcement Learning for Solving the Vehicle Rout-
+ing Problem. In Advances in Neural Information Processing
+Systems, volume 31, 9839–9849.
+Ni, A.; Yin, P.; Zhao, Y.; Riddell, M.; Feng, T.; Shen, R.; Yin,
+S.; Liu, Y.; Yavuz, S.; Xiong, C.; Joty, S.; Zhou, Y.; Radev,
+D.; and Cohan, A. 2024. L2CEval: Evaluating Language-
+to-Code Generation Capabilities of Large Language Models.
+Transactions of the Association for Computational Linguis-
+tics, 12: 1311–1329.
+Ramamonjison, R.; Yu, T.; Li, R.; Li, H.; Carenini, G.; Ghad-
+dar, B.; He, S.; Mostajabdaveh, M.; Banitalebi-Dehkordi, A.;
+Zhou, Z.; and Zhang, Y. 2022. NL4Opt Competition: Formu-
+lating Optimization Problems Based on Their Natural Lan-
+guage Descriptions. In Proceedings of the NeurIPS 2022
+Competitions Track, 189–203.
+Romera-Paredes, B.; Barekatain, M.; Novikov, A.; Balog,
+M.; Kumar, M. P.; Dupont, E.; Ruiz, F. J. R.; Ellenberg,
+J. S.; Wang, P.; Fawzi, O.; Kohli, P.; Fawzi, A.; Grochow,
+J. A.; Lodi, A.; Mouret, J.-B.; Ringer, T.; and Yu, T. 2024.
+Mathematical Discoveries from Program Search with Large
+Language Models. Nature, 625: 468–475.
+Scholak, T.; Schucher, N.; and Bahdanau, D. 2021. PICARD:
+Parsing Incrementally for Constrained Auto-Regressive De-
+coding from Language Models. In Proceedings of the 2021
+Conference on Empirical Methods in Natural Language Pro-
+cessing, 9895–9901.
+Vinyals, O.; Fortunato, M.; and Jaitly, N. 2015.
+Pointer
+Networks. In Advances in Neural Information Processing
+Systems, volume 28, 2692–2700.
+Wang, B.; Wang, Z.; Wang, X.; Cao, Y.; Saurous, R. A.; and
+Kim, Y. 2023. Grammar Prompting for Domain-Specific
+Language Generation with Large Language Models.
+In
+Advances in Neural Information Processing Systems, vol-
+ume 36.
+Wang, Z.; Li, X.; Sun, L.; Zhang, H.; Liu, H.; and Wang, J.
+2024. Learning State-Specific Action Masks for Reinforce-
+ment Learning. Algorithms, 17(2): 60.
+Yang, C.; Wang, X.; Lu, Y.; Liu, H.; Le, Q. V.; Zhou, D.; and
+Chen, X. 2024. Large Language Models as Optimizers. In
+International Conference on Learning Representations.
+Ye, H.; Wang, J.; Cao, Z.; Berto, F.; Hua, C.; Kim, H.; Park,
+J.; and Song, G. 2024. ReEvo: Large Language Models as
+Hyper-Heuristics with Reflective Evolution. In Advances in
+Neural Information Processing Systems, volume 37.
+Zhang, J.; Wang, W.; Guo, S.; Wang, L.; Lin, F.; Yang,
+C.; and Yin, W. 2024. Solving General Natural-Language-
+Description Optimization Problems with Large Language
+Models.
+In Proceedings of the 2024 Conference of the
+North American Chapter of the Association for Computa-
+tional Linguistics: Human Language Technologies, Industry
+Track, 483–490.
+Zhou, C.; Yu, C.; Yao, S.; Lin, X.; Wang, Z.; Zhou, Y.; and
+Zhang, Q. 2026. URS: A Unified Neural Routing Solver for
+Cross-Problem Zero-Shot Generalization. In Proceedings of
+the 43rd International Conference on Machine Learning.
+Zhou, J.; Cao, Z.; Wu, Y.; Song, W.; Ma, Y.; Zhang, J.; and
+Chi, X. 2024. MVMoE: Multi-Task Vehicle Routing Solver
+with Mixture-of-Experts. In Proceedings of the 41st Inter-
+national Conference on Machine Learning, 61804–61824.
+Zhou, J.; Wu, Y.; Song, W.; Cao, Z.; and Zhang, J. 2023.
+Towards Omni-Generalizable Neural Methods for Vehicle
+Routing Problems. In Proceedings of the 40th International
+Conference on Machine Learning, volume 202, 42769–
+42789.
+
+--- PAGE 11 ---
+
+
+### Technical Supplement
+
+This supplement provides the dataset construction and eval-
+uation protocol, implementation details, reproducibility set-
+tings, complete numerical results, and failure analyses for
+the main paper. The post-hoc checker, reference solvers,
+and all reported metrics are defined here independently of
+the LangNCO inference pipeline. Sections A–C document
+dataset construction, the LangNCO implementation, and re-
+producibility settings. Section D reports complete experi-
+mental results, including decoding ablations and a Critical-
+Offset sensitivity analysis; Section E analyzes representative
+failures and decoding behavior.
+
+### A
+
+
+### Dataset Construction and Evaluation
+
+
+### Protocol
+
+
+#### A.1
+
+
+#### Base and Primary Constraint Datasets
+
+A.1.1
+Base CVRP benchmark
+We use the public 300-
+instance capacitated vehicle routing problem (CVRP) test
+split released with LLMCoSolver (Jiang et al. 2025a). Each
+instance contains one depot and 10–100 customers. Using
+the same numerical instances permits instance-level com-
+parison between LLMCoSolver, which generates complete
+routes from text, and LangNCO, which intervenes in a stan-
+dard CVRP policy. The split also spans multiple sizes and
+spatial distributions and includes a high-quality LKH-3 route
+for every instance.
+Throughout this supplement, V = {0, 1, . . . , n} is the
+node set and the universe of decoder actions, with N =
+|V | = n + 1 total nodes. Node 0 is the depot and nodes
+1, . . . , n are the n customers. Customer i has raw coordinate
+xi, raw demand di, and the homogeneous vehicle capacity is
+Q. We write cij = ∥xi −xj∥2 for the unrounded Euclidean
+edge cost between nodes i and j.
+In the released generation procedure, the number of cus-
+tomers is sampled from the integers in [10, 100]. Coordi-
+nates are drawn either uniformly or from Gaussian mix-
+ture distributions parameterized by the number of clusters
+c and scale l, using (c, l) = (2, 5) and (3, 10). Customer
+demands are sampled uniformly from 1, . . . , 10, while the
+depot is assigned a demand value of zero as a represen-
+tational convention inherited from the original dataset. In
+the released implementation, if ¯d is the mean customer de-
+mand and r ∼Triangular(3, 6, 25), the homogeneous vehi-
+cle capacity is set to Q = ⌊r ¯d⌋. Capacity therefore depends
+on each instance’s demand profile and sampled coefficient,
+rather than being fixed by problem size.
+The released text-attributed instances contain the fields in
+Table 4.
+We use these 300 numerical instances and their supplied
+routes without regeneration or resampling. Before supply-
+ing the instances to RouteFinder, we divide all coordinate
+values by 1000 to match the normalized coordinate scale
+expected by the RouteFinder implementation. This rescal-
+ing is applied only to the RouteFinder input; solution costs
+and reference gaps are evaluated using the original, un-
+normalized coordinates. Following the source benchmark,
+the routes are treated as near-optimal references rather than
+optimality-certified ground truth. Each primary dataset adds
+Table 4: Principal fields in the public LLMCoSolver CVRP
+instances.
+Field
+Contents
+num_nodes
+Number of nodes, including the depot.
+vehicle_capacity
+Homogeneous vehicle capacity Q.
+instruction
+Natural-language statement of unique
+visits, capacity, Euclidean-distance
+minimization, and output format.
+input
+Node IDs, coordinates, demands, and
+the two nearest neighbors and distances
+used as LLM heuristic features.
+output
+LKH-3 routes and total distance.
+one natural-language constraint to each base instance. The
+nearest-neighborfeatures arenotpart oftheRouteFinderstate
+given to LangNCO or NCO w/o intervention. They are re-
+constructed from the coordinates only for the LLMCoSolver
+baseline to preserve its original input format.
+A.1.2
+Common construction protocol
+For each task, a
+single fixed sentence template is instantiated with instance-
+specific nodes or parameters. Targets are selected from the
+supplied reference-route structure, rather than independently
+from coordinates and demands, so that the original route
+violates the added requirement and a solver cannot succeed
+merely by ignoring it. Where relevant, the construction also
+excludes a cost-preserving route reversal as a trivial solution.
+Every instance stores both the sentence shown to hu-
+mans and LLMs and a machine-readable template with its
+grounded variables. The latter is used only to build the post-
+hoc checker. The instruction asks the solver to minimize
+total distance, obey hard constraints, and satisfy soft re-
+quests when possible. Wording is fixed within each task to
+isolate constraint-type and composition performance from
+paraphrase robustness. A single pseudorandom generator is
+seeded once with 1234 at the beginning of each dataset-
+construction run.
+Labels above the braced positional slots state the value
+inserted at run time and are not part of the recipe string. The
+braced token itself is reproduced verbatim from the released
+recipe; one slot may expand to a comma-separated list, as in
+Vehicle and Order.
+Road.
+The template is:
+The road between Node
+node ID
+{0}
+and Node
+node ID
+{1}
+is closed.
+We first sample a reference route containing at least two
+customers and then sample one adjacent customer–customer
+pair on that route. Depot-adjacent edges are excluded. The
+selected undirected edge is therefore used by the original
+route, which must change to satisfy the closure.
+
+--- PAGE 12 ---
+
+Time.
+The template is:
+Node
+node ID
+{0}
+must be served between time
+start time
+{1}
+and
+end time
+{2} . However, arriving early
+and waiting is not allowed.
+Vehicles depart at time zero, travel time from i to j is
+⌈0.1cij⌉, service time is zero, and all unconstrained nodes
+have the unrestricted window [0, ∞). Waiting after an early
+arrival is not allowed, so the arrival itself must lie in the
+stated interval.
+Among routes with at least three customers, we choose
+the route with maximum total travel time under this inte-
+ger time model and split its customer sequence as evenly
+as possible into nonempty First, Middle, and Last thirds,
+assigning remainders to earlier thirds. Let l be the refer-
+ence arrival time of the Middle-third customer farthest from
+the depot. The window is [l, l + w], with integer w sam-
+pled uniformly from {18, 19, 20}. This range is obtained by
+scaling RouteFinder’s normalized time-window-length range
+[0.18, 0.20] (Berto et al. 2025b) by 100 to match the integer
+time units above. Its target is sampled from the First third
+and displayed bounds are rounded to integers. Using a later
+arrival band for an early-route customer makes both the ref-
+erence order and its reversal nontrivial, while the no-wait
+policy prevents an arbitrarily early arrival from satisfying
+the constraint.
+Vehicle.
+The template is:
+Nodes
+2 node IDs
+{0}
+must be served by Vehicle ID
+vehicle ID
+{1}
+.
+We select two distinct reference routes when possible and
+take the highest-demand customer from each. If their com-
+bined demand exceeds Q, the largest selected demand is
+repeatedly replaced by the next-largest demand on the same
+route until the pair fits. The designated vehicle is sampled
+uniformly from the reference routes. Selecting high-demand
+customers from different routes tends to require genuine re-
+distribution rather than a cost-free relabeling.
+Order.
+The template is:
+Nodes
+2 prerequisite node IDs
+{0}
+must be served before Nodes
+subject node ID
+{1}
+by the same vehicle, but not necessarily
+immediately before.
+Two prerequisite nodes must precede one subject node. On
+every eligible reference route, the subject is restricted to an
+interior position and the two prerequisites include at least one
+customer from each side of it. This “sandwich” makes both
+the original route and its reversal violate the requirement.
+Candidates whose total demand exceeds Q are removed.
+Among the remaining candidates, let cleft and cright be
+the centroids of prerequisites selected before and after the
+subject in the reference order, and let cafter denote the subject
+centroid. We maximize
+dist(cleft, cright) −λ dist(cafter, cleftcright) ,
+λ = 1,
+(17)
+where the second distance is to the line segment. We draw
+64 random candidates per eligible route and retain the global
+maximum. The score separates the prerequisite groups while
+placing the subject near their connecting segment, making
+low-cost routes likely to encounter the subject before all
+prerequisites have been served.
+
+#### A.2
+
+
+#### Pairwise Constraint Datasets
+
+The six pairwise datasets contain every pair among Road,
+Time, Vehicle, and Order. Each contains the same 300 base
+instances. We join the corresponding primary datasets by
+instance identifier. The two natural-language conditions and
+their machine-readable records are concatenated in task or-
+der, with identifiers reassigned from zero. A Road + Time
+example is:
+- The road between Node 78 and Node 37 is
+closed.
+- Node 14 must be served between time 115
+and 134. However, arriving early and
+waiting is not allowed.
+Grounded targets and parameters are inherited unchanged
+from the two primary datasets and are not adjusted to am-
+plify their interaction. This construction tests whether inde-
+pendently generated constraints can be satisfied jointly; in-
+teractions may nevertheless arise naturally on the shared in-
+stance. The single-constraint reference routes are not merged.
+Pairwise references are recomputed with both constraints as
+described in Section A.4.
+For separate generation, each bullet is sent in an indepen-
+dent LLM request and its rule becomes a branch applied in
+source order. For joint generation, the bullet texts are joined
+with spaces and sent in one request, producing one com-
+bined rule. Prompts, DSL semantics, validation, repair, and
+execution are otherwise identical. With one condition the two
+forms coincide.
+
+#### A.3
+
+
+#### Additional Constraint Datasets
+
+The breadth evaluation covers twelve constraint types beyond
+the four primary families. All use the same 50-instance subset
+of the base data. We stratify by customer count into [10, 20],
+[21, 40], [41, 60], [61, 80], and [81, 100]. Proportional alloca-
+tion with the largest-remainder method yields 4, 11, 13, 11,
+and 11 instances; within each stratum we take the first in-
+stances in source order. Because subsampling precedes con-
+straint generation, every task uses identical numerical CVRP
+instances.
+The common protocol and seed 1234 from Section A.1
+apply. No candidate was rejected, so every dataset contains
+50 instances. Time-dependent tasks share the Time model:
+departure at zero, travel time ⌈0.1cij⌉, zero service time, no
+waiting, and default window [0, ∞). These datasets have no
+constraint-specific reference solutions, so only feasibility is
+reported.
+
+--- PAGE 13 ---
+
+First delivery.
+Node
+node ID
+{0}
+must be the first customer served on the
+route of the vehicle assigned to it. The
+depot is not counted as a customer.
+Among all customers that are neither first nor last on their
+reference route, we choose the one farthest from the depot,
+breaking ties by node ID. Excluding both endpoints makes
+the reference and its reversal violate the constraint; the dis-
+tance choice discourages a trivial low-cost reorder.
+Visit position.
+Node
+node ID
+{0}
+must be the
+position
+{1} -th customer served on the route of
+its assigned vehicle.
+For a customer at reference position p on a k-customer
+route, eligible positions are {1, . . . , k} \ {p, k −p + 1}. We
+uniformly sample a customer with a nonempty set and then an
+eligible position, excluding both the reference and reversed
+positions.
+Arrival capacity reserve.
+Node
+node ID
+{0}
+must be served only when the
+vehicle’s remaining capacity is at least
+capacity threshold
+{1}
+.
+Let (c1, . . . , ck) be the customer sequence of the longest
+reference route, where ci is the customer node at position
+i and k is the number of customers on that route. Choose
+a customer uniformly from positions c⌊k/2⌋+1, . . . , ck−1.
+If L is demand served before that customer and Cr =
+Q −L, sample the threshold uniformly from the integers
+in [Cr + 1, Cr + ⌊¯d⌋]. The reference necessarily violates
+the threshold, but the extra reserve is limited to roughly one
+average delivery.
+Heavy-delivery limit.
+Each vehicle may serve at most
+customer limit
+{1}
+customer nodes whose demand is at least
+demand threshold
+{0}
+.
+Sample limit Y uniformly from 1–3, reducing the upper
+bound to one less than the number of distinct demands if
+that number is at most three. Starting from the maximum
+demand, decrease threshold X until some reference route
+contains at least Y + 1 customers with demand at least X.
+This is the largest threshold that guarantees a violation and
+avoids labeling most customers as heavy deliveries.
+Minimum service interval.
+The same vehicle must begin service at
+the next customer at least
+minimum interval
+{1}
+time units after completing service at
+Node
+node ID
+{0} , without waiting.
+Among reference customers followed by another customer,
+choose the one farthest from the depot. If t1 is travel time
+to its reference successor and t2 is travel time to the depot,
+set the displayed interval to the rounded midpoint g = (t1 +
+t2)/2. In the released 50 instances, the rounded value satisfies
+t1 < g ≤t2, so the reference successor is prohibited while
+returning to the depot remains available.
+Depot closure.
+The depot is out of service during the
+period from time
+start time
+{0}
+and
+end time
+{1} . However, arriving early and
+waiting is not allowed.
+Sample a reference route and set closure start to its depot-
+return time. The closure duration is the rounded mean travel
+time over all node pairs. Thus the selected route violates
+the interval, whose width is approximately one typical move
+rather than an arbitrarily narrow or broad period.
+Small-delivery assignment.
+Vehicle ID
+vehicle ID
+{0}
+must serve all and only
+customer nodes whose demand is at most
+demand threshold
+{1}
+.
+Let Nv = ⌊�n
+i=1 di/Q⌋and sample a vehicle ID from
+{0, . . . , Nv −1}. Let dmax be the largest threshold for which
+the total demand of all customers at or below it fits in one
+vehicle, and let dmin = mini∈V \{0} di be the minimum cus-
+tomer demand. We sample the threshold from [dmin, dmax]
+and reject the sample if the designated reference route already
+equals the resulting customer set.
+Return deadline.
+Vehicle ID
+vehicle ID
+{0}
+must arrive at the depot by time
+deadline
+{1} .
+Among reference routes with at least two customers,
+choose the earliest to return and set its deadline one time unit
+earlier. This creates the smallest strict violation at the ear-
+liest absolute return time while avoiding a degenerate zero-
+customer route.
+Vehicle workload limit.
+Vehicle ID
+vehicle ID
+{0}
+may visit at most
+customer limit
+{1}
+customer nodes.
+Among routes with at least two customers, select the one
+with the fewest and set its limit to one less than that count.
+
+--- PAGE 14 ---
+
+This yields the smallest positive absolute limit and a one-
+customer violation.
+Consecutive deliveries.
+Nodes
+node ID
+{0} ,
+node ID
+{1} , and
+node ID
+{2}
+must be served consecutively, in that
+order, by the same vehicle.
+Sample a reference route with at least three customers
+and then three of its customers. Uniformly select a permuta-
+tion different from their reference relative order. Same-route
+sampling ensures the combined demand fits Q; the new re-
+quirement generally changes both order and adjacency.
+Customer incompatibility.
+Nodes
+node ID
+{0}
+and
+node ID
+{1}
+must be served by different vehicles.
+Sample one adjacent customer pair from a reference route
+with at least two customers. The reference violates the assign-
+ment, and adjacency tends to select geometrically compatible
+customers whose separation is costly.
+Restricted-area transition.
+Do not travel directly from Node
+source node ID
+{0}
+to any customer node with an x-coordinate
+between
+lower x-bound
+{1}
+and
+upper x-bound
+{2}
+.
+Sample an interior reference customer as the source. If
+its successor has x-coordinate xc and customer extrema are
+xmin and xmax, the rounded bounds are (xmin + xc)/2 and
+(xc+xmax)/2. The interval contains the reference successor,
+while excluding route endpoints prevents a depot successor
+in either the original route or its reversal. Returning directly
+to the depot remains permitted.
+
+#### A.4
+
+
+#### Reference Solvers and Evaluation
+
+A.4.1
+Independent post-hoc checker
+Every method is
+evaluated by the same checker, which receives only the re-
+turned route sequence and is isolated from rule generation,
+Rule Executor implementation, decoding, and rollout selec-
+tion. A route is feasible only if it starts and ends at the depot,
+respects capacity, visits every customer exactly once, and
+satisfies every grounded additional constraint. Empty or un-
+parseable outputs are infeasible. The objective is the sum
+of unrounded Euclidean edge lengths over all routes, irre-
+spective of any integer costs used internally by a reference
+solver.
+Road checks both directions of the closed edge. Time re-
+constructs arrival times under the no-wait model. Vehicle
+IDs are zero-based positions in the returned route list, and a
+missing designated position is a violation. Order requires all
+referenced nodes on one route and every prerequisite position
+to precede the subject. Pairwise constraints are dispatched by
+their task prefix and combined by conjunction. The additional
+tasks use analogous task-specific checks derived from their
+machine-readable records.
+If DSL parsing, schema validation, and both repair at-
+tempts all fail, LangNCO solves the instance without an
+additional rule; the returned route is still checked against
+the requested constraint. Runtime exceptions and decoding
+deadlocks are recorded as no solution. No failure is removed
+from the feasibility denominator.
+A.4.2
+Road
+references
+Road
+references
+use
+LKH-
+3 (Helsgaun 2017) with an explicit integer distance matrix.
+Each closed-edge cost is set to ten times the largest edge
+length in the instance. We run ten trials with seed zero and
+accept a route only after the independent checker verifies the
+base CVRP and road closure.
+A.4.3
+Time, Vehicle, and Order references
+These
+references use the OR-Tools Routing Solver (Google
+2026)
+with
+PARALLEL_CHEAPEST_INSERTION,
+GUIDED_LOCAL_SEARCH, and a 600-second limit per
+instance. Arc costs are ceiling-rounded Euclidean distances;
+reported objectives are recomputed from unrounded dis-
+tances. The vehicle count is min{n, ⌈�
+i di/Q⌉+ 2} and is
+increased if needed to include a designated vehicle ID.
+Time uses a time dimension with zero slack, Vehicle fixes
+the routing solver’s vehicle variable, and Order combines
+a visit-position dimension with same-vehicle equalities. To
+improve initial-solution construction, only non-target cus-
+tomers may be dropped with penalty 105. Target nodes re-
+main mandatory, and any final route with a dropped cus-
+tomer is rejected. Since coordinates lie in [0, 1000]2, one
+ceiling-rounded edge costs at most 1415 and a simple inser-
+tion changes two edges by at most about 2830; the penalty
+therefore strongly favors reinsertion. It is a search aid, not
+a proof that every incomplete route costs more than every
+complete one. All accepted primary and pairwise references
+visit every customer.
+Empty internal routes can change vehicle positions af-
+ter compression. We therefore retain internal vehicle–route
+pairs, remove empty routes, construct an explicit map to com-
+pressed output positions, and transform grounded vehicle IDs
+before checking.
+A.4.4
+Pairwise and additional references
+Pairwise
+references
+impose
+both
+constraints
+in
+one
+OR-Tools
+model; closed edges are removed from successor do-
+mains. We compare six first-solution strategies and select
+GLOBAL_CHEAPEST_ARC, which has the greatest aggre-
+gate reference coverage (Table 18). Other settings match the
+single-constraint OR-Tools runs. A solution is retained only
+if it passes both checks. Failure within 600 seconds is not
+an infeasibility certificate. No constrained reference solver is
+constructed for the twelve additional tasks, whose purpose is
+breadth rather than objective-gap evaluation.
+A.4.5
+Metrics
+Feasibility is the fraction of all test in-
+stances whose output passes the checker. For a feasible out-
+put with objective z and an available constrained reference
+objective z∗,
+gap(z, z∗) = z −z∗
+z∗
+× 100%.
+(18)
+
+--- PAGE 15 ---
+
+Primary-task gaps are averaged over feasible method outputs;
+all 300 primary instances have references. Pairwise feasibil-
+ity counts always use all 300 instances for each method. Pair-
+wise gaps use only the intersection on which that LangNCO
+variant and OR-Tools both return feasible solutions. Addi-
+tional tasks report feasibility over all 50 instances and no
+reference gap. Reference solutions are time-limited, near-
+optimal baselines rather than optimality-certified ground
+truth.
+
+### B
+
+
+### LangNCO Implementation Details
+
+
+#### B.1
+
+
+#### DSL Schema, Validation, and Compilation
+
+B.1.1
+Typed
+guarded-rule
+representation
+The
+LangNCO DSL is a typed guarded mask-effect intermediate
+representation. It separates four semantic components,
+summarized in Table 5, rather than asking the LLM to
+generate executable tensor code.
+Targets may identify fixed nodes, structural sets such as
+the depot or all customers, or sets selected from node at-
+tributes. Expressions combine typed Boolean, comparison,
+arithmetic, and visit-history aggregation primitives. Acces-
+sors expose standard CVRP state, cumulative or vehicle-
+specific visit history, node attributes, and explicitly declared
+auxiliary observations. The latter may be scalar, node in-
+dexed, vector valued, or pairwise. In these experiments,
+elapsed time and travel times are auxiliary observations vis-
+ible to the Rule Executor but not added to the frozen NCO
+policy input.
+For constraint c, the matched-action set is
+Mc(st) = {a ∈Tc | gc(st) ∧hc(st, a)} ,
+(19)
+where Tc is the target set, gc(st) ∈{0, 1} is a state-level
+guard, and hc(st, a) ∈{0, 1} is a candidate-level predicate.
+With batch size B and N nodes, state guards are evaluated
+in a row context and return B Booleans, whereas target pred-
+icates and candidate guards are evaluated in a node context
+and return B × N Booleans. Static context checks reject
+candidate-indexed access where only a row value is valid.
+This separation delegates broadcasting, tensor shapes, types,
+and device placement to the compiler rather than the LLM.
+B.1.2
+Structured generation, validation, and compila-
+tion
+The generation protocol exposes a typed catalog of
+available observations, target constructors, expression fami-
+lies, and nonexpansive effects. It asks for one structured rule
+representation without executable code or explanatory text.
+For multiple requirements, accepted constraints are com-
+bined in source order, keeping language interpretation sepa-
+rate from deterministic execution.
+After parsing and normalization, the rule is validated
+against a machine-readable schema. The same compiler then
+performs a dry compilation, rejecting unsupported opera-
+tions, malformed target sets, missing arguments, and context-
+invalid access. Dry compilation establishes structural con-
+formance and static translatability, assuming run-time fields
+have their declared shapes; it does not execute a route or
+establish semantic agreement with the sentence.
+On a parse, schema, or compile error, the prior output
+and concrete diagnostic are returned to the LLM for at most
+two bounded repairs. If all three attempts fail, the instance
+is solved with only the base CVRP mask. This fallback pre-
+serves pipeline execution but does not satisfy the omitted
+requirement by default. The protocol describes the informa-
+tion and guarantees supplied to the generator; exact prompt
+wording and serialization details are not needed for the exe-
+cution semantics analyzed here.
+For a valid constraint, the compiler evaluates gc as a
+row mask in {0, 1}B and represents Tc and hc as target
+and candidate masks Tc, hc ∈{0, 1}B×N. It constructs the
+Boolean match mask Kc ∈{0, 1}B×N whose entries, for
+b = 1, . . . , B and a ∈V , are
+Kc[b, a] = Tc[b, a] ∧gc[b] ∧hc[b, a].
+(20)
+Thus, Kc[b, a] = 1 if and only if a ∈Mc(s(b)
+t ). As a mi-
+nor executor artifact, a force_only update is evaluated
+only on rows selected by gc; unselected rows pass through
+unchanged. Fixed row values are broadcast over candidates,
+while $n access is vectorized. All generated tensors use ex-
+plicit types and the input mask’s device.
+DSL thresholds use raw units. If RouteFinder stores nor-
+malized coordinate and demand values xnorm
+i
+and dnorm
+i
+, the
+compiler recovers xraw
+i
+= 1000xnorm
+i
+and draw
+i
+= Qdnorm
+i
+.
+Coordinate predicates use the canonical, unaugmented co-
+ordinates so geometric augmentation cannot change a con-
+straint’s meaning. A rule needing unavailable auxiliary state
+or vehicle-specific history is inactive and leaves the input
+mask unchanged.
+For an active constraint, starting with the base feasible set
+A and apart from the exhausted-target safeguard described
+below, source-ordered constraints apply
+block :
+A ←A \ Mc(st),
+force_only :
+A ←A ∩Mc(st).
+(21)
+Both effects are intersections or removals from the current
+mask; no later rule can re-enable a base- or earlier-rule-
+prohibited action.
+
+#### B.2
+
+
+#### Rule Executor and Deadlock Handling
+
+At each step, the Rule Executor takes RouteFinder’s standard-
+CVRP base mask and applies every compiled constraint and
+branch in order. Let mrule
+t,q (a) ∈{0, 1} denote the retain
+mask contributed by update q. The final mask satisfies
+mt(a) = mbase
+t
+(a) ∧
+�
+q
+mrule
+t,q (a),
+mt(a) ≤mbase
+t
+(a),
+a ∈V.
+(22)
+It is shared by greedy and sampling decoders; masked logits
+are set to −∞.
+A limited safeguard skips force_only when its tar-
+get contains neither the depot nor any unvisited customer. It
+does not skip a temporarily unavailable but unvisited cus-
+tomer, which may become available after a depot return. The
+safeguard keeps execution defined after an exhausted target
+but does not certify the skipped constraint.
+A rollout is deadlocked if customers remain while no cus-
+tomer or depot action is executable. A depot state with no
+
+--- PAGE 16 ---
+
+Table 5: Semantic components of the guarded-rule representation.
+Component
+Abstract role
+Target
+Selects the candidate actions affected by a constraint.
+State guard
+Determines whether the constraint is active for a decoder state.
+Candidate predicate
+Evaluates the constraint separately for each candidate action.
+Effect
+Removes matched actions or restricts the feasible set to matched actions.
+visitable customer is also deadlocked, because repeatedly se-
+lecting the depot cannot change the state. Likewise, a POMO
+start that externally forces an action prohibited by the exe-
+cuted mask is marked deadlocked. Before masked softmax,
+an all-false row is assigned a temporary depot-only numeri-
+cal sink so batch shapes remain valid; the rollout is terminal
+with reward −∞, so this sink cannot recover or select a
+solution. If every rollout deadlocks, the instance returns no
+solution. There is no backtracking, mask relaxation, or rule
+regeneration. Vectorized execution of R constraints over |V |
+actions costs O(R|V |) per step.
+
+#### B.3
+
+
+#### Critical-Node Extraction and Critical-Offset
+
+
+#### Decoding
+
+Hard masking establishes only immediate legality. A legal
+action can still consume capacity required by an assigned
+customer, miss a future time window, or close a route before
+an ordering prerequisite is completed. Critical-Offset Decod-
+ing uses DSL-referenced nodes as a low-cost completion-
+oriented rollout prior instead of solving a constrained con-
+tinuation for every candidate.
+For a rule set r and constraint c ∈r, let Ntar(c) be fixed
+IDs resolved from its target and Ncond(c) fixed IDs resolved
+from its guards. We call them subject and condition nodes
+and define
+Sr =
+�
+c∈r
+Ntar(c),
+Gr =
+�
+c∈r
+Ncond(c),
+Cr = (Sr ∪Gr) \ {0}.
+(23)
+The depot is excluded to avoid encouraging premature route
+termination. Extraction is deterministic, scope-aware, and
+shared across all rollouts of an instance. It recursively collects
+static targets and fixed IDs in current-node comparisons and
+visit aggregations. State values such as time, capacity, and
+vehicle ID add no condition node. Attribute-defined where
+targets and all_customers are not expanded into the
+lookup table in the current implementation, although their
+hard rules still execute normally.
+At step t, only legal critical nodes are active:
+At = {a : mt(a) = 1},
+Ct = Cr ∩At.
+(24)
+For masked-policy probability pt(a) and strength α ∈[0, 1],
+define the unnormalized weight
+q(α)
+t
+(a) =
+�(1 −α)pt(a) + α,
+a ∈Ct,
+pt(a),
+otherwise.
+(25)
+Greedy decoding maximizes q(α)
+t
+; sampling normalizes it
+over At. At α = 0 this is exactly the original masked policy.
+At α = 1, legal critical nodes each receive unnormalized
+weight one, but noncritical legal actions retain positive policy
+weight. An offset never revives a masked action.
+For every POMO start and each of eight geometric aug-
+mentations, the total sampling budget is 100. Ninety rollouts
+use α = 0 and two each use
+Λ = {0.2, 0.4, 0.6, 0.8, 1.0}.
+(26)
+This fixed 90:10 allocation and strength set were selected
+heuristically, not tuned on a validation set. Complete rollouts
+are ranked only by travel cost; incomplete and deadlocked
+rollouts are discarded. The independent checker is not used
+to filter or rank candidates. Critical lookup and weighting add
+O(|V |) time per step and O(B|V |) lookup storage, without
+increasing the number of policy evaluations relative to sam-
+pling with 100 rollouts per POMO start and augmentation.
+
+#### B.4
+
+
+#### Frozen RouteFinder and Input Audit
+
+We train RouteFinder (Berto et al. 2025b) only on stan-
+dard CVRP and freeze the same parameters for all ex-
+periments. There is no fine-tuning, gradient update, opti-
+mizer step, or online adaptation on augmented instances.
+Let xnorm
+i
+= xi/1000 and dnorm
+i
+= di/Q be the coor-
+dinate and linehaul-demand inputs to RouteFinder. In the
+CVRP-specific implementation, the initial embeddings and
+step context are
+e(0)
+0
+= Wdepxnorm
+0
+,
+(27)
+e(0)
+i
+= Wcust[xnorm
+i
+, dnorm
+i
+],
+i ∈V \ {0},
+(28)
+hctx
+t
+= Wctx[evt, 1 −ut/Q].
+(29)
+Here the three W matrices are learned linear projections, ei
+is the encoder output obtained from e(0)
+i , vt is the current
+node, and ut is the raw linehaul demand already served on
+the current route; hence 1 −ut/Q is the normalized avail-
+able load. Thus the learned initial embedding receives only
+depot/customer coordinates and customer linehaul demand,
+while the learned step context receives only the current-node
+encoder embedding and available load. Unlike the multi-
+variant RouteFinder embedding, this CVRP-specific embed-
+ding has no input channels for time windows, service times,
+backhaul demand, open-route flags, distance limits, current
+time, or remaining distance.
+The environment may retain extra state to execute a hard
+rule, but that state is converted to a Boolean mask before
+affecting the policy. Critical-Offset Decoding similarly con-
+verts statically extracted node IDs to a lookup and changes
+
+--- PAGE 17 ---
+
+Table 6: Information-flow audit. Constraint-specific state affects the frozen policy only through the nonexpansive action mask
+and legal-action offset.
+Path
+Used
+Not used
+Learned initial embedding
+Depot/customer coordinates and customer demand
+Time windows, service time, backhaul demand,
+open-route flag, distance limit, natural language, or
+DSL tokens
+Learned step context
+Current-node embedding and available load
+Current time, vehicle index, full visit sequence, or
+remaining distance
+Decoder interface
+Combined base/rule mask, critical-node lookup,
+and α
+Natural-language or DSL tokens and raw values
+referenced by guards
+Environment and Rule Executor
+Visit state, time/travel state, vehicle ID, capacity,
+and other state needed to evaluate a mask
+Any learned-parameter update
+weights only among already legal actions. With an empty
+rule set, the overlay returns the base mask and Ct = ∅, so
+for every α,
+r = ∅=⇒mt = mbase
+t
+,
+q(α)
+t
+= pt.
+(30)
+Thus, with the same checkpoint, decoding settings, seed,
+and budget, empty-rule LangNCO follows the ordinary
+RouteFinder code path and sampling distribution.
+
+### C
+
+
+### Experimental Settings and Reproducibility
+
+
+#### C.1
+
+
+#### Models and Baselines
+
+We generate rules with locally served Gemma4 and with
+GPT-5 through Azure OpenAI. DSL-versus-Python compar-
+isons hold the LLM, sentence, frozen NCO solver, and decod-
+ing budget fixed while using the representation-specific gen-
+eration and repair protocols reported below. Table 7 records
+the generation settings.
+The implementation passed seed zero to GPT-5, but the
+API did not guarantee determinism, so we do not treat it as a
+reproducible seed. GPT-5 requests omit temperature because
+the deployment does not accept an arbitrary value. Only
+Primary Order free-form Python required 16,384 completion
+tokens after an 8,192-token context-length error; no DSL
+condition used the larger limit.
+One hundred samples means 100 rollouts inside every
+augmentation–POMO-start combination, not 100 trajecto-
+ries total per instance. The samples and the two rollouts at
+each nonzero α are internal candidates within one algorithm
+invocation, not repeated experimental runs.
+Direct GPT-5 receives one feasible route generated by a
+randomized heuristic as its one-shot example. LLMCoSolver
+retains its Alpaca-style scaffold and two-nearest-neighbor
+input, with only the new condition and required problem
+definition appended.
+We retrain LLMCoSolver following its published pro-
+cedure: one epoch of CVRP supervised fine-tuning with
+per-device batch size four, followed by the published
+reinforcement-learning stage initialized from the final SFT
+checkpoint, and then weight merging. Other settings use the
+released defaults. We correct one response-delimiter issue in
+the public SFT collator: Qwen tokenizes ### Response:
+differently at the beginning of a string and after whitespace.
+We tokenize it after a whitespace-ending dummy prefix so
+prompt labels are masked and loss is computed only on the re-
+sponse. Training data, architecture, and hyperparameters are
+otherwise unchanged. The retrained baseline obtains 100%
+feasibility and a 4.91% gap on unconstrained CVRP, close to
+the reported 100% and 4.53%.
+
+#### C.2
+
+
+#### Randomness and Number of Runs
+
+Each method is invoked once per test instance. Direct GPT-5
+makes one request and does not retry API or parse failures.
+DSL repair attempts are internal pipeline operations trig-
+gered only by validation failure. LLMCoSolver’s eight can-
+didates likewise form one best-of-eight invocation. The pro-
+tocol does not estimate training-seed or API-generation vari-
+ance. GPT-5 results are therefore not exactly reproducible.
+
+#### C.3
+
+
+#### Hardware, Software, and Timing Protocol
+
+End-to-end latency is measured separately for each instance
+and decomposed into (i) rule generation, including repair; (ii)
+validation and DSL-to-Python compilation, or loading free-
+form code; and (iii) NCO solving. Before timing Ollama,
+one dummy request excludes initial model loading. The GPU
+is synchronized immediately before and after NCO timing;
+no separate NCO warm-up solve is used. Compilation in-
+cludes validation, code generation, and function loading, but
+excludes dataset and checkpoint loading, Ollama loading,
+output writing, and post-hoc evaluation.
+LangNCO processes the test instances sequentially, one
+at a time with batch size one; its three measured stages are
+also sequential within each instance. Direct GPT-5 requests
+were issued in parallel, so their total wall time is not directly
+comparable. Observed API latency includes network trans-
+fer, service queueing, and service-side inference; Ollama la-
+tency also includes local client–server communication. The
+reported software versions, timing boundaries, and execu-
+tion order define the protocol used for the end-to-end latency
+measurements in Table 13.
+
+### D
+
+
+### Additional Experimental Results
+
+Feasibility in every table is determined by the independent
+checker. Objective and gap entries are mean ± standard de-
+viation over feasible outputs only. Consequently, mean ob-
+jectives are not directly comparable when methods have dif-
+ferent feasible subsets. A gap is computed between a feasible
+output and its corresponding constrained reference.
+
+--- PAGE 18 ---
+
+Table 7: LLM rule-generation settings. “Default” means the request omitted that option. Context length is shared by prompt and
+output; maximum completion is the request-level output cap.
+Setting
+Gemma4
+GPT-5
+Identifier
+gemma4:31b-it-q8_0
+Azure deployment gpt-5
+Runtime/API
+Ollama
+Azure OpenAI API, 2025-01-01-preview
+Quantization
+8 bit
+Managed API (not applicable)
+Temperature
+0.0
+Default
+Top-p/top-k
+Ollama defaults
+Defaults
+Context length
+8,192 tokens (OLLAMA_CONTEXT_LENGTH=8192)
+Managed by API; not configured
+Maximum completion
+Not set in request
+8,192 tokens; 16,384 only for Primary Order Python
+generation
+Reasoning effort
+Not applicable
+medium
+Generation seed
+0
+No reproducible fixed seed
+DSL repair
+Up to two validation-feedback attempts
+Same
+Python repair
+None
+None
+Table 8: Methods and inference settings. Every RouteFinder-based row uses the same frozen standard-CVRP policy.
+Method/component
+Model or implementation
+Inference setting
+LangNCO
+Frozen RouteFinder
+Critical-Offset Decoding; eight dihedral augmentations;
+all POMO starts; 100 samples per start and
+augmentation; decoder temperature 1.0; 90 ordinary
+and ten offset-guided samples.
+Direct GPT-5
+Azure OpenAI gpt-5
+One-shot prompt; one response per instance; 128,000
+maximum completion tokens; medium reasoning;
+default temperature; no retry; regex and JSON route
+parsing.
+LLMCoSolver
+Retrained Qwen2.5-7B-based model
+Two-nearest-neighbor augmentation; best of eight;
+temperature 0.7; top-p 0.9; 3,000 maximum new
+tokens; selection by base-CVRP reward.
+NCO w/o intervention
+Same frozen RouteFinder
+No rule; augmented multi-start greedy decoding; eight
+augmentations and all POMO starts.
+LKH-3 reference
+Road wrapper
+RUNS=10; seed zero; closed edge cost ten times the
+maximum instance edge.
+OR-Tools reference
+Routing Solver
+PCI for Time/Vehicle/Order and GCA for Pairwise;
+guided local search; 600 seconds per instance.
+
+#### D.1
+
+
+#### Unconstrained CVRP Sanity Check
+
+Table 11 verifies each solver on the 300 unmodified CVRP
+instances and checks that an empty LangNCO rule has no
+effect. The reference objective over all instances is 9,662.95±
+4,737.80.
+The retrained LLMCoSolver’s 100% feasibility and 4.91%
+gap confirm that it learned the base problem before testing
+unseen conditions. Direct GPT-5 fails on 23 instances and
+has a 48.76% feasible-output gap. RouteFinder and empty-
+rule LangNCO have identical outputs, feasibility, and cost
+statistics.
+
+#### D.2
+
+
+#### Full End-to-End and Decoding Results
+
+D.2.1
+End-to-end performance
+Table 12 reports the
+complete natural-language-to-route pipeline. “–” means no
+feasible output, so gap and objective are undefined.
+Reference objectives for Road, Time, Vehicle, and Or-
+der are respectively 9,702.69 ± 4,720.65, 9,840.66 ±
+4,788.95, 9,967.52 ± 4,866.50, and 9,815.17 ± 4,831.95.
+Both LangNCO variants return 300 feasible routes on every
+primary task with gaps of 1.63–3.26%. NCO w/o interven-
+tion is feasible on only 1.00–37.33%; its occasionally small
+conditional gap describes the few accidental successes, not
+general constraint handling. Direct GPT-5 is more feasible
+but has gaps of 32.04–120.01%. LLMCoSolver is fully feasi-
+ble on standard CVRP but reaches only 0.00–36.33% under
+the unseen conditions.
+Validation and compilation remain below 3 ms in every
+condition; LLM rule generation dominates end-to-end la-
+tency. These are client-observed times, not isolated model-
+compute benchmarks, particularly for the remote GPT-5 API.
+D.2.2
+Full decoding ablation
+This ablation replaces
+generated masks with independently implemented reference
+masks to isolate decoding from rule-generation error. Criti-
+cal nodes are still extracted from LangNCO-Gemma4 DSL,
+not dataset labels. “Noaug + single start” uses neither ge-
+ometric augmentation nor POMO multistart; “noaug” uses
+POMO starts without augmentation. NCO greedy uses both.
+The greedy controls add either one ordinary sample or one
+
+--- PAGE 19 ---
+
+Table 9: Randomness controls and deterministic selection rules.
+Stage
+Seed or selection rule
+Primary and Additional generation
+1234 for every task.
+Pairwise construction
+Join the two primary instances by index; no new sampling.
+Additional subset
+Proportional size strata; first source instances within each stratum.
+Gemma4 rule generation
+Seed 0 and temperature 0.0.
+GPT-5 rule generation / Direct GPT-5
+No reproducible fixed seed.
+LangNCO NCO sampling
+Seed i for instance i.
+NCO w/o intervention
+Seed 0; decoding is greedy.
+LKH-3
+Seed 0.
+OR-Tools and LLMCoSolver
+No explicit random seed.
+Table 10: Local execution environment.
+Item
+Configuration
+CPU
+Intel Xeon w9-3575X, 44 cores / 88 threads
+GPU
+NVIDIA RTX PRO 6000 Blackwell Max-Q, 96 GB
+Memory
+512 GiB
+OS
+Ubuntu 24.04
+Python
+3.12
+Ollama
+0.30.8
+LKH-3
+3.0.8
+α = 1 offset-guided rollout. Both sampling rows use exactly
+100 rollouts per POMO start and augmentation. Timing starts
+after five warm-up solves, which are excluded from the re-
+ported values. Because the implementation cannot execute
+greedy and sampling decoding in parallel, NCO greedy + 1
+sample runs them sequentially; its reported time is the sum
+of the two decoder passes and is consequently longer than
+either pass alone.
+Adding one ordinary rollout raises greedy feasibility only
+from 75.33% to 77.33% on Vehicle and from 75.00% to
+83.67% on Order. Replacing that rollout with one offset-
+guided trajectory reaches 100% on both. At the same budget
+of 100 rollouts per POMO start and augmentation, ordinary
+sampling fails on 1 Time, 37 Vehicle, and 9 Order instances,
+while Critical-Offset sampling reaches 100% on all four tasks
+and reduces their gaps from 2.19%, 3.33%, and 3.52% to
+1.89%, 2.53%, and 2.85%. Mean decoder time across the
+four tasks is 173.78 ms for ordinary sampling and 174.68 ms
+for Critical-Offset sampling.
+D.2.3
+Critical-Offset sensitivity
+We vary two parame-
+ters while holding the total budget at B = 100 rollouts
+per POMO start and augmentation. The critical-offset roll-
+out ratio ρ assigns Boff = ρB rollouts to nonzero offsets
+and leaves the rest at α = 0. The offset-strength spac-
+ing ∆α defines Λ∆α = {∆α, 2∆α, . . . , 1.0}; its values
+are assigned cyclically to the offset rollouts. We test ρ ∈
+{0.05, 0.10, 0.20, 0.50} and ∆α ∈{0.05, 0.10, 0.20, 0.50},
+excluding three combinations with Boff < |Λ∆α|. As in
+the decoding ablation, reference masks isolate decoder be-
+havior, while critical nodes are extracted from LangNCO-
+Gemma4 DSL. The setting used in the main paper is
+(ρ, ∆α) = (0.10, 0.20).
+All 13 evaluated settings reach 100% feasibility on all
+four datasets. In particular, ρ = 0.05 uses only five offset-
+guided rollouts, yet both evaluable spacings recover a feasible
+solution for every instance. The feasibility gains therefore do
+not depend on a narrow allocation or strength grid: mixing a
+small number of directed trajectories into ordinary sampling
+is already sufficient to avoid the observed future deadlocks.
+Unlike feasibility, conditional solution quality does vary
+across the parameter grid. At ∆α = 0.20, increasing ρ from
+0.05 to 0.50 lowers the Vehicle gap from 2.60% to 2.33%
+and the Order gap from 2.89% to 2.72%; Time improves
+more modestly from 1.94% to 1.85%. This indicates that
+allocating more of the fixed budget to guided trajectories can
+improve the best feasible route found, even after feasibility
+has saturated at 100%.
+The effect of ∆α is task-dependent rather than uniformly
+smaller. On Order, changing ∆α at fixed ρ produces up to a
+0.18-point gap range, comparable to the effect of changing
+ρ at fixed ∆α. At ρ = 0.50, the two finer grids give 2.59–
+2.60%, versus 2.74% for ∆α = 0.50. Thus, ρ controls how
+many guided candidates are available, whereas ∆α controls
+the coverage and resolution of intervention strengths. Both
+can matter for finding a route that remains aligned with the
+base policy while satisfying the constraint.
+The task pattern suggests a mechanism for this quality
+effect. Under ordinary hard-masked sampling, Vehicle and
+Order exhibit both more deadlocks and higher conditional
+gaps than Road and Time (Table 14). Hard masking guaran-
+tees only immediate legality: in Vehicle, other customers can
+consume capacity needed by assigned nodes, while in Order,
+a depot return can close a route before all order-linked cus-
+tomers are completed. Once such a future consequence be-
+comes immediate, the mask can abruptly remove the policy’s
+preferred actions. If legal actions remain, renormalization
+forces choices that the learned policy originally considered
+unlikely, disrupting its distance-minimizing route structure
+through a costly detour; otherwise, the rollout deadlocks. A
+larger ρ creates more trajectories that prioritize critical nodes
+before this point, while a finer ∆α grid includes weak off-
+sets that preserve the base policy as well as strong offsets
+that avert deadlock. Selecting among these trajectories can
+therefore recover a policy-aligned route rather than merely
+a feasible one. Time also creates a future dependency, but
+each instance has a single windowed target rather than mul-
+tiple coupled critical nodes, which may explain its smaller
+
+--- PAGE 20 ---
+
+Table 11: Unconstrained CVRP sanity check. The empty-rule result exactly matches the frozen RouteFinder baseline.
+Method
+Feasible
+Gap [%]
+Objective
+LLMCoSolver
+300/300 (100.00%)
+4.91 ± 3.37
+10,227.09 ± 5,208.21
+Direct GPT-5
+277/300 (92.33%)
+48.76 ± 82.40
+15,326.47 ± 12,776.96
+NCO w/o intervention
+300/300 (100.00%)
+2.83 ± 2.32
+9,885.24 ± 4,750.93
+LangNCO (empty rule)
+300/300 (100.00%)
+2.83 ± 2.32
+9,885.24 ± 4,750.93
+Table 12: Full primary-task end-to-end results. Gaps and objectives summarize only feasible outputs; each dataset has 300
+instances.
+Dataset
+Method
+Feasible
+Gap [%]
+Objective
+Road
+LLMCoSolver
+109/300 (36.33%)
+5.70 ± 3.34
+11,811.25 ± 5,577.29
+Road
+Direct GPT-5
+285/300 (95.00%)
+35.02 ± 64.20
+13,281.54 ± 9,665.37
+Road
+NCO w/o intervention
+112/300 (37.33%)
+2.65 ± 2.02
+10,865.53 ± 5,121.04
+Road
+LangNCO-Gemma4
+300/300 (100.00%)
+1.63 ± 1.65
+9,828.66 ± 4,719.14
+Road
+LangNCO-GPT-5
+300/300 (100.00%)
+1.63 ± 1.65
+9,828.66 ± 4,719.14
+Time
+LLMCoSolver
+41/300 (13.67%)
+4.42 ± 2.46
+11,325.59 ± 5,269.24
+Time
+Direct GPT-5
+239/300 (79.67%)
+120.01 ± 123.02
+23,559.14 ± 17,924.90
+Time
+NCO w/o intervention
+33/300 (11.00%)
+1.63 ± 2.64
+11,104.62 ± 4,928.38
+Time
+LangNCO-Gemma4
+300/300 (100.00%)
+1.89 ± 3.00
+9,953.71 ± 4,696.32
+Time
+LangNCO-GPT-5
+300/300 (100.00%)
+1.89 ± 3.00
+9,953.71 ± 4,696.32
+Vehicle
+LLMCoSolver
+6/300 (2.00%)
+0.58 ± 0.49
+6,172.51 ± 1,326.12
+Vehicle
+Direct GPT-5
+286/300 (95.33%)
+40.39 ± 68.58
+14,498.03 ± 11,035.21
+Vehicle
+NCO w/o intervention
+3/300 (1.00%)
+2.56 ± 1.12
+6,952.16 ± 408.46
+Vehicle
+LangNCO-Gemma4
+300/300 (100.00%)
+2.53 ± 2.65
+10,158.41 ± 4,809.64
+Vehicle
+LangNCO-GPT-5
+300/300 (100.00%)
+2.68 ± 2.87
+10,167.84 ± 4,803.62
+Order
+LLMCoSolver
+0/300 (0.00%)
+–
+–
+Order
+Direct GPT-5
+287/300 (95.67%)
+32.04 ± 57.23
+13,185.65 ± 9,079.90
+Order
+NCO w/o intervention
+4/300 (1.33%)
+1.47 ± 0.93
+8,356.78 ± 2,365.50
+Order
+LangNCO-Gemma4
+300/300 (100.00%)
+3.26 ± 3.71
+10,050.50 ± 4,753.62
+Order
+LangNCO-GPT-5
+300/300 (100.00%)
+2.97 ± 3.46
+10,027.54 ± 4,756.53
+variation. In contrast, Road’s forbidden edge is removed im-
+mediately, creates no comparable future commitment, and its
+gap remains within 1.62–1.68% across the grid.
+The best four-task mean, 2.09% at (0.50, 0.05), is only
+0.13 percentage points below the main setting’s 2.23%. The
+parameters therefore offer useful quality control, with task-
+dependent effects, while the main result—100% feasibility
+with near-best quality while retaining 90 ordinary rollouts—
+does not depend on a narrow parameter choice.
+
+#### D.3
+
+
+#### DSL versus Free-Form Python
+
+Table 16 compares the two representation-specific genera-
+tion pipelines; the LLM, sentence, downstream solver, and
+Critical-Offset Decoding are fixed. Failure is the number of
+instances without a feasible final output, and gap is averaged
+only over feasible outputs.
+The DSL is feasible in all eight generator–task conditions.
+Python falls below 100% in Gemma4-Time, Gemma4-Order,
+and GPT-5-Vehicle, reaching a minimum of 89.33%. Its oc-
+casionally smaller feasible-output gap reflects selection after
+failures and does not establish better solution quality.
+
+#### D.4
+
+
+#### Pairwise Constraint Results
+
+Table 17 compares Gemma4 separate and joint generation.
+No pair-specific prompt or handler is used. OR-Tools (GCA)
+is a 600-second time-limited reference. Feasibility is counted
+independently for each method over all 300 instances; each
+LangNCO gap is computed only on the intersection where
+that row and GCA are both feasible. Therefore, objective
+columns can summarize different feasible subsets.
+Separate, Joint, and GCA return respectively 1786, 1753,
+and 1786 feasible solutions out of 1800. Joint generation
+is therefore not uniformly superior. It recovers two Vehicle
++ Order instances by integrating a shared node’s vehicle
+assignment with same-vehicle ordering, but it fails on 26
+Road + Order instances, illustrating that combined context
+can also lose individual semantics.
+GCA provides the greatest aggregate reference coverage
+and is therefore used for pairwise gaps. This selection in-
+creases time-limited reference coverage; it is not a claim of
+general superiority for OR-Tools or LangNCO.
+
+#### D.5
+
+
+#### Additional Constraints
+
+The frozen policy without intervention is feasible on 15.67%
+overall. LangNCO-Gemma4 reaches 98.67% and is per-
+fect on ten tasks. The two small-delivery failures con-
+
+--- PAGE 21 ---
+
+Table 13: Per-instance LangNCO wall-clock latency (mean ± standard deviation). End-to-end time is the sum of the three
+measured stages.
+Dataset
+Generator
+End-to-end [ms]
+Rule generation [ms]
+Validate + compile [ms]
+NCO solve [ms]
+Road
+Gemma4
+16,398.08 ± 4,678.31
+16,113.54 ± 4,682.77
+2.84 ± 0.72
+281.69 ± 153.71
+Road
+GPT-5
+10,714.05 ± 3,681.74
+10,457.49 ± 3,683.47
+0.65 ± 0.24
+255.91 ± 137.14
+Time
+Gemma4
+44,983.17 ± 6,997.72
+44,691.05 ± 6,962.60
+2.81 ± 0.79
+289.32 ± 175.59
+Time
+GPT-5
+39,842.02 ± 22,012.27
+39,495.22 ± 21,987.02
+0.74 ± 0.26
+346.05 ± 205.16
+Vehicle
+Gemma4
+15,023.30 ± 2,863.01
+14,743.96 ± 2,829.72
+2.77 ± 0.77
+276.57 ± 156.65
+Vehicle
+GPT-5
+36,637.52 ± 22,892.23
+36,323.33 ± 22,883.83
+0.64 ± 0.21
+313.55 ± 186.47
+Order
+Gemma4
+72,362.71 ± 28,394.11
+72,086.05 ± 28,391.66
+2.85 ± 0.78
+273.80 ± 159.02
+Order
+GPT-5
+48,958.89 ± 23,017.82
+48,638.66 ± 23,010.17
+0.74 ± 0.70
+319.50 ± 199.13
+cern critical-node extraction from attribute-defined targets,
+whereas the six return-deadline failures concern a semantic
+rule-generation error. Section E separates these mechanisms.
+
+### E
+
+
+### Failure and Mechanistic Analyses
+
+
+#### E.1
+
+
+#### Free-Form Python Failures
+
+Free-form failures concentrate in low-level tensor integration
+rather than in recognizing the requested condition. Gemma4
+produces 11 Time and 32 Order runtime failures; GPT-5
+produces one Vehicle implementation failure. Three repre-
+sentative mechanisms follow.
+Shape mismatch.
+A Time rule adds curr_time of shape
+[B] directly to travel_times of shape [B, N], causing
+a broadcasting error. The rule needs only the designated
+destination and should jointly index the batch, current node,
+and target to obtain a [B] pairwise value.
+Device mismatch.
+An Order rule initializes
+met = torch.ones(can_visit.shape[0], dtype
+=torch.bool)
+on the CPU, while visited_by, vehicle_idx,
+and can_visit reside on the GPU. A subsequent
+Boolean operation fails unless the new tensor is created on
+can_visit.device.
+Copy-only advanced indexing.
+A Vehicle rule uses
+can_visit[rows][:, cols] = False
+The first Boolean index creates a temporary copy, so the
+assignment does not modify can_visit. This silent fail-
+ure requires a single direct index into the original tensor.
+The DSL avoids all three classes by leaving shapes, devices,
+broadcasting, and in-place mask composition to the compiler.
+
+#### E.2
+
+
+#### Pairwise and Additional-Constraint Failures
+
+Separate Vehicle + Order generation can produce indi-
+vidually plausible rules whose conjunction loses a cross-
+constraint implication. For example:
+- Nodes 30, 3 must be served by Vehicle
+ID 5.
+- Nodes 30, 60 must be served before Node
+57 by the same vehicle.
+The Vehicle rule restricts only nodes 30 and 3. The Order
+rule blocks 57 until 30 and 60 have been visited by the current
+vehicle, but independent generation does not infer that the
+shared node 30 makes vehicle 5 the required vehicle for 60
+and 57 as well. If another vehicle serves 60 first, vehicle 5
+cannot meet the route-local prerequisite. Separate generation
+fails on two such instances; Joint constrains all four related
+nodes to vehicle 5 and completes both.
+Joint generation is not uniformly better. One Road + Time
+rule checks whether current_time itself lies in the win-
+dow rather than adding travel time to the target. Several Road
++ Order and Time + Order rules omit by: vehicle_idx
+from all_visited; this represents global precedence but
+loses the requested same-vehicle condition. The frequency
+of the latter error in Road + Order may indicate interference
+from the road’s node-to-node relation, but that interpretation
+is an inference from outputs, not a causal finding. Joint Vehi-
+cle + Order also sometimes misses the same cross-constraint
+implication. Moreover, an OR-Tools no-solution result under
+the time limit is not proof of infeasibility, so we assign mech-
+anistic causes only when the generated rule or trace directly
+identifies one.
+Small-delivery assignment exposes a different limitation.
+The Rule Executor correctly evaluates a where target such as
+“demand at most 4” at every step, but the static critical-node
+extractor resolves only literal IDs. The designated route can
+return before serving every member of the attribute-defined
+set, after which other vehicles are blocked from them.
+For diagnosis, we preserve the same hard constraint and
+replace one failed instance’s attribute predicate
+Vehicle ID 0 must serve all and only
+customer nodes whose demand is at most 4.
+with its instance-grounded equivalent:
+Vehicle ID 0 must serve all and only
+customer nodes
+5, 8, 10, 12, 18, 19, 27, 29, 41, 42, 46,
+47, 57, 58, 60, 62, 63, 67, 68.
+The original form yields no solution, whereas the lit-
+eral form extracts the critical set and completes under the
+same hard semantics. This controlled reformulation directly
+supports extractor coverage as the cause. Static attributes
+could be expanded deterministically once per instance with-
+out changing the Rule Executor, offset equation, or frozen
+
+--- PAGE 22 ---
+
+Table 14: Full decoding ablation across all four primary datasets. Time is per-instance NCO decoding time in milliseconds;
+language generation and compilation are excluded.
+Dataset
+Strategy
+Feasible
+Gap [%]
+Objective
+Time [ms]
+Road
+NCO greedy (noaug + single start)
+300/300 (100.00%)
+9.47 ± 11.49
+10,424.60 ± 4,756.40
+99.20 ± 53.19
+Road
+NCO greedy (noaug)
+300/300 (100.00%)
+5.23 ± 5.84
+10,107.41 ± 4,734.66
+113.87 ± 50.90
+Road
+NCO greedy
+300/300 (100.00%)
+3.19 ± 3.04
+9,950.00 ± 4,728.90
+117.36 ± 56.35
+Road
+NCO greedy + 1 sample
+300/300 (100.00%)
+2.28 ± 2.38
+9,920.20 ± 4,728.38
+239.61 ± 106.60
+Road
+NCO sampling
+300/300 (100.00%)
+1.64 ± 1.68
+9,830.36 ± 4,723.48
+167.88 ± 99.84
+Road
+Critical-Offset greedy
+300/300 (100.00%)
+3.15 ± 3.03
+9,946.12 ± 4,727.31
+140.88 ± 65.04
+Road
+Critical-Offset sampling
+300/300 (100.00%)
+1.63 ± 1.65
+9,828.66 ± 4,719.14
+173.00 ± 101.77
+Time
+NCO greedy (noaug + single start)
+158/300 (52.67%)
+8.95 ± 6.34
+12,147.49 ± 5,023.99
+100.25 ± 45.62
+Time
+NCO greedy (noaug)
+285/300 (95.00%)
+7.20 ± 7.36
+10,532.27 ± 4,698.93
+120.82 ± 55.04
+Time
+NCO greedy
+299/300 (99.67%)
+4.47 ± 4.98
+10,170.02 ± 4,701.39
+119.71 ± 53.89
+Time
+NCO greedy + 1 sample
+299/300 (99.67%)
+3.83 ± 4.35
+10,118.89 ± 4,698.80
+241.94 ± 109.93
+Time
+NCO sampling
+299/300 (99.67%)
+2.19 ± 3.33
+9,985.64 ± 4,686.60
+178.90 ± 111.28
+Time
+Critical-Offset greedy
+300/300 (100.00%)
+3.52 ± 3.71
+10,088.72 ± 4,711.08
+134.63 ± 67.56
+Time
+Critical-Offset sampling
+300/300 (100.00%)
+1.89 ± 3.00
+9,953.71 ± 4,696.32
+183.36 ± 113.30
+Vehicle
+NCO greedy (noaug + single start)
+94/300 (31.33%)
+13.67 ± 14.19
+9,984.04 ± 4,002.33
+96.43 ± 44.75
+Vehicle
+NCO greedy (noaug)
+169/300 (56.33%)
+10.05 ± 10.60
+9,583.89 ± 4,291.81
+112.17 ± 50.58
+Vehicle
+NCO greedy
+226/300 (75.33%)
+5.64 ± 4.68
+9,554.24 ± 4,496.91
+109.39 ± 49.89
+Vehicle
+NCO greedy + 1 sample
+232/300 (77.33%)
+5.26 ± 4.69
+9,536.46 ± 4,471.97
+228.63 ± 101.83
+Vehicle
+NCO sampling
+263/300 (87.67%)
+3.33 ± 2.98
+9,699.06 ± 4,630.74
+163.24 ± 96.72
+Vehicle
+Critical-Offset greedy
+300/300 (100.00%)
+4.56 ± 4.14
+10,316.78 ± 4,793.07
+126.06 ± 65.33
+Vehicle
+Critical-Offset sampling
+300/300 (100.00%)
+2.53 ± 2.65
+10,158.41 ± 4,809.64
+168.07 ± 97.95
+Order
+NCO greedy (noaug + single start)
+27/300 (9.00%)
+9.91 ± 6.46
+8,141.98 ± 3,175.66
+98.35 ± 44.92
+Order
+NCO greedy (noaug)
+134/300 (44.67%)
+11.39 ± 11.47
+9,418.80 ± 4,154.35
+117.93 ± 54.49
+Order
+NCO greedy
+225/300 (75.00%)
+7.69 ± 7.42
+9,789.76 ± 4,658.21
+115.28 ± 52.47
+Order
+NCO greedy + 1 sample
+251/300 (83.67%)
+6.56 ± 6.46
+9,938.24 ± 4,722.22
+231.92 ± 103.10
+Order
+NCO sampling
+291/300 (97.00%)
+3.52 ± 4.18
+9,866.84 ± 4,635.28
+185.10 ± 106.92
+Order
+Critical-Offset greedy
+300/300 (100.00%)
+6.81 ± 6.40
+10,325.12 ± 4,751.61
+121.99 ± 53.50
+Order
+Critical-Offset sampling
+300/300 (100.00%)
+2.85 ± 3.30
+10,018.17 ± 4,759.80
+174.28 ± 103.07
+policy; aggregate results with that extension remain future
+work.
+Return deadline instead exposes semantic generation er-
+ror. For “Vehicle 1 must arrive at the depot by time 25,”
+a failed rule blocks late arrivals to all_customers but
+never targets the depot-return action. The rule discourages
+new service after the deadline without enforcing the required
+return. Residual errors therefore separate into missing cross-
+constraint implications, incorrect state or same-vehicle se-
+mantics, and static critical-node extraction coverage.
+
+#### E.3
+
+
+#### Critical-Offset Sampling Case Study
+
+We compare an Ordinary Sampling rollout that deadlocks
+with a Critical-Offset Sampling rollout that completes on the
+same instance and sample index. Raw probability refers to
+the frozen policy probability after hard masking, while the
+offset weight is q(α)
+t
+from Equation 25.
+E.3.1
+Time: preserving a service opportunity
+Both
+rollouts first move from the depot to node 14. Under Ordi-
+nary Sampling, node 2 remains legal but has raw probability
+1.34 × 10−9; selecting node 13 makes its time window un-
+reachable and the rollout deadlocks. In the Critical-Offset
+rollout, node 2 has raw probability 5.69 × 10−9 but offset
+weight 1.00, so it is served immediately and the rollout com-
+pletes.
+The hard mask cannot prohibit node 13 because it is lo-
+cally legal. The offset adds a trajectory that uses the expiring
+service opportunity.
+In this representative case, a critical node is legal but re-
+ceives negligible policy probability. The Rule Executor has
+no basis to remove a different action that is legal at the current
+step. Critical-Offset Sampling reallocates part of the existing
+rollout budget toward constraint-referenced nodes without
+relaxing masks. The lower aggregate gaps for Critical-Offset
+Sampling in Table 14 are consistent with this interpretation,
+but the case study does not establish it causally. The method
+remains a search bias, not a look-ahead proof of completion,
+and its current fixed-ID coverage is the limitation diagnosed
+above.
+
+--- PAGE 23 ---
+
+Table 15: Critical-Offset sensitivity at a fixed budget of 100 rollouts per POMO start and augmentation, with rollout ratio ρ by
+row and strength spacing ∆α by column. Entries are mean reference gap ± standard deviation over feasible solutions; every
+filled cell attained 300/300 feasible solutions. Dashes mark combinations that cannot cover every strength at least once. Bold
+denotes the lowest gap for each dataset, and † marks the setting used in the main paper.
+Dataset
+ρ
+Reference gap [%] at offset-strength spacing ∆α
+0.05
+0.10
+0.20
+0.50
+Road
+0.05
+–
+–
+1.63 ± 1.66
+1.63 ± 1.66
+0.10
+–
+1.63 ± 1.66
+1.63 ± 1.65†
+1.64 ± 1.67
+0.20
+1.64 ± 1.65
+1.62 ± 1.62
+1.65 ± 1.67
+1.65 ± 1.67
+0.50
+1.66 ± 1.62
+1.66 ± 1.63
+1.65 ± 1.59
+1.68 ± 1.66
+Time
+0.05
+–
+–
+1.94 ± 3.02
+1.94 ± 3.03
+0.10
+–
+1.89 ± 2.97
+1.89 ± 3.00†
+1.88 ± 2.97
+0.20
+1.87 ± 2.96
+1.87 ± 2.96
+1.86 ± 2.96
+1.86 ± 2.94
+0.50
+1.86 ± 2.94
+1.86 ± 2.95
+1.85 ± 2.95
+1.86 ± 2.95
+Vehicle
+0.05
+–
+–
+2.60 ± 2.69
+2.63 ± 2.71
+0.10
+–
+2.47 ± 2.63
+2.53 ± 2.65†
+2.52 ± 2.69
+0.20
+2.34 ± 2.49
+2.37 ± 2.59
+2.41 ± 2.64
+2.42 ± 2.63
+0.50
+2.26 ± 2.47
+2.30 ± 2.58
+2.33 ± 2.63
+2.38 ± 2.66
+Order
+0.05
+–
+–
+2.89 ± 3.35
+2.88 ± 3.28
+0.10
+–
+2.74 ± 3.15
+2.85 ± 3.30†
+2.86 ± 3.28
+0.20
+2.68 ± 3.00
+2.63 ± 2.91
+2.71 ± 3.06
+2.81 ± 3.19
+0.50
+2.59 ± 2.84
+2.60 ± 2.90
+2.72 ± 3.00
+2.74 ± 3.01
+Table 16: Schema-validated DSL versus free-form Python rule generation. Each row contains 300 instances.
+Dataset
+Generator
+Representation
+Feasible
+Failure
+Gap [%]
+Road
+Gemma4
+DSL
+300/300 (100.00%)
+0
+1.63
+Road
+Gemma4
+Python
+300/300 (100.00%)
+0
+1.63
+Road
+GPT-5
+DSL
+300/300 (100.00%)
+0
+1.63
+Road
+GPT-5
+Python
+300/300 (100.00%)
+0
+1.63
+Time
+Gemma4
+DSL
+300/300 (100.00%)
+0
+1.89
+Time
+Gemma4
+Python
+289/300 (96.33%)
+11
+1.89
+Time
+GPT-5
+DSL
+300/300 (100.00%)
+0
+1.89
+Time
+GPT-5
+Python
+300/300 (100.00%)
+0
+1.92
+Vehicle
+Gemma4
+DSL
+300/300 (100.00%)
+0
+2.53
+Vehicle
+Gemma4
+Python
+300/300 (100.00%)
+0
+2.53
+Vehicle
+GPT-5
+DSL
+300/300 (100.00%)
+0
+2.68
+Vehicle
+GPT-5
+Python
+299/300 (99.67%)
+1
+2.62
+Order
+Gemma4
+DSL
+300/300 (100.00%)
+0
+3.26
+Order
+Gemma4
+Python
+268/300 (89.33%)
+32
+3.05
+Order
+GPT-5
+DSL
+300/300 (100.00%)
+0
+2.97
+Order
+GPT-5
+Python
+300/300 (100.00%)
+0
+3.30
+
+--- PAGE 24 ---
+
+Table 17: All pairwise constraint results. Gap is relative to the OR-Tools GCA reference on the jointly feasible subset.
+Combination
+Method
+Feasible
+Gap vs. GCA [%]
+Objective
+Road + Time
+OR-Tools (GCA)
+300/300 (100.00%)
+–
+9,875.92 ± 4,773.63
+Road + Time
+Separate
+300/300 (100.00%)
+2.25 ± 3.45
+10,016.40 ± 4,679.15
+Road + Time
+Joint
+297/300 (99.00%)
+2.27 ± 3.46
+9,996.15 ± 4,696.13
+Road + Vehicle
+OR-Tools (GCA)
+300/300 (100.00%)
+–
+9,998.89 ± 4,844.93
+Road + Vehicle
+Separate
+300/300 (100.00%)
+3.14 ± 2.82
+10,253.60 ± 4,813.32
+Road + Vehicle
+Joint
+300/300 (100.00%)
+3.14 ± 2.82
+10,253.60 ± 4,813.32
+Road + Order
+OR-Tools (GCA)
+300/300 (100.00%)
+–
+9,855.80 ± 4,812.87
+Road + Order
+Separate
+300/300 (100.00%)
+3.94 ± 4.33
+10,152.61 ± 4,749.32
+Road + Order
+Joint
+274/300 (91.33%)
+4.48 ± 4.80
+10,060.28 ± 4,734.18
+Time + Vehicle
+OR-Tools (GCA)
+300/300 (100.00%)
+–
+10,074.32 ± 4,841.97
+Time + Vehicle
+Separate
+300/300 (100.00%)
+4.01 ± 3.71
+10,384.94 ± 4,776.70
+Time + Vehicle
+Joint
+300/300 (100.00%)
+4.01 ± 3.71
+10,384.94 ± 4,776.70
+Time + Order
+OR-Tools (GCA)
+289/300 (96.33%)
+–
+9,981.26 ± 4,764.97
+Time + Order
+Separate
+292/300 (97.33%)
+5.18 ± 5.17
+10,369.51 ± 4,666.54
+Time + Order
+Joint
+286/300 (95.33%)
+4.82 ± 4.96
+10,388.42 ± 4,684.52
+Vehicle + Order
+OR-Tools (GCA)
+297/300 (99.00%)
+–
+10,138.43 ± 4,853.72
+Vehicle + Order
+Separate
+294/300 (98.00%)
+6.77 ± 5.80
+10,603.09 ± 4,671.41
+Vehicle + Order
+Joint
+296/300 (98.67%)
+6.62 ± 5.59
+10,676.40 ± 4,788.87
+Table 18: OR-Tools pairwise feasibility by first-solution strategy. PCI: parallel cheapest insertion; LCI: local cheapest insertion;
+PMCA: path most constrained arc; GCA: global cheapest arc; SV: savings; AT: automatic.
+Combination
+Feasibility [%]
+PCI
+LCI
+PMCA
+GCA
+SV
+AT
+Road + Time
+100.00
+100.00
+100.00
+100.00
+100.00
+100.00
+Road + Vehicle
+100.00
+100.00
+100.00
+100.00
+24.67
+73.67
+Road + Order
+98.67
+98.67
+8.33
+100.00
+9.33
+11.67
+Time + Vehicle
+99.00
+96.33
+99.67
+100.00
+22.33
+73.33
+Time + Order
+90.00
+86.67
+7.33
+96.33
+6.67
+13.00
+Vehicle + Order
+96.33
+88.00
+14.00
+99.00
+4.00
+17.67
+Total feasible
+1752/1800
+1709/1800
+988/1800
+1786/1800
+501/1800
+868/1800
+Table 19: Feasibility on twelve additional constraint types, 50 instances each. No constrained objective reference is available for
+these datasets.
+Constraint type
+NCO w/o intervention
+LangNCO-Gemma4
+First delivery
+0/50 (0.00%)
+50/50 (100.00%)
+Visit position
+4/50 (8.00%)
+50/50 (100.00%)
+Arrival capacity reserve
+33/50 (66.00%)
+50/50 (100.00%)
+Heavy-delivery limit
+5/50 (10.00%)
+50/50 (100.00%)
+Minimum service interval
+1/50 (2.00%)
+50/50 (100.00%)
+Depot closure
+17/50 (34.00%)
+50/50 (100.00%)
+Small-delivery assignment
+0/50 (0.00%)
+48/50 (96.00%)
+Return deadline
+6/50 (12.00%)
+44/50 (88.00%)
+Vehicle workload limit
+8/50 (16.00%)
+50/50 (100.00%)
+Consecutive deliveries
+1/50 (2.00%)
+50/50 (100.00%)
+Customer incompatibility
+13/50 (26.00%)
+50/50 (100.00%)
+Restricted-area transition
+6/50 (12.00%)
+50/50 (100.00%)
+Total
+94/600 (15.67%)
+592/600 (98.67%)

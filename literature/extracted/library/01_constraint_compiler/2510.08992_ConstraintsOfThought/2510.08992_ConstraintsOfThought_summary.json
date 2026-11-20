@@ -1,0 +1,9462 @@
+{
+  "meta": {
+    "file": "2510.08992_ConstraintsOfThought.pdf",
+    "page_count": 26,
+    "title": "Constraints-of-Thought: A Framework for Constrained Reasoning in Language-Model-Guided Search",
+    "author": "Kamel Alrashedy; Vriksha Srihari; Zulfiqar Zaidi; Ridam Srivastava; Pradyumna Tambwekar; Matthew Gombolay",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:a6404ea)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 10.0,
+    "heading_font_sizes": [
+      20.0,
+      17.2,
+      12.0,
+      10.1
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "17.2": 4,
+      "12.0": 38,
+      "10.1": 1261,
+      "10.0": 1672,
+      "9.9": 374,
+      "9.0": 322,
+      "8.1": 16,
+      "8.0": 88,
+      "7.1": 126,
+      "7.0": 906,
+      "6.9": 36,
+      "6.1": 3,
+      "6.0": 17,
+      "5.8": 9,
+      "5.0": 20,
+      "4.7": 17,
+      "4.3": 26
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "Constraints-of-Thought:",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "A Framework for",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Constrained Reasoning in Language-Model-Guided",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Search",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Abstract",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "produce steps that violate high-level intent or domain constraints.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "We introduce",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "predicate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "evaluated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "domain",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "validator.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "These",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "restrict the feasible action space at each state and transform free-form reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "demonstrate the utility of this representation by integrating it with Monte Carlo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "complexity, reflected in lower branching factors and faster convergence.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Across",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "four",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "domains",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "representing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "distinct",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "settings",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "including",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "planning,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "code",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "synthesis, symbolic reasoning, and scientific knowledge, Const-o-T consistently",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "outperforms",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "prompting-only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "search-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "baselines.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "domain constraints and fail to align with user intent.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "While approaches such as Chain-of-Thought",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "without",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "mechanism",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "enforce",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "feasibility",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "planning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "As",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "result,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "propose",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Constraints-of-Thought",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(Const-o-T),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "framework",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "converts",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "steps",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "into",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2510.08992v3  [cs.LG]  12 May 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Figure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "1:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "empowers",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "LLMs",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(i)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "infer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "intent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "statements",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(ii)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "extract",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "high-level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "strategies,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "restrict",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "admissible",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "act",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "controllers",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "rather",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "than",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "post-hoc",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "output",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "filters.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "These",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "guide",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "budgeted,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "constraint-guided",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "variant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "MCTS,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "steering",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "exploration",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "toward",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "rule-compliant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "high-quality",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "defines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "predicate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "actions",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "induces",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "restricted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "restriction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "enforced",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "before",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "node",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "expansion",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Unlike",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "prior",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "approaches",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "use",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "scoring,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "prompting,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "post-hoc",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "filtering,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "still",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "operate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "full",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ", Const-o-T modifies the planner itself by restricting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "This transformation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We demonstrate the practical benefits of this representation by integrating Const-o-T with MCTS",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "branching",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "factor.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Prior",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "approaches",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "incorporate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "through",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "scoring,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "verification,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "actions",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "entering",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "process.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "evaluate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "across",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "four",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "domains,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "it",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "consistently outperforms strong baselines.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "These results demonstrate that structured intermediate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "interpretable intent–constraint pairs that expose the system’s reasoning process, we also evaluate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "whether this representation improves human understanding and perceived alignment with system",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Constraint-Guided MCTS.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We integrate Const-o-T with MCTS, operationalizing executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Computational",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Evaluation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "empirically",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "show",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "consistent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "branching-factor",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "reduction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Related Work",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "models",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "such",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "MDPs",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "simulation-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "methods",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "like",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "MCTS",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "but",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "these",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "approaches",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "pretrained knowledge to generate reasoning traces and actions in open-ended settings.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Examples",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "include",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "enhancing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "tree",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "combining",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "heuristic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "symbolic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "executable constraints and therefore neither define a restricted feasible action set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "within the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "intent-to-constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "translation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Other",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "studies",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "show",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "reduce",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "hallucinations",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "objectives, or post-hoc verifiers.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Unlike prior approaches that translate intent into constraints for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "decoding enforces token-level restrictions during sequence generation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Neuro-symbolic [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "] and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Constrained Generation and Decoding.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Most prior work on constrained generation applies con-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "straints during decoding rather than at the planning level.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "PPL-MCTS [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "] integrates constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "action space.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "NeuroLogic [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "] introduces a search-based decoding strategy that enforces logical",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Const-o-T applies constraints at the planning level:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "each executable constraint induces a reduced",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "3",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Constraints-of-Thought Framework for Guided Search",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "that restricts the feasible action set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "during search, causing exploration to include invalid or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "contains the actions available to the agent.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "The transition function,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ", defines how actions change",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "the state, and the reward function,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ", evaluates the quality of decisions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "A trajectory is defined as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "In these equations,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "denotes the Risk fitness function (Sec. E), while",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "represent task-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "specific evaluation functions for other domains using LLM-as-a-Judge scoring mechanisms.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "intent–constraint pair.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Formally, a Const-o-T step is defined as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ", where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "is a natural-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "is a machine-executable constraint that enforces the corresponding action restriction (e.g., “Place",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "5",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "troops",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Territory",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "A\").",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Once",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "extracted,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "pair",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "serves",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "dual",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "role",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "planning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ", the constraint defines a reduced action set,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ", containing only actions consistent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "models",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "generate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "actions",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "evaluate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "nodes,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "uses",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "intermediate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "explicitly",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "modify",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "planner’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "feasible",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "set.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "formulation,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "steps",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "act",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "asymptotic optimality under large rollout budgets, our objective is efficient, intent-aligned search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Selection Phase:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Starting from the root, MCTS recursively selects child nodes using a modified",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "set equal to the number of extracted constraints, coupling search depth to the structured constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Constraints influence planning through two complementary mechanisms.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "First, during search, the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Given",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "sequence",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "planner",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "generates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "trajectory",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Validators",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "domain-specific",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "enforce",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "task-level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "feasibility.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Risk",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "domain,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "final",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "removes unsupported actions,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "it may produce a partial plan when later actions depend on earlier",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "ing implicitly but do not modify the planner’s feasible action set.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "In contrast, Const-o-T produces",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "4",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Experiments",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "plans,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "interpretability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "intermediate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "steps.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "benchmark",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "our",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "method",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "against",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "diverse",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "baselines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "spanning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "prompting-based,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "search-based,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "constraint-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "MCTS [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "] as well as MCTS augmented with CoT reasoning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We also include a constraint-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Risk is a strategy board game played on a world map of 21 territories grouped into six continents.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "example).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "use",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Commander’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Intent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(CI)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "dataset",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "contains",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "examples",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "natural language strategies paired with corresponding ground-truth territories for troop placement.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We measure alignment using Earth Mover’s Distance (EMD) [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "], which quantifies the minimum",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "lowest EMD, indicating the best alignment between predicted and ground-truth troop placements.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "key",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "improvement",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "comes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "constraint-guided",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "search,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "restricts",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "space",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "CAD",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "scripts,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "enforcement",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "helps",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "maintain",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "syntactic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "validity",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "geometric",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "cor-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "rectness.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We utilize CADPrompt [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "], a dataset containing 200 3D design examples, each paired",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "with a natural language description and a corresponding Python script (See Figure 13).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We report",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Hausdorff",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "distance",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "between",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "generated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "ground-truth",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "objects",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "percentage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "generated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "examples compiling successfully.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "The results in Table 2 demonstrate that MCTS with Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Figure 2:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "User study ratings across three interaction modes:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "alignment, agnostic, and adversarial.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "1K test); and (ii) Math-500 [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "], a benchmark of 500 problems.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "The results in Table 2 show that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "integrating",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "structured",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "improves",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "accuracy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "across",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "On",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "GSM8K,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "best",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "results",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "are achieved by MCTS with Const-o-T, reaching 93.4% accuracy with LLaMA-3 and 96.2% with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "experts in biology,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "physics,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and chemistry [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "We evaluate LLM performance on GPQA using",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "We additionally evaluate whether the structured intent–constraint representation improves human",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "(1)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Aligned",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "system",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "follows",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "user’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "stated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "strategy;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "(2)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Agnostic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "system",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "optimizes only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "for winning;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "(3)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Adversarial",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "the system intentionally",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "acts against the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "representation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "measured",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "four",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "dependent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "variables",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "using",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "7-point",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Likert",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "scales:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Alignment,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "5",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Analysis",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "In this section, we analyze our approach in the Risk domain to understand its performance gains.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": ", which is enforced prior to node expansion.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "This reduces the branching factor by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Search-Space Reduction.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "A key mechanism underlying the performance gains of our approach",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "explicit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "reduction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "space.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "By",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "enforcing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "restricting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "admissible",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "reduces",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "branching",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "factor",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "constraining",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "space,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "leading",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "higher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "runtime.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "shows",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "restricting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "set of constraints.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Specifically, we sample 100",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "examples",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Risk",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "game",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "using",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "GPT-4.1,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "troop",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "count",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "selected",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "modified.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Noise",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "applied",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "varying",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "rates,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "ing levels of extraction error.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "After constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "extraction,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "we",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "randomly",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "select",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "con-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "straints and use an LLM to generate incorrect",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "troop-count",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "values",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "those",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "entries.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "ob-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "increases,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "indicating that the method does not",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "generation, on a subset of 100 examples from Risk using GPT-4.1.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "All comparisons use identical",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "generation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "budgets",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "evaluation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "settings.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Applying",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "yields",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "by avoiding infeasible trajectories early, rather than discarding them after generation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "This result",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Failure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Modes.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "identify",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "three",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "primary",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "failure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "modes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Risk",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "domain.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "First,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "errors",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "constraint extraction can impose infeasible or misaligned restrictions on the action space.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Second,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "actions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Third,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "ambiguous",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "underspecified",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "user",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "input",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "may",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "result",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "incomplete",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "sets",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(See Fig. 9).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "This highlights the primary limitations arising from constraint extraction and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "6",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Discussion",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "ily function as explanatory rationales, Const-o-T represents intermediate reasoning as executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "is whether constraints define the admissible action set or merely evaluate candidates.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Our method",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "explicitly defines the constraint-induced action set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": ", which directly shapes the planner’s ex-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "ploration by pruning infeasible actions before expansion.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Table 7 summarizes the key differences",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "than guiding it externally.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Prior LLM-based approaches (e.g.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "CoT, ToT, verifier-based methods)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "dynamically",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "redefines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "branching",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "factor",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "step:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "instead",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "exploring",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "actions,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "search,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "rather",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "than",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "filtering",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "outputs",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "post-hoc.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "induces",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "reduced",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "space",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "that shape exploration in real time, preventing infeasible actions from entering the search tree.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "contrast, post-hoc filtering cannot influence exploration and often leads to wasted computation or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "during search.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Importantly,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the method is robust to moderate constraint errors,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "as the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Beyond",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Accuracy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Improvements.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "While",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "improvements",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "final",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "accuracy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "sometimes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "is consistent with the role of executable constraints as search controllers:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "their primary effect is to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "7",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Limitations",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "8",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Conclusion",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "introduced",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Constraints-of-Thought",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(Const-o-T),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "framework",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "transforms",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "unconstrained",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Acknowledgment",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "References",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Denny Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "et al.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chain-of-thought prompting elicits reasoning in large language models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhenyu Guan, Xiangyu Kong, Fangwei Zhong, and Yizhou Wang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Richelieu:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Self-evolving",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "llm-based agents for ai diplomacy.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Advances in Neural Information Processing Systems",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ", 37:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "of code are few-shot commonsense learners.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "2022 Conference on Empirical Methods in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Training verifiers to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Martin L Puterman.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Markov decision processes:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "discrete stochastic dynamic programming",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Cameron B Browne, Edward Powley, Daniel Whitehouse, Simon M Lucas, Peter I Cowling,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tathagata Chakraborti, Sarath Sreedharan, and Subbarao Kambhampati.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "The emerging land-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "scape",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "explainable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "ai",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "decision",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "making.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "arXiv",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "preprint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "arXiv:2002.11697",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang Zhu, Ishika Singh, Robin Jia, and Jesse Thomason.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Language models can infer action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shunyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Dian",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Jeffrey",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Izhak",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shafran,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tom",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Griffiths,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Cao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Karthik",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Narasimhan.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tree of thoughts:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Deliberate problem solving with large language models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ad-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Xuhui Zhou, Yue Zhang, Leyang Cui, and Dandan Huang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Evaluating commonsense in pre-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "trained",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Proceedings",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "AAAI",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "conference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "artificial",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "intelligence",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Wenlong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Huang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Pieter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Abbeel,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Deepak",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Pathak,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Igor",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Mordatch.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "models",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "zero-shot planners:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Extracting actionable knowledge for embodied agents.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "International",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Stuart",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Russell,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Peter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Norvig,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Artificial",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Intelligence.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "A",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "modern",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "approach.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Artificial",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, et al.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Program synthesis with large",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yilun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Hao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chuchu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Fan.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "anything",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "rigor:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "General-purpose",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "zero-shot",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "llm-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "formalized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "programming.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Thirteenth",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "International",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Feng,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Nathaniel",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Weir,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Kaj",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Bostrom,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sam",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Bayless,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Darion",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Cassel,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sapana",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chaudhary,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Benjamin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Kiesl-Reiter,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Huzefa",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Rangwala.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Vericot:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Neuro-symbolic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "chain-of-thought",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Michael Ahn, Anthony Brohan, Noah Brown, Yevgen Chebotar, Omar Cortes, Byron David,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "through discriminator-guided mcts decoding.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Proceedings of the 2022 conference of the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "North",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "American",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "chapter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "association",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "computational",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "linguistics:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "human",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ximing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sean",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Welleck,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Peter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "West,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Liwei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Jiang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Jungo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Kasai,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Daniel",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Khashabi,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ronan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Le",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Bras,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lianhui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Qin,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Youngjae",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Rowan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zellers,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "et",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "al.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Neurologic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "a*",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "esque",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "decoding:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "North",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "American",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chapter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Association",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Computational",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Linguistics:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Human",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Luca",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Beurer-Kellner,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Marc",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Fischer,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Martin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Vechev.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Guiding",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "llms",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "right",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "way:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Fast,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and Jason Weston.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chain-of-verification reduces hallucination in large language models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Shun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhenfang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yikang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Shen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Mingyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ding,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Joshua",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "B",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Tenenbaum,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chuang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Gan.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Planning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "large",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "models",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "code",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "generation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "arXiv",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "preprint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Kamel Alrashedy, Pradyumna Tambwekar, Zulfiqar Zaidi, Megan Langwasser, Wei Xu, and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Matthew Gombolay.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Generating cad code with vision-language models for 3d designs.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Dirani, Julian Michael, and Samuel R Bowman.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Gpqa:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "A graduate-level google-proof q&a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Explainable artificial intelligence:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Evaluating the objective and subjective impacts of xai on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "René F Kizilcec.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "How much information?",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "effects of transparency on trust in an algorithmic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "A",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Risk Game environment",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "and Grey factions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "The game begins with the participant allocating troops to preferred regions by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "interacting through an AI-powered chat interface.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "An AI planner then generates a proposed plan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "number of troops by either the attacker or defender.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "The more troops committed to an attack, the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "Figure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "8:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "Risk",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "game:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "Turn",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "1,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "player",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "proceeds",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "through",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "reinforcement,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "attack,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "B",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "Constraints-of-Thought (Const-o-T)",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "planner’s feasible action space.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "Formally, each constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 14,
+        "text": "defines a predicate over actions that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "search.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "transforms",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "intermediate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "descriptive",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "rationales",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "into",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "by restricting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "the admissible",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "actions to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "those consistent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "with the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "intended strategy.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "Second,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "they",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "pairs.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "From",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "lines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "4",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "10,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "constraint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "validated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "ensure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "C",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "User Study",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "adapted from validated measures of trust in automation [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "] and technology acceptance [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "with wording contextualized to the Risk domain (e.g.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "“I trust the system’s troop placement/plan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "alignment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "Significant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "differences",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "across",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "interaction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "modes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "were",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "observed",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "transparency",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "(",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "usability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "(",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "trust",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "(",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "both agnostic and adversarial conditions across all metrics.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "These results indicate that constraint-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "D",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "Additional Analysis",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "constraint set against the ground-truth troop placements in the Risk dataset.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 15,
+        "text": "We compute standard",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "Const-o-T), we observe a significant effect on EMD (",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "indicating",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "strategy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "significantly",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "affects",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "placement",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "quality..",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "Further,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "prompting approaches also show differences (",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "by preventing unnecessary expansions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "As a result, Const-o-T operates as a budgeted, constraint-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "guided variant of MCTS that focuses exploration on feasible and relevant actions, reducing over-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "from 0.51 to 0.53, while removing constraints increases it to 0.52.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "Disabling the verification step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "performance, increasing EMD to 0.79.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 16,
+        "text": "These results indicate that each component contributes to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 17,
+        "text": "E",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 17,
+        "text": "Fitness Function",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 17,
+        "text": "using a fitness function that balances goal satisfaction against constraint violations.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 17,
+        "text": "The fitness",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "equation,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "denotes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "normalized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "goal",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "scores",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "measure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "how",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "well",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "configuration",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "penalty coefficient,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ", is set sufficiently large to ensure that any violation dominates the weighted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "pairwise",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "troop",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "distance",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "(uses",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "graph",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "distance",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "normalized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ");",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ":",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "maximize",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "battles",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "throughout",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "game;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ":",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "fortify",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "borders",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "continents",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "you",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "control;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": ":",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "limit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "exposure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "many",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "Constraints.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "Constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "formulated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "binary",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "functions",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "equal",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "when",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "violated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 18,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "optimization",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "toward",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "different",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "strategic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "preferences",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "while",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "ensuring",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "hard",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "remain",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "F",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "Comparison of Chain-of-Thought (CoT) and Constraints-of-Thought",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "(Const-o-T)",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "lacks",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "verifiability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "control",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "process.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "CoT",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "best",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "suited",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "single-step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "QA",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "goal-aligned planning, making it especially effective for multi-step tasks like strategy games and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "G",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "Commander’s Intent Dataset Example",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "example",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "Commander’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "Intent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "dataset",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "highlights",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "complex",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "strategic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "H",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "Constraint-Optimization Baseline for Troop Placement",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "step, the commander’s intent is provided to a large language model (we use ChatGPT 4.0 mini) to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "predicted by the LLM yield no feasible solutions,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 19,
+        "text": "we retain the largest subset of constraints that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "This one was difficult but I determined that controlling red would allow me the greatest",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "the most number of troops with 20 that they can move around,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "so the strategy would be",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "the center of the board until I can attempt to force them down into the purple region and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "Figure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "11:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "An",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "example",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "Commander’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "Intent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "dataset.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "Top:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "natural",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "strategy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "In this equation,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "denotes goal scores that measure how well the deployment state",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 20,
+        "text": "satisfies",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "Figure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "12:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "Const-o-T",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "empowers",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "LLMs",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "(i)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "infer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "intent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "statements",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "(ii)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "extract",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "executable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "high-level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "strategies,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "restrict",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "admissible",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "during",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "act",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "controllers",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "rather",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "than",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "post-hoc",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "output",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "filters.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "These",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "constraints",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "guide",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "budgeted,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "constraint-guided",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "variant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "MCTS,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "steering",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "exploration",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "toward",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "rule-compliant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "high-quality",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "I",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "Examples from CAD code generation from CADCodePrompt dataset",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "subsection",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "presents",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "representative",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "example",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "CADCodePrompt",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "dataset",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "illustrate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "natural",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "descriptions",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "paired",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "their",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "corresponding",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "CAD",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "code",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "implementations",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 21,
+        "text": "(See",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      }
+    ]
+  },
+  "images": [
+    {
+      "page": 2,
+      "filename": "page2_img1.png",
+      "width": 1200,
+      "height": 669,
+      "format": "png",
+      "size_bytes": 322909
+    },
+    {
+      "page": 7,
+      "filename": "page7_img1.png",
+      "width": 5562,
+      "height": 1326,
+      "format": "png",
+      "size_bytes": 170501
+    },
+    {
+      "page": 8,
+      "filename": "page8_img1.png",
+      "width": 2373,
+      "height": 1471,
+      "format": "png",
+      "size_bytes": 171776
+    },
+    {
+      "page": 8,
+      "filename": "page8_img2.png",
+      "width": 4612,
+      "height": 2646,
+      "format": "png",
+      "size_bytes": 272136
+    },
+    {
+      "page": 8,
+      "filename": "page8_img3.png",
+      "width": 2370,
+      "height": 1470,
+      "format": "png",
+      "size_bytes": 151756
+    },
+    {
+      "page": 13,
+      "filename": "page13_img1.png",
+      "width": 1918,
+      "height": 990,
+      "format": "png",
+      "size_bytes": 464642
+    },
+    {
+      "page": 13,
+      "filename": "page13_img2.png",
+      "width": 1919,
+      "height": 985,
+      "format": "png",
+      "size_bytes": 425921
+    },
+    {
+      "page": 14,
+      "filename": "page14_img1.png",
+      "width": 1923,
+      "height": 987,
+      "format": "png",
+      "size_bytes": 410743
+    },
+    {
+      "page": 18,
+      "filename": "page18_img1.png",
+      "width": 5231,
+      "height": 3367,
+      "format": "png",
+      "size_bytes": 417263
+    },
+    {
+      "page": 20,
+      "filename": "page20_img1.png",
+      "width": 4050,
+      "height": 2296,
+      "format": "png",
+      "size_bytes": 884421
+    },
+    {
+      "page": 21,
+      "filename": "page21_img1.png",
+      "width": 1974,
+      "height": 1070,
+      "format": "png",
+      "size_bytes": 844686
+    },
+    {
+      "page": 22,
+      "filename": "page22_img1.png",
+      "width": 1024,
+      "height": 768,
+      "format": "png",
+      "size_bytes": 10190
+    },
+    {
+      "page": 22,
+      "filename": "page22_img2.png",
+      "width": 1178,
+      "height": 1012,
+      "format": "png",
+      "size_bytes": 117097
+    }
+  ],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3177,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 5210,
+      "block_count": 25,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 3,
+      "text_length": 5283,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 4,
+      "text_length": 3026,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 5,
+      "text_length": 4463,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 6,
+      "text_length": 4223,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 3399,
+      "block_count": 11,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 3574,
+      "block_count": 8,
+      "image_count": 3,
+      "has_drawings": false
+    },
+    {
+      "page": 9,
+      "text_length": 4858,
+      "block_count": 11,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 10,
+      "text_length": 3328,
+      "block_count": 18,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 11,
+      "text_length": 3877,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 12,
+      "text_length": 3195,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 13,
+      "text_length": 1279,
+      "block_count": 6,
+      "image_count": 2,
+      "has_drawings": false
+    },
+    {
+      "page": 14,
+      "text_length": 1475,
+      "block_count": 11,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 15,
+      "text_length": 3735,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 16,
+      "text_length": 2977,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 17,
+      "text_length": 4117,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 18,
+      "text_length": 2160,
+      "block_count": 22,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 19,
+      "text_length": 2912,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 20,
+      "text_length": 2088,
+      "block_count": 12,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 21,
+      "text_length": 1116,
+      "block_count": 5,
+      "image_count": 1,
+      "has_drawings": false
+    },
+    {
+      "page": 22,
+      "text_length": 639,
+      "block_count": 6,
+      "image_count": 2,
+      "has_drawings": true
+    },
+    {
+      "page": 23,
+      "text_length": 3844,
+      "block_count": 37,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 24,
+      "text_length": 3844,
+      "block_count": 37,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 25,
+      "text_length": 2356,
+      "block_count": 32,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 26,
+      "text_length": 2609,
+      "block_count": 31,
+      "image_count": 0,
+      "has_drawings": true
+    }
+  ]
+}

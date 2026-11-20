@@ -1,0 +1,3035 @@
+# 论文综合提取报告: LANG-NCO_2603.07613.pdf
+
+---
+
+## 📋 文档元信息
+
+| 属性 | 值 |
+|------|----|
+| 文件名 | LANG-NCO_2603.07613.pdf |
+| 总页数 | 33 |
+| 标题 | Inverse Robin Spectral Problem for the p-Laplace Operator |
+| 作者 | Farid Bozorgnia; Olimjon Eshkobilov |
+| 创建工具 | arXiv GenPDF (tex2pdf:0d14211) |
+| 图片数量 | 0 |
+| 正文字体大小 | 10.0 |
+
+## 📑 目录结构
+
+  - [L2] (p.1) Inverse
+  - [L2] (p.1) Robin
+  - [L2] (p.1) Spectral
+  - [L2] (p.1) Problem
+  - [L2] (p.1) for
+  - [L2] (p.1) the
+  - [L2] (p.1) p
+  - [L2] (p.1) -Laplace
+  - [L2] (p.1) Operator
+      - [L4] (p.1) Farid
+      - [L4] (p.1) Bozorgnia,
+      - [L4] (p.1) Olimjon
+      - [L4] (p.1) Eshkobilov
+    - [L3] (p.1) 1
+    - [L3] (p.1) Introduction
+- [L1] (p.1) arXiv:2603.07613v2  [math.AP]  24 Sep 2026
+      - [L4] (p.2) 1.1
+      - [L4] (p.2) Problem
+      - [L4] (p.2) setting
+      - [L4] (p.3) 1.2
+      - [L4] (p.3) Main
+      - [L4] (p.3) results
+      - [L4] (p.3) and
+      - [L4] (p.3) scope
+    - [L3] (p.4) 2
+    - [L3] (p.4) Background
+    - [L3] (p.4) and
+    - [L3] (p.4) Preliminaries
+      - [L4] (p.5) 2.1
+      - [L4] (p.5) Principal
+      - [L4] (p.5) eigenvalue
+      - [L4] (p.5) with
+      - [L4] (p.5) mixed
+      - [L4] (p.5) boundary
+      - [L4] (p.5) conditions
+      - [L4] (p.7) 2.2
+      - [L4] (p.7) Boundary
+      - [L4] (p.7) behavior
+      - [L4] (p.7) and
+      - [L4] (p.7) regularity
+      - [L4] (p.8) 2.3
+      - [L4] (p.8) Unique
+      - [L4] (p.8) continuation:
+      - [L4] (p.8) a
+      - [L4] (p.8) local
+      - [L4] (p.8) boundary
+      - [L4] (p.8) statement
+      - [L4] (p.8) and
+      - [L4] (p.8) a
+      - [L4] (p.8) propagation
+      - [L4] (p.8) statement
+    - [L3] (p.10) 3
+    - [L3] (p.10) Thin-Coating
+    - [L3] (p.10) Asymptotics
+    - [L3] (p.10) and
+    - [L3] (p.10) Effective
+    - [L3] (p.10) Robin
+    - [L3] (p.10) Conditions
+    - [L3] (p.15) 4
+    - [L3] (p.15) Inverse
+    - [L3] (p.15) Problem:
+    - [L3] (p.15) Uniqueness
+    - [L3] (p.15) and
+    - [L3] (p.15) Stability
+      - [L4] (p.15) 4.1
+      - [L4] (p.15) Boundary
+      - [L4] (p.15) non-degeneracy
+      - [L4] (p.16) 4.2
+      - [L4] (p.16) Unconditional
+      - [L4] (p.16) consequences
+      - [L4] (p.16) of
+      - [L4] (p.16) the
+      - [L4] (p.16) variational
+      - [L4] (p.16) characterization
+      - [L4] (p.19) 4.3
+      - [L4] (p.19) The
+      - [L4] (p.19) linearized
+      - [L4] (p.19) coefficients
+      - [L4] (p.19) and
+      - [L4] (p.19) the
+      - [L4] (p.19) critical
+      - [L4] (p.19) sets
+      - [L4] (p.20) 4.4
+      - [L4] (p.20) Uniqueness
+      - [L4] (p.20) from
+      - [L4] (p.20) the
+      - [L4] (p.20) eigenvalue
+      - [L4] (p.20) and
+      - [L4] (p.20) the
+      - [L4] (p.20) boundary
+      - [L4] (p.20) flux
+      - [L4] (p.22) 4.5
+      - [L4] (p.22) Differentiability
+      - [L4] (p.22) of
+      - [L4] (p.22) the
+      - [L4] (p.22) principal
+      - [L4] (p.22) branch
+      - [L4] (p.25) 4.6
+      - [L4] (p.25) Conditional
+      - [L4] (p.25) stability
+      - [L4] (p.28) 4.7
+      - [L4] (p.28) Status
+      - [L4] (p.28) and
+      - [L4] (p.28) verification
+      - [L4] (p.28) of
+      - [L4] (p.28) the
+      - [L4] (p.28) structural
+      - [L4] (p.28) hypotheses
+    - [L3] (p.31) Acknowledgments
+    - [L3] (p.31) References
+
+## 📊 各页概况
+
+| 页码 | 文本长度 | 文本块数 | 图片数 | 含矢量图 |
+|------|----------|----------|--------|----------|
+| 1 | 3978 | 13 | 0 |  |
+| 2 | 3022 | 27 | 0 | ✓ |
+| 3 | 4108 | 18 | 0 | ✓ |
+| 4 | 2690 | 35 | 0 | ✓ |
+| 5 | 2625 | 34 | 0 | ✓ |
+| 6 | 3707 | 25 | 0 | ✓ |
+| 7 | 3332 | 19 | 0 | ✓ |
+| 8 | 3621 | 19 | 0 | ✓ |
+| 9 | 4040 | 19 | 0 | ✓ |
+| 10 | 3434 | 21 | 0 | ✓ |
+| 11 | 1759 | 40 | 0 | ✓ |
+| 12 | 2103 | 64 | 0 | ✓ |
+| 13 | 2046 | 39 | 0 | ✓ |
+| 14 | 2899 | 39 | 0 | ✓ |
+| 15 | 3058 | 23 | 0 | ✓ |
+| 16 | 2532 | 32 | 0 | ✓ |
+| 17 | 2929 | 25 | 0 | ✓ |
+| 18 | 2918 | 34 | 0 | ✓ |
+| 19 | 2673 | 27 | 0 | ✓ |
+| 20 | 2721 | 34 | 0 | ✓ |
+| 21 | 3068 | 22 | 0 | ✓ |
+| 22 | 2578 | 30 | 0 | ✓ |
+| 23 | 3268 | 28 | 0 | ✓ |
+| 24 | 3083 | 31 | 0 | ✓ |
+| 25 | 1375 | 31 | 0 | ✓ |
+| 26 | 2630 | 24 | 0 | ✓ |
+| 27 | 2846 | 25 | 0 | ✓ |
+| 28 | 3158 | 21 | 0 | ✓ |
+| 29 | 3349 | 22 | 0 | ✓ |
+| 30 | 3284 | 25 | 0 | ✓ |
+| 31 | 3062 | 22 | 0 | ✓ |
+| 32 | 3218 | 24 | 0 |  |
+| 33 | 543 | 5 | 0 |  |
+
+---
+
+## 📖 全文内容
+
+
+---
+### 【第 1 页】
+
+
+##### Inverse Robin Spectral Problem for the p-Laplace Operator
+
+
+###### Farid Bozorgnia, Olimjon Eshkobilov
+
+Department of Mathematics, New Uzbekistan University
+Email: f.bozorgnia@newuu.uz,
+Email: o.eshqobilov@newuu.uz
+Abstract
+We study an inverse Robin spectral problem for the p-Laplacian with mixed Dirichlet–Robin
+boundary conditions. The unknown coefficient lies on an inaccessible Robin portion, and the data are
+the principal eigenvalue and nonlinear conormal flux on an accessible Dirichlet patch. For a coating of
+thickness ερ and conductivity εp−1, we prove convergence of the principal eigenvalue and strong W 1,p
+convergence of the eigenfunctions to an effective Robin problem with coefficient h = ρ−(p−1). The
+Rayleigh characterization gives a two-sided comparison inequality, ordered uniqueness and weighted
+L1 stability, and Fr´echet differentiability of the eigenvalue map for 1 < p < ∞. For nonordered
+coefficients and p ≥2, the eigenvalue and accessible flux determine the coefficient under the stated
+critical-set connectivity and local boundary-regularity hypotheses. Differentiability of the principal
+eigenfunction branch is proved for p = 2 and imposed as a structural hypothesis for p > 2; together
+with a quantitative linearized estimate, it yields conditional local stability. On finite-dimensional
+classes, branch differentiability and linearized injectivity yield local Lipschitz stability (with branch
+differentiability automatic when p = 2), while monotone one-parameter families are identifiable from
+the principal eigenvalue.
+Keywords: Inverse Robin problem, p-Laplacian, thin coating, principal eigenvalue, partial boundary
+data, conditional stability.
+MSC2020: 35R30, 35J92, 35P30.
+
+###### 1
+
+
+###### Introduction
+
+Inverse spectral and boundary-value problems seek to recover unknown properties of a physical system
+from indirect observations such as eigenvalues, boundary traces, or flux measurements. Their mathemat-
+ical foundations go back to classical questions in spectral geometry and inverse Sturm–Liouville theory,
+including the works of Kac [24] and Gel’fand–Levitan [20]. Related inverse boundary problems arise in
+non-destructive testing [22, 10], electrical impedance tomography [31, 9], and corrosion detection [7]. For
+techniques based on singular solutions and boundary measurements in inverse conductivity problems we
+refer to [6].
+Robin boundary conditions are particularly relevant when the boundary of a body interacts with an
+exterior medium or is separated from it by a thin layer. Effective boundary conditions of this type have
+a long history in the linear setting. For a layer of thickness of order ε and conductivity σε, Friedman [19]
+showed that the critical scaling σε/ε →α ∈(0, ∞) leads, in the limit, to a Robin boundary condition for
+the associated two-phase principal eigenvalue problem, whereas σε/ε →0 produces perfect insulation.
+Variational formulations of the same limit were developed by Brezis, Caffarelli and Friedman [12] and by
+Acerbi and Buttazzo [2], and the resulting surface energy is the starting point of the optimal insulation
+problems of Bucur, Buttazzo and Nitsch [13] and, for a layer of variable thickness, of Acampora, Cristo-
+foroni, Nitsch and Trombetti [1]. A refinement of Friedman’s asymptotics that tracks the geometry of
+the interface is due to Yachimura [40]. For the p-Laplacian, a Γ-limit of the insulation energy for a layer
+with a p-dependent thickness scaling has recently been obtained by Della Pietra and Oliva [15]. The
+thin-layer result proved in Section 3 below is of a different nature: it is a spectral statement for a layer
+of variable thickness; it produces strong W 1,p(Ω) convergence of the eigenfunctions, and it identifies the
+effective coefficient explicitly.
+The purpose of the present paper is to investigate the corresponding mechanism and the associated
+inverse problem for the nonlinear p-Laplace operator
+−∆pu := −div
+�
+|∇u|p−2∇u
+�
+,
+1 < p < ∞.
+1
+
+#### arXiv:2603.07613v2  [math.AP]  24 Sep 2026
+
+
+---
+### 【第 2 页】
+
+The p-Laplacian is a basic model for nonlinear diffusion and power-law constitutive relations and arises,
+for example, in models of non-Newtonian fluids and nonlinear transport [11]. For p = 2 it reduces to
+the classical Laplacian, whereas for p ̸= 2 it is genuinely nonlinear and may be degenerate or singular at
+critical points of the solution.
+The inverse theory for the nonlinear problem is substantially more delicate than for p = 2. The super-
+position principle is unavailable, there is no linear orthogonal spectral decomposition, and linearization
+around a p-Laplace eigenfunction produces coefficients depending on the gradient, which for p > 2
+lose uniform ellipticity at critical points of the eigenfunction.
+These features make classical unique-
+continuation and stability arguments considerably more restrictive than in the linear setting, where
+inverse Robin problems have been extensively studied; see for example [36, 23, 14] and the references
+therein.
+
+###### 1.1
+
+
+###### Problem setting
+
+Unless explicitly stated otherwise, Ω⊂Rn, n ≥2, is a bounded connected domain with C2 boundary,
+and ΓD, γ are nonempty, disjoint, relatively open subsets of ∂Ω. We write
+ζ := ΓD ∩γ
+(1)
+for the interface between the two boundary portions, and we impose the standing geometric hypothesis
+∂Ω= ΓD ∪γ ∪ζ,
+Hn−1(ζ) = 0.
+(2)
+The exception is Section 3, which deliberately treats the fully coated geometry γ = ∂Ω, ΓD = ∅; the
+results quoted there are stated in a form that covers this case, see Remark 2.5 and Lemma 2.8.
+We refer to ΓD as the accessible boundary portion and to γ as the inaccessible portion carrying the
+unknown Robin coefficient. Set
+V := W 1,p
+ΓD (Ω) :=
+�
+v ∈W 1,p(Ω) : Tv = 0 on ΓD
+�
+,
+(3)
+where T denotes the Sobolev trace operator. For a nonnegative Robin coefficient h on γ we consider the
+principal eigenvalue problem
+
+
+
+
+
+
+
+
+
+−∆pu = λ|u|p−2u
+in Ω,
+u = 0
+on ΓD,
+|∇u|p−2∇u · ν + h|u|p−2u = 0
+on γ,
+(4)
+where ν is the outward unit normal. We restrict attention to the principal eigenpair and normalize
+�
+Ω
+|u|p dx = 1,
+u > 0 in Ω.
+(5)
+The principal eigenvalue admits a variational characterization
+λ1(h) = inf
+v∈V
+v̸=0
+�
+Ω
+|∇v|p dx +
+�
+γ
+h|v|p dσ
+�
+Ω
+|v|p dx
+,
+(6)
+whose elementary properties are collected in Section 2.1.
+The inverse data are λ1(h) together with the nonlinear conormal flux
+qh := |∇u(h)|p−2∇u(h) · ν.
+(7)
+In the natural Sobolev formulation, qh is the conormal trace of the vector field |∇u|p−2∇u, made precise
+in Section 4.6; on compact subportions of ΓD the boundary regularity of Lemma 2.8 gives it the pointwise
+meaning written above. Since u(h) = 0 on ΓD by construction, it is the flux and not the Dirichlet trace of
+the eigenfunction that carries the nontrivial boundary information. The inverse Robin spectral problem
+considered here is therefore the following.
+To what extent does the pair consisting of λ1(h) and the flux qh on the accessible boundary determine
+the Robin coefficient h on γ, and how stable is this determination with respect to perturbations of the
+measured data?
+2
+
+---
+### 【第 3 页】
+
+
+###### 1.2
+
+
+###### Main results and scope
+
+Thin-coating limit.
+Let the exterior coating have local thickness ερ(ξ) with ρ > 0 and conductivity
+σε = εp−1, a scaling that balances the thickness of the layer against the (p −1)-homogeneity of the
+nonlinear normal flux and is of critical order in the sense of Remark 3.4. If Λ1(ε) and Φε denote the
+principal eigenvalue and the normalized positive eigenfunction of the two-phase problem, then
+Λ1(ε) −→µ1,
+Φε|Ω−→u1
+strongly in W 1,p(Ω),
+(8)
+where (µ1, u1) is the normalized positive principal eigenpair of the effective Robin problem on Ωwith
+coefficient
+h(ξ) = ρ(ξ)−(p−1).
+(9)
+Uniqueness for ordered coefficients.
+Since (6) exhibits λ1 as an infimum of functionals affine in h,
+one obtains, for all p ∈(1, ∞) and all n ≥2, the two-sided comparison
+�
+γ
+(h2 −h1) u p
+2 dσ ≤λ1(h2) −λ1(h1) ≤
+�
+γ
+(h2 −h1) u p
+1 dσ.
+(10)
+Three consequences follow, none requiring a nondegeneracy or invertibility hypothesis: ordered coeffi-
+cients with equal principal eigenvalues coincide; in the ordered regime h2 −h1 obeys a Lipschitz estimate
+in a weighted L1(γ) norm; and the derivative (12) below exists. In the thin-layer model h1 ≤h2 means
+ρ1 ≥ρ2, so the limiting principal eigenvalue distinguishes any two pointwise ordered thickness profiles.
+Conditional uniqueness in the general case.
+Without an ordering assumption we use the flux
+data as well and take p ≥2. With F(z) = |z|p−2z and (λ1(hj), uj) the normalized principal eigenpairs,
+the difference of the two eigenfunctions solves a linear equation with the path coefficient
+A(x) =
+�1
+0
+DF
+�
+(1 −t)∇u2(x) + t∇u1(x)
+�
+dt.
+(11)
+Under a connectedness hypothesis on the critical sets Σj := {∇uj = 0}, made precise in Section 4.4,
+equality of the principal eigenvalues together with equality of the fluxes on the accessible portion implies
+h1 = h2 on γ.
+The hypothesis is dimension dependent: in the plane measurable uniformly elliptic
+coefficients suffice for propagation, so only Σ1 ∩Σ2 must be avoided, whereas for n ≥3 the Lipschitz
+regularity we can verify is available only away from Σ1 ∪Σ2.
+Differentiability and conditional stability.
+By Proposition 4.6, the eigenvalue map is Fr´echet
+differentiable at any reference coefficient h0, with no linearized-invertibility hypothesis, and
+λ′
+1(h0)[ϑ] =
+�
+γ
+ϑ u p
+0 dσ.
+(12)
+The eigenvalue datum thus contributes a single scalar functional at the linearized level, and the remaining
+information on h must come from the boundary flux. For the eigenfunction branch, differentiability is
+proved when p = 2; for p > 2 the natural linearization is degenerate and the standard implicit-function
+framework is unavailable, see Remark 4.15, so we retain it as a structural hypothesis. Together with a
+quantitative stability estimate for the linearized inverse map, it yields in Section 4.6 the local conditional
+estimate
+∥h −h0∥L2(γ) ≤CM 1−α�
+δ + �ω(t)t
+�α,
+t = ∥h −h0∥C1(γ) ≤M,
+(13)
+with α ∈(0, 1), δ the discrepancy between the nonlinear measurements, and �ω(s) →0 as s →0. In
+the full infinite-dimensional coefficient class the estimate therefore remains conditional rather than an
+unconditional data-only H¨older estimate. On finite-dimensional classes the remainder can be absorbed,
+and for p = 2, where both the branch differentiability and the injectivity of the linearized measurement
+map are proved, this gives unconditional local Lipschitz stability.
+The paper is organized as follows. Section 2 collects the variational, regularity and unique-continuation
+background, together with a two-sided bound for the averaged Jacobian of F along a segment and a reg-
+ularity lemma valid where the gradient does not vanish. Section 3 studies the nonlinear thin-coating
+model. Section 4 treats the inverse problem, from boundary non-degeneracy and the unconditional con-
+sequences of the variational characterization through the conditional uniqueness and stability theorems,
+and concludes in Section 4.7 with the status of the structural hypotheses, the spherical-shell obstruction
+to critical-set connectivity, and what is verified unconditionally when p = 2, including on a non-radial
+ellipsoid.
+3
+
+---
+### 【第 4 页】
+
+
+###### 2
+
+
+###### Background and Preliminaries
+
+Throughout this section 1 < p < ∞unless a more restrictive range is stated. Recall the nonlinear vector
+field
+F : Rn →Rn,
+F(z) := |z|p−2z.
+The letter F is reserved for this field throughout the paper. Reserving ξ for boundary points, we use
+z, η, a, b for vectors of Rn. For z ̸= 0 and η ∈Rn, we have
+DF(z)η = |z|p−2η + (p −2)|z|p−4(z · η)z,
+DF(z) = |z|p−2I + (p −2)|z|p−4z z⊤.
+(14)
+The matrix DF(z) is symmetric with eigenvalues |z|p−2 of multiplicity n −1 and (p −1)|z|p−2 in the
+direction of z, whence
+min{1, p −1}|z|p−2|η|2 ≤DF(z)η · η ≤max{1, p −1}|z|p−2|η|2.
+(15)
+For p ≥2 the field F is continuously differentiable on all of Rn, with DF(0) = I when p = 2 and
+DF(0) = 0 when p > 2; for 1 < p < 2 it is not differentiable at the origin. Similarly
+G(s) := |s|p−2s,
+satisfies G′(s) = (p −1)|s|p−2 for s ̸= 0, and G is C1 on R when p ≥2. By (15) the linearization of the
+p-Laplacian degenerates for p > 2 where ∇u = 0 and becomes singular for 1 < p < 2; since the inverse
+analysis of Section 4 uses classical linearization, we restrict there to p ≥2 from Section 4.3 onward.
+The map F is strictly monotone: for all a, b ∈Rn,
+�
+F(b) −F(a)
+�
+· (b −a) ≥0, with equality if and
+only if a = b. Quantitatively,
+�
+F(b) −F(a)
+�
+· (b −a) ≥
+
+
+
+2 2−p|b −a|p,
+p ≥2,
+(p −1)(|a| + |b|)p−2|b −a|2,
+1 < p < 2,
+(a, b) ̸= (0, 0);
+(16)
+see [29, Ch. 12].
+Two further properties of DF will be used. The first is a quantitative increment estimate, needed
+for the regularity of the path coefficient in Section 4.3.
+Lemma 2.1. Let p > 2. There exists Cp < ∞such that, for all a, b ∈Rn with (a, b) ̸= (0, 0),
+∥DF(a) −DF(b)∥≤Cp max{|a|, |b|}p−3|a −b|.
+(17)
+Consequently,
+∥DF(a) −DF(b)∥≤
+�
+Cp|a −b|p−2,
+2 < p ≤3,
+Cp(|a| + |b|)p−3|a −b|,
+p ≥3.
+(18)
+For p = 2, DF ≡I.
+Proof. Let p > 2 and set
+M := max{|a|, |b|} > 0,
+a′ := a
+M ,
+b′ := b
+M .
+By the homogeneity DF(tz) = tp−2DF(z), t > 0,
+∥DF(a) −DF(b)∥= M p−2∥DF(a′) −DF(b′)∥,
+(19)
+and we may assume |a′| = 1, |b′| ≤1. We claim that
+∥DF(a′) −DF(b′)∥≤Cp|a′ −b′|.
+(20)
+Three cases are distinguished. If the segment [a′, b′] is contained in {|z| ≥1
+4}, then, since also |z| ≤1
+on the segment, the explicit formula (14) gives ∥D2F(z)∥≤Cp|z|p−3 ≤Cp there, and (20) follows from
+the mean value theorem. If the segment meets a point v0 with |v0| < 1
+4, then |a′ −b′| ≥|a′ −v0| ≥3
+4,
+while ∥DF(a′)∥+ ∥DF(b′)∥≤2(p −1) because |a′|, |b′| ≤1 and p > 2; hence (20) holds after enlarging
+Cp. The same trivial bound covers the remaining case b′ = 0.
+Substituting (20) into (19) and using |a′ −b′| = |a −b|/M proves (17). If p ≥3, then M p−3 ≤
+(|a| + |b|)p−3. If 2 < p ≤3, then |a −b| ≤2M and therefore M p−3|a −b| ≤23−p|a −b|p−2. These give
+(18).
+4
+
+---
+### 【第 5 页】
+
+The second compares the average of DF along a segment with the larger of the two endpoints, and
+shows in particular that this average is uniformly elliptic exactly when the larger endpoint is bounded
+above and away from zero.
+Lemma 2.2. Let p ≥2, let a, b ∈Rn, and set
+M := max{|a|, |b|},
+A :=
+�1
+0
+DF
+�
+(1 −t)a + tb
+�
+dt.
+If p = 2, then A = I. If p > 2, then
+2−pM p−2 ≤
+�1
+0
+��(1 −t)a + tb
+��p−2 dt ≤M p−2,
+(21)
+and consequently, for every η ∈Rn,
+2−pM p−2|η|2 ≤Aη · η ≤(p −1)M p−2|η|2.
+(22)
+Proof. The case p = 2 is immediate. Let p > 2. The upper bound in (21) follows from |(1 −t)a + tb| ≤
+(1 −t)|a| + t|b| ≤M. For the lower bound we may assume, by the symmetry t �→1 −t, that |a| = M.
+For 0 ≤t ≤1
+4,
+|(1 −t)a + tb| ≥|a| −t|b −a| ≥M −2tM ≥M
+2 ,
+whence
+�1
+0
+|(1 −t)a + tb|p−2 dt ≥1
+4
+�M
+2
+�p−2
+= 2−pM p−2.
+Finally, (22) follows by integrating (15) along the segment, using min{1, p −1} = 1 and max{1, p −1} =
+p −1 for p ≥2.
+Applied pointwise to vector fields a = a(x) and b = b(x) on a set E, Lemma 2.2 shows that, for p > 2,
+A(x) is uniformly elliptic on E precisely when
+0 < m0 ≤max{|a(x)|, |b(x)|} ≤M0 < ∞
+(x ∈E).
+For p = 2, uniform ellipticity is automatic since A ≡I.
+
+###### 2.1
+
+
+###### Principal eigenvalue with mixed boundary conditions
+
+We first specify the weak formulation of (4).
+Definition 2.3. A pair (λ, u) ∈R × V with u ̸≡0 is a weak eigenpair of (4) if
+�
+Ω
+|∇u|p−2∇u · ∇φ dx +
+�
+γ
+h|u|p−2u φ dσ = λ
+�
+Ω
+|u|p−2u φ dx
+for all φ ∈V.
+(23)
+The next proposition states the existence, positivity and simplicity of the principal eigenpair, and
+shows that the positivity and normalization conditions single it out uniquely.
+Proposition 2.4. Let Ω, ΓD, and γ satisfy the standing assumptions of Section 1.1, and let h ∈L∞(γ)
+with h ≥0. Then the infimum in (6) is attained, λ1(h) > 0, and there is a normalized eigenfunction
+u1 ∈V with ∥u1∥Lp(Ω) = 1 and u1 > 0 in Ω. Moreover the principal eigenvalue is simple in the strong
+sense that
+every weak eigenfunction associated with λ1(h) is a scalar multiple of u1.
+(24)
+Consequently u1 > 0 and ∥u1∥Lp(Ω) = 1 select a unique principal eigenfunction, denoted u(h).
+Proof. Since h ≥0, the Rayleigh quotient in (6) is bounded below by the optimal constant in the Poincar´e
+inequality on V , which is positive because Hn−1(ΓD) > 0; hence λ1(h) > 0. Existence of a minimizer
+follows from the direct method, using that inequality, the compactness of W 1,p(Ω) �→Lp(Ω) and of the
+trace W 1,p(Ω) →Lp(∂Ω); the boundary term is weakly continuous by the latter. Replacing a minimizer
+by its absolute value and applying the strong maximum principle [38] yields a normalized eigenfunction
+u1 > 0 in Ω.
+5
+
+---
+### 【第 6 页】
+
+Let now v be any weak eigenfunction associated with λ1(h). Testing (23) with φ = v shows that v
+realizes the infimum in (6), hence so does |v|, which is therefore itself an eigenfunction and is positive
+in Ωby the strong maximum principle. Applying Picone’s identity for the p-Laplacian [8] to the pair
+u1, |v|, through the admissible test functions |v|p(u1 + ϵ)1−p and up
+1(|v| + ϵ)1−p and letting ϵ ↓0, gives
+|v| = c u1 for some c > 0; the Robin contributions cancel because u1 and |v| satisfy the same boundary
+condition with coefficient h. Finally, v is continuous in Ωby Lemma 2.6 and Lemma 2.8(i), whose proofs
+use neither simplicity nor the present proposition. Since |v| = c u1 > 0 on the connected open set Ω, the
+function v has a constant sign there, and therefore v = ±c u1. This proves (24), and positivity together
+with ∥u1∥Lp(Ω) = 1 selects a unique principal eigenfunction, denoted u(h).
+The following remark records the version of that proposition needed for the fully coated geometry of
+Section 3, in which the Dirichlet portion is empty.
+Remark 2.5. Proposition 2.4 remains valid when ΓD = ∅, that is for the purely Robin problem on
+∂Ω= γ, provided ess infγ h > 0. Then V = W 1,p(Ω) and coercivity follows from the equivalence of
+norms
+∥v∥p
+W 1,p(Ω) ≤C(Ω, p)
+��
+Ω
+|∇v|p dx +
+�
+∂Ω
+|v|p dσ
+�
+,
+v ∈W 1,p(Ω),
+(25)
+valid on bounded Lipschitz domains [32], which is the case used in Section 3; there h = ρ−(p−1) with
+ρ ∈C2(Γ) positive on the compact set Γ, so that infγ h > 0.
+The same conclusions hold for the
+two-phase problem (33). For each fixed ε > 0 the coefficient σε in (31) satisfies εp−1 ≤σε ≤1, so
+the energy Φ �→
+�
+Ωε σε|∇Φ|p dx is coercive on W 1,p
+0
+(Ωε) by the Poincar´e inequality, which requires no
+regularity of ∂Ωε, and the direct method applies. The operator div(σε|∇Φ|p−2∇Φ) satisfies the standard
+structure conditions with ellipticity constants εp−1 and 1, so the Harnack inequality and the strong
+maximum principle for quasilinear equations with measurable coefficients of p-growth give positivity
+of the first eigenfunction in the connected set Ωε. Simplicity follows from Picone’s identity [8], which
+holds verbatim with the weight σε in the leading term, the boundary terms now vanishing because both
+functions have zero trace on ∂Ωε.
+The next lemma establishes boundedness of the principal eigenfunction by a standard Moser iteration.
+It is stated for both geometries, since it is used in Section 3 in the fully coated case.
+Lemma 2.6. Assume either the mixed-boundary geometry of Section 1.1, or
+ΓD = ∅,
+γ = ∂Ω,
+V = W 1,p(Ω).
+Let h ∈L∞(γ) with h ≥0, and let u ∈V be a weak eigenfunction of (4) associated with λ1(h), normalized
+by ∥u∥Lp(Ω) = 1; in particular, u may be a normalized principal eigenfunction. Then u ∈L∞(Ω), with a
+bound depending only on n, p, Ωand λ1(h).
+Proof. We may assume u ≥0. For k > 0 and κ ≥0 put uk := min{u, k} and test (23) with φ := u u κ
+k ∈V ,
+which is admissible because s �→s min{s, k}κ is Lipschitz on [0, ∞) and vanishes at 0; for κ = 0 this is
+φ = u. Since h ≥0 and u ≥0, the boundary term is nonnegative and may be discarded, which gives
+�
+Ω
+u κ
+k |∇u|p dx + κ
+�
+{u<k}
+u u κ−1
+k
+|∇u|p dx ≤λ1(h)
+�
+Ω
+up u κ
+k dx.
+Writing wk := u u κ/p
+k
+and using
+|∇wk|p ≤C(p)(1 + κ)p−1�
+u κ
+k |∇u|p + κ u u κ−1
+k
+1{u<k}|∇u|p�
+,
+the left-hand side above controls ∥∇wk∥p
+Lp(Ω) up to the factor C(p)(1+κ)p−1. Since moreover ∥wk∥p
+Lp(Ω) =
+�
+Ωupu κ
+k dx, we obtain
+∥wk∥p
+W 1,p(Ω) ≤C(1 + κ)p−1�
+1 + λ1(h)
+��
+Ω
+upu κ
+k dx;
+the Lp term is needed in the fully coated case ΓD = ∅, where no Poincar´e inequality is available. For
+p < n the Sobolev embedding W 1,p(Ω) �→Lp∗(Ω), p∗= np/(n −p), then yields
+∥wk∥p
+Lp∗(Ω) ≤C(1 + κ)p−1�
+1 + λ1(h)
+��
+Ω
+upu κ
+k dx.
+6
+
+---
+### 【第 7 页】
+
+Letting k →∞, the right-hand side being finite at each stage by the preceding step, and iterating along
+the exponents defined by p+κ0 = p and p+κj+1 = (p+κj) p∗/p, produces bounds in successively higher
+Lq with constants whose product converges, and hence ∥u∥L∞(Ω) ≤C. When p = n the same iteration
+is run with a fixed q > n in place of p∗, using W 1,n(Ω) �→Lq(Ω). When p > n the conclusion follows
+directly from W 1,p(Ω) �→L∞(Ω) and the bound ∥u∥p
+W 1,p(Ω) ≤1+λ1(h) furnished by the energy identity
+and the normalization.
+This is the standard Moser scheme for quasilinear equations with nonlinear
+boundary conditions; see [28, 39].
+Since the Rayleigh quotient gives λ1(h) ≤C(Ω, p)
+�
+1 + ∥h∥L∞(γ)
+�
+, the bound of Lemma 2.6 depends
+on h only through ∥h∥L∞(γ).
+
+###### 2.2
+
+
+###### Boundary behavior and regularity
+
+We first record the boundary point principle used later to obtain nondegeneracy of the gradient on the
+Dirichlet measurement boundary.
+Lemma 2.7. Let 1 < p < ∞, let Ωbe a bounded C2 domain, and let x0 ∈∂Ω. Suppose that u ∈C1(Ω∩U)
+in a neighborhood U of x0,
+u > 0
+in Ω∩U,
+u(x0) = 0,
+and −∆pu = λup−1 in Ω∩U for some λ ≥0. Then ∂νu(x0) < 0.
+Proof. Since −∆pu = λup−1 ≥0 in Ω∩U, the boundary point principle for the p-Laplacian applies; see
+[38, 34]. The C2 regularity of ∂Ωprovides the interior sphere condition at x0, and therefore ∂νu(x0) <
+0.
+We next collect the interior and boundary regularity needed below. The regularity is local away from
+the interface ζ = ΓD ∩γ, where the boundary condition changes type.
+Lemma 2.8. Let Ωhave C2 boundary and assume either the mixed-boundary geometry of Section 1.1,
+or
+ΓD = ∅,
+γ = ∂Ω,
+ζ = ∅,
+V = W 1,p(Ω).
+Let h ∈C1(γ) with h ≥0, and let u ∈V ∩L∞(Ω) be a weak solution of (4) for some λ ∈R. Then:
+(i) there exists β ∈(0, 1) such that u ∈C1,β
+loc (Ω);
+(ii) for every compact set K ⊂Ω\ ζ there exist βK ∈(0, 1) and CK < ∞such that ∥u∥C1,βK (K) ≤CK;
+(iii) in particular, ∇u extends continuously to every compact subportion Γ′
+D ⋐ΓD and γ′ ⋐γ;
+(iv) if ζ = ∅, then u ∈C1,β(Ω) for some β ∈(0, 1).
+The constants depend only on n, p, the C2 character of ∂Ω, λ, ∥u∥L∞(Ω), ∥h∥C1(γ) and dist(K, ζ).
+Proof. Since u ∈L∞(Ω), the right-hand side λ|u|p−2u is bounded, and standard interior C1,β regularity
+for degenerate and singular quasilinear equations gives (i); see [17, 37, 27].
+For (ii), let x0 ∈K ∩∂Ω. By the geometric hypothesis (2) and x0 /∈ζ we have x0 ∈ΓD ∪γ, and since
+ΓD and γ are relatively open and disjoint there is rx0 > 0 such that Brx0(x0) ∩∂Ωis contained either
+in ΓD or in γ. Hence, near x0, the boundary condition is either purely Dirichlet or purely Robin. On
+a Dirichlet portion, standard boundary C1,β regularity for the homogeneous Dirichlet problem applies;
+see [37, 28]. On a Robin portion, the condition
+|∇u|p−2∇u · ν + h|u|p−2u = 0
+is treated as a nonlinear conormal boundary condition; since h ∈C1(γ) and u is bounded, the p-growth,
+continuity and monotonicity hypotheses of the boundary regularity theory are satisfied, see [28], and u
+is locally C1,β up to that portion.
+A finite covering of K ∩∂Ω, together with the interior estimate on the part of K away from the
+boundary, proves (ii), and (iii) follows immediately. If ζ = ∅, compactness of ∂Ωyields a finite boundary
+covering by patches of a single type, and combining the corresponding estimates with (i) proves (iv).
+7
+
+---
+### 【第 8 页】
+
+The preceding regularity allows the weak boundary conditions to be interpreted pointwise. Note that
+ΓD ∩ζ = ∅: a point of the relatively open set ΓD has a boundary neighborhood disjoint from γ and
+therefore cannot lie in γ. The same argument gives γ ∩ζ = ∅, so every point of ΓD and of γ lies in a
+compact boundary portion away from ζ.
+Remark 2.9. Let u be as in Lemma 2.8. Then u = 0 pointwise on ΓD, and
+|∇u|p−2∇u · ν + h|u|p−2u = 0
+pointwise on γ.
+Indeed, div F(∇u) = −λ|u|p−2u in the distributional sense, so the Gauss–Green formula identifies the
+weak conormal trace with F(∇u) · ν, and localizing (23) near γ gives the stated identity in the weak
+boundary sense. By Lemma 2.8(ii) both u and F(∇u) are continuous up to compact boundary portions
+away from ζ, which upgrades the identity to a pointwise one.
+Where the gradient does not vanish, the degeneracy of the p-Laplacian disappears and the preceding
+regularity improves. We record only the range p ≥2, which is the one needed in the later linearized and
+uniqueness arguments.
+Lemma 2.10. Let p ≥2, let u be a positive solution as in Lemma 2.8, and let β be as in that lemma.
+(i) If O ⊂Ωis open and infO |∇u| > 0, then there exists α ∈(0, β] such that
+u ∈C2,α
+loc (O);
+in particular ∇u is locally Lipschitz in O.
+(ii) Let O ⊂Rn be open with O ∩∂Ω⊂ΓD, and suppose that O ∩∂Ωis of class C2,α0 for some
+α0 ∈(0, 1). If infO∩Ω|∇u| > 0, then for every O′ ⋐O there exists α ∈
+�
+0, min{β, α0}
+�
+such that
+u ∈C2,α�
+O′ ∩Ω
+�
+.
+Proof. Let U ⋐O. By Lemma 2.8, ∇u is bounded and H¨older continuous on U, so that 0 < m ≤|∇u| ≤
+M < ∞there, and by (15) the matrix DF(∇u) is symmetric and uniformly elliptic on U; moreover F is
+smooth on the annulus {m/2 < |z| < 2M}.
+For (i), the equation reads DF(∇u) : D2u = −λup−1 on U, with coefficients DF(∇u) and right-hand
+side both H¨older continuous of exponent β, and with uniformly elliptic principal part. Interior Schauder
+theory therefore gives u ∈C2,α(U) for some α ∈(0, β]; see [21]. Since U ⋐O was arbitrary, this proves
+the local statement, and ∇u ∈C1,α(U) is in particular Lipschitz on U.
+For (ii), Lemma 2.8 gives u ∈C1,β locally up to the Dirichlet boundary, and since p ≥2 the
+function up−1 is H¨older continuous up to the boundary. The uniform lower bound on |∇u| removes the
+degeneracy of the principal part. After flattening the C2,α0 boundary, boundary Schauder estimates for
+uniformly elliptic quasilinear equations with homogeneous Dirichlet data give u ∈C2,α(O′ ∩Ω) with
+α ≤min{β, α0}, the restriction α ≤β coming from the H¨older exponent of the frozen coefficients
+DF(∇u); see for example [21, 28].
+Only the C2,α regularity in Lemma 2.10(ii), and hence the local boundedness of D2u, is used later,
+in the regularity analysis of the path coefficient in Section 4.3. Part (ii) requires O ∩∂Ωto be of class
+C2,α0, which is slightly stronger than the standing hypothesis ∂Ω∈C2 of Section 1.1; this additional local
+regularity of the measurement boundary is therefore part of the hypotheses of the uniqueness theorem
+for p > 2, and is recalled where it is used.
+
+###### 2.3
+
+
+###### Unique continuation:
+
+
+###### a local boundary statement and a propagation
+
+
+###### statement
+
+The first ingredient states that vanishing Cauchy data on a boundary patch force the solution to vanish
+there.
+Theorem 2.11. Let Ω⊂Rn, n ≥2, be a bounded domain, and let U ⊂Rn be open and connected, with
+U ∩∂Ω̸= ∅and ∂Ω∩U of class C2. Let A ∈C0,1(U ∩Ω; Rn×n) be symmetric and uniformly elliptic on
+U ∩Ω, say θI ≤A ≤ΘI with 0 < θ ≤Θ < ∞, let B ∈L∞(U ∩Ω) and λ ∈R, and let w ∈H1(U ∩Ω)
+solve −div(A∇w) = λBw in U ∩Ωwith vanishing Cauchy data,
+w = 0
+and
+A∇w · ν = 0
+on U ∩∂Ω,
+(26)
+8
+
+---
+### 【第 9 页】
+
+the first in the sense of traces and the second in the weak conormal-trace sense. Equivalently,
+�
+U∩Ω
+A∇w · ∇φ dx = λ
+�
+U∩Ω
+B w φ dx
+for all φ ∈C∞
+c (U),
+(27)
+together with w = 0 on U ∩∂Ω. Then w ≡0 in U ∩Ω.
+Proof. Formulation (27) encodes both the interior equation and the vanishing of the conormal trace,
+since the test functions are not required to vanish on U ∩∂Ω.
+Let K := {S ∈Rn×n
+sym : θI ≤S ≤ΘI}, a closed convex subset of the space of symmetric matrices, and
+let Π denote the metric projection onto K in the Frobenius inner product, which is 1-Lipschitz. Extend
+each entry of A from U ∩Ωto a Lipschitz function on U and set �A := Π(Aext). Then �A is Lipschitz,
+symmetric and uniformly elliptic on U, and �A = A on U ∩Ωbecause A(x) ∈K there. Extend B by zero
+and let �w be the extension of w by zero to U.
+Since ∂Ω∩U is C2 and w has vanishing Dirichlet trace there, �w ∈H1(U) with ∇�w = ∇w 1Ω. For
+φ ∈C∞
+c (U), (27) gives
+�
+U
+�A ∇�w · ∇φ dx =
+�
+U∩Ω
+A ∇w · ∇φ dx = λ
+�
+U
+�B �w φ dx,
+so no distribution supported on the interface is produced and �w solves the equation weakly in U. Because
+∂Ω∩U is C2 and nonempty, the open set U \ Ωis nonempty, and �w vanishes on it. As U is connected,
+interior unique continuation for uniformly elliptic divergence-form operators with Lipschitz principal
+coefficients [25, 23] gives �w ≡0 in U, hence w ≡0 in U ∩Ω. See also [3] for related boundary unique-
+continuation results.
+The second ingredient propagates the vanishing through a connected region on which the coefficients
+are nondegenerate.
+Theorem 2.12. Let D ⊂Rn be open and connected, let A be symmetric, locally uniformly elliptic and
+locally Lipschitz in D, and let B ∈L∞
+loc(D), λ ∈R. If w ∈H1
+loc(D) is a weak solution of −div(A∇w) =
+λBw in D and w vanishes on some nonempty open subset of D, then w ≡0 in D.
+Proof. Let Z be the set of points of D having a neighborhood on which w vanishes; Z is open and
+nonempty. Let x0 lie in the closure of Z in D and choose Br(x0) ⋐D. There A is uniformly elliptic
+and Lipschitz and B is bounded, so the strong unique continuation property holds [25]; since Z is open,
+Br(x0) ∩Z is a nonempty open set on which w vanishes, whence w ≡0 on Br(x0) and x0 ∈Z. Thus Z
+is open and closed in the connected set D, so Z = D.
+The next remark explains why the Lipschitz regularity of the leading coefficient cannot simply be
+dropped in dimensions three and higher.
+Remark 2.13. Sub-Lipschitz unique continuation can fail in dimensions n ≥3: Miller [30] constructed
+a self-adjoint divergence-form counterexample with H¨older continuous principal coefficients, following
+earlier nonuniqueness phenomena for second-order elliptic equations due to Pli´s [33]. This is directly
+relevant to the p-Laplace linearization, whose coefficients lose regularity at critical points of the reference
+eigenfunction.
+In the plane the situation is better, as the following remark records.
+Remark 2.14. In dimension n = 2, unique continuation for divergence-form elliptic equations holds
+with A merely measurable, symmetric and uniformly elliptic, by the Bers–Nirenberg representation
+and quasiconformal methods; see Alessandrini [5] and Schulz [35]. The two proofs above use only the
+ellipticity of the extension, the vanishing of the Cauchy data, and the unique continuation property on
+balls, and the projection Π preserves measurability; both theorems remain valid for n = 2 under that
+weaker hypothesis on A.
+For completeness, we state the form of the implicit function theorem used in Section 4.5, together
+with the modulus of continuity of the remainder that it supplies.
+Theorem 2.15. Let X, Y, Z be Banach spaces, O ⊂X × Y open, and G : O →Z continuously Fr´echet
+differentiable. Suppose G(x0, y0) = 0 and DyG(x0, y0) : Y →Z is a bounded linear isomorphism. Then
+there are neighborhoods U ∋x0 and V ∋y0 and a unique C1 map Υ : U →V with Υ(x0) = y0 and
+G(x, Υ(x)) = 0 on U. After shrinking U there is a nondecreasing modulus ω with ω(s) →0 as s →0
+such that
+∥Υ(x) −Υ(x0) −DΥ(x0)[x −x0]∥Y ≤ω(∥x −x0∥X) ∥x −x0∥X.
+(28)
+9
+
+---
+### 【第 10 页】
+
+For the statement see [41]; the modulus is obtained by taking ω(s) to be the supremum of the quotient
+on the left-hand side of (28) divided by ∥x −x0∥X over 0 < ∥x −x0∥X ≤s, which is nondecreasing and
+tends to zero as s ↓0 by the differentiability of Υ at x0.
+
+###### 3
+
+
+###### Thin-Coating Asymptotics and Effective Robin Conditions
+
+Thin layers with material properties different from those of the underlying medium generate an effective
+boundary interaction when their thickness tends to zero. For clarity, the asymptotic theorem is proved
+when the entire boundary Γ := ∂Ωis coated, so that no junction effects occur at the edge of the coating;
+this is the one place where the mixed geometry of Section 1.1 is replaced by ΓD = ∅. The partially coated
+case, which is the configuration underlying the inverse problem of Section 4, is described in Remark 3.3.
+Let Ωbe a bounded domain with C2 boundary Γ, and let ρ ∈C2(Γ) satisfy ρ > 0. Denote by νΓ the
+outward unit normal and by
+W(ξ) := −DΓνΓ(ξ)
+(29)
+the Weingarten map (shape operator) of Γ, where DΓνΓ denotes the tangential derivative of the unit
+normal. With this sign convention and the outward normal, a ball of radius R has W = −R−1I, so that
+the Jacobian (39) below equals (1 + t/R)n−1, as it must for an outward layer. Only ρ, its tangential
+gradient and infΓ ρ > 0 enter the estimates, so ρ ∈C1(Γ) with ρ > 0 would suffice throughout this
+section.
+For ε > 0 sufficiently small, the tubular map
+X(ξ, t) := ξ + tνΓ(ξ)
+is a diffeomorphism onto its image for 0 ≤t ≤ερ(ξ). We define
+Σε :=
+�
+X(ξ, t) : ξ ∈Γ, 0 < t < ερ(ξ)
+�
+,
+Ωε := Ω∪Γ ∪Σε.
+(30)
+The conductivity is
+σε(x) =
+�
+1,
+x ∈Ω,
+εp−1,
+x ∈Σε,
+(31)
+see Figure 1. This is the critical thin-layer scaling: a normal variation across a layer of thickness ερ(ξ)
+is of order u/(ερ(ξ)), so the corresponding nonlinear flux has the scale
+εp−1���
+u
+ερ(ξ)
+���
+p−2
+u
+ερ(ξ) = |u|p−2u
+ρ(ξ)p−1 ,
+(32)
+which is of order one as ε →0; that this is the only order with a nondegenerate limit is the content of
+Remark 3.4.
+The choice (31) specifies a family of increasingly thin and increasingly resistive layers, not the intrinsic
+conductivity of a fixed material. For p = 2 it reduces to σε = ε, that is to Friedman’s critical scaling
+σε/ε →α with α = 1, and the effective condition ρ ∂νu + u = 0 is the classical contact-resistance law.
+For p ̸= 2 the constitutive law J = σ|E|p−2E with E = −∇u carries the same (p −1)-homogeneity as
+the Ostwald–de Waele power-law model, see for example [11], and (31) is the order that balances the
+vanishing thickness against that homogeneity.
+We consider the two-phase principal eigenvalue problem
+
+
+
+−div
+�
+σε|∇Φε|p−2∇Φε
+�
+= Λ1(ε)|Φε|p−2Φε
+in Ωε,
+Φε = 0
+on ∂Ωε.
+(33)
+Problem (33) is a purely Dirichlet eigenvalue problem on Ωε for the weighted operator with coefficient σε,
+which for each fixed ε > 0 is bounded above by 1 and below by εp−1. By the last part of Remark 2.5, the
+principal eigenvalue Λ1(ε) therefore exists and is simple, and Φε may be chosen positive with ∥Φε∥Lp(Ωε) =
+1. Note that the degeneracy as ε →0 is not an issue here: only fixed ε is involved, and the asymptotics
+of Theorem 3.2 are extracted from the Rayleigh quotients, not from these bounds.
+The interface Γ is internal to Ωε. Since Φε ∈W 1,p(Ωε), its traces from the two sides of Γ agree, while
+the weak formulation of (33) yields continuity of the weighted normal flux σε|∇Φε|p−2∇Φε · νΓ across Γ
+in the usual weak transmission sense.
+10
+
+---
+### 【第 11 页】
+
+ξ
+νΓ(ξ)
+ξ′
+ερ(ξ′)
+Ω
+σε = 1
+Σε,
+σε = εp−1
+Γ = ∂Ω
+∂Ωε,
+Φε = 0
+Figure 1: Schematic thin-coating geometry.
+The domain Ωis surrounded by a layer Σε of variable
+thickness ερ. The conductivity equals 1 in Ωand εp−1 in the coating. The dashed curve is the outer
+boundary, where a homogeneous Dirichlet condition is imposed. The normal direction is drawn at ξ and
+the layer thickness at a second point ξ′.
+The next lemma collects everything the layer contributes to the asymptotics.
+Parts (i) and (ii)
+compute the mass and the energy carried by the affine extension of a fixed function and identify the
+surface term that survives in the limit. Parts (iii) and (iv) are one-dimensional estimates along the
+normal fibres, valid for an arbitrary competitor: the first says that the layer carries negligible Lp mass,
+the second bounds the layer energy from below by the effective Robin energy of the trace.
+Lemma 3.1. Let ε > 0 be small enough that X is a diffeomorphism on the layer.
+(i) Let u ∈C1(Ω) and define �uε on Ωε by
+�uε(x) =
+
+
+
+
+
+u(x),
+x ∈Ω,
+u(ξ)
+�
+1 −
+t
+ερ(ξ)
+�
+,
+x = X(ξ, t) ∈Σε.
+(34)
+Then �uε ∈W 1,p
+0
+(Ωε) and
+�
+Σε
+|�uε|p dx = O(ε).
+(35)
+(ii) For the same extension,
+�
+Σε
+εp−1|∇�uε|p dx =
+�
+Γ
+|u(ξ)|p
+ρ(ξ)p−1 dσ + O(ε).
+(36)
+(iii) For every Φ ∈W 1,p
+0
+(Ωε),
+�
+Σε
+|Φ|p dx ≤Cεp
+�
+Σε
+|∇Φ|p dx.
+(37)
+(iv) For every Φ ∈W 1,p
+0
+(Ωε), with TΦ the trace of Φ|Ωon Γ,
+εp−1
+�
+Σε
+|∇Φ|p dx ≥(1 −Cε)
+�
+Γ
+|TΦ(ξ)|p
+ρ(ξ)p−1 dσ.
+(38)
+The constants in (37) and (38) depend only on p, Γ and ∥ρ∥C1(Γ), while those implicit in (35) and (36)
+depend in addition on ∥u∥C1(Ω) and on
+�
+infΓ ρ
+�−1.
+Proof. In tubular coordinates,
+dx = J(ξ, t) dt dσ(ξ),
+J(ξ, t) = det(I −tW(ξ)) = 1 + O(t) = 1 + O(ε)
+(39)
+uniformly for 0 ≤t ≤ερ(ξ); in particular 1 −Cε ≤J ≤1 + Cε and |Σε| = O(ε).
+11
+
+---
+### 【第 12 页】
+
+(i). Write
+�uε(ξ, t) := u(ξ)
+�
+1 −
+t
+ερ(ξ)
+�
+,
+0 ≤t ≤ερ(ξ),
+so that �uε(ξ, 0) = u(ξ) and �uε(ξ, ερ(ξ)) = 0. Hence the interior function and the layer extension have
+the same trace on Γ, while the extension has zero trace on ∂Ωε; since the tubular coordinate map is
+bi-Lipschitz for all sufficiently small ε, the piecewise-defined function (34) belongs to W 1,p
+0
+(Ωε).
+As
+|�uε| ≤∥u∥L∞(Γ) and |Σε| = O(ε), (35) follows.
+(ii). At fixed ξ,
+∂t�uε(ξ, t) = −u(ξ)
+ερ(ξ),
+and at fixed t,
+∇Γ�uε(ξ, t) =
+�
+1 −
+t
+ερ(ξ)
+�
+∇Γu(ξ) + t u(ξ)
+ερ(ξ)2 ∇Γρ(ξ).
+Because 0 ≤t ≤ερ(ξ) and u, ρ ∈C1(Γ) with ρ bounded away from zero,
+sup
+ξ∈Γ, 0≤t≤ερ(ξ)
+|∇Γ�uε(ξ, t)| ≤C0,
+(40)
+with C0 independent of ε. The Euclidean gradient in tubular coordinates is
+|∇�uε(X(ξ, t))|2 = |∂t�uε(ξ, t)|2 +
+��(I −tW(ξ))−1∇Γ�uε(ξ, t)
+��2 ,
+(41)
+and (I −tW(ξ))−1 = I + O(ε) uniformly in the layer. Set
+Nε(ξ) := |u(ξ)|
+ερ(ξ) ,
+Tε(ξ, t) :=
+��(I −tW(ξ))−1∇Γ�uε(ξ, t)
+��,
+so that Tε ≤C uniformly by (40) and |∇�uε|p = (N 2
+ε + T 2
+ε )p/2 by (41). For p > 1 and N, T ≥0,
+0 ≤
+�
+N 2 + T 2�p/2 −N p ≤Cp
+�
+N p−1T + T p�
+,
+whence
+|∇�uε|p =
+����
+u(ξ)
+ερ(ξ)
+����
+p
++ Rε(ξ, t),
+0 ≤Rε(ξ, t) ≤C
+�����
+u(ξ)
+ερ(ξ)
+����
+p−1
++ 1
+�
+.
+Using (39), the principal term satisfies
+εp−1
+�
+Γ
+�ερ(ξ)
+0
+����
+u(ξ)
+ερ(ξ)
+����
+p
+J(ξ, t) dt dσ(ξ) =
+�
+Γ
+|u(ξ)|p
+ρ(ξ)p−1 dσ(ξ) + O(ε),
+while for the remainder
+εp−1
+�
+Γ
+�ερ(ξ)
+0
+Rε(ξ, t)J(ξ, t) dt dσ(ξ) ≤Cεp−1
+�
+Γ
+�ερ(ξ)
+0
+�|u(ξ)|p−1
+εp−1ρ(ξ)p−1 + 1
+�
+dt dσ(ξ)
+= O(ε).
+This proves (36).
+(iii) and (iv). By the Sobolev slicing property, for a.e. ξ ∈Γ the function gξ(t) := Φ(X(ξ, t)) belongs
+to W 1,p(0, ερ(ξ)) with |g′
+ξ(t)| ≤|∇Φ(X(ξ, t))|, and gξ(ερ(ξ)) = 0 because Φ vanishes on ∂Ωε. H¨older’s
+inequality applied to gξ(t) = −
+�ερ(ξ)
+t
+g′
+ξ(s) ds gives
+|gξ(t)|p ≤(ερ(ξ))p−1
+�ερ(ξ)
+0
+|g′
+ξ|p ds,
+0 ≤t ≤ερ(ξ).
+Integrating in t yields
+�ερ(ξ)
+0
+|gξ|p dt ≤(ερ(ξ))p
+�ερ(ξ)
+0
+|g′
+ξ|p dt,
+and integrating over Γ against (39) proves (37). Taking instead t = 0 in the same H¨older bound gives
+εp−1
+�ερ(ξ)
+0
+|g′
+ξ|p dt ≥|gξ(0)|p
+ρ(ξ)p−1 = |TΦ(ξ)|p
+ρ(ξ)p−1 ,
+the powers of ε cancelling exactly; integrating over Γ and using J ≥1 −Cε proves (38).
+12
+
+---
+### 【第 13 页】
+
+The following theorem is the thin-coating limit: the principal eigenvalue of the two-phase problem
+converges to that of the effective Robin problem, and the eigenfunctions converge strongly.
+Theorem 3.2. Let Λ1(ε) and Φε be as above, and let (µ1, u1) be the normalized positive principal
+eigenpair of
+
+
+
+−∆pu = µ|u|p−2u
+in Ω,
+|∇u|p−2∂νΓu + ρ−(p−1)|u|p−2u = 0
+on Γ.
+(42)
+Then Λ1(ε) →µ1 and Φε|Ω→u1 strongly in W 1,p(Ω) as ε →0.
+Proof. Existence, positivity and simplicity of (µ1, u1) follow from Remark 2.5, whose hypothesis infΓ ρ−(p−1) >
+0 holds here. The Rayleigh characterizations are
+Λ1(ε) =
+inf
+Φ∈W 1,p
+0
+(Ωε)\{0}
+�
+Ωε
+σε|∇Φ|p dx
+�
+Ωε
+|Φ|p dx
+,
+µ1 =
+inf
+u∈W 1,p(Ω)\{0}
+�
+Ω
+|∇u|p dx +
+�
+Γ
+ρ−(p−1)|u|p dσ
+�
+Ω
+|u|p dx
+.
+(43)
+Step 1: upper bound. Choose u(m) ∈C1(Ω) with u(m) →u1 strongly in W 1,p(Ω). By continuity
+of the trace operator, the limiting Robin Rayleigh quotient of u(m) converges to µ1 as m →∞. Fix m
+and extend u(m) affinely through the layer as in (34). The constants in Lemma 3.1(i)–(ii) depend on
+∥u(m)∥C1(Ω) and are therefore not uniform in m, so the limits must be taken in the order ε →0 first and
+m →∞second. With that order, Lemma 3.1(i)–(ii) and (43) give
+lim sup
+ε→0
+Λ1(ε) ≤
+�
+Ω
+|∇u(m)|p dx +
+�
+Γ
+ρ−(p−1)|u(m)|p dσ
+�
+Ω
+|u(m)|p dx
+for every m,
+and letting m →∞,
+lim sup
+ε→0
+Λ1(ε) ≤µ1.
+(44)
+Step 2: compactness and vanishing coating mass. Let εk →0 be an arbitrary sequence and set
+Φk := Φεk and vk := Φk|Ω. By (44), Λ1(εk) ≤C, and testing (33) with Φk, using ∥Φk∥Lp(Ωεk ) = 1, gives
+�
+Ω
+|∇vk|p dx + εp−1
+k
+�
+Σεk
+|∇Φk|p dx = Λ1(εk) ≤C.
+(45)
+Since ∥vk∥Lp(Ω) ≤1, the sequence (vk) is bounded in W 1,p(Ω). By (37) and (45),
+�
+Σεk
+|Φk|p dx ≤Cεp
+k
+�
+Σεk
+|∇Φk|p dx ≤Cεk,
+so the normalization of Φk implies ∥vk∥p
+Lp(Ω) = 1 + O(εk).
+After passing to a subsequence, not relabeled,
+vk ⇀�u
+weakly in W 1,p(Ω),
+(46)
+vk →�u
+strongly in Lp(Ω),
+(47)
+Tvk →T �u
+strongly in Lp(Γ),
+(48)
+the last by compactness of the trace embedding. Since Φk > 0 we have �u ≥0, and (47) together with
+the preceding normalization gives ∥�u∥Lp(Ω) = 1.
+13
+
+---
+### 【第 14 页】
+
+Step 3: lower bound. By Lemma 3.1(iv) applied to Φk and by (48),
+lim inf
+k→∞εp−1
+k
+�
+Σεk
+|∇Φk|p dx ≥
+�
+Γ
+|�u|p
+ρp−1 dσ.
+(49)
+Combining this with the weak lower semicontinuity of the Dirichlet energy, the superadditivity of the
+lower limit, (45) and the variational characterization (43) of µ1, together with ∥�u∥Lp(Ω) = 1, gives
+lim inf
+k→∞Λ1(εk) ≥
+�
+Ω
+|∇�u|p dx +
+�
+Γ
+|�u|p
+ρp−1 dσ ≥µ1.
+(50)
+Step 4: identification of the limit and strong convergence. Combining (44) and (50),
+µ1 ≥lim sup
+k→∞
+Λ1(εk) ≥lim inf
+k→∞Λ1(εk) ≥
+�
+Ω
+|∇�u|p dx +
+�
+Γ
+|�u|p
+ρp−1 dσ ≥µ1,
+so equality holds throughout. Hence Λ1(εk) →µ1 and �u is a normalized nonnegative minimizer of the
+limiting Robin Rayleigh quotient, so that �u = u1 by simplicity of the principal eigenvalue.
+To obtain strong convergence, set
+Ak :=
+�
+Ω
+|∇vk|p dx,
+Bk := εp−1
+k
+�
+Σεk
+|∇Φk|p dx,
+A :=
+�
+Ω
+|∇u1|p dx,
+B :=
+�
+Γ
+|u1|p
+ρp−1 dσ.
+By the energy identity, Ak + Bk = Λ1(εk) →µ1 = A + B, while weak lower semicontinuity and (49)
+give lim infk Ak ≥A and lim infk Bk ≥B. Therefore Ak →A. Since ∇vk ⇀∇u1 in Lp(Ω; Rn) and
+∥∇vk∥Lp(Ω) →∥∇u1∥Lp(Ω), the uniform convexity of Lp gives ∇vk →∇u1 strongly in Lp(Ω; Rn), and
+with (47),
+vk →u1
+strongly in W 1,p(Ω).
+The limit (µ1, u1) obtained in this way does not depend on the subsequence extracted in Step 2.
+Consequently every sequence εk →0 has a subsequence along which Λ1(εk) →µ1 and Φεk|Ω→u1 in
+W 1,p(Ω), so the full sequence converges to the same limit, and since the sequence was arbitrary,
+Λ1(ε) →µ1,
+Φε|Ω→u1
+strongly in W 1,p(Ω)
+(ε →0).
+Thus the thin layer generates the effective coefficient h = ρ−(p−1); for ρ ≡1 one gets h ≡1, and for
+p = 2 the formula reduces to h = 1/ρ, consistent with the classical linear thin-layer limit [19, 12].
+The next remark records the partially coated geometry, which is the one underlying the inverse
+problem.
+Remark 3.3. Let Ω, ΓD and γ satisfy the standing assumptions of Section 1.1, let ρ ∈C1(γ) with ρ > 0
+on γ, and coat only the inaccessible portion:
+Σγ
+ε :=
+�
+X(ξ, t) : ξ ∈γ, 0 < t < ερ(ξ)
+�
+,
+Ωε := Ω∪γ ∪Σγ
+ε.
+Impose the homogeneous Dirichlet condition on ΓD and on the outer face {X(ξ, ερ(ξ)) : ξ ∈γ}, and the
+natural no-flux condition on the lateral face {X(ξ, t) : ξ ∈∂γ}, whose surface measure is O(ε). Then,
+with σε as in (31),
+Λ1(ε) →λ1(h),
+Φε|Ω→u(h)
+strongly in W 1,p(Ω),
+h = ρ−(p−1).
+The proof is that of Theorem 3.2 with three changes. The admissible class is {Φ ∈W 1,p(Ωε) : Φ = 0 on
+ΓD and on the outer face}, so the competitor of Step 1 is taken in V and extended affinely across γ only,
+which is admissible precisely because no Dirichlet condition is imposed on the lateral face. The slicing
+estimates of Lemma 3.1(iii)–(iv) are integrated over γ instead of Γ, the fibres over γ terminating on the
+outer face where Φ vanishes. Finally, λ1(h) > 0 and the simplicity of the limiting eigenpair come from
+Proposition 2.4 rather than from Remark 2.5.
+14
+
+---
+### 【第 15 页】
+
+The final remark shows that the exponent p −1 is the only order of vanishing of the conductivity
+that produces a finite nonzero Robin interaction.
+Remark 3.4. Let the conductivity in the layer be a general positive function of ε, the value 1 in Ω
+being unchanged:
+σε = 1 in Ω,
+σε = s(ε) > 0 in Σε,
+cε := ε1−ps(ε).
+Suppose cε →c ∈(0, ∞). The proof of Theorem 3.2 then applies with εp−1 replaced by s(ε) throughout:
+parts (ii) and (iv) of Lemma 3.1 acquire the factor cε on their right-hand sides, and part (iii) gives
+�
+Σε |Φε|p dx ≤Cε/cε →0, which is all Step 2 uses. The effective coefficient is therefore
+h = c ρ−(p−1) =
+�
+c−1/(p−1)ρ
+�−(p−1),
+that is, the limit is the one produced by the rescaled thickness c−1/(p−1)ρ. If cε →0, the affine extension
+of the constant function 1 has Rayleigh quotient cε
+�
+Γ ρ−(p−1) dσ / |Ω| + o(1) →0, so Λ1(ε) →0, which is
+the Neumann limit of perfect insulation. The regime cε →∞formally corresponds to a Dirichlet limit
+and is not needed here.
+
+###### 4
+
+
+###### Inverse Problem: Uniqueness and Stability
+
+We now return to the mixed boundary geometry introduced in Section 1.1 and study the inverse recovery
+of the Robin coefficient from spectral and boundary measurements. Sections 4.1 and 4.2 are valid for all
+1 < p < ∞; from Section 4.3 onward we assume p ≥2. Recall that
+ζ = ΓD ∩γ.
+We fix a nonempty relatively open patch
+Γm ⋐ΓD,
+dm := dist
+�
+Γm, ∂Ω\ ΓD
+�
+> 0.
+(51)
+in particular, dist(Γm, ζ) ≥dm > 0.
+For the uniqueness argument it suffices to retain any such patch, since unique continuation requires
+only a nonempty relatively open portion of the boundary; for the quantitative stability estimate the
+choice of patch of course affects the constants. Admissible coefficients are taken in
+Had :=
+�
+h ∈C1(γ) : inf
+γ h > 0
+�
+,
+(52)
+an open subset of the Banach space C1(γ); openness is what makes h0 + ϑ admissible for all small
+perturbations ϑ, and is therefore what the differentiability statements of Section 4.5 require.
+Some
+statements need only h ∈L∞(γ) with h ≥0, as indicated.
+
+###### 4.1
+
+
+###### Boundary non-degeneracy
+
+The next proposition shows that the principal eigenfunction is nondegenerate on the accessible boundary
+and positive on the inaccessible one, and that its gradient is bounded below in a collar around the
+measurement patch.
+Proposition 4.1. Let 1 < p < ∞, let h ∈C1(γ) with h ≥0, and let u be the normalized positive
+principal eigenfunction of (4). Then
+∂νu(x) < 0
+and
+|∇u(x)| = |∂νu(x)| > 0
+for every x ∈ΓD.
+(53)
+Moreover u(x) > 0 for every x ∈γ, and at every x ∈γ with h(x) > 0 one has ∂νu(x) < 0 and
+|∇u(x)| > 0. Finally, for every Γm ⋐ΓD there are cm > 0 and an open neighborhood Um of Γm in Rn
+with
+|∇u(x)| ≥cm
+for all x ∈Um ∩Ω.
+(54)
+Proof. By Lemma 2.6 we have u ∈L∞(Ω), and ΓD ∪γ ⊂∂Ω\ ζ, so Lemma 2.8 and Remark 2.9 give the
+required C1 boundary regularity and the pointwise boundary conditions locally on both portions.
+Let x ∈ΓD. Since u > 0 in Ωand u(x) = 0, Lemma 2.7 gives ∂νu(x) < 0. As u = 0 on the relatively
+open set ΓD, its tangential derivatives vanish there, so ∇u(x) = ∂νu(x)ν(x), which proves (53).
+15
+
+---
+### 【第 16 页】
+
+Now let x0 ∈γ. Continuity gives u(x0) ≥0. If u(x0) = 0, then Lemma 2.7 yields ∂νu(x0) < 0, hence
+F(∇u(x0)) · ν < 0, contradicting the Robin condition
+F(∇u(x0)) · ν = −h(x0)u(x0)p−1 = 0.
+Thus u > 0 on γ. If h(x) > 0, then F(∇u(x)) · ν = −h(x)u(x)p−1 < 0, so ∇u(x) ̸= 0 and consequently
+∂νu(x) < 0.
+Finally, by (51) the compact set
+K :=
+�
+x ∈Ω: dist(x, Γm) ≤dm
+2
+�
+is disjoint from ζ, so Lemma 2.8 gives ∇u ∈C(K), while (53) gives mm := minΓm |∇u| > 0. By uniform
+continuity there is δ ∈(0, dm/2) such that |∇u(x)| ≥mm/2 whenever x ∈Ωand dist(x, Γm) < δ. Taking
+Um :=
+�
+x ∈Rn : dist(x, Γm) < δ
+�
+,
+cm := mm
+2 ,
+proves (54).
+The pointwise conclusions of Proposition 4.1 hold at every point of ΓD and of γ. No uniform lower
+bound up to the interface ζ is claimed, and none is needed: the quantitative bound (54) is required only
+on the collar where the Cauchy data are observed.
+
+###### 4.2
+
+
+###### Unconditional consequences of the variational characterization
+
+The characterization (6) expresses λ1 as an infimum of functionals that are affine in h, which alone yields
+a two-sided comparison. Throughout this subsection 1 < p < ∞.
+Proposition 4.2. Let h1, h2 ∈L∞(γ) with hj ≥0, and let uj := u(hj). Then
+�
+γ
+(h2 −h1) u p
+2 dσ ≤λ1(h2) −λ1(h1) ≤
+�
+γ
+(h2 −h1) u p
+1 dσ.
+(55)
+In particular h �→λ1(h) is nondecreasing and concave on {h ∈L∞(γ) : h ≥0}.
+Proof. Using u2 as a competitor in (6) for the coefficient h1, and recalling ∥u2∥Lp(Ω) = 1,
+λ1(h1) ≤
+�
+Ω
+|∇u2|p dx +
+�
+γ
+h1u p
+2 dσ = λ1(h2) −
+�
+γ
+(h2 −h1)u p
+2 dσ,
+which is the first inequality; exchanging the indices gives the second. Monotonicity is immediate, and
+concavity holds because λ1 is an infimum of affine functions of h.
+The comparison, together with compactness and simplicity, gives continuity of the principal eigenpair.
+Theorem 4.3. Let h, hk ∈L∞(γ) with h, hk ≥0 and hk →h in L∞(γ). Then λ1(hk) →λ1(h) and
+u(hk) →u(h)
+strongly in W 1,p(Ω),
+and consequently u(hk) →u(h) strongly in Lp(γ).
+Proof. Set uk := u(hk), λk := λ1(hk), u∗:= u(h) and λ := λ1(h), all eigenfunctions being normalized by
+∥· ∥Lp(Ω) = 1 as in Proposition 2.4. Since hk →h in L∞(γ), the sequence (hk) is uniformly bounded,
+and using any fixed v ∈V \ {0} in the Rayleigh quotient gives supk λk < ∞. Testing (23) with φ = uk
+and using the normalization gives the energy identity
+�
+Ω
+|∇uk|p dx +
+�
+γ
+hkup
+k dσ = λk,
+whose left-hand side has nonnegative boundary term because hk ≥0; hence ∥∇uk∥p
+Lp(Ω) ≤λk and (uk)
+is bounded in W 1,p(Ω). By continuity of the trace operator,
+Ctr := sup
+k
+∥uk∥p
+Lp(γ) + ∥u∗∥p
+Lp(γ) < ∞.
+16
+
+---
+### 【第 17 页】
+
+Proposition 4.2 then yields
+|λk −λ| ≤Ctr∥hk −h∥L∞(γ) →0.
+Let (ukj) be an arbitrary subsequence. After passing to a further subsequence, not relabeled,
+ukj ⇀�u in W 1,p(Ω),
+ukj →�u in Lp(Ω) and in Lp(γ),
+for some �u ∈V with �u ≥0 and ∥�u∥Lp(Ω) = 1. Since
+�
+γ hkjup
+kj dσ →
+�
+γ h�up dσ, weak lower semicontinuity
+and the energy identity give
+λ ≤
+�
+Ω
+|∇�u|p dx +
+�
+γ
+h�up dσ ≤lim inf
+j→∞λkj = λ,
+so �u is a normalized nonnegative principal eigenfunction and therefore �u = u∗by Proposition 2.4.
+Furthermore
+�
+Ω
+|∇ukj|p dx = λkj −
+�
+γ
+hkjup
+kj dσ −→
+�
+Ω
+|∇u∗|p dx,
+so uniform convexity of Lp gives ∇ukj →∇u∗strongly in Lp(Ω; Rn), and with the strong Lp(Ω) conver-
+gence, ukj →u∗strongly in W 1,p(Ω).
+The limit u∗is independent of the subsequences extracted, so every subsequence of (uk) has a further
+subsequence converging to u∗in W 1,p(Ω); hence the full sequence converges to u∗. The trace convergence
+follows by continuity of the trace operator.
+The comparison principle immediately yields uniqueness for ordered coefficients.
+Theorem 4.4. Let 1 < p < ∞and let h1, h2 ∈C1(γ) satisfy 0 ≤h1 ≤h2 on γ. If λ1(h1) = λ1(h2),
+then h1 = h2 on γ.
+Proof. Let uj := u(hj). By the first inequality in (55),
+�
+γ
+(h2 −h1)up
+2 dσ ≤λ1(h2) −λ1(h1) = 0.
+Since h2 −h1 ≥0 and u2 > 0 on γ by Proposition 4.1, the integrand is nonnegative, so (h2 −h1)up
+2 = 0
+a.e. on γ and hence h1 = h2 a.e. on γ. Continuity of h1 and h2 upgrades this to every point of γ.
+Theorem 4.4 requires no flux measurement, no unique continuation argument, and no critical-set
+nondegeneracy assumption. For coefficients arising from the thin-layer model, (9) gives h = ρ−(p−1), so
+that h1 ≤h2 if and only if ρ1 ≥ρ2; the ordering corresponds to one coating being pointwise at least as
+thick as the other.
+The same comparison gives a quantitative weighted L1 stability estimate.
+Corollary 4.5. Let h1, h2 ∈C1(γ) satisfy 0 ≤h1 ≤h2 on γ. Then
+��(h2 −h1)up
+2
+��
+L1(γ) ≤λ1(h2) −λ1(h1) ≤
+��(h2 −h1)up
+1
+��
+L1(γ).
+(56)
+Moreover, for every K ⋐γ one has minK u2 > 0 and
+�
+min
+K u2
+�p
+∥h2 −h1∥L1(K) ≤λ1(h2) −λ1(h1).
+(57)
+Proof. Since h2 −h1 ≥0 and uj > 0 on γ, the two integrals in (55) are the L1(γ) norms appearing in
+(56). For K ⋐γ, Proposition 4.1 and the boundary continuity of u2 give minK u2 > 0, and restricting
+the first integral in (55) to K gives (57).
+Estimate (57) is a local Lipschitz bound for ordered coefficients, obtained without Fr´echet differentia-
+bility and without any quantitative stability estimate for the linearized inverse problem. The restriction
+K ⋐γ is natural, because the results used here do not provide a uniform positive lower bound for u2 up
+to the interface ζ.
+Finally, the same comparison controls the remainder in the first-order expansion of the eigenvalue
+map and yields its Fr´echet derivative, again without any linearized-invertibility hypothesis. Since the
+estimate involves only the sup-norm of the perturbation, it is stated on L∞(γ).
+17
+
+---
+### 【第 18 页】
+
+Proposition 4.6. Let 1 < p < ∞, let h0 ∈Had, and set u0 := u(h0). Put
+A :=
+�
+h ∈L∞(γ) : h ≥0
+�
+,
+ωλ(s) := sup
+�
+∥u(h)p −up
+0∥L1(γ) : h ∈A, ∥h −h0∥L∞(γ) ≤s
+�
+.
+Then ωλ is finite and nondecreasing on bounded intervals, ωλ(s) →0 as s ↓0, and for every h ∈A, with
+t := ∥h −h0∥L∞(γ),
+����λ1(h) −λ1(h0) −
+�
+γ
+(h −h0)up
+0 dσ
+����≤t ωλ(t).
+(58)
+Consequently λ1 is Fr´echet differentiable at h0 as a map from L∞(γ) to R, with
+λ′
+1(h0)[ϑ] =
+�
+γ
+ϑ up
+0 dσ.
+(59)
+The same statements hold with L∞(γ) replaced by C1(γ), since ∥ϑ∥L∞(γ) ≤∥ϑ∥C1(γ) and ωλ is nonde-
+creasing.
+Proof. Proposition 4.2 gives
+�
+γ
+(h −h0)u(h)p dσ ≤λ1(h) −λ1(h0) ≤
+�
+γ
+(h −h0)up
+0 dσ,
+whence
+����λ1(h) −λ1(h0) −
+�
+γ
+(h −h0)up
+0 dσ
+����≤∥h −h0∥L∞(γ) ∥u(h)p −up
+0∥L1(γ),
+which is (58).
+For the modulus, the elementary inequality |ap −bp| ≤p|a −b|(ap−1 + bp−1) for a, b ≥0 and H¨older’s
+inequality give
+∥u(h)p −up
+0∥L1(γ) ≤p ∥u(h) −u0∥Lp(γ)
+�
+∥u(h)∥p−1
+Lp(γ) + ∥u0∥p−1
+Lp(γ)
+�
+.
+(60)
+As in the proof of Theorem 4.3, the traces u(h) are bounded in Lp(γ) uniformly for h in a bounded
+subset of A, so ωλ is finite; monotonicity is clear from the definition. Suppose ωλ(s) ̸→0. Then there
+are η > 0, sk ↓0 and hk ∈A with ∥hk −h0∥L∞(γ) ≤sk and ∥u(hk)p −up
+0∥L1(γ) ≥η. Since hk →h0 in
+L∞(γ), Theorem 4.3 gives u(hk) →u0 in Lp(γ), and (60) forces ∥u(hk)p −up
+0∥L1(γ) →0, a contradiction.
+Hence ωλ(s) →0.
+Finally, ϑ �→
+�
+γ ϑ up
+0 dσ is a bounded linear functional on L∞(γ), because up
+0 ∈L1(γ). Since h0 ∈Had,
+one has infγ h0 > 0, so the ball {h ∈L∞(γ) : ∥h −h0∥L∞(γ) < infγ h0} is contained in A, and Fr´echet
+differentiability at h0 is understood on this L∞-neighborhood, on which λ1 is defined. With this reading,
+(58) is exactly the statement that λ1 is Fr´echet differentiable at h0 with derivative (59).
+The next lemma specializes the comparison to a ray of coefficients. It is used in Section 4.7, where the
+structural hypotheses are examined on explicit geometries and the recovery of a single scalar parameter
+is at issue.
+Lemma 4.7. Let 1 < p < ∞, let ¯h ∈C1(γ), and let 0 ̸≡ψ ∈C1(γ) satisfy ψ ≥0. Assume
+hθ := ¯h + θψ ∈Had
+(θ ∈I),
+where I ⊂R is an open interval, and set λ(θ) := λ1(hθ) and uθ := u(hθ). Then, for θ1 < θ2,
+(θ2 −θ1)
+�
+γ
+ψup
+θ2 dσ ≤λ(θ2) −λ(θ1) ≤(θ2 −θ1)
+�
+γ
+ψup
+θ1 dσ.
+(61)
+In particular λ is strictly increasing and
+λ′(θ) =
+�
+γ
+ψup
+θ dσ > 0,
+(62)
+so λ(θ) determines θ uniquely. Moreover, for every compact interval J ⋐I there is CJ > 0 with
+|θ2 −θ1| ≤CJ|λ(θ2) −λ(θ1)|,
+θ1, θ2 ∈J.
+(63)
+Proof. For θ1 < θ2 one has hθ2 −hθ1 = (θ2 −θ1)ψ ≥0, so Proposition 4.2 gives (61). Since ψ ≥0 is
+nontrivial and uθ > 0 on γ by Proposition 4.1, we have
+�
+γ ψup
+θ dσ > 0, so λ is strictly increasing; and
+by Proposition 4.6, λ′(θ) = λ′
+1(hθ)[ψ] =
+�
+γ ψup
+θ dσ, which is (62). Finally m(θ) :=
+�
+γ ψup
+θ dσ is positive
+and, by Theorem 4.3, continuous in θ; hence mJ := minθ∈J m(θ) > 0 and (61) gives |λ(θ2) −λ(θ1)| ≥
+mJ|θ2 −θ1|, that is (63) with CJ = m−1
+J .
+18
+
+---
+### 【第 19 页】
+
+
+###### 4.3
+
+
+###### The linearized coefficients and the critical sets
+
+From here to the end of Section 4 we assume p ≥2. Let h1, h2 ∈Had and uj := u(hj). With F and G
+as in Section 2,
+F : Rn →Rn,
+F(z) = |z|p−2z,
+G : R →R,
+G(s) := |s|p−2s.
+Define the path coefficients
+A(x) :=
+�1
+0
+DF
+�
+(1 −t)∇u2(x) + t∇u1(x)
+�
+dt,
+(64)
+B(x) :=
+�1
+0
+G′�
+(1 −t)u2(x) + tu1(x)
+�
+dt = (p −1)
+�1
+0
+�
+(1 −t)u2(x) + tu1(x)
+�p−2 dt.
+(65)
+The second expression uses G′(s) = (p−1)|s|p−2 and the positivity of u1, u2 in Ω, by which (1−t)u2+tu1 >
+0 for every t ∈[0, 1], so the absolute value may be omitted. Since DF(z) is symmetric, so is A(x), and
+by Lemma 2.6,
+0 ≤B(x) ≤(p −1)
+�
+u1(x) + u2(x)
+�p−2,
+B ∈L∞(Ω).
+(66)
+Because F and G are C1 for p ≥2, the fundamental theorem of calculus gives, with w := u1 −u2,
+F(∇u1) −F(∇u2) = A ∇w,
+G(u1) −G(u2) = B w.
+(67)
+If moreover λ1(h1) = λ1(h2) =: λ, subtracting the two weak eigenvalue equations gives the exact differ-
+ence equation
+−div
+�
+A(x)∇w
+�
+= λ B(x) w
+in Ω,
+(68)
+in the distributional sense in Ω. Since p ≥2 and Ωis bounded, W 1,p(Ω) �→H1(Ω), so w ∈H1(Ω).
+By Lemma 2.2, with
+M(x) := max
+�
+|∇u1(x)|, |∇u2(x)|
+�
+,
+(69)
+one has A ≡I when p = 2, while for p > 2 the matrix A is comparable to M p−2I and hence degenerates
+exactly where both gradients vanish. Accordingly we set
+Σj := {x ∈Ω: ∇uj(x) = 0},
+Σ∪:= Σ1 ∪Σ2,
+Σ∩:= Σ1 ∩Σ2.
+(70)
+The next lemma records that the critical sets are closed and cannot contain a ball, so that their
+complements are dense.
+Lemma 4.8. Each Σj is relatively closed in Ωwith empty interior. The same holds for Σ∪and Σ∩,
+whose complements in Ωare therefore open and dense.
+Proof. Closedness follows from continuity of ∇uj in Ω. If ∇uj vanished on a ball B ⊂Ω, then uj ≡c
+on B and the equation would give 0 = λ1(hj)cp−1 in D′(B), hence c = 0, contradicting uj > 0. For
+the union, if a ball B ⊂Ωsatisfied B ⊂Σ1 ∪Σ2, then B \ Σ1 would be an open subset of Σ2; it is
+nonempty because Σ1 has empty interior, contradicting the fact that Σ2 has empty interior as well.
+Finally Σ∩⊂Σ1.
+The next lemma supplies the two properties of A used in the propagation argument: away from the
+common critical set it is uniformly elliptic, and away from the union of the critical sets it is in addition
+Lipschitz.
+Lemma 4.9. Let p ≥2.
+(i) If K ⊂Ω\ Σ∩is compact, then A is uniformly elliptic on K, with constants depending only on p,
+minK M and maxK M.
+(ii) If K ⊂Ω\ Σ∪is compact, then u1, u2 are smooth in a neighborhood of K and A|K is Lipschitz.
+Proof. Part (i) follows from the continuity and positivity of M on K together with Lemma 2.2.
+For (ii), continuity of the gradients gives a neighborhood of K on which |∇uj| ≥m/2, where
+m := min
+K min
+j
+|∇uj| > 0,
+19
+
+---
+### 【第 20 页】
+
+hence Lemma 2.10(i) gives smoothness of u1, u2 near K. Set
+LK := max
+j
+LipK(∇uj) < ∞,
+MK := max
+K M,
+vx(t) := (1 −t)∇u2(x) + t∇u1(x),
+so that |vx(t) −vy(t)| ≤2LK|x −y| for x, y ∈K and t ∈[0, 1].
+For p = 2 we have A ≡I. Let p > 2. By (17),
+∥A(x) −A(y)∥≤2CpLK|x −y|
+�1
+0
+max{|vx(t)|, |vy(t)|}p−3 dt.
+If p ≥3, the integral is bounded by M p−3
+K
+. If 2 < p < 3, then p −3 < 0, so
+max{|vx(t)|, |vy(t)|}p−3 ≤|vx(t)|p−3,
+and it suffices to bound
+�1
+0 |vx(t)|p−3 dt uniformly on K. For each x ∈K either mint∈[0,1] |vx(t)| ≥m/2,
+in which case the integral is at most (m/2)p−3, or |∇u1(x)−∇u2(x)| ≥m/2, since otherwise the segment
+would remain within distance m/2 of ∇u2(x) and hence stay outside the ball of radius m/2. In the latter
+case, set
+κx := |∇u1(x) −∇u2(x)| ∈[m/2, 2MK].
+Then |vx(t)|2 = d2
+x + κ2
+x|t −tx|2 for suitable dx ≥0 and tx ∈R, so the substitution s = κx(t −tx) gives
+|vx(t)| ≥|s| and dt = ds/κx ≤(2/m) ds, whence
+�1
+0
+|vx(t)|p−3 dt ≤2
+m
+�2MK
+−2MK
+|s|p−3 ds = 2
+m · 2 (2MK)p−2
+p −2
+,
+which is finite because p −3 > −1. In either case
+sup
+x∈K
+�1
+0
+|vx(t)|p−3 dt ≤Cp,m,MK < ∞,
+and the required Lipschitz bound follows.
+
+###### 4.4
+
+
+###### Uniqueness from the eigenvalue and the boundary flux
+
+The following assumption is the hypothesis under which the general uniqueness theorem is proved; it
+concerns the topology of the complement of the critical sets and is stated separately for the plane and
+for higher dimensions.
+Assumption 1. Let p ≥2, let h1, h2 ∈Had, and let u1, u2 be the corresponding normalized positive
+principal eigenfunctions. With the notation (70), assume that the open set
+D :=
+
+
+
+
+
+
+
+Ω,
+p = 2,
+Ω\ Σ∩,
+p > 2, n = 2,
+Ω\ Σ∪,
+p > 2, n ≥3,
+is connected.
+For p = 2 one has D = Ω, so the assumption is vacuous: the critical sets may well be nonempty, but
+they are irrelevant because A ≡I. For p > 2 the assumption holds whenever the relevant critical set is
+Hn−1-negligible, by the following lemma.
+Lemma 4.10. Let Ω⊂Rn be open and connected and let Σ ⊂Ωbe relatively closed with Hn−1(Σ) = 0.
+Then Ω\ Σ is connected.
+Proof. First let B ⋐Ωbe a ball and let x, y ∈B \Σ. For a ∈B \Σ define Ea := {z ∈B : [a, z] ∩Σ ̸= ∅}.
+The radial projection πa(ξ) := (ξ−a)/|ξ−a| is Lipschitz on each set {|ξ−a| ≥1/k}, so Hn−1(πa(Σ)) = 0,
+and polar coordinates give Ln(Ea) = 0. Choosing z ∈B \ (Ex ∪Ey) gives [x, z] ∪[z, y] ⊂B \ Σ, so B \ Σ
+is path connected.
+For arbitrary x, y ∈Ω\ Σ, join them by a continuous path in Ωand cover its compact image by a
+finite chain of balls Bi ⋐Ωwith consecutive overlaps. Since Hn−1(Σ) = 0, the set Σ has empty interior,
+so each overlap contains a point outside Σ. Applying the first part in each ball and concatenating the
+resulting paths shows that Ω\ Σ is path connected, hence connected.
+20
+
+---
+### 【第 21 页】
+
+We can now state the main uniqueness result: the principal eigenvalue together with the nonlinear
+flux on the measurement patch determines the Robin coefficient.
+Theorem 4.11. Let p ≥2, and let Ω, ΓD, and γ satisfy the standing assumptions of Section 1.1. If
+p > 2 and n ≥3, assume additionally that ∂Ωis of class C2,α0 in a neighborhood of Γm for some
+α0 ∈(0, 1). Let h1, h2 ∈Had have normalized positive principal eigenpairs (λ1(hj), uj), and suppose
+Assumption 1 holds for (u1, u2). If
+λ1(h1) = λ1(h2)
+and
+qh1 = qh2
+on Γm
+(71)
+in the conormal-trace sense, then h1 = h2 on γ.
+Proof. Set λ := λ1(h1) = λ1(h2) and w := u1−u2, so that (68) holds and w ∈H1(Ω). Both eigenfunctions
+vanish on ΓD, so w = 0 on Γm, and by (67) the flux equality in (71) gives
+(A∇w) · ν =
+�
+F(∇u1) −F(∇u2)
+�
+· ν = qh1 −qh2 = 0
+on Γm,
+(72)
+and by Lemma 2.8 and Remark 2.9 this pointwise identity coincides with the weak conormal trace.
+By Proposition 4.1, applied to u1 and to u2, after intersecting the two collars and decreasing the
+constant we may choose Um and cm > 0 with
+|∇uj| ≥cm
+on Um ∩Ω,
+j = 1, 2.
+Choose a connected open set U ⊂Rn with
+∅̸= U ∩∂Ω⊂Γm,
+U ∩Ω⊂Um ∩Ω.
+Lemma 2.2 gives uniform ellipticity of A on U ∩Ω. If n ≥3, then A is in addition Lipschitz on U ∩Ω:
+this is immediate for p = 2, while for p > 2 it follows from the local C2,α regularity up to Γm furnished
+by Lemma 2.10(ii), which is where the C2,α0 hypothesis on ∂Ωis used, combined with the averaging
+estimate in the proof of Lemma 4.9(ii), which applies unchanged on this closed boundary collar.
+Moreover A∇w = F(∇u1) −F(∇u2) belongs to L2(U ∩Ω; Rn), its divergence belongs to L2(U ∩Ω)
+by (68), and its weak conormal trace vanishes on U ∩∂Ωby (72). Hence the local Gauss–Green formula
+gives
+�
+U∩Ω
+A∇w · ∇φ dx = λ
+�
+U∩Ω
+B w φ dx,
+φ ∈C∞
+c (U),
+which is (27). Theorem 2.11, in dimension two in the form recorded in Remark 2.14, therefore gives
+w ≡0
+in U ∩Ω.
+The set U ∩Ωis nonempty, open, and contained in D, since |∇uj| ≥cm > 0 there.
+By Assumption 1 the set D is connected; by Lemma 4.9, A is locally uniformly elliptic in D, and
+locally Lipschitz there when p = 2 or n ≥3; and B ∈L∞(Ω) by (66). Applying Theorem 2.12, in
+dimension two in the form recorded in Remark 2.14, to (68) gives
+w ≡0
+in D.
+By Lemma 4.8 the set D is dense in Ω, and w is continuous, so u1 = u2 =: u in Ω. Let x0 ∈γ.
+Since x0 /∈ζ, Lemma 2.8 gives C1 regularity up to the boundary near x0, so ∇u1(x0) = ∇u2(x0),
+and by Remark 2.9 both Robin conditions hold pointwise at x0.
+Subtracting them gives (h1(x0) −
+h2(x0))u(x0)p−1 = 0, and u(x0) > 0 by Proposition 4.1, so h1(x0) = h2(x0). As x0 ∈γ was arbitrary,
+h1 = h2 on γ.
+For p = 2, Assumption 1 is vacuous and Theorem 4.11 recovers the linear inverse Robin spectral
+setting and the uniqueness mechanism studied by Santacesaria and Yachimura [36].
+The proof consumed exactly two properties of A: uniform ellipticity on the boundary collar and in
+D, and enough regularity for unique continuation. The next remark explains why the first cannot be
+bought artificially when the second is unavailable.
+21
+
+---
+### 【第 22 页】
+
+Remark 4.12. A cutoff regularization does not remove the obstruction. Let U be the boundary collar
+of the preceding proof, choose U 0 ⋐U 1 ⋐U with Γm ∩Ω⊂U 0, and let χ ∈C∞(Ω) satisfy χ = 0 on U 0
+and χ = 1 outside U 1. Then
+Aτ := A + τχI
+agrees with A near Γm and is uniformly elliptic on Ω: on U 1 ∩Ωthis follows from Proposition 4.1 and
+Lemma 2.2, while outside U 1 one has Aτ ≥τI. However,
+−div(Aτ∇w) = λB w −τ div(χ∇w),
+so w no longer satisfies a homogeneous equation of the required form. Moreover, adding the smooth term
+τχI does not improve the regularity of A needed for interior propagation in dimensions n ≥3, which by
+Remark 2.13 cannot simply be dispensed with.
+
+###### 4.5
+
+
+###### Differentiability of the principal branch
+
+Fix h0 ∈Had with normalized positive principal eigenpair (λ0, u0), and define the normalization tangent
+hyperplane
+V⊥:=
+�
+v ∈V :
+�
+Ω
+up−1
+0
+v dx = 0
+�
+.
+(73)
+Perturbation directions are denoted ϑ ∈C1(γ). The eigenvalue component of the expansion is settled
+by Proposition 4.6; only the eigenfunction requires further input.
+Define the residual map
+⟨R(h, u, λ), ϕ⟩:=
+�
+Ω
+|∇u|p−2∇u · ∇ϕ dx −λ
+�
+Ω
+|u|p−2u ϕ dx +
+�
+γ
+h|u|p−2u ϕ dσ,
+ϕ ∈V,
+(74)
+and the normalization constraint
+C(u) := ∥u∥p
+Lp(Ω) −1;
+(75)
+the augmented map
+H(h, u, λ) :=
+�
+R(h, u, λ), C(u)
+�
+: Had × V × R →V ∗× R
+(76)
+vanishes precisely at normalized eigenpairs of (4). That H is continuously differentiable is not a formal
+consequence of the pointwise smoothness of F, since differentiability of a superposition operator between
+function spaces is a statement about those spaces.
+Lemma 4.13. Let p ≥2, let p′ := p/(p −1), and let Ωbe bounded. The superposition operator induced
+by F,
+N : Lp(Ω; Rn) →Lp′(Ω; Rn),
+N(z) := F ◦z = |z|p−2z,
+is of class C1, and its derivative is multiplication by the matrix field DF(z), that is DN(z)w = DF(z)w
+pointwise a.e. The same holds for the scalar map on Lp(Ω) and on Lp(γ). Consequently, R, C and H
+are continuously Fr´echet differentiable.
+Proof. For p = 2 the map is the identity, so let p > 2. By (15), ∥DF(z)∥≤(p −1)|z|p−2, and H¨older
+with the exponents p/(p −2) and p, whose reciprocals sum to 1/p′, gives
+∥DF(z)w∥Lp′ ≤(p −1)∥z∥p−2
+Lp ∥w∥Lp.
+(77)
+Write the remainder in integral form,
+F(z + w) −F(z) −DF(z)w =
+�1
+0
+�
+DF(z + sw) −DF(z)
+�
+w ds,
+and estimate by (18). For 2 < p ≤3 the integrand is bounded by Cp|w|p−1, and since (p −1)p′ = p
+its Lp′ norm is Cp∥w∥p−1
+Lp
+= o(∥w∥Lp) because p −1 > 1.
+For p ≥3 the integrand is bounded by
+Cp(|z| + |w|)p−3|w|2, and H¨older with the exponents p/(p −3) and p/2 gives
+Cp(∥z∥Lp + ∥w∥Lp)p−3∥w∥2
+Lp = o(∥w∥Lp).
+22
+
+---
+### 【第 23 页】
+
+The same increment estimates and H¨older’s inequality give
+∥DN(z1) −DN(z2)∥L(Lp,Lp′) ≤
+�
+Cp∥z1 −z2∥p−2
+Lp ,
+2 < p < 3,
+Cp
+�
+∥z1∥Lp + ∥z2∥Lp�p−3∥z1 −z2∥Lp,
+p ≥3,
+so z �→DN(z) is continuous. The scalar and boundary statements follow identically, using the bounded
+trace V →Lp(γ) and the multiplication L∞(γ) × Lp′(γ) →Lp′(γ). Consequently R is C1 by bounded
+duality pairing, and C is C1 with DC(u)[v] = p
+�
+Ω|u|p−2u v dx.
+Differentiating at the normalized principal eigenpair (h, u, λ) = (h, u(h), λ1(h)) gives
+⟨DhR[ϑ], ϕ⟩=
+�
+γ
+ϑ|u|p−2u ϕ dσ,
+(78)
+⟨DuR[v], ϕ⟩=
+�
+Ω
+A∇v · ∇ϕ dx −λ(p −1)
+�
+Ω
+|u|p−2vϕ dx + (p −1)
+�
+γ
+h|u|p−2vϕ dσ =: ⟨Mh[v], ϕ⟩, (79)
+⟨DλR[µ], ϕ⟩= −µ
+�
+Ω
+|u|p−2u ϕ dx,
+DC(u)[v] = p
+�
+Ω
+|u|p−2u v dx,
+(80)
+where A(x) := DF(∇u(x)); we write M0 := Mh0 and A0 := DF(∇u0). Since A(x) is symmetric, the
+bilinear form in (79) is symmetric, that is ⟨Mh[v], ϕ⟩= ⟨Mh[ϕ], v⟩for v, ϕ ∈V ; this is used twice below.
+We also identify u p−1
+0
+with the functional ϕ �→
+�
+Ωu p−1
+0
+ϕ dx in V ∗.
+The next lemma records that the homogeneity of the equation puts the eigenfunction itself in the
+kernel of the linearized operator, which is why the normalization has to be adjoined.
+Lemma 4.14. For every h ∈Had one has Mh[u(h)] = 0 in V ∗.
+Proof. Since DF(z)z = (p −1)F(z), we get A∇u = (p −1)|∇u|p−2∇u; substituting v = u in (79) gives
+(p −1) times (23), hence zero.
+Lemma 4.14 shows that the eigenvalue equation alone can never have an invertible linearization. One
+is thus led to
+L0(v, µ) :=
+�
+M0[v] −µu p−1
+0
+, p
+�
+Ω
+u p−1
+0
+v dx
+�
+: V × R →V ∗× R,
+(81)
+which is D(u,λ)H(h0, u0, λ0).
+The following remark shows that, for exponents above two, no operator between the natural pair of
+spaces can be an isomorphism, so that the standard implicit function route is unavailable for reasons of
+Banach space geometry.
+Remark 4.15. Let p > 2 and V = W 1,p
+ΓD (Ω). Then V ×R and V ∗×R are not isomorphic, so (81) cannot
+be an isomorphism.
+Indeed, the map v �→(v, ∇v) identifies V with a closed subspace of Lp(Ω; Rn+1).
+Since Lp has
+Rademacher type 2 for p ≥2 and type passes to subspaces, V , and hence V × R, has type 2. By the
+duality principle for type and cotype, the dual of a space of type 2 has cotype 2, so V ∗× R has cotype
+2; see [4, Ch. 6] and [16, Ch. 11]. If these spaces were isomorphic, one space would have both type 2 and
+cotype 2 and would therefore be isomorphic to a Hilbert space by Kwapie´n’s theorem [26].
+On the other hand, choosing normalized functions φk ∈C∞
+c (Ω) with pairwise disjoint supports shows
+that their closed span in V is isomorphic to ℓp. Since ℓp is not Hilbertian for p ̸= 2, neither V × R nor
+any space isomorphic to it can be Hilbertian, a contradiction.
+We therefore do not assume invertibility of L0, and instead assume directly the property that the
+stability argument uses.
+Assumption 2. Let p ≥2 and h0 ∈Had.
+There exist a neighborhood U ⊂Had of h0 in C1(γ),
+a bounded linear map u′(h0) : C1(γ) →V , and a nondecreasing function ωu : [0, ∞) →[0, ∞) with
+ωu(s) →0 as s ↓0, such that for every h ∈U,
+��u(h) −u0 −u′(h0)[h −h0]
+��
+W 1,p(Ω) ≤ωu
+�
+∥h −h0∥C1(γ)
+�
+∥h −h0∥C1(γ).
+(82)
+Equivalently, the map h �→u(h) is Fr´echet differentiable at h0 from C1(γ) into W 1,p(Ω), with derivative
+u′(h0); the modulus ωu is then recovered as in (28).
+23
+
+---
+### 【第 24 页】
+
+Combining (82) with Proposition 4.6, and using ∥h −h0∥L∞(γ) ≤∥h −h0∥C1(γ) together with the
+monotonicity of ωλ, gives for every h ∈U
+��u(h)−u0−u′(h0)[h−h0]
+��
+W 1,p(Ω)+
+��λ1(h)−λ0−λ′
+1(h0)[h−h0]
+��≤ω
+�
+∥h−h0∥C1(γ)
+�
+∥h−h0∥C1(γ), (83)
+with ω := ωu + ωλ.
+In the linear case the assumption is a theorem.
+Proposition 4.16. For p = 2, Assumption 2 holds at every h0 ∈Had.
+Proof. For p = 2 we have V = H1
+ΓD(Ω) and A0 ≡I. The form
+a0(v, ϕ) :=
+�
+Ω
+∇v · ∇ϕ dx +
+�
+γ
+h0vϕ dσ
+is bounded and coercive on V , while V �→L2(Ω) is compact. Hence M0 = a0−λ0( · , · )L2(Ω) is Fredholm
+of index zero, and by (24), ker M0 = span{u0}, so that symmetry gives ran M0 = {f ∈V ∗: ⟨f, u0⟩= 0}.
+For injectivity of L0, let L0(v, µ) = (0, 0). Pairing M0[v] = µu0 with u0, and using the symmetry of
+M0 together with Lemma 4.14, gives µ∥u0∥2
+L2 = 0, so µ = 0; then v = su0, and the second component
+forces s = 0. For surjectivity, given (f, c) ∈V ∗×R, set µ := −⟨f, u0⟩/∥u0∥2
+L2, so that f +µu0 ∈ran M0;
+choose v0 with M0[v0] = f + µu0 and put v := v0 + su0 with s :=
+�
+c/2 −
+�
+Ωu0v0
+�
+/∥u0∥2
+L2. Then
+L0(v, µ) = (f, c).
+Thus L0 is an isomorphism, and since H is C1 by Lemma 4.13, Theorem 2.15 produces a C1 map
+h �→(�u(h), �λ(h)) with values in a neighborhood W of (u0, λ0), unique as a solution of H = 0 in W, and
+supplies ωu through (28). The pair (u(h), λ1(h)) solves H = 0 and converges to (u0, λ0) in V × R by
+Theorem 4.3, hence lies in W for h near h0, and uniqueness there identifies the two branches.
+The following theorem identifies the linearized problem satisfied by the derivative of the principal
+branch.
+Theorem 4.17. Let p ≥2 and let h0 ∈Had satisfy Assumption 2. For ϑ ∈C1(γ) put u′ := u′(h0)[ϑ]
+and λ′ := λ′
+1(h0)[ϑ]. Then u′ ∈V⊥and, for every ϕ ∈V ,
+�
+Ω
+A0∇u′ · ∇ϕ dx −λ0(p −1)
+�
+Ω
+u p−2
+0
+u′ϕ dx + (p −1)
+�
+γ
+h0u p−2
+0
+u′ϕ dσ = λ′
+�
+Ω
+u p−1
+0
+ϕ dx −
+�
+γ
+ϑu p−1
+0
+ϕ dσ.
+(84)
+Formally, (84) together with
+�
+Ωu p−1
+0
+u′ dx = 0 is the linearized problem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+−div(A0∇u′) −λ0(p −1)u p−2
+0
+u′ = λ′u p−1
+0
+in Ω,
+u′ = 0
+on ΓD,
+A0∇u′ · ν + (p −1)h0u p−2
+0
+u′ = −ϑu p−1
+0
+on γ,
+�
+Ω
+u p−1
+0
+u′ dx = 0.
+(85)
+Proof. By Lemma 4.13 the map H is C1, and by Assumption 2 together with Proposition 4.6 the branch
+is Fr´echet differentiable at h0. Differentiating H(h, u(h), λ1(h)) = (0, 0) at h0 in the direction ϑ gives
+DhR[ϑ]+M0[u′]−λ′u p−1
+0
+= 0 in V ∗together with p
+�
+Ωu p−1
+0
+u′ dx = 0. The second identity says u′ ∈V⊥,
+and expanding the first with (78) and (79) gives (84).
+As a consistency check, (84) reproduces the unconditional formula (59). Taking ϕ = u0 and using the
+symmetry of the form in (79) with A0∇u0 = (p −1)|∇u0|p−2∇u0, the three terms on the left are (p −1)
+times (23) for u0 tested with u′, and hence vanish; since
+�
+Ωu p
+0 dx = 1, what remains is λ′ =
+�
+γ ϑu p
+0 dσ,
+in agreement with Proposition 4.6.
+The system (85) is read through (84); in particular A0∇u′ · ν on γ is the associated weak conor-
+mal trace, and no classical pointwise interpretation is asserted for u′, whose equation has a coefficient
+degenerating at the critical points of u0 when p > 2.
+24
+
+---
+### 【第 25 页】
+
+
+###### 4.6
+
+
+###### Conditional stability
+
+Let p′ :=
+p
+p−1 and set
+Wdiv,p′(Ω) :=
+�
+g ∈Lp′(Ω; Rn) : div g ∈Lp′(Ω)
+�
+,
+(86)
+with graph norm
+∥g∥Wdiv,p′ := ∥g∥Lp′(Ω) + ∥div g∥Lp′(Ω).
+For g ∈Wdiv,p′(Ω), the normal trace is defined by
+⟨g · ν, Tϕ⟩:=
+�
+Ω
+g · ∇ϕ dx +
+�
+Ω
+ϕ div g dx,
+ϕ ∈W 1,p(Ω).
+(87)
+Since the trace operator maps W 1,p(Ω) onto
+W 1−1/p,p(∂Ω) = W 1/p′,p(∂Ω),
+this defines a bounded normal-trace map
+Wdiv,p′(Ω) −→W −1/p′,p′(∂Ω).
+Notice that 1/p′ = 1 −1/p, which equals 1/p only when p = 2.
+For the measurement patch, define
+�
+W 1/p′,p(Γm) := C∞
+c (Γm)
+W 1/p′,p(∂Ω)
+and
+W −1/p′,p′(Γm) :=
+��
+W 1/p′,p(Γm)
+�∗.
+Restriction to Γm is understood in this dual sense. Set
+Y := R × W −1/p′,p′(Γm),
+∥(a, q)∥Y := |a| + ∥q∥W −1/p′,p′(Γm).
+Definition 4.18. The measurement map is
+F : Had −→Y,
+F(h) :=
+�
+λ1(h), qh|Γm
+�
+,
+(88)
+where qh is the weak normal trace of F(∇u(h)).
+The next corollary transfers the differentiability of the principal branch to the measurement map,
+which is the form used in the stability estimate.
+Corollary 4.19. Let p ≥2 and let h0 ∈Had satisfy Assumption 2. Set
+g(h) := F(∇u(h)).
+Then:
+(i) For every h ∈Had,
+g(h) ∈Wdiv,p′(Ω),
+div g(h) = −λ1(h)u(h)p−1,
+so F(h) is well defined.
+(ii) The map h �→g(h) is Fr´echet differentiable at h0 into Wdiv,p′(Ω). For
+u′
+ϑ := u′(h0)[ϑ],
+one has
+g′(h0)[ϑ] = A0∇u′
+ϑ
+and
+div g′(h0)[ϑ] = −λ′
+1(h0)[ϑ]up−1
+0
+−λ0(p −1)up−2
+0
+u′
+ϑ
+in Lp′(Ω).
+25
+
+---
+### 【第 26 页】
+
+(iii) The measurement map is Fr´echet differentiable at h0, with
+DF(h0)[ϑ] =
+��
+γ
+ϑup
+0 dσ, (A0∇u′
+ϑ) · ν|Γm
+�
+.
+(89)
+Moreover, there is a nondecreasing modulus �ω with �ω(s) →0 as s ↓0 such that, for every h ∈U,
+��F(h) −F(h0) −DF(h0)[h −h0]
+��
+Y ≤�ω(t)t,
+t := ∥h −h0∥C1(γ).
+(90)
+Proof. For (i),
+|g(h)|p′ = |∇u(h)|p ∈L1(Ω),
+and the weak eigenvalue equation gives
+div g(h) = −λ1(h)u(h)p−1.
+Since (p −1)p′ = p, the right-hand side belongs to Lp′(Ω).
+For (ii), Assumption 2 gives differentiability of
+h �−→∇u(h)
+into Lp(Ω; Rn).
+The vector-valued part of Lemma 4.13 and the chain rule therefore give
+g′(h0)[ϑ] = DF(∇u0)∇u′
+ϑ = A0∇u′
+ϑ
+in Lp′(Ω; Rn).
+Likewise, Proposition 4.6, the scalar part of Lemma 4.13, and the product rule show that
+h �−→−λ1(h)u(h)p−1
+is Fr´echet differentiable into Lp′(Ω) with the stated derivative. Hence h �→g(h) is differentiable in the
+graph norm of Wdiv,p′(Ω).
+For (iii), the two components of DF(h0) are obtained by composing (ii) with the bounded normal-
+trace and restriction maps, and by (59) for the eigenvalue component. It remains to produce the modulus
+in (90). Write ϑ := h −h0, zh := ∇u(h), z0 := ∇u0. By (82),
+∥u(h) −u0∥W 1,p(Ω) ≤
+�
+∥u′(h0)∥+ ωu(t)
+�
+t =: C1t,
+with C1 independent of h ∈U after shrinking U to a bounded neighborhood. For the flux component,
+g(h) −g(h0) −A0∇u′
+ϑ =
+�
+N(zh) −N(z0) −DF(z0)(zh −z0)
+�
++ DF(z0)
+�
+zh −z0 −∇u′
+ϑ
+�
+.
+By Lemma 4.13 the first bracket is bounded in Lp′(Ω) by ωN (∥zh −z0∥Lp)∥zh −z0∥Lp ≤ωN (C1t)C1t
+for a nondecreasing modulus ωN vanishing at the origin, and the second term is bounded by (p −
+1)∥z0∥p−2
+Lp ωu(t)t by (77) and (82). For the divergence component,
+div
+�
+g(h) −g(h0) −A0∇u′
+ϑ
+�
+= −
+�
+λ1(h) −λ0 −λ′
+1(h0)[ϑ]
+�
+up−1
+0
+−
+�
+λ1(h) −λ0
+�
+(p −1)up−2
+0
+u′
+ϑ
+−λ1(h)
+�
+u(h)p−1 −up−1
+0
+−(p −1)up−2
+0
+u′
+ϑ
+�
+.
+The first term is at most ωλ(t)t ∥up−1
+0
+∥Lp′ by Proposition 4.6. For the second, H¨older with the exponents
+p/(p−2) and p gives ∥up−2
+0
+u′
+ϑ∥Lp′ ≤∥u0∥p−2
+Lp ∥u′
+ϑ∥Lp ≤Ct, while |λ1(h)−λ0| ≤Ct by Proposition 4.2, so
+this term is O(t2). The bracket in the third term splits as the flux component did, into the superposition
+remainder of s �→sp−1 at u0 and (p −1)up−2
+0
+(u(h) −u0 −u′
+ϑ), bounded respectively by ωN (C1t)C1t and
+Cωu(t)t; and λ1(h) is bounded on U. Adding these bounds, dividing by t and taking the supremum over
+0 < t ≤s defines a nondecreasing �ω with �ω(s) →0, for which (90) holds.
+Before stating the stability estimate we record what can be proved unconditionally on a finite-
+dimensional set of directions, where injectivity of the linearized measurement map already yields an
+estimate of the required interpolation form.
+26
+
+---
+### 【第 27 页】
+
+Lemma 4.20. Suppose that F : Had →Y is Fr´echet differentiable at h0, let {0} ̸= Xm ⊂C1(γ) be finite
+dimensional, and assume that DF(h0)|Xm : Xm →Y is injective. Then there exists Cm > 0 such that
+∥ϑ∥L2(γ) ≤Cm∥DF(h0)[ϑ]∥Y ,
+ϑ ∈Xm.
+(91)
+Moreover, for every α ∈(0, 1) there exists Cm,α > 0 such that
+∥ϑ∥L2(γ) ≤Cm,α∥DF(h0)[ϑ]∥α
+Y ∥ϑ∥1−α
+C1(γ),
+ϑ ∈Xm.
+(92)
+Proof. Elements of Xm are continuous on γ, so ∥ϑ∥L2(γ) = 0 forces ϑ = 0; thus ∥· ∥L2(γ) is a norm on
+Xm and, all norms on Xm being equivalent, the sphere
+Sm := {ϑ ∈Xm : ∥ϑ∥L2(γ) = 1}
+is compact. The map ϑ �→∥DF(h0)[ϑ]∥Y is continuous on Xm and, by injectivity, positive on Sm, so
+σm := min
+ϑ∈Sm ∥DF(h0)[ϑ]∥Y > 0,
+and homogeneity gives (91) with Cm = σ−1
+m .
+Let Cγ be the norm of the embedding C1(γ) �→L2(γ). For α ∈(0, 1),
+∥ϑ∥L2(γ) = ∥ϑ∥α
+L2(γ)∥ϑ∥1−α
+L2(γ) ≤Cα
+mC1−α
+γ
+∥DF(h0)[ϑ]∥α
+Y ∥ϑ∥1−α
+C1(γ),
+which is (92).
+Lemma 4.20 does not verify the hypothesis below: (92) holds only on Xm, and its constant is not
+controlled as dim Xm grows. The infinite-dimensional statement is a genuine additional input, which we
+record as a hypothesis.
+Assumption 3. Let h0 ∈Had satisfy Assumption 2. There exist C0 > 0 and α ∈(0, 1) such that
+∥ϑ∥L2(γ) ≤C0∥DF(h0)[ϑ]∥α
+Y ∥ϑ∥1−α
+C1(γ)
+(93)
+for every ϑ ∈C1(γ).
+Remark 4.21. Assumption 3 is weaker than the existence of a bounded left inverse for DF(h0): the
+interpolation structure of (93) reflects the severe ill-posedness, in that a small measurement residual
+controls only a weak norm of ϑ once a stronger norm is bounded a priori. For p = 2 the linearized
+operator is the Laplacian with a Robin condition, and quantitative unique continuation results are
+available for related inverse Robin problems; the known estimates are of logarithmic type [14] and are
+not stated for the spectral measurement map, so they do not yield (93). For p ̸= 2 the corresponding
+estimate would have to be established for div(A0∇· ), whose coefficient degenerates at the critical points
+of u0 by (15). In both cases (93) is therefore kept as an explicit hypothesis.
+The conditional stability estimate now follows from the remainder bound and the assumed linearized
+estimate.
+Theorem 4.22. Let p ≥2 and let h0 ∈Had satisfy Assumptions 2 and 3. Fix M > 0. Then there exists
+ρ0 > 0 such that, for every h ∈Had with
+t := ∥h −h0∥C1(γ) ≤min{M, ρ0},
+one has
+∥h −h0∥L2(γ) ≤C0M 1−α�
+δ + �ω(t)t
+�α,
+δ := ∥F(h) −F(h0)∥Y .
+(94)
+Proof. Choose ρ0 > 0 with BC1(h0, ρ0) ⊂U and set ϑ := h −h0. By (90) and the triangle inequality,
+∥DF(h0)[ϑ]∥Y ≤δ + �ω(t)t.
+Substituting into (93) and using t ≤M gives (94).
+The right-hand side of (94) involves the unknown t through the remainder �ω(t)t, so the estimate is
+conditional rather than a data-only H¨older bound. On a finite-dimensional set of directions the remainder
+can be absorbed, and the estimate becomes a genuine data-only Lipschitz bound.
+27
+
+---
+### 【第 28 页】
+
+Corollary 4.23. Let p ≥2, let h0 ∈Had satisfy Assumption 2, and let {0} ̸= Xm ⊂C1(γ) be finite
+dimensional with DF(h0)|Xm injective. Then there exist rm > 0 and Cm > 0, with Cm as in (91), such
+that
+∥h −h0∥L2(γ) ≤2Cm∥F(h) −F(h0)∥Y
+(95)
+whenever
+h ∈(h0 + Xm) ∩Had,
+∥h −h0∥C1(γ) ≤rm.
+Proof. Set ϑ := h −h0 ∈Xm and t := ∥ϑ∥C1(γ). By (91), ∥DF(h0)[ϑ]∥Y ≥C−1
+m ∥ϑ∥L2(γ), and since all
+norms on Xm are equivalent there is Km > 0 with t ≤Km∥ϑ∥L2(γ). Hence, by (90),
+∥F(h) −F(h0)∥Y ≥∥DF(h0)[ϑ]∥Y −�ω(t)t ≥
+�
+C−1
+m −Km�ω(t)
+�
+∥ϑ∥L2(γ).
+Choose rm > 0 so that BC1(h0, rm) ⊂U and Km�ω(rm) ≤
+1
+2Cm . For t ≤rm the monotonicity of �ω then
+gives ∥F(h) −F(h0)∥Y ≥
+1
+2Cm ∥ϑ∥L2(γ), which is (95).
+Thus, under Assumption 2, finite-dimensional injectivity yields local data-only Lipschitz stability,
+whereas Theorem 4.22 remains conditional in the full coefficient class.
+
+###### 4.7
+
+
+###### Status and verification of the structural hypotheses
+
+The conditional results of Sections 4.4–4.6 use three structural assumptions: Assumption 1 on the prop-
+agation set, Assumption 2 on differentiability of the principal eigenfunction branch, and Assumption 3
+on the linearized inverse map. In addition, when p > 2 and n ≥3, Theorem 4.11 uses the local C2,α0
+boundary regularity stated there. We summarize below what is automatic, what follows from explicit
+sufficient conditions, and what remains conditional.
+Boundary geometry.
+The standing hypothesis (2) is automatic when ΓD and γ are unions of con-
+nected components of ∂Ωwhose union is ∂Ω, because then ζ = ∅. This includes the spherical shell
+considered below, for which Lemma 2.8(iv) gives global C1,β regularity up to the boundary. The addi-
+tional C2,α0 regularity near Γm assumed in Theorem 4.11 when p > 2 and n ≥3 is used only to obtain
+Lipschitz regularity of A on the boundary collar in the proof of that theorem, and it is automatic for the
+smooth shell and ellipsoid geometries considered below.
+Assumption 1
+For p = 2 the assumption is vacuous because D = Ω. Let p > 2 and set
+Σ∗:=
+�
+Σ∩,
+n = 2,
+Σ∪,
+n ≥3.
+By Lemma 4.8 the set Σ∗is relatively closed in Ω, so Lemma 4.10 shows that the sufficient condition
+Hn−1(Σ∗) = 0
+implies that D = Ω\ Σ∗is connected. Moreover, by Lemma 2.2 the ellipticity of A on a compact K ⋐D
+is controlled from below by minK M and from above by maxK M, both positive and finite. Thus the
+ellipticity required for propagation is local and quantitative, and no global positive lower bound for the
+gradients is imposed.
+The next remark isolates the case h1 = h2. Uniqueness is vacuous there, but it is the sharpest test of
+how restrictive the propagation hypothesis is, and the shell model below shows that it already fails on
+the diagonal when p > 2.
+Remark 4.24. For a function u, write Σ(u) := {x ∈Ω: ∇u(x) = 0}. For p > 2, on the diagonal
+h1 = h2 = h one has Σ∩= Σ∪= Σ(u(h)), so Assumption 1 reduces to
+Ω\ Σ(u(h))
+is connected.
+(96)
+This permits critical points, provided their set does not separate Ω; by Lemma 4.10 a sufficient condition
+is Hn−1(Σ(u(h))) = 0. No diagonal critical-set condition is needed when p = 2.
+The following shell model shows that (96) can fail for p > 2 even in a smooth geometry.
+28
+
+---
+### 【第 29 页】
+
+Proposition 4.25. Let n ≥2, let 0 < rin < rout, and set
+Ω:= {x ∈Rn : rin < |x| < rout},
+ΓD := {|x| = rin},
+γ := {|x| = rout}.
+Let p ≥2 and let h > 0 be constant. Then the normalized positive principal eigenfunction is radial,
+u(x) = U(|x|), and there is a unique r∗∈(rin, rout) such that Σ(u) = {x ∈Ω: |x| = r∗}.
+Proof. The data are invariant under rotations, so for every rotation R the function u ◦R is again a
+normalized positive principal eigenfunction; by (24) it equals u, and u is radial. Set
+Q(r) := rn−1|U ′(r)|p−2U ′(r).
+The radial form of the equation shows that Q is absolutely continuous with
+Q′(r) = −λ1(h)rn−1U(r)p−1 < 0,
+so Q is continuous and strictly decreasing. At the inner boundary the outward normal is −x/|x|, so
+Lemma 2.7 gives ∂νu = −U ′(rin) < 0 and hence Q(rin) > 0. At the outer boundary the Robin condition
+gives
+|U ′(rout)|p−2U ′(rout) = −h U(rout)p−1 < 0,
+so Q(rout) < 0. Thus Q has exactly one zero r∗, and since rn−1 > 0 one has Q(r) = 0 if and only if
+U ′(r) = 0.
+Remark 4.26. For p > 2 the critical sphere of Proposition 4.25 separates Ω, so (96) fails. For p = 2
+Assumption 1 is vacuous and the critical sphere creates no obstruction to Theorem 4.11. In either case
+constant Robin coefficients are ordered, so Theorem 4.4 already gives uniqueness from the principal
+eigenvalue alone. The proposition therefore delimits the scope of the propagation hypothesis rather than
+exhibiting a failure of uniqueness.
+Remark 4.27. The shell also explains the regularity distinction between Σ∩and Σ∪. Since Q(r∗) = 0
+and Q′(r∗) = −λ1(h)(r∗)n−1U(r∗)p−1 < 0, one has Q(r) = −c0(r −r∗) + o(|r −r∗|) with c0 > 0, and
+therefore
+|U ′(r)| =
+�|Q(r)|
+rn−1
+�1/(p−1)
+≍|r −r∗|1/(p−1).
+For p > 2 the gradient is not Lipschitz across the critical sphere, and for r ̸= r∗,
+|U ′′(r)| ≍|r −r∗|(2−p)/(p−1).
+A path average may consequently remain uniformly elliptic while inheriting sub-Lipschitz endpoint
+regularity. This is the configuration in which the two eigenfunctions have critical spheres at different
+radii, so that along the segment one endpoint stays bounded away from zero while the other vanishes.
+Already in the scalar model p = 3, where F(s) = |s|s and DF(s) = 2|s|, one has for b = 1 and 0 ≤a ≤1
+�1
+0
+DF
+�
+(1 −t)b + ta
+�
+dt = 1 + a,
+so that the choice a(r) = |r −r∗|1/2, which is the order of vanishing computed above for p = 3, produces
+a coefficient that is uniformly positive but not Lipschitz.
+Accordingly, on Σ∪\ Σ∩the path matrix remains locally uniformly elliptic but may lack Lipschitz
+regularity, whereas on Σ∩ellipticity itself degenerates. In dimension two the first obstruction is removed
+by Remark 2.14; in dimensions n ≥3 the propagation argument therefore avoids Σ∪.
+The measure condition above is an explicit sufficient criterion whenever the critical set is known.
+This paper does not establish such a critical-set estimate for general nonsymmetric mixed-boundary
+configurations.
+Assumption 2
+For p = 2, Proposition 4.16 proves the assumption at every h0 ∈Had, by the implicit function theorem
+and simplicity of the principal eigenvalue.
+For p > 2 differentiability of the principal branch is not proved here, and Remark 4.15 shows that
+the standard implicit-function argument cannot be carried out in the natural pair V × R and V ∗× R.
+All results using Assumption 2 therefore remain conditional for p > 2.
+29
+
+---
+### 【第 30 页】
+
+Assumption 3
+In the full infinite-dimensional coefficient class, (93) is retained as an explicit hypothesis.
+For p =
+2, logarithmic stability results for related inverse Robin problems, such as [14], motivate conditional
+estimates of this kind but do not imply the power-type inequality for the spectral measurement map
+used here. For p > 2 the principal coefficient of the linearized operator degenerates on the critical set of
+u0, and no estimate of the form (93) is derived in this paper; the cutoff regularization of Remark 4.12
+does not help, because the regularized operator is not the derivative of the forward map.
+For p = 2, however, one ingredient of the stability analysis is available unconditionally: the linearized
+measurement map is injective, which is precisely the hypothesis that the finite-dimensional stability
+mechanism requires.
+Proposition 4.28. Let p = 2 and let h0 ∈Had. Then DF(h0) : C1(γ) →Y is injective.
+Proof. By Proposition 4.16, Assumption 2 holds, so DF(h0) is defined by Corollary 4.19. Let DF(h0)[ϑ] =
+0 and put u′ := u′(h0)[ϑ].
+The first component of (89) gives λ′ := λ′
+1(h0)[ϑ] = 0. Since A0 ≡I for p = 2, Corollary 4.19(ii)
+shows that
+g′ := g′(h0)[ϑ] = ∇u′ ∈W div,2(Ω),
+div g′ = −λ′u0 −λ0u′ = −λ0u′
+in L2(Ω),
+that is, u′ ∈H1(Ω) solves the homogeneous equation −∆u′ = λ0u′ in Ω.
+We next convert the flux datum into the local weak formulation required by Theorem 2.11. Note that
+(84) admits only test functions vanishing on ΓD and therefore carries no information about the conormal
+trace on Γm; that information enters through the second component of (89), which states that the weak
+normal trace g′ · ν vanishes in W −1/2,2(Γm), that is,
+⟨g′ · ν, ψ⟩= 0
+for every ψ ∈�
+W 1/2,2(Γm).
+Choose a connected open set U ⊂Rn with ∅̸= U ∩∂Ω⊂Γm. For ϕ ∈C∞
+c (U) the trace Tϕ is smooth
+and compactly supported in Γm, hence belongs to �
+W 1/2,2(Γm), and the defining identity of the weak
+normal trace gives
+0 = ⟨g′ · ν, Tϕ⟩=
+�
+U∩Ω
+∇u′ · ∇ϕ dx +
+�
+U∩Ω
+ϕ div g′ dx =
+�
+U∩Ω
+∇u′ · ∇ϕ dx −λ0
+�
+U∩Ω
+u′ϕ dx.
+Since moreover u′ ∈V , so that u′ = 0 on U ∩∂Ω⊂ΓD in the sense of traces, the pair of conditions
+above is exactly the vanishing-Cauchy-data hypothesis of Theorem 2.11, with A = I and B = 1. Hence
+u′ ≡0 in U ∩Ω, and Theorem 2.12, applied on the connected set Ω, gives u′ ≡0 in Ω.
+With u′ = 0 and λ′ = 0, (84) reduces to
+�
+γ
+ϑ u0 ϕ dσ = 0
+for all ϕ ∈V.
+Every ϕ ∈C∞
+c (γ) extends to an element of V , so the traces on γ of functions in V are dense in L2(γ),
+whence ϑu0 = 0 on γ. Since u0 > 0 on γ by Proposition 4.1, it follows that ϑ = 0.
+Consequently, for p = 2 and every finite-dimensional Xm ⊂C1(γ), the restriction DF(h0)|Xm is
+injective, and Corollary 4.23 gives local data-only Lipschitz stability on (h0 + Xm) ∩Had. This is uncon-
+ditional. Injectivity alone does not yield (93), so the infinite-dimensional estimate remains conditional
+even for p = 2. For p > 2 the branch hypothesis is not available and neither statement applies.
+A non-radial domain.
+Let
+Ω=
+�
+x ∈Rn :
+n
+�
+j=1
+x2
+j
+a2
+j
+< 1
+�
+,
+a1 ̸= a2,
+and choose nonempty relatively open parts ΓD and γ satisfying the standing decomposition (2). This is
+a smooth, genuinely non-radial multidimensional geometry, and every hypothesis used in the preceding
+two subsubsections at p = 2 holds on it.
+30
+
+---
+### 【第 31 页】
+
+Let h∗> 0 be constant, let 0 ̸≡ψ ∈C1
+c (γ) satisfy ψ ≥0, and let I ⊂R be an open interval such that
+hθ := h∗+ θψ ∈Had for θ ∈I. By Lemma 4.7,
+λ′
+1(hθ)[ψ] =
+�
+γ
+ψ u p
+θ dσ > 0,
+so the principal eigenvalue alone determines θ, with inverse Lipschitz stability on every compact interval
+J ⋐I. This holds for every 1 < p < ∞and uses none of the structural assumptions.
+For p = 2 one has A ≡I, so Assumption 1 is automatic, and Proposition 4.16 gives differentiability of
+the principal branch; by the proposition above, DF(h0) is injective at every h0 ∈Had, and Corollary 4.23
+applies on every finite-dimensional affine class. For p > 2 the example verifies none of critical-set connec-
+tivity, principal-branch differentiability, or quantitative linearized stability, which retain the conditional
+status described above.
+
+###### Acknowledgments
+
+The authors are grateful to Vladimir Bobkov for carefully reading the manuscript and for his insightful
+suggestions and helpful discussions.
+
+###### References
+
+[1] P. Acampora, E. Cristoforoni, C. Nitsch and C. Trombetti, On the optimal shape of a thin insulating
+layer, SIAM J. Math. Anal. 56 (2024), 3509–3536.
+[2] E. Acerbi and G. Buttazzo, Reinforcement problems in the calculus of variations, Ann. Inst. H.
+Poincar´e Anal. Non Lin´eaire 3 (1986), 273–284.
+[3] V. Adolfsson and L. Escauriaza, C1,α domains and unique continuation at the boundary, Comm.
+Pure Appl. Math. 50 (1997), 935–969.
+[4] F. Albiac and N. J. Kalton, Topics in Banach Space Theory, 2nd ed., Grad. Texts in Math. 233,
+Springer, Cham, 2016.
+[5] G. Alessandrini, Strong unique continuation for general elliptic equations in 2D, J. Math. Anal.
+Appl. 386 (2012), 669–676.
+[6] G. Alessandrini, Singular solutions of elliptic equations and the determination of conductivity by
+boundary measurements, J. Differential Equations 84 (1990), 252–272.
+[7] G. Alessandrini, L. Del Piero and L. Rondi, Stable determination of corrosion by a single electrostatic
+boundary measurement, Inverse Problems 19 (2003), 973–984.
+[8] W. Allegretto and Y. X. Huang, A Picone’s identity for the p-Laplacian and applications, Nonlinear
+Anal. 32 (1998), 819–830.
+[9] K. Astala and L. P¨aiv¨arinta, Calder´on’s inverse conductivity problem in the plane, Ann. of Math.
+163 (2006), 265–299.
+[10] V. Bacchelli and S. Vessella, Lipschitz stability for a stationary 2D inverse problem with unknown
+polygonal boundary, Inverse Problems 22 (2006), 1627–1658.
+[11] R. B. Bird, R. C. Armstrong and O. Hassager, Dynamics of Polymeric Liquids, Vol. 1: Fluid
+Mechanics, 2nd ed., Wiley, New York, 1987.
+[12] H. Br´ezis, L. A. Caffarelli and A. Friedman, Reinforcement problems for elliptic equations and
+variational inequalities, Ann. Mat. Pura Appl. 123 (1980), 219–246.
+[13] D. Bucur, G. Buttazzo and C. Nitsch, Symmetry breaking for a problem in optimal insulation, J.
+Math. Pures Appl. 107 (2017), 451–463.
+[14] S. Chaabane, I. Fellah, M. Jaoua and J. Leblond, Logarithmic stability estimates for a Robin coef-
+ficient in two-dimensional Laplace inverse problems, Inverse Problems 20 (2004), 47–59.
+31
+
+---
+### 【第 32 页】
+
+[15] F. Della Pietra and F. Oliva, Optimal insulation and concentration breaking for nonlinear Robin
+boundary value problems, Preprint, arXiv:2607.02229 (2026).
+[16] J. Diestel, H. Jarchow and A. Tonge, Absolutely Summing Operators, Cambridge Stud. Adv. Math.
+43, Cambridge University Press, 1995.
+[17] E. DiBenedetto, C1+α local regularity of weak solutions of degenerate elliptic equations, Nonlinear
+Anal. 7 (1983), 827–850.
+[18] E. B. Fabes, C. E. Kenig and R. P. Serapioni, The local regularity of solutions of degenerate elliptic
+equations, Comm. Partial Differential Equations 7 (1982), 77–116.
+[19] A. Friedman, Reinforcement of the principal eigenvalue of an elliptic operator, Arch. Rational Mech.
+Anal. 73 (1980), 1–17.
+[20] I. M. Gel’fand and B. M. Levitan, On the determination of a differential equation from its spectral
+function, Izv. Akad. Nauk SSSR Ser. Mat. 15 (1951), 309–360.
+[21] D. Gilbarg and N. S. Trudinger, Elliptic Partial Differential Equations of Second Order, 2nd ed.,
+Springer, Berlin, 1983.
+[22] M. Ikehata, Reconstruction of the support function for inclusion from boundary measurements, J.
+Inverse Ill-Posed Probl. 8 (2000), 367–378.
+[23] V. Isakov, Inverse Problems for Partial Differential Equations, 3rd ed., Springer, 2017.
+[24] M. Kac, Can one hear the shape of a drum?, Amer. Math. Monthly 73 (1966), 1–23.
+[25] H. Koch and D. Tataru, Carleman estimates and unique continuation for second-order elliptic equa-
+tions with nonsmooth coefficients, Comm. Pure Appl. Math. 54 (2001), 339–360.
+[26] S. Kwapie´n, Isomorphic characterizations of inner product spaces by orthogonal series with vector
+valued coefficients, Studia Math. 44 (1972), 583–595.
+[27] J. L. Lewis, Regularity of the derivatives of solutions to certain degenerate elliptic equations, Indiana
+Univ. Math. J. 32 (1983), 849–858.
+[28] G. M. Lieberman, Boundary regularity for solutions of degenerate elliptic equations, Nonlinear Anal.
+12 (1988), 1203–1219.
+[29] P. Lindqvist, Notes on the p-Laplace Equation, 2nd ed., Report 161, University of Jyv¨askyl¨a, 2017.
+[30] K. Miller, Nonunique continuation for uniformly parabolic and elliptic equations in self-adjoint di-
+vergence form with H¨older continuous coefficients, Arch. Rational Mech. Anal. 54 (1974), 105–117.
+[31] A. I. Nachman, Global uniqueness for a two-dimensional inverse boundary value problem, Ann. of
+Math. 143 (1996), 71–96.
+[32] J. Neˇcas, Les m´ethodes directes en th´eorie des ´equations elliptiques, Academia, Prague, and Masson
+et Cie, Paris, 1967.
+[33] A. Pli´s, On non-uniqueness in Cauchy problem for an elliptic second order differential equation,
+Bull. Acad. Polon. Sci. S´er. Sci. Math. Astronom. Phys. 11 (1963), 95–100.
+[34] P. Pucci and J. Serrin, The Maximum Principle, Progr. Nonlinear Differential Equations Appl. 73,
+Birkh¨auser, Basel, 2007.
+[35] F. Schulz, On the unique continuation property of elliptic divergence form equations in the plane,
+Math. Z. 228 (1998), 201–206.
+[36] M. Santacesaria and T. Yachimura, On an inverse Robin spectral problem, Inverse Problems 36
+(2020), 075004.
+[37] P. Tolksdorf, Regularity for a more general class of quasilinear elliptic equations, J. Differential
+Equations 51 (1984), 126–150.
+32
+
+---
+### 【第 33 页】
+
+[38] J. L. V´azquez, A strong maximum principle for some quasilinear elliptic equations, Appl. Math.
+Optim. 12 (1984), 191–202.
+[39] P. Winkert, L∞-estimates for nonlinear elliptic Neumann boundary value problems, NoDEA Non-
+linear Differential Equations Appl. 17 (2010), 289–302.
+[40] T. Yachimura, Asymptotic behavior for the principal eigenvalue of a reinforcement problem, Appli-
+cable Analysis 98 (2019), 1946–1958.
+[41] E. Zeidler, Nonlinear Functional Analysis and its Applications, I: Fixed-Point Theorems, Springer,
+New York, 1986.
+33
+
+---
+
+## 🔤 字体大小分布
+
+| 字体大小 | 出现次数 | 角色 |
+|----------|----------|------|
+| 20.0 | 1 | heading_level_1 |
+| 17.2 | 9 | heading_level_2 |
+| 14.3 | 21 | heading_level_3 |
+| 12.0 | 79 | heading_level_4 |
+| 10.0 | 20753 | body_text |
+| 9.0 | 154 | minor |
+| 7.0 | 3590 | minor |
+| 6.0 | 11 | minor |
+| 5.0 | 256 | minor |
+
+---
+*报告生成完毕*

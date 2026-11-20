@@ -1,0 +1,2768 @@
+{
+  "meta": {
+    "file": "2606.05622_AdaPlanBench.pdf",
+    "page_count": 56,
+    "title": "AdaPlanBench: Evaluating Adaptive Planning in Large Language Model Agents under World and User Constraints",
+    "author": "Jiayu Liu; Cheng Qian; Zhenhailong Wang; Bingxuan Li; Jiateng Liu; Qing Zong; Heng Wang; Jeonghwan Kim; Yumeng Wang; Bingxiang He; Xiusi Chen; Yi R. Fung; Heng Ji",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:8def8d8)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 10.1,
+    "heading_font_sizes": [
+      20.0,
+      14.4,
+      14.3,
+      13.9,
+      12.0,
+      10.4
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "14.4": 2,
+      "14.3": 1,
+      "13.9": 14,
+      "12.0": 29,
+      "10.4": 270,
+      "10.1": 4112,
+      "10.0": 2604,
+      "9.9": 1025,
+      "9.3": 74,
+      "9.1": 459,
+      "9.0": 245,
+      "8.9": 64,
+      "8.3": 4,
+      "8.1": 2,
+      "8.0": 92,
+      "7.9": 100,
+      "7.6": 681,
+      "7.5": 7,
+      "7.4": 68,
+      "7.3": 99,
+      "7.2": 95,
+      "7.0": 116,
+      "6.9": 5,
+      "6.5": 11,
+      "6.4": 190,
+      "6.0": 24,
+      "5.9": 101,
+      "5.8": 17,
+      "5.6": 9,
+      "5.2": 66,
+      "5.0": 8,
+      "4.9": 147,
+      "4.8": 10,
+      "4.6": 3,
+      "4.3": 5,
+      "3.8": 1
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "AdaPlanBench:",
+        "size": 14.4,
+        "level": 2,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "Evaluating Adaptive Planning in Large Lan-",
+        "size": 14.4,
+        "level": 2,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "guage Model Agents under World and User Constraints",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "Abstract",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2606.05622v2  [cs.CL]  9 Jul 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 2,
+        "text": "AdaPlanBench Construction",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 3,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "= (",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "3",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 5,
+        "text": "Experiment",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 6,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "4",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 7,
+        "text": "Analysis",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 7,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "5",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 10,
+        "text": "Conclusion",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 10,
+        "text": "6",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 10,
+        "text": "Limitations",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 11,
+        "text": "Ethics statement",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 11,
+        "text": "References",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "A",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "Related Works",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 22,
+        "text": "Formalization",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "= (",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "= (",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "{M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": ") =",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 22,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "∼M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "|",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "C",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "T",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "C",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "T",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "C",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "C",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "←M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 23,
+        "text": "∪C",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 24,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 25,
+        "text": "C",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 25,
+        "text": "Experiment Details",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 25,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 25,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "̸",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "̸",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "= (",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 26,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "= (",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "⊆B",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "⊆",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "⊆",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "\\",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∩",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 27,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "≥",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∅",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∧",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∅",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∧",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 28,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 29,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "∪",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "{M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 30,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "M",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "±",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "(",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": ")",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 31,
+        "text": "D",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 31,
+        "text": "Additional Experiment Results",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 31,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 32,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 32,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 32,
+        "text": "∈{",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 32,
+        "text": "}",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 33,
+        "text": "E",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 33,
+        "text": "Discussion",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 35,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 36,
+        "text": "F",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 36,
+        "text": "Human Annotation",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 37,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "−",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "=",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 37,
+        "text": "∑",
+        "size": 13.9,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 38,
+        "text": "G",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 38,
+        "text": "Case Study",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 38,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 38,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 38,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 38,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 38,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 43,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 43,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 44,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 44,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 45,
+        "text": "E",
+        "size": 10.4,
+        "level": 6,
+        "bold": false
+      }
+    ]
+  },
+  "images": [
+    {
+      "page": 1,
+      "filename": "page1_img1.png",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "size_bytes": 2751
+    },
+    {
+      "page": 1,
+      "filename": "page1_img2.png",
+      "width": 590,
+      "height": 539,
+      "format": "png",
+      "size_bytes": 17404
+    },
+    {
+      "page": 3,
+      "filename": "page3_img1.png",
+      "width": 89,
+      "height": 89,
+      "format": "png",
+      "size_bytes": 3489
+    },
+    {
+      "page": 3,
+      "filename": "page3_img2.png",
+      "width": 41,
+      "height": 41,
+      "format": "png",
+      "size_bytes": 141
+    },
+    {
+      "page": 3,
+      "filename": "page3_img3.png",
+      "width": 1282,
+      "height": 212,
+      "format": "png",
+      "size_bytes": 1669
+    },
+    {
+      "page": 3,
+      "filename": "page3_img4.png",
+      "width": 79,
+      "height": 78,
+      "format": "png",
+      "size_bytes": 3094
+    },
+    {
+      "page": 3,
+      "filename": "page3_img5.png",
+      "width": 1282,
+      "height": 197,
+      "format": "png",
+      "size_bytes": 1559
+    },
+    {
+      "page": 3,
+      "filename": "page3_img6.png",
+      "width": 1282,
+      "height": 242,
+      "format": "png",
+      "size_bytes": 1890
+    },
+    {
+      "page": 54,
+      "filename": "page54_img1.png",
+      "width": 1823,
+      "height": 1361,
+      "format": "png",
+      "size_bytes": 201779
+    },
+    {
+      "page": 55,
+      "filename": "page55_img1.png",
+      "width": 1858,
+      "height": 1365,
+      "format": "png",
+      "size_bytes": 195006
+    },
+    {
+      "page": 56,
+      "filename": "page56_img1.png",
+      "width": 1435,
+      "height": 1175,
+      "format": "png",
+      "size_bytes": 137571
+    }
+  ],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3415,
+      "block_count": 12,
+      "image_count": 2,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 4497,
+      "block_count": 11,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 3,
+      "text_length": 4142,
+      "block_count": 69,
+      "image_count": 6,
+      "has_drawings": true
+    },
+    {
+      "page": 4,
+      "text_length": 3728,
+      "block_count": 25,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 5,
+      "text_length": 3795,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 6,
+      "text_length": 4212,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 3438,
+      "block_count": 29,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 3087,
+      "block_count": 49,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 9,
+      "text_length": 3289,
+      "block_count": 38,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 10,
+      "text_length": 4123,
+      "block_count": 11,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 11,
+      "text_length": 3415,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 12,
+      "text_length": 3620,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 13,
+      "text_length": 4989,
+      "block_count": 3,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 14,
+      "text_length": 4438,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 15,
+      "text_length": 3546,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 16,
+      "text_length": 3544,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 17,
+      "text_length": 4102,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 18,
+      "text_length": 5004,
+      "block_count": 3,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 19,
+      "text_length": 4065,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 20,
+      "text_length": 4034,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 21,
+      "text_length": 3952,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 22,
+      "text_length": 3228,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 23,
+      "text_length": 2633,
+      "block_count": 22,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 24,
+      "text_length": 3787,
+      "block_count": 24,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 25,
+      "text_length": 3239,
+      "block_count": 20,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 26,
+      "text_length": 4102,
+      "block_count": 16,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 27,
+      "text_length": 3139,
+      "block_count": 16,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 28,
+      "text_length": 1359,
+      "block_count": 39,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 29,
+      "text_length": 2590,
+      "block_count": 35,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 30,
+      "text_length": 3885,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 31,
+      "text_length": 3147,
+      "block_count": 20,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 32,
+      "text_length": 3595,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 33,
+      "text_length": 3871,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 34,
+      "text_length": 4537,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 35,
+      "text_length": 4489,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 36,
+      "text_length": 4351,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 37,
+      "text_length": 3429,
+      "block_count": 24,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 38,
+      "text_length": 3115,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 39,
+      "text_length": 3414,
+      "block_count": 8,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 40,
+      "text_length": 2874,
+      "block_count": 8,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 41,
+      "text_length": 1925,
+      "block_count": 8,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 42,
+      "text_length": 1886,
+      "block_count": 8,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 43,
+      "text_length": 1369,
+      "block_count": 6,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 44,
+      "text_length": 2290,
+      "block_count": 6,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 45,
+      "text_length": 2565,
+      "block_count": 4,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 46,
+      "text_length": 2517,
+      "block_count": 25,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 47,
+      "text_length": 2421,
+      "block_count": 8,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 48,
+      "text_length": 2153,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 49,
+      "text_length": 1608,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 50,
+      "text_length": 1697,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 51,
+      "text_length": 1896,
+      "block_count": 27,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 52,
+      "text_length": 1448,
+      "block_count": 81,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 53,
+      "text_length": 3572,
+      "block_count": 24,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 54,
+      "text_length": 305,
+      "block_count": 3,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 55,
+      "text_length": 305,
+      "block_count": 3,
+      "image_count": 1,
+      "has_drawings": true
+    },
+    {
+      "page": 56,
+      "text_length": 259,
+      "block_count": 3,
+      "image_count": 1,
+      "has_drawings": true
+    }
+  ]
+}

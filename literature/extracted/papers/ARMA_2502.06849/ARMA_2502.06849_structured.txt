@@ -1,0 +1,1066 @@
+文档: ARMA_2502.06849.pdf
+页数: 18
+图片: 7 张
+正文字体大小: 10.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) Model
+  [L2] (p.1) Fusion
+  [L2] (p.1) via
+  [L2] (p.1) Neuron
+  [L2] (p.1) Transplantation
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+[L1] (p.1) arXiv:2502.06849v1  [cs.LG]  7 Feb 2025
+    [L3] (p.3) 2
+    [L3] (p.3) Related
+    [L3] (p.3) Work
+    [L3] (p.4) 3
+    [L3] (p.4) Neuron
+    [L3] (p.4) Transplantation
+    [L3] (p.7) 4
+    [L3] (p.7) Experiments
+    [L3] (p.15) 5
+    [L3] (p.15) Discussion
+    [L3] (p.15) and
+    [L3] (p.15) Conclusion
+    [L3] (p.15) References
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## Model Fusion via Neuron Transplantation
+
+Muhammed Öz[0009−0003−4337−407X],
+Nicholas Kiefer[0009−0008−1454−4144],
+Charlotte Debus[0000−0002−7156−2022],
+Jasmin Hörter,
+Achim Streit[0000−0002−5065−469X], and
+Markus Götz[0000−0002−2233−1041](�)
+Scientific Computing Center (SCC), Karlsruhe Institute of Technology (KIT),
+Hermann-von-Helmholtz Platz 1, 76344 Eggenstein-Leopoldshafen, Germany
+{muhammed.oez, nicholas.kiefer, charlotte.debus, jasmin.hoerter,
+achim.streit, markus.goetz}@kit.edu
+Abstract. Ensemble learning is a widespread technique to improve the
+prediction performance of neural networks. However, it comes at the price
+of increased memory and inference time. In this work we propose a novel
+model fusion technique called Neuron Transplantation (NT) in which we
+fuse an ensemble of models by transplanting important neurons from all
+ensemble members into the vacant space obtained by pruning insignifi-
+cant neurons. An initial loss in performance post-transplantation can be
+quickly recovered via fine-tuning, consistently outperforming individual
+ensemble members of the same model capacity and architecture. Fur-
+thermore, NT enables all the ensemble members to be jointly pruned and
+jointly trained in a combined model. Comparing it to alignment-based av-
+eraging (like Optimal-Transport-fusion), it requires less fine-tuning than
+the corresponding OT-fused model, the fusion itself is faster and requires
+less memory, while the resulting model performance is comparable or bet-
+ter. The code is available under the following link:
+https://github.com/masterbaer/neuron-transplantation .
+Keywords: Model Fusion · Ensemble Learning · Compression · Parallel
+Neural Network
+
+### 1
+
+
+### Introduction
+
+Nowadays, it is not uncommon to have neural networks with billions of param-
+eters [5]. The inference time and memory demand for large pretrained models
+is costly, even more so when the model is only one of many base learners in
+an ensemble. Ensemble learning techniques are known to increase generaliza-
+tion [23], but require even more memory and computational resources compared
+to a single model. This makes the deployment of deep ensembles difficult, if not
+even unattainable [39]. Knowledge distillation [13] is one solution to compress
+ensembles but it requires the ensemble members in the fine-tuning process. An
+alternative to this is weight-based model fusion such as weight averaging and
+
+# arXiv:2502.06849v1  [cs.LG]  7 Feb 2025
+
+
+--- PAGE 2 ---
+
+2
+M. Öz et al.
+neuron alignment [33]. Yet both come with an issue: weight averaging can lead
+to a poor performance as the different models can lie in different basins in the
+loss landscape [1] and are therefore separated by a so-called loss barrier. Mean-
+while alignment based methods, e.g. graph matching [21] or layerwise neuron
+alignment [33], usually come with large memory demands [19]. Hence we focus
+on a less demanding compression method: pruning.
+The study of pruning in neural networks has shown that not all parame-
+ters contribute equally to the predictive performance [20] and may be removed
+without any or negligible impact. While ensemble-pruning usually refers to the
+selection of a representative subset of the ensemble [29], we create a pruning-
+based model fusion technique called Neuron Transplantation (NT) which fuses
+the ensemble members by transplanting only their most important neurons into
+the fused model. Since we avoid weight averaging, we also avoid the accompa-
+nying issue of loss barriers. We show that transplantation captures the essence
+of an ensemble without significant losses, as the ensemble performance can be
+partially recovered via fine-tuning compensating the loss of the smaller neurons.
+Neuron Transplantation can be used in place of (aligned) weight averaging for
+diverse models. Prime examples are federated learning [28], deep ensemble prun-
+ing [8], fine-tuning of pretrained models for downstream tasks [38], knowledge
+distillation as a way to fuse an ensemble teacher or an ensemble student [33],
+or possibly for synchronous SGD training [6, 34]. It should not be used for too
+similar models as the transplanted neurons are redundant.
+Our contributions can be summarized as follows:
+1. We present a novel ensemble-compression technique which fuses models of
+the same architecture into a same sized one, with minimal compression loss
+mitigated through fine-tuning outperforming state-of-the-art model fusion
+techniques.
+2. We find that our approach is susceptible to the order of operations, first
+merging, then jointly pruning and fine-tuning the neurons leads to slightly
+better results than individually pruning, merging and fine-tuning. Thus we
+recommend to first merge when using NT for model fusion. For ensemble
+pruning, the merging step can be omitted as it introduces cross-weights.
+3. We find that merging multiple models jointly or in a hierarchical way leads
+to the best results while an iterative approach—due to unequal weighting—
+leads to slightly worse performance recovery.
+4. We show through various ablations with different widths, depths and number
+of models, that NT is applicable in all settings while the fusion results in
+diminishing returns for an increasing amount of models.
+5. We find and discuss a fundamental limitation of NT: fusing a model with
+itself (and very similar models) replaces the smaller neurons with already
+known ones which leads to an overall information loss without the compen-
+sation of new neurons. This limits NT to merging models that are “diverse
+enough”.
+
+--- PAGE 3 ---
+
+Model Fusion via Neuron Transplantation
+3
+
+### 2
+
+
+### Related Work
+
+The field of model fusion has been categorized by Li et al. [19] into four categories,
+of which “weight averaging”, and “alignment” is of relevance to our work.
+Weight Averaging. Weight averaging of trained models [37] is the process of
+combining models in a defined space. The outputs of the individual models
+are weighted and summed. Weight averaging has the problem of a loss barrier
+which increases the loss for fused models through averaging. For large pre-trained
+models, it has been shown that they lie in a single low error basin [25, 38],
+rendering vanilla averaging feasible. Another such scenario is the case of merging
+similar models [19]. In such fusion settings [4, 17], no loss-barrier seems to be
+present making average-based methods viable. Unlike the approaches detailed
+here, we do not interpolate between different models, but instead transplant all
+of them into the fused model to create a new initialization that is able to reach
+near-ensemble performance with the memory and speed of a single member.
+Alignment. Entezari et al. conjecture that models can be permuted in such a
+way that there is no loss barrier on the linear interpolation between them [9].
+This solves the problem of the loss barrier in weight averaging, but the search
+space to probe all possible permutations in a reasonable time is too large. To
+solve this, Ainsworth et al. propose activation matching, weight matching and
+using a straight-through estimator to find good permutations [1]. Singh and
+Jaggi use Optimal Transport (OT) to align the neurons (layerwise, in a greedy
+way) minimizing the total transportation cost between them [33]. In both works,
+a certain loss barrier remains when the actual averaging is done, especially when
+layers with small widths are fused. In contrast to these methods, we do not try
+to “align and average” neurons, but to “select” the most relevant ones from the
+ensemble members, hence avoiding the averaging-induced loss.
+Distillation. Knowledge distillation [13] is a compression method that can be
+used as a fusion method [2,31,36]. It is orthogonal to averaging or transplanting
+and can be used alongside other fusion methods such as OT [33] or ours. In
+knowledge distillation, knowledge from the teacher is distilled into the student by
+having access to the logits of the teacher model as soft targets, in addition to the
+original labels as hard targets. Sun et al. use knowledge distillation on a diverse
+ensemble as a synchronization method for SGD [34]. After each fusion, workers
+train independently until the next synchronization step. To ensure diversity of
+the ensemble members, they add a similarity term to the loss function. We use
+distillation to further study the behaviour of our method in experiments.
+Pruning. Pruning is the method of removing elements from a model, the smallest
+unit being a single weight, which can be set to zero to decrease model complexity
+while retaining predictive performance. The field of pruning is large [22]. Struc-
+tured pruning considers compositions of elements to be pruned concurrently,
+for linear layers these might be neurons, their equivalent for CNNs might be
+
+--- PAGE 4 ---
+
+4
+M. Öz et al.
+filters [3]. Units to be removed are selected by some measure, e.g. magnitude
+pruning uses the Lp-norm as a simple indicator whether a units contribution is
+of relevance [30]. As structured pruning can get complex when using different
+architectures, we resort to torch-pruning [10] which is a pruning framework that
+can handle many structural couplings in a general way.
+
+### 3
+
+
+### Neuron Transplantation
+
+Fig. 1: Neuron Transplantation. Low-magnitude neurons are replaced by large-
+magnitude ones from other models.
+Our proposed Neuron Transplantation method (see Figure 2) is an ensemble
+fusion method that merges important neurons in a layer-wise fashion. We do
+not try to “align and average” neurons, but to “select” the most relevant ones
+from each ensemble member. Consider an ensemble which consists of k members
+with equal architecture and equal size of all layers and parameters. NT is the
+composition of the following steps:
+1. Initialize all models with different random seeds, and train individually using
+the full data set.
+2. Concatenate the non-output layers vertically, and average the classification
+layers.
+3. Prune all non-output layers via structured magnitude pruning to a sparsity
+of 1 −1
+k to obtain the original architecture of a single model.
+4. Using the new initialization obtained from the steps above, fine-tune the
+resulting model on the full data set to compensate for the lost smaller mag-
+nitude neurons.
+Concatenation. Step two of our method is done in a way that the resulting model
+is equivalent to output averaging. Layers connected to the input stay connected
+to the input, the output layer is an average of all individual output layers and
+all others are concatenated. All weights between the layers, which we call cross
+
+  [本页图片: page4_img1.png]
+
+--- PAGE 5 ---
+
+Model Fusion via Neuron Transplantation
+5
+Fig. 2: Pipeline of fusing multiple ensemble members. Multiple models are trained
+independently, concatenated into one large model, pruned down to the original
+size and then fine-tuned.
+weights, are initialized to zero, and will later be learned by fine-tuning the model.
+The concatenation is illustrated in Figure 2.
+Formally, for an input x ∈Rn a linear layer is of the form Wx + b with
+weight matrix W ∈Rm×n and bias b ∈Rm, n, m being the input and output
+dimension respectively. The fusion of linear layers splits into three distinct cases.
+The matrix resulting from the concatenation of input layers has shape Rkm×n
+with k the number of models in the ensemble. Any layer not connected to the
+input or output will have shape Rkm×kn. The output layer is an average of all
+individual output layers and has shape Rm×kn.
+Analogously, a concatenation operation can be defined for (2D-) convolu-
+tions and operations that usually are used along convolutions such as batch
+normalizations and poolings. Figure 3 illustrates the different operations when
+concatenating convolutional layers.
+Fig. 3: Concatenating 2D convolution layers. Channels are stacked, batch nor-
+malization and pooling operations are preserved.
+The weight matrix W ∈Ro×i,×h×w and bias b ∈Ro×h×w, of a 2D con-
+volution, where o, i, h, w are the output, input, kernel height and kernel width
+
+  [本页图片: page5_img1.png, page5_img2.png]
+
+--- PAGE 6 ---
+
+6
+M. Öz et al.
+dimensions respectively, can be combined with equally sized weight matrices of
+other layers, by stacking them along the channel dimension. Because we do not
+apply convolutional layers as output layers, we do not have to handle this case.
+For Convolutional Neural Networks (CNNs), operations such as Batch Nor-
+malizations [14], pooling and flattening are usually used in conjunction. Batch-
+Normalizations only act on single channels. Since the layers are concatenated
+channel-wise, the parameters of the fused model (the weight, the bias, the run-
+ning mean and the running variance) are simple concatenations of the individual
+models parameters. Poolings and flattenings need no special consideration.
+Pruning. In step three, the fused model is pruned. In order to obtain the archi-
+tecture and size of an individual model, we use structured magnitude-pruning
+to prune nodes. Note that it is also possible to obtain other sizes as in Figure 4
+where larger sizes recover more of the ensemble performance and smaller sizes
+less. For this work we stick to the original architecture. In a layer-wise fashion,
+the neurons with the smallest L2-norm are removed. We chose the L2-norm due
+to its simplicity, but we expect similar performance when pruning with other
+metrics such as the L1-norm [18]. We do this until the original architecture is
+obtained, i.e. for k models, we use a sparsity of 1 −1/k.
+3.1
+Analysis of NT
+Memory and Time Requirements. Let the ensemble consist of k equal sized
+models. For parallel training and joint fusion, all individual models need to be
+stored in memory. Storing the L2-norms for each neuron is the only additional
+memory needed.
+For time constraints, one only needs to consider the upper bound of sorting
+the computed L2-norms of each neuron. For a layer with k ∗N neurons and
+M inputs each, computing the L2-norms is of order O(kNM) and sorting them
+an additional O(kNlog(kN)). This is negligible compared to training and fine-
+tuning, especially if k is small. For very large k, it may be beneficial to use a
+reduction scheme for the fusion.
+Reduction Scheme for Multiple Models. To speed up the fusion process for multi-
+ple models and to limit the required memory, we introduce an iterative and a re-
+cursive version of NT, which we call NT-iterative and NT-recursive respectively.
+The iterative version iterates through the models and merges the current model
+with the next one until no model is left, i.e., similar to exponential weighted
+averaging. We expect a smaller accuracy drop post-fusion as a lot of weight is
+given to the last model of the iteration. The recursive variant recursively merges
+each half of the available models and then combines both. Both versions have
+the advantage that they only have to merge two models simultaneously while
+the latter is better parallelizable.
+Fusing Duplicate Models. A fundamental limitation of transplanting neurons is
+the case of fusing a model with itself, or a highly similar one, as the gained
+
+--- PAGE 7 ---
+
+Model Fusion via Neuron Transplantation
+7
+neurons are redundant and do not compensate for the pruned ones. We will
+showcase and analyze real-world scenarios where this can happen.
+
+### 4
+
+
+### Experiments
+
+In this section we conduct experiments on NT as a fusion method.In section
+4.2 we analyze how Neuron Transplantation is performed in an effective way
+and how it fares in different settings. We deliberately prioritize demonstrating
+the feasibility and efficacy of our method over achieving the highest accuracy
+with the analyzed models on the chosen datasets. By focusing on validating
+the underlying principle of transplantation, we aim to provide a simple drop-in
+replacement for other more costly fusion methods. We therefore compare our
+method to state-of-the-art fusion techniques in section 4.3.
+4.1
+Experimental settings
+We first study NT’s properties through ablation experiments and afterwards
+compare its performance against related model fusion approaches. For the ab-
+lation studies, if not stated otherwise, we use an ensemble of two small neural
+networks with three hidden layers of width 512, referred to as “MLP”, and train
+it on the SVHN real-world image dataset [24] with the following hyperparame-
+ters: batch size of 256, 100 epochs, SGD-optimizer with a momentum of 0.9 and
+a constant learning rate of 0.01 and the cross entropy loss as the loss function.
+For the comparison to other methods, we use the models LeNet [16], VGG11 [32]
+and Resnet18 [12] and the additional image datasets MNIST [7], CIFAR10 and
+CIFAR100 [15]. LeNet and MNIST act as an easy classification task whereas CI-
+FAR10/CIFAR100 with VGG11 or Resnet18 are slightly more challenging and
+allow a closer comparison to Optimal-Transport-fusion [33] as they used a sim-
+ilar setting. Since OT-fusion does not support biases and batch normalization,
+we remove them for these experiments. We make the following alterations to the
+hyperparameters to get a more accurate comparison to OT-fusion: we train the
+MLP and LeNet for 60 epochs (as the training process already converges) and
+VGG11/Resnet18 for 300 epochs. For VGG11 and Resnet18 we use a batch size
+of 128 and a learning rate of 0.05 with a decay of 0.5 every 30 epochs.
+Hardware and Software Environment. The experiments were conducted on a
+GPU4 node using 12 Intel Xeon Platinum 8368 CPUs and an NVIDIA A100-40
+GPU with 40 GB memory. We trained our models using PyTorch [27], a popular
+deep learning framework, and utilized CUDA [26], NVIDIA’s parallel computing
+platform, to leverage GPU acceleration for faster training. For our NT-fusion we
+utilize the pruning framework torch-pruning [10] and for OT-fusion the Optimal-
+Transport solver POT [11].
+
+--- PAGE 8 ---
+
+8
+M. Öz et al.
+4.2
+Main Properties and Ablation Studies
+Figure 4 shows the key property of NT: At the cost of some current accuracy
+the potential to reach greater performance via fine-tuning is brought. The initial
+performance drop is a result of the pruning process. The loss of small-magnitude
+neurons is overcompensated by newly transplanted ones after fine-tuning.
+Fig. 4: Left: Transplanting different neuron amounts of one model into another.
+Without fine-tuning, test accuracy of the fused model drops symmetrically. With
+3 epochs of fine-tuning, the fused model surpasses individual model performance
+peaking at a 50% transplantation rate. Right: Fusing multiple models and prun-
+ing to specific sparsity ratios followed by 30 epochs of fine-tuning. Marked with
+“x” is the sparsity ratio, for which an individual model size is recovered. For more
+models, this shifts closer to a sparsity of one, where most performance is lost.
+Order of Operations. We consider the order of pruning, merging and potentially
+fine-tuning. We differentiate between three cases:
+1. Prune-merge-fine-tune: The ensemble members are first pruned individually
+and then merged. This requires the least amount of memory and local prun-
+ing can be done in parallel.
+2. Merge-prune-fine-tune: The models are first merged and then jointly pruned.
+This has the advantage of considering all neurons in the pruning process.
+3. Merge-fine-tune-prune-fine-tune: The same as above with additional fine-
+tuning after merging, exploiting the potential of training the merged ensem-
+ble.
+Table 1 shows that the additional fine-tuning step of option three does not
+pay off and that the second option, i.e., merging, then pruning, slightly outper-
+forms the first one at early epochs. We conclude that jointly selecting the neurons
+with the largest L2-norm across all models is better than doing so locally, though
+the improvement is marginal at later epochs. We deliberately left out a possible
+
+  [本页图片: page8_img1.png, page8_img2.png]
+
+--- PAGE 9 ---
+
+Model Fusion via Neuron Transplantation
+9
+fourth option: "Prune - Local Fine-tune - Merge". In this option, the ensemble
+members are pruned and fine-tuned individually and merged at the end. When
+doing this, it might be useful to ask what the purpose of the operation is. The
+merging in the last step decides whether this option is a simple ensemble-pruning
+technique or a model fusion technique. If the sole purpose is to prune the ensem-
+ble, then the merging should be omitted as it introduces cross-weights that are
+not required. If the purpose lies in model fusion, the required fine-tuning of all
+ensemble members needlessly increases the fusion time. Thus in both use cases,
+this option is sub-optimal.
+Table 1: NT of two models with merging, pruning, and fine-tuning in different
+order. Fine-tuning is done for 20 epochs in total. The accuracies (in %) are
+averaged over five different random seeds. First merging, then pruning yields
+the best results for early epochs. At later epochs, all three methods have equal
+performance.
+Order \Fine-tuning Epoch
+4
+7
+10
+13
+16
+19
+Prune-Merge-Fine-tune
+53.87 54.11 54.16 54.64 54.57 54.83
+Merge-Prune-Fine-tune
+54.14 54.18 54.43 55.13 54.83 54.71
+Merge-Fine-tune-Prune-Fine-tune 53.27 53.85 54.08 54.89 55.11 54.98
+Multiple model fusion. When merging an increasing amount of models, only large
+weights from each individual remain. The extreme case occurs when we merge
+k models and prune to k neurons in total. In that case we expect a saturation
+or loss of performance. Figure 4 (right side) shows the fusion behaviour for
+multiple models. While the ensemble continues to get better for a larger amount
+of models, the NT-fused model saturates.
+In Table 2 we compare the different reduction schemes to fuse multiple mod-
+els. While all three methods succeed in extracting some ensemble performance,
+NT-iterative yields the worst results. We attribute this to the asymmetric weight-
+ing of the ensemble members. Both the baseline and hierarchical version perform
+similarly well.
+Width and depth. Tables 3 and 4 show how NT handles different layer widths
+and model depths. Smaller networks (in depth and width) profit slightly more
+from NT while all considered cases succeed in recovering some ensemble perfor-
+mance. It is notable that the behaviour for the width is opposite to linear mode
+connectivity from Ainsworth et al. and from Singh et al. where they observe
+larger loss barriers at smaller widths and vice versa [1,33].
+Failure case. Different to other fusion operations, NT applied on a copy of an
+individual model does not result in the identity operation. In this scenario, half
+of the neurons are discarded while the larger half is replicated. After training
+
+--- PAGE 10 ---
+
+10
+M. Öz et al.
+Table 2: NT and its variants fusing multiple models. We report the accuracy (in
+%) in the format immediate|best, which is after pruning and after fine-tuning for
+20 epochs respectively, averaged over five seeds.
+Method \Models
+2
+4
+8
+16
+Ensemble
+84.61
+85.85
+86.43
+86.82
+Best Model
+82.57
+82.92
+83.18
+83.19
+NT
+77.88 | 84.37 62.86 | 84.67 34.59 | 84.77
+20.9 | 84.48
+NT-Iterative
+77.88 | 84.37 79.11 | 84.25 76.22 | 83.93 67.66 | 84.08
+NT-Recursive
+77.88 | 84.37 61.98 | 84.65 46.82 | 84.72 42.35 | 84.63
+Table 3: Accuracies in % on different layer widths of the MLP on the SVHN
+dataset. We merge two models trained for 100 epochs with a constant lr of 0.01.
+All training cases converged aside from width = 2048 models. NT is usable for
+any considered layer width but seems to be especially useful for smaller widths
+(16 and 32).
+Method \Width
+16
+32
+64
+128
+256
+512
+1024 2048
+Ensemble
+68.26 76.66 81.40 83.99 84.29 84.93 85.12 86.07
+Best Model
+66.94 74.70 79.07 81.34 82.10 82.97 83.14 85.56
+NT
+69.52 77.82 81.05 83.19 83.42 84.91 85.75 85.97
+Table 4: Accuracies on different layer depths (in %). The ensemble consists of two
+models. Only the models for depths 9 and 11 did not converge after 100 epochs
+which is why further fine-tuning slightly increases the performance. Models of
+low depth seem to profit more from NT while in every case the best individual
+model’s accuracy is surpassed.
+Method \Depth
+1
+3
+5
+7
+9
+11
+Ensemble
+82.76 84.78 84.17 82.83 82.03 79.44
+Best Model
+81.90 83.54 82.47 80.72 79.20 77.68
+NT
+84.44 85.10 83.89 82.57 81.31 80.42
+
+--- PAGE 11 ---
+
+Model Fusion via Neuron Transplantation
+11
+in step one, a single model has an accuracy of 83.02%. Merging with itself and
+pruning leads to 67.63%, and single performance is recovered after one epoch of
+fine-tuning.
+A consequence of this property is the inefficiency to use NT as an alternative for
+averaging in synchronous SGD. When synchronizing every epoch with four mod-
+els, the training process fails to train at all. It might be possible to circumvent
+the problem by diversifying the ensemble members, similar to Sun et al. [34].
+4.3
+Comparisons with Other Fusion Methods
+To compare to other fusion methods we report the accuracy after fusing, and
+after fine-tuning or distillation. We compare NT-fusion to vanilla averaging, and
+the state-of-the-art method of OT-fusion.
+Hyperparameters for fine-tuning and distillation. We fine-tune or distill for 30
+epochs, for the distillation we use a temperature of 2 and a soft target loss weight
+of 1 (discarding the hard targets) to train the fused-model with the ensemble
+teacher (outputs are averaged). For Resnet18 we also increase the number of
+epochs to 100, change the learning rate to 0.1 and the schedule to a 0.1-decay
+after epochs 50 and 80 (compared to the experimental setting in section 4.1).
+VGG11 on CIFAR100. Figure 5 shows the mean accuracy of the fusion methods
+using fine-tuning and distillation. NT is quickest in converging, followed by OT
+and averaging. Vanilla averaging leads to a large drop in accuracy from which the
+model only recovers after many epochs of further training. In all cases individual
+performance is beaten, and performance of output averaging of the full ensemble
+is matched if not outperformed.
+Fig. 5: Mean accuracy plots for NT, OT and vanilla averaging for five differ-
+ent seeds after fusing two models. All methods beat individual accuracy after
+different amounts of fine-tuning (left) and distillation (right).
+
+  [本页图片: page11_img1.png, page11_img2.png]
+
+--- PAGE 12 ---
+
+12
+M. Öz et al.
+Various Datasets and Models. We further compare NT, OT and vanilla averaging
+on different model architectures and different datasets. Tables 5, 6 and 7 show
+results for MLP, LeNet, VGG11 and Resnet18 on the datasets MNIST, CIFAR10,
+CIFAR100 and SVHN. Table 5 shows the post-fusion accuracies, Tables 6 and 7
+the fine-tuning/distillation accuracies after 3 epochs and for the best checkpoint
+in 30 epochs. We do not use the large vision models VGG11 and Resnet18 for
+the MNIST and SVHN datasets. We make the following observations.
+In most cases, NT has a larger accuracy immediately after fusing than OT.
+This indicates that the loss-barrier induced performance drop in OT (despite
+alignment) exceeds the drop caused by the exchange of the smaller neurons in
+NT. Without alignment, the performance drop is even larger as vanilla averaging
+has the least accuracy after fusion. These observations prevail for a few epochs
+of fine-tuning.
+After about three to four epochs, the NT-fused model (and with slightly more
+epochs, the OT-fused model followed by the vanilla-averaged model) is on par
+with the best individual model outperforming it with further training.
+All methods eventually reach a similar accuracy which lies above the best indi-
+vidual accuracy and below the ensemble accuracy with some exceptions where a
+better result is achieved. Any method can fail to do so in some cases, depending
+on the random seed.
+Under distillation using soft targets, the choice of the student model only has
+a small effect on the outcome. Using the NT-fused model, the OT-fused model
+or even an individual model is viable while the vanilla-averaged model can still
+suffer from the loss barrier during the training process.
+Table 5: Comparison of different fusion methods: Accuracies immediately after
+fusing multiple fully trained models with NT, OT and vanilla averaging. The
+results are averaged over 5 different random seeds.
+Post-fusion
+Model+Data
+Ensemble
+Best Model
+Avg
+OT
+NT
+MLP+CIFAR10
+56.99 ± 0.22 54.91 ± 0.35 31.65 ± 1.25 52.69 ± 0.55
+41.08 ± 1.4
+MLP+MNIST
+98.22 ± 0.07 98.15 ± 0.07 72.1 ± 11.84 96.91 ± 0.12 94.19 ± 1.99
+MLP+SVHN
+84.56 ± 0.37 83.16 ± 0.35 47.93 ± 3.96 78.99 ± 0.64 80.26 ± 1.27
+LeNet+CIFAR10
+65.96 ± 0.61 59.93 ± 0.64 15.62 ± 2.37
+23.21 ± 5.4
+25.24 ± 7.06
+LeNet+MNIST
+99.16 ± 0.04 99.09 ± 0.03 57.34 ± 6.56 78.26 ± 17.39 88.38 ± 4.69
+LeNet+SVHN
+89.23 ± 0.34 86.16 ± 0.32 27.34 ± 2.49 46.31 ± 19.45 68.62 ± 5.4
+VGG11+CIFAR10
+83.26 ± 0.15 81.49 ± 0.28 37.2 ± 6.65 75.36 ± 0.77 69.66 ± 7.97
+VGG11+CIFAR100
+57.25 ± 1.07 52.02 ± 0.3 13.48 ± 3.82 32.26 ± 8.35 36.0 ± 18.88
+Resnet18+CIFAR10
+87.79 ± 0.25 86.48 ± 0.1 67.1 ± 17.98
+/
+57.72 ± 34.31
+Resnet18+CIFAR100 69.72 ± 0.65 63.94 ± 0.6
+7.54 ± 0.71
+/
+1.06 ± 0.06
+
+--- PAGE 13 ---
+
+Model Fusion via Neuron Transplantation
+13
+Table 6: Comparison of different fusion methods: Accuracies in % after fine-
+tuning for NT, OT and vanilla averaging. The results are averaged over 5 different
+random seeds.
+Fine-tuning
+Model+Data
+Ensemble
+Epochs
+Avg
+OT
+NT
+MLP+CIFAR10
+56.99 ± 0.22
+3
+52.69 ± 0.53
+53.31 ± 0.46
+53.6 ± 0.46
+best
+54.57 ± 0.82
+55.05 ± 0.21 55.28 ± 0.19
+MLP+MNIST
+98.22 ± 0.07
+3
+97.8 ± 0.07
+97.91 ± 0.06
+98.1 ± 0.1
+best
+98.25 ± 0.07 98.28 ± 0.06 98.26 ± 0.07
+MLP+SVHN
+84.56 ± 0.37
+3
+81.24 ± 0.95
+82.2 ± 0.8
+84.22 ± 0.42
+best
+83.97 ± 0.2
+84.11 ± 0.21 84.67 ± 0.18
+LeNet+CIFAR10
+65.96 ± 0.61
+3
+57.36 ± 1.33
+60.9 ± 0.64
+60.12 ± 0.53
+best
+62.88 ± 0.49 63.03 ± 0.42
+62.0 ± 0.45
+LeNet+MNIST
+99.16 ± 0.04
+3
+98.69 ± 0.21 98.73 ± 0.26 98.68 ± 0.42
+best
+99.14 ± 0.05 99.11 ± 0.07
+99.12 ± 0.04
+LeNet+SVHN
+89.23 ± 0.34
+3
+86.47 ± 0.33
+86.6 ± 0.23
+87.39 ± 0.37
+best
+87.99 ± 0.28
+87.61 ± 0.19 88.01 ± 0.36
+VGG11+CIFAR10
+83.26 ± 0.15
+3
+78.66 ± 1.14
+80.72 ± 0.32 80.91 ± 0.35
+best
+80.75 ± 0.42
+81.08 ± 0.29 81.12 ± 0.27
+VGG11+CIFAR100
+57.25 ± 1.07
+3
+15.52 ± 5.19
+56.59 ± 2.0
+59.33 ± 2.93
+best
+60.18 ± 3.25
+60.84 ± 2.3
+60.54 ± 2.38
+Resnet18+CIFAR10
+87.79 ± 0.25
+3
+70.57 ± 7.19
+/
+78.74 ± 1.55
+best
+84.96 ± 1.23
+/
+86.71 ± 0.84
+Resnet18+CIFAR100 69.72 ± 0.65
+3
+56.0 ± 2.09
+/
+58.51 ± 0.99
+best
+73.59 ± 0.19
+/
+74.12 ± 0.39
+Memory and Time Measurements. We measure execution time and peak memory
+usage for OT, NT and averaging, varying the width of an ensemble consisting
+of two neural networks with one hidden layer. Table 8 shows the execution time
+and RAM usage of the fusion (while the RAM is also influenced by storing the
+models and data batches). Note that the used GPU runs OOM for OT, which
+is the reason why we can only compare NT to vanilla averaging for larger layer
+widths. Averaging has a negligible memory usage, and wall time increases to a
+tenth of a second for the largest fusion. NT has similar negligible RAM usage
+but the time increases to ∼1s. This is still little compared to a normal training
+time of an ensemble which can be in the order of hours.
+
+--- PAGE 14 ---
+
+14
+M. Öz et al.
+Table 7: Comparison of different fusion methods: Accuracies in % after distilla-
+tion for NT, OT and vanilla averaging. The results are averaged over 5 different
+random seeds.
+Distillation
+Model+Data
+Epochs
+Model0
+Avg
+OT
+NT
+MLP+CIFAR10
+3
+52.79 ± 0.16
+52.39 ± 0.69 53.16 ± 0.63 52.71 ± 1.12
+best
+56.42 ± 0.32
+56.42 ± 0.32 56.77 ± 0.13 56.62 ± 0.25
+MLP+MNIST
+3
+98.12 ± 0.08
+97.75 ± 0.23
+98.0 ± 0.16
+98.15 ± 0.11
+best
+98.28 ± 0.08
+98.28 ± 0.08 98.31 ± 0.05 98.23 ± 0.09
+MLP+SVHN
+3
+83.89 ± 0.15
+81.35 ± 0.82
+83.17 ± 0.26 84.45 ± 0.35
+best
+84.52 ± 0.2
+84.52 ± 0.2
+84.42 ± 0.23 84.57 ± 0.36
+LeNet+CIFAR10
+3
+61.06 ± 0.59
+60.06 ± 0.86 61.59 ± 1.07
+61.0 ± 1.22
+best
+64.23 ± 0.36 64.23 ± 0.36 63.95 ± 0.59
+63.51 ± 0.37
+LeNet+MNIST
+3
+98.83 ± 0.19 98.63 ± 0.29
+98.77 ± 0.09
+98.76 ± 0.08
+best
+99.17 ± 0.11
+99.17 ± 0.11
+99.17 ± 0.04 99.19 ± 0.04
+LeNet+SVHN
+3
+87.02 ± 0.2
+87.27 ± 0.51
+87.3 ± 0.21
+87.95 ± 0.45
+best
+88.95 ± 0.38
+88.95 ± 0.38
+88.68 ± 0.22 88.97 ± 0.45
+VGG11+CIFAR10
+3
+82.23 ± 0.41 78.96 ± 0.56
+80.89 ± 0.33
+81.84 ± 0.22
+best
+82.71 ± 0.27
+82.71 ± 0.27
+82.9 ± 0.33
+82.54 ± 0.28
+VGG11+CIFAR100
+3
+55.35 ± 0.67
+15.99 ± 6.46
+54.37 ± 1.23 55.91 ± 1.26
+best
+57.23 ± 1.69
+57.23 ± 1.69 57.39 ± 1.28
+56.84 ± 1.2
+Resnet18+CIFAR10
+3
+73.12 ± 5.36
+67.85 ± 5.93
+/
+73.46 ± 5.37
+best
+85.48 ± 0.75
+85.48 ± 0.75
+/
+86.45 ± 1.35
+Resnet18+CIFAR100
+3
+65.59 ± 1.51 59.04 ± 1.62
+/
+64.64 ± 0.68
+best
+70.93 ± 0.6
+70.93 ± 0.6
+/
+71.14 ± 0.68
+Table 8: Execution time and RAM usage of different fusion methods.
+Method \Width
+256
+512
+1024
+2048
+4096
+Averaging
+0.002 s 0.005 s 0.015 s
+0.04 s
+0.12 s
+3.8 MB 3.8 MB 3.8 MB
+3.8 MB
+3.8 MB
+OT
+0.73 s
+3.19 s
+14.57 s
+/
+/
+3.8 MB 3.8 MB 22.1 GB > 38.67 GB > 38.67 GB
+NT
+0.03 s
+0.06 s
+0.15 s
+0.47s
+1.39 s
+3.8 MB 3.8 MB 3.8 MB
+3.8 MB
+3.8 MB
+
+--- PAGE 15 ---
+
+Model Fusion via Neuron Transplantation
+15
+
+### 5
+
+
+### Discussion and Conclusion
+
+The inference time and memory consumption of large pretrained ensembles can
+be large making it difficult to adapt them to downstream tasks with limited
+hardware. Distillation does not solve this issue as all ensemble members are
+present as the ensemble teacher during fine-tuning and recent alignment-based
+model fusion methods suffer from large memory requirements or search times.
+In this work, we present a novel model fusion method called Neuron Trans-
+plantation, that is able to fuse ensembles to a single model’s size through com-
+putationally cheap pruning and little fine-tuning, retaining most of the ensemble
+performance. NT jointly prunes all models by removing neurons with the small-
+est L2-norms and concatenates the remaining ones, setting up the fused model
+to retrain to a higher accuracy than any individual model. We theorize that only
+the large weights of the models are needed to set the fused model into a “good”
+loss neighborhood while the loss of the small weights can be compensated with
+further fine-tuning.
+Compared to vanilla averaging, NT does not suffer from severe loss-barriers,
+and compared to OT, no costly permutation matrices need to be computed,
+enabling NT to fuse models with large widths. It can be used in combination with
+distillation to give a slight but cheap performance boost. Though our approach
+suffers from a saturation when fusing too many models (in our experiments
+>8) and from redundant neurons when the models are too similar, NT can
+be applied to various architectures like MLPs and CNNs. It’s application to
+transformers [35] and other use cases like federated learning or parallel SGD we
+leave for future work.
+We advocate NT as model fusion technique. Though its application as a pure
+ensemble-pruning technique also seems apparent, it is - by design as a canonical
+way of applying pruning to ensembles for model fusion - almost equivalent to
+pruning each ensemble member individually. Whether the joint pruning and
+joint training of NT can overcompensate for the newly introduced cross-weights
+remains to be seen. We also leave that for future work.
+It might also be possible to heuristically decide whether the neurons are
+diverse enough for Neuron Transplantation to succeed. Such an approach could
+solve the information loss issue of using NT on really similar models.
+Acknowledgments. This work is supported by the Helmholtz Association Initiative
+and Networking Fund under the Helmholtz AI platform grant and the HAICORE@KIT
+partition.
+Disclosure of Interests. The authors have no competing interests to declare that
+are relevant to the content of this article.
+
+### References
+
+1. Ainsworth, S.K., Hayase, J., Srinivasa, S.: Git re-basin: Merging models modulo
+permutation symmetries (2023). https://doi.org/10.48550/arXiv.2209.04836
+
+--- PAGE 16 ---
+
+16
+M. Öz et al.
+2. Allen-Zhu, Z., Li, Y.: Towards understanding ensemble, knowledge distillation and
+self-distillation in deep learning. CoRR abs/2012.09816 (2020), https://arxiv.
+org/abs/2012.09816
+3. Anwar, S., Hwang, K., Sung, W.: Structured pruning of deep convolutional neural
+networks. J. Emerg. Technol. Comput. Syst. 13(3) (feb 2017), https://doi.org/
+10.1145/3005348
+4. Bhagat Smith, J., Gashler, M.: Investigation of how neural networks learn from the
+experiences of peers through periodic weight averaging investigation of how neural
+networks learn from the experiences of peers through periodic weight averaging. In:
+2017 16th IEEE International Conference on Machine Learning and Applications
+(ICMLA) (12 2017). https://doi.org/10.1109/ICMLA.2017.00-72
+5. Chowdhery, A., Narang, S., Devlin, J., Bosma, M., Mishra, G., Roberts, A.,
+Barham, P., Chung, H.W., Sutton, C., Gehrmann, S., Schuh, P., Shi, K.,
+Tsvyashchenko, S., Maynez, J., Rao, A., Barnes, P., Tay, Y., Shazeer, N., Prab-
+hakaran, V., Reif, E., Du, N., Hutchinson, B., Pope, R., Bradbury, J., Austin,
+J., Isard, M., Gur-Ari, G., Yin, P., Duke, T., Levskaya, A., Ghemawat, S., Dev,
+S., Michalewski, H., Garcia, X., Misra, V., Robinson, K., Fedus, L., Zhou, D.,
+Ippolito, D., Luan, D., Lim, H., Zoph, B., Spiridonov, A., Sepassi, R., Dohan,
+D., Agrawal, S., Omernick, M., Dai, A.M., Pillai, T.S., Pellat, M., Lewkowycz,
+A., Moreira, E., Child, R., Polozov, O., Lee, K., Zhou, Z., Wang, X., Saeta, B.,
+Diaz, M., Firat, O., Catasta, M., Wei, J., Meier-Hellstern, K., Eck, D., Dean, J.,
+Petrov, S., Fiedel, N.: Palm: Scaling language modeling with pathways (2022).
+https://doi.org/10.48550/arXiv.2204.02311
+6. Das, D., Avancha, S., Mudigere, D., Vaidynathan, K., Sridharan, S., Kalamkar,
+D., Kaul, B., Dubey, P.: Distributed deep learning using synchronous stochastic
+gradient descent (2016). https://doi.org/10.48550/arXiv.1602.06709
+7. Deng, L.: The mnist database of handwritten digit images for machine learning
+research. IEEE Signal Processing Magazine 29(6), 141–142 (2012). https://doi.
+org/10.1109/MSP.2012.2211477
+8. Dong, X., Yu, Z., Cao, W., Shi, Y., Ma, Q.: A survey on ensemble learn-
+ing. Front. Comput. Sci. 14(2), 241–258 (2020), https://doi.org/10.1007/
+s11704-019-8208-z
+9. Entezari, R., Sedghi, H., Saukh, O., Neyshabur, B.: The role of permutation in-
+variance in linear mode connectivity of neural networks (2022). https://doi.org/
+10.48550/arXiv.2110.06296
+10. Fang, G., Ma, X., Song, M., Mi, M.B., Wang, X.: Depgraph: Towards any structural
+pruning. In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition. pp. 16091–16101 (2023). https://doi.org/10.48550/arXiv.
+2301.12900
+11. Flamary, R., Courty, N., Gramfort, A., Alaya, M.Z., Boisbunon, A., Chambon,
+S., Chapel, L., Corenflos, A., Fatras, K., Fournier, N., Gautheron, L., Gayraud,
+N.T., Janati, H., Rakotomamonjy, A., Redko, I., Rolet, A., Schutz, A., Seguy,
+V., Sutherland, D.J., Tavenard, R., Tong, A., Vayer, T.: Pot: Python optimal
+transport. Journal of Machine Learning Research 22(78),
+1–8 (2021), http://
+jmlr.org/papers/v22/20-451.html
+12. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition.
+CoRR abs/1512.03385 (2015), http://arxiv.org/abs/1512.03385
+13. Hinton, G., Vinyals, O., Dean, J.: Distilling the knowledge in a neural network
+(2015). https://doi.org/10.48550/arXiv.1503.02531
+
+--- PAGE 17 ---
+
+Model Fusion via Neuron Transplantation
+17
+14. Ioffe, S., Szegedy, C.: Batch normalization: Accelerating deep network training by
+reducing internal covariate shift. CoRR abs/1502.03167 (2015), http://arxiv.
+org/abs/1502.03167
+15. Krizhevsky, A.: Learning multiple layers of features from tiny images. University
+of Toronto (05 2012)
+16. Lecun, Y., Bottou, L., Bengio, Y., Haffner, P.: Gradient-based learning applied to
+document recognition. Proceedings of the IEEE 86(11), 2278–2324 (1998). https:
+//doi.org/10.1109/5.726791
+17. Leontev, M.I., Islenteva, V., Sukhov, S.V.: Non-iterative knowledge fusion in deep
+convolutional neural networks. Neural Processing Letters 51(1), 1–22 (Jul 2019),
+http://dx.doi.org/10.1007/s11063-019-10074-0
+18. Li, H., Kadav, A., Durdanovic, I., Samet, H., Graf, H.P.: Pruning filters for efficient
+convnets. In: International Conference on Learning Representations (2017), https:
+//openreview.net/forum?id=rJqFGTslg
+19. Li, W., Peng, Y., Zhang, M., Ding, L., Hu, H., Shen, L.: Deep model fusion: A
+survey (2023). https://doi.org/10.48550/arXiv.2309.15698
+20. Liebenwein, L., Baykal, C., Carter, B., Gifford, D., Rus, D.: Lost in pruning: The
+effects of pruning neural networks beyond test accuracy (2021). https://doi.org/
+10.48550/arXiv.2103.03014
+21. Liu, C., Lou, C., Wang, R., Xi, A.Y., Shen, L., Yan, J.: Deep neural network fusion
+via graph matching with applications to model ensemble and federated learning.
+In: Chaudhuri, K., Jegelka, S., Song, L., Szepesvari, C., Niu, G., Sabato, S. (eds.)
+Proceedings of the 39th International Conference on Machine Learning. Proceed-
+ings of Machine Learning Research, vol. 162, pp. 13857–13869. PMLR (17–23 Jul
+2022), https://proceedings.mlr.press/v162/liu22k.html
+22. Mishra, R., Gupta, H.P., Dutta, T.: A survey on deep neural network compression:
+Challenges, overview, and solutions (2020). https://doi.org/10.48550/arXiv.
+2010.03954
+23. Mohammed, A., Kora, R.: A comprehensive review on ensemble deep learning:
+Opportunities and challenges. Journal of King Saud University - Computer and
+Information Sciences 35(2), 757–774 (2023), https://www.sciencedirect.com/
+science/article/pii/S1319157823000228
+24. Netzer, Y., Wang, T., Coates, A., Bissacco, A., Wu, B., Ng, A.: Reading digits in
+natural images with unsupervised feature learning. NIPS (01 2011)
+25. Neyshabur, B., Sedghi, H., Zhang, C.: What is being transferred in transfer learn-
+ing? CoRR abs/2008.11687 (2020), https://arxiv.org/abs/2008.11687
+26. NVIDIA, Vingelmann, P., Fitzek, F.H.: Cuda, release: 10.2.89 (2020), https://
+developer.nvidia.com/cuda-toolkit
+27. Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., Killeen,
+T., Lin, Z., Gimelshein, N., Antiga, L., Desmaison, A., Kopf, A., Yang, E.,
+DeVito, Z., Raison, M., Tejani, A., Chilamkurthy, S., Steiner, B., Fang, L.,
+Bai, J., Chintala, S.: Pytorch: An imperative style, high-performance deep
+learning library. In: Advances in Neural Information Processing Systems 32, pp.
+8024–8035. Curran Associates, Inc. (2019), http://papers.neurips.cc/paper/
+9015-pytorch-an-imperative-style-high-performance-deep-learning-library.
+pdf
+28. Qi, P., Chiaro, D., Guzzo, A., Ianni, M., Fortino, G., Piccialli, F.: Model aggre-
+gation techniques in federated learning: A comprehensive survey. Future Genera-
+tion Computer Systems 150, 272–293 (2024), https://www.sciencedirect.com/
+science/article/pii/S0167739X23003333
+
+--- PAGE 18 ---
+
+18
+M. Öz et al.
+29. Qian, C., Yu, Y., Zhou, Z.H.: Pareto ensemble pruning. In: Proceedings of the
+Twenty-Ninth AAAI Conference on Artificial Intelligence. p. 2935–2941. AAAI’15,
+AAAI Press (2015)
+30. Reed, R.: Pruning algorithms-a survey. IEEE Transactions on Neural Networks
+4(5), 740–747 (1993). https://doi.org/10.1109/72.248452
+31. Shen, Z., He, Z., Xue, X.: MEAL: multi-model ensemble via adversarial learning.
+CoRR abs/1812.02425 (2018), http://arxiv.org/abs/1812.02425
+32. Simonyan, K., Zisserman, A.: Very deep convolutional networks for large-scale im-
+age recognition. In: International Conference on Learning Representations (2015).
+https://doi.org/10.48550/arXiv.1409.1556
+33. Singh, S.P., Jaggi, M.: Model fusion via optimal transport (2023). https://doi.
+org/10.48550/arXiv.1910.05653
+34. Sun, S., Chen, W., Bian, J., Liu, X., Liu, T.Y.: Ensemble-compression: A new
+method for parallel training of deep neural networks (2017). https://doi.org/
+10.48550/arXiv.1606.00575
+35. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser,
+L., Polosukhin, I.: Attention is all you need. CoRR abs/1706.03762 (2017), http:
+//arxiv.org/abs/1706.03762
+36. Walawalkar, D., Shen, Z., Savvides, M.: Online ensemble model compression using
+knowledge distillation. CoRR abs/2011.07449 (2020), https://arxiv.org/abs/
+2011.07449
+37. Wang, H., Yurochkin, M., Sun, Y., Papailiopoulos, D.S., Khazaeni, Y.: Feder-
+ated learning with matched averaging. CoRR abs/2002.06440 (2020), https:
+//arxiv.org/abs/2002.06440
+38. Wortsman, M., Ilharco, G., Gadre, S.Y., Roelofs, R., Gontijo-Lopes, R., Morcos,
+A.S., Namkoong, H., Farhadi, A., Carmon, Y., Kornblith, S., Schmidt, L.: Model
+soups: averaging weights of multiple fine-tuned models improves accuracy without
+increasing inference time (2022). https://doi.org/10.48550/arXiv.2203.05482
+39. Yang,
+Y.,
+Lv,
+H.:
+Discussion
+of
+ensemble
+learning
+under
+the
+era
+of
+deep
+learning.
+CoRR
+abs/2101.08387
+(2021).
+https://doi.org/10.1007/
+s10462-022-10283-5, https://arxiv.org/abs/2101.08387

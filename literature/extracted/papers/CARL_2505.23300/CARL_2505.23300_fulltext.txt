@@ -1,0 +1,1499 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+FACTORIZATIONS FOR VARIABLE EXPONENT MUCKENHOUPT
+WEIGHTS
+STEFANOS LAPPAS AND TUOMAS OIKARI
+Abstract. Given two variable exponent Muckenhoupt weights w ∈Ap(·) and w1 ∈Ap1(·),
+we prove that for all small enough θ > 0, there holds that w0 ∈Ap0(·), where the weight is
+determined by w = w1−θ
+0
+wθ
+1 and exponent of the weight class by 1/p(·) = (1−θ)/p0(·)+θ/p1(·).
+The proof is based on a recent reverse Hölder’s inequality for variable exponent Muckenhoupt
+weights by Cruz-Uribe and Penrod. We upgrade these factorizations to the restricted range
+context by using a recent transformation formula due to Nieraeth. Then, following an extrap-
+olation of compactness scheme by Hytönen and Lappas, we provide an alternative proof of the
+recent extrapolation of compactness results of Lorist and Nieraeth in the context of weighted
+variable exponent Lebesgue spaces.
+1. Introduction
+The aim of this paper is to prove factorization results for variable exponent Muckenhoupt
+weights in the diagonal, off-diagonal and limited range contexts (see Theorems 1.2 and 1.8 in
+the body-text). These new factorizations lead, by an argument due to the first named author
+and Hytönen [10], to the compactness extrapolation results, Theorems 1.4 and 1.9, on weighted
+variable exponent Lebesgue spaces Lp(·)
+w
+(we recall their definition soon). The proof we present
+is hands-on and elementary. However, we also note that these extrapolation results (including
+concrete examples to which they are applicable) follow as special cases from Lorist and Nieraeth’s
+work [13, Sections 1 and 6] on extrapolation on Banach function spaces. Factorization results
+for weights are however of independent value and, again, provide a more hands-on approach to
+such results. For an extensive treatment of variable exponent Lebesgue spaces, we refer to the
+books of Cruz-Uribe, Fiorenza [3] and of Diening, Harjulehto, Hästö, Růžička [7]. To be able to
+formulate our results we begin by gathering below some basic definitions and notation.
+• The class P(Rd) stands for measurable functions p(·) : Rd →[1, ∞], this is the collection
+of all variable exponents.
+• Given p(·) ∈P(Rd), the variable exponent Lebesgue space Lp(·)(Rd) is defined through
+the norm
+∥f∥Lp(·)(Rd) := inf{λ > 0 : ρp(·)(f/λ) ≤1},
+where the modular is defined through
+ρp(·)(f) :=
+ˆ
+Rd\{p(·)=∞}
+|f(x)|p(x)dx + ∥f∥L∞({p(·)=∞}).
+• We abbreviate ∥f∥Lp(·)(Rd) = ∥f∥p(·).
+• A weight w is an almost everywhere positive function and is treated as a multiplier; we
+define the weighted space Lp(·)
+w
+through the norm
+∥f∥Lp(·)
+w
+:= ∥fw∥p(·).
+• Given p(·) ∈P(Rd), the conjugate exponent p′(·) is given by 1/p(·) + 1/p′(·) = 1.
+• Given p(·) ∈P(Rd), we denote p−= ess infx∈Rd p(x) and p+ = ess supx∈Rd p(x).
+• The harmonic mean pE on a set E of positive and finite Lebesgue measure is defined by
+1
+pE
+:=
+ˆ
+E
+−
+1
+p(x)dx =
+1
+|E|
+ˆ
+E
+1
+p(x)dx.
+2020 Mathematics Subject Classification. 47B38 (Primary); 42B35, 46B70.
+Key words and phrases. Weights, variable exponent, factorization, extrapolation, compact operator.
+1
+arXiv:2505.23300v3  [math.FA]  30 Aug 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+2
+S. LAPPAS AND T. OIKARI
+• We drop the ambient space/dimension Rd from the notation whenever convenient, as it
+plays no particular role in our considerations.
+Common background smoothness assumptions on the variable exponents are the following local
+and asymptotic Hölder continuity classes. We denote
+• p(·) ∈LH0, if there exists C0 > 0 such that, whenever |x −y| < 1
+2, then
+|p(x) −p(y)| ≤
+C0
+−log(|x −y|);
+• p(·) ∈LH∞, if there exist p∞∈R and C∞> 0 such that
+|p(x) −p∞| ≤
+C∞
+log(e + |x|);
+• LH := LH0 ∩LH∞.
+Notice that if p(·) ∈LH then p+ < ∞. Moreover, it follows from [3, Proposition 2.3] that
+p(·) ∈LH ⇐⇒1/p(·) ∈LH.
+1.A. Full range factorization and extrapolation. We begin by stating the factorization
+results (see also Subsection 1.B) which are proved in Section 3. As easy corollaries, we obtain
+the extrapolation of compactness results, which are also stated in these subsections, while their
+proofs are given in Section 4. Without much added difficulty, we work directly in the off-diagonal
+setting, meaning that in what follows we do not only consider γ = 0 but also γ ∈(0, 1). Let
+γ ∈[0, 1) be fixed and we denote
+E0
+(1,∞) := {p(·) ∈P ∩LH : 1 < p−≤p+ < ∞} ,
+Eγ
+(1,∞) :=
+��
+p(·), q(·)
+�
+∈E0
+(1,∞) × E0
+(1,∞) : 1/p(·) −1/q(·) = γ
+�
+.
+We consider the following class of variable exponent Muckenhoupt weights.
+1.1. Definition ([5], Definition 2.10). Let γ ∈[0, 1) and p(·), q(·) ∈P be such that 1/p(·) −
+1/q(·) = γ. Then, a weight w belongs to the class Aγ
+p(·),q(·), if
+[w]Aγ
+p(·),q(·) := sup
+Q
+|Q|γ−1∥wχQ∥q(·)∥w−1χQ∥p′(·) < ∞,
+where the supremum is taken over all cubes Q ⊂Rd.
+When γ = 0 we understand that p(·) ∈E0
+(1,∞) is equivalent to (p(·), p(·)) ∈E0
+(1,∞).
+Our first factorization theorem for variable exponent Muckenhoupt weights reads as follows.
+1.2. Theorem (Full range factorization). Let γ ∈[0, 1) be fixed and
+•
+�
+p1(·), q1(·)
+�
+∈Eγ
+(1,∞) and w1 ∈Aγ
+p1(·),q1(·),
+•
+�
+p(·), q(·)
+�
+∈Eγ
+(1,∞) and w ∈Aγ
+p(·),q(·).
+Given any θ ∈(0, 1) define the variable exponents (p0(·), q0(·)) and the weight w0 through
+(1.3)
+�1
+p(·), 1
+q(·)
+�
+=
+�1 −θ
+p0(·) +
+θ
+p1(·), 1 −θ
+q0(·) +
+θ
+q1(·)
+�
+,
+w = w1−θ
+0
+wθ
+1.
+Then, there exists η ∈(0, 1) so that for all θ ∈(0, η) there holds that
+•
+�
+p0(·), q0(·)
+�
+∈Eγ
+(1,∞) and w0 ∈Aγ
+p0(·),q0(·).
+The following extrapolation of compactness result is derived by using Theorem 1.2.
+1.4. Theorem (Full range extrapolation of compactness). Let γ ∈[0, 1) and T be a linear
+operator that is
+• bounded from Lp0(·)
+w0
+to Lq0(·)
+w0
+for all
+�
+p0(·), q0(·)
+�
+∈Eγ
+(1,∞) and for all w0 ∈Aγ
+p0(·),q0(·),
+• compact from Lp1(·)
+w1
+to Lq1(·)
+w1
+for some
+�
+p1(·), q1(·)
+�
+∈Eγ
+(1,∞) and for some w1 ∈Aγ
+p1(·),q1(·).
+Then, the operator T is
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+FACTORIZATION OF WEIGHTS
+3
+• compact from Lp(·)
+w
+to Lq(·)
+w
+for all (p(·), q(·)) ∈Eγ
+(1,∞) and for all w ∈Aγ
+p(·),q(·).
+Theorem 1.4 is in fact a special circumstance in a more general limited range context.
+1.B. Limited range factorization and extrapolation. We turn to the limited range setting.
+First, given r < s we denote
+E0
+(r,s) := {p(·) ∈P ∩LH : r < p−≤p+ < s} .
+For γ ∈[0, 1) and 1 ≤ri < si ≤∞for i = 1, 2, we denote
+⃗Eγ
+(⃗r,⃗s) :=
+�
+(p(·), q(·)) ∈E0
+(r1,s1) × E0
+(r2,s2) :
+1
+p(·) −
+1
+q(·) = 1
+r1
+−1
+r2
+= 1
+s1
+−1
+s2
+= γ
+�
+.
+1.5. Remark. We understand that whenever we write (p(·), q(·)) ∈⃗Eγ
+(⃗r,⃗s), then the condition
+1
+r1
+−1
+r2
+= 1
+s1
+−1
+s2
+= γ
+automatically holds, since otherwise ⃗Eγ
+(⃗r,⃗s) = ∅.
+The following off-diagonal limited range variable weight class was introduced in Nieraeth [16,
+Theorem A]; the special case p(·) = q(·), r1 = r2, and s1 = s2, is also contained in [16, Definition
+3.4].
+1.6. Definition ([16]). Let γ ∈[0, 1) and 1 ≤ri ≤si ≤∞, for i = 1, 2. Then, for (p(·), q(·)) ∈
+⃗Eγ
+(⃗r,⃗s) the class A(p(·),q(·)),(⃗r,⃗s) is defined through the condition
+[w](p(·),q(·)),(⃗r,⃗s) := sup
+Q
+|Q|−( 1
+r1 −1
+s1 )∥wχQ∥
+1
+1
+q(·) −1
+s2
+∥w−1χQ∥
+1
+1
+r1 −
+1
+p(·)
+< ∞,
+where the supremum is taken over all cubes Q ⊂Rd.
+1.7. Remark. While the definition of [w](p(·),q(·)),(⃗r,⃗s) only explicitly depends on r1, s1, s2, but
+not on r2, we note that r2 is actually determined by the other three exponents, by Remark 1.5.
+Notice, unlike in the full range context, that the symbol A is not included in the notation
+[w](p(·),q(·)),(⃗r,⃗s), following the notation of Nieraeth [16].
+We now state our second factorization result.
+1.8. Theorem (Limited range factorization). Let ri, si ∈[1, ∞] satisfy ri < si for i = 1, 2 and
+γ ∈[0, 1) be fixed. Let
+•
+�
+p1(·), q1(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and w1 ∈A(p1(·),q1(·)),(⃗r,⃗s),
+•
+�
+p(·), q(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and w ∈A(p(·),q(·)),(⃗r,⃗s).
+Given a fixed θ ∈(0, 1) define the variable exponents (p0(·), q0(·)) and the weight w0 through
+�1
+p(·), 1
+q(·)
+�
+=
+�1 −θ
+p0(·) +
+θ
+p1(·), 1 −θ
+q0(·) +
+θ
+q1(·)
+�
+,
+w = w1−θ
+0
+wθ
+1.
+Then, there exists η ∈(0, 1) so that for all θ ∈(0, η) there holds that
+•
+�
+p0(·), q0(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and w0 ∈A(p0(·),q0(·)),(⃗r,⃗s).
+Theorem 1.8 yields the following extrapolation of compactness result.
+1.9. Theorem (Limited range extrapolation of compactness). Let γ ∈[0, 1) and ri, si ∈[1, ∞]
+satisfying ri < si for i = 1, 2. Let T be a linear operator that is
+• bounded from Lp0(·)
+w0
+to Lq0(·)
+w0
+for all (p0(·), q0(·)) ∈⃗Eγ
+(⃗r,⃗s) and for all w0 ∈A(p0(·),q0(·)),(⃗r,⃗s),
+• compact from Lp1(·)
+w1
+to Lq1(·)
+w1
+for some (p1(·), q1(·)) ∈⃗Eγ
+(⃗r,⃗s) and
+for some w1 ∈A(p1(·),q1(·)),(⃗r,⃗s).
+Then, the operator T is
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+4
+S. LAPPAS AND T. OIKARI
+• compact from Lp(·)
+w
+to Lq(·)
+w
+for all
+�
+p(·), q(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and for all w ∈A(p(·),q(·)),(⃗r,⃗s).
+The limited range context covers both the diagonal full/limited range and the off-diagonal full
+range contexts.
+• To recover the diagonal full/limited range context, simply set γ = 0 to obtain r1 = r2,
+s1 = s2 and p(·) = q(·).
+• Given γ ∈[0, 1), we take r1 = 1, s1 = 1/γ and r2 = 1/(1 −γ), s2 = ∞to recover the
+off-diagonal full range variable weights as in Definition 1.1:
+[w]Aγ
+p(·),q(·) = [w](p(·),q(·)),(⃗r,⃗s).
+1.10. Remark. Earlier versions of Theorems 1.2 and 1.8 for classical Lp spaces can be found
+in [10]. The literature on the factorization of Muckenhoupt weights in the constant-exponent
+setting has since expanded considerably; see for example, the works by Cao–Olivo–Yabuta [2],
+Hytönen–Lappas [9], Liu–Wu–Yang [12], Lorist-Nieraeth [13] and Martín-Reyes–Rivera-Ríos [14].
+1.11. Remark. Theorems 1.4 and 1.9 have their predecessors for constant exponent Lp spaces in
+[10]. We observe the following differences. In the constant exponent case, the initial boundedness
+assumption is made for some exponent and all weights, while Theorems 1.4 and 1.9 make the
+initial assumption for all exponents (in a certain range) and all weights. In the constant exponent
+case, the boundedness with some exponent (and all weights) implies the boundedness for all
+exponents (and all weights) by the classical Rubio de Francia extrapolation of boundedness [17].
+Versions of Rubio de Francia’s extrapolation for variable-exponent spaces are due to Cruz-Uribe–
+Wang [5] (with further extensions by Cao–Marín–Martell [1] and Nieraeth [16]).
+However, in their results, the starting point of the extrapolation is boundedness for some
+constant exponent (and all weights), and variable exponents only appear in the conclusions.
+Such results would allow one to replace the boundedness assumption for all variable exponents
+(p0(·), q0(·)) by some constant exponents (p0, q0) in the same class, but it seems open whether
+it is possible to start from the boundedness for just one non-constant variable exponent pair
+(p0(·), q0(·)). We do not seem to have an analogue of Rubio de Francia’s extrapolation theorem
+on weighted variable exponent Lebesgue spaces. Furthermore, we point out that Cruz-Uribe–
+Wang (see [5, Theorem 2.7]) proved that operators satisfying the hypotheses of the extrapolation
+theorem for Muckenhoupt Ap weights are bounded on weighted variable Lebesgue spaces. Similar
+results hold in the off-diagonal and limited range setting (see [5, Theorems 2.11 and 2.14]). For
+further extensions of [5] we refer to the recent works by Cao–Marín–Martell [1] and Nieraeth
+[16].
+1.C. Acknowledgements and complements. This project was initiated in 2021 during our
+PhD studies at the University of Helsinki by Tuomas Hytönen introducing us to the idea of
+extending the compactness extrapolation results from [10] to variable exponent Lebesgue spaces.
+Back then we got stuck due to the unavailability of appropriate reverse Hölder’s inequalities.
+Luckily for us, these were provided recently by Cruz-Uribe and Penrod [4, Theorem 1.1] which
+allowed us to pick up and finish the project that we had started nearly four years ago. In between,
+the abstract compactness extrapolation results of Lorist and Nieraeth [13] appeared which yield
+the results of [10] in the context of variable exponent Lebesgue spaces.
+2. Preliminaries
+We next gather some known results on variable exponent Lebesgue spaces that we will need.
+The following is immediate from the definitions.
+2.1. Lemma ([3], Proposition 2.18). Given a measurable function p(·) : Rd →(0, ∞) such that
+p+ < ∞, there holds that ∥|f|s∥p(·) = ∥f∥s
+sp(·), for all s > 0.
+The next lemma addresses the norm of a characteristic function of a cube. This result is stated
+in terms of the Ap(·) condition, given in Definition 1.1 for γ = 0. We state this special case here.
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+FACTORIZATION OF WEIGHTS
+5
+In particular, given p(·) ∈P, we say that 1 ∈Ap(·) if
+[1]Ap(·) := sup
+Q
+|Q|−1∥χQ∥p(·)∥χQ∥p′(·) < ∞.
+2.2. Remark. The fact that p(·) ∈LH ∩P with p+ < ∞implies [1]Ap(·) < ∞can be found in [3,
+Proposition 4.57]. Notice that there this condition is referred to as the K0 condition. Moreover,
+as explained in [3, Example 4.59] the K0 condition is strictly weaker than LH condition.
+2.3. Lemma ([7], Lemma 4.5.3). Let p(·) ∈LH ∩P with p+ < ∞. Then, ∥χQ∥p(·) ∼|Q|1/pQ,
+for every cube Q ⊂Rd and the implicit constants depend on p(·) and [1]Ap(·) < ∞.
+Another basic result we use is Hölder’s inequality in the variable exponent setting.
+2.4. Lemma ([18], Lemma 6.2). Given p1(·), . . . , pm(·) ∈P, define p(·) ∈P by
+1
+p(·) =
+m
+�
+j=1
+1
+pj(·),
+where j = 1, . . . , m. Then, for all fj ∈Lpj(·) and f1 · · · fm ∈Lp(·) one has
+(2.5)
+∥f1 · · · fm∥Lp(·) ≲∥f1∥Lp1(·) · · · ∥fm∥Lpm(·),
+where the implicit constant depends only on the pj(·).
+2.6. Remark. The Hölder’s inequality for two variable exponents can be found in [3, Corollary
+2.28]. This fact together with an induction argument imply [18, Lemma 6.2]. Moreover, from the
+proofs of [3, Corollary 2.28] and [18, Lemma 6.2] one sees that the implicit constant appearing
+in (2.5) is at most 5m−1, where m ≥2.
+A key role will be played by the following recent reverse Hölder’s inequality for variable
+exponent Muckenhoupt weights.
+2.7. Theorem ([4], Theorem 1.1). Let r(·) ∈LH ∩P with r+ < ∞and let u ∈Ar(·). Then,
+there exists an exponent s > 1 such that for all cubes Q ⊂Rd,
+|Q|
+−
+1
+srQ ∥uχQ∥Lsr(·) ≲|Q|
+−1
+rQ ∥uχQ∥Lr(·),
+where the implicit constant depends only on r(·).
+In fact, we will use the following corollary, which states that the reverse Hölder’s inequality
+does not only hold for the single s, but in a specific way also for all t ∈(1, s).
+2.8. Lemma ([4], Corollary 4.4). Let r(·) ∈LH ∩P with r+ < ∞. If u ∈Ar(·), then there exists
+an exponent s > 1 such that for all t ∈(1, s) and for all cubes Q ⊂Rd,
+|Q|
+−
+1
+trQ ∥uχQ∥Ltr(·) ≲|Q|
+−1
+rQ ∥uχQ∥Lr(·),
+where the implicit constant depends only on r(·) and [1]A�v(·) < ∞, where
+�v(·) :=
+r(·)
+1
+t −1
+s
+.
+2.9. Remark. The fact that [1]A�v(·) < ∞is contained in the proof of [4, Corollary 4.4].
+To apply the reverse Hölder’s inequality we use the following lemma.
+2.10. Lemma ([5], Proposition 5.4). Let γ ∈[0, 1) and define σ′ = 1/γ. Let p(·), q(·) ∈P be
+such that 1/p(·) −1/q(·) = 1/σ′. Then, w ∈Aγ
+p(·),q(·) if and only if wσ ∈Aq(·)/σ.
+3. Factorizations for variable exponent Muckenhoupt weights
+The technical core of the extrapolation of compactness results, Theorems 1.4 and 1.9, following
+the approach to similar results first studied in [10], consists of factorization Theorems 1.2 and
+1.8, respectively. In this section, we provide the proofs of these factorization results.
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+6
+S. LAPPAS AND T. OIKARI
+3.A. Full-range factorization. In this subsection, we present the proof of the factorization
+Theorem 1.2. Besides the relevance of this full-range result in its own right, it will also be used
+in the proof of the limited-range variant further below.
+Proof of Theorem 1.2. A fixed choice of θ ∈(0, 1) determines the tuple
+�
+p0(·), q0(·)
+�
+and the
+weight w0 through (1.3).
+We first check that
+�
+p0(·), q0(·)
+�
+∈Eγ
+(1,∞), provided θ < η, and η is sufficiently small. We
+impose that
+η < min
+�(p1)−
+p+
+, 1 −1
+p−
+, (q1)−
+q+
+, 1 −1
+q−
+�
+.
+(3.1)
+Notice that η ∈(0, 1) is clear. From the first two entries in the minimum in (3.1), it follows that
+1 −θ
+p0(·) =
+1
+p(·) −
+θ
+p1(·)
+
+
+
+
+
+≥1
+p+
+−
+θ
+(p1)−
+> 1
+p+
+−
+η
+(p1)−
+> 0,
+≤1
+p−
+−
+θ
+(p1)+
+< 1
+p−
+< 1 −η < 1 −θ,
+and hence (p0)−, (p0)+ ∈(1, ∞). Exactly the same argument (using the two rightmost entries
+inside the minimum bounding η) shows that (q0)−, (q0)+ ∈(1, ∞).
+Next we check that p0(·), q0(·) ∈LH. Since (p0)+, (q0)+ < ∞, by [3, Proposition 2.3] we know
+that p0(·), q0(·) ∈LH if and only if 1/p0(·), 1/q0(·) ∈LH. Similarly p+, q+, (p1)+, (q1)+ < ∞
+gives 1/p(·), 1/q(·), 1/p1(·), 1/q1(·) ∈LH. Therefore 1/p0(·), 1/q0(·) (by (1.3)) are linear combina-
+tions of functions in LH. Since LH is closed under linear combinations, we get 1/p0(·), 1/q0(·) ∈
+LH. Since (p0)+, (q0)+ < ∞, this is further equivalent to p0(·), q0(·) ∈LH. To see that 1/p0(·) −
+1/q0(·) = γ, notice that
+γ =
+1
+p(·) −
+1
+q(·) = 1 −θ
+p0(·) +
+θ
+p1(·) −1 −θ
+q0(·) −
+θ
+q1(·) = (1 −θ)
+�
+1
+p0(·) −
+1
+q0(·)
+�
++ θγ.
+Thus we have shown that
+�
+p0(·), q0(·)
+�
+∈Eγ
+(1,∞), provided θ < η and (3.1) holds.
+It remains to show that, under a further restriction of η, there holds that w0 ∈Aγ
+p0(·),q0(·) for
+all θ < η. Fix a cube Q and after solving w0 = w1/(1−θ)w−θ/(1−θ)
+1
+(by (1.3)) write
+∥w0χQ∥q0(·)∥w−1
+0 χQ∥p′
+0(·) = ∥w
+1
+1−θ w
+−
+θ
+1−θ
+1
+χQ∥q0(·)∥w−
+1
+1−θ w
+θ
+1−θ
+1
+χQ∥p′
+0(·).
+The idea is to use Hölder’s inequality appropriately in preparation for a later use of the reverse
+Hölder’s inequality. Let ι > 0 be a positive constant (to be later fixed as a function of the reverse
+Hölder’s inequality) and define e(·) = eθ(·) and u(·) = uθ(·) through
+1
+q0(·) =
+1
+(1 + ι)q(·) +
+θ
+(1 + ι)p′
+1(·) +
+1
+e(·),
+(3.2)
+1
+p′
+0(·) =
+1
+(1 + ι)p′(·) +
+θ
+(1 + ι)q1(·) +
+1
+u(·).
+(3.3)
+We next check that if θ is sufficiently small (for a given fixed ι), then eθ(·), uθ(·) ∈E0
+(1,∞). Solving
+for 1/q0(·) from (1.3) and using (3.2) we find that
+1
+(1 −θ)q(·) −
+θ
+(1 −θ)q1(·) =
+1
+(1 + ι)q(·) +
+θ
+(1 + ι)p′
+1(·) +
+1
+eθ(·),
+and rearranging gives
+1
+eθ(·) =
+�
+1
+1 −θ −
+1
+1 + ι
+�1
+q(·) −θ
+�
+1
+(1 −θ)q1(·) +
+1
+(1 + ι)p′
+1(·)
+�
+,
+(3.4)
+which shows that
+lim
+θ→0+
+1
+eθ(·) =
+�
+1 −
+1
+1 + ι
+�1
+q(·).
+(3.5)
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+FACTORIZATION OF WEIGHTS
+7
+Since ι > 0, it is immediate by (3.5) that we may choose θ so small that e = eθ(·) ∈P with
+e−> 1. Clearly also 1/e(·) ∈LH as a linear combination of elements of LH (this follows by
+[3, Proposition 2.3] and the fact that p′
+1(·) ∈LH since p1(·) ∈LH and (p1)−> 1). Thus, by
+e+ < ∞(clear from (3.4)) and [3, Proposition 2.3], it follows that e(·) ∈E0
+(1,∞). A similar analysis
+shows that u(·) = uθ(·) ∈E0
+(1,∞), provided θ is sufficiently small. Since e(·), u(·) ∈E0
+(1,∞), we
+have
+(3.6)
+∥χQ∥e(·) ∼|Q|1/eQ
+and
+∥χQ∥u(·) ∼|Q|1/uQ,
+by Lemma 2.3.
+Now Hölder’s inequality (Lemma 2.4) applied with the variable exponents (3.2) shows that
+(3.7)
+∥w
+1
+1−θ w
+−
+θ
+1−θ
+1
+χQ∥q0(·) ≲∥w
+1
+1−θ χQ∥(1+ι)q(·)∥w
+−
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+p′
+1(·)∥χQ∥e(·)
+and with the variable exponents (3.3) that
+(3.8)
+∥w−
+1
+1−θ w
+θ
+1−θ
+1
+χQ∥p′
+0(·) ≲∥w−
+1
+1−θ χQ∥(1+ι)p′(·)∥w
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+q1(·)∥χQ∥u(·)
+By summing equations (3.2) and (3.3), we obtain
+1 −γ =
+1
+q0(·) +
+1
+p′
+0(·) =
+1
+1 + ι
+�1
+q(·) +
+1
+p′(·)
+�
++
+θ
+1 + ι
+�
+1
+p′
+1(·) +
+1
+q1(·)
+�
++
+1
+e(·) +
+1
+u(·)
+= 1 −γ
+1 + ι + θ1 −γ
+1 + ι +
+1
+e(·) +
+1
+u(·).
+After rearranging, this gives
+1
+e(·) +
+1
+u(·) = (1 −γ)
+�
+1 −
+�
+1
+1 + ι +
+θ
+1 + ι
+��
+= (1 −γ)
+�
+1 −1 + θ
+1 + ι
+�
+,
+and in particular, for all cubes Q, there holds
+1
+eQ
++ 1
+uQ
+= (1 −γ)
+�
+1 −1 + θ
+1 + ι
+�
+.
+(3.9)
+Multiplying the bounds (3.7) and (3.8) together, using (3.6) and (3.9) and rearranging, we obtain
+|Q|γ−1∥w0χQ∥q0(·)∥w−1
+0 χQ∥p′
+0(·)
+≲|Q|−(1+θ) 1−γ
+1+ι
+�
+∥w
+1
+1−θ χQ∥(1+ι)q(·)∥w−
+1
+1−θ χQ∥(1+ι)p′(·)
+�
+×
+�
+∥w
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+q1(·)∥w
+−
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+p′
+1(·)
+�
+(3.10)
+We consider the square bracketed terms separately. By Lemma 2.1 we write
+∥w
+1
+1−θ χQ∥(1+ι)q(·)∥w−
+1
+1−θ χQ∥(1+ι)p′(·) = ∥wσχQ∥
+1
+σ(1−θ)
+1+ι
+1−θ
+q(·)
+σ
+∥w−σχQ∥
+1
+σ(1−θ)
+1+ι
+1−θ
+p′(·)
+σ
+.
+(3.11)
+Recall that w ∈Aγ
+p(·),q(·) if and only if w−1 ∈Aγ
+q′(·),p′(·) (immediately from the definition). Now
+Lemma 2.10 applied with σ =
+1
+1−γ , shows that wσ ∈Aq(·)/σ and w−σ ∈Ap′(·)/σ. Moreover,
+notice that q(·)/σ, p′(·)/σ ∈P ∩LH with (q(·)/σ)+, (p′(·)/σ)+ < ∞.
+Therefore the reverse
+Hölder’s inequality, Lemma 2.8, tells us that there exist some s1, s2 > 1 such that
+∥wσχQ∥t q(·)
+σ ≲|Q|( 1
+t −1)σ/qQ∥wσχQ∥q(·)
+σ ,
+1 < t < s1,
+(3.12)
+∥w−σχQ∥t p′(·)
+σ
+≲|Q|( 1
+t −1)σ/p′
+Q∥w−σχQ∥p′(·)
+σ ,
+1 < t < s2.
+(3.13)
+Now we demand from θ, ι that
+(3.14)
+1 < t := t(θ, ι) := (1 + ι)/(1 −θ) < min(s1, s2).
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+8
+S. LAPPAS AND T. OIKARI
+Applying Lemma 2.1 and estimates (3.12) and (3.13), we obtain
+RHS(3.11)σ(1−θ) = ∥wσχQ∥t q(·)
+σ ∥w−σχQ∥t p′(·)
+σ
+≲|Q|σ( 1
+t −1)(1/qQ+1/p′
+Q)∥wσχQ∥q(·)
+σ ∥w−σχQ∥p′(·)
+σ
+= |Q|σ( 1
+t −1)(1/qQ+1/p′
+Q)∥wχQ∥σ
+q(·)∥w−1χQ∥σ
+p′(·)
+≤|Q|σ( 1
+t −1)(1−γ)|Q|σ(1−γ)[w]σ
+Aγ
+p(·),q(·)
+= |Q|σ 1
+t (1−γ)[w]σ
+Aγ
+p(·),q(·) = |Q|σ 1−θ
+1+ι (1−γ)[w]σ
+Aγ
+p(·),q(·),
+where we substituted the value of t from (3.14) in the last step. Taking roots of both sides, we
+have
+(3.15)
+RHS(3.11) ≲|Q|
+1−γ
+1+ι [w]
+1
+1−θ
+Aγ
+p(·),q(·).
+Then, we consider the second bracketed term of (3.10). By Lemma 2.1, we write it as
+∥w
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+q1(·)∥w
+−
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+p′
+1(·) =
+�
+∥wσ
+1 χQ∥
+1
+σ(1−θ)
+�
+1+ι
+1−θ
+�q1(·)
+σ
+∥w−σ
+1 χQ∥
+1
+σ(1−θ)
+�
+1+ι
+1−θ
+�p′
+1(·)
+σ
+�θ
+.
+(3.16)
+Notice that RHS(3.16) is formally of exactly the same form as RHS(3.11)θ but with the variable
+exponents q1(·), p′
+1(·) in place of q(·), p′(·). Therefore, exactly the same analysis as above yields,
+for an appropriate choice of t(θ, ι) small enough, that
+(3.17)
+RHS(3.16) ≲
+�
+|Q|
+1−γ
+1+ι [w1]
+1
+1−θ
+Aγ
+p1(·),q1(·)
+�θ
+.
+Chaining all of the above estimates together, the proof is concluded by
+|Q|γ−1∥w0χQ∥q0(·)∥w−1
+0 χQ∥p′
+0(·)
+≲|Q|−(1+θ) 1−γ
+1+ι
+�
+∥w
+1
+1−θ χQ∥(1+ι)q(·)∥w−
+1
+1−θ χQ∥(1+ι)p′(·)
+�
+×
+�
+∥w
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+q1(·)∥w
+−
+θ
+1−θ
+1
+χQ∥�
+1+ι
+θ
+�
+p′
+1(·)
+�
+by (3.10)
+≲|Q|−(1+θ) 1−γ
+1+ι |Q|
+1−γ
+1+ι |Q|θ 1−γ
+1+ι [w]
+1
+1−θ
+Aγ
+p(·),q(·)[w1]
+θ
+1−θ
+Aγ
+p1(·),q1(·)
+by (3.15) and (3.17)
+= [w]
+1
+1−θ
+Aγ
+p(·),q(·)[w1]
+θ
+1−θ
+Aγ
+p1(·),q1(·).
+□
+3.B. Limited-range factorization. We turn to the off-diagonal limited range context.
+In
+particular, we provide the proof of the second key factorization Theorem 1.8 which is essential
+for the proof of Theorem 1.9.
+Proof of Theorem 1.8. The strategy of the proof is to apply a transformation to reduce the
+situation at hand to the one that was already covered in Theorem 1.2, then apply that theorem,
+and finally transform back.
+Turning to the details, we consider the following maps introduced by Nieraeth [16]:
+ϕr,s(t) :=
+t −1/s
+1/r −1/s,
+wr,s := w1/(1/r−1/s)
+and define new variable exponents through
+1
+pr,s(·) := ϕr,s
+�1
+p(·)
+�
+,
+1
+p′r,s(·) = 1 −
+1
+pr,s(·).
+Our standing assumptions state that
+1/r1 −1/r2 = 1/s1 −1/s2 = 1/p1(·) −1/q1(·) = γ.
+(3.18)
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+FACTORIZATION OF WEIGHTS
+9
+Notice that 1/r1 −1/s1 = 1/r2 −1/s2 by the left-most identity of (3.18). Then,
+1
+(p1)r1,s1(·) −
+1
+(q1)r2,s2(·) =
+1
+1/r1 −1/s1
+�
+1
+p1(·) −
+1
+q1(·) −
+�1
+s1
+−1
+s2
+��
+=
+γ −γ
+1/r1 −1/s1
+= 0,
+showing that (the latter identity is checked similarly)
+(p1)r1,s1(·) = (q1)r2,s2(·),
+pr1,s1(·) = qr2,s2(·).
+(3.19)
+Then, a computation, using Lemma 2.1, shows that
+�
+∥w1χQ∥
+1
+1
+q1(·) −1
+s2
+∥w−1
+1 χQ∥
+1
+1
+r1 −
+1
+p1(·)
+�
+1
+1/r1−1/s1
+= ∥(w1)r2,s2χQ∥
+1
+r2 −1
+s2
+1
+q1(·) −1
+s2
+∥(w1)−1
+r1,s1χQ∥
+1
+r1 −1
+s1
+1
+r1 −
+1
+p1(·)
+= ∥(w1)r2,s2χQ∥(q1)r2,s2(·)∥(w1)−1
+r1,s1χQ∥(p1)′r1,s1(·)
+= ∥(w1)r1,s1χQ∥(p1)r1,s1(·)∥(w1)−1
+r1,s1χQ∥(p1)′r1,s1(·),
+(3.20)
+where in the last equation we used (p1)r1,s1(·) = (q1)r2,s2(·) and (w1)r2,s2 = (w1)r1,s1. Thus
+[(w1)r1,s1]1/r1−1/s1
+A(p1)r1,s1 (·) = [w1](p1(·),q1(·)),(⃗r,⃗s) < ∞.
+Similarly for the weight w, we have
+[wr1,s1]1/r1−1/s1
+Apr1,s1 (·) = [w](p(·),q(·)),(⃗r,⃗s) < ∞.
+To apply Theorem 1.2 with the weights (w1)r1,s1, wr1,s1, notice that (p1)r1,s1(·), pr1,s1(·) ∈
+E0
+(1,∞). Indeed this follows as ϕr1,s1 : [1/s1, 1/r1] →[0, 1] continuously and p1(·), p(·) ∈E0
+(r1,s1).
+Therefore, by Theorem 1.2, there exists some η = η (pr1,s1(·), (p1)r1,s1(·), wr1,s1, (w1)r1,s1) ∈(0, 1)
+such that the following holds: whenever θ ∈(0, η), and µ = µθ and e0(·) = eθ(·) are defined by
+(3.21)
+1
+pr1,s1(·) = 1 −θ
+e0(·) +
+θ
+(p1)r1,s1(·),
+wr1,s1 = (µ)1−θ(w1)θ
+r1,s1,
+then
+µ ∈Ae0(·),
+e0(·) ∈E0
+(1,∞).
+In particular, there holds that
+[µ]Ae0(·) ≲[wr1,s1]
+1
+1−θ
+Apr1,s1 (·)[(w1)r1,s1]
+θ
+1−θ
+A(p1)r1,s1 (·).
+Now define the variable exponents (p0(·), q0(·)) and the weight w0 through the relations
+w0 = µ1/r1−1/s1,
+(p0)r1,s1(·) = e0(·),
+1
+q(·) = 1 −θ
+q0(·) +
+θ
+q1(·).
+(3.22)
+Notice that there exist some constants c = c(r1, s1) and c′ = c′(r1, s1) such that 1/u(·) =
+c/ur1,s1(·) + c′, for all variable exponents u(·). Therefore,
+1
+p(·) =
+c
+pr1,s1(·) + c′ = c
+�1 −θ
+e0(·) +
+θ
+(p1)r1,s1(·)
+�
++ c′
+by (3.21)
+= c
+�
+1 −θ
+(p0)r1,s1(·) +
+θ
+(p1)r1,s1(·)
+�
++ c′
+by (3.22)
+= (1 −θ)
+�
+c
+(p0)r1,s1(·) + c′
+�
++ θ
+�
+c
+(p1)r1,s1(·) + c′
+�
+= 1 −θ
+p0(·) +
+θ
+p1(·).
+(3.23)
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+10
+S. LAPPAS AND T. OIKARI
+Then, we check that p0(·) ∈E0
+(r1,s1) and q0(·) ∈E0
+(r2,s2). Since (p0)r1,s1(·) = e0(·) ∈E0
+(1,∞), and
+ϕr1,s1 : [1/s1, 1/r1] →[0, 1] continuously, it is clear that p0(·) ∈E0
+(r1,s1). By assumption we know
+that q(·), q1(·) ∈E0
+(r2,s2); therefore, if θ is sufficiently small, also q0(·) ∈E0
+(r2,s2).
+To finish the verification that
+�
+p0(·), q0(·)
+�
+∈⃗Eγ
+(⃗r,⃗s), we use the right-most identity of (3.22)
+and (3.23) to obtain
+γ =
+1
+p(·) −
+1
+q(·) = 1 −θ
+p0(·) +
+θ
+p1(·) −1 −θ
+q0(·) −
+θ
+q1(·) = (1 −θ)
+�
+1
+p0(·) −
+1
+q0(·)
+�
++ θγ,
+which immediately gives that 1/p0(·) −1/q0(·) = γ.
+It remains to verify that w0 ∈A(p0(·),q0(·)),(⃗r,⃗s). First, notice that, by the same computation as
+(3.23), it is clear that
+1
+qr2,s2(·) =
+1 −θ
+(q0)r2,s2(·) +
+θ
+(q1)r2,s2(·).
+Together with (3.19), this shows that
+1
+pr1,s1(·) =
+1
+qr2,s2(·) =
+1 −θ
+(q0)r2,s2(·) +
+θ
+(q1)r2,s2(·) =
+1 −θ
+(q0)r2,s2(·) +
+θ
+(p1)r1,s1(·).
+Since the solution (q0)r2,s2(·) to this equation is unique, and we know that (p0)r1,s1(·) is a solution
+(by repeating the computation (3.23)), it follows that (q0)r2,s2(·) = (p0)r1,s1(·). Now, repeating
+the computation (3.20) and recalling definitions, we find
+�
+∥w0χQ∥
+1
+1
+q0(·) −1
+s2
+∥w−1
+0 χQ∥
+1
+1
+r1 −
+1
+p0(·)
+�
+1
+1/r1−1/s1 = ∥(w0)r2,s2χQ∥
+1
+r2 −1
+s2
+1
+q0(·) −1
+s2
+∥(w0)−1
+r1,s1χQ∥
+1
+r1 −1
+s1
+1
+r1 −
+1
+p0(·)
+= ∥µχQ∥(q0)r2,s2(·)∥µ−1χQ∥(p0)′r1,s1(·)
+= ∥µχQ∥(p0)r1,s1(·)∥µ−1χQ∥(p0)′r1,s1(·)
+= ∥µχQ∥e0(·)∥µ−1χQ∥e′
+0(·).
+Thus we obtain that
+[w0](p0(·),q0(·)),(⃗r,⃗s) = [µ]1/r1−1/s1
+Ae0(·)
+< ∞,
+which completes the proof.
+□
+4. Proofs of Theorems 1.4 and 1.9
+We begin by recalling some interpolation results for compact operators and variable exponent
+Lebesgue spaces. The first is the Cwikel–Kalton [6] complex interpolation for compact linear
+operators. Here, we recall the version as stated in [10, Theorem 3.1].
+4.1. Theorem. Let (X0, X1) and (Y0, Y1) be Banach couples and T be a linear operator such
+that T : X0 + X1 →Y0 + Y1 and T : Xi →Yi boundedly for i = 0, 1. Suppose moreover that
+T : X1 →Y1 is compact. Let [ , ]θ be the complex interpolation functor of Calderón. Then also
+T : [X0, X1]θ →[Y0, Y1]θ is compact for θ ∈(0, 1) under any of the following four side conditions:
+(1) X1 has the UMD (unconditional martingale differences) property,
+(2) X1 is reflexive, and X1 = [X0, E]α for some Banach space E and α ∈(0, 1),
+(3) Y1 = [Y0, F]β for some Banach space F and β ∈(0, 1),
+(4) X0 and X1 are both complexified Banach lattices of measurable functions on a common
+measure space.
+4.2. Lemma. If pi(·) ∈P with 1 < (pi)−≤(pi)+ < ∞and wi are weights satisfying wi ∈Lpi(·)
+loc
+and w−1
+i
+∈Lp′
+i(·)
+loc , then the spaces Xi = Lpi(·)
+wi
+satisfy the condition (4) of Theorem 4.1.
+Proof. It is known, e.g. from [11, page 565], that both Xi = Lpi(·)
+wi , for i = 0, 1, are Banach
+function spaces. Hence, they are also complexified Banach lattices of measurable functions on
+the common measure space Rd.
+□
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+FACTORIZATION OF WEIGHTS
+11
+Another basic ingredient is interpolation with the change of weights. In the case of weighted
+variable Lebesgue spaces the following interpolation result is proved in [15] (see also [8]).
+4.3. Theorem ([15], Theorems 3.4.1 and 3.4.2). Let 0 < θ < 1. For i = 0, 1, let qi(·) ∈P be
+variable exponents satisfying 1 < (qi)−≤(qi)+ < ∞and wi be weights satisfying wi ∈Lqi(·)
+loc
+and
+w−1
+i
+∈Lq′
+i(·)
+loc . Then
+[Lq0(·)
+w0 , Lq1(·)
+w1 ]θ = Lqθ(·)
+wθ ,
+where
+1
+qθ(·) = 1 −θ
+q0(·) +
+θ
+q1(·)
+and
+wθ = w1−θ
+0
+wθ
+1.
+Moreover, the norms of the spaces [Lq0(·)
+w0 , Lq1(·)
+w1 ]θ and Lqθ(·)
+wθ
+are equivalent.
+4.4. Remark. Notice that the weights belonging to the off-diagonal full/limited range variable
+classes as in Definitions 1.1/1.6 satisfy the assumptions and conclusions of Lemma 4.2 and
+Theorem 4.3.
+We now turn to proving Theorems 1.4 and 1.9 (the latter automatically yields the first as a
+special case, in fact) by combining Theorem 1.8 with Theorems 4.1 and 4.3.
+Proof of Theorem 1.9. Fix some
+�
+p(·), q(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and w ∈A(p(·),q(·)),(⃗r,⃗s). We will show that T
+is Lp(·)
+w
+→Lq(·)
+w
+compact. By Theorem 1.8, there exists some η ∈(0, 1) so that for all θ ∈(0, η)
+there holds that
+�
+p0(·), q0(·)
+�
+∈⃗Eγ
+(⃗r,⃗s) and w0 ∈A(p0(·),q0(·)),(⃗r,⃗s), where these objects are defined
+through the relations
+1
+p(·) = 1 −θ
+p0(·) +
+θ
+p1(·),
+1
+q(·) = 1 −θ
+q0(·) +
+θ
+q1(·),
+w = w1−θ
+0
+wθ
+1.
+Now we fix any such θ ∈(0, η) (e.g. θ = η/2) and then by Theorem 4.3 (applicable due to
+Remark 4.4) there holds that
+[Lp0(·)
+w0 , Lp1(·)
+w1 ]θ = Lp(·)
+w ,
+[Lq0(·)
+w0 , Lq1(·)
+w1 ]θ = Lq(·)
+w .
+It remains to interpret everything into the context of Theorem 4.1. We let Xi := Lpi(·)
+wi
+and
+Yi := Lqi(·)
+wi . We know that T maps X0+X1 →Y0+Y1 (structural assumption on T), T : X0 →Y0
+is bounded and T : X1 →Y1 is compact (both are assumed). By Lemma 4.2 and Remark 4.4,
+the condition (4) of Theorem 4.1 is satisfied by Xi = Lpi(·)
+wi , for i = 0, 1. Thus, by Theorem 4.1, it
+follows that T is Lp(·)
+w
+= [X0, X1]θ →[Y0, Y1]θ = Lq(·)
+w
+compact, just as we wanted to prove.
+□
+Funding. S. L. was supported by the Primus research programme PRIMUS/21/SCI/002 of
+Charles University and the Foundation for Education and European Culture, founded by Nicos
+and Lydia Tricha. T.O. was supported by the Research Council of Finland through Project
+358180.
+Declarations
+Conflict of interest. The authors have no relevant financial or non-financial interests to dis-
+close.
+References
+[1] M. Cao, J.J. Marín and J. M. Martell. Extrapolation on function and modular spaces, and applications. Adv.
+Math., 406 (2022), Paper No. 108520, 87 pp.
+[2] M. Cao, A. Olivo and K. Yabuta. Extrapolation for multilinear compact operators and applications. Trans.
+Amer. Math. Soc., 375 (2022), no. 7, 5011–5070.
+[3] D. Cruz-Uribe and A. Fiorenza. Variable Lebesgue spaces, Applied and Numerical Harmonic Analysis.
+Birkhäuser/Springer, Heidelberg, 2013. Foundations and harmonic analysis.
+[4] D. Cruz-Uribe and M. Penrod. The reverse Hölder inequality for Ap(·) weights with applications to matrix
+weights. Publ. Mat., 70 (2026), no. 2, 493–524.
+[5] D. Cruz-Uribe and L. A. D. Wang. Extrapolation and weighted norm inequalities in the variable Lebesgue
+spaces. Trans. Amer. Math. Soc., 369 (2017), no. 2, 1205–1235.
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+12
+S. LAPPAS AND T. OIKARI
+[6] M. Cwikel and N. J. Kalton. Interpolation of compact operators by the methods of Calderón and Gustavsson-
+Peetre. Proc. Edinburgh Math. Soc., 38 (1995), no. 2, 261–276.
+[7] L. Diening, P. Harjulehto, P. Hästö and M. Ružička. Lebesgue and Sobolev spaces with variable exponents.
+Lecture Notes in Mathematics, vol. 2017, Springer, Heidelberg, 2011.
+[8] C. Fernandes, O. Karlovych and S. Medalha. Invertibility of Fourier convolution operators with PC symbols
+on variable Lebesgue spaces with Khvedelidze weights. J. Math. Sci. (N.Y.), 266 (2022), no. 3, 419–434.
+[9] T. Hytönen and S. Lappas. Extrapolation of compactness on weighted spaces: Bilinear operators. Indag.
+Math. (N.S.), 33 (2022), no. 2, 397–420.
+[10] T. Hytönen and S. Lappas. Extrapolation of compactness on weighted spaces. Rev. Mat. Iberoam., 39 (2023),
+no. 1, 91–122.
+[11] M. Izuki, E. Nakai and Y. Sawano. Wavelet characterization and modular inequalities for weighted Lebesgue
+spaces with variable exponent. Ann. Acad. Sci. Fenn. Math., 40 (2015), no. 2, 551–571.
+[12] S. Liu, H. Wu and D. Yang. A note on extrapolation of compactness. Collect. Math., 74 (2023), no. 2,
+375–390.
+[13] E. Lorist and Z. Nieraeth. Extrapolation of compactness on Banach function spaces. J. Fourier Anal. Appl.,
+30 (2024), no. 3, Paper No. 30, 25 pp.
+[14] F. J. Martín-Reyes and I. P. Rivera-Ríos. A note on one-sided extrapolation of compactness and applications.
+Studia Math., 284 (2025), no. 1, 39–68.
+[15] S. J. B. Medalha. Algebras of Convolution Type Operators on Weighted Variable Lebesgue Spaces. Master
+Thesis, NOVA University Lisbon, Medalha_2020.pdf, 2020.
+[16] Z. Nieraeth. Extrapolation in general quasi-Banach function spaces. J. Funct. Anal., 285 (2023), no. 10,
+Paper No. 110130, 109 pp.
+[17] J. L. Rubio de Francia. Factorization theory and Ap weights. Amer. J. Math., 106 (1984), no. 3, 533–547.
+[18] J. Tan, J. Wang and Q. Xue. Boundedness of a class of multilinear operators and their iterated commutators
+on Morrey-Banach function spaces. J. Geom. Anal., 35 (2025), no. 7, Paper No. 208, 50 pp.
+(S. Lappas) Department of Mathematical Analysis, Faculty of Mathematics and Physics, Charles
+University, Sokolovská 83, 186 75 Praha 8, Czech Republic
+and
+Mathematisches Institut, Rheinische Friedrich-Wilhelms-Universität Bonn, Endenicher Allee 60,
+53115 Bonn, Germany
+Email address: stefanos.lappas@matfyz.cuni.cz; lappas@math.uni-bonn.de; vlappas@hotmail.com
+(T. Oikari) Aalto University, Department of Mathematics and Systems Analysis, P.O. Box
+11100, FI-00076 Aalto, Finland
+Email address: tuomas.oikari@gmail.com

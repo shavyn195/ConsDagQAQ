@@ -1,0 +1,7494 @@
+{
+  "meta": {
+    "file": "2610.29292_ContrastiveAttributionTopology.pdf",
+    "page_count": 11,
+    "title": "Credit Where Credit Is Due: Contrastive Attribution Topology Search for Multi-Agent Systems",
+    "author": "Fabian Tritthart; Tom Zehle",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:07e334b)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 8.0,
+    "heading_font_sizes": [
+      20.0,
+      17.2,
+      12.0,
+      10.1,
+      10.0,
+      9.9,
+      9.0
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "17.2": 3,
+      "12.0": 19,
+      "10.1": 452,
+      "10.0": 406,
+      "9.9": 163,
+      "9.0": 6,
+      "8.0": 759,
+      "7.9": 21,
+      "7.4": 23,
+      "7.2": 2,
+      "7.0": 540,
+      "6.7": 1,
+      "6.4": 33,
+      "6.3": 6,
+      "6.2": 4,
+      "6.0": 43,
+      "5.7": 2,
+      "5.3": 3,
+      "5.2": 12,
+      "5.0": 3,
+      "4.7": 57,
+      "4.4": 17,
+      "4.2": 13,
+      "4.0": 14,
+      "3.9": 10,
+      "3.7": 17,
+      "3.5": 35,
+      "3.4": 3,
+      "3.3": 28,
+      "2.8": 11,
+      "2.6": 1,
+      "2.5": 27,
+      "2.3": 24,
+      "0.3": 33
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "Credit Where Credit Is Due:",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Contrastive Attribution",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Topology Search for Multi-Agent Systems",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Fabian Tritthart",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "University of Freiburg",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "fabian.tritthart@email.uni-freiburg.de",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Tom Zehle",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "University of Freiburg",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "tom.zehle@tue.ellis.eu",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Abstract",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "An LLM multi-agent system (MAS) is only as good as the agents it chooses to trust:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "its accuracy and cost hinge on its topology, meaning which agents are included",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and how they communicate.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "A single task score, however, does not reveal which",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "agents help or hinder performance.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "We propose Contrastive Attribution Topology",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Search (CATS), which searches for compact teams within a fixed supergraph of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "specialized agents.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "An LLM attributer compares execution traces across candidate",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "topologies and assigns credit to individual agents. CATS uses these credits to update",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "supergraph edges while progressively pruning weak edges and agents, yielding a",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "small team for deployment.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "With small open-weight models and matched candidate",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "evaluations, CATS improves mean accuracy on BigCodeBench by 5.3 percentage",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "points over score-only heuristic search while using 54% fewer deployment tokens.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "On",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "MBPP,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "CATS",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "matches",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "strongest",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "baselines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "fewer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "tokens",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "than",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "other searches.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "In a HotpotQA prompt-poisoning stress test, CATS excludes all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "adversarially prompted agents in all three runs, whereas random search retains some",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "at comparable accuracy.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Per-agent credit thus supports both team optimization and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the pruning of potentially harmful agents.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "LLM-based multi-agent systems split work across specialized agents, for example one that writes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "code and another that tests it.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Such collaboration can improve small models [",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "9",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ",",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "10",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "], but more agents",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and messages mean more tokens.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Building a good system therefore requires choosing which agents",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "to include and how they communicate, that is, the",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "topology",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ".",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Since the best topology depends on the",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "task, manual design is difficult [5, 6], which motivates automated search over candidate teams.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Task scores, however, evaluate the team as a whole:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a correct solution may contain unnecessary work,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and a failed one may include useful contributions.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Scores alone thus say little about which agents to",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "keep.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Can feedback on individual agents guide the search for compact, effective teams?",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "We introduce",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Contrastive Attribution Topology Search (CATS)",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", an offline meta-agent that assembles",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "teams",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "fixed",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "pool.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Starting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "supergraph",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "links,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "CATS",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "evaluates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "sampled teams on target-domain tasks.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "An LLM compares their transcripts and assigns each agent",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "signed credit.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "CATS then updates link probabilities, prunes weak links and unreachable agents, and",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "selects one fixed team for deployment.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Agent models, prompts, roles, and tools never change.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Our contributions are:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(i)",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "contrastive per-agent credit to guide team construction (Figure 1),",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(ii)",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "higher",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "mean accuracy and lower deployment token use than score-only search on two coding benchmarks",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "with matched candidate evaluations (Table 1), and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(iii)",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a HotpotQA stress test where CATS excludes",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "all poisoned agents in every run, while random search retains some at comparable accuracy (Table 2).",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2610.29292v1  [cs.CL]  21 Oct 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Figure 1:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "CATS pipeline.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "At each of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "T",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "steps,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "K",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "subgraphs are sampled from the supergraph and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "evaluated on",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "N",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "tasks.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "The depicted supergraph is a simplified example.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Method",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "CATS repeatedly samples teams from a supergraph, credits each agent, and prunes weak edges.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Supergraph.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "optimized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "multi-agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "topology",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "subgraph",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "hand-crafted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "complete directed acyclic graph specialized to a chosen problem domain (Figure 1).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Its nodes are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "agents and its edges denote direct communication (and thereby the scheduling order).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Agents are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "specialized via system prompts, optional reasoning, and tool sets.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We hand-craft them using domain",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "knowledge",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(automating this is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "left to future",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "work).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Each edge",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "e",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "carries a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "logit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "with sampling",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "probability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "α",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "=",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "σ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ")",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ", initialized to a common",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "α",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Following DARTS [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "7",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "], we relax the discrete",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "edge choices to these continuous parameters but replace gradient descent with heuristic credit-based",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "updates derived from contrastive attribution.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Sampling.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "At each step, we sample",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "K",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "topologies by independently drawing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "e",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "∼",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Bernoulli(",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "α",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ")",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "rejecting graphs with nodes unreachable from the source.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Since agents share an environment, not",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "every agent needs a downstream consumer:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "edges are optional communication channels.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We evaluate",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "each candidate on",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "N",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "tasks, obtaining scores",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "s",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Candidates, tasks, and often agents run in parallel.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Attribution.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "An LLM attributer assigns each participating agent",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "i",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "in candidate",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "k",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "on task",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "q",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a credit",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "c",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "∈",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "[",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "−",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "1",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "1]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(harmful to helpful) by comparing candidate rollouts on the same task.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "The attributer",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "sees task scores, length-capped agent outputs, tool calls, and the final artifact state (e.g., the coding",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "environment), and runs in parallel across tasks.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Update.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Credits are normalized into per-agent advantages",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "A",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "=",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Q",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "�",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "c",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "−",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "b",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ")",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "where",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Q",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "holds the tasks with a credit for",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "i",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "in",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "k",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "b",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "is the mean credit over participating agents and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "candidates for task",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "q",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Each edge",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "u, v",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ")",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "fired in candidate",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "k",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "is updated by",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "←",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "+",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "ηA",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Unfired",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "non-source edges into an active agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "v",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "receive a smaller secondary update",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "←",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "θ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "+",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "ηρA",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "After each step we prune weak edges whose probability has fallen below the fraction",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "δ",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "of its initial",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "value",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "(the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "pruning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "fraction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "),",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "E",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "←{",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "e",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "∈",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "E",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ":",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "α",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "≥",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "δα",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "}",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "remove",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "nodes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "no",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "longer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "reachable from the source.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "This shrinks",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "E",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and thus",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "V",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "|",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ", reducing the per-step cost.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Selection.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "After",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "T",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "steps",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "we",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "return",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "best",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "final",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "=",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "arg max",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "�",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "s",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "step-",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "T",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "candidates, which are sampled under the accumulated priors.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Ties are broken in favor of fewer",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "agents and then the earlier candidate.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "As an ablation, we also evaluate the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "pruned supergraph",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "consisting of all nodes and edges that remain after pruning.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Table 1:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Searched topologies versus hand-crafted",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and single-agent baselines.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Held-out coding tasks,",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "mean",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "±",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "sample SD over 3 seeds, 100 tasks per",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "benchmark.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Best score per benchmark in bold.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Table 2:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Poisoned-pool stress test on",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "HotpotQA.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Results for CATS, random",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "search, and score-only search (mean",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "±",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "sample SD, 3 seeds, 100 tasks).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Figure 2:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "BigCodeBench search",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "dynamics",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "(mean",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "±",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "SD, 3 seeds).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Baselines.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We compare against (i) a direct LLM call without tools, (ii) a ReAct [",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "13",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "] single agent, both",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with literature-derived system prompts (Appendix Table 6), (iii) a hand-crafted multi-agent system",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "(MAS) designed before observing supergraph results (Appendix Figure 4d), (iv) random topology",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "search, and (v) a score-only heuristic search using CATS’s fired/unfired update and hyperparameters,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "scalar",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "scores",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "replacing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "credits.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Both",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "search",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "baselines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "match",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "K",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "×",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "T",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "candidate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "evaluations on the same tasks, not compute (search costs:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Appendix Table 10).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "3",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Benchmarking",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Experimental setup.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We target the local-deployment setting and therefore use small open-weight",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "models: Gemma 4 12B for the MAS agents and the larger Gemma 4 31B endpoint for the attributer [",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "4",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "].",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We evaluate CATS on two agentic coding benchmarks,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "BigCodeBench and MBPP [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "1",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "18",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "search runs for 4 optimization steps with a high learning rate and pruning fraction (Table 5).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "configuration performed well in preliminary experiments that excluded the held-out tasks, though we",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "do not claim it is optimal.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We repeat all experiments over three random seeds and report means with",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "standard deviations.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "BigCodeBench.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Our",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "selected",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "topology",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "improves",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "mean",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "accuracy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "strongest",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "baseline,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "score-only heuristic search, by 5.3 points while using 54% fewer deployment tokens with matched",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "candidate evaluations (Table 1).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Gains hold across all three seeds, but standard deviations overlap",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and uncertainty remains (Table 8).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "MBPP.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "performs comparably to the hand-crafted MAS and random search, using fewer deploy-",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "ment tokens than the other searches but more than the hand-crafted MAS (Table 1).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Final-candidate ablation.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Deploying",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "instead of",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "roughly halves coding deployment tokens,",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with higher mean accuracy on BigCodeBench and the same on MBPP (Table 1).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Offline search tokens.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Including attribution, CATS uses 28% and 35% fewer mean search tokens",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "than score-only search on BigCodeBench and MBPP, respectively, but roughly twice those of either",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "search baseline on poisoned HotpotQA (Table 10).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Discovered architectures.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Every selected coding team retains a draft coder; 3 of 6 have no inter-agent",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "edges, but agents can still interact through the shared environment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "All selected HotpotQA teams",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "instead retain reader-to-submitter paths (Appendix A.2).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "These patterns support team construction,",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with agent selection the clearest coding result;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "they do not isolate a benefit from communication",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "optimization.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "3",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "4",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Poisoned-Pool Stress Test",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Figure 3:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Selected topologies on HotpotQA",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "(seed 13).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Poisoned agents are in orange.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "A meta-agent that assembles teams must also decline",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "to delegate to agents it should not trust.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "To probe",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "this failure mode, we construct a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "poisoned",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "variant",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "of HotpotQA [",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "12",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "], a third domain distinct from the",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "coding tasks above.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Its supergraph contains six ad-",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "versarially prompted agents and four honest agents.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "attacks",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "include",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "plan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "misdirection,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "fabricated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "evidence,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "citation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "spoofing,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "instruction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "hijacking,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "late",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "answer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "overwrites,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "exact-match",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "sabotage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "(Table 3).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "The search receives no adversarial super-",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "vision:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "it observes only task scores and transcripts,",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "and is never told which agents are poisoned.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Table 2",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "shows why task score alone is insufficient to assess",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "delegation:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "comparable scores can mask different levels of poisoned-agent recruitment.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "CATS retains",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "no poisoned agents across all three seeds.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Random search retains two on average.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Score-only search’s",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "teams are cheap but inaccurate:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "1, 2, and 5 agents, one with four poisoned.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "CATS instead removes",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "their incoming edges, making them unreachable (Figure 3).",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Exclusion is therefore a byproduct of the",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "optimization signal, not a separate security filter.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "5",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Related Work",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Topology is an established optimization target:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "GPTSwarm optimizes agent graphs, MaAS samples",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "query-dependent systems from an agentic supergraph, and AgentPrune prunes redundant or malicious",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "communication",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "[",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "15",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "16",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "17",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Graph-GRPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "derives",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "statistical,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "per-edge",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "credit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "relative",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "rewards within groups of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "sampled graphs [",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "3",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "CATS instead uses LLM-judged,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "per-agent credit,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "adapting contrastive attribution from prompt optimization [",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "14",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "] to topology search:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "agent configura-",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "tions stay fixed, while team membership and communication links change.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Introspective LLM judges",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "do not faithfully approximate leave-one-out contribution [",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "8",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "], so we treat our credit as an optimization",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "signal, not a causal measure.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "6",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Limitations, Responsible Use, and Conclusion",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Evaluating a single model family across three domains and three seeds limits what we can conclude",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "about broader transfer and variance, while high baseline scores on MBPP leave little headroom for",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "accuracy gains.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Moreover, although pruning yields sparse coding teams, this may reflect coordination",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "via the shared environment rather than a general lack of need for direct communication.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Finally, we",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "only track token cost without optimizing it, making Pareto search over score and cost, as done for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "prompts by Büssing et al. [2], a natural next step.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Attribution credits have not been validated against human judgments.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Credit–success correlation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "(Table",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "9)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "consistency",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "check,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "since",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "attributer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "sees",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "system_score",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "score-only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "baseline was not separately tuned and does not isolate which component of CATS accounts for the",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "difference.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Credit is node-level, propagated equally to all incoming fired edges.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "A comparison with",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Graph-GRPO’s statistical edge-level credit remains future work [3].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "CATS turns a hand-crafted supergraph into a small fixed team.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "It improved the balance between",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "performance and efficiency on BigCodeBench, reduced unnecessary complexity on the easier MBPP,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "and excluded poisoned agents that task scores alone could not detect.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "In all three domains it matched",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "or beat score-only heuristic search on score, deployment-token use, or both.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "This supports attribution",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "for team optimization and the pruning of potentially harmful agents, not a security guarantee.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Responsible-use statement.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Selecting a topology determines which agents gain access to tools and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "task context.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Our stress test shows that attribution can exclude fixed adversarial prompts, but this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "does not establish deployment safety.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "An adaptive adversary could act beyond the capped transcript",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "window or exploit the unverified LLM attributer directly.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Tool and data permissions must therefore",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "remain outside the optimizer.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "4",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Acknowledgments and Disclosure of Funding",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Tom Zehle received funding from the European Union.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "This work was supported by the European",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Union’s Horizon Europe research and innovation programme under grant agreement No. 101214398",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "(ELLIOT). Views and opinions expressed are, however, those of the authors only and do not nec-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "essarily reflect those of the European Union or the European Commission.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Neither the European",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Union nor the granting authority can be held responsible for them.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Finally, we thank the anonymous",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "reviewers for their constructive feedback.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "References",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[1]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, and Charles Sutton.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Program Synthesis",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "with Large Language Models, August 2021.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2108.07732 [cs.PL].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[2]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Jan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Büssing,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Moritz",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Schlager,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Timo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Heiß,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Tom",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Zehle,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Matthias",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Feurer.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "MO-CAPO:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Multi-Objective Cost-Aware Prompt Optimization, May 2026.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2605.18869 [cs.LG].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[3]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Yueyang Cang, Xiaoteng Zhang, Erlu Zhao, Zehua Ji, Yuhang Liu, Yuchen He, Zhiyuan Ning,",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Chen Chen, Wenge Que, and Li Shi.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Graph-GRPO: Stabilizing Multi-Agent Topology Learning",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "via Group Relative Policy Optimization, March 2026.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2603.02701 [cs.CL].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[4]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Gemma Team et al.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Gemma 4 Technical Report, July 2026.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2607.02770 [cs.CL].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[5]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Junda He, Christoph Treude, and David Lo.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "LLM-Based Multi-Agent Systems for Software",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Engineering:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Literature Review, Vision, and the Road Ahead.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "ACM Transactions on Software",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Engineering and Methodology",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", 34(5):124:1–124:30, May 2025.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "ISSN 1049-331X.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "doi:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "10.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "1145/3712003.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[6]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Xinyi Li, Sai Wang, Siqi Zeng, Yu Wu, and Yi Yang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "A survey on LLM-based multi-agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "systems:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "workflow, infrastructure, and challenges.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Vicinagearth",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", 1(1):9, 2024.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "doi:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "10.1007/",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "s44336-024-00009-2.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[7]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Hanxiao Liu, Karen Simonyan, and Yiming Yang.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "DARTS: Differentiable Architecture Search.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "International Conference on Learning Representations (ICLR)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", 2019.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[8]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Mingyu Lu, Yushan Huang, Chris Lin, and Su-In Lee.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Agents that Matter:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Optimizing Multi-",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Agent LLMs via Removal-Based Attribution, May 2026.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2605.27621 [cs.MA].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[9]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Weizhou",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Shen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Chenliang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Hongzhan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Ming",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Yan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Xiaojun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Quan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Hehong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Ji Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and Fei Huang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Small LLMs Are Weak Tool Learners:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "A Multi-LLM Agent.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ". Association for",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Computational Linguistics, 2024.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "doi:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "10.18653/v1/2024.emnlp-main.929.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[10]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Varun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Sunkaraneni,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Pierfrancesco",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Beneventano,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Riccardo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Neumarker,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Tomaso",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Poggio,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Tomer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Galanti.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Agentic",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Systems",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Boosting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Weak",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Models,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "May",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "2026.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2605.14163 [cs.AI].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[11]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Ronald",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "J.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Williams.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Simple",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Statistical",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Gradient-Following",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Algorithms",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Connectionist",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Reinforcement Learning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Machine Learning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", 8(3-4):229–256, May 1992.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "ISSN 0885-6125.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "doi:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "10.1007/BF00992696.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[12]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William Cohen, Ruslan Salakhutdinov,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Christopher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "D.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Manning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "HotpotQA:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "A",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Dataset",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Diverse,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Explainable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Multi-hop",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Question Answering.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Conference on Empirical Methods in Natural Language Processing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "(EMNLP)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ". Association for Computational Linguistics, 2018.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "doi:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "10.18653/v1/D18-1259.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[13]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Shunyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Yao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Jeffrey",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Zhao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Dian",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Nan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Du,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Izhak",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Shafran,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Karthik",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "R.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Narasimhan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Yuan Cao.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "ReAct:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Synergizing Reasoning and Acting in Language Models.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "In",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "International",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Conference on Learning Representations (ICLR)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", 2023.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "[14]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Tom Zehle.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "CANTANTE: Optimizing Agentic Systems via Contrastive Credit Attribution, May",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "2026.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "arXiv:2605.13295 [cs.CL].",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "5",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "[15]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Guibin Zhang, Luyang Niu, Junfeng Fang, Kun Wang, Lei Bai, and Xiang Wang.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Multi-Agent",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Architecture Search via Agentic Supernet.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "In",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "International Conference on Machine Learning",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(ICML)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ". PMLR, 2025.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "[16]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Guibin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Yanwei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Yue,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Zhixun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Sukwon",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Yun,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Guancheng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Wan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Kun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Dawei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Cheng,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Jeffrey",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Xu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Tianlong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Chen.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Cut",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Crap:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "An",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Economical",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Communication",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Pipeline",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "LLM-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Multi-Agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Systems.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "International",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Conference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Learning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Representations (ICLR)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ", 2025.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "[17]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Mingchen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Zhuge,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Wenyi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Louis",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Kirsch,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Francesco",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Faccio,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Dmitrii",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Khizbullin,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Jürgen Schmidhuber.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "GPTSwarm:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Language Agents as Optimizable Graphs.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "In",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "International",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Conference on Machine Learning (ICML)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ". PMLR, 2024.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "[18]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Terry Yue Zhuo, Minh Chien Vu, Jenny Chim, Han Hu, Wenhao Yu, Ratnadira Widyasari, Imam",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Nur Bani Yusuf, Haolan Zhan, Junda He, Indraneil Paul, Simon Brunner, Chen Gong, James",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Hoang, Armel Zebaze, Xiaoheng Hong, Wen-Ding Li, Jean Kaddour, Ming Xu, Zhihan Zhang,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Prateek",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Yadav,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Naman",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Jain,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Alex",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Gu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Zhoujun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Cheng,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Jiawei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Liu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Qian",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Liu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Zijian",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Binyuan Hui, Niklas Muennighoff, David Lo, Daniel Fried, Xiaoning Du, Harm de Vries, and",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Leandro von Werra.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "BigCodeBench:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Benchmarking Code Generation with Diverse Function",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Calls",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Complex",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Instructions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "International",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Conference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Learning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Representations",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(ICLR)",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ", 2025.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "A",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Additional Experimental Details",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "A.1",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Supergraphs and Graphs",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(a) BigCodeBench.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(b) MBPP.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(c) Poisoned HotpotQA.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(d) Hand-crafted MAS baseline.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Figure 4:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Initial supergraphs and fixed baseline.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Supergraph edges run forward between layers,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "start",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "edges select entry agents.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Orange nodes in (c) are adversarially prompted.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "These labels are",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "hidden from the search and attributer.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Agent codes are listed in Table 3.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "6",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Table 3:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Agent pools.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "HotpotQA alignment labels are for post-hoc measurement only and are read",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "by neither the search nor the attributer.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "A read budget of zero permits listing titles but not reading",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "passages.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "A.2",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Selected Deployment Architectures",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Table 4:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Selected deployment topologies",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "G",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ".",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "These are the highest-scoring step-4 candidates on the",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "search set and are the systems reported as “CATS” in the main tables.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Agent codes are resolved in",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Table 3.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Each listed edge is directed.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "start",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "denotes an entry edge.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "7",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "The selected coding teams consistently retain a draft coder alongside one or two other agents, but",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "their communication patterns differ (Table 4).",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "For example, BigCodeBench seed 13 connects a draft",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "coder, implementer, and test designer in a chain;",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "MBPP seed 13 selects the same roles with only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "direct entry edges from",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "start",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": ".",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Two further BigCodeBench teams likewise have only entry edges, while",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the remaining MBPP teams retain a single inter-agent edge.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "These patterns show that selecting a set",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "of agents and connecting that set are distinct decisions.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Because agents access a shared environment,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "teams with only entry edges can still interact through the persisted artifact.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "HotpotQA yields a different pattern:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "every selected team retains the second-hop reader and either the",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "drafter or final submitter, with directed communication from a reader to the answer-submitting agent.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "These teams combine retrieval and answer submission while excluding all poisoned roles. The contrast",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "with coding illustrates that the search does not always remove communication.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "However, these graphs",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "alone do not establish the benefit of their particular edges; that would require a comparison that holds",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "agent membership fixed.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "A.3",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Search and Baselines",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Table",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "5:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Run",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "settings.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Left:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "CATS",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "hyperparameters,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "shared",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "across",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "benchmarks.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Right:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "per-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "benchmark inference settings and mean CATS cost.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Attribution accounted for 9–11% of coding-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "search tokens.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Table 6:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Operational definitions of the baselines.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "All baselines use the same task model, grader,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "decoding limits, and seed-specific held-out tasks.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "8",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "A.4",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Evaluation Protocol",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Field",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "caps",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "use",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "o200k_base",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "tokens,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "retain",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "prefix,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "discard",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "tail,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "append",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "marker",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "...",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "[truncated]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "outside the cap.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Agent input fields (query and upstream outputs) use the 900/700-",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "token caps in Table 5; the attributer’s query and string-valued",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "says",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "fields use 120 tokens for coding",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "and 150 for HotpotQA, with",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "does",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "tool-effect logs and",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "final",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "summaries exempt from field capping.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "The assembled attributer prompt is also prefix-capped at its model limit minus the attribution field",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "cap.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Seeds",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "13–15",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "jointly",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "control",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "splits,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "global",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "randomness,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "topology",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "sampling,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "generation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "generation endpoint, hosted by the University of Freiburg, used the aliases",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "gemma-4-12b-llmlb",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(agents/baselines) and",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "gemma-4-31b-llmlb",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(attributer).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Weight hashes and quantization were not",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "exposed.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Coding runs use fresh temporary directories and process groups with a 30-second timeout.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Crashes, timeouts, empty environments, and unusable results score zero.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Deployment tokens count",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "all agent-call input and output tokens per held-out task.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "All reported",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "±",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "values and shaded bands are",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Bessel-corrected sample standard deviations over three runs.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Table 7:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Dataset splits and grading.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Each held-out set contains 100 tasks.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "A.5",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Per-Seed Results and Additional Analyses",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Table 8:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Per-seed evaluations supporting the headline comparisons.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Each seed groups results for",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "the selected topologies on its 100-task held-out set.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Scores are percentages.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Tokens are thousands of",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "input plus output tokens per task.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "V/E",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "counts selected agents/edges, including start edges.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "P",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "counts",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "poisoned agents (HotpotQA only).",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(a) MBPP search score.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "(b) MBPP surviving edges.",
+        "size": 9.0,
+        "level": 7,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Figure 5:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "CATS dynamics on MBPP.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "The corresponding BigCodeBench panels appear in the main",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "paper.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Lines show means over three seeds.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Bands show sample standard deviations.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "9",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Table 9:",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Credit–success consistency check.",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Correlation between the mean credit over participating",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "agents,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "¯",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "c",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and the binary task score",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "s",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "over all (candidate,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "task) pairs.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Within-task columns",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "correlate within each query.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Scores are binary, so Pearson",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "r",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "is the point-biserial coefficient.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Four",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "pairs are dropped from seed 15 due to one unparsed transcript.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "The attributer sees",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "system_score",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ",",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "so this is not independent validation of credit quality.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Table 10:",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Offline search tokens, separate from deployment.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Millions of input plus output tokens",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "for 16 candidates on 100 search tasks, averaged over seeds 13–15; totals include sample SD.",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "10",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "B",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "BigCodeBench Attributer Call",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "We adapt contrastive attribution [",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "14",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "] for BigCodeBench by grading the persisted code artifact instead",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of agent text. We also expose ordered, compact tool effects. The representative call below is excerpted,",
+        "size": 9.9,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "with omitted material marked",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "[...]",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": ".",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "11",
+        "size": 10.0,
+        "level": 5,
+        "bold": false
+      }
+    ]
+  },
+  "images": [],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3346,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 3828,
+      "block_count": 121,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 3,
+      "text_length": 3722,
+      "block_count": 33,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 4,
+      "text_length": 3939,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 5,
+      "text_length": 3566,
+      "block_count": 18,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 6,
+      "text_length": 1917,
+      "block_count": 46,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 2280,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 3586,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 9,
+      "text_length": 2836,
+      "block_count": 33,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 10,
+      "text_length": 1235,
+      "block_count": 9,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 11,
+      "text_length": 3464,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    }
+  ]
+}

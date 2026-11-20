@@ -1,0 +1,3504 @@
+文档: 2510.08992_ConstraintsOfThought.pdf
+页数: 26
+图片: 13 张
+正文字体大小: 10.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) Constraints-of-Thought:
+  [L2] (p.1) A Framework for
+  [L2] (p.1) Constrained Reasoning in Language-Model-Guided
+  [L2] (p.1) Search
+    [L3] (p.1) Abstract
+      [L4] (p.1) produce steps that violate high-level intent or domain constraints.
+      [L4] (p.1) We introduce
+      [L4] (p.1) is
+      [L4] (p.1) an
+      [L4] (p.1) executable
+      [L4] (p.1) predicate
+      [L4] (p.1) evaluated
+      [L4] (p.1) by
+      [L4] (p.1) a
+      [L4] (p.1) domain
+      [L4] (p.1) validator.
+      [L4] (p.1) These
+      [L4] (p.1) constraints
+      [L4] (p.1) restrict the feasible action space at each state and transform free-form reasoning
+      [L4] (p.1) demonstrate the utility of this representation by integrating it with Monte Carlo
+      [L4] (p.1) complexity, reflected in lower branching factors and faster convergence.
+      [L4] (p.1) Across
+      [L4] (p.1) four
+      [L4] (p.1) domains
+      [L4] (p.1) representing
+      [L4] (p.1) distinct
+      [L4] (p.1) reasoning
+      [L4] (p.1) settings
+      [L4] (p.1) including
+      [L4] (p.1) planning,
+      [L4] (p.1) code
+      [L4] (p.1) synthesis, symbolic reasoning, and scientific knowledge, Const-o-T consistently
+      [L4] (p.1) outperforms
+      [L4] (p.1) prompting-only
+      [L4] (p.1) and
+      [L4] (p.1) search-based
+      [L4] (p.1) baselines.
+      [L4] (p.1) Each
+      [L4] (p.1) reasoning
+      [L4] (p.1) step
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+      [L4] (p.1) domain constraints and fail to align with user intent.
+      [L4] (p.1) While approaches such as Chain-of-Thought
+      [L4] (p.1) reasoning
+      [L4] (p.1) without
+      [L4] (p.1) an
+      [L4] (p.1) executable
+      [L4] (p.1) mechanism
+      [L4] (p.1) to
+      [L4] (p.1) enforce
+      [L4] (p.1) feasibility
+      [L4] (p.1) during
+      [L4] (p.1) planning.
+      [L4] (p.1) As
+      [L4] (p.1) a
+      [L4] (p.1) result,
+      [L4] (p.1) We
+      [L4] (p.1) propose
+      [L4] (p.1) Constraints-of-Thought
+      [L4] (p.1) (Const-o-T),
+      [L4] (p.1) a
+      [L4] (p.1) framework
+      [L4] (p.1) that
+      [L4] (p.1) converts
+      [L4] (p.1) reasoning
+      [L4] (p.1) steps
+      [L4] (p.1) into
+[L1] (p.1) arXiv:2510.08992v3  [cs.LG]  12 May 2026
+      [L4] (p.2) Figure
+      [L4] (p.2) 1:
+      [L4] (p.2) Const-o-T
+      [L4] (p.2) empowers
+      [L4] (p.2) LLMs
+      [L4] (p.2) to
+      [L4] (p.2) (i)
+      [L4] (p.2) infer
+      [L4] (p.2) intent
+      [L4] (p.2) statements
+      [L4] (p.2) and
+      [L4] (p.2) (ii)
+      [L4] (p.2) extract
+      [L4] (p.2) executable
+      [L4] (p.2) constraints
+      [L4] (p.2) from
+      [L4] (p.2) high-level
+      [L4] (p.2) strategies,
+      [L4] (p.2) which
+      [L4] (p.2) restrict
+      [L4] (p.2) the
+      [L4] (p.2) admissible
+      [L4] (p.2) action
+      [L4] (p.2) set
+      [L4] (p.2) during
+      [L4] (p.2) search
+      [L4] (p.2) and
+      [L4] (p.2) act
+      [L4] (p.2) as
+      [L4] (p.2) search
+      [L4] (p.2) controllers
+      [L4] (p.2) rather
+      [L4] (p.2) than
+      [L4] (p.2) post-hoc
+      [L4] (p.2) output
+      [L4] (p.2) filters.
+      [L4] (p.2) These
+      [L4] (p.2) constraints
+      [L4] (p.2) guide
+      [L4] (p.2) a
+      [L4] (p.2) budgeted,
+      [L4] (p.2) constraint-guided
+      [L4] (p.2) variant
+      [L4] (p.2) of
+      [L4] (p.2) MCTS,
+      [L4] (p.2) steering
+      [L4] (p.2) exploration
+      [L4] (p.2) toward
+      [L4] (p.2) rule-compliant
+      [L4] (p.2) and
+      [L4] (p.2) high-quality
+      [L4] (p.2) defines
+      [L4] (p.2) a
+      [L4] (p.2) predicate
+      [L4] (p.2) over
+      [L4] (p.2) actions
+      [L4] (p.2) that
+      [L4] (p.2) induces
+      [L4] (p.2) a
+      [L4] (p.2) restricted
+      [L4] (p.2) action
+      [L4] (p.2) set
+      [L4] (p.2) ,
+      [L4] (p.2) and
+      [L4] (p.2) this
+      [L4] (p.2) restriction
+      [L4] (p.2) is
+      [L4] (p.2) enforced
+      [L4] (p.2) before
+      [L4] (p.2) node
+      [L4] (p.2) expansion
+      [L4] (p.2) during
+      [L4] (p.2) search.
+      [L4] (p.2) Unlike
+      [L4] (p.2) prior
+      [L4] (p.2) approaches
+      [L4] (p.2) that
+      [L4] (p.2) use
+      [L4] (p.2) constraints
+      [L4] (p.2) for
+      [L4] (p.2) scoring,
+      [L4] (p.2) prompting,
+      [L4] (p.2) or
+      [L4] (p.2) post-hoc
+      [L4] (p.2) filtering,
+      [L4] (p.2) which
+      [L4] (p.2) still
+      [L4] (p.2) operate
+      [L4] (p.2) over
+      [L4] (p.2) the
+      [L4] (p.2) full
+      [L4] (p.2) action
+      [L4] (p.2) set
+      [L4] (p.2) , Const-o-T modifies the planner itself by restricting
+      [L4] (p.2) to
+      [L4] (p.2) .
+      [L4] (p.2) This transformation
+      [L4] (p.2) We demonstrate the practical benefits of this representation by integrating Const-o-T with MCTS
+      [L4] (p.2) the
+      [L4] (p.2) branching
+      [L4] (p.2) factor.
+      [L4] (p.2) Prior
+      [L4] (p.2) approaches
+      [L4] (p.2) incorporate
+      [L4] (p.2) constraints
+      [L4] (p.2) through
+      [L4] (p.2) scoring,
+      [L4] (p.2) verification,
+      [L4] (p.2) or
+      [L4] (p.2) actions
+      [L4] (p.2) from
+      [L4] (p.2) entering
+      [L4] (p.2) the
+      [L4] (p.2) search
+      [L4] (p.2) process.
+      [L4] (p.2) We
+      [L4] (p.2) evaluate
+      [L4] (p.2) Const-o-T
+      [L4] (p.2) across
+      [L4] (p.2) four
+      [L4] (p.2) domains,
+      [L4] (p.2) where
+      [L4] (p.2) it
+      [L4] (p.2) consistently outperforms strong baselines.
+      [L4] (p.2) These results demonstrate that structured intermediate
+      [L4] (p.2) interpretable intent–constraint pairs that expose the system’s reasoning process, we also evaluate
+      [L4] (p.2) whether this representation improves human understanding and perceived alignment with system
+      [L4] (p.2) Constraint-Guided MCTS.
+      [L4] (p.2) We integrate Const-o-T with MCTS, operationalizing executable
+      [L4] (p.2) Computational
+      [L4] (p.2) Evaluation.
+      [L4] (p.2) We
+      [L4] (p.2) empirically
+      [L4] (p.2) show
+      [L4] (p.2) consistent
+      [L4] (p.2) branching-factor
+      [L4] (p.2) reduction
+      [L4] (p.2) and
+    [L3] (p.2) 2
+    [L3] (p.2) Related Work
+      [L4] (p.2) models
+      [L4] (p.2) such
+      [L4] (p.2) as
+      [L4] (p.2) MDPs
+      [L4] (p.2) [
+      [L4] (p.2) ],
+      [L4] (p.2) and
+      [L4] (p.2) simulation-based
+      [L4] (p.2) methods
+      [L4] (p.2) like
+      [L4] (p.2) MCTS
+      [L4] (p.2) [
+      [L4] (p.2) ],
+      [L4] (p.2) but
+      [L4] (p.2) these
+      [L4] (p.2) approaches
+      [L4] (p.2) pretrained knowledge to generate reasoning traces and actions in open-ended settings.
+      [L4] (p.2) Examples
+      [L4] (p.2) include
+      [L4] (p.2) enhancing
+      [L4] (p.2) planning
+      [L4] (p.2) with
+      [L4] (p.2) tree
+      [L4] (p.2) search
+      [L4] (p.2) [
+      [L4] (p.2) ],
+      [L4] (p.2) combining
+      [L4] (p.2) heuristic
+      [L4] (p.2) reasoning
+      [L4] (p.2) with
+      [L4] (p.2) symbolic
+      [L4] (p.3) executable constraints and therefore neither define a restricted feasible action set
+      [L4] (p.3) within the
+      [L4] (p.3) and
+      [L4] (p.3) intent-to-constraint
+      [L4] (p.3) translation
+      [L4] (p.3) [
+      [L4] (p.3) ].
+      [L4] (p.3) Other
+      [L4] (p.3) studies
+      [L4] (p.3) show
+      [L4] (p.3) constraints
+      [L4] (p.3) reduce
+      [L4] (p.3) hallucinations
+      [L4] (p.3) in
+      [L4] (p.3) objectives, or post-hoc verifiers.
+      [L4] (p.3) Unlike prior approaches that translate intent into constraints for
+      [L4] (p.3) decoding enforces token-level restrictions during sequence generation.
+      [L4] (p.3) Neuro-symbolic [
+      [L4] (p.3) ] and
+      [L4] (p.3) Constrained Generation and Decoding.
+      [L4] (p.3) Most prior work on constrained generation applies con-
+      [L4] (p.3) straints during decoding rather than at the planning level.
+      [L4] (p.3) PPL-MCTS [
+      [L4] (p.3) ] integrates constraints
+      [L4] (p.3) action space.
+      [L4] (p.3) NeuroLogic [
+      [L4] (p.3) ] introduces a search-based decoding strategy that enforces logical
+      [L4] (p.3) Const-o-T applies constraints at the planning level:
+      [L4] (p.3) each executable constraint induces a reduced
+    [L3] (p.3) 3
+    [L3] (p.3) Constraints-of-Thought Framework for Guided Search
+      [L4] (p.3) that restricts the feasible action set
+      [L4] (p.3) during search, causing exploration to include invalid or
+      [L4] (p.3) contains the actions available to the agent.
+      [L4] (p.3) The transition function,
+      [L4] (p.3) , defines how actions change
+      [L4] (p.3) the state, and the reward function,
+      [L4] (p.3) , evaluates the quality of decisions.
+      [L4] (p.3) A trajectory is defined as
+      [L4] (p.4) In these equations,
+      [L4] (p.4) denotes the Risk fitness function (Sec. E), while
+      [L4] (p.4) represent task-
+      [L4] (p.4) specific evaluation functions for other domains using LLM-as-a-Judge scoring mechanisms.
+      [L4] (p.4) The
+      [L4] (p.4) intent–constraint pair.
+      [L4] (p.4) Formally, a Const-o-T step is defined as
+      [L4] (p.4) , where
+      [L4] (p.4) is a natural-
+      [L4] (p.4) is a machine-executable constraint that enforces the corresponding action restriction (e.g., “Place
+      [L4] (p.4) 5
+      [L4] (p.4) troops
+      [L4] (p.4) on
+      [L4] (p.4) Territory
+      [L4] (p.4) A").
+      [L4] (p.4) Once
+      [L4] (p.4) extracted,
+      [L4] (p.4) each
+      [L4] (p.4) pair
+      [L4] (p.4) serves
+      [L4] (p.4) a
+      [L4] (p.4) dual
+      [L4] (p.4) role
+      [L4] (p.4) in
+      [L4] (p.4) planning.
+      [L4] (p.4) , the constraint defines a reduced action set,
+      [L4] (p.4) , containing only actions consistent
+      [L4] (p.4) models
+      [L4] (p.4) to
+      [L4] (p.4) generate
+      [L4] (p.4) candidate
+      [L4] (p.4) actions
+      [L4] (p.4) or
+      [L4] (p.4) evaluate
+      [L4] (p.4) nodes,
+      [L4] (p.4) Const-o-T
+      [L4] (p.4) uses
+      [L4] (p.4) intermediate
+      [L4] (p.4) reasoning
+      [L4] (p.5) to
+      [L4] (p.5) explicitly
+      [L4] (p.5) modify
+      [L4] (p.5) the
+      [L4] (p.5) planner’s
+      [L4] (p.5) feasible
+      [L4] (p.5) action
+      [L4] (p.5) set.
+      [L4] (p.5) In
+      [L4] (p.5) this
+      [L4] (p.5) formulation,
+      [L4] (p.5) reasoning
+      [L4] (p.5) steps
+      [L4] (p.5) act
+      [L4] (p.5) as
+      [L4] (p.5) asymptotic optimality under large rollout budgets, our objective is efficient, intent-aligned search
+      [L4] (p.5) Selection Phase:
+      [L4] (p.5) Starting from the root, MCTS recursively selects child nodes using a modified
+      [L4] (p.5) set equal to the number of extracted constraints, coupling search depth to the structured constraint
+      [L4] (p.5) Constraints influence planning through two complementary mechanisms.
+      [L4] (p.5) First, during search, the
+      [L4] (p.5) Given
+      [L4] (p.5) a
+      [L4] (p.5) sequence
+      [L4] (p.5) of
+      [L4] (p.5) constraints
+      [L4] (p.5) ,
+      [L4] (p.5) the
+      [L4] (p.5) planner
+      [L4] (p.5) generates
+      [L4] (p.5) an
+      [L4] (p.5) action
+      [L4] (p.5) trajectory
+      [L4] (p.5) Validators
+      [L4] (p.5) are
+      [L4] (p.5) domain-specific
+      [L4] (p.5) and
+      [L4] (p.5) enforce
+      [L4] (p.5) task-level
+      [L4] (p.5) feasibility.
+      [L4] (p.5) In
+      [L4] (p.5) the
+      [L4] (p.5) Risk
+      [L4] (p.5) domain,
+      [L4] (p.5) the
+      [L4] (p.5) final
+      [L4] (p.6) removes unsupported actions,
+      [L4] (p.6) it may produce a partial plan when later actions depend on earlier
+      [L4] (p.6) ing implicitly but do not modify the planner’s feasible action set.
+      [L4] (p.6) In contrast, Const-o-T produces
+    [L3] (p.6) 4
+    [L3] (p.6) Experiments
+      [L4] (p.6) plans,
+      [L4] (p.6) and
+      [L4] (p.6) interpretability
+      [L4] (p.6) of
+      [L4] (p.6) intermediate
+      [L4] (p.6) reasoning
+      [L4] (p.6) steps.
+      [L4] (p.6) We
+      [L4] (p.6) benchmark
+      [L4] (p.6) our
+      [L4] (p.6) method
+      [L4] (p.6) against
+      [L4] (p.6) a
+      [L4] (p.6) diverse
+      [L4] (p.6) set
+      [L4] (p.6) of
+      [L4] (p.6) baselines
+      [L4] (p.6) spanning
+      [L4] (p.6) prompting-based,
+      [L4] (p.6) search-based,
+      [L4] (p.6) and
+      [L4] (p.6) constraint-based
+      [L4] (p.6) planning
+      [L4] (p.6) MCTS [
+      [L4] (p.6) ] as well as MCTS augmented with CoT reasoning.
+      [L4] (p.6) We also include a constraint-based
+      [L4] (p.6) Risk is a strategy board game played on a world map of 21 territories grouped into six continents.
+      [L4] (p.6) example).
+      [L4] (p.6) We
+      [L4] (p.6) use
+      [L4] (p.6) the
+      [L4] (p.6) Commander’s
+      [L4] (p.6) Intent
+      [L4] (p.6) (CI)
+      [L4] (p.6) dataset
+      [L4] (p.6) [
+      [L4] (p.6) ],
+      [L4] (p.6) which
+      [L4] (p.6) contains
+      [L4] (p.6) examples
+      [L4] (p.6) of
+      [L4] (p.6) natural language strategies paired with corresponding ground-truth territories for troop placement.
+      [L4] (p.6) We measure alignment using Earth Mover’s Distance (EMD) [
+      [L4] (p.6) ], which quantifies the minimum
+      [L4] (p.6) lowest EMD, indicating the best alignment between predicted and ground-truth troop placements.
+      [L4] (p.6) The
+      [L4] (p.6) key
+      [L4] (p.6) improvement
+      [L4] (p.6) comes
+      [L4] (p.6) from
+      [L4] (p.6) constraint-guided
+      [L4] (p.6) search,
+      [L4] (p.6) which
+      [L4] (p.6) restricts
+      [L4] (p.6) the
+      [L4] (p.6) action
+      [L4] (p.6) space
+      [L4] (p.6) to
+      [L4] (p.6) CAD
+      [L4] (p.6) scripts,
+      [L4] (p.6) where
+      [L4] (p.6) constraint
+      [L4] (p.6) enforcement
+      [L4] (p.6) helps
+      [L4] (p.6) maintain
+      [L4] (p.6) syntactic
+      [L4] (p.6) validity
+      [L4] (p.6) and
+      [L4] (p.6) geometric
+      [L4] (p.6) cor-
+      [L4] (p.6) rectness.
+      [L4] (p.6) We utilize CADPrompt [
+      [L4] (p.6) ], a dataset containing 200 3D design examples, each paired
+      [L4] (p.6) with a natural language description and a corresponding Python script (See Figure 13).
+      [L4] (p.6) We report
+      [L4] (p.6) Hausdorff
+      [L4] (p.6) distance
+      [L4] (p.6) between
+      [L4] (p.6) generated
+      [L4] (p.6) and
+      [L4] (p.6) ground-truth
+      [L4] (p.6) objects
+      [L4] (p.6) and
+      [L4] (p.6) the
+      [L4] (p.6) percentage
+      [L4] (p.6) of
+      [L4] (p.6) generated
+      [L4] (p.6) examples compiling successfully.
+      [L4] (p.6) The results in Table 2 demonstrate that MCTS with Const-o-T
+      [L4] (p.7) Figure 2:
+      [L4] (p.7) User study ratings across three interaction modes:
+      [L4] (p.7) alignment, agnostic, and adversarial.
+      [L4] (p.7) 1K test); and (ii) Math-500 [
+      [L4] (p.7) ], a benchmark of 500 problems.
+      [L4] (p.7) The results in Table 2 show that
+      [L4] (p.7) integrating
+      [L4] (p.7) structured
+      [L4] (p.7) reasoning
+      [L4] (p.7) improves
+      [L4] (p.7) accuracy
+      [L4] (p.7) across
+      [L4] (p.7) models.
+      [L4] (p.7) On
+      [L4] (p.7) GSM8K,
+      [L4] (p.7) the
+      [L4] (p.7) best
+      [L4] (p.7) results
+      [L4] (p.7) are achieved by MCTS with Const-o-T, reaching 93.4% accuracy with LLaMA-3 and 96.2% with
+      [L4] (p.7) experts in biology,
+      [L4] (p.7) physics,
+      [L4] (p.7) and chemistry [
+      [L4] (p.7) ].
+      [L4] (p.7) We evaluate LLM performance on GPQA using
+      [L4] (p.7) We additionally evaluate whether the structured intent–constraint representation improves human
+      [L4] (p.7) (1)
+      [L4] (p.7) Aligned
+      [L4] (p.7) ,
+      [L4] (p.7) where
+      [L4] (p.7) the
+      [L4] (p.7) system
+      [L4] (p.7) follows
+      [L4] (p.7) the
+      [L4] (p.7) user’s
+      [L4] (p.7) stated
+      [L4] (p.7) strategy;
+      [L4] (p.7) (2)
+      [L4] (p.7) Agnostic
+      [L4] (p.7) ,
+      [L4] (p.7) where
+      [L4] (p.7) the
+      [L4] (p.7) system
+      [L4] (p.7) optimizes only
+      [L4] (p.7) for winning;
+      [L4] (p.7) and
+      [L4] (p.7) (3)
+      [L4] (p.7) Adversarial
+      [L4] (p.7) ,
+      [L4] (p.7) where
+      [L4] (p.7) the system intentionally
+      [L4] (p.7) acts against the
+      [L4] (p.7) representation.
+      [L4] (p.7) We
+      [L4] (p.7) measured
+      [L4] (p.7) four
+      [L4] (p.7) dependent
+      [L4] (p.7) variables
+      [L4] (p.7) using
+      [L4] (p.7) 7-point
+      [L4] (p.7) Likert
+      [L4] (p.7) scales:
+      [L4] (p.7) Alignment,
+    [L3] (p.8) 5
+    [L3] (p.8) Analysis
+      [L4] (p.8) In this section, we analyze our approach in the Risk domain to understand its performance gains.
+      [L4] (p.8) , which is enforced prior to node expansion.
+      [L4] (p.8) This reduces the branching factor by
+      [L4] (p.8) Search-Space Reduction.
+      [L4] (p.8) A key mechanism underlying the performance gains of our approach
+      [L4] (p.8) is
+      [L4] (p.8) the
+      [L4] (p.8) explicit
+      [L4] (p.8) reduction
+      [L4] (p.8) of
+      [L4] (p.8) the
+      [L4] (p.8) search
+      [L4] (p.8) space.
+      [L4] (p.8) By
+      [L4] (p.8) enforcing
+      [L4] (p.8) constraints
+      [L4] (p.8) during
+      [L4] (p.8) search,
+      [L4] (p.8) Const-o-T
+      [L4] (p.8) from
+      [L4] (p.8) restricting
+      [L4] (p.8) the
+      [L4] (p.8) admissible
+      [L4] (p.8) action
+      [L4] (p.8) set
+      [L4] (p.8) during
+      [L4] (p.8) search,
+      [L4] (p.8) which
+      [L4] (p.8) reduces
+      [L4] (p.8) the
+      [L4] (p.8) branching
+      [L4] (p.8) factor
+      [L4] (p.8) and
+      [L4] (p.8) constraining
+      [L4] (p.8) the
+      [L4] (p.8) search
+      [L4] (p.8) space,
+      [L4] (p.8) leading
+      [L4] (p.8) to
+      [L4] (p.8) higher
+      [L4] (p.8) runtime.
+      [L4] (p.8) This
+      [L4] (p.8) shows
+      [L4] (p.8) that
+      [L4] (p.8) restricting
+      [L4] (p.8) set of constraints.
+      [L4] (p.8) Specifically, we sample 100
+      [L4] (p.8) examples
+      [L4] (p.8) from
+      [L4] (p.8) the
+      [L4] (p.8) Risk
+      [L4] (p.8) game
+      [L4] (p.8) using
+      [L4] (p.8) GPT-4.1,
+      [L4] (p.8) where
+      [L4] (p.8) the
+      [L4] (p.8) troop
+      [L4] (p.8) count
+      [L4] (p.8) in
+      [L4] (p.8) selected
+      [L4] (p.8) constraints
+      [L4] (p.8) is
+      [L4] (p.8) modified.
+      [L4] (p.8) Noise
+      [L4] (p.8) is
+      [L4] (p.8) applied
+      [L4] (p.8) at
+      [L4] (p.8) varying
+      [L4] (p.8) rates,
+      [L4] (p.8) ing levels of extraction error.
+      [L4] (p.8) After constraint
+      [L4] (p.8) extraction,
+      [L4] (p.8) we
+      [L4] (p.8) randomly
+      [L4] (p.8) select
+      [L4] (p.8) of
+      [L4] (p.8) the
+      [L4] (p.8) con-
+      [L4] (p.8) straints and use an LLM to generate incorrect
+      [L4] (p.8) troop-count
+      [L4] (p.8) values
+      [L4] (p.8) for
+      [L4] (p.8) those
+      [L4] (p.8) entries.
+      [L4] (p.8) We
+      [L4] (p.8) ob-
+      [L4] (p.8) increases,
+      [L4] (p.8) indicating that the method does not
+      [L4] (p.8) generation, on a subset of 100 examples from Risk using GPT-4.1.
+      [L4] (p.8) All comparisons use identical
+      [L4] (p.8) candidate
+      [L4] (p.8) generation
+      [L4] (p.8) budgets
+      [L4] (p.8) and
+      [L4] (p.8) evaluation
+      [L4] (p.8) settings.
+      [L4] (p.8) Applying
+      [L4] (p.8) constraints
+      [L4] (p.8) during
+      [L4] (p.8) search
+      [L4] (p.8) yields
+      [L4] (p.8) by avoiding infeasible trajectories early, rather than discarding them after generation.
+      [L4] (p.8) This result
+      [L4] (p.9) Failure
+      [L4] (p.9) Modes.
+      [L4] (p.9) We
+      [L4] (p.9) identify
+      [L4] (p.9) three
+      [L4] (p.9) primary
+      [L4] (p.9) failure
+      [L4] (p.9) modes
+      [L4] (p.9) in
+      [L4] (p.9) the
+      [L4] (p.9) Risk
+      [L4] (p.9) domain.
+      [L4] (p.9) First,
+      [L4] (p.9) errors
+      [L4] (p.9) in
+      [L4] (p.9) constraint extraction can impose infeasible or misaligned restrictions on the action space.
+      [L4] (p.9) Second,
+      [L4] (p.9) actions.
+      [L4] (p.9) Third,
+      [L4] (p.9) ambiguous
+      [L4] (p.9) or
+      [L4] (p.9) underspecified
+      [L4] (p.9) user
+      [L4] (p.9) input
+      [L4] (p.9) may
+      [L4] (p.9) result
+      [L4] (p.9) in
+      [L4] (p.9) incomplete
+      [L4] (p.9) constraint
+      [L4] (p.9) sets
+      [L4] (p.9) (See Fig. 9).
+      [L4] (p.9) This highlights the primary limitations arising from constraint extraction and
+    [L3] (p.9) 6
+    [L3] (p.9) Discussion
+      [L4] (p.9) ily function as explanatory rationales, Const-o-T represents intermediate reasoning as executable
+      [L4] (p.9) is whether constraints define the admissible action set or merely evaluate candidates.
+      [L4] (p.9) Our method
+      [L4] (p.9) explicitly defines the constraint-induced action set
+      [L4] (p.9) , which directly shapes the planner’s ex-
+      [L4] (p.9) ploration by pruning infeasible actions before expansion.
+      [L4] (p.9) Table 7 summarizes the key differences
+      [L4] (p.9) than guiding it externally.
+      [L4] (p.9) Prior LLM-based approaches (e.g.,
+      [L4] (p.9) CoT, ToT, verifier-based methods)
+      [L4] (p.9) dynamically
+      [L4] (p.9) redefines
+      [L4] (p.9) the
+      [L4] (p.9) branching
+      [L4] (p.9) factor
+      [L4] (p.9) at
+      [L4] (p.9) each
+      [L4] (p.9) step:
+      [L4] (p.9) instead
+      [L4] (p.9) of
+      [L4] (p.9) exploring
+      [L4] (p.9) actions,
+      [L4] (p.9) the
+      [L4] (p.9) search,
+      [L4] (p.9) rather
+      [L4] (p.9) than
+      [L4] (p.9) filtering
+      [L4] (p.9) outputs
+      [L4] (p.9) post-hoc.
+      [L4] (p.9) Each
+      [L4] (p.9) constraint
+      [L4] (p.9) induces
+      [L4] (p.9) a
+      [L4] (p.9) reduced
+      [L4] (p.9) action
+      [L4] (p.9) space
+      [L4] (p.9) that shape exploration in real time, preventing infeasible actions from entering the search tree.
+      [L4] (p.9) In
+      [L4] (p.9) contrast, post-hoc filtering cannot influence exploration and often leads to wasted computation or
+      [L4] (p.9) set
+      [L4] (p.9) during search.
+      [L4] (p.9) Importantly,
+      [L4] (p.9) the method is robust to moderate constraint errors,
+      [L4] (p.9) as the
+      [L4] (p.9) Beyond
+      [L4] (p.9) Accuracy
+      [L4] (p.9) Improvements.
+      [L4] (p.9) While
+      [L4] (p.9) improvements
+      [L4] (p.9) in
+      [L4] (p.9) final
+      [L4] (p.9) task
+      [L4] (p.9) accuracy
+      [L4] (p.9) are
+      [L4] (p.9) sometimes
+      [L4] (p.9) is consistent with the role of executable constraints as search controllers:
+      [L4] (p.9) their primary effect is to
+    [L3] (p.9) 7
+    [L3] (p.9) Limitations
+    [L3] (p.9) 8
+    [L3] (p.9) Conclusion
+      [L4] (p.9) We
+      [L4] (p.9) introduced
+      [L4] (p.9) Constraints-of-Thought
+      [L4] (p.9) (Const-o-T),
+      [L4] (p.9) a
+      [L4] (p.9) framework
+      [L4] (p.9) that
+      [L4] (p.9) transforms
+      [L4] (p.9) unconstrained
+    [L3] (p.10) Acknowledgment
+    [L3] (p.10) References
+      [L4] (p.10) Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le,
+      [L4] (p.10) Denny Zhou,
+      [L4] (p.10) et al.
+      [L4] (p.10) Chain-of-thought prompting elicits reasoning in large language models.
+      [L4] (p.10) Zhenyu Guan, Xiangyu Kong, Fangwei Zhong, and Yizhou Wang.
+      [L4] (p.10) Richelieu:
+      [L4] (p.10) Self-evolving
+      [L4] (p.10) llm-based agents for ai diplomacy.
+      [L4] (p.10) Advances in Neural Information Processing Systems
+      [L4] (p.10) , 37:
+      [L4] (p.10) of code are few-shot commonsense learners.
+      [L4] (p.10) In
+      [L4] (p.10) 2022 Conference on Empirical Methods in
+      [L4] (p.10) Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al.
+      [L4] (p.10) Training verifiers to
+      [L4] (p.10) Martin L Puterman.
+      [L4] (p.10) Markov decision processes:
+      [L4] (p.10) discrete stochastic dynamic programming
+      [L4] (p.10) .
+      [L4] (p.10) Cameron B Browne, Edward Powley, Daniel Whitehouse, Simon M Lucas, Peter I Cowling,
+      [L4] (p.10) Tathagata Chakraborti, Sarath Sreedharan, and Subbarao Kambhampati.
+      [L4] (p.10) The emerging land-
+      [L4] (p.10) scape
+      [L4] (p.10) of
+      [L4] (p.10) explainable
+      [L4] (p.10) ai
+      [L4] (p.10) planning
+      [L4] (p.10) and
+      [L4] (p.10) decision
+      [L4] (p.10) making.
+      [L4] (p.10) arXiv
+      [L4] (p.10) preprint
+      [L4] (p.10) arXiv:2002.11697
+      [L4] (p.10) ,
+      [L4] (p.10) Wang Zhu, Ishika Singh, Robin Jia, and Jesse Thomason.
+      [L4] (p.10) Language models can infer action
+      [L4] (p.10) Shunyu
+      [L4] (p.10) Yao,
+      [L4] (p.10) Dian
+      [L4] (p.10) Yu,
+      [L4] (p.10) Jeffrey
+      [L4] (p.10) Zhao,
+      [L4] (p.10) Izhak
+      [L4] (p.10) Shafran,
+      [L4] (p.10) Tom
+      [L4] (p.10) Griffiths,
+      [L4] (p.10) Yuan
+      [L4] (p.10) Cao,
+      [L4] (p.10) and
+      [L4] (p.10) Karthik
+      [L4] (p.10) Narasimhan.
+      [L4] (p.10) Tree of thoughts:
+      [L4] (p.10) Deliberate problem solving with large language models.
+      [L4] (p.10) Ad-
+      [L4] (p.11) Xuhui Zhou, Yue Zhang, Leyang Cui, and Dandan Huang.
+      [L4] (p.11) Evaluating commonsense in pre-
+      [L4] (p.11) trained
+      [L4] (p.11) language
+      [L4] (p.11) models.
+      [L4] (p.11) In
+      [L4] (p.11) Proceedings
+      [L4] (p.11) of
+      [L4] (p.11) the
+      [L4] (p.11) AAAI
+      [L4] (p.11) conference
+      [L4] (p.11) on
+      [L4] (p.11) artificial
+      [L4] (p.11) intelligence
+      [L4] (p.11) ,
+      [L4] (p.11) Wenlong
+      [L4] (p.11) Huang,
+      [L4] (p.11) Pieter
+      [L4] (p.11) Abbeel,
+      [L4] (p.11) Deepak
+      [L4] (p.11) Pathak,
+      [L4] (p.11) and
+      [L4] (p.11) Igor
+      [L4] (p.11) Mordatch.
+      [L4] (p.11) Language
+      [L4] (p.11) models
+      [L4] (p.11) as
+      [L4] (p.11) zero-shot planners:
+      [L4] (p.11) Extracting actionable knowledge for embodied agents.
+      [L4] (p.11) In
+      [L4] (p.11) International
+      [L4] (p.11) Stuart
+      [L4] (p.11) Russell,
+      [L4] (p.11) Peter
+      [L4] (p.11) Norvig,
+      [L4] (p.11) and
+      [L4] (p.11) Artificial
+      [L4] (p.11) Intelligence.
+      [L4] (p.11) A
+      [L4] (p.11) modern
+      [L4] (p.11) approach.
+      [L4] (p.11) Artificial
+      [L4] (p.11) Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David
+      [L4] (p.11) Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, et al.
+      [L4] (p.11) Program synthesis with large
+      [L4] (p.11) Yilun
+      [L4] (p.11) Hao,
+      [L4] (p.11) Yang
+      [L4] (p.11) Zhang,
+      [L4] (p.11) and
+      [L4] (p.11) Chuchu
+      [L4] (p.11) Fan.
+      [L4] (p.11) Planning
+      [L4] (p.11) anything
+      [L4] (p.11) with
+      [L4] (p.11) rigor:
+      [L4] (p.11) General-purpose
+      [L4] (p.11) zero-shot
+      [L4] (p.11) planning
+      [L4] (p.11) with
+      [L4] (p.11) llm-based
+      [L4] (p.11) formalized
+      [L4] (p.11) programming.
+      [L4] (p.11) The
+      [L4] (p.11) Thirteenth
+      [L4] (p.11) International
+      [L4] (p.11) Yu
+      [L4] (p.11) Feng,
+      [L4] (p.11) Nathaniel
+      [L4] (p.11) Weir,
+      [L4] (p.11) Kaj
+      [L4] (p.11) Bostrom,
+      [L4] (p.11) Sam
+      [L4] (p.11) Bayless,
+      [L4] (p.11) Darion
+      [L4] (p.11) Cassel,
+      [L4] (p.11) Sapana
+      [L4] (p.11) Chaudhary,
+      [L4] (p.11) Benjamin
+      [L4] (p.11) Kiesl-Reiter,
+      [L4] (p.11) and
+      [L4] (p.11) Huzefa
+      [L4] (p.11) Rangwala.
+      [L4] (p.11) Vericot:
+      [L4] (p.11) Neuro-symbolic
+      [L4] (p.11) chain-of-thought
+      [L4] (p.11) Michael Ahn, Anthony Brohan, Noah Brown, Yevgen Chebotar, Omar Cortes, Byron David,
+      [L4] (p.11) through discriminator-guided mcts decoding.
+      [L4] (p.11) In
+      [L4] (p.11) Proceedings of the 2022 conference of the
+      [L4] (p.11) North
+      [L4] (p.11) American
+      [L4] (p.11) chapter
+      [L4] (p.11) of
+      [L4] (p.11) the
+      [L4] (p.11) association
+      [L4] (p.11) for
+      [L4] (p.11) computational
+      [L4] (p.11) linguistics:
+      [L4] (p.11) human
+      [L4] (p.11) language
+      [L4] (p.11) Ximing
+      [L4] (p.11) Lu,
+      [L4] (p.11) Sean
+      [L4] (p.11) Welleck,
+      [L4] (p.11) Peter
+      [L4] (p.11) West,
+      [L4] (p.11) Liwei
+      [L4] (p.11) Jiang,
+      [L4] (p.11) Jungo
+      [L4] (p.11) Kasai,
+      [L4] (p.11) Daniel
+      [L4] (p.11) Khashabi,
+      [L4] (p.11) Ronan
+      [L4] (p.11) Le
+      [L4] (p.11) Bras,
+      [L4] (p.11) Lianhui
+      [L4] (p.11) Qin,
+      [L4] (p.11) Youngjae
+      [L4] (p.11) Yu,
+      [L4] (p.11) Rowan
+      [L4] (p.11) Zellers,
+      [L4] (p.11) et
+      [L4] (p.11) al.
+      [L4] (p.11) Neurologic
+      [L4] (p.11) a*
+      [L4] (p.11) esque
+      [L4] (p.11) decoding:
+      [L4] (p.11) of
+      [L4] (p.11) the
+      [L4] (p.11) North
+      [L4] (p.11) American
+      [L4] (p.11) Chapter
+      [L4] (p.11) of
+      [L4] (p.11) the
+      [L4] (p.11) Association
+      [L4] (p.11) for
+      [L4] (p.11) Computational
+      [L4] (p.11) Linguistics:
+      [L4] (p.11) Human
+      [L4] (p.11) Luca
+      [L4] (p.11) Beurer-Kellner,
+      [L4] (p.11) Marc
+      [L4] (p.11) Fischer,
+      [L4] (p.11) and
+      [L4] (p.11) Martin
+      [L4] (p.11) Vechev.
+      [L4] (p.11) Guiding
+      [L4] (p.11) llms
+      [L4] (p.11) the
+      [L4] (p.11) right
+      [L4] (p.11) way:
+      [L4] (p.11) Fast,
+      [L4] (p.11) and Jason Weston.
+      [L4] (p.11) Chain-of-verification reduces hallucination in large language models.
+      [L4] (p.11) In
+      [L4] (p.11) Shun
+      [L4] (p.11) Zhang,
+      [L4] (p.11) Zhenfang
+      [L4] (p.11) Chen,
+      [L4] (p.11) Yikang
+      [L4] (p.11) Shen,
+      [L4] (p.11) Mingyu
+      [L4] (p.11) Ding,
+      [L4] (p.11) Joshua
+      [L4] (p.11) B
+      [L4] (p.11) Tenenbaum,
+      [L4] (p.11) and
+      [L4] (p.11) Chuang
+      [L4] (p.11) Gan.
+      [L4] (p.11) Planning
+      [L4] (p.11) with
+      [L4] (p.11) large
+      [L4] (p.11) language
+      [L4] (p.11) models
+      [L4] (p.11) for
+      [L4] (p.11) code
+      [L4] (p.11) generation.
+      [L4] (p.11) arXiv
+      [L4] (p.11) preprint
+      [L4] (p.12) Kamel Alrashedy, Pradyumna Tambwekar, Zulfiqar Zaidi, Megan Langwasser, Wei Xu, and
+      [L4] (p.12) Matthew Gombolay.
+      [L4] (p.12) Generating cad code with vision-language models for 3d designs.
+      [L4] (p.12) The
+      [L4] (p.12) Dirani, Julian Michael, and Samuel R Bowman.
+      [L4] (p.12) Gpqa:
+      [L4] (p.12) A graduate-level google-proof q&a
+      [L4] (p.12) Explainable artificial intelligence:
+      [L4] (p.12) Evaluating the objective and subjective impacts of xai on
+      [L4] (p.12) René F Kizilcec.
+      [L4] (p.12) How much information?
+      [L4] (p.12) effects of transparency on trust in an algorithmic
+    [L3] (p.12) A
+    [L3] (p.12) Risk Game environment
+      [L4] (p.12) and Grey factions.
+      [L4] (p.12) The game begins with the participant allocating troops to preferred regions by
+      [L4] (p.12) interacting through an AI-powered chat interface.
+      [L4] (p.12) An AI planner then generates a proposed plan
+      [L4] (p.13) number of troops by either the attacker or defender.
+      [L4] (p.13) The more troops committed to an attack, the
+      [L4] (p.14) Figure
+      [L4] (p.14) 8:
+      [L4] (p.14) Risk
+      [L4] (p.14) game:
+      [L4] (p.14) Turn
+      [L4] (p.14) 1,
+      [L4] (p.14) where
+      [L4] (p.14) the
+      [L4] (p.14) player
+      [L4] (p.14) proceeds
+      [L4] (p.14) through
+      [L4] (p.14) the
+      [L4] (p.14) reinforcement,
+      [L4] (p.14) attack,
+      [L4] (p.14) and
+    [L3] (p.14) B
+    [L3] (p.14) Constraints-of-Thought (Const-o-T)
+      [L4] (p.14) planner’s feasible action space.
+      [L4] (p.14) Formally, each constraint
+      [L4] (p.14) defines a predicate over actions that
+      [L4] (p.15) during
+      [L4] (p.15) search.
+      [L4] (p.15) This
+      [L4] (p.15) transforms
+      [L4] (p.15) intermediate
+      [L4] (p.15) reasoning
+      [L4] (p.15) from
+      [L4] (p.15) descriptive
+      [L4] (p.15) rationales
+      [L4] (p.15) into
+      [L4] (p.15) search
+      [L4] (p.15) by restricting
+      [L4] (p.15) the admissible
+      [L4] (p.15) actions to
+      [L4] (p.15) those consistent
+      [L4] (p.15) with the
+      [L4] (p.15) intended strategy.
+      [L4] (p.15) Second,
+      [L4] (p.15) they
+      [L4] (p.15) of
+      [L4] (p.15) pairs.
+      [L4] (p.15) From
+      [L4] (p.15) lines
+      [L4] (p.15) 4
+      [L4] (p.15) to
+      [L4] (p.15) 10,
+      [L4] (p.15) each
+      [L4] (p.15) candidate
+      [L4] (p.15) constraint
+      [L4] (p.15) is
+      [L4] (p.15) validated
+      [L4] (p.15) to
+      [L4] (p.15) ensure
+    [L3] (p.15) C
+    [L3] (p.15) User Study
+      [L4] (p.15) adapted from validated measures of trust in automation [
+      [L4] (p.15) ,
+      [L4] (p.15) ] and technology acceptance [
+      [L4] (p.15) ],
+      [L4] (p.15) with wording contextualized to the Risk domain (e.g.,
+      [L4] (p.15) “I trust the system’s troop placement/plan
+      [L4] (p.15) and
+      [L4] (p.15) alignment.
+      [L4] (p.15) Significant
+      [L4] (p.15) differences
+      [L4] (p.15) across
+      [L4] (p.15) interaction
+      [L4] (p.15) modes
+      [L4] (p.15) were
+      [L4] (p.15) observed
+      [L4] (p.15) for
+      [L4] (p.15) transparency
+      [L4] (p.15) (
+      [L4] (p.15) ,
+      [L4] (p.15) ),
+      [L4] (p.15) usability
+      [L4] (p.15) (
+      [L4] (p.15) ,
+      [L4] (p.15) ),
+      [L4] (p.15) trust
+      [L4] (p.15) (
+      [L4] (p.15) ,
+      [L4] (p.15) both agnostic and adversarial conditions across all metrics.
+      [L4] (p.15) These results indicate that constraint-
+    [L3] (p.15) D
+    [L3] (p.15) Additional Analysis
+      [L4] (p.15) constraint set against the ground-truth troop placements in the Risk dataset.
+      [L4] (p.15) We compute standard
+      [L4] (p.16) Const-o-T), we observe a significant effect on EMD (
+      [L4] (p.16) ,
+      [L4] (p.16) ,
+      [L4] (p.16) ,
+      [L4] (p.16) ),
+      [L4] (p.16) indicating
+      [L4] (p.16) that
+      [L4] (p.16) reasoning
+      [L4] (p.16) strategy
+      [L4] (p.16) significantly
+      [L4] (p.16) affects
+      [L4] (p.16) placement
+      [L4] (p.16) quality..
+      [L4] (p.16) Further,
+      [L4] (p.16) prompting approaches also show differences (
+      [L4] (p.16) ,
+      [L4] (p.16) ,
+      [L4] (p.16) ,
+      [L4] (p.16) by preventing unnecessary expansions.
+      [L4] (p.16) As a result, Const-o-T operates as a budgeted, constraint-
+      [L4] (p.16) guided variant of MCTS that focuses exploration on feasible and relevant actions, reducing over-
+      [L4] (p.16) from 0.51 to 0.53, while removing constraints increases it to 0.52.
+      [L4] (p.16) Disabling the verification step
+      [L4] (p.16) performance, increasing EMD to 0.79.
+      [L4] (p.16) These results indicate that each component contributes to
+    [L3] (p.17) E
+    [L3] (p.17) Fitness Function
+      [L4] (p.17) using a fitness function that balances goal satisfaction against constraint violations.
+      [L4] (p.17) The fitness
+      [L4] (p.18) In
+      [L4] (p.18) this
+      [L4] (p.18) equation,
+      [L4] (p.18) denotes
+      [L4] (p.18) normalized
+      [L4] (p.18) goal
+      [L4] (p.18) scores
+      [L4] (p.18) that
+      [L4] (p.18) measure
+      [L4] (p.18) how
+      [L4] (p.18) well
+      [L4] (p.18) the
+      [L4] (p.18) configuration
+      [L4] (p.18) penalty coefficient,
+      [L4] (p.18) , is set sufficiently large to ensure that any violation dominates the weighted
+      [L4] (p.18) pairwise
+      [L4] (p.18) troop
+      [L4] (p.18) distance
+      [L4] (p.18) (uses
+      [L4] (p.18) graph
+      [L4] (p.18) distance
+      [L4] (p.18) ,
+      [L4] (p.18) normalized
+      [L4] (p.18) by
+      [L4] (p.18) );
+      [L4] (p.18) :
+      [L4] (p.18) maximize
+      [L4] (p.18) battles
+      [L4] (p.18) throughout
+      [L4] (p.18) the
+      [L4] (p.18) game;
+      [L4] (p.18) :
+      [L4] (p.18) fortify
+      [L4] (p.18) borders
+      [L4] (p.18) of
+      [L4] (p.18) continents
+      [L4] (p.18) you
+      [L4] (p.18) control;
+      [L4] (p.18) :
+      [L4] (p.18) limit
+      [L4] (p.18) exposure
+      [L4] (p.18) to
+      [L4] (p.18) many
+      [L4] (p.18) Constraints.
+      [L4] (p.18) Constraints
+      [L4] (p.18) are
+      [L4] (p.18) formulated
+      [L4] (p.18) as
+      [L4] (p.18) binary
+      [L4] (p.18) functions
+      [L4] (p.18) that
+      [L4] (p.18) equal
+      [L4] (p.18) when
+      [L4] (p.18) violated
+      [L4] (p.18) and
+      [L4] (p.19) optimization
+      [L4] (p.19) toward
+      [L4] (p.19) different
+      [L4] (p.19) strategic
+      [L4] (p.19) preferences
+      [L4] (p.19) while
+      [L4] (p.19) ensuring
+      [L4] (p.19) that
+      [L4] (p.19) hard
+      [L4] (p.19) constraints
+      [L4] (p.19) remain
+    [L3] (p.19) F
+    [L3] (p.19) Comparison of Chain-of-Thought (CoT) and Constraints-of-Thought
+    [L3] (p.19) (Const-o-T)
+      [L4] (p.19) lacks
+      [L4] (p.19) verifiability
+      [L4] (p.19) and
+      [L4] (p.19) control
+      [L4] (p.19) over
+      [L4] (p.19) the
+      [L4] (p.19) search
+      [L4] (p.19) process.
+      [L4] (p.19) CoT
+      [L4] (p.19) is
+      [L4] (p.19) best
+      [L4] (p.19) suited
+      [L4] (p.19) for
+      [L4] (p.19) single-step
+      [L4] (p.19) QA
+      [L4] (p.19) or
+      [L4] (p.19) goal-aligned planning, making it especially effective for multi-step tasks like strategy games and
+    [L3] (p.19) G
+    [L3] (p.19) Commander’s Intent Dataset Example
+      [L4] (p.19) This
+      [L4] (p.19) example
+      [L4] (p.19) from
+      [L4] (p.19) the
+      [L4] (p.19) Commander’s
+      [L4] (p.19) Intent
+      [L4] (p.19) dataset
+      [L4] (p.19) highlights
+      [L4] (p.19) the
+      [L4] (p.19) complex
+      [L4] (p.19) strategic
+      [L4] (p.19) reasoning
+    [L3] (p.19) H
+    [L3] (p.19) Constraint-Optimization Baseline for Troop Placement
+      [L4] (p.19) step, the commander’s intent is provided to a large language model (we use ChatGPT 4.0 mini) to
+      [L4] (p.19) predicted by the LLM yield no feasible solutions,
+      [L4] (p.19) we retain the largest subset of constraints that
+      [L4] (p.20) This one was difficult but I determined that controlling red would allow me the greatest
+      [L4] (p.20) the most number of troops with 20 that they can move around,
+      [L4] (p.20) so the strategy would be
+      [L4] (p.20) the center of the board until I can attempt to force them down into the purple region and
+      [L4] (p.20) Figure
+      [L4] (p.20) 11:
+      [L4] (p.20) An
+      [L4] (p.20) example
+      [L4] (p.20) from
+      [L4] (p.20) the
+      [L4] (p.20) Commander’s
+      [L4] (p.20) Intent
+      [L4] (p.20) dataset.
+      [L4] (p.20) Top:
+      [L4] (p.20) a
+      [L4] (p.20) natural
+      [L4] (p.20) language
+      [L4] (p.20) strategy
+      [L4] (p.20) In this equation,
+      [L4] (p.20) denotes goal scores that measure how well the deployment state
+      [L4] (p.20) satisfies
+      [L4] (p.21) Figure
+      [L4] (p.21) 12:
+      [L4] (p.21) Const-o-T
+      [L4] (p.21) empowers
+      [L4] (p.21) LLMs
+      [L4] (p.21) to
+      [L4] (p.21) (i)
+      [L4] (p.21) infer
+      [L4] (p.21) intent
+      [L4] (p.21) statements
+      [L4] (p.21) and
+      [L4] (p.21) (ii)
+      [L4] (p.21) extract
+      [L4] (p.21) executable
+      [L4] (p.21) constraints
+      [L4] (p.21) from
+      [L4] (p.21) high-level
+      [L4] (p.21) strategies,
+      [L4] (p.21) which
+      [L4] (p.21) restrict
+      [L4] (p.21) the
+      [L4] (p.21) admissible
+      [L4] (p.21) action
+      [L4] (p.21) set
+      [L4] (p.21) during
+      [L4] (p.21) search
+      [L4] (p.21) and
+      [L4] (p.21) act
+      [L4] (p.21) as
+      [L4] (p.21) search
+      [L4] (p.21) controllers
+      [L4] (p.21) rather
+      [L4] (p.21) than
+      [L4] (p.21) post-hoc
+      [L4] (p.21) output
+      [L4] (p.21) filters.
+      [L4] (p.21) These
+      [L4] (p.21) constraints
+      [L4] (p.21) guide
+      [L4] (p.21) a
+      [L4] (p.21) budgeted,
+      [L4] (p.21) constraint-guided
+      [L4] (p.21) variant
+      [L4] (p.21) of
+      [L4] (p.21) MCTS,
+      [L4] (p.21) steering
+      [L4] (p.21) exploration
+      [L4] (p.21) toward
+      [L4] (p.21) rule-compliant
+      [L4] (p.21) and
+      [L4] (p.21) high-quality
+    [L3] (p.21) I
+    [L3] (p.21) Examples from CAD code generation from CADCodePrompt dataset
+      [L4] (p.21) This
+      [L4] (p.21) subsection
+      [L4] (p.21) presents
+      [L4] (p.21) representative
+      [L4] (p.21) example
+      [L4] (p.21) from
+      [L4] (p.21) CADCodePrompt
+      [L4] (p.21) dataset
+      [L4] (p.21) to
+      [L4] (p.21) illustrate
+      [L4] (p.21) the
+      [L4] (p.21) natural
+      [L4] (p.21) language
+      [L4] (p.21) descriptions
+      [L4] (p.21) paired
+      [L4] (p.21) with
+      [L4] (p.21) their
+      [L4] (p.21) corresponding
+      [L4] (p.21) CAD
+      [L4] (p.21) code
+      [L4] (p.21) implementations
+      [L4] (p.21) (See
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## Constraints-of-Thought: A Framework for
+
+
+## Constrained Reasoning in Language-Model-Guided
+
+
+## Search
+
+Kamel Alrashedy, Vriksha Srihari, Zulfiqar Zaidi,
+Ridam Srivastava, Pradyumna Tambwekar, Matthew Gombolay
+Georgia Institute of Technology, GA, USA
+{kalrashedy3,vriksha.srihari,zzaidi8}@gatech.edu
+{rsrivastava7,ptambwekar3}@gatech.edu
+{matthew.gombolay}@cc.gatech.edu
+
+### Abstract
+
+While large language models (LLMs) can generate multi-step plans, they frequently
+
+#### produce steps that violate high-level intent or domain constraints. We introduce
+
+Constraints-of-Thought (Const-o-T), a structured intermediate representation that
+converts each reasoning step into an 〈intent, constraint〉pair, where the constraint
+
+#### is an executable predicate evaluated by a domain validator. These constraints
+
+
+#### restrict the feasible action space at each state and transform free-form reasoning
+
+traces into controllers that actively shape search. The primary contribution of this
+work is the executable intent–constraint representation, which converts reasoning
+steps into constraints that directly restrict the planner’s feasible action space. We
+
+#### demonstrate the utility of this representation by integrating it with Monte Carlo
+
+Tree Search (MCTS), where extracted constraints restrict the planner’s admissible
+actions during search. This yields both improved task accuracy and reduced search
+
+#### complexity, reflected in lower branching factors and faster convergence. Across
+
+
+#### four domains representing distinct reasoning settings including planning, code
+
+
+#### synthesis, symbolic reasoning, and scientific knowledge, Const-o-T consistently
+
+
+#### outperforms prompting-only and search-based baselines. Each reasoning step
+
+produces an executable constraint κt that induces a restricted action set Aκt(s) ⊆
+A(s), which is enforced prior to node expansion during search.The key intellectual
+contribution is demonstrating that executable intent–constraint representations can
+serve as a general, domain-agnostic prior that converts language model reasoning
+from descriptive rationales into verifiable search controllers.
+
+### 1
+
+
+### Introduction
+
+Large language models (LLMs) can generate multi-step reasoning traces, but these traces often violate
+
+#### domain constraints and fail to align with user intent. While approaches such as Chain-of-Thought
+
+(CoT) reasoning [1] appear to “think through” the space of possible plans, they produce free-form
+
+#### reasoning without an executable mechanism to enforce feasibility during planning. As a result,
+
+generated actions frequently violate domain constraints or logical consistency across a range of tasks,
+including combinatorial planning (e.g., strategy games and program synthesis [2, 3, 4]) and symbolic
+reasoning (e.g., arithmetic [5]). Prior work typically uses reasoning traces as guidance or post-hoc
+verification, but does not modify the planner’s feasible action space, leading to exploration of invalid
+or misaligned actions during search [6].
+
+#### We propose Constraints-of-Thought (Const-o-T), a framework that converts reasoning steps into
+
+executable constraints that restrict the admissible action set during search. Concretely, each constraint
+Preprint.
+
+# arXiv:2510.08992v3  [cs.LG]  12 May 2026
+
+
+--- PAGE 2 ---
+
+This strategy was much more difficult, since most of
+the territories, which would be best for attacking
+were surrounded by strong enemy troops, so I did
+not want to risk getting attacked over the fact that I
+was near an important territory. I decided to put
+most of my troops on Green. Specifically Green_D
+and Green_ E, since the territories nearest to me
+have a small troop count, which would make them
+outnumbered with their 1-1 defense. This also gives
+me access to Purple and Red, without putting me in
+a lot of danger. Blue also seemed like an easy
+continent to take over, which is why I chose to put
+my troops there too.
+Language strategy
+Phase 1: Initial Prompt
+Environment
+Phase 2: Constraints-of-Thought
+Step 1:
+"Intent": "Strengthen Green_D to secure the
+continent's entry point and outnumber adjacent
+weak defenses.",
+"Constraint": "Place 5 armies on Green_D",
+Step 2:
+"Intent": "Reinforce Green_E to protect the
+continent’s eastern border and maintain access
+to Purple.",
+"Constraint": "Place 4 armies on Green_E",
+Step 3:
+"Intent": "Establish presence in Blue_A to support
+an easy takeover of the Blue continent.",
+"Constraint": "Place 3 armies on Blue_A",
+Phase 3: Constraint-Guided Search
+MCTS
+State feedback from the environment
+Constraint-Guided
+Constraints are validated against the environment
+and checked for alignment with the user’s intent
+
+#### Figure 1: Const-o-T empowers LLMs to (i) infer intent statements and (ii) extract executable
+
+
+#### constraints from high-level strategies, which restrict the admissible action set during search and
+
+
+#### act as search controllers rather than post-hoc output filters. These constraints guide a budgeted,
+
+
+#### constraint-guided variant of MCTS, steering exploration toward rule-compliant and high-quality
+
+actions while remaining robust to moderate constraint errors (See example from CAD code Fig 12).
+
+#### defines a predicate κt over actions that induces a restricted action set Aκt(s) ⊆A(s), and this
+
+
+#### restriction is enforced before node expansion during search. Unlike prior approaches that use
+
+
+#### constraints for scoring, prompting, or post-hoc filtering, which still operate over the full action
+
+
+#### set A(s), Const-o-T modifies the planner itself by restricting A(s) to Aκt(s). This transformation
+
+turns reasoning from descriptive rationales into search controllers, reducing the branching factor and
+focusing exploration on feasible trajectories.
+
+#### We demonstrate the practical benefits of this representation by integrating Const-o-T with MCTS
+
+for constraint-guided planning. The key novelty of our approach is the executable intent–constraint
+representation, while MCTS serves as a supporting mechanism that operationalizes these constraints
+during search. In our framework, an LLM first generates a sequence of 〈intent, constraint〉pairs from
+the user’s strategic input. Each constraint κt induces a restricted action set Aκt(s) ⊆A(s), and this
+restriction is enforced before node expansion during search, pruning infeasible actions and reducing
+
+#### the branching factor. Prior approaches incorporate constraints through scoring, verification, or
+
+affordance weighting, where the full action set A(s) is still considered during generation. In contrast,
+our approach restricts the admissible action set to Aκt(s) prior to expansion, preventing infeasible
+
+#### actions from entering the search process. We evaluate Const-o-T across four domains, where it
+
+
+#### consistently outperforms strong baselines. These results demonstrate that structured intermediate
+
+representations can effectively guide planning and improve reliability. Because Const-o-T produces
+
+#### interpretable intent–constraint pairs that expose the system’s reasoning process, we also evaluate
+
+
+#### whether this representation improves human understanding and perceived alignment with system
+
+behavior, finding that users report significantly higher transparency, usability, trust, and alignment.
+Our work makes the following contributions:
+1. Constraints-of-Thought (Const-o-T). We propose an executable intermediate representation that
+decomposes strategies into 〈intent, constraint〉pairs, where constraints define a reduced feasible
+action space A′(s).
+
+#### 2. Constraint-Guided MCTS. We integrate Const-o-T with MCTS, operationalizing executable
+
+constraints as search controllers that restrict the feasible action space during exploration.
+
+#### 3. Computational Evaluation. We empirically show consistent branching-factor reduction and
+
+compute-normalized gains across heterogeneous domains.
+4. Human Evaluation. We conduct a user study on the board game Risk showing that the structured
+⟨intent, constraint⟩representation improves transparency, trust, and alignment with user strategies
+(p < 0.05).
+
+### 2
+
+
+### Related Work
+
+Planning and Decision Making. Classical AI planning relies on heuristic search [7], probabilistic
+
+#### models such as MDPs [8], and simulation-based methods like MCTS [9], but these approaches
+
+require explicit domain modeling [10]. Recent work explores LLMs as flexible planners, leveraging
+
+#### pretrained knowledge to generate reasoning traces and actions in open-ended settings. Examples
+
+
+#### include enhancing planning with tree search [11], combining heuristic reasoning with symbolic
+
+2
+
+  [本页图片: page2_img1.png]
+
+--- PAGE 3 ---
+
+search [12], and using episodic memory for long-horizon strategies [13]. Prior LLM–search hybrids
+typically use language models to generate candidate actions or evaluate nodes during search, rather
+than modifying the planner’s feasible action space. In contrast, our approach modifies the feasible
+action set itself by introducing executable constraints that restrict expansions before search proceeds.
+Reasoning with LLMs. LLMs improve performance by reasoning before answering. CoT [1] and
+ToT [14] generate step-by-step traces that aid tasks such as arithmetic [5], commonsense [15], and
+decision-making [16]. However, these reasoning traces function as explanatory rationales rather than
+
+#### executable constraints and therefore neither define a restricted feasible action set A′(s) within the
+
+planning process nor enforce constraint satisfaction during planning. Consequently, reasoning steps
+cannot formally restrict the actions considered during search, allowing plans to drift from the user’s
+intent in combinatorial spaces.
+Constraint-Guided Reasoning. Constraints have long ensured feasibility in symbolic planning [17],
+and recent work extends this idea to LLMs through structured prompting in program synthesis [18]
+
+#### and intent-to-constraint translation [19]. Other studies show constraints reduce hallucinations in
+
+reinforcement learning and neural planning [20], while LLMFP [21] formalizes prompts into verifiable
+representations. However, these approaches primarily use constraints as static templates, optimization
+
+#### objectives, or post-hoc verifiers. Unlike prior approaches that translate intent into constraints for
+
+optimization or prompting, we treat constraints as executable controllers that dynamically restrict the
+planner’s feasible action set during search. We distinguish three classes of approaches. Constrained
+
+#### decoding enforces token-level restrictions during sequence generation. Neuro-symbolic [22] and
+
+affordance-based methods [23] (e.g., SayCan) incorporate feasibility through scoring or weighting
+candidate actions, but still evaluate the full action set A(s). In contrast, our method applies executable
+constraints during search, restricting the admissible action set to Aκt(s) before expansion.
+
+#### Constrained Generation and Decoding. Most prior work on constrained generation applies con-
+
+
+#### straints during decoding rather than at the planning level. PPL-MCTS [24] integrates constraints
+
+into generation by guiding MCTS with a learned discriminator; however, these constraints primarily
+function as evaluative signals that influence path selection rather than explicitly restricting a structured
+
+#### action space. NeuroLogic [25] introduces a search-based decoding strategy that enforces logical
+
+constraints during generation instead of applying them post-hoc, while DOMINO [26] improves the
+efficiency of constrained decoding. However, both operate at the token-sequence level. In contrast,
+
+#### Const-o-T applies constraints at the planning level: each executable constraint induces a reduced
+
+admissible action set Aκt(s) before node expansion. Thus, constraints act as search controllers that
+shape high-level planning, rather than as token-level decoding rules or post-hoc evaluators.
+
+### 3
+
+
+### Constraints-of-Thought Framework for Guided Search
+
+We study task planning in domains where translating natural language strategies into executable plans
+remains challenging. Existing LLM planners typically lack an executable intermediate representation
+
+#### that restricts the feasible action set A′(s) during search, causing exploration to include invalid or
+
+misaligned actions. We introduce Const-o-T, a structured reasoning framework in which constraints
+restrict the admissible action set during search, acting as search controllers rather than post-hoc output
+filters. When integrated with MCTS, this yields a budgeted, constraint-guided variant that focuses
+exploration on feasible, intent-aligned actions. Moreover, the framework remains robust to moderate
+constraint errors, maintaining stable performance even when constraint extraction is imperfect.
+3.1
+Task Planning
+We formulate task planning as a finite-horizon Markov Decision Process (MDP) (S, A, T, r, γ, H),
+where the agent generates an action sequence over a horizon of length, H, to maximize cumulative
+reward. The state space, S, captures the relevant environment configuration, and the action space, A,
+
+#### contains the actions available to the agent. The transition function, T, defines how actions change
+
+
+#### the state, and the reward function, r, evaluates the quality of decisions. A trajectory is defined as
+
+(s0, a0, s1, a1, . . . , sH−1, aH−1), where each action is selected to optimize the expected return.
+The transition dynamics T determine how states evolve in response to actions and may be stochastic
+or deterministic depending on the domain. The reward function r evaluates the utility of generated
+outputs, which can be computed from domain-specific fitness functions or external evaluators. In CAD
+and arithmetic domains, r is approximated using LLM-based judgments of correctness. Importantly,
+these LLM evaluations provide soft scoring among already feasible candidates, while feasibility itself
+is enforced by the symbolic constraints used during search. The discount factor γ balances immediate
+3
+
+--- PAGE 4 ---
+
+Algorithm 1 Constraint-Guided MCTS (CG-MCTS)
+Require: Initial state s0; Map M; Constraint sequence C =
+�
+(intenti, constrainti)
+�K
+i=1;
+Ensure: Plan π or root action a⋆
+1: function CG_MCTS(s0, M, C)
+2:
+Create root node v0 with state s0;
+3:
+R ←|C| ≡K
+▷Number of rollouts equals number of constraints
+4:
+for k = 1 to R do
+5:
+c ←C[k]
+▷Use the k-th constraint to guide this rollout
+6:
+v ←v0; path ←[ ]
+7:
+while not TERMINAL(v) do
+▷Selection
+8:
+a ←arg max
+a∈A(v)
+�
+Q(v, a) + cuct
+�
+ln(1+N(v))
+1+N(v,a) + λ · log PLM(a | state, κk)
+�
+9:
+path ←path ∪{(v, a)}
+10:
+v ←CHILD(v, a)
+11:
+end while
+12:
+˜
+A ∼TOPK(PLM(· | state(v), c, D), Kgen)
+▷Expansion
+13:
+Alegal ←{a ∈˜
+A : κk(a) = 1}
+▷Constraints restrict action space before expansion
+14:
+if Alegal = ∅then Alegal ←{a ∈˜
+A : Ic(a | v) = 1} else keep top Kexpand
+15:
+For each a ∈Alegal:
+16:
+v′ ←CREATECHILD(v, a, NextState(v, a))
+17:
+v ←EVALUATION(v)
+▷Evaluation
+18:
+BACKUP(path, V (v))
+▷Backpropagation
+19:
+end for
+20:
+π′ ←EXTRACTBESTPATH(v0)
+▷Construct plan from search tree
+21:
+π ←FINALVALIDATION(π′, C)
+▷Remove unsupported actions
+22:
+return π
+23: end function
+and future rewards. Rather than solving for an optimal policy, π∗, the planner constructs an action
+sequence (a0, . . . , aH−1) that maximizes cumulative reward given by Eq. 1-3.
+Rtotal =
+H−1
+�
+t=0
+γtr(st, at)
+(1)
+r(s, a) = 1{constraint satisfied} + F(s, a)
+(2)
+F(s, a) =
+�z1(s, a),
+Risk
+zn(s, a),
+Other tasks
+(3)
+
+#### In these equations, z1 denotes the Risk fitness function (Sec. E), while z2, . . . , zn represent task-
+
+
+#### specific evaluation functions for other domains using LLM-as-a-Judge scoring mechanisms. The
+
+indicator function 1{·} enforces constraint satisfaction by excluding infeasible actions, while F(s, a)
+provides a task-specific evaluation signal used to rank feasible candidates.
+3.2
+Constraints-of-Thought
+We introduce Constraints-of-Thought (Const-o-T), a framework that represents structured reasoning
+steps guiding the agent’s decision-making process. Const-o-T represents each reasoning step as an
+
+#### intent–constraint pair. Formally, a Const-o-T step is defined as ct = ⟨it, κt⟩, where it is a natural-
+
+language intent describing the strategic objective (e.g., “Reinforce a border to deter enemy") and κt
+
+#### is a machine-executable constraint that enforces the corresponding action restriction (e.g., “Place
+
+
+#### 5 troops on Territory A"). Once extracted, each ct = ⟨it, κt⟩pair serves a dual role in planning.
+
+The intent provides a human-interpretable explanation of the agent’s reasoning, while the constraint
+restricts the feasible action space by pruning actions that violate domain rules. Formally, given a state
+
+#### st, the constraint defines a reduced action set, A′(st) ⊆A(st), containing only actions consistent
+
+with κt. This conversion of intermediate reasoning into executable action-set restrictions constitutes
+the core representation introduced by Const-o-T. Unlike prior LLM–search hybrids that use language
+
+#### models to generate candidate actions or evaluate nodes, Const-o-T uses intermediate reasoning
+
+4
+
+--- PAGE 5 ---
+
+
+#### to explicitly modify the planner’s feasible action set. In this formulation, reasoning steps act as
+
+executable controllers that restrict the search space rather than merely guiding exploration. The role
+of symbolic validation is to enforce feasibility constraints during search by preventing invalid actions
+from entering the search tree. Candidate actions that do not satisfy κt are rejected prior to expansion.
+Constraints follow simple domain-specific schemas (e.g., ‘Place n troops on territory x’) that map to
+executable predicates κt. Validation is performed using domain-specific rule checkers (e.g., legality
+constraints in Risk, compilation checks in CAD, and symbolic consistency in arithmetic reasoning)
+3.3
+Constraint-Guided MCTS
+We employ a constraint-guided, budgeted variant of MCTS. Unlike classical MCTS, which targets
+
+#### asymptotic optimality under large rollout budgets, our objective is efficient, intent-aligned search
+
+under limited compute.
+Algorithm Overview: Given a natural language strategy, we first extract a sequence of ⟨it, κt⟩pairs
+using a language model (See Appendix B). Each constraint κt defines a predicate over actions that
+induces a restricted action set Aκt(s) ⊆A(s), which is enforced before node expansion during search
+(See Algorithm 1). The LLM proposes constraints, while the symbolic validator enforces feasibility
+by filtering invalid actions before they enter the search tree.
+
+#### Selection Phase: Starting from the root, MCTS recursively selects child nodes using a modified
+
+Upper Confidence Bound (UCB) criterion that balances exploration and exploitation with the LLM’s
+confidence, as given by Eq. 4.
+UCB(v, a) = Q(v, a) + cuct
+�
+ln(1 + N(v))
+1 + N(v, a) + λ · log PLM(a | state, κt)
+(4)
+In this equation, PLM(a | state, κt) denotes the probability assigned by the language model to action
+a given the current state and constraint, and λ controls the influence of this prior during search.
+Constraint-Guided Search. Const-o-T restricts the feasible action set during MCTS by enforcing
+constraint predicates at expansion time, pruning actions that violate the extracted intent–constraint
+pairs. This reduces branching factor and focuses search on strategies consistent with user intent.
+Expansion and Evaluation. At leaf nodes, LLMs generate candidate actions given the current state,
+active constraint, and user strategy. We filter candidates for legality (e.g., game rules) and constraint
+satisfaction before expansion. Each resulting child node is evaluated using a domain-specific fitness
+function measuring strategic objective achievement and constraint adherence. The rollout budget is
+
+#### set equal to the number of extracted constraints, coupling search depth to the structured constraint
+
+sequence.
+Constraint-Guided Reasoning.
+We formalize constraint-guided reasoning as a structured planning
+process in which intermediate reasoning steps restrict the feasible action space of a planning algorithm.
+Let S denote the state space and let A(s) denote the set of admissible actions in state s. Each Const-
+o-T reasoning step ct = ⟨it, κt⟩restricts the feasible action space of the planner, where it denotes a
+natural-language intent and κt denotes an executable constraint. The constraint predicate is defined
+as shown in Eq. 5. In this equation, κt(a) = 1 when action a satisfies the extracted constraint at state
+st, and κt(a) = 0 otherwise.
+κt : A(st) →{0, 1}
+(5)
+
+#### Constraints influence planning through two complementary mechanisms. First, during search, the
+
+LLM conditioned on κt guides MCTS toward constraint-consistent candidate actions. At expansion
+time, candidate actions are checked against κt, and actions that do not satisfy the active constraint are
+not added to the search tree. Second, after a full plan is generated, a domain-specific validator checks
+the final output and removes unsupported actions. This final validation step is conservative: it does
+not introduce new actions, regenerate the plan, or iteratively repair the output.
+The constrained action space induced by the predicate is given in Eq. 6.
+Aκt(st) = {a ∈A(st) | κt(a) = 1}
+(6)
+
+#### Given a sequence of constraints C = (κ1, . . . , κT ), the planner generates an action trajectory
+
+τ = (a1, . . . , aT ) such that at ∈Aκt(st) for each step t.
+
+#### Validators are domain-specific and enforce task-level feasibility. In the Risk domain, the final
+
+validation step is implemented as a Python rule-based checker that takes as input the generated plan
+5
+
+--- PAGE 6 ---
+
+Table 1: EMD between predicted and ground-truth troop placements across multiple LLMs. Lower
+values indicate better spatial alignment with human strategies.
+Method
+LLaMA 3.3
+GPT-4.1
+GPT-5.2
+Claude Haiku
+DeepSeek R1
+GPT-OSS-120B
+Direct Prompt
+0.64
+0.60
+0.58
+0.63
+0.76
+0.61
+CoT [1]
+0.74
+0.54
+0.56
+0.64
+0.73
+0.70
+CoT+RS [27]
+0.72
+0.64
+0.70
+0.70
+0.87
+0.66
+LLMFP [21]
+1.13
+0.81
+1.08
+1.03
+1.15
+0.82
+CTP [28]
+0.68
+0.56
+0.59
+0.65
+0.85
+0.60
+CoV [29]
+0.70
+0.56
+0.59
+0.63
+0.79
+0.62
+Const-o-T
+0.66
+0.60
+0.61
+0.65
+0.77
+0.64
+ToT [14]
+1.05
+0.72
+0.76
+0.89
+0.90
+0.85
+MCTS [30]
+0.96
+0.76
+0.79
+0.79
+1.01
+0.93
+MCTS with CoT
+0.99
+0.75
+0.70
+0.76
+1.01
+0.82
+MCTS with Const-o-T
+0.57
+0.51
+0.54
+0.55
+0.59
+0.59
+and the extracted intent–constraint pairs and identifies actions that violate the constraints. In CAD
+generation and arithmetic reasoning, we use LLM-based validators to check that generated outputs
+satisfy geometric, symbolic, and constraint consistency requirements. Because final validation only
+
+#### removes unsupported actions, it may produce a partial plan when later actions depend on earlier
+
+ones that are removed. In practice, we prefer removing known invalid actions and deferring repair to
+downstream processes or human oversight, rather than presenting infeasible actions as valid.
+This procedure contrasts with CoT reasoning, which produces free-form rationales that guide reason-
+
+#### ing implicitly but do not modify the planner’s feasible action set. In contrast, Const-o-T produces
+
+structured reasoning controllers ct = fLLM(st) = ⟨it, κt⟩, where the constraint κt explicitly modifies
+the action space used during search.
+
+### 4
+
+
+### Experiments
+
+We evaluate our approach along three dimensions: task accuracy, structural alignment of generated
+
+#### plans, and interpretability of intermediate reasoning steps. We benchmark our method against a
+
+
+#### diverse set of baselines spanning prompting-based, search-based, and constraint-based planning
+
+approaches. The prompting baselines include Direct Prompt, Chain-of-Thought (CoT) [1], Tree-of-
+Thought (ToT) [14], CoT with Rejection Sampling (CoT+RS) [27], Constraint Template Prompting
+(CTP) [28], and Chain-of-Verification (CoV) [29]. For search-based methods, we consider classical
+
+#### MCTS [30] as well as MCTS augmented with CoT reasoning. We also include a constraint-based
+
+planning baseline, LLMFP [21], which translates natural language problems into formal optimization
+constraints. Unless otherwise specified, all baselines are evaluated consistently across all domains.
+4.1
+Game Strategy: Risk
+
+#### Risk is a strategy board game played on a world map of 21 territories grouped into six continents.
+
+We focus on the initial troop placement studied in prior work [19] (See Appendix §G for illustrative
+
+#### example). We use the Commander’s Intent (CI) dataset [19], which contains 1, 053 examples of
+
+
+#### natural language strategies paired with corresponding ground-truth territories for troop placement.
+
+
+#### We measure alignment using Earth Mover’s Distance (EMD) [31], which quantifies the minimum
+
+cost of transforming the predicted troop placement distribution into the ground-truth distribution. Our
+results demonstrate that across all evaluated LLMs, MCTS with Const-o-T consistently achieves the
+
+#### lowest EMD, indicating the best alignment between predicted and ground-truth troop placements.
+
+
+#### The key improvement comes from constraint-guided search, which restricts the action space to
+
+strategy-consistent troop placements during planning (See Table 1).
+4.2
+CAD Code Generation
+The task involves translating natural language descriptions of 3D objects into executable parametric
+
+#### CAD scripts, where constraint enforcement helps maintain syntactic validity and geometric cor-
+
+
+#### rectness. We utilize CADPrompt [32], a dataset containing 200 3D design examples, each paired
+
+
+#### with a natural language description and a corresponding Python script (See Figure 13). We report
+
+
+#### Hausdorff distance between generated and ground-truth objects and the percentage of generated
+
+
+#### examples compiling successfully. The results in Table 2 demonstrate that MCTS with Const-o-T
+
+achieves the best performance across both LLaMA and GPT-4.1, with the lowest Hausdorff distances
+(0.21 and 0.12) and the highest success rate of 95.5% for GPT-4.1.
+6
+
+--- PAGE 7 ---
+
+
+#### Figure 2: User study ratings across three interaction modes: alignment, agnostic, and adversarial.
+
+Statistical significance is indicated by asterisks (∗p < 0.05, ∗∗p < 0.01, ∗∗∗p < 0.001).
+Table 2: Evaluation metrics across benchmarks. For CADPrompt, we report the median Hausdorff
+Distance (HD) and Success Rate (SR). For GSM8K, Math-500, and GPQA, we report accuracy.
+Method
+CADPrompt [32]
+GSM8K [5]
+Math-500 [5]
+GPQA[33]
+LLaMA-3
+GPT-4.1
+LLaMA-3
+GPT-4.1 LLaMA-3
+GPT-4.1 LLaMA-3
+GPT-4.1
+HD↓
+SR↑
+HD↓
+SR↑
+Acc.
+Acc.
+Acc.
+Acc.
+Acc.
+Acc.
+CoT
+0.22
+88.5%
+0.15
+92.0%
+91.9%
+95.1%
+64.2%
+79.2%
+36.3%
+65.9%
+CoT + RS
+0.27
+91.5%
+0.13
+92.5%
+92.4%
+93.1%
+66.6%
+78.4%
+40.9%
+66.6%
+CoV
+0.27
+89.0%
+0.14
+94.0%
+91.3%
+93.6%
+68.2%
+81.7%
+43.0%
+65.4%
+CTP
+0.24
+89.0%
+0.16
+94.0%
+86.8%
+94.0%
+65.0%
+78.3%
+38.5%
+65.9%
+Const-o-T
+0.22
+89.5%
+0.16
+94.5%
+92.5%
+96.1%
+64.2%
+79.2%
+42.9%
+64.1%
+ToT
+0.22
+94.0%
+0.15
+92.0%
+92.6%
+93.7%
+60.4%
+80.8%
+41.9%
+65.6%
+MCTS
+0.24
+89.5%
+0.13
+94.5%
+92.9%
+95.0%
+66.2%
+82.2%
+48.4%
+65.1%
+MCTS with CoT
+0.24
+90.5%
+0.16
+93.0%
+91.8%
+95.1%
+68.8%
+80.2%
+50.5%
+67.1%
+MCTS with Const-o-T
+0.21
+92.0%
+0.12
+95.5%
+93.4%
+96.2%
+70.0%
+83.1%
+52.0%
+70.2%
+4.3
+Arithmetic Reasoning
+Arithmetic reasoning involves solving multi-step mathematical word problems by translating natural
+language into symbolic equations and sequential calculations. The task requires symbolic consistency
+across steps, with performance typically measured using exact-match accuracy on the final answer.
+We utilize two benchmarks: (i) GSM8K [5], which contains 8.5K math word problems (7.5K train,
+
+#### 1K test); and (ii) Math-500 [34], a benchmark of 500 problems. The results in Table 2 show that
+
+
+#### integrating structured reasoning improves accuracy across models. On GSM8K, the best results
+
+
+#### are achieved by MCTS with Const-o-T, reaching 93.4% accuracy with LLaMA-3 and 96.2% with
+
+GPT-4.1. On Math-500, LLaMA-3 achieves 70.0% accuracy, while GPT-4.1 achieves 83.1%.
+4.4
+Scientific Reasoning
+GPQA consists of graduate-level multiple-choice scientific reasoning questions written by domain
+
+#### experts in biology, physics, and chemistry [33]. We evaluate LLM performance on GPQA using
+
+accuracy. Table 2 shows that constraint-guided reasoning improves GPQA performance, with MCTS
++ Const-o-T achieving the best results (52.0% with LLaMA and 70.2% with GPT-4.1).
+4.5
+Human Evaluation
+
+#### We additionally evaluate whether the structured intent–constraint representation improves human
+
+understanding and perceived alignment with system behavior. We conducted a within-subjects user
+study (n = 18) under an IRB-approved protocol in Risk game. Participants provided natural-language
+descriptions of their commander’s intent, and the system generated corresponding action plans across
+full gameplay turns (Reinforce, Attack, and Freemove phases). We consider three interaction modes:
+
+#### (1) Aligned, where the system follows the user’s stated strategy; (2) Agnostic, where the system
+
+
+#### optimizes only for winning; and (3) Adversarial, where the system intentionally acts against the
+
+user’s intent. This design isolates whether alignment is genuinely attributable to the intent–constraint
+
+#### representation. We measured four dependent variables using 7-point Likert scales: Alignment,
+
+Transparency [35], Usability [36], and Trust as shown in Fig. 2. The representation improves human
+interpretability and alignment. Additional details on study design is provided in Appendix § C.
+7
+
+  [本页图片: page7_img1.png]
+
+--- PAGE 8 ---
+
+Figure 3: Branching factor per step (GPT4.1).
+Figure 4: Average inference time per example.
+
+### 5
+
+
+### Analysis
+
+
+#### In this section, we analyze our approach in the Risk domain to understand its performance gains.
+
+Const-o-T operates through a simple mechanism. Each constraint κt induces a restricted action set
+
+#### Aκt(s) ⊆A(s), which is enforced prior to node expansion. This reduces the branching factor by
+
+preventing infeasible actions from entering the search tree, leading to more efficient exploration and
+improved alignment with user intent.
+
+#### Search-Space Reduction. A key mechanism underlying the performance gains of our approach
+
+
+#### is the explicit reduction of the search space. By enforcing constraints during search, Const-o-T
+
+restricts the admissible action set prior to node expansion. This leads to a more focused exploration
+process that avoids infeasible or irrelevant trajectories. Empirically, we observe consistently lower
+branching factors compared to both standard MCTS and MCTS with CoT (See Fig. 3) on GPT-4.1.
+This confirms that restricting Aκt(s) reduces the search space and improves efficiency.
+Search Efficiency. Figure 4 shows the average wall-clock time per example. While CoT increases
+runtime, Const-o-T reduces overall inference time. These improvements shown in Const-o-T arise
+
+#### from restricting the admissible action set during search, which reduces the branching factor and
+
+limits the number of node expansions. As a result, the search avoids exploring infeasible trajectories
+and converges more efficiently. In contrast, CoT introduces additional reasoning overhead without
+
+#### constraining the search space, leading to higher runtime. This shows that restricting Aκt(s)
+
+improves search efficiency and reduces runtime.
+Figure 5: EMD vs. perturbation level for LLaMA
+and GPT-4.1
+Sensitivity to Constraint Quality. To evaluate
+robustness to imperfect constraint extraction, we
+introduce controlled noise by perturbing a sub-
+
+#### set of constraints. Specifically, we sample 100
+
+
+#### examples from the Risk game using GPT-4.1,
+
+
+#### where the troop count in selected constraints
+
+
+#### is modified. Noise is applied at varying rates,
+
+ϵ ∈{0%, 10%, 20%, 30%}, to simulate increas-
+
+#### ing levels of extraction error. After constraint
+
+
+#### extraction, we randomly select ϵ of the con-
+
+
+#### straints and use an LLM to generate incorrect
+
+
+#### troop-count values for those entries. We ob-
+
+serve gradual performance degradation as noise
+
+#### increases, indicating that the method does not
+
+fail catastrophically under imperfect constraints
+(See Fig. 5). This shows the method remains
+robust under moderate constraint errors.
+In-Search vs Post-hoc Constraints. We compare our method, which applies executable constraints
+during search, to a post-hoc filtering baseline in which constraints are applied only after candidate
+
+#### generation, on a subset of 100 examples from Risk using GPT-4.1. All comparisons use identical
+
+
+#### candidate generation budgets and evaluation settings. Applying constraints during search yields
+
+improved performance (from 0.86 to 0.75) and reduces runtime (from 13.6s to 9.8s). In contrast, post-
+hoc filtering exhibits a high failure rate due to early constraint violations, which prevents effective
+exploration. This shows that enforcing constraints during search leads to more efficient exploration
+
+#### by avoiding infeasible trajectories early, rather than discarding them after generation. This result
+
+supports the claim that constraints define the admissible action set during search rather than acting as
+post-hoc filters. This shows constraints must be applied during search rather than post-hoc.
+8
+
+  [本页图片: page8_img1.png, page8_img2.png, page8_img3.png]
+
+--- PAGE 9 ---
+
+
+#### Failure Modes. We identify three primary failure modes in the Risk domain. First, errors in
+
+
+#### constraint extraction can impose infeasible or misaligned restrictions on the action space. Second,
+
+overly restrictive constraints can lead to over-pruning, eliminating valid and potentially high-quality
+
+#### actions. Third, ambiguous or underspecified user input may result in incomplete constraint sets
+
+
+#### (See Fig. 9). This highlights the primary limitations arising from constraint extraction and
+
+over-pruning.
+
+### 6
+
+
+### Discussion
+
+From Rationales to Controllers. While CoT produces unconstrained reasoning traces that primar-
+
+#### ily function as explanatory rationales, Const-o-T represents intermediate reasoning as executable
+
+intent–constraint pairs that directly restrict the feasible action set during search. The key distinction
+
+#### is whether constraints define the admissible action set or merely evaluate candidates. Our method
+
+
+#### explicitly defines the constraint-induced action set Aκt(s), which directly shapes the planner’s ex-
+
+
+#### ploration by pruning infeasible actions before expansion. Table 7 summarizes the key differences
+
+between Const-o-T and CoT across representation, purpose, efficiency, and robustness.
+Modifying the Planner. A key distinction of Const-o-T is that it modifies the planner itself, rather
+
+#### than guiding it externally. Prior LLM-based approaches (e.g., CoT, ToT, verifier-based methods)
+
+influence action selection through scoring, prompting, or filtering, but still operate over the full action
+space A(s). In contrast, each constraint κt explicitly defines a restricted action set Aκt(s) ⊆A(s),
+and this restriction is enforced before node expansion. From a search perspective, this mechanism
+
+#### dynamically redefines the branching factor at each step: instead of exploring |A(s)| actions, the
+
+planner operates over |Aκt(s)|, where |Aκt(s)| ≪|A(s)|. As a result, Const-o-T alters the structure
+of the search tree itself, eliminating infeasible branches before they are explored.
+Constraints as Search Controllers. In Const-o-T, constraints restrict the admissible action set during
+
+#### search, rather than filtering outputs post-hoc. Each constraint κt induces a reduced action space
+
+Aκt(s), ensuring that only feasible actions are considered during node expansion. This transforms
+reasoning from descriptive guidance into a control mechanism: constraints act as search controllers
+
+#### that shape exploration in real time, preventing infeasible actions from entering the search tree. In
+
+
+#### contrast, post-hoc filtering cannot influence exploration and often leads to wasted computation or
+
+failed search trajectories. Our contribution is not post-hoc filtering, but defining the admissible action
+
+#### set Aκt(s) during search. Importantly, the method is robust to moderate constraint errors, as the
+
+search process degrades gracefully rather than failing catastrophically when constraints are imperfect.
+
+#### Beyond Accuracy Improvements. While improvements in final task accuracy are sometimes
+
+modest, Const-o-T consistently reduces search complexity and, in interactive evaluation, substantially
+improves perceived alignment between user intent and system behavior (See Figure 2). This pattern
+
+#### is consistent with the role of executable constraints as search controllers: their primary effect is to
+
+restrict infeasible reasoning paths and preserve intent during planning. Furthermore, our approach can
+be viewed as a budgeted, constraint-guided variant of MCTS, where constraints reduce the effective
+branching factor of the search, leading to more efficient and focused exploration.
+
+### 7
+
+
+### Limitations
+
+Const-o-T depends on accurate constraint extraction; when LLMs misinterpret user input or produce
+incomplete symbolic constraints, the search may be guided toward suboptimal solutions. Additionally,
+the framework assumes users can articulate intent in natural language; however, for complex scenarios,
+users may struggle to express nuanced preferences, potentially leading to constraint extraction failures
+and human-AI alignment issues.
+
+### 8
+
+
+### Conclusion
+
+
+#### We introduced Constraints-of-Thought (Const-o-T), a framework that transforms unconstrained
+
+natural language reasoning into structured, verifiable constraints for guiding language model planning.
+By representing each reasoning step as an ⟨intent, constraint⟩pair, our approach provides actionable
+control over the search process rather than merely explanatory rationales. Our integration with MCTS
+demonstrates how constraints can effectively prune infeasible branches and direct exploration toward
+semantically meaningful actions. Comprehensive evaluation across four domains shows consistent
+improvements in accuracy, structural alignment, and constraint satisfaction. These findings suggest
+that structured constraint extraction represents a promising direction for constraint-guided reasoning
+in LLM-based planning systems.
+9
+
+--- PAGE 10 ---
+
+
+### Acknowledgment
+
+This work was supported by the Office of Naval Research (ONR) under grant number N00014-23-1-
+2887, by the National Science Foundation under grant number CMMI-2229260, and by a gift from
+Konica Minolta.
+
+### References
+
+
+#### [1] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le,
+
+
+#### Denny Zhou, et al. Chain-of-thought prompting elicits reasoning in large language models.
+
+Advances in neural information processing systems, 35:24824–24837, 2022.
+[2] David Silver, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja Huang, Arthur
+Guez, Thomas Hubert, Lucas Baker, Matthew Lai, Adrian Bolton, et al. Mastering the game of
+go without human knowledge. nature, 550(7676):354–359, 2017.
+
+#### [3] Zhenyu Guan, Xiangyu Kong, Fangwei Zhong, and Yizhou Wang. Richelieu: Self-evolving
+
+
+#### llm-based agents for ai diplomacy. Advances in Neural Information Processing Systems, 37:
+
+123471–123497, 2024.
+[4] Aman Madaan, Shuyan Zhou, Uri Alon, Yiming Yang, and Graham Neubig. Language models
+
+#### of code are few-shot commonsense learners. In 2022 Conference on Empirical Methods in
+
+Natural Language Processing, EMNLP 2022, 2022.
+[5] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,
+
+#### Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al. Training verifiers to
+
+solve math word problems. arXiv preprint arXiv:2110.14168, 2021.
+[6] Zhanke Zhou, Rong Tao, Jianing Zhu, Yiwen Luo, Zengmao Wang, and Bo Han. Can language
+models perform robust reasoning in chain-of-thought prompting with noisy rationales? Advances
+in Neural Information Processing Systems, 37:123846–123910, 2024.
+[7] Judea Pearl. Heuristics: intelligent search strategies for computer problem solving. Addison-
+Wesley Longman Publishing Co., Inc., 1984.
+
+#### [8] Martin L Puterman. Markov decision processes: discrete stochastic dynamic programming.
+
+John Wiley & Sons, 2014.
+
+#### [9] Cameron B Browne, Edward Powley, Daniel Whitehouse, Simon M Lucas, Peter I Cowling,
+
+Philipp Rohlfshagen, Stephen Tavener, Diego Perez, Spyridon Samothrakis, and Simon Colton.
+A survey of monte carlo tree search methods. IEEE Transactions on Computational Intelligence
+and AI in games, 4(1):1–43, 2012.
+
+#### [10] Tathagata Chakraborti, Sarath Sreedharan, and Subbarao Kambhampati. The emerging land-
+
+
+#### scape of explainable ai planning and decision making. arXiv preprint arXiv:2002.11697,
+
+2020.
+[11] Jonathan Light, Min Cai, Weiqin Chen, Guanzhi Wang, Xiusi Chen, Wei Cheng, Yisong Yue,
+and Ziniu Hu. Strategist: Self-improvement of llm decision making via bi-level tree search. In
+The Thirteenth International Conference on Learning Representations, 2025.
+[12] Swarnadeep Saha, Archiki Prasad, Justin Chih-Yao Chen, Peter Hase, Elias Stengel-Eskin, and
+Mohit Bansal. System-1. x: Learning to balance fast and slow planning with language models.
+arXiv preprint arXiv:2407.14414, 2024.
+
+#### [13] Wang Zhu, Ishika Singh, Robin Jia, and Jesse Thomason. Language models can infer action
+
+semantics for symbolic planners from environment feedback. arXiv preprint arXiv:2406.02791,
+2024.
+
+#### [14] Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik
+
+
+#### Narasimhan. Tree of thoughts: Deliberate problem solving with large language models. Ad-
+
+vances in neural information processing systems, 36:11809–11822, 2023.
+10
+
+--- PAGE 11 ---
+
+
+#### [15] Xuhui Zhou, Yue Zhang, Leyang Cui, and Dandan Huang. Evaluating commonsense in pre-
+
+
+#### trained language models. In Proceedings of the AAAI conference on artificial intelligence,
+
+volume 34, pages 9733–9740, 2020.
+
+#### [16] Wenlong Huang, Pieter Abbeel, Deepak Pathak, and Igor Mordatch. Language models as
+
+
+#### zero-shot planners: Extracting actionable knowledge for embodied agents. In International
+
+conference on machine learning, pages 9118–9147. PMLR, 2022.
+
+#### [17] Stuart Russell, Peter Norvig, and Artificial Intelligence.
+
+
+#### A modern approach.
+
+
+#### Artificial
+
+Intelligence. Prentice-Hall, Egnlewood Cliffs, 25(27):79–80, 1995.
+
+#### [18] Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David
+
+
+#### Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, et al. Program synthesis with large
+
+language models. arXiv preprint arXiv:2108.07732, 2021.
+[19] Pradyumna Tambwekar, Lakshita Dodeja, Nathan Vaska, Wei Xu, and Matthew Gombolay. A
+computational interface to translate strategic intent from unstructured language in a low-data
+setting. Findings of the Association for Computational Linguistics: EMNLP 2023, 2023.
+[20] Javier Garcia and Fernando Fernández. Safe exploration of state and action spaces in reinforce-
+ment learning. Journal of Artificial Intelligence Research, 45:515–564, 2012.
+
+#### [21] Yilun Hao, Yang Zhang, and Chuchu Fan. Planning anything with rigor: General-purpose
+
+
+#### zero-shot planning with llm-based formalized programming. The Thirteenth International
+
+Conference on Learning Representations, 2025.
+
+#### [22] Yu Feng, Nathaniel Weir, Kaj Bostrom, Sam Bayless, Darion Cassel, Sapana Chaudhary,
+
+
+#### Benjamin Kiesl-Reiter, and Huzefa Rangwala. Vericot: Neuro-symbolic chain-of-thought
+
+validation via logical consistency checks. arXiv preprint arXiv:2511.04662, 2025.
+
+#### [23] Michael Ahn, Anthony Brohan, Noah Brown, Yevgen Chebotar, Omar Cortes, Byron David,
+
+Chelsea Finn, Chuyuan Fu, Keerthana Gopalakrishnan, Karol Hausman, et al. Do as i can, not
+as i say: Grounding language in robotic affordances. arXiv preprint arXiv:2204.01691, 2022.
+[24] Antoine Chaffin, Vincent Claveau, and Ewa Kijak. Ppl-mcts: Constrained textual generation
+
+#### through discriminator-guided mcts decoding. In Proceedings of the 2022 conference of the
+
+
+#### North American chapter of the association for computational linguistics: human language
+
+technologies, pages 2953–2967, 2022.
+
+#### [25] Ximing Lu, Sean Welleck, Peter West, Liwei Jiang, Jungo Kasai, Daniel Khashabi, Ronan
+
+
+#### Le Bras, Lianhui Qin, Youngjae Yu, Rowan Zellers, et al. Neurologic a* esque decoding:
+
+Constrained text generation with lookahead heuristics. In Proceedings of the 2022 Conference
+
+#### of the North American Chapter of the Association for Computational Linguistics: Human
+
+Language Technologies, pages 780–799, 2022.
+
+#### [26] Luca Beurer-Kellner, Marc Fischer, and Martin Vechev. Guiding llms the right way: Fast,
+
+non-invasive constrained generation. arXiv preprint arXiv:2403.06988, 2024.
+[27] Jiarui Yao, Yifan Hao, Hanning Zhang, Hanze Dong, Wei Xiong, Nan Jiang, and Tong Zhang.
+Optimizing chain-of-thought reasoners via gradient variance minimization in rejection sampling
+and rl. arXiv preprint arXiv:2505.02391, 2025.
+[28] Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hiroaki Hayashi, and Graham Neubig.
+Pre-train, prompt, and predict: A systematic survey of prompting methods in natural language
+processing. ACM computing surveys, 55(9):1–35, 2023.
+[29] Shehzaad Dhuliawala, Mojtaba Komeili, Jing Xu, Roberta Raileanu, Xian Li, Asli Celikyilmaz,
+
+#### and Jason Weston. Chain-of-verification reduces hallucination in large language models. In
+
+Findings of the association for computational linguistics: ACL 2024, pages 3563–3578, 2024.
+
+#### [30] Shun Zhang, Zhenfang Chen, Yikang Shen, Mingyu Ding, Joshua B Tenenbaum, and
+
+
+#### Chuang Gan. Planning with large language models for code generation. arXiv preprint
+
+arXiv:2303.05510, 2023.
+11
+
+--- PAGE 12 ---
+
+[31] Yossi Rubner, Carlo Tomasi, and Leonidas J Guibas. The earth mover’s distance as a metric for
+image retrieval. International journal of computer vision, 40(2):99–121, 2000.
+
+#### [32] Kamel Alrashedy, Pradyumna Tambwekar, Zulfiqar Zaidi, Megan Langwasser, Wei Xu, and
+
+
+#### Matthew Gombolay. Generating cad code with vision-language models for 3d designs. The
+
+Thirteenth International Conference on Learning Representations, 2025.
+[33] David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien
+
+#### Dirani, Julian Michael, and Samuel R Bowman. Gpqa: A graduate-level google-proof q&a
+
+benchmark. In First conference on language modeling, 2024.
+[34] Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn
+Song, and Jacob Steinhardt. Measuring mathematical problem solving with the math dataset.
+arXiv preprint arXiv:2103.03874, 2021.
+[35] Andrew Silva, Mariah Schrum, Erin Hedlund-Botti, Nakul Gopalan, and Matthew Gombolay.
+
+#### Explainable artificial intelligence: Evaluating the objective and subjective impacts of xai on
+
+human-agent interaction. International Journal of Human–Computer Interaction, 39(7):1390–
+1404, 2023.
+[36] James R Lewis. The system usability scale: past, present, and future. International Journal of
+Human–Computer Interaction, 34(7):577–590, 2018.
+[37] Jiun-Yin Jian, Ann M Bisantz, and Colin G Drury. Foundations for an empirically determined
+scale of trust in automated systems. International journal of cognitive ergonomics, 4(1):53–71,
+2000.
+
+#### [38] René F Kizilcec. How much information? effects of transparency on trust in an algorithmic
+
+interface. In Proceedings of the 2016 CHI conference on human factors in computing systems,
+pages 2390–2395, 2016.
+[39] Fred D Davis. Perceived usefulness, perceived ease of use, and user acceptance of information
+technology. MIS quarterly, pages 319–340, 1989.
+[40] Q Vera Liao, Daniel Gruen, and Sarah Miller. Questioning the ai: informing design practices for
+explainable ai user experiences. In Proceedings of the 2020 CHI conference on human factors
+in computing systems, pages 1–15, 2020.
+[41] Google LLC. OR-Tools: Google Operations Research Tools. https://developers.google.
+com/optimization/, 2025. Accessed: 2025-09-22.
+
+### A
+
+
+### Risk Game environment
+
+Risk is a strategy-based game originally developed as a board game. Our online adaptation faithfully
+preserves its core rules, challenging players in diplomacy, territorial conquest, and conflict resolution.
+The objective is to achieve world domination across a custom-designed map composed of 6 continents
+and 21 territories. Players take turns deploying troops and attempting to capture territories from their
+opponents, with combat outcomes determined by dice rolls.
+In our setup, the participant plays as the White player, while two heuristic agents control the Black
+
+#### and Grey factions. The game begins with the participant allocating troops to preferred regions by
+
+
+#### interacting through an AI-powered chat interface. An AI planner then generates a proposed plan
+
+that aligns with the participant’s stated intent. The participant can either accept this plan or provide
+feedback to update it, as illustrated in Fig. 6-7.
+12
+
+--- PAGE 13 ---
+
+Figure 6: Risk game – Turn 0, showing the initial troop placement by the player.
+Once the participant lays down their troops, the opponents make their moves. Once the turn circles
+back to the participant, as seen in Fig. 7, they can either use the same strategy as before or give a new
+one to the planner.
+Figure 7: Risk game: Post–Turn 0, as the Black and Gray players make their moves.
+Next, the participant can choose to Reinforce, Attack, or Freemove (as shown in Fig. 8). At the start
+of each turn, the player receives reinforcement armies proportional to the number of territories they
+control, with additional bonus armies granted for holding entire continents. These reinforcements can
+be used to strengthen key strongholds.
+Players may attack adjacent or connected opponent territories—those linked by unidirectional arrows.
+The outcomes of attacks are determined by dice rolls, with each roll resulting in the loss of a certain
+
+#### number of troops by either the attacker or defender. The more troops committed to an attack, the
+
+higher the chances of success. A battle continues until the attacker chooses to stop, runs out of armies
+to attack with, or successfully eliminates the last defending unit—at which point they take over the
+territory by moving armies into it.
+13
+
+  [本页图片: page13_img1.png, page13_img2.png]
+
+--- PAGE 14 ---
+
+At the end of the turn, the player may perform a Freemove, redistributing armies between their own
+connected territories. This cycle repeats until one player achieves world domination.
+
+#### Figure 8: Risk game: Turn 1, where the player proceeds through the reinforcement, attack, and
+
+freemove phases.
+Algorithm 2 Constraints-of-Thought (Const-o-T) Extraction from user input
+Require: User description D; map state M; prompt template T
+Ensure: Sequence C = [ci]K
+i=1, where ci = ⟨ii, κi⟩; total count K
+1: function CONSTCOT_EXTRACT(D, M, T )
+2:
+�C ←LM(D, M, T )
+3:
+C ←[ ]
+4:
+for all c ∈�C do
+5:
+if VALIDATE(c) then
+6:
+C ←C ∪[c]
+7:
+end if
+8:
+end for
+9:
+K ←|C|
+10:
+return (C, K)
+11: end function
+12: function VALIDATE(c)
+13:
+require fields present: step_id, it (natural-language intent), κt (constraint predicate)
+14:
+require it length within bounds; κt matches grammar G or schema S
+15:
+require κt is feasible under X′ if available (e.g., legal action, resource limits)
+16:
+return true if all checks pass; else false
+17: end function
+
+### B
+
+
+### Constraints-of-Thought (Const-o-T)
+
+The key idea behind Const-o-T is to transform natural language strategies into a sequence of structured
+⟨intent, constraint⟩pairs, where each constraint is an executable predicate that directly restricts the
+
+#### planner’s feasible action space. Formally, each constraint κt defines a predicate over actions that
+
+induces a restricted action set Aκt(s) ⊆A(s), and this restriction is enforced before node expansion
+14
+
+  [本页图片: page14_img1.png]
+
+--- PAGE 15 ---
+
+
+#### during search. This transforms intermediate reasoning from descriptive rationales into search
+
+controllers that modify the planner itself.
+These extracted constraints serve two roles. First, they align planning with the user’s high-level intent
+
+#### by restricting the admissible actions to those consistent with the intended strategy. Second, they
+
+ensure feasibility by enforcing domain-specific requirements (e.g., game rules or geometric validity)
+through symbolic validation.
+Algorithm 2 illustrates this process. In line 2, the language model maps the user input to a sequence
+
+#### of ⟨intent, constraint⟩pairs. From lines 4 to 10, each candidate constraint is validated to ensure
+
+structural correctness and feasibility. The resulting constraint set defines the admissible action space
+used during downstream reasoning or planning, ensuring that only constraint-consistent actions are
+considered throughout the search process.
+
+### C
+
+
+### User Study
+
+The user study was conducted with 18 participants (5 female and 13 male). All participants over the
+age of 18 were welcome but the average age of the participants was 21.7. Participants had varying
+levels of experience with AI systems, gaming, strategy-based games and Risk. Trust scale items were
+
+#### adapted from validated measures of trust in automation [37, 38] and technology acceptance [39],
+
+
+#### with wording contextualized to the Risk domain (e.g., “I trust the system’s troop placement/plan
+
+suggestions”). Usability scale items were also contextualized to the Risk domain (e.g., “I could easily
+predict how changes in my strategy description would affect the system’s decisions”), following prior
+work on user understanding of AI behavior [40]. The reliability of each metric was calculated using
+Cronbach’s α and reported in Table 3. Normality and heteroskedasticity assumptions were checked
+using a Shapiro-Wilk test and a Levene’s test, respectively. Transparency and usability metrics passed
+these tests. The results of the ANOVA and post-hoc Tukey’s HSD test for transparency and usability
+and the Kruskal-Wallis test and post-hoc Dunn’s test for trust and alignment are reported in Table 4
+and Table 5 respectively.
+Table 3: Reliability analysis by metric and mode. α > 0.9 has excellent reliability, α > 0.8 has good
+reliability and α > 0.7 has acceptable reliability
+Metric
+Mode
+α
+Reliability
+Transparency
+Mode 1
+0.95
+Excellent
+Mode 2
+0.93
+Excellent
+Mode 3
+0.95
+Excellent
+Usability
+Mode 1
+0.81
+Good
+Mode 2
+0.76
+Acceptable
+Mode 3
+0.78
+Acceptable
+Trust
+Mode 1
+0.79
+Acceptable
+Mode 2
+0.93
+Excellent
+Mode 3
+0.90
+Excellent
+We conducted a one-way ANOVA for transparency and usability and a Kruskal–Wallis test for trust
+
+#### and alignment. Significant differences across interaction modes were observed for transparency
+
+
+#### (F(2, 51) = 7.78, p < 0.01), usability (F(2, 51) = 10.23, p < 0.001), trust (H(2) = 19.80,
+
+p < 0.001), and alignment (H(2) = 23.75, p < 0.001), as shown in Fig. 2. Post-hoc pairwise com-
+parisons (Tukey HSD and Dunn tests) indicate that the aligned condition significantly outperformed
+
+#### both agnostic and adversarial conditions across all metrics. These results indicate that constraint-
+
+guided planning produces actions that users perceive as significantly more aligned with their stated
+strategies than systems that either ignore or oppose user intent.
+
+### D
+
+
+### Additional Analysis
+
+Constraint Quality. To evaluate the quality of the extracted constraints, we compare the predicted
+
+#### constraint set against the ground-truth troop placements in the Risk dataset. We compute standard
+
+classification metrics over territory-level constraint predictions. Our method achieves 0.82 precision,
+and 0.81 recall, indicating that the extracted constraints are both highly precise and largely complete.
+15
+
+--- PAGE 16 ---
+
+Table 4: ANOVA and post-hoc results for transparency and usability
+Transparency
+Usability
+APA
+F(2, 51) = 7.78, p < 0.01
+F(2, 51) = 10.23, p < 0.001
+Shapiro p
+0.427
+0.971
+Levene p
+0.996
+0.843
+Eta2
+0.234
+0.286
+Power
+0.951
+0.987
+Tukey HSD pairwise comparisons
+Comparison
+Transparency (mean diff, p)
+Usability (mean diff, p)
+Mode 1 vs Mode 2
+-1.21, p = 0.001 **
+-1.83, p = 0.0001 ***
+Mode 1 vs Mode 3
+-0.84, p = 0.026 *
+-1.07, p = 0.030 *
+Mode 2 vs Mode 3
++0.36, p = 0.481 n.s.
++0.76, p = 0.156 n.s.
+Cohen’s d (pairwise effect sizes; d > 0.8 signifies large effect size)
+Comparison
+Transparency
+Usability
+Mode 1 vs Mode 2
+1.29
+1.52
+Mode 1 vs Mode 3
+0.90
+0.89
+Mode 2 vs Mode 3
+-0.39
+-0.61
+Table 5: Kruskal–Wallis tests, Dunn post-hoc comparisons, and Cohen’s d effect sizes for Trust and
+Alignment.
+Trust
+Alignment
+APA
+H(2) = 19.80, p < 0.001
+H(2) = 23.75, p < 0.001
+Dunn pairwise comparisons (adjusted p)
+Comparison
+Trust
+Alignment
+Mode 1 vs Mode 2
+p = 0.0001 ***
+p < 0.00001 ***
+Mode 1 vs Mode 3
+p = 0.0014 **
+p = 0.0011 **
+Mode 2 vs Mode 3
+p = 1.000 n.s.
+p = 0.814 n.s.
+Cohen’s d (pairwise effect sizes; d > 0.8 signifies large effect size)
+Comparison
+Trust
+Alignment
+Mode 1 vs Mode 2
+1.76
+2.19
+Mode 1 vs Mode 3
+1.51
+1.67
+Mode 2 vs Mode 3
+-0.26
+-0.43
+Manual inspection of 100 randomly sampled examples indicates that most errors arise from ambiguous
+strategy descriptions or underspecified user goals.
+Statistical Analysis. We conducted one-way ANOVA tests to evaluate how different experimental
+settings affect performance for GPT-4.1. For search methods (MCTS, MCTS + CoT, and MCTS +
+
+#### Const-o-T), we observe a significant effect on EMD (F(2, 3156) = 75.92, p < 0.001, η2 = 0.046,
+
+
+#### f = 0.219), indicating that reasoning strategy significantly affects placement quality.. Further,
+
+
+#### prompting approaches also show differences (F(7, 8377) = 15.94, p < 0.001, η2 = 0.013, f =
+
+0.115).
+Error Analysis. Figure 10 shows that classical MCTS and MCTS with CoT often over-generate plans,
+whereas MCTS with Const-o-T better aligns plan length with the ground truth. This behavior arises
+because constraints restrict the admissible action set during search, which reduces the branching factor
+
+#### by preventing unnecessary expansions. As a result, Const-o-T operates as a budgeted, constraint-
+
+
+#### guided variant of MCTS that focuses exploration on feasible and relevant actions, reducing over-
+
+generation.
+Ablation Study. We conducted an ablation study on 200 GPT-4.1 examples to examine the contribu-
+tions of intent extraction, constraint enforcement, and verification. Removing intent increases EMD
+
+#### from 0.51 to 0.53, while removing constraints increases it to 0.52. Disabling the verification step
+
+yields a similar EMD of 0.53. In contrast, removing both intent and constraint substantially degrades
+
+#### performance, increasing EMD to 0.79. These results indicate that each component contributes to
+
+improving alignment with ground-truth placements, while the combination of intent and constraint is
+16
+
+--- PAGE 17 ---
+
+Examples of Failure Modes from Risk game
+1. Wrong territory selected by the extracted constraint
+Example 1:
+I need to defend my troops in major areas like Purple and Yellow. By placing my troops in these areas I can move them freely to
+attack my opponent and win the battles. I also need to have more troops on the board to help gain more territory. I am want to
+fortify my troops so i moved more troops to boarders. This way I can move my troops and attack freely. this will help attack and
+gain ground.
+GT: [(’Green_C’, 4), (’Blue_B’, 3), (’Green_B’, 4), (’Yellow_B’, 1), (’Purple_D’, 2)]
+Pred: [(’Purple_A’, 8), (’Yellow_B’, 6)]
+Example 2:
+I’m looking to kick the other player off of purple e and then make my way over to red b to attack and take that continent. I don’t see
+a threat from blue yet but also want to be able to defend and attack from green if they make a move on me.
+GT: [(’Purple_B’, 5), (’Purple_C’, 5), (’Purple_D’, 4)]
+Pred: [(’Purple_A’, 6), (’Red_B’, 5), (’Green_B’, 3)]
+2. Constraint too restrictive, eliminating a good move
+Example 1:
+The yellow contenint is my get away, I can get to any country by the yellow. Thats why I start off on yellow because its prepared to
+take out any other contenient. The red contienent is what Id end om bexause the red is the ending of the game GT: [(’Yellow_D’, 3),
+(’Green_B’, 3), (’Blue_B’, 3), (’Purple_B’, 3), (’Blue_D’, 2)]
+Pred: [(’Yellow_D’, 14)]
+Example 2:
+Red I feel is the central part of the map. I almost even believe that is why the map shows it so far out to trick you to think it is not. I
+think Red would be the place to go, to make sure you can get to everyone quickly and start to take over each continent one at a time.
+GT: [(’Blue_A’, 1), (’Purple_B’, 1), (’Yellow_A’, 2), (’Red_B’, 2), (’Blue_B’, 2), (’Blue_C’, 4), (’Blue_D’, 2)]
+Pred: [(’Red_B’, 7), (’Red_C’, 7)]
+3. Vague input leading to incomplete structure
+Example 1:
+As I looked at the board I wanted to spread my troops to three continents. On those continents I was just going to occupy one
+country each. Doing it that way would give me a chance to be able to attacked continent purple from two different continents. I
+would also be able to attack continent green from a couple different continents. Giving me the opportunity to be able to make these
+attacks and perhaps win them. From there I could march on and keep battling troops and conquering more countries.
+GT: [(’Purple_A’, 4), (’Red_B’, 5), (’Blue_C’, 5)]
+Pred: [(’Blue_A’, 5), (’Red_C’, 4), (’Purple_A’, 5)]
+Example 2:
+I am planning a focused strategy, by limiting deployment of troops in terms of number of countries and continents. I am avoiding
+battle on territories that are already heavily occupied, since I lack confidence and don’t want to immediately lose a lot of troops. I
+want to establish a stronghold in at least one country in at least 2 territories. That way, I can act as a spoiler to keep other players
+from taking over the whole board. I chose countries that offered some mobility because of the presence of an arrow. Once I establish
+a foothold in my initial continent choices, I will move on toward world domination.
+GT: [(’Green_E’, 5), (’Blue_A’, 5), (’Yellow_D’, 4)]
+Pred: [(’Yellow_D’, 7), (’Green_D’, 7)]
+Figure 9: Failure Modes
+Table 6: Ablation: intent and constraint components
+Variant
+EMD ↓
+w/o Intent
+0.53
+w/o Constraint
+0.52
+w/o Verification
+0.53
+w/o Intent & Constraint
+0.79
+Ours
+0.51
+critical for maintaining stable search behavior. The full model achieves the best performance (EMD =
+0.51; Table 6). While verification contributes to performance, the primary gains arise from restricting
+the action space during search. Verification acts as a safeguard ensuring constraint satisfaction rather
+than the primary driver of improvements.
+
+### E
+
+
+### Fitness Function
+
+For the game of Risk, during the troop deployment phase, we evaluate a candidate deployment state
+
+#### v using a fitness function that balances goal satisfaction against constraint violations. The fitness
+
+function used to evaluate a candidate deployment state, v, is defined in Eq. 7.
+V (v) =
+6
+�
+i=1
+wi gi(v) −λ
+9
+�
+m=1
+cm(v),
+(7)
+17
+
+--- PAGE 18 ---
+
+Figure 10: Distribution of plan lengths relative to ground truth for GPT-4.1.
+
+#### In this equation, gi(v) denotes normalized goal scores that measure how well the configuration
+
+satisfies strategic objectives. The coefficients wi denote non-negative weights that encode the relative
+importance of each goal. The functions cm(v) denote binary indicators of constraint violations. The
+
+#### penalty coefficient, λ, is set sufficiently large to ensure that any violation dominates the weighted
+
+sum of goals, thereby prioritizing feasible deployments over infeasible ones.
+Goals.
+The goal functions gi(v) measure how well the player’s configuration v satisfies strategic
+objectives:
+g1(v) = #{occupied territories adjacent to enemy}
+#{occupiable territories adjacent to enemy},
+(8)
+g2(v) = #{countries controlled}
+#{countries occupiable},
+(9)
+g3(v) = 1 −
+1
+|T (v)|
+�
+|T (v)| −1
+�
+�
+u,w∈T (v)
+u̸=w
+d(u, w)
+dmax ,
+(10)
+g4(v) = #{troops adjacent to enemy}
+#{total troops}
+,
+(11)
+g5(v) = #{border troops on controlled continents}
+#{troops on controlled continents}
+,
+(12)
+g6(v) = 1 −#{unique enemy players adjacent}
+#{maximum enemies}
+.
+(13)
+Descriptions. g1: surround enemy territories; g2: maximize territorial control; g3: minimize average
+
+#### pairwise troop distance (uses graph distance d(·, ·), normalized by dmax); g4: maximize battles
+
+
+#### throughout the game; g5: fortify borders of continents you control; g6: limit exposure to many
+
+enemies.
+
+#### Constraints.
+
+
+#### Constraints are formulated as binary functions that equal 1 when violated and 0
+
+otherwise:
+c1(v) = ⊮[no troop on required continent]
+c2(v) = ⊮[troop placed on forbidden continent]
+c3(v) = ⊮[cannot reach continent in one move]
+c4(v) = ⊮[border of continent not defended]
+c5(v) = ⊮[insufficient troops to defend continent]
+c6(v) = ⊮[fewer than required countries]
+c7(v) = ⊮[troops on fewer than required continents]
+c8(v) = ⊮[fewer than required troops per country]
+c9(v) = ⊮[troops on more than allowed continents]
+(14)
+Together, these definitions create a fitness landscape in which higher scores correspond to strategically
+advantageous and constraint-compliant configurations. The weighting scheme allows tailoring the
+18
+
+  [本页图片: page18_img1.png]
+
+--- PAGE 19 ---
+
+
+#### optimization toward different strategic preferences while ensuring that hard constraints remain
+
+non-negotiable.
+
+### F
+
+
+### Comparison of Chain-of-Thought (CoT) and Constraints-of-Thought
+
+
+### (Const-o-T)
+
+CoT relies on unconstrained natural language reasoning that helps describe the thought process but
+
+#### lacks verifiability and control over the search process. CoT is best suited for single-step QA or
+
+explanation tasks, but often leads to large search spaces and hallucinations.
+In contrast, Const-o-T converts strategies into structured symbolic constraints, which can be formally
+verified and used to guide or prune search (e.g., in MCTS). This results in more efficient, robust, and
+
+#### goal-aligned planning, making it especially effective for multi-step tasks like strategy games and
+
+CAD design.
+Table 7: Comparison of Chain-of-Thought (CoT) and Constraints-of-Thought (Const-o-T).
+Aspect
+Chain-of-Thought (CoT)
+Constraints-of-Thought (Const-o-T)
+Representation
+unconstrained natural reasoning trace
+Structured symbolic constraints (equations,
+rules)
+Purpose
+Describes reasoning steps
+Prescribes feasible solution space
+Search Interaction
+Linear expansion; may increase branching
+Guides/prunes expansions; controls horizon
+and branching factor
+Verification
+No formal mechanism; correctness by final
+output
+Constraints checkable via solvers/game rules
+Efficiency
+Larger search space; redundant paths possi-
+ble
+Compressed space; faster convergence
+Robustness
+Prone to hallucinations and drift
+Enforces consistency; fewer invalid solutions
+Use Case Fit
+Best for single-step QA/explanation
+Suited for multi-step planning,
+strategy,
+CAD/game tasks
+Novelty
+Thoughts as rationales
+Thoughts as controllers (constraints for sym-
+bolic search)
+
+### G
+
+
+### Commander’s Intent Dataset Example
+
+
+#### This example from the Commander’s Intent dataset highlights the complex strategic reasoning
+
+required in a Risk board game scenario (See Figure 11). The natural language strategy demonstrates
+multi-step task planning, where the player first analyzes the current board state and then formulates a
+plan. The accompanying map depicts the actual game state, with the ground truth showing optimal
+troop placements of seven units each in Red_B and Red_C. These placements align with the strategic
+focus on securing the Red continent, as outlined in the textual strategy.
+
+### H
+
+
+### Constraint-Optimization Baseline for Troop Placement
+
+We also implemented a constraint optimization based baseline. It is a two-step strategy. In the first
+
+#### step, the commander’s intent is provided to a large language model (we use ChatGPT 4.0 mini) to
+
+identify the set of active constraints. These constraints are then enforced using Google’s OR-Tools
+library [41] to trim the search space and obtain a feasible set of troop deployments. If the constraints
+
+#### predicted by the LLM yield no feasible solutions, we retain the largest subset of constraints that
+
+produces a feasible solution.
+19
+
+--- PAGE 20 ---
+
+Language strategy.
+
+#### This one was difficult but I determined that controlling red would allow me the greatest
+
+chance of success as it provides a good base for defense while also granting large movement
+opportunities to attack most of the board. Green will be the biggest challenge as they have
+
+#### the most number of troops with 20 that they can move around, so the strategy would be
+
+to gain control of red as quickly as possible before moving in on yellow while leaving the
+borders of red as strong as possible. Gaining control of yellow and red would allow me to
+keep green on the defense from opposite sides, but give me access to work control of blue as
+green will most likely make moves to gain purple as a stronghold. The trick will be playing
+a long game to maintain control of the split continents while green will ultimately control
+
+#### the center of the board until I can attempt to force them down into the purple region and
+
+attack from several sides.
+
+#### Figure 11: An example from the Commander’s Intent dataset. Top: a natural language strategy
+
+description. Bottom: the corresponding map scenario. The ground truth troop placements are Country
+= Red_B with 7 troops and Country = Red_C with 7 troops.
+Table 8: Results of the constraint-optimization baseline.
+Method
+F1 (%)
+Accuracy (%)
+Constraint-Optimization
+Baseline
+57.0
+62.8
+In the second step, all deployments in the feasible set are evaluated using only the goal component of
+the fitness function, as defined in Eq. 15.
+V (v) =
+6
+�
+i=1
+wi gi(v),
+(15)
+
+#### In this equation, gi(v) denotes goal scores that measure how well the deployment state v satisfies
+
+strategic objectives. The coefficients wi denote weights provided by the LLM based on the comman-
+der’s intent expressed in natural language, reflecting the relative importance of each objective. The
+deployment with the highest value of V (v) is selected as the baseline solution.
+The performance of the constraint-optimization baseline is shown in Table 8. Even though it leverages
+constraint-based optimization, its performance compared to human-provided troop-placement ground
+20
+
+  [本页图片: page20_img1.png]
+
+--- PAGE 21 ---
+
+
+#### Figure 12: Const-o-T empowers LLMs to (i) infer intent statements and (ii) extract executable
+
+
+#### constraints from high-level strategies, which restrict the admissible action set during search and
+
+
+#### act as search controllers rather than post-hoc output filters. These constraints guide a budgeted,
+
+
+#### constraint-guided variant of MCTS, steering exploration toward rule-compliant and high-quality
+
+actions while remaining robust to moderate constraint errors.
+truth is significantly worse than our method (See Section 4). In addition, it is not very flexible: each
+new domain requires hand-crafting a constraint model and solver formulation, whereas our approach
+transfers more easily and remains flexible across a wide range of applications.
+
+### I
+
+
+### Examples from CAD code generation from CADCodePrompt dataset
+
+
+#### This subsection presents representative example from CADCodePrompt dataset to illustrate the
+
+
+#### natural language descriptions paired with their corresponding CAD code implementations (See
+
+Figure 13). The example demonstrates how natural language of CAD design can be translated into
+executable Python code using CADQuery.
+21
+
+  [本页图片: page21_img1.png]
+
+--- PAGE 22 ---
+
+Write Python code using CADQuery to create a triangular 3D object. First, draw a sketch of
+an equilateral triangle, pointing downwards. Next, cutout a semicircle from the bottom corner
+of the triangle. The diameter of this semicircular cutout should be approximately 2/3rd of the
+length of each side of the triangle. Finally, extrude this sketch to create a 3D object.
+(a) The natural language descriptions of the 3D object.
+(b) CAD object
+(c) Python Code
+Figure 13: An example from the CADPrompt dataset, showing (a) the prompt, (b) the corresponding
+CAD object, and (c) the human-annotated Python code used to generate the CAD object.
+22
+
+  [本页图片: page22_img1.png, page22_img2.png]
+
+--- PAGE 23 ---
+
+Constraints-of-Thought Prompt for Strategic Planning in the Risk Game
+You are a strategic assistant for the Risk board game. Your task is to immediately allocate all troops according to the
+Commander’s intent, using step-by-step reasoning based on Constraints-of-Thought (Const-o-T) and Monte Carlo Tree Search
+(MCTS) decision-making.
+Input Provided:
+• A natural language description of the Commander’s intent for this turn’s troop placement (e.g., "Fortify the Green
+continent and strengthen borders.").
+• The current map status (countries, ownership, and unoccupied territories).
+Your Output:
+• Generate a sequential and complete plan for troop placement for this turn only.
+For each step, provide:
+• A concise, natural-language intent (why the troop is being placed in that country)
+• A formal placement constraint (e.g., “Place 3 troops on Green_C”)
+• The exact country and number of troops as: ["Green_C", 3]
+• The Placement must include a valid country and a numeric troop count; the troop count cannot be None, empty, or
+non-numeric. Only output a numeric value for the number of troops.
+Example Constraints:
+• Place ‘n’ troops on Country ‘X’
+• Attack Country ‘X’ from Country ‘Y’ with ‘n’ troops
+• Move ‘n’ troops to Country ‘X’ from Country ‘Y’
+• Add ‘n’ troops to reinforce Country ’X’
+Game Environment:
+Risk is a board game in which an army commander tries to take over the world by defeating all enemy troops and controlling all
+countries. Risk is a simplified version of real conflict, and has rules to reflect this:
+• Players control countries by having troops in them.
+• The more countries and continents a player controls, the more resources they get.
+• Players win countries from other players by battling with their troops.
+• The more troops a player has when battling, the more likely they are to win.
+• Players can only attack or be attacked by countries that are next to them.
+• Some map connections are one-way only.
+Our modified RISK Map contains 5 continents - Red, Green, Purple, Yellow and Blue. Each continent is made up of countries. Red
+continent has 3 countries, Green has 5 countries, Purple has 5 countries, Yellow has 4 countries and Blue has 4 countries. Green_A,
+Yellow_B, Blue_C, etc. are referred to as countries or territories Green, Yellow, Blue, Red, Purple are referred to as continents.
+Continents also have different connections between them through which the troops can move. These connections are one way i.e
+troops from the source country can only move to the destination country and not the other way round. The map has the following
+connections - Yellow_D is connected to Green_A, Greed_D is connected to Red_A, Red_A is connected to Green_D, Red_B
+is connected to Purple_E, Red_C is connected to Yellow_B, Red_C is connected to Blue_B, Blue_A is connected to Yellow_C,
+Yellow_C is connected to Blue_D, Blue_C is connected to Purple_A, Purple_A is connected to Green_E and Green_E is connected
+to Purple_A.
+INPUT
+Commander’s Intent: {Strategy_Description}
+The Map Status: {mapStatus}
+You may place troops only in countries that are unoccupied according to the current map status.
+OUTPUT FORMAT (JSON-like):
+Constraint-of-thoughts [
+{
+"step_id": 1,
+"intent": "Reinforce Green_C to protect the continent’s border.",
+"constraint": "Place 5 troops on Green_C",
+"placement": ["Green_C", 5]
+}
+]
+INSTRUCTIONS
+• Focus only on troop placement this turn. Do not suggest attacks, moves, or future planning.
+• Use formal placement constraints for each action.
+• Do not select the same country more than once.
+• Be concise and ensure placements clearly support the Commander’s current intent.
+• Output the full CoT sequence in the specified format.
+Now, reason step-by-step and output your immediate troop placement sequence.
+Figure 14: Prompt Template: Constraints-of-Thought for Risk Game Troop Placement
+23
+
+--- PAGE 24 ---
+
+Constraints-of-Thought Prompt for Strategic Planning in the Risk Game
+You are a strategic assistant for the Risk board game. Your task is to immediately allocate all troops according to the
+Commander’s intent, using step-by-step reasoning based on Constraints-of-Thought (Const-o-T) and Monte Carlo Tree Search
+(MCTS) decision-making.
+Input Provided:
+• A natural language description of the Commander’s intent for this turn’s troop placement (e.g., "Fortify the Green
+continent and strengthen borders.").
+• The current map status (countries, ownership, and unoccupied territories).
+Your Output:
+• Generate a sequential and complete plan for troop placement for this turn only.
+For each step, provide:
+• A concise, natural-language intent (why the troop is being placed in that country)
+• A formal placement constraint (e.g., “Place 3 troops on Green_C”)
+• The exact country and number of troops as: ["Green_C", 3]
+• The Placement must include a valid country and a numeric troop count; the troop count cannot be None, empty, or
+non-numeric. Only output a numeric value for the number of troops.
+Example Constraints:
+• Place ‘n’ troops on Country ‘X’
+• Attack Country ‘X’ from Country ‘Y’ with ‘n’ troops
+• Move ‘n’ troops to Country ‘X’ from Country ‘Y’
+• Add ‘n’ troops to reinforce Country ’X’
+Game Environment:
+Risk is a board game in which an army commander tries to take over the world by defeating all enemy troops and controlling all
+countries. Risk is a simplified version of real conflict, and has rules to reflect this:
+• Players control countries by having troops in them.
+• The more countries and continents a player controls, the more resources they get.
+• Players win countries from other players by battling with their troops.
+• The more troops a player has when battling, the more likely they are to win.
+• Players can only attack or be attacked by countries that are next to them.
+• Some map connections are one-way only.
+Our modified RISK Map contains 5 continents - Red, Green, Purple, Yellow and Blue. Each continent is made up of countries. Red
+continent has 3 countries, Green has 5 countries, Purple has 5 countries, Yellow has 4 countries and Blue has 4 countries. Green_A,
+Yellow_B, Blue_C, etc. are referred to as countries or territories Green, Yellow, Blue, Red, Purple are referred to as continents.
+Continents also have different connections between them through which the troops can move. These connections are one way i.e
+troops from the source country can only move to the destination country and not the other way round. The map has the following
+connections - Yellow_D is connected to Green_A, Greed_D is connected to Red_A, Red_A is connected to Green_D, Red_B
+is connected to Purple_E, Red_C is connected to Yellow_B, Red_C is connected to Blue_B, Blue_A is connected to Yellow_C,
+Yellow_C is connected to Blue_D, Blue_C is connected to Purple_A, Purple_A is connected to Green_E and Green_E is connected
+to Purple_A.
+INPUT
+Commander’s Intent: {Strategy_Description}
+The Map Status: {mapStatus}
+You may place troops only in countries that are unoccupied according to the current map status.
+OUTPUT FORMAT (JSON-like):
+Constraint-of-thoughts [
+{
+"step_id": 1,
+"intent": "Reinforce Green_C to protect the continent’s border.",
+"constraint": "Place 5 troops on Green_C",
+"placement": ["Green_C", 5]
+}
+]
+INSTRUCTIONS
+• Focus only on troop placement this turn. Do not suggest attacks, moves, or future planning.
+• Use formal placement constraints for each action.
+• Do not select the same country more than once.
+• Be concise and ensure placements clearly support the Commander’s current intent.
+• Output the full CoT sequence in the specified format.
+Now, reason step-by-step and output your immediate troop placement sequence.
+Figure 15: Prompt Template: Constraints-of-Thought for Risk Game Troop Placement
+24
+
+--- PAGE 25 ---
+
+Constraints-of-Thought Prompt for CAD code generation
+You are a symbolic CAD modeling assistant. Your task is to generate a 3D CAD object by reasoning step-by-step using
+Constraints-of-Thought (Const-o-T) — a structured form of geometric planning based on user instructions.
+You will be given:
+• A natural language description of a 3D object
+Your output must consist of a sequence of steps, where each step includes:
+1. A short natural-language intent (what to do and why)
+2. A plain-English geometric constraint (e.g., “The base should be a box with width 1.0, depth 0.75, and height 0.25”, or
+“The hole should be centered on the base, with radius 0.1, and aligned along the Z-axis”)
+Each step must logically build upon previous ones.
+INPUT:
+Natural Language Description: {language_description}
+Output format (JSON-like):
+{Constraints-of-Thought[
+{"Step_id": 1,
+"Intent": "Create the base plate.",
+"Constraint": "Make a rectangular box with width 1.0 units,
+depth 0.75 units, and height 0.25 units."},
+{"Step_id": 2,
+"Intent": "Add a centered hole.",
+"Constraint": "Drill a circular hole with radius 0.1 units at the center of the base,
+oriented along the Z-axis."}
+]}
+INSTRUCTIONS:
+• Think like a constraint solver: extract clear symbolic relationships but describe them in English.
+• Use plain sentences that can be easily mapped to CAD operations.
+• Be concise. Avoid unnecessary primitives.
+• The final object must follow all described constraints.
+Now reason step-by-step and output the full Constraints-of-Thought (Const-o-T) sequence.
+Figure 16: Prompt for symbolic 3D CAD modeling using Constraints-of-Thought (Const-o-T).
+Evaluation Prompt for Math Arithmetic Step
+You are an evaluation agent tasked with assessing whether a reasoning step effectively contributes to solving a math problem.
+Your job is to evaluate a single step in the problem-solving process and return a score between 0 and 1, where:
+• - 1 means the step is highly useful and directly helps solve the problem,
+• - 0 means the step is irrelevant, misleading, or incorrect,
+• - Intermediate values (e.g., 0.5) indicate partial usefulness or vague contribution.
+INPUT:
+• Problem: {question}
+• Step to evaluate: {Step}
+Output format (JSON):
+{"score": float between 0 and 1}
+Now assess the step and output the score.
+Figure 17: Prompt for evaluating math arithmetic step in MCTS.
+25
+
+--- PAGE 26 ---
+
+Evaluation Prompt for CAD code Step
+You are an evaluation agent tasked with assessing whether a **generated CAD modeling code snippet** effectively contributes to
+building the intended 3D model.
+Your job is to evaluate a single step of **CAD code** within the Constraints-of-Thought pipeline and return a score between 0 and
+1, where:
+• - 1 means the code is highly useful, precise, and directly implements the intended modeling operation,
+• - 0 means the code is irrelevant, incorrect, or harmful to the design,
+• - Intermediate values (e.g., 0.5) indicate partial correctness, vague implementation, or incomplete alignment with the
+intended step.
+INPUT:
+• CAD Object Description: {question}
+• CAD Code to evaluate: {Step}
+Output format (JSON):
+{"score": float between 0 and 1}
+Now assess the step and output the score.
+Figure 18: Prompt for evaluating CAD code step in MCTS.
+Constraints-of-Thought Prompt for math arithmetic
+You are a symbolic math solver. Your task is to solve a math word problem by reasoning step-by-step using Constraints-of-
+Thought (Const-o-T) — a structured form of logical planning.
+You will be given:
+• A natural language word problem involving arithmetic reasoning.
+Your output must consist of a sequence of steps, where each step includes:
+1. A short natural-language Intent (what is being computed and why).
+2. A precise Constraint using symbolic math expressions (e.g., x = 2 * y, total = cost_per_egg * eggs_sold).
+INPUT:
+Word Problem: {question}
+OUTPUT FORMAT (JSON-like):
+json{Constraint-of-thoughts [
+{
+"Step_id": 1,
+"Intent": "Determine the number of bolts of blue fiber needed for one robe.",
+"Constraint": "blue_bolts = 2"
+},
+{
+"Step_id": 2,
+"Intent": "Calculate the number of bolts of white fiber needed,
+which is half as much as blue fiber.",
+"Constraint": "white_bolts = blue_bolts / 2"
+},
+{
+"Step_id": 3,
+"Intent": "Add the number of blue and white bolts to find
+the total number of bolts needed.",
+"Constraint": "total_bolts = blue_bolts + white_bolts"
+}
+]}
+INSTRUCTIONS:
+• Use precise arithmetic operations for each step (addition, subtraction, multiplication, division).
+• Define and name variables explicitly to reflect the quantities being calculated (e.g., total_bolts, num_apples,
+cost_per_item).
+• Each step should logically follow from the previous one, building upon the calculations.
+• Only use the information given in the problem — no assumptions or outside knowledge.
+• Your solution must contain no more than 7 steps. Merge or skip trivial operations when appropriate.
+Figure 19: Prompt for math arithmetic using Constraints-of-Thought (Const-o-T).
+26

@@ -1,0 +1,4109 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+ANCHOR: Assessing Naturalistic Constraint Hierarchies and
+Ordering in Repository-Grounded Agentic Coding
+Wenqiang Zhu1,∗
+Xinping Lei2,∗
+Zhiyi Lai3
+Zhengshuo Gong2
+Tianzhuang He2
+Songwei Yu4
+Weihao Li1
+Jingxuan Xu4
+Zihang Xu5
+Ziqi Miao3
+Gang Wu3
+Zhongqiu Wang3
+Yuhui Bai3
+Jie Li3
+Zhao Liu3
+Junhao Fan6
+Yan Wu3
+Yanan Wu2
+Jiaheng Liu2
+Quan Gu3
+Ariel Deng3,†
+1Southern University of Science and Technology
+2Nanjing University
+3Independent Researcher
+4National University of Singapore
+5Beihang University
+6University of Michigan
+Abstract
+For repository-grounded coding agents, a functionally correct patch is not necessarily an acceptable one:
+developers also constrain how the task must be carried out—modification scope, workflow order, validation,
+tool use, and reporting. This capability, which we call engineering constraint following, remains largely
+invisible to current evaluations. We introduce ANCHOR (Assessing Naturalistic Constraint Hierarchies
+and Ordering in Repository-Grounded Agentic Coding), a benchmark built on naturalistic, multilingual
+repository tasks spanning eight language groups. ANCHOR combines (i) a hierarchical taxonomy of
+10 categories and 78 leaf types distilled from real developer interactions, (ii) an automated pipeline that
+instantiates task-grounded atomic constraints and composes them into typed AND/THEN/PRIORITY relations,
+and (iii) a trajectory-grounded evaluation framework that checks both the code diff and the execution
+trajectory with rule-based and LLM judges. Across 19 agent configurations spanning 2 scaffolds and 10
+foundation models on 358 tasks, the strongest measured system, Claude Opus 4.8 under Cline, reaches
+70.1% atomic compliance and 63.7% relation compliance, while 19.0% of tasks pass every scored checklist
+item under the strict all-item FCCR criterion. A five-engineer audit of constraints from 50 instances
+reports 94% feasibility, 94% repository consistency, and 96% realism. In the primary paired set (14
+configurations), the mean signed change in task completion after adding constraints is +0.7 percentage
+points; individual changes vary in both directions. These results distinguish functional success from
+constraint compliance, with failures concentrated in workflow ordering, tool-use discipline, and reporting,
+and substantial interactions between models and scaffolds.
+Dataset: https://huggingface.co/datasets/Yone-01/ANCHOR
+Code: https://github.com/bupterlxp/ANCHOR
+1
+Introduction
+Software engineering tasks are rarely unconstrained objectives. Developers ask agents not only to fix the bug, but also
+to preserve APIs, reproduce before patching, run specific tests, avoid prohibited tools, and report what was actually
+executed. For coding agents, success is therefore not merely to solve the task, but to solve it under explicit engineering
+constraints.
+We argue that this is not simply generic instruction following with code context. In repository-grounded agentic
+coding, many requirements are trajectory-grounded: they constrain tool use, workflow order, validation, and reporting
+*Equal contribution.
+†Corresponding author.
+Contact: 12111009@mail.sustech.edu.cn.
+arXiv:2610.16859v3  [cs.CL]  17 Nov 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+1
+INTRODUCTION
+ANCHOR
+ANCHOR
+A correct patch can still violate engineering constraints.
+Developer instruction
+Fix the parser bug without changing the public API. Reproduce the failure first,
+add a regression test, and report the commands you ran.
+Agent A
+Observed behavior
+Bug fixed
+Tests pass
+Public API changed
+Failure not reproduced before editing
+No regression test added
+Commands not reported
+Violates the engineering requirements
+Agent B
+Observed behavior
+Bug fixed
+Tests pass
+Public API preserved
+Failure reproduced before editing
+Regression test added
+Commands reported
+Satisfies the engineering requirements
+Evaluation
+Agent A
+Agent B
+Task completion
+Pass
+Pass
+Engineering constraint following
+Fail
+Pass
+Figure 1 Illustrative schematic. A correct patch is not necessarily an acceptable engineering solution. Two agents fix the
+same bug and pass tests. Their observed behavior differs on API preservation, reproduction order, regression testing, and command
+reporting. ANCHOR distinguishes task completion from engineering constraint following.
+over the course of execution rather than only the final artifact. They are also often structured, because multiple
+requirements must be satisfied jointly, in order, or under explicit priority. Engineering constraint following is thus a
+distinct capability dimension, complementary to both task completion and scaffold-level policy compliance. Figure 1
+illustrates this distinction: two trajectories may solve the same issue, yet only one is acceptable under the stated
+engineering requirements.
+This gap has become important because modern coding agents can already solve a substantial fraction of real repository
+issues on SWE-bench-style benchmarks (Jimenez et al., 2024; Zan et al., 2025; Xu et al., 2025; Badertdinov et al., 2026).
+Yet these benchmarks largely evaluate whether the final artifact is correct, not whether the agent obeyed the task-level
+requirements that governed its execution. General instruction-following benchmarks do not capture repository-grounded,
+multi-step engineering workflows, while recent agentic instruction-following benchmarks still emphasize generic agentic
+instructions or scaffold-level policies rather than task-level engineering requirements (Zhou et al., 2023; Jiang et al.,
+2024; Pyatkin et al., 2025; Wu et al., 2025; Zou et al., 2025; Zhang et al., 2025d; Qi et al., 2025; Yao et al., 2024; Ding
+et al., 2026). Current evaluations may therefore overestimate real-world readiness. Table 1 situates ANCHOR within
+this landscape.
+To address this gap, we introduce ANCHOR (Assessing Naturalistic Constraint Hierarchies and Ordering in Repository-
+Grounded Agentic Coding), a benchmark for evaluating engineering constraint following in repository-grounded coding
+tasks. ANCHOR combines a 10-category, 78-leaf taxonomy, an automated pipeline that instantiates atomic constraints
+and composes them into structured AND/THEN/PRIORITY relations, and a trajectory-grounded evaluation framework
+with rule-based and LLM judges. Across 19 constrained configurations, including a full-benchmark Claude Opus
+4.8 evaluation under Cline, the highest strict all-item FCCR is 19.0%. The primary paired set (14 configurations)
+shows a mean signed completion change of +0.7 percentage points after adding constraints, with gains and losses
+across systems. This calibration does not establish joint satisfiability or equal task difficulty; the direct evidence is
+that functional completion and checklist compliance differ within each evaluated configuration. Our contributions are
+to define engineering constraint following, operationalize it in a benchmark, and characterize the resulting failures,
+supported by human audits of both generated constraints and judge decisions.
+2
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+3
+CONSTRAINT TAXONOMY
+ANCHOR
+Table 1 Comparison with prior instruction-following and coding benchmarks.
+Benchmark
+Task
+Real
+Scope
+Comp.
+Auto.
+Traj.
+Eval.
+Scale
+Lang.
+IFEval
+NL gen.
+✗
+✗
+✗
+✗
+✗
+Rule
+541
+EN
+FollowBench
+NL gen.
+✗
+✗
+✗
+✗
+✗
+LLM
+820
+EN
+ComplexBench
+NL gen.
+✗
+✗
+✓
+✓
+✗
+LLM+Rule
+∼1K
+ZH/EN
+BigCodeBench
+Code gen.
+✗
+Limited
+✗
+✗
+✗
+Exec.
+1140
+Python
+CIFE
+Code gen.
+✗
+Artifact
+✗
+✓
+✗
+LLM
+1000
+Python
+CodeIF
+Code gen.
+✗
+Limited
+✗
+✗
+✗
+Rule
+–
+Multi
+AgentIF
+Agentic
+✗
+Limited
+✗
+✓
+✗
+LLM
+707
+EN
+OctoBench
+Agentic
+✓
+Limited
+✗
+✗
+Limited
+Rule
+217
+Multi
+ANCHOR (Ours)
+Agentic
+✓
+Eng.
+✓
+✓
+✓
+Rule+LLM
+358
+Multi
+Benchmark instances are available on Hugging Face; the construction/evaluation prompts and taxonomy are available in
+the public repository.
+2
+Related Work
+Repository-grounded coding benchmarks such as SWE-bench, SWE-Compass, and SWE-Rebench V2 measure whether
+an agent can resolve real software engineering tasks in real repositories, typically through final-patch correctness under
+an executable test harness (Jimenez et al., 2024; Xu et al., 2025; Badertdinov et al., 2026; Zan et al., 2025; Deng
+et al., 2025; Thai et al., 2026; Yu et al., 2026; Zhou et al., 2026; Li et al., 2024). These benchmarks have driven rapid
+progress in coding agents, but they primarily measure task completion. They therefore provide limited visibility into
+whether an agent respected task-specific engineering requirements on scope, workflow, validation, or reporting during
+execution. Complementary evaluations assess repository-level completion (Yang et al., 2024; Liu et al., 2025b), visual
+and interactive artifact quality (Lei et al., 2026; Zhang et al., 2025b), and code critique (Zhang et al., 2025a). Trajectory
+diagnosis and process feedback further expose intermediate agent failures (Li et al., 2026; Xu et al., 2026).
+Constraint-aware instruction-following benchmarks establish the importance of explicitly verifiable requirements, both
+in natural language and in code generation (Zhou et al., 2023; Jiang et al., 2024; Pyatkin et al., 2025; Wu et al., 2025;
+Wen et al., 2024; Chen et al., 2024; Qin et al., 2024; Zhang et al., 2025e; Zhuo et al., 2025; Yan et al., 2025; Gunnu
+et al., 2025). However, they mostly evaluate single-turn settings, final artifacts, or flat constraint sets. Recent work such
+as Inverse IFEval further shows that even strong LLMs can fail to override entrenched training conventions in order to
+follow explicit user instructions (Zhang et al., 2025c). ANCHOR instead targets repository-grounded agentic coding,
+where many requirements are trajectory-level and many must be interpreted jointly through ordering or priority relations.
+The closest concurrent work is OctoBench (Ding et al., 2026), which studies scaffold-aware instruction following
+in repository-grounded coding. We view the two benchmarks as complementary rather than competing. OctoBench
+targets scaffold- and platform-level policies, whereas ANCHOR targets task-level engineering constraints specified
+by the developer instruction itself. ANCHOR further contributes an explicit engineering constraint taxonomy and
+structured composite relations, enabling direct evaluation of hierarchy, ordering, and precedence. Table 1 summarises
+this positioning against prior instruction-following and coding benchmarks.
+3
+Constraint Taxonomy
+The ANCHOR taxonomy is constructed bottom-up from real developer interactions with coding agents rather than
+from an a priori schema. We first collected a corpus of agentic coding interactions—task instructions, inline review
+comments, and post-hoc feedback on agent trajectories—and performed grounded open-label annotation to extract the
+engineering constraints that developers impose on coding agents in practice. A panel of senior software engineers then
+iteratively refined this raw label space by clustering near-duplicate labels, resolving boundary cases, and stress-testing
+3
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+3
+CONSTRAINT TAXONOMY
+ANCHOR
+8
+12
+16
+20
+24
+28
+32
+36
+40
+Total constraints
+0
+5
+10
+15
+20
+25
+Tasks
+mean=24.5
+(a) Constraints per task
+0
+500
+1000
+1500
+Atomic constraints
+Testing
+Scope
+Workflow
+Reporting
+Tool Exec.
+Implementation
+Style
+Dependency
+Security
+Environment
+1299
+1234
+1116
+991
+860
+711
+640
+261
+226
+212
+(b) Top-level categories
+Figure 2 Constraint footprint in the source developer queries. Left: constraints per original query. Right: extracted atomic
+constraints across the ten top-level categories. These panels describe the source-query corpus; the instantiated benchmark taxonomy
+is shown separately in Figure 3.
+Table 2 Top-level engineering constraint taxonomy in ANCHOR, with leaf counts and instantiated atomic-constraint counts from
+the current release.
+Code
+Category
+#Leaves
+#Atomic
+C1
+Tool Execution Protocol
+8
+371
+C2
+Workflow & Behaviour
+9
+512
+C3
+Modification Scope & Change Budget
+7
+518
+C4
+Code Style & Engineering Standards
+13
+223
+C5
+Code Implementation
+13
+283
+C6
+Environment
+6
+70
+C7
+Dependency & Build Strategy
+5
+49
+C8
+Security & Dangerous Operations
+6
+49
+C9
+Testing
+6
+530
+C10
+Output Format & Reporting
+5
+231
+Total
+78
+2,836
+the emerging hierarchy against held-out trajectories. The resulting hierarchy contains 10 top-level categories, 34
+mid-level subcategories, and 78 leaf categories; in the current release, these leaves account for 2,836 instantiated
+atomic constraints. Full annotation guidelines, boundary cases, and the complete taxonomy are provided in Appendix A
+and Appendix B.
+Throughout this refinement, the taxonomy is treated as an evaluation substrate rather than a descriptive catalog, guided by
+five design principles. Coverage: the taxonomy should span the major constraint types observed in real developer data,
+so that practical instructions map into it with minimal residue. Semantic exclusivity: leaf categories should be as disjoint
+as possible, reducing ambiguity during annotation and automatic mapping. Operationalisability: each leaf should admit
+concrete, testable instantiations with stable pass conditions under either rule-based or LLM-based judging. Hierarchical
+organisation: the structure should support both fine-grained diagnosis at the leaf level and coarse-grained reporting at the
+category level. Language neutrality: the same conceptual categories should transfer across the multilingual repository
+settings covered by ANCHOR.
+At the top level, the ten categories capture complementary dimensions of agentic coding. C1 (Tool Execution Protocol)
+governs how tools are invoked, including tool selection, invocation parameters, failure handling, and result verification,
+and C2 (Workflow & Behaviour) governs how the agent conducts the task over time, including execution order,
+user confirmation, information disclosure, and commit discipline. C3 (Modification Scope & Change Budget)
+bounds the spatial, quantitative, and semantic extent of changes, C4 (Code Style & Engineering Standards) covers
+formatting, naming, type-system usage, and documentation, and C5 (Code Implementation) constrains implementation
+4
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+4
+ANCHOR CONSTRUCTION PIPELINE
+ANCHOR
+C9 Testing
+530 (18.7%)
+Test coverage
+156
+Suite selection
+155
+Other 3
+leaves
+115
+Test quality
+104
+C3 Scope
+518 (18.3%)
+Task boundary
+158
+Other 4 leaves
+149
+Interface
+compat.
+127
+Line limits
+84
+C2 Workflow
+512 (18.1%)
+Task-level
+order
+200
+Pre-commit
+checks
+127
+Other 6
+leaves
+98
+Decision
+expl.
+87
+C1 Tools
+371 (13.1%)
+Result
+verification
+159
+Other 5
+leaves
+94
+Required
+params
+74
+Tool pref.
+44
+C5 Implementation
+283 (10.0%)
+Error
+handling
+115
+Other 10
+leaves
+90
+Lang.
+features
+41
+Algorithm
+choice
+37
+C10 Reporting
+231 (8.1%)
+Tone &
+style
+66
+Language
+choice
+62
+Exec.
+evidence
+53
+Other 2
+leaves
+50
+C4 Style
+223 (7.9%)
+Other 10
+leaves
+93
+Modularity
+73
+Lint &
+format
+30
+Type
+safety
+27
+C6 Env.
+70 (2.5%)
+C7 Dep.
+49 (1.7%)
+C8 Security
+49 (1.7%)
+Figure 3 Instantiated ANCHOR taxonomy: 2,836 atomic constraints across ten categories. Category areas are proportional to
+their atomic counts. The three largest leaf types are labelled within each large category; the remaining leaves are combined into an
+explicitly labelled “Other” tile. The three smallest categories show their totals. Colours match Figure 2; Table 9 lists all 78 leaves.
+choices such as algorithms, error handling, side-effect control, and technology selection. C6–C8 specify environment
+compatibility and isolation, dependency and build policy, and prohibitions on dangerous or privileged operations, while
+C9 (Testing) and C10 (Output Format & Reporting) impose validation and reporting requirements. Leaf categories
+are the smallest operational unit: each captures a semantically coherent developer requirement that can be instantiated
+into task-grounded constraints and verified with relatively stable logic. The categories are complementary rather than
+alternative—a single instruction such as “only modify files under common/crypto/, reproduce the bug before applying
+the fix, and add a regression test before reporting completion” simultaneously invokes C3 (scope), C2 (workflow), and
+C9 (testing).
+Figure 2 summarizes the source-query corpus, while Figure 3 and Table 2 describe the instantiated benchmark. As a
+lightweight sanity check against template collapse, we mask repository names, file paths, function names, and other
+task-specific identifiers, then measure pairwise similarity among constraints instantiated from the same leaf. Across
+130,049 within-leaf pairs drawn from 70 multi-instance leaves, the mean masked cosine similarity is 0.565, indicating
+shared semantics within a leaf without near-duplicate templating.
+4
+ANCHOR Construction Pipeline
+ANCHOR draws repository-level coding environments from the multilingual benchmark SWE-Compass (Xu et al.,
+2025), which is built from real GitHub issues and provides gold-standard patches with executable test environments
+across Python, Go, Java, TypeScript, Rust, C, C++, and C#. We retain instances that satisfy four properties: (i) a usable
+execution environment, enabling trajectory-grounded evaluation in a unified sandbox; (ii) sufficient task and repository
+context to support downstream constraint selection; (iii) moderate patch complexity, excluding both trivial micro-edits
+and long-horizon changes that are difficult to evaluate consistently; and (iv) broad coverage across programming
+languages and repository types. The purpose of this filtering is not to favour easier tasks, but to ensure that each
+retained instance can support realistic, task-grounded, and verifiable engineering constraints. Figure 4 summarizes how
+ANCHOR converts a raw repository task into both a natural developer instruction and a structured constraint object that
+can be evaluated after agent execution, through five explicit steps.
+5
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+4
+ANCHOR CONSTRUCTION PIPELINE
+ANCHOR
+Running example — 33cn/chain33 (Go): make the crypto registry reject duplicate crypto-type (ty) registration — shown in the teal cards below
+registry silently
+accepts a duplicate
+ty
+Go blockchain node ·
+common/crypto ·
+go test
+21 candidate
+leaves: scope,
+testing, reporting,
+…
+9 kept — e.g. “confine
+changes to
+common/crypto” · 12
+dropped (lint: generic)
+add the dup-ty test then
+run common/crypto
+tests then report the
+command
+“…keep the fix in
+common/crypto;
+add the test, then
+run, then report…”
+9 atomics + 2
+composites →
+checklist
+Problem
+statement
+Gold patch
+Language
+Repo docs
+(DeepWiki)
+real GitHub issues
++ executable tests
+Repository Task
+raw repository docs
+ LLM distillation 
+Project card
+purpose · stack ·
+layout ·
+conventions ·
+testing
+noise removed;
+≈10–20% of original
+length
+1 Context Compression
+Taxonomy 
+10 / 34 / 78
+C1
+C10
+High-recall
+subset
+task type
+repo context
+mod. scope
+drop always-true
+categories
+2 Leaf Selection
+naturalistic
+non-blocking
+verifiable
+task-grounded
+non-prescriptive
+✕ generic /
+blocking / patch-
+derived dropped
+reference-informed;
+no prescribed solution
+3 Atomic Instantiation
+a₁
+a₂
+a₃
+a₄
+AND
+THEN
+PRIORITY
+connected subgraphs;
+≤ 1 composite per atomic
+4 Composite Construction
+Developer
+instruction
+1. atomic item
+2. composite →
+one item
+3. verbatim
+paths & flags
+task prose +
+constraint list;
+no new constraints,
+no solution details
+5 Query Synthesis
+Constrained
+query
+Structured
+constraints
+Checklist
+(§4)
+code- & trajectory-
+grounded evaluation
+Benchmark Instance
+Figure 4 Overview of the ANCHOR construction pipeline. Starting from a repository task drawn from real GitHub issues
+(problem statement, gold patch, language, repository documentation), five stages produce each benchmark instance: (1) repository
+documentation is distilled into a compact project card; (2) a high-recall subset of taxonomy leaves is selected from task, repository,
+and scope evidence; (3) leaves are instantiated into task-grounded atomic constraints under explicit quality gates; (4) related atomics
+are composed into connected composite graphs with typed AND/THEN/PRIORITY relations; and (5) the result is rendered as a natural
+developer instruction paired with a structured constraint object, which Section 5 operationalizes into an executable checklist. A
+running example from 33cn/chain33 (rejecting duplicate crypto-type registration in Go) is threaded through the figure as the teal
+example lane at the bottom.
+Step 1: Context collection and compression.
+For each retained task, we gather the repository identifier, target language,
+original problem statement, gold patch, and repository-level documentation from DeepWiki (Cognition AI, 2025). Raw
+documentation is often too long and noisy to include directly in downstream prompts, so we compress it into a compact
+project-context card that preserves repository purpose, technology stack, directory structure, engineering conventions,
+testing practices, and version information, while discarding diagrams, verbose API documentation, illustrative code
+examples, and marketing language. This is a targeted information-distillation step rather than mere length reduction:
+the card supplies repository-level evidence for later decisions, such as whether linting, testing, or dependency-policy
+constraints are meaningful for a given project.
+Step 2: Leaf-category selection.
+Given the 78 leaf categories, this stage retrieves a high-recall subset of potentially
+relevant leaves for the task, based on three complementary evidence sources: task-type evidence (e.g., testing and
+interface-compatibility constraints are natural in bug-fixing tasks), repository-context evidence (e.g., explicit formatter,
+linter, or type-checking conventions make the corresponding categories meaningful), and modification-scope evidence
+(e.g., tasks touching public interfaces, filesystem logic, or security-sensitive code raise different constraint families).
+The selector deliberately avoids categories that are only theoretically applicable to almost any coding task, since these
+tend to yield generic and weakly discriminative constraints later on.
+Step 3: Atomic constraint instantiation and filtering.
+Each selected leaf is instantiated into zero or more atomic
+constraints—concrete, task-specific constraint statements grounded in the actual files, tools, and technologies involved.
+The selection and instantiation prompts receive the gold patch as context, including affected modules and plausible
+implementation concerns. They explicitly prohibit copying its exact file/line counts or restating its implementation as
+a constraint; an engineering requirement should admit valid implementations beyond the reference patch. Because
+instantiation and composition share a prompt, the patch is also visible at composition time. These safeguards reduce,
+but do not rule out, indirect solution leakage. Every retained constraint must be naturalistic (plausibly stated by a
+senior engineer assigning the task), non-blocking (constraining how the task is done without making it infeasible),
+specific and verifiable (admitting an objective pass/fail judgement), task-grounded (referencing concrete task details),
+and independent in content from the gold solution: the generator may inspect the patch for task context, but the final
+constraint should not encode patch-specific file/line counts or implementation details. The generator is instructed to
+6
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+4
+ANCHOR CONSTRUCTION PIPELINE
+ANCHOR
+discard candidates that fail these criteria, so Steps 2 and 3 jointly form a recall–precision cascade: coarse selection
+avoids prematurely missing meaningful categories, while instantiation enforces quality control over what enters the
+benchmark.
+Step 4: Composite construction.
+Real developer instructions are often not flat lists of independent requirements; they
+specify joint satisfaction, required execution order, or precedence among competing requirements. ANCHOR captures
+this structure by composing task-grounded atomics into connected composite graphs whose edges carry one of three
+typed relations: AND requires joint satisfaction; THEN requires both satisfaction and correct temporal order—reaching the
+right end state in the wrong order is scored as a failure; and PRIORITY places two constraints intentionally in tension, and
+a PRIORITY edge passes if and only if the higher-priority source constraint is upheld, regardless of whether the lower-
+priority target is sacrificed to it. This edge-level rule does not waive other requirements in a mixed-relation composite.
+Edge types may be mixed within a single composite, so multi-step and prioritised workflows can be expressed in one
+graph. Composites are introduced only when the underlying relations are semantically natural and task-meaningful, and
+atomics that do not admit such structure remain standalone instruction items. Each atomic constraint participates in at
+most one composite, and the connected-subgraph formulation keeps each composite interpretable as a single instruction
+unit rather than an arbitrary bundle of clauses.
+The non-blocking criterion is a construction safeguard for individual constraints, not a formal proof that all constraints
+can be jointly satisfied. AND and THEN require compatible requirements; PRIORITY intentionally introduces a conflict
+together with an explicit precedence rule. Assigning an atomic constraint to at most one composite limits graph overlap,
+but does not eliminate semantic interactions between distinct composites. Small completion-rate changes likewise
+cannot establish satisfiability, since an agent can solve the task while ignoring a constraint. We therefore complement
+these safeguards with a separate human audit: five senior engineers independently assessed the atomic constraints in
+50 instances for feasibility, repository consistency, and realism, with reported validity rates of 94%, 94%, and 96%,
+respectively. Section 4.1 provides the rubric and agreement statistics; these results characterize sampled constraint
+quality rather than certify every full constraint set.
+Step 5: Query synthesis.
+The final stage renders the structured representation as a natural developer instruction in
+two parts: a short task description rewritten in the voice of a developer assigning work, followed by a constraint list
+of separable instruction items. Independent atomics become individual items, while each composite is rendered as
+a single natural-language item that preserves the relation semantics among its members. Synthesis must preserve
+specificity: exact file paths, command names, flags, module references, and behavioural conditions from the instantiated
+constraints remain intact. It must also neither introduce new constraints nor leak gold-solution details—the query
+expresses requirements, not answers.
+This five-stage design preserves the natural surface form of developer instructions while grounding evaluation in an
+explicit, machine-checkable representation of what the agent was required to do and in what relational structure. Detailed
+filtering criteria, design rationales, prompt templates, and stage-specific schemas are provided in Appendix B and
+Appendix C.1–C.4. Section 5 then operationalizes this structured representation into executable checklist items for code-
+and trajectory-grounded evaluation.
+4.1
+Human Audit of Generated Constraints
+This audit examines the generated requirements themselves, separately from the 480-item judge–human study in
+Section 5.1. We sampled 50 benchmark instances. All five engineers independently labelled every atomic constraint in
+these instances on three binary dimensions, without seeing one another’s labels. They were the same senior engineers
+used in the judge study, with 6–12 years of experience: two Python/Go backend engineers, one infrastructure engineer
+with Java/Bash and CI/CD expertise, one TypeScript/Rust full-stack engineer, and one research engineer with broad
+open-source code-review experience.
+The rubric was as follows. Feasibility: PASS if the requirement can be met in the given repository and task without
+preventing completion; FAIL for an unsatisfiable or task-blocking requirement, such as restricting edits to a directory
+that excludes the relevant files. Repository consistency: PASS if referenced paths, symbols, tools, dependencies, and
+conventions agree with the repository; FAIL for hallucinated referents or an inapplicable toolchain. Realism: PASS if a
+senior engineer could plausibly impose the requirement here; FAIL if it is artificial, trivially satisfied, or merely restates
+the task or reference solution.
+7
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+5
+EVALUATION FRAMEWORK
+ANCHOR
+Table 3 summarizes the five-annotator audit. Raw agreement ranges from 92.0% to 97.6%, and Gwet’s AC1 ranges
+from 0.91 to 0.97. These results support consistency of the sampled quality judgments, while the audit covers atomic
+constraints from 50 instances rather than every composite or complete task-level constraint set. The validity rates do not
+estimate how much FCCR would change after repairing ambiguous items.
+Table 3 Audit of atomic constraints from 50 instances, independently labelled by five engineers. Validity and raw agreement are
+percentages; Gwet AC1 is a coefficient.
+Dimension
+Validity
+Raw agreement
+Gwet AC1
+Feasibility
+94.0
+92.0
+0.91
+Repository consistency
+94.0
+96.4
+0.96
+Realism
+96.0
+97.6
+0.97
+5
+Evaluation Framework
+Section 4 produces, for each task, a natural developer instruction paired with a structured constraint representation. We
+now describe how that representation is operationalized into executable checks over the agent’s code diff and trajectory.
+Figure 5 summarizes this process.
+Checklist generation.
+For each task instance, we generate a checklist: a structured set of evaluation items generated
+from the constraint representation and checked against the final developer instruction, which is authoritative if the
+two differ. This intermediate checklist layer is necessary because the construction-time representation is convenient
+for instantiation and composition, but evaluation requires item-level pass conditions, judge assignments, and explicit
+evidence targets. Only constraints preserved in the final instruction are retained. Verified atomic constraints yield atomic
+items one-to-one, including atomics that participate in composites; each composite constraint additionally yields a
+relation item that references its member atomic items as dependent checks and evaluates the higher-order property—joint
+satisfaction, temporal ordering, or priority handling—on top of them. Each item contains a natural-language question, a
+pass condition, a judge type with its parameters, and an evidence type specifying whether the item should be checked
+against the code diff, the execution trajectory (including the final response), or commit messages. This design supports
+fine-grained diagnosis of individual violations as well as explicit evaluation of structured constraint compliance.
+Hybrid judging.
+When the pass condition is reducible to symbolic checks, ANCHOR uses rule-based judges over
+explicit evidence sources; Table 4 summarizes the rule templates. A single item may bind several rule checks
+that must jointly hold—for example, verifying that one module’s import is absent while its replacement’s import is
+present. Otherwise—especially for semantically complex atomic items and relation items involving THEN or PRIORITY—
+ANCHOR uses an LLM judge, which receives the checklist question, the pass condition, and a task-relevant evidence
+excerpt, and returns a binary PASS/FAIL decision with a brief justification. Evidence excerpts are used instead of
+full raw trajectories whenever possible to reduce noise and context length. This hybrid split matters because many
+engineering constraints are only partially observable from the final patch: scope, file-budget, and import restrictions are
+often reducible to symbolic checks, whereas workflow order, reporting fidelity, and relations such as THEN or PRIORITY
+require reasoning over temporally ordered evidence extracted from the trajectory. Prompt templates are provided in
+Appendix C.5 and Appendix C.6.
+5.1
+Judge Validation
+To assess the reliability of the LLM judge used throughout ANCHOR, we conducted a human agreement study on
+a stratified sample of 480 checklist instances drawn from held-out tasks, balanced across the ten top-level taxonomy
+categories, the three relation types (AND, THEN, PRIORITY), and three difficulty strata (rule-verifiable, semantically
+straightforward, and semantically complex). Each (constraint, evidence) pair was independently labelled PASS/FAIL
+by five human evaluators who did not participate in benchmark construction, taxonomy design, or prompt authoring.
+The evaluators were senior software engineers with 6–12 years of professional development experience (mean 8.4
+years), drawn from a mix of backgrounds to reduce single-stack bias: two backend engineers with primary experience in
+Python and Go service development, one infrastructure engineer with CI/CD and build-system expertise across Java and
+Bash toolchains, one full-stack engineer working primarily in TypeScript and Rust, and one researcher–engineer with
+8
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+5
+EVALUATION FRAMEWORK
+ANCHOR
+Checklist Generation
+•  For each task, convert the constraint representation into a structured checklist.
+•  Atomic items correspond one-to-one with atomic constraints.
+•  Relation items correspond to composite constraints and reference dependent atomic check 
+items.
+Example Checklist Items
+1.    Did the agent modify only files under common/crypto? (Atomic, code diff)
+2.    Did the agent avoid importing prohibited library X? (Atomic, modified code)
+3.    Did the agent add the required regression test? (Atomic, code diff)
+4.    Did the agent report changed files, commands run, and test results? (Atomic, final response)
+5.    Did the agent reproduce the bug before implementing the fix? (Relation: THEN, trajectory)
+6.    Did the agent satisfy both scope restriction and regression testing? (Relation: AND)
+7.    When scope minimization conflicted with security, did the agent prioritize security?(Relation: PRIORITY)
+8.    Was the requested command pytest tests/test_crypto.py executed? (Atomic, trajectory)
+9.    Did the agent preserve the public API signature of encrypt_block? (Atomic, modified code)
+10.    Did the agent avoid modifying poetry.lock? (Atomic, code diff)
+Dependency of Checklist Items
+Atomic item
+Relation item
+1
+2
+3
+4
+8
+9
+10
+5
+6
+7
+Checklist Item
+Dep(i)
+1
+{ }
+2
+{ }
+3
+{ }
+4
+{ }
+5
+{ 1,4}
+6
+{ 1,3}
+7
+{ 1,5,9}
+8
+{ }
+9
+{ }
+10
+{ }
+Rule-Augmented Evaluation
+Task Instance 𝑇
+Checklist Items
+𝑞1, 𝑞2, ···, 𝑞3
+Evidence 𝑜
+Rule-defined?
+×
+✓
+LLM Judge
+𝑀𝑗𝑢𝑑𝑔𝑒
+Evidence Extractor
+𝑀𝑒𝑥𝑡
+Segments e
+Relevant evidence for
+checklist item q
+Rule Evaluator
+𝑅𝑞
+Evaluation Results
+[𝑟1, 𝑟2, ···, 𝑟𝑚] ∈ {0,1 }
+Dependency Aggregation
+ෝ𝑟𝑖= 𝑟𝑖∧   𝑟𝑝
+p ∈ Dep(i)
+Final Metrics
+ACP / CCR / IPR / FCCR
+Figure 5 Overview of the ANCHOR evaluation framework.
+Table 4 Rule-based judge function types used in ANCHOR.
+Judge type
+Description
+path_filter
+Whether modified paths satisfy a whitelist/blacklist
+file_count
+Whether the number of modified files satisfies a threshold
+line_count
+Whether the number of changed lines satisfies a threshold
+command_presence
+Whether a command appears or does not appear in the trajectory
+command_arg_check
+Whether a command uses required or forbidden flags
+action_sequence
+Whether observable actions occur in the required order
+import_check
+Whether a module is imported or explicitly not imported
+regex_match
+Whether target text matches a regular expression
+prior experience reviewing open-source pull requests at scale across multiple language ecosystems. All evaluators had
+prior code-review responsibility on production codebases of at least 100k lines, ensuring familiarity with the kinds of
+engineering constraints—modification scope, validation discipline, dependency hygiene, reporting obligations—that
+ANCHOR targets. Evaluators were given the checklist question, the explicit pass condition, and the same evidence
+excerpt provided to the LLM judge, but no access to the judge’s output, in order to avoid anchoring. The majority label
+across the five evaluators was used as the human consensus, and inter-evaluator agreement on the sample itself was
+κ = 0.83, indicating that the consensus label is itself stable.
+Aggregating across all sampled items, the LLM judge reaches Cohen’s κ = 0.78 with the human consensus label,
+corresponding to 89.4% raw agreement. Agreement is highest on rule-verifiable atomic items in categories such
+as Modification Scope (C3), Dependency (C7), and Tool Execution Protocol (C1), with κ = 0.86, where the pass
+condition reduces to a deterministic check over the diff or trajectory. Agreement remains substantial on semantically
+straightforward items at κ = 0.79, and is lowest, though still acceptable, on relation items involving THEN ordering
+and PRIORITY conflict resolution at κ = 0.69. The lower agreement on these relations is relevant when interpreting
+Section 6.5: ordering is difficult both to follow and to verify, and the present alignment study does not fully separate
+agent errors from evaluation noise.
+Disagreement is concentrated in three patterns rather than spread uniformly across the sample. First, partial-evidence
+9
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+5
+EVALUATION FRAMEWORK
+ANCHOR
+cases account for 41.2% of disagreements: the LLM judge tends to mark an item PASS when some—but not all—
+sub-components of the pass condition are demonstrated in the evidence, whereas human evaluators apply a stricter
+all-or-nothing reading. This is most common in C9 (Testing) and C10 (Reporting), where a constraint such as “report
+changed files, commands run, and test results” is partially fulfilled by the agent’s final summary. Second, temporal-
+boundary cases account for 26.7%: for THEN relations, the judge occasionally accepts an interleaved or out-of-order
+trajectory as compliant if both component actions are eventually present, whereas human evaluators enforce strict
+precedence (e.g., reproduction must occur before any modification, not merely before the final patch). Third, intent-
+versus-action cases account for 19.4%: when the agent verbally acknowledges a constraint in its final report but does
+not in fact act on it, the LLM judge is somewhat more lenient than human evaluators, who consistently mark such cases
+FAIL. The remaining 12.7% of disagreements are scattered across category-specific edge cases without a dominant
+pattern.
+In a human-subset consistency check, the configurations ranked on the 480-item human-labelled subset have Spearman
+correlation 0.96 with the full judge-based ranking. This comparison also changes the evaluated item set and is not
+an isolated judge-swap experiment. No cross-provider judge comparison or controlled prompt-sensitivity study is
+reported. Consequently, the alignment results do not establish absence of model-family bias or robustness to arbitrary
+judge/prompt choices. We treat the LLM judge as an imperfect proxy and report its lower agreement on hard relations
+explicitly.
+5.2
+Metrics
+We report four complementary metrics. For a benchmark set with N task instances, let At and Rt denote the numbers of
+atomic and relation items for task t, let I[·] be the indicator function, and let at,i, rt,j ∈{0, 1} denote pass/fail outcomes.
+ACR =
+�N
+t=1
+�At
+i=1 at,i
+�N
+t=1 At
+,
+CCR =
+�N
+t=1
+�Rt
+j=1 rt,j
+�N
+t=1 Rt
+,
+IPR =
+�N
+t=1
+��At
+i=1 at,i + �Rt
+j=1 rt,j
+�
+�N
+t=1(At + Rt)
+,
+FCCR = 1
+N
+N
+�
+t=1
+I
+��At
+�
+i=1
+at,i = At
+�
+∧
+�Rt
+�
+j=1
+rt,j = Rt
+��
+.
+(1)
+Here ACR and CCR measure atomic and relation-item satisfaction, IPR aggregates all checklist items, and literal all-item
+FCCR requires every item in a task to pass. ACR isolates compliance with individual requirements, while CCR captures
+the harder ability to coordinate multiple requirements under AND, THEN, and PRIORITY relations; FCCR is the strictest
+checklist-level summary. We report aggregate metrics, category-level ACR, and relation-level CCR.
+Pooled aggregation.
+Let A = �
+t At and R = �
+t Rt. The pooled definitions imply
+IPR = A ACR + R CCR
+A + R
+.
+(2)
+For ANCHOR, A = 2,836 and R = 600. System-level IPR is computed according to Equation 2 over the common item
+set. All metrics are reported to one decimal place.
+Category-level Macro ACR instead averages the per-task category ACR over task–configuration pairs containing at least
+one atomic item from that category. It assigns equal weight to each eligible pair, whereas Pooled ACR weights each
+atomic item equally. We label these aggregations explicitly in tables and figures.
+Interpreting strict compliance.
+FCCR answers whether every scored checklist item passes; it is neither a severity-
+weighted risk score nor the rate of jointly successful and compliant task completions. A missed report item and an
+API-breaking change both make FCCR zero for a task, although their engineering impact differs. ACR, CCR, and IPR
+retain partial-compliance information, and task completion must be reported alongside them. FCCR also depends on
+checklist length and the dependence between items, so a lower value on longer checklists alone does not establish a
+coordination deficit.
+10
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+Priority and applicability.
+A PRIORITY relation can pass when the higher-priority requirement is met and the lower-
+priority requirement is sacrificed. A failed lower-priority atomic still makes FCCR zero. FCCR therefore measures
+literal checklist completion, rather than satisfaction of obligations after resolving precedence. A precedence-aware
+alternative would require explicit applicability labels for overridden obligations and a separate scoring rule.
+Weighting and category imbalance.
+The equations above pool checklist items: frequent categories and tasks with
+more items receive more weight in ACR/IPR. This matters because C2, C3, and C9 contain 1,560 of the 2,836 atomics
+(55.0%), while C6–C8 contain only 168 (5.9%). Their frequencies reflect this task collection and generation pipeline, not
+an independently estimated distribution of engineering needs. Possible complements are a macro-average of category-
+specific ACR values and a weighted item-pass rate �
+t,k wt,kyt,k/ �
+t,k wt,k, where yt,k is an atomic or relation-item
+outcome and weights are fixed before comparing systems. Such weights could reflect a documented deployment’s
+priorities; they would not turn strict all-or-nothing FCCR into a severity-sensitive metric. These alternatives are not
+included in the reported scores.
+6
+Experiments
+After summarizing the evaluation setup, we report three layers of findings. First, ANCHOR exposes a large and
+systematic gap between task completion and engineering constraint compliance. Second, this gap is structured rather
+than uniform: it concentrates in trajectory-grounded categories and in composite constraints that require temporal or
+relational coordination. Third, trajectory-based error attribution most often labels failures as missed or deprioritized
+constraints. These labels provide descriptive hypotheses about behavior, rather than a causal separation of model
+capability and scaffold effects.
+6.1
+Experimental Setup
+ANCHOR contains 358 tasks from 23 repositories spanning eight language groups (counting C and C++ together),
+with 2,836 atomic constraints and 600 relation items across ten top-level categories and 78 leaves. We distinguish
+three evaluation sets. The primary paired set contains seven foundation models evaluated under both OpenCode and
+Cline, yielding 14 configurations: DeepSeek-V3.2(Liu et al., 2025a), GLM-5(Zeng et al., 2026), GLM-5.1(Z.AI, 2026),
+GPT-5.3-Codex(OpenAI, 2026a), GPT-5.4(OpenAI, 2026b), Kimi-K2.5(Team et al., 2026), and Qwen-3.5-Plus. The
+extended paired set also includes GPT-5.4-Mini and Qwen-3.5-Flash under both scaffolds, yielding 18 configurations.
+The full evaluation set includes these 18 configurations and Claude Opus 4.8 under Cline, for 19 configurations spanning
+ten models. All configurations use the same 358 tasks. Table 5 and the system-level scatter cover the full evaluation set;
+diagnostic figures specify the corresponding paired set in their captions.
+Each run starts from a clean repository checkout inside an isolated Docker sandbox. Agents may inspect files, execute
+commands, and edit the repository through their scaffold interfaces; network access is restricted to dependency resolution
+required by the original environment. Task completion is evaluated with the original repository test harness under a
+fixed 30-minute timeout, and we record the full interaction trace for constraint evaluation. We report task completion
+together with the four ANCHOR metrics from Section 5: ACR, CCR, IPR, and FCCR. Table 5 reports point estimates;
+the category plot reports task-bootstrap 95% confidence intervals. These intervals address variation across sampled
+tasks, not stochastic variation across repeated agent runs. To separate constraint following from raw task solvability,
+we additionally evaluate a task-only setting in which the same agent receives the repository task objective without the
+ANCHOR engineering constraints. Benchmark statistics are summarized in Figure 6.
+11
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+358
+repository tasks
+23
+repositories
+8
+language groups
+3,436
+checklist items
+(a) Checklist composition
+2,836
+600
+Atomic constraints
+Relation items
+Mean per task: 7.9 atomics + 1.7 relations
+Relation types
+AND  250
+THEN  327
+PRIORITY  23
+(b) Taxonomy hierarchy
+10
+top-level categories
+34
+mid-level categories
+78
+leaf categories
+Figure 6 ANCHOR dataset overview. Stacked-bar widths are proportional to item counts; the relation-type bar expands the 600
+relation items. Per-task counts are means rounded to one decimal place. The taxonomy spans ten top-level categories, 34 mid-level
+categories, and 78 leaves, all represented in the benchmark. C and C++ are counted as one language group.
+6.2
+Main Results: The Constraint–Completion Gap
+Table 5 summarizes task completion and constraint compliance for all evaluated agent configurations. The main result is
+a consistent gap between producing a functionally correct patch and following the engineering constraints that govern
+how the patch should be produced.
+Claude Opus 4.8 under Cline achieves the highest reported compliance scores: 70.1% ACR, 63.7% CCR, 69.0% IPR,
+and 19.0% FCCR, with 43.6% constrained task completion. Its literal all-item FCCR is 7.0 percentage points higher
+than GPT-5.4 under Cline (12.0%). Nevertheless, 81.0% of tasks still fail at least one checklist item. Completion and
+FCCR are different marginal rates, not a measured joint success rate; their 24.6-point difference lower-bounds the share
+of tasks that are completed without passing the entire checklist. The strict interpretation of FCCR, including overridden
+lower-priority atomics, is specified in Section 5.2.
+The task-only comparison is a calibration check. Across the primary paired set, the mean signed completion change
+is +0.7 percentage points, while the mean absolute change is 1.9 points; individual changes range from −4.1 to +4.5
+points. For Claude Opus 4.8, completion falls from 45.3% to 43.6%, a −1.7-point change. Across all 19 rows with
+task-only values in Table 5, the mean signed change is approximately +0.1 percentage points. These differences do not
+establish equivalence of task difficulty or joint satisfiability of constraints.
+The compliance gap also persists under the same foundation model across scaffolds. OpenCode+GPT-5.3-Codex and
+Cline+GPT-5.3-Codex differ by only 0.3 points in constrained completion (37.4% versus 37.7%), but by 5.0 points in
+IPR (67.9% versus 62.9%) and 3.1 points in FCCR (12.3% versus 9.2%). Thus similar functional performance can
+coexist with materially different compliance profiles.
+The metric ordering is itself diagnostic. Agents satisfy isolated atomic items substantially more often than relation items,
+with ACR exceeding CCR by 6.7 percentage points on average across the 19 configurations. FCCR is much lower
+than both because it is a strict task-level metric: a single missed checklist item causes full compliance to fail. The four
+metrics therefore distinguish average item satisfaction from passing every scored item jointly, subject to the severity and
+priority limitations discussed in Section 5.2.
+6.3
+Fine-Grained Results by Constraint Category
+Figure 7 shows that category difficulty is highly non-uniform, and the pattern aligns with the kind of behavior each
+category demands. The highest point estimates are for Dependency & Build Strategy (72.4% Macro ACR), Security &
+Dangerous Operations (68.7%), and Modification Scope & Change Budget (66.6%). These constraints are often phrased
+12
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+Table 5 Main results on ANCHOR. Task-only completion is measured on the original task objective without engineering constraints.
+Constrained completion is measured with the full ANCHOR developer instruction. ACR, CCR, IPR, and FCCR are reported on
+constrained runs. All numbers are percentages; higher is better. ACR, CCR, and IPR pool checklist items; FCCR uses the literal
+all-item criterion. Gold , silver , and bronze cells mark the best, second-best, and third-best values in each column.
+Scaffold
+Model
+Task Completion
+Constraint Compliance
+Task-only
+Constrained
+ACR
+CCR
+IPR
+FCCR
+OpenCode
+DeepSeek-V3.2
+24.3
+23.2
+40.7
+28.3
+38.5
+1.7
+GLM-5
+31.8
+33.5
+59.2
+52.5
+58.0
+4.2
+GLM-5.1
+36.0
+35.5
+60.6
+57.3
+60.0
+6.1
+GPT-5.3-Codex
+35.5
+37.4
+68.9
+63.4
+67.9
+12.3
+GPT-5.4
+34.9
+36.3
+67.4
+62.6
+66.6
+11.5
+Kimi-K2.5
+27.4
+29.3
+57.6
+50.2
+56.3
+4.2
+Qwen-3.5-Plus
+28.2
+32.7
+52.6
+47.5
+51.7
+2.5
+GPT-5.4-Mini
+31.2
+30.6
+60.1
+51.1
+58.5
+7.3
+Qwen-3.5-Flash
+21.5
+18.7
+35.7
+27.4
+34.3
+1.0
+Cline
+DeepSeek-V3.2
+27.6
+23.5
+51.2
+38.5
+49.0
+2.5
+GLM-5
+33.2
+33.2
+61.4
+56.7
+60.6
+5.6
+GLM-5.1
+34.9
+33.8
+61.2
+57.0
+60.5
+7.8
+GPT-5.3-Codex
+36.9
+37.7
+64.1
+57.5
+62.9
+9.2
+GPT-5.4
+33.5
+36.9
+64.3
+60.9
+63.7
+12.0
+Kimi-K2.5
+32.7
+31.0
+59.4
+57.9
+59.1
+3.9
+Qwen-3.5-Plus
+29.3
+32.1
+45.9
+40.8
+45.0
+2.2
+GPT-5.4-Mini
+23.1
+22.3
+32.4
+23.5
+30.8
+4.1
+Qwen-3.5-Flash
+24.9
+22.7
+50.4
+39.2
+48.4
+2.8
+Claude Opus 4.8
+45.3
+43.6
+70.1
+63.7
+69.0
+19.0
+40
+50
+60
+70
+C7 Dependency & Build
+C8 Security
+C3 Scope & Budget
+C4 Style & Standards
+C5 Implementation
+C6 Environment
+C9 Testing
+C1 Tool Execution
+C2 Workflow & Behaviour
+C10 Reporting
+72.4
+68.7
+66.6
+65.7
+63.9
+63.2
+56.6
+55.7
+50.1
+41.0
+Top-Level Categories
+<=2 files
+3-4 files
+>4 files
+52.5
+55.0
+57.5
+60.0
+62.5
+65.0
+67.5
+70.0
+72.5
+Compliance (%)
+n=99
+n=114
+n=150
+Scope by Modified Files
+<=50 lines
+51-150 lines
+>150 lines
+n=123
+n=99
+n=141
+Scope by Changed Lines
+Overall IPR
+C3 ACR
+Macro ACR (%)
+≤2
+3–4
+>4
+Modified files
+0
+50
+100
+150
+200
+250
+Tasks
+213
+87
+58
+Reference-Patch Files
+≤50
+51–150
+>150
+Added + removed lines
+0
+50
+100
+150
+200
+250
+218
+76
+64
+Reference-Patch Lines
+Figure 7 Left: category-level Macro ACR for the primary paired set. Rates are averaged over task–configuration pairs containing at
+least one atomic item from the corresponding category. Error bars denote 95% bootstrap confidence intervals over tasks. Middle and
+right: reference-patch scope distributions over all 358 tasks. File counts include every modified file; changed lines count additions
+plus deletions within diff hunks. Each scope panel contains one observation per task.
+13
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+as local prohibitions or boundary conditions, so conservative agent behavior is frequently sufficient to satisfy them.
+In contrast, Output Format & Reporting is by far the hardest category (41.0% Macro ACR), followed by Workflow
+& Behavior (50.1%), Tool Execution Protocol (55.7%), and Testing (56.6%). These categories are more trajectory-
+grounded: they require agents to maintain process discipline over time, choose the right tools, act in the correct order,
+validate the result, and faithfully report what they actually did. Appendix A documents the taxonomy at mid-level and
+leaf-level granularity. Figure 8 shows per-configuration Macro ACR for the extended paired set.
+The scope distributions describe the reference patches associated with the tasks: 213 modify at most two files, 87 modify
+three or four, and 58 modify more than four. By changed lines, 218 contain at most 50 additions plus deletions, 76
+contain 51–150, and 64 contain more than 150.
+The rare categories need particular caution: C6 has 70 atomic constraints, and C7 and C8 have only 49 each, compared
+with 512–530 in C2, C3, and C9. Re-evaluating the same items across models does not create new independent tasks.
+The displayed point estimates therefore do not establish reliable superiority on security or dependency handling; category
+coverage and judging methods are detailed in Table 6. Category-specific IPR/FCCR are not reported because relation
+items may span multiple atomic categories.
+C1
+C2
+C3
+C4
+C5
+C6
+C7
+C8
+C9
+C10
+DeepSeek-V3.2
+GLM-5
+GLM-5.1
+GPT-5.3-Codex
+GPT-5.4
+Kimi-K2.5
+Qwen-3.5-Plus
+GPT-5.4-Mini
+Qwen-3.5-Flash
+45.3
+40.4
+61.6
+55.0
+54.3
+59.8
+78.7
+66.7
+48.4
+43.5
+61.8
+55.2
+67.7
+68.0
+60.0
+49.3
+77.0
+62.5
+62.8
+44.2
+59.3
+53.3
+68.4
+71.9
+66.9
+59.6
+75.0
+79.2
+59.0
+49.1
+57.9
+53.6
+75.6
+71.5
+67.9
+73.9
+50.0
+64.6
+59.4
+52.5
+64.7
+56.2
+68.2
+68.9
+64.2
+75.4
+43.4
+79.2
+61.7
+57.8
+59.1
+49.0
+68.0
+64.7
+62.5
+55.8
+82.7
+50.0
+63.9
+53.4
+51.1
+39.1
+33.4
+49.4
+59.0
+50.7
+69.3
+54.2
+55.5
+27.1
+35.4
+30.3
+42.1
+33.6
+23.9
+61.9
+21.8
+69.8
+21.5
+25.8
+52.7
+43.2
+52.5
+58.1
+53.7
+57.6
+63.8
+62.5
+53.6
+30.0
+Cline
+C1
+C2
+C3
+C4
+C5
+C6
+C7
+C8
+C9
+C10
+35.7
+42.8
+48.5
+46.1
+50.5
+61.6
+73.0
+65.6
+30.6
+14.9
+56.6
+56.4
+73.8
+65.6
+63.3
+62.3
+80.6
+72.9
+56.5
+30.2
+56.6
+56.0
+72.5
+72.2
+69.3
+71.0
+68.9
+72.9
+55.6
+36.3
+64.7
+48.8
+84.4
+82.9
+82.4
+79.0
+80.6
+83.3
+67.1
+45.8
+62.9
+48.8
+83.5
+78.5
+77.2
+72.5
+78.6
+81.2
+68.7
+48.3
+54.0
+55.4
+64.6
+63.4
+61.3
+57.2
+82.7
+64.6
+54.5
+42.5
+49.4
+47.1
+62.6
+61.5
+56.1
+56.5
+73.0
+64.6
+48.9
+28.9
+54.3
+39.8
+81.0
+73.2
+70.3
+73.5
+74.5
+81.2
+54.0
+37.4
+30.2
+32.6
+47.2
+39.4
+36.3
+47.1
+59.1
+60.9
+24.1
+18.4
+OpenCode
+40
+45
+50
+55
+60
+65
+70
+75
+Top-level category
+Macro ACR (%)
+Figure 8 Per-configuration top-level category breakdown. Each cell reports Macro ACR (%) for one scaffold–model configuration
+and one top-level category, macro-averaged over tasks containing at least one atomic constraint from that category. Columns use
+the C1–C10 shorthand from Table 2. The heatmap covers the extended paired set (18 configurations). It makes it easier to identify
+whether a category-level trend in Figure 7 is broad-based or driven by a subset of configurations.
+Category coverage and judging reliability.
+Table 6 combines the category Macro ACR estimates from Figure 7,
+atomic and distinct-task counts, and applicable evaluation methods. These estimates use the figure’s task–configuration
+macro-average, distinct from pooling all atomic items. Methods are selected for individual pass conditions: no category
+is exclusively rule-judged or LLM-judged. In particular, import_check tests named imports, not arbitrary depen-
+dency changes; action_sequence tests observable action sequences, not whether an agent semantically understood a
+prerequisite.
+The judge study reports κ = 0.86 for rule-verifiable items and κ = 0.69 for difficult THEN/PRIORITY items. These
+pooled coefficients cannot be assigned to every category in the corresponding group. The 50-instance audit likewise
+does not provide per-category validity estimates. Category-specific IPR/FCCR would require an explicit attribution
+rule for cross-category relation items, whose category fields are null in the checklist schema; they are not reported here.
+Future uncertainty estimates for these breakdowns should resample whole tasks and retain within-task dependence. The
+49-item C7/C8 and 70-item C6 slices warrant cautious, directional interpretation.
+14
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+Table 6 Category counts, Macro ACR (%), and typical evidence and checking methods. Macro ACR averages over task–configuration
+pairs containing the corresponding category. The Tasks column counts distinct instances containing at least one such atomic item.
+Category names appear in Table 2.
+Category
+Atomics
+Tasks
+Macro
+ACR
+Typical evidence and checking methods
+C1
+371
+234
+55.7
+Command presence/argument rules; semantic result
+verification may need an LLM.
+C2
+512
+284
+50.1
+Observable action sequences; semantic ordering,
+explanations, and precedence need an LLM.
+C3
+518
+274
+66.6
+Path/file/line checks; semantic scope and API compatibility
+need deeper inspection.
+C4
+223
+167
+65.7
+Diff patterns and lint evidence; naming, documentation
+quality, and design need semantic judgment.
+C5
+283
+174
+63.9
+Named imports and code patterns; algorithms, error handling,
+and side effects need semantic judgment.
+C6
+70
+66
+63.2
+Paths, commands, and configuration; runtime compatibility
+may require execution or semantic evidence.
+C7
+49
+47
+72.4
+Manifest paths and named imports; general dependency/build
+policy may need an LLM.
+C8
+49
+48
+68.7
+Prohibited commands and credential patterns; secure
+implementation needs semantic checks.
+C9
+530
+297
+56.6
+Test commands, flags, and ordering; test adequacy and result
+interpretation need semantic judgment.
+C10
+231
+162
+41.0
+Report text/patterns; completeness and fidelity need
+comparison with trajectory evidence.
+6.4
+Scaffold–Model Interactions
+For the same foundation model, IPR can differ substantially between OpenCode and Cline. GPT-5.4-Mini scores 58.5%
+under OpenCode and 30.8% under Cline, a decrease of 27.7 points; DeepSeek-V3.2 and Qwen-3.5-Flash score 10.5
+and 14.1 points higher under Cline, respectively. The strongest paired configuration also depends on the scaffold:
+GPT-5.3-Codex has the highest IPR under OpenCode, whereas GPT-5.4 leads the paired Cline configurations. Table 7
+reports per-model point differences for the extended paired set. These descriptive comparisons cover complete scaffold
+configurations, including prompts, tools, and workflow; they do not isolate a causal component or establish statistical
+significance. We use two open-source scaffolds to make their interfaces inspectable. Performance under Claude Code,
+Codex, or other scaffolds is outside the evaluated scope; Claude Opus 4.8 is evaluated under Cline only.
+Table 7 Scaffold differences (Cline minus OpenCode) in percentage points.
+Model
+∆ACR
+∆CCR
+∆IPR
+∆FCCR
+DeepSeek-V3.2
++10.5
++10.2
++10.5
++0.8
+GLM-5
++2.2
++4.2
++2.6
++1.4
+GLM-5.1
++0.6
+−0.3
++0.5
++1.7
+GPT-5.3-Codex
+−4.8
+−5.9
+−5.0
+−3.1
+GPT-5.4
+−3.1
+−1.7
+−2.9
++0.5
+Kimi-K2.5
++1.8
++7.7
++2.8
+−0.3
+Qwen-3.5-Plus
+−6.7
+−6.7
+−6.7
+−0.3
+GPT-5.4-Mini
+−27.7
+−27.6
+−27.7
+−3.2
+Qwen-3.5-Flash
++14.7
++11.8
++14.1
++1.8
+6.5
+Composite Constraints: Semantics and Structural Difficulty
+We next isolate the structured part of engineering constraint following: whether agents preserve the relations linking
+multiple constraints, not just the atomic requirements themselves.
+15
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+AND
+(n=250)
+THEN
+(n=327)
+PRIORITY
+(n=23)
+0
+20
+40
+60
+80
+42.0
+34.9
+52.2
+26.8
+30.9
+39.1
+DeepSeek-V3.2
+lower range
+AND
+(n=250)
+THEN
+(n=327)
+PRIORITY
+(n=23)
+67.6
+52.6
+65.2
+65.2
+52.9
+73.9
+GLM-5.1
+middle range
+AND
+(n=250)
+THEN
+(n=327)
+PRIORITY
+(n=23)
+72.0
+53.5
+60.9
+76.0
+51.4
+69.6
+GPT-5.4
+upper range
+Mean CCR (%)
+Cline
+OpenCode
+Figure 9 Semantic breakdown of composite relation types for three models under both scaffolds.
+8-16
+(n=64)
+17-22
+(n=125)
+23-28
+(n=94)
+29-46
+(n=75)
+Task graph load (|Vtask| + |Etask|)
+0%
+4%
+8%
+12%
+FCCR (%)
+A
+2
+(n=102)
+3
+(n=284)
+4
+(n=121)
+5
+(n=24)
+Atomic nodes per composite
+55%
+60%
+65%
+70%
+ACR (%)
+B
+ACR vs Atomic Node Count
+1
+(n=119)
+2
+(n=315)
+3
+(n=136)
+4
+(n=26)
+Relation edges per composite
+40%
+45%
+50%
+55%
+CCR (%)
+C
+CCR vs Relation Edge Count
+Cline
+OpenCode
+All-item FCCR vs Task Graph Load
+Figure 10 Structural diagnosis of composite constraints. From left to right: FCCR as a function of task-level graph load, computed
+on the union graph induced by all composite constraints in a task; ACR as a function of the number of atomic nodes in a composite;
+and CCR as a function of the number of relation edges in a composite. Each scaffold curve averages the seven models in the primary
+paired set under that scaffold. Sample counts are shown in the x-axis tick labels. The displayed counts sum to 358 tasks in the
+graph-load panel, 531 observations grouped by composite node count, and 596 grouped by composite edge count. The latter two are
+panel-specific observation counts, distinct from the benchmark-wide atomic and relation-item totals. The ACR and CCR panels use
+truncated y-axes for readability.
+Figure 9 isolates relation semantics. THEN is clearly the hardest relation type, with mean CCR only 46.7%, compared
+with 58.1% for AND and 64.0% for PRIORITY. This THEN penalty is broad-based across representative low-, mid-, and
+high-performing model families, indicating that agents can often satisfy the component actions yet still fail to preserve
+their required order. Failed priority trajectories show a related pattern: agents optimize for the most direct functional fix
+while neglecting the higher-priority engineering requirement. The extended paired set is shown in Figure 11.
+Figure 10 then turns to graph structure. The left panel shows that the literal all-item pass rate decreases as the overall
+task graph grows: FCCR drops from 9.4% to 2.7% on Cline and from 11.2% to 4.2% on OpenCode as task graph load
+increases from 8–16 to 29–46. The middle panel asks whether this degradation is already visible at the level of the local
+atomic requirements inside each composite. It is not. ACR stays comparatively stable across 2–5-node composites,
+ranging from 57.4% to 65.3% on Cline and from 60.1% to 67.9% on OpenCode. Larger composites often bundle
+individually explicit local requirements, which helps explain why ACR does not decline monotonically with node count.
+The right panel shows where the main structural penalty enters: relation-level compliance drops as edge count grows,
+from 54.3% to 44.0% on Cline and from 53.3% to 40.1% on OpenCode across 1–4 edges. These associations are
+consistent with difficulty in coordinating requirements, but do not isolate a causal effect of graph structure. The strict
+FCCR criterion becomes harder as more items are included, and graph size, relation type, and task difficulty are not
+independently randomized. Count-controlled comparisons would be needed to separate these effects.
+16
+
+============================================================
+=== PAGE 17 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+AND
+THEN PRIOR.
+L=3
+L=5
+L=7
+L=9
+DeepSeek-V3.2
+GLM-5
+GLM-5.1
+GPT-5.3-Codex
+GPT-5.4
+Kimi-K2.5
+Qwen-3.5-Plus
+GPT-5.4-Mini
+Qwen-3.5-Flash
+42.3
+32.6
+60.0
+41.4
+41.5
+31.8
+11.1
+60.2
+55.4
+70.0
+56.9
+62.2
+51.5
+38.9
+69.1
+53.7
+80.0
+63.8
+59.1
+65.2
+50.0
+63.4
+50.3
+90.0
+50.0
+56.1
+63.6
+61.1
+68.3
+57.7
+80.0
+58.6
+64.0
+63.6
+55.6
+64.2
+49.7
+60.0
+60.3
+56.1
+56.1
+44.4
+43.9
+39.4
+60.0
+41.4
+43.3
+39.4
+44.4
+24.4
+23.4
+50.0
+22.4
+24.4
+28.8
+22.2
+43.9
+36.0
+60.0
+44.8
+40.2
+37.9
+33.3
+Relation type
+Structural load
+Cline
+AND
+THEN PRIOR.
+L=3
+L=5
+L=7
+L=9
+24.4
+32.6
+60.0
+37.9
+31.7
+27.3
+5.6
+64.2
+51.4
+70.0
+60.3
+63.4
+48.5
+22.2
+65.9
+56.6
+60.0
+63.8
+66.5
+45.5
+44.4
+77.2
+52.6
+70.0
+53.4
+65.2
+62.1
+72.2
+77.2
+53.1
+90.0
+69.0
+64.0
+59.1
+61.1
+54.5
+48.0
+60.0
+51.7
+57.9
+39.4
+33.3
+53.7
+42.9
+80.0
+55.2
+50.6
+45.5
+22.2
+68.3
+41.1
+90.0
+50.0
+54.3
+56.1
+44.4
+25.2
+29.1
+60.0
+25.9
+32.3
+27.3
+11.1
+Relation type
+Structural load
+OpenCode
+30
+40
+50
+60
+70
+80
+Mean CCR (%)
+Figure 11 Per-configuration composite-constraint breakdown. Each cell reports mean CCR (%) for one scaffold–model configuration
+and one composite bucket. The first three columns correspond to relation types (AND, THEN, PRIORITY); the remaining columns
+correspond to retained structural-load bins, where load is defined as |V | + |E|. The heatmap shows that the THEN penalty is
+broad-based across the extended paired set, while performance on higher-load composites is much more model-sensitive.
+15
+20
+25
+30
+35
+40
+45
+Constrained task completion (%)
+30
+40
+50
+60
+70
+IPR (%)
+Scaffold
+OpenCode
+Cline
+Model
+DeepSeek-V3.2
+GLM-5
+GLM-5.1
+GPT-5.3-Codex
+GPT-5.4
+Kimi-K2.5
+Qwen-3.5-Plus
+GPT-5.4-Mini
+Qwen-3.5-Flash
+Claude Opus 4.8
+Figure 12 Constrained task completion versus IPR for the full evaluation set in Table 5. Colors identify models, shapes identify
+scaffolds, and lines connect configurations using the same foundation model across scaffolds. Each point represents a complete agent
+configuration.
+17
+
+============================================================
+=== PAGE 18 ===
+============================================================
+
+6
+EXPERIMENTS
+ANCHOR
+6.6
+Compliance and Task Completion Are Distinct
+Figure 12 shows a positive association between task completion and IPR across configurations. The Spearman
+correlation is 0.87 on the primary paired set, 0.90 on the extended paired set, and 0.91 on the full evaluation set. Stronger
+configurations tend to improve both metrics, although this system-level association does not imply that the same tasks
+are easy under both criteria.
+The gap between completion and literal all-item FCCR provides a complementary comparison. For Claude Opus 4.8
+under Cline, the marginal rates of 43.6% completion and 19.0% FCCR imply that at least 24.6% of tasks are completed
+without passing every checklist item. This is a lower bound from marginal rates, not a measured joint rate. As illustrated
+in Figure 1, functional completion alone does not establish literal checklist completion.
+Table 8 conditions FCCR on task success for the extended paired set. FCCR is higher on successful trajectories in 13 of
+18 configurations, with a mean signed difference of 1.74 percentage points. These descriptive gaps do not establish
+statistical independence. On failed tasks, a checklist pass does not imply a usable repair and may include satisfied
+prohibitions or vacuously true conditional checks.
+Table 8 Literal all-item FCCR on task-successful (S) and task-failed (F) trajectories for the extended paired set (18 configurations).
+All values are percentages.
+Model
+OpenCode
+Cline
+FCCR (S)
+FCCR (F)
+FCCR (S)
+FCCR (F)
+DeepSeek-V3.2
+4.8
+0.7
+6.0
+1.5
+GLM-5
+6.7
+2.9
+4.2
+6.3
+GLM-5.1
+3.9
+7.4
+7.4
+8.0
+GPT-5.3-Codex
+11.9
+12.5
+11.9
+7.6
+GPT-5.4
+13.8
+10.1
+12.9
+11.5
+Kimi-K2.5
+5.7
+3.6
+5.4
+3.2
+Qwen-3.5-Plus
+5.1
+1.2
+5.2
+0.8
+GPT-5.4-Mini
+9.1
+6.5
+6.2
+3.6
+Qwen-3.5-Flash
+1.5
+1.0
+1.2
+3.2
+6.7
+Error Analysis
+To understand where constraint failures come from, we analyze the attributed error labels produced by our failure-
+analysis pipeline over the primary paired set. This yields 20,726 attributed failures in total: 16,700 from atomic checklist
+items and 4,026 from composite relation items. We group them into six attributed behavioral patterns: E1 Not Perceived,
+E2 Misunderstood, E3 Deprioritized, E4 Capability Limitation, E5 Scaffold Interference, and E6 Partial Compliance.
+The attribution prompt used in this step is provided in Appendix C.7.
+Figure 13 summarizes the attributed behavioral patterns. E1 Not Perceived accounts for 38.2% of failures, E3 Depriori-
+tized for 21.9%, and E6 Partial Compliance for 14.5%; together they account for 74.6%, while E4 Capability Limitation
+accounts for 5.2%. These are post-hoc labels inferred from constraint text and judge reasoning, not direct observations
+of the model’s internal state or experimentally identified causes.
+E5 Scaffold Interference accounts for 6.9% of attributed failures and covers recognizable interference such as context
+truncation, conflicting system instructions, and tool/API limitations. This share does not bound the scaffold’s total effect:
+different prompts, tools, and workflows can change whether a model notices or prioritizes a constraint, yielding behavior
+labelled E1 or E3. Thus a small E5 share is compatible with the large scaffold–model interactions in Section 6.4. The
+attribution data alone do not quantify those indirect pathways.
+THEN failures skew toward E1/E6, whereas AND and PRIORITY failures more often receive E3. These patterns motivate
+better workflow tracking, persistent constraint-state maintenance, and precedence reasoning as directions to test,
+alongside improvements in coding capability and scaffold design.
+Figures 14 and 15 break down the attributed patterns by foundation model and constraint category.
+18
+
+============================================================
+=== PAGE 19 ===
+============================================================
+
+7
+DISCUSSION AND LIMITATIONS
+ANCHOR
+0
+10
+20
+30
+40
+50
+Share of failures (%)
+E1
+E2
+E3
+E4
+E5
+E6
+38.2
+13.3
+21.9
+5.2
+6.9
+14.5
+(a) Overall
+0
+25
+50
+75
+100
+Within-group share (%)
+Cline (10,381)
+OpenCode (10,345)
+(b) By scaffold
+0
+25
+50
+75
+100
+Within-group share (%)
+THEN (2,422)
+AND (1,480)
+PRIORITY (124)
+(c) By relation type
+E1: Not Perceived
+E2: Misunderstood
+E3: Deprioritized
+E4: Capability Limitation
+E5: Scaffold Interference
+E6: Partial Compliance
+E1 35.7%
+E1 40.8%
+E1 33.1%
+E3 31.0%
+E3 32.3%
+Figure 13 Attributed behavioral patterns across failed ANCHOR checklist items in the primary paired set. Left: overall distribution
+over 20,726 failures. Middle: row-normalized composition by scaffold. Right: row-normalized composition by relation type for
+4,026 failed composite items. E1 = not perceived; E2 = misunderstood; E3 = deprioritized; E4 = capability limitation; E5 = scaffold
+interference; E6 = partial compliance.
+E1
+E2
+E3
+E4
+E5
+E6
+DeepSeek-V3.2 (3,877)
+Qwen-3.5-Plus (3,584)
+Kimi-K2.5 (2,903)
+GLM-5 (2,808)
+GLM-5.1 (2,679)
+GPT-5.4 (2,455)
+GPT-5.3-Codex (2,420)
+38.6
+14.8
+24.0
+5.4
+3.0
+14.1
+31.8
+14.6
+27.3
+4.6
+8.1
+13.5
+33.2
+17.6
+26.4
+4.4
+4.2
+14.2
+34.3
+15.2
+22.2
+4.7
+6.8
+16.8
+42.6
+12.1
+19.9
+4.5
+6.2
+14.6
+44.5
+9.0
+15.4
+6.8
+10.8
+13.4
+46.6
+7.7
+13.2
+5.9
+11.7
+14.9
+Error attribution by model
+0
+10
+20
+30
+40
+50
+60
+Within-row share (%)
+Figure 14 Row-normalized error attribution by model for the primary paired set. Rows aggregate both scaffolds; cells show the
+percentage of attributed failures assigned to E1–E6, and counts in parentheses show row totals. The labels describe behavioral
+patterns, not causal effects of model capability.
+7
+Discussion and Limitations
+7.1
+Why Task Completion Is Not Deployment Readiness
+Task completion is a necessary signal of coding ability, but it is not yet a sufficient signal of deployment readiness. In
+real software engineering, the acceptability of a patch depends not only on whether it resolves the underlying issue, but
+also on whether it respects the engineering constraints under which the task was assigned. Consider modification scope:
+an agent may fix a bug in parser.py, yet also refactor adjacent modules despite an instruction to keep changes local.
+The issue is resolved, but the patch becomes harder to review, riskier to backport, and less likely to be merged. Likewise,
+an agent may produce a functionally correct patch while violating interface constraints, for example by changing a
+public API when explicitly asked to preserve backward compatibility. In both cases, the artifact may satisfy a functional
+oracle while failing the practical acceptance criteria imposed by the developer.
+Process constraints create a second class of non-deployment-ready success. An agent may arrive at a correct fix without
+first reproducing the failure, without adding a regression test, or without reporting the commands it ran. Such a patch is
+19
+
+============================================================
+=== PAGE 20 ===
+============================================================
+
+7
+DISCUSSION AND LIMITATIONS
+ANCHOR
+E1
+E2
+E3
+E4
+E5
+E6
+C2 Workflow (3,536)
+C9 Testing (3,173)
+C3 Scope (2,455)
+C1 Tool (2,290)
+C10 Reporting (1,901)
+C5 Implementation (1,450)
+C4 Style (1,087)
+C6 Environment (384)
+C8 Security (213)
+C7 Dependency (211)
+58.5
+9.8
+8.9
+6.6
+2.5
+13.8
+54.7
+14.0
+11.8
+3.7
+3.1
+12.7
+12.1
+14.2
+61.9
+1.8
+5.5
+4.5
+40.2
+11.9
+20.2
+8.0
+3.1
+16.7
+41.5
+3.9
+6.0
+4.1
+23.9
+20.7
+23.8
+27.4
+14.0
+8.6
+10.8
+15.4
+35.0
+17.5
+16.5
+3.7
+11.3
+16.1
+34.4
+24.2
+28.1
+1.8
+5.7
+5.7
+51.6
+13.6
+25.4
+1.4
+7.0
+0.9
+15.2
+16.1
+35.1
+2.8
+19.0
+11.8
+Error attribution by top-level atomic category
+0
+10
+20
+30
+40
+50
+60
+Within-row share (%)
+Figure 15 Row-normalized error attribution by atomic category. Cells show the percentage of attributed failures assigned to E1–E6;
+counts in parentheses show row totals. Workflow and Testing are dominated by E1, Modification Scope by E3, and Output Format &
+Reporting has a heavier mix of E5 and E6.
+harder to audit, harder to maintain, and harder to trust in future incidents, because reviewers lack evidence about how
+the failure was diagnosed and how the fix was validated. Similarly, a task may be solved through prohibited means, such
+as introducing an unapproved dependency, using a restricted tool, or ignoring an explicit ordering requirement such as
+reproduce before fix or test before commit. These examples illustrate why solve task and deployment-ready behaviour
+are not equivalent in agentic coding. ANCHOR is designed to make these otherwise hidden engineering failure modes
+measurable. Section 6.6 shows that system-level completion and IPR are positively associated, while task completion
+and literal all-item FCCR remain different outcomes. For the strongest configuration, their marginal rates imply that
+approximately 24.6% or more of tasks are completed without passing every scored checklist item. Table 8 also shows
+nonzero all-item pass rates on task-failed trajectories. Repository-level success and engineeringly acceptable behaviour
+therefore come apart in both directions: agents can fix the issue while behaving like weak collaborators, and they can
+behave in a largely disciplined way without actually completing the repair.
+7.2
+Limitations
+Evaluation cost.
+Running each agent to completion on each ANCHOR task, and evaluating its trajectory against
+the checklist, incurs significant compute cost. This makes large-scale model sweeps, repeated judge calibration, and
+continual benchmark refreshes substantially more expensive than final-patch-only evaluation.
+LLM judge reliability.
+Although hybrid judging broadens coverage, LLM-based evaluation may still share systematic
+biases with the evaluated models, particularly for models from the same vendor family as the judge. Future work
+should investigate cross-vendor judge configurations and stronger human-audited judge calibration protocols. The
+human alignment and subset-consistency checks do not substitute for controlled judge-provider or prompt swaps.
+Error-attribution labels also rely on LLM interpretation and should not be read as causal measurements.
+Generated-constraint validity and reference-patch exposure.
+The five-engineer audit covers 50 instances rather than
+the full benchmark, and evaluates atomics rather than complete interacting constraint sets. The audit reports high raw
+20
+
+============================================================
+=== PAGE 21 ===
+============================================================
+
+8
+CONCLUSION
+ANCHOR
+agreement and Gwet’s AC1. Prompt instructions against copying the reference solution do not exclude indirect leakage,
+since both selection and instantiation/composition receive the gold patch. A patch-blind construction ablation and a
+full-set consistency audit remain open validation steps.
+Strict metrics, coverage, and uncertainty.
+FCCR is sensitive to any failed item, irrespective of severity, and to checklist
+size. Under the literal definition, it also penalizes a failed lower-priority atomic even when the priority relation passes.
+An applicability-aware variant needs explicit handling of overridden obligations and new scoring. Category imbalance
+gives common constraints more weight in pooled metrics; the small environment, dependency, and security slices do not
+support definitive category rankings. Category-specific IPR/FCCR would also require an attribution rule for relations
+spanning multiple categories. Paired scaffold differences are descriptive comparisons without significance tests or
+repeated-run uncertainty estimates.
+Metric aggregation.
+ACR, CCR, and IPR pool scored checklist items, so tasks and categories with more items
+receive proportionally greater weight. FCCR and category-level Macro ACR expose complementary task-level and
+category-level behavior. Applications may prefer other weighting schemes when particular engineering requirements
+carry greater practical importance.
+Scaffold scope.
+We evaluate two open-source scaffolds. Their prompts, tools, and workflows can interact strongly with
+a given model, as the paired comparisons show. Claude Opus 4.8 is evaluated under Cline only, and the results cannot
+establish performance under untested scaffolds. The 6.9% E5 attribution share measures labelled interference, not the
+scaffold’s total causal contribution.
+Taxonomy coverage.
+Our taxonomy was derived from grounded analysis of real developer interactions with coding
+agents and the engineering requirements expressed in those tasks. Despite our best efforts at coverage, niche engineering
+domains (e.g., embedded systems or hardware description languages) may still contain constraint types not captured in
+the current 78 leaf categories.
+Constraint interaction effects.
+In ANCHOR, each composite constraint is treated as an independent subgraph. In
+principle, constraints from different composites could interact—a PRIORITY relationship between atomics in different
+composites is not currently modelled. Disjoint graph membership does not imply semantic independence, and the
+current prompt-based non-blocking checks do not prove joint satisfiability. This is a known simplification.
+7.3
+Benchmark Maintenance and Community Plan
+To ensure ANCHOR remains useful as models improve, we plan to maintain versioned benchmark releases, contami-
+nation monitoring, and a documented expansion protocol for adding new task instances under explicit quality-control
+requirements. Published results should always cite the version used so that future comparisons remain interpretable as
+the benchmark evolves.
+8
+Conclusion
+We presented ANCHOR, a benchmark that reframes evaluation in agentic coding from task completion alone to
+task completion under explicit engineering constraints. By modelling task-level requirements as structured, often
+trajectory-grounded constraints and evaluating them at multiple granularities, ANCHOR makes engineering constraint
+following measurable in repository-grounded coding tasks. Across 19 configurations spanning two scaffolds and ten
+models, the strongest measured system passes every scored checklist item on 19.0% of tasks, with 43.6% constrained
+task completion. Human audits provide evidence about sampled constraint validity and judge agreement, while leaving
+uncertainty about full-set consistency and difficult relational judgments. Compliance also depends substantially on
+scaffold–model interactions. ANCHOR therefore supports evaluating task completion alongside atomic, relational, and
+strict checklist compliance, with explicit attention to priority semantics, category coverage, and evaluation uncertainty.
+21
+
+============================================================
+=== PAGE 22 ===
+============================================================
+
+REFERENCES
+ANCHOR
+References
+Ibragim Badertdinov, Maksim Nekrashevich, Anton Shevtsov, and Alexander Golubev. 2026. SWE-rebench V2: Language-agnostic
+SWE task collection at scale. arXiv preprint arXiv:2602.23866.
+Xinyi Chen, Baohao Liao, Jirui Qi, Panagiotis Eustratiadis, Christof Monz, Arianna Bisazza, and Maarten de Rijke. 2024. The SIFo
+benchmark: Investigating the sequential instruction following ability of large language models. In Findings of the Association for
+Computational Linguistics: EMNLP 2024.
+Cognition AI. 2025. DeepWiki: AI-generated repository documentation. https://deepwiki.com. Accessed 2025.
+Xiang Deng, Jeff Da, Edwin Pan, Yannis Yiming He, Charles Ide, Kanak Garg, Niklas Lauffer, Andrew Park, Nitin Pasari, Chetan
+Rane, Karmini Sampath, Maya Krishnan, Srivatsa Kundurthy, Sean Hendryx, Zifan Wang, Vijay Bharadwaj, Jeff Holm, Raja
+Aluri, Chen Bo Calvin Zhang, and 3 others. 2025. Swe-bench pro: Can ai agents solve long-horizon software engineering tasks?
+Preprint, arXiv:2509.16941.
+Deming Ding, Shichun Liu, Enhui Yang, Jiahang Lin, Ziying Chen, Shihan Dou, Honglin Guo, Weiyu Cheng, Pengyu Zhao, Chengjun
+Xiao, and 1 others. 2026. Octobench: Benchmarking scaffold-aware instruction following in repository-grounded agentic coding.
+arXiv preprint arXiv:2601.10343.
+Sravani Gunnu, Shanmukha Guttula, and Hima Patel. 2025. Cife: Code instruction-following evaluation. Preprint, arXiv:2512.17387.
+Yuxin Jiang, Yufei Wang, Xingshan Zeng, Wanjun Zhong, Liangyou Li, Fei Mi, Lifeng Shang, Xin Jiang, Qun Liu, and Wei Wang.
+2024. FollowBench: A multi-level fine-grained constraints following benchmark for large language models. In Proceedings of the
+62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 4667–4688, Bangkok,
+Thailand. Association for Computational Linguistics.
+Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik R. Narasimhan. 2024. SWE-bench:
+Can language models resolve real-world GitHub issues? In The Twelfth International Conference on Learning Representations.
+Xinping Lei, Xinyu Che, Junqi Xiong, Chenchen Zhang, Yukai Huang, Chenyu Zhou, Haoyang Huang, Minghao Liu, Letian Zhu,
+Hongyi Ye, Jinhua Hao, Ken Deng, Zizheng Zhan, Han Li, Dailin Li, Yifan Yao, Ming Sun, Zhaoxiang Zhang, and Jiaheng Liu.
+2026. WebCompass: Towards Multimodal Web Coding Evaluation for Code Language Models. Preprint, arXiv:2604.18224.
+Bowen Li, Wenhan Wu, Ziwei Tang, Lin Shi, John Yang, Jinyang Li, Shunyu Yao, Chen Qian, Binyuan Hui, Qicheng Zhang, Zhiyin
+Yu, He Du, Ping Yang, Dahua Lin, Chao Peng, and Kai Chen. 2024. DevEval: Prompting large language models to tackle the full
+software development lifecycle: A case study. Preprint, arXiv:2403.08604.
+Han Li, Yifan Yao, Letian Zhu, Rili Feng, Hongyi Ye, Jiaming Wang, Yancheng He, Pengyu Zou, Lehan Zhang, Xinping Lei,
+Haoyang Huang, Ken Deng, Ming Sun, Zhaoxiang Zhang, He Ye, and Jiaheng Liu. 2026. CodeTracer: Towards Traceable Agent
+States. Preprint, arXiv:2604.11641.
+Aixin Liu, Aoxue Mei, Bangcai Lin, Bing Xue, Bingxuan Wang, Bingzheng Xu, Bochao Wu, Bowei Zhang, Chaofan Lin, Chen
+Dong, and 1 others. 2025a. Deepseek-v3. 2: Pushing the frontier of open large language models. arXiv preprint arXiv:2512.02556.
+Jiaheng Liu, Ken Deng, Congnan Liu, Jian Yang, Shukai Liu, He Zhu, Peng Zhao, Linzheng Chai, Yanan Wu, Jin Ke, Ge Zhang,
+Zekun Moore Wang, Guoan Zhang, Yingshui Tan, Bangyu Xiang, Zhaoxiang Zhang, Wenbo Su, and Bo Zheng. 2025b. M2RC-
+EVAL: Massively multilingual repository-level code completion evaluation. In Proceedings of the 63rd Annual Meeting of the
+Association for Computational Linguistics (Volume 1: Long Papers), pages 15661–15684, Vienna, Austria. Association for
+Computational Linguistics.
+OpenAI. 2026a. Introducing GPT-5.3-Codex. https://openai.com/index/introducing-gpt-5-3-codex/. Accessed:
+2026-05-07.
+OpenAI. 2026b. Introducing GPT-5.4. https://openai.com/index/introducing-gpt-5-4/. Accessed: 2026-05-07.
+Valentina Pyatkin, Saumya Malik, Victoria Graf, Hamish Ivison, Shengyi Huang, Pradeep Dasigi, Nathan Lambert, and Hannaneh
+Hajishirzi. 2025. Generalizing verifiable instruction following. Preprint, arXiv:2507.02833. Accepted to NeurIPS 2025 Datasets
+and Benchmarks.
+Yunjia Qi, Hao Peng, Xiaozhi Wang, Amy Xin, Youfeng Liu, Bin Xu, Lei Hou, and Juanzi Li. 2025. AGENTIF: Benchmarking
+instruction following of large language models in agentic scenarios. In Advances in Neural Information Processing Systems,
+volume 38. Spotlight.
+Yiwei Qin, Kaiqiang Song, Yebowen Hu, Wenlin Yao, Sangwoo Cho, Xiaoyang Wang, Xuansheng Wu, Fei Liu, Pengfei Liu, and
+Dong Yu. 2024. InFoBench: Evaluating instruction following ability in large language models. In Findings of the Association for
+Computational Linguistics: ACL 2024, pages 13025–13048, Bangkok, Thailand. Association for Computational Linguistics.
+22
+
+============================================================
+=== PAGE 23 ===
+============================================================
+
+REFERENCES
+ANCHOR
+Kimi Team, Tongtong Bai, Yifan Bai, Yiping Bao, SH Cai, Yuan Cao, Y Charles, HS Che, Cheng Chen, Guanduo Chen, and 1 others.
+2026. Kimi k2. 5: Visual agentic intelligence. arXiv preprint arXiv:2602.02276.
+Minh V. T. Thai, Tue Le, Dung Nguyen Manh, Huy Phan Nhat, and Nghi D. Q. Bui. 2026. Swe-evo: Benchmarking coding agents in
+long-horizon software evolution scenarios. Preprint, arXiv:2512.18470.
+Bosi Wen, Pei Ke, Xiaotao Gu, Lindong Wu, Hao Huang, Jinfeng Zhou, Wenchuang Li, Binxin Hu, Wendy Gao, Jiaxin Xu, Yiming
+Liu, Jie Tang, Hongning Wang, and Minlie Huang. 2024. Benchmarking complex instruction-following with multiple constraints
+composition. Preprint, arXiv:2407.03978.
+Xiaodong Wu, Minhao Wang, Yichen Liu, Xiaoming Shi, He Yan, Lu Xiangju, Junmin Zhu, and Wei Zhang. 2025. Lifbench:
+Evaluating the instruction following performance and stability of large language models in long-context scenarios. In Proceedings
+of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 16445–16468.
+Jingxuan Xu, Ken Deng, Weihao Li, Songwei Yu, Huaixi Tang, Haoyang Huang, Zhiyi Lai, Zizheng Zhan, Yanan Wu, Chenchen
+Zhang, and 1 others. 2025. SWE-Compass: Towards unified evaluation of agentic coding abilities for large language models.
+arXiv preprint arXiv:2511.05459.
+Jingxuan Xu, Gang Wu, Yanan Wu, Yutao Mou, Songwei Yu, Tianzhuang He, Zhengshuo Gong, Zhao Liu, Zihang Xu, Wenqiang
+Zhu, Xinping Lei, Weihao Li, Yuhui Bai, Zhongqiu Wang, Yan Wu, and Ariel Deng. 2026. FLARE: A Full-Lifecycle Dense
+Supervision Paradigm for Long-Horizon Coding Agents via Generative Reward Model. Preprint, arXiv:2609.23808.
+Kaiwen Yan, Hongcheng Guo, Xuanqing Shi, Shaosheng Cao, Donglin Di, and Zhoujun Li. 2025. Codeif: Benchmarking the
+instruction-following capabilities of large language models for code generation. In Proceedings of the 63rd Annual Meeting of the
+Association for Computational Linguistics (Volume 6: Industry Track), pages 1272–1286.
+Jian Yang, Jiajun Zhang, Jiaxi Yang, Ke Jin, Lei Zhang, Qiyao Peng, Ken Deng, Yibo Miao, Tianyu Liu, Zeyu Cui, Binyuan Hui, and
+Junyang Lin. 2024. ExecRepoBench: Multi-level Executable Code Completion Evaluation. Preprint, arXiv:2412.11990.
+Shunyu Yao, Noah Shinn, Pedram Razavi, and Karthik Narasimhan. 2024. τ-bench: A benchmark for tool-agent-user interaction in
+real-world domains. Preprint, arXiv:2406.12045.
+Songwei Yu, Ziqi Miao, Jingxuan Xu, Junhao Fan, Haoyang Huang, Yuan Xiong, Zihang Xu, Weihao Li, Wenqiang Zhu, Yuechen
+Luo, Xinshun Feng, Yanan Wu, and Ken Deng. 2026. SWE-Nexus: Automated Composition of Software Engineering Tasks from
+Test Execution. Preprint, arXiv:2610.20038.
+Z.AI. 2026. GLM-5.1: Overview. https://docs.z.ai/guides/llm/glm-5.1. Z.AI Developer Documentation. Accessed:
+2026-05-07.
+Daoguang Zan, Zhirong Huang, Wei Liu, Hanwu Chen, Linhao Zhang, Shulin Xin, Lu Chen, Qi Liu, Xiaojian Zhong, Aoyan Li,
+Siyao Liu, Yongsheng Xiao, Liangqiang Chen, Yuyu Zhang, Jing Su, Tianyu Liu, Rui Long, Kai Shen, and Liang Xiang. 2025.
+Multi-swe-bench: A multilingual benchmark for issue resolving. Preprint, arXiv:2504.02605.
+Aohan Zeng, Xin Lv, Zhenyu Hou, Zhengxiao Du, Qinkai Zheng, Bin Chen, Da Yin, Chendi Ge, Chenghua Huang, Chengxing Xie,
+and 1 others. 2026. Glm-5: from vibe coding to agentic engineering. arXiv preprint arXiv:2602.15763.
+Alexander Zhang, Marcus Dong, Jiaheng Liu, Wei Zhang, Yejie Wang, Jian Yang, Ge Zhang, Tianyu Liu, Zhongyuan Peng, Yingshui
+Tan, Yuanxing Zhang, Zhexu Wang, Weixun Wang, Yancheng He, Ken Deng, Wangchunshu Zhou, Wenhao Huang, and Zhaoxiang
+Zhang. 2025a. CodeCriticBench: A Holistic Code Critique Benchmark for Large Language Models. Preprint, arXiv:2502.16614.
+Chenchen Zhang, Yuhang Li, Can Xu, Jiaheng Liu, Ao Liu, Changzhi Zhou, Ken Deng, Dengpeng Wu, Guanhua Huang, Kejiao
+Li, Qi Yi, Ruibin Xiong, Shihui Hu, Yue Zhang, Yuhao Jiang, Zenan Xu, Yuanxing Zhang, Wiggin Zhou, Chayse Zhou, and
+Fengzong Lian. 2025b. ArtifactsBench: Bridging the Visual-Interactive Gap in LLM Code Generation Evaluation. Preprint,
+arXiv:2507.04952.
+Qinyan Zhang, Xinping Lei, Ruijie Miao, Yu Fu, Haojie Fan, Le Chang, Jiafan Hou, Dingling Zhang, Zhongfei Hou, Ziqiang
+Yang, Changxin Pu, Fei Hu, Jingkai Liu, Mengyun Liu, Yang Liu, Xiang Gao, Jiaheng Liu, Tong Yang, Zaiyuan Wang, and
+2 others. 2025c. Inverse ifeval: Can llms unlearn stubborn training conventions to follow real instructions? arXiv preprint
+arXiv:2509.04292.
+Tao Zhang, ChengLIn Zhu, Yanjun Shen, Wenjing Luo, Yan Zhang, Hao Liang, Tao Zhang, Fan Yang, Mingan Lin, Yujing Qiao,
+Weipeng Chen, Bin Cui, Wentao Zhang, and Zenan Zhou. 2025d. CFBench: A comprehensive constraints-following benchmark
+for LLMs. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers),
+pages 32926–32944, Vienna, Austria. Association for Computational Linguistics.
+23
+
+============================================================
+=== PAGE 24 ===
+============================================================
+
+REFERENCES
+ANCHOR
+Zhihan Zhang, Shiyang Li, Zixuan Zhang, Xin Liu, Haoming Jiang, Xianfeng Tang, Yifan Gao, Zheng Li, Haodong Wang, Zhaoxuan
+Tan, Yichuan Li, Qingyu Yin, Bing Yin, and Meng Jiang. 2025e. Iheval: Evaluating language models on following the instruction
+hierarchy. Preprint, arXiv:2502.08745.
+Jeffrey Zhou, Tianjian Lu, Swaroop Mishra, Siddhartha Brahma, Sujoy Basu, Yi Luan, Denny Zhou, and Le Hou. 2023. Instruction-
+following evaluation for large language models. Preprint, arXiv:2311.07911.
+Qixing Zhou, Jiacheng Zhang, Haiyang Wang, Rui Hao, Jiahe Wang, Minghao Han, Yuxue Yang, Shuzhe Wu, Feiyang Pan,
+Lue Fan, and 1 others. 2026. FeatureBench: Benchmarking agentic coding for complex feature development. arXiv preprint
+arXiv:2602.10975.
+Terry Yue Zhuo, Minh Chien Vu, Jenny Chim, Han Hu, Wenhao Yu, Ratnadira Widyasari, Imam Nur Bani Yusuf, Haolan Zhan,
+Junda He, Indraneil Paul, Simon Brunner, Chen Gong, Thong Hoang, Armel Randy Zebaze, Xiaoheng Hong, Wen-Ding Li, Jean
+Kaddour, Ming Xu, Zhihan Zhang, and 14 others. 2025. BigCodeBench: Benchmarking code generation with diverse function
+calls and complex instructions. In The Thirteenth International Conference on Learning Representations.
+Tao Zou, Xinghua Zhang, Haiyang Yu, Minzheng Wang, Fei Huang, and Yongbin Li. 2025. Eifbench: Extremely complex instruction
+following benchmark for large language models. In Proceedings of the 2025 Conference on Empirical Methods in Natural
+Language Processing, pages 20941–20964.
+A
+Full Constraint Taxonomy
+This appendix documents all 78 leaf categories in the current taxonomy. Across the current release, these leaves account
+for 2,836 instantiated atomic constraints. For each leaf, we provide: (i) a one-sentence definition of what the constraint
+governs, (ii) 2–4 representative instantiations drawn from real developer instructions, and (iii) the default evaluation
+mode (rule-based vs. LLM-as-judge). Table 2 summarizes the top-level taxonomy, while Table 9 provides the full mid-
+and leaf-level breakdown used in the current release.
+Table 9 Mid- and leaf-level categories in the ANCHOR taxonomy, with instantiated counts and representative example constraints.
+Subcategory
+Leaf category
+Count
+Example constraint
+C1 Tool Execution Protocol
+1.1 Tool selection
+1.1.1 Tool Preference &
+Substitution
+44
+Use rg rather than grep for search; use fd rather than
+find.
+1.1.2 Tool prohibition
+1
+Do not use sed -i for bulk replacement; do not use
+curl.
+1.1.3 Tool Composition
+& Pipeline
+1
+First locate the target with rg, then edit the file.
+1.2 Invocation
+parameters
+1.2.1 Required
+parameters
+74
+Run pytest with –timeout=30.
+1.2.2 Forbidden
+parameters
+36
+Do not run git commit with –no-verify.
+1.3 Execution
+results
+1.3.1 Truthfulness &
+Completeness
+24
+Do not claim a command was executed unless it was
+actually run.
+1.3.2 Failure Handling &
+Retry
+32
+Analyse the error before retrying a failed command.
+1.3.3 Result verification
+159
+Re-run the relevant command after editing to verify
+the effect.
+C2 Workflow & Behaviour
+2.1 Execution order
+2.1.1 Task-level order
+200
+Reproduce the bug before attempting a fix.
+2.1.2 Operation-level
+order
+9
+Read the file before modifying it.
+2.2 User
+confirmation
+2.2.1 Pre-action
+confirmation
+1
+Present the fix plan and wait for approval before
+proceeding.
+2.2.2 Escalation triggers
+4
+Ask for confirmation before changing a public API
+signature.
+24
+
+============================================================
+=== PAGE 25 ===
+============================================================
+
+REFERENCES
+ANCHOR
+Subcategory
+Leaf category
+Count
+Example constraint
+2.3 Information
+disclosure
+2.3.2 Decision
+explanation
+87
+Explain why this fix is preferred over the alternatives.
+2.3.3 Capability
+Boundary Declaration
+9
+Mark uncertain conclusions as hypotheses rather than
+facts.
+2.4 Commit
+conventions
+2.4.1 Commit message
+format
+21
+Use Conventional Commits format for commit
+messages.
+2.4.2 Commit
+Granularity & Strategy
+54
+Keep each logical change in a separate commit.
+2.4.3 Pre-commit checks
+127
+Run lint and tests before committing.
+C3 Modification Scope & Change Budget
+3.1 Spatial scope
+3.1.1 Directory-level
+constraints
+77
+Restrict changes to src/parser/ only.
+3.1.2 File-level
+constraints
+28
+Modify only config.ts and parser.ts.
+3.1.3 Code-level
+constraints
+2
+Change only the function body, not the function
+signature.
+3.2 Quantity
+budget
+3.2.1 File-count limits
+42
+Modify at most three files.
+3.2.2 Line-count limits
+84
+Keep the total diff under 50 lines.
+3.3 Semantic scope
+3.3.1 Task Boundary
+158
+Fix this bug only; do not introduce refactoring or new
+features.
+3.3.2 Interface
+compatibility
+127
+Preserve the existing HTTP API path and response
+format.
+C4 Code Style & Engineering Standards
+4.1 Formatting
+4.1.1 Lint & Formatter
+Tools
+30
+Ensure the new code passes ruff format and ruff
+check.
+4.1.2 Whitespace &
+Layout Rules
+3
+Use two-space indentation rather than tabs.
+4.1.3 Syntax Format
+Preferences
+3
+Use single quotes consistently.
+4.2 Naming
+4.2.1 Naming style
+10
+Use snake_case for Python variables.
+4.2.2 Naming quality
+12
+Avoid non-descriptive variable names such as tmp or
+data.
+4.3 Type system
+4.3.1 Type annotation
+requirements
+9
+Add explicit return type annotations for all new
+functions.
+4.3.2 Type-safety
+restrictions
+27
+Do not use Any or as any.
+4.4 Comments &
+documentation
+4.4.1 Inline comments
+13
+Add comments for complex logic, explaining why
+rather than what.
+4.4.2 Docstrings
+8
+Add a Google-style docstring for each new public
+function.
+4.4.3 Project
+documentation
+26
+Update the README when adding a new public API.
+4.5 Code structure
+4.5.1 Modularity
+73
+Extract duplicated logic into a shared helper function.
+4.5.2 Complexity limits
+1
+Keep nesting depth below three levels.
+4.5.3 Design patterns
+8
+Prefer composition over inheritance.
+C5 Code Implementation
+25
+
+============================================================
+=== PAGE 26 ===
+============================================================
+
+REFERENCES
+ANCHOR
+Subcategory
+Leaf category
+Count
+Example constraint
+5.1 Algorithm &
+strategy
+5.1.1 Algorithm
+Selection
+37
+Use binary search rather than linear search.
+5.1.2 Concurrency &
+Synchronization Strategy
+2
+Use asyncio rather than threads for this task.
+5.1.3 Retry & Fault
+Tolerance Strategy
+2
+Apply exponential backoff, with at most three retries.
+5.1.4 Error handling
+115
+Do not use bare except; catch specific exceptions.
+5.1.5 Side-effect control
+32
+Do not mutate the input object; return a new object
+instead.
+5.2 Coding style
+5.2.1 Syntax restrictions
+3
+Do not use the walrus operator.
+5.2.2 Paradigm
+requirements
+1
+Use async/await instead of callbacks.
+5.2.3 Language features
+41
+Use f-strings rather than .format().
+5.3 Performance
+requirements
+5.3.1 Complexity
+constraints
+5
+Keep time complexity within O(n log n).
+5.3.2 Resource
+constraints
+10
+Keep memory usage below 256 MB per request.
+5.3.3 Data processing
+strategy
+12
+Stream large files instead of loading them fully into
+memory.
+5.4 Technology
+choice
+5.4.1 Required libraries
+12
+Use httpx rather than requests.
+5.4.2 Forbidden libraries
+11
+Do not introduce pandas for this simple
+transformation.
+C6 Environment
+6.1 Runtime
+versions
+6.1.1 Language Version
+18
+Keep the implementation compatible with Python
+3.10 and 3.11.
+6.1.2 Framework &
+Platform Version
+4
+Maintain compatibility with PostgreSQL 14+.
+6.2 Platform
+compatibility
+6.2.1 Path & Filesystem
+3
+Do not hard-code /tmp; use a portable temporary
+directory API.
+6.2.2 Encoding &
+Runtime Environment
+5
+Assume UTF-8 explicitly rather than relying on the
+system default encoding.
+6.3 Isolation
+6.3.1 Filesystem
+isolation
+28
+Do not write files outside the repository workspace.
+6.3.2 System
+environment isolation
+12
+Do not modify global git or npm configuration.
+C7 Dependency & Build Strategy
+7.1 Dependency
+changes
+7.1.1 Addition
+Restrictions
+41
+Do not add any new third-party dependency.
+7.2 Version
+management
+7.2.1 Lock File Policy
+4
+Do not modify poetry.lock.
+7.2.2 Version Range
+Policy
+1
+Allow patch upgrades but not major-version upgrades.
+7.3 Build pipeline
+7.3.1 CI/CD
+configuration
+1
+Do not modify files under .github/workflows/.
+7.3.2 Build Scripts &
+Output
+2
+Do not change the build artifact path or filename.
+C8 Security & Dangerous Operations
+26
+
+============================================================
+=== PAGE 27 ===
+============================================================
+
+B
+ADDITIONAL METHODOLOGICAL DETAILS
+ANCHOR
+Subcategory
+Leaf category
+Count
+Example constraint
+8.1 Dangerous
+commands &
+privileges
+8.1.1 Destructive
+commands
+24
+Do not use rm -rf or git reset –hard.
+8.1.2 Privilege & System
+Operations
+14
+Do not use sudo or modify firewall rules.
+8.2 Information
+leakage
+8.2.1 Secret &
+Credential Protection
+3
+Do not print API keys or tokens in logs.
+8.2.3 System
+Information Protection
+2
+Do not expose internal server paths in error output.
+8.3 Code security
+8.3.1 Injection protection
+5
+Use parameterised SQL rather than string
+concatenation.
+8.3.3 Encryption &
+Secure Coding
+1
+Use bcrypt or argon2 for password hashing.
+C9 Testing
+9.1 Test writing
+9.1.1 Test Coverage
+Requirements
+156
+Add a regression test that reproduces the bug.
+9.1.2 Test quality
+standards
+104
+Ensure each test is independent and order-insensitive.
+9.2 Test execution
+9.2.1 Test Suite Selection
+155
+Run the affected unit tests before the full suite.
+9.2.2 Static Analysis &
+Checks
+45
+Run mypy and ruff check before submission.
+9.3 Test reporting
+9.3.1 Result summary
+4
+Report which tests passed or failed, rather than saying
+only “tests passed.”
+9.3.2 Reproduction &
+Comparison
+66
+Show the before/after test results for the fix.
+C10 Output Format & Reporting
+10.1 Language &
+tone
+10.1.1 Language Choice
+62
+Answer in Chinese throughout.
+10.1.2 Tone & Style
+66
+Avoid emojis and keep the response concise.
+10.2 Structure &
+templates
+10.2.1 Report Template
+5
+Organise the final report as: reproduce / root cause /
+fix / verification / risk / rollback.
+10.3 Citation &
+evidence
+10.3.1 Code References
+45
+Cite the modified file path and line numbers.
+10.3.2 Execution
+Evidence
+53
+Include the relevant command output as evidence for
+each conclusion.
+B
+Additional Methodological Details
+B.1
+Taxonomy Design Principles
+The ANCHOR taxonomy was not designed purely from an a priori schema. Instead, we started from grounded open-label
+annotation over real developer interactions with coding agents, including task instructions, inline review comments,
+and post-hoc feedback on agent trajectories. Senior software engineers then iteratively clustered near-duplicate labels,
+resolved boundary cases, and stress-tested the emerging hierarchy against held-out trajectories. The goal of this
+refinement process was not merely descriptive coverage, but an operational taxonomy that could support scalable
+instantiation, evaluation, and error analysis.
+Five design principles guided this process. First, coverage: the taxonomy should cover the major engineering constraint
+types that appear in practice, so that real developer instructions map into it with minimal residue. Second, semantic
+exclusivity: leaf categories should be as disjoint as possible, reducing ambiguity during annotation and automatic
+mapping. Third, operationalisability: each leaf should admit concrete, testable instantiations with stable pass conditions
+27
+
+============================================================
+=== PAGE 28 ===
+============================================================
+
+B
+ADDITIONAL METHODOLOGICAL DETAILS
+ANCHOR
+under either rule-based or LLM-based evaluation. Fourth, hierarchical organisation: the taxonomy should support both
+fine-grained diagnostic analysis at the leaf level and coarse-grained reporting at the category level. Fifth, language
+neutrality: the same conceptual categories should transfer across the multilingual repository settings covered by
+ANCHOR.
+The current release instantiates this design as a three-level hierarchy with 10 top-level categories, 34 mid-level sub-
+categories, and 78 leaf categories. At a coarse level, these groups capture complementary dimensions of engineering
+behaviour: process- and trajectory-level constraints (C1–C2), patch- and implementation-level constraints (C3–C5),
+environment and system-boundary constraints (C6–C8), and validation and reporting requirements (C9–C10). Leaf
+categories are the smallest operational unit: each is intended to capture a semantically coherent developer requirement
+that can be instantiated into task-grounded constraints and evaluated with relatively stable verification logic.
+B.2
+Environment Curation and Context Compression
+The construction pipeline begins by selecting repository tasks that can support realistic and verifiable engineering
+constraints. The filtering objective is not to privilege easier tasks, but to ensure that each retained instance admits
+trajectory-grounded evaluation. In practice, we prioritise instances with (i) a usable execution environment, (ii) sufficient
+task and repository context to support downstream constraint selection, (iii) moderate patch complexity rather than
+trivial micro-edits or very long-horizon changes, and (iv) broad coverage across programming languages and repository
+types.
+For each retained instance, we collect the repository identifier, target language, original problem statement, gold patch,
+and repository-level documentation from DeepWiki (Cognition AI, 2025). These artefacts provide complementary
+signals for later stages: the problem statement and patch reveal the task objective and likely affected code regions, while
+repository documentation provides project-level context such as architecture, tooling, testing practices, and engineering
+conventions.
+Raw repository documentation is often too long and noisy to include directly in downstream prompts. We therefore
+compress it into a compact project-context card that preserves information useful for constraint construction, such as
+repository purpose, technology stack, directory structure, testing practices, and version information, while discarding
+low-value content such as diagrams, verbose API documentation, illustrative code examples, marketing language, and
+redundant passages. This step is not merely length reduction: it is a targeted information-distillation stage that gives
+later prompts repository-level evidence without overwhelming the context budget.
+B.3
+Subset Selection and Atomic Instantiation
+Given the full taxonomy, the next challenge is deciding which leaf categories are relevant to a particular task. ANCHOR
+treats this as a high-recall selection problem. The coarse selection stage receives the full taxonomy, the repository
+identifier, programming language, problem statement, compressed repository context, and the gold patch. The prompt
+permits the gold patch to inform task context and category selection, while explicitly forbidding requirements that copy
+its exact counts or restate the reference solution. This is a prompt-level safeguard, not evidence that category selection is
+independent of the patch.
+Selection decisions are based on three complementary evidence sources. The first is task-type evidence: some categories
+are more naturally associated with certain task types, such as testing or interface-compatibility constraints in bug-
+fixing tasks. The second is repository-context evidence: formatter, linter, type-checking, or dependency-management
+conventions make some categories more meaningful for a given project. The third is modification-scope evidence: tasks
+touching public interfaces, filesystem logic, exception handling, or security-sensitive code naturally raise different
+constraint families. At the same time, the selector avoids retaining categories that are only theoretically applicable to
+almost any coding task, because these tend to yield generic and weakly discriminative constraints later on.
+This stage is intentionally followed by an implicit precision filter during atomic instantiation. A selected category is
+retained in the final benchmark instance only if it can yield one or more constraints that are naturalistic, non-blocking,
+specific and verifiable, task-grounded, and independent of the reference implementation in content. Categories that
+would only produce generic, overly restrictive, or weakly diagnostic constraints are dropped. In this sense, ANCHOR
+uses a recall–precision cascade: coarse selection aims to avoid prematurely missing meaningful categories, while atomic
+instantiation enforces quality control over what ultimately appears in the benchmark.
+28
+
+============================================================
+=== PAGE 29 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+B.4
+Composite Constraints and Query Synthesis
+Real developer instructions are often not flat lists of independent requirements. They may specify joint satisfaction,
+required execution order, or precedence among competing requirements. ANCHOR captures this structure by organising
+selected subsets of atomic constraints into connected composite graphs. Edges carry one of three typed relations: AND
+requires joint satisfaction, THEN requires both satisfaction and correct temporal order, and PRIORITY requires the source
+constraint to take precedence over the target when the two are in tension.
+Composite constraints are introduced only when the underlying relations are semantically natural and task-meaningful;
+ANCHOR does not force unrelated constraints into a shared graph merely to increase structural complexity. Not all
+atomic constraints must participate in composites, and standalone constraints remain as independent instruction items.
+Edge types may be mixed within one composite, and each atomic constraint participates in at most one composite,
+so composites partition the related atomics into disjoint, self-contained instruction units. This connected-subgraph
+formulation keeps each composite interpretable as a single instruction unit rather than an arbitrary bundle of checklist
+clauses.
+The final query-synthesis stage converts the structured representation into a natural developer instruction suitable for
+direct agent execution. Each query is written in two parts: a short task description rewritten in the voice of a developer
+assigning work, and a constraint list composed of separable instruction items. Independent atomic constraints become
+individual items, while each composite constraint is rendered as a single natural-language item that preserves the relation
+semantics among its member atomics. A key requirement of this stage is specificity preservation: exact file paths,
+command names, flags, module references, and behavioural conditions from the instantiated constraints must remain
+intact. The synthesis step must also avoid introducing new constraints or leaking gold-solution details. Prompt templates
+for these stages are provided in Appendix C.1–C.4.
+C
+Prompt Templates
+C.1
+Context Compression Prompt
+The released prompt directory does not contain the repository-context compression template. In the current pipeline,
+this step uses a shorter summarization instruction to distill raw DeepWiki documentation into a compact project-context
+card covering repository purpose, technology stack, directory structure, engineering conventions, testing practices, and
+version compatibility. The prompt templates below are included verbatim from the released prompt set, with variable
+slots preserved in braces.
+C.2
+Coarse Constraint Selection Prompt
+Constraint subset selection prompt
+You are an expert in software engineering practices and agentic coding evaluation. Your task is to analyze a coding task and
+determine which engineering constraint categories are applicable to it.
+## Context
+We are building a benchmark to evaluate how well AI coding agents follow engineering constraints during agentic coding tasks. For
+each coding task, we need to select which constraint categories are relevant, so that we can later generate specific
+constraint instances for those categories.
+## Constraint Taxonomy
+Below is the complete taxonomy of engineering constraints in JSON format. Each leaf category (the deepest level with a "
+description" field) is the finest granularity. Your job is to select which leaf categories are applicable to the given task.
+{constraint_taxonomy}
+## Input
+You will receive the following information about a coding task:
+### Repository
+{repo}
+### Programming Language
+{programming_languages}
+29
+
+============================================================
+=== PAGE 30 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+### Problem Statement
+{problem_statement}
+### Patch
+The following is the complete diff of the gold-standard fix for this task. Use it to understand what files are involved, what kind
+of changes are made, and what code areas are affected. Do NOT use it to reverse-engineer constraints that exactly match the
+patch (e.g., do not set the EXACT same count as the patch). Instead, use it to judge which categories of constraints would
+be reasonable for this task.
+{patch}
+### Project Context (from DeepWiki)
+The following is the DeepWiki documentation for this repository. It may be lengthy. Focus on extracting: (1) the project’s tech
+stack and core dependencies, (2) module architecture and directory structure, (3) engineering practices if mentioned, (4)
+infrastructure and external services. Ignore irrelevant sections.
+{repo_context}
+## Instructions
+1. Read all the input information carefully. For long inputs (patch, DeepWiki), focus on extracting the key signals relevant to
+constraint selection rather than reading every line in detail.
+2. For each leaf category in the taxonomy, determine whether it is applicable to this task. A category is applicable if:
+- The task’s nature makes this type of constraint meaningful (e.g., "Test Coverage Requirements" is applicable to a bug fix
+task)
+- The project’s tech stack or practices make this type of constraint relevant (e.g., "Type Safety Restrictions" is relevant for
+a TypeScript project)
+- The modification involved could reasonably be subject to this type of constraint (e.g., "Injection Prevention" is relevant if
+the patch touches input handling code)
+3. Do NOT select a category just because it could theoretically apply to any task. For example:
+- "Platform Compatibility" should NOT be selected if the task is a simple Python logic fix with no file/path/encoding
+operations
+- "Performance Requirements" should NOT be selected if the task is a UI text change
+- "Concurrency & Synchronization Strategy" should NOT be selected if the task has nothing to do with concurrent code
+4. DO select categories that are clearly relevant even if the task description doesn’t explicitly mention them. For example:
+- "Error Handling" should be selected if the patch modifies exception-handling code, even if the issue description doesn’t
+mention error handling
+- "Lint & Formatter Tools" should be selected if the project uses a known linter (visible in project context), even if not
+mentioned in the issue
+5. The following categories require special attention because they are often overlooked despite being broadly applicable to most
+coding tasks. Evaluate each of them carefully before deciding to skip:
+- **Tool Selection (1.1) and Call Parameters (1.2)**: Think from the USER’s perspective -- users don’t know the agent’s
+internal tool names. They give commands like "use grep to search", "don’t use force push", "run tests with verbose output".
+Select these categories when the task involves operations where a user might naturally specify preferred commands, forbidden
+commands, or required/forbidden flags.
+- **Commit Convention (2.4)**: Select this category for any task where the agent will produce code changes that should be
+committed. Commit message format, commit granularity, and pre-commit checks are standard engineering practices. Do NOT skip
+this category just because it "applies to any task" -- it has specific, instantiable conventions (Conventional Commits,
+signed-off-by, scope tags, etc.) that vary by project.
+- **Quantity Scope (3.2)**: File count and line count constraints are natural engineering guardrails (e.g., "keep this change
+minimal", "don’t touch more than N files"). These are applicable to most code modification tasks. Do NOT avoid this category
+due to the "no reverse-engineering from patch" rule -- that rule means don’t set the EXACT same count as the patch, not
+that quantity constraints are forbidden entirely.
+- **Language & Tone (10.1) and Structure & Template (10.2)**: Consider the agent’s FINAL REPORT to the user after completing
+the task. Users often want the agent to summarize its work in a specific language, tone, or structure (e.g., "explain in
+Chinese", "use a bullet-point summary", "structure your report as: root cause -> fix -> impact -> test results"). Select
+these when the task involves reporting back to the user.
+6. For categories under "Workflow & Behavior" and "Output Format & Reporting", consider whether they are meaningful given the task
+type. Most agentic coding tasks involve tool use and multi-step workflows, so many of these categories will be broadly
+applicable -- but still skip those that are clearly irrelevant to the specific task.
+## Output Format
+All output text must be in English, including all descriptions, reasons, questions, and natural language fields.
+Output a JSON object with a single key "selected_categories" containing an array of objects. Each object has three fields:
+- "id": the leaf category ID (e.g., "1.1.1", "5.1.4")
+- "name": the leaf category name
+- "reason": a single sentence explaining why this category is applicable to this task
+Only include applicable categories. Do NOT include categories that are not relevant.
+30
+
+============================================================
+=== PAGE 31 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+Example output structure:
+{
+"selected_categories": [
+{
+"id": "1.1.1",
+"name": "Tool Preference & Substitution",
+"reason": "Python project using pytest; tool preferences for search and test execution are relevant."
+},
+{
+"id": "2.1.1",
+"name": "Task-level Order",
+"reason": "Bug fix task requiring reproduction before modification."
+},
+{
+"id": "4.2.1",
+"name": "Naming Style",
+"reason": "Python project where snake_case conventions apply to new code."
+}
+]
+}
+C.3
+Atomic Constraint Instantiation Prompt
+Atomic constraint instantiation and composite composition prompt
+You are an expert in software engineering practices and agentic coding evaluation. Your task is to generate high-quality,
+realistic engineering constraints for a specific coding task, and then organize some of them into composite constraints
+using a graph structure.
+## Context
+We are building a benchmark to evaluate how well AI coding agents follow engineering constraints during agentic coding tasks. In
+the previous step, we selected candidate constraint categories that MIGHT be relevant to this task. Now you need to:
+1. Review these candidates and decide which ones truly deserve instantiation for this specific task.
+2. For the ones worth instantiating, generate concrete, specific, testable constraints.
+3. Compose some of these constraints into composite constraints by defining relationships between them.
+## Candidate Categories
+The following categories were pre-selected as potentially relevant. You do NOT need to instantiate all of them. Skip any category
+that:
+- Would produce a forced or unnatural constraint for this specific task
+- Would generate a generic constraint that applies to any task equally (e.g., "report progress" for any bug fix)
+- Would interfere with or block the primary task of fixing the bug / completing the coding task
+- Does not have a clear, specific instantiation grounded in this task’s details
+It is perfectly fine -- and expected -- to skip a significant portion of these candidates. Quality over quantity.
+{selected_categories}
+## Task Information
+### Repository
+{repo}
+### Programming Language
+{programming_languages}
+### Problem Statement
+{problem_statement}
+### Patch
+The following is the gold-standard fix. Use it to understand the task context, affected files, and code areas. Do NOT reverse-
+engineer constraints from the patch -- the constraint should be a reasonable engineering rule, not a description of what the
+patch happens to do. Specifically: do not set the EXACT same file count, line count, or modification scope as the patch.
+However, general quantity guardrails (e.g., "limit changes to at most 5 files") are acceptable and encouraged when they
+represent reasonable engineering practice.
+{patch}
+### Project Context (from DeepWiki)
+{repo_context}
+## Part 1: Atomic Constraint Generation
+31
+
+============================================================
+=== PAGE 32 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+Generate concrete atomic constraints based on the candidate categories. Follow these principles:
+### Quality Principles
+1. **Natural and realistic**: Every constraint must be something a real engineering team or developer would plausibly enforce for
+this specific task. Ask yourself: "Would a senior engineer naturally say this when assigning this task?" If not, do not
+generate it.
+2. **Must not block the primary task**: The constraint must not prevent the agent from successfully completing the bug fix or
+coding task. For example, do not restrict the agent to a directory that does not contain the files needing modification. The
+constraint should guide HOW the task is done, not prevent it from being done.
+3. **Specific and testable**: The constraint must be concrete enough that a human or LLM judge can objectively determine pass/fail.
+"Write clean code" is bad. "All new helper methods must include a Javadoc comment explaining their purpose" is good.
+4. **Grounded in THIS task**: The constraint must reference specific details of this task -- file names, class names, method names
+, module paths, tools, or technologies visible in the problem statement, patch, or project context.
+5. **Independent of the gold patch**: Do not reverse-engineer constraints from the patch. The constraint should be a reasonable
+engineering rule, not a description of what the patch happens to do.
+6. **One category can produce multiple constraints**: If a category naturally yields multiple distinct, high-quality constraints
+for this task, generate them all. Do not artificially limit to one per category.
+7. **Skip freely**: If a candidate category does not yield a natural, high-quality constraint for this task, skip it entirely. Do
+not force it.
+8. **Conflicting constraints are allowed**: When you plan to create a PRIORITY edge in Part 2, the involved constraints SHOULD
+intentionally conflict. This tests the agent’s ability to prioritize correctly.
+### Guidance for Historically Under-generated Categories
+The following categories are frequently skipped but often have natural, high-quality instantiations. Give them extra consideration
+before deciding to skip:
+**1.1 Tool Selection / 1.2 Call Parameters**: Think at the COMMAND level, not the tool-framework level. Users say things like "use
+grep instead of find to locate the relevant code", "don’t use git push --force", "run the test suite with --verbose". These
+are natural, testable constraints. Do NOT reference internal agent tool names (like "Edit", "Bash", "Read") -- instead
+reference shell commands, git subcommands, build tools, and other commands that a real developer would mention.
+**2.4 Commit Convention**: The agent should commit its changes when done. Generate constraints about:
+- Commit message format (e.g., Conventional Commits: "fix(parser): ...", include issue number, etc.)
+- Commit granularity (e.g., separate logical changes into distinct commits vs. a single atomic commit)
+- Pre-commit verification (e.g., ensure tests pass before committing)
+The constraint should include an instruction telling the agent to commit its changes upon completion.
+**3.2 Quantity Scope**: File count and line count constraints are natural engineering guardrails. Generate constraints like "limit
+your changes to at most N files" or "keep the net line change under M lines". Choose N and M as reasonable engineering
+bounds -- do NOT copy the exact counts from the gold patch. For example, if the patch touches 2 files, a constraint saying "
+at most 5 files" is fine; "exactly 2 files" is reverse-engineering.
+**10.1 Language & Tone / 10.2 Structure & Template**: These apply to the agent’s FINAL REPORT -- the summary it gives the user
+after completing the task. Natural examples:
+- "Summarize your changes in Chinese" or "Write your final explanation in English" (10.1)
+- "Use concise, technical language -- no analogies or metaphors" (10.1)
+- "Structure your final report as: 1) Root cause analysis, 2) Fix description, 3) Files modified, 4) Test results" (10.2)
+- "Provide a markdown table listing each modified file and the reason for the change" (10.2)
+### What NOT to generate
+- Constraints that are true for ANY coding task (e.g., "verify your changes compile", "test your code")
+- Constraints so restrictive they make the task impossible or absurdly difficult
+- Constraints so loose they are trivially satisfied by any reasonable attempt
+- Constraints that merely restate the problem statement or task requirements
+- Constraints that describe what the gold patch does
+## Part 2: Composite Constraint Composition
+After generating atomic constraints, compose some of them into composite constraints. A composite constraint is a connected
+subgraph where atomic constraints are nodes and edges represent relationships.
+### Edge Types
+**AND**: Both constraints must be satisfied simultaneously. Also used as connective glue to keep the subgraph connected. The
+composite constraint passes only if ALL connected nodes are satisfied.
+**THEN**: Constraint A must be satisfied before constraint B. Both must be satisfied AND in the correct order. Wrong order = fail
+even if both are individually satisfied.
+32
+
+============================================================
+=== PAGE 33 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+**PRIORITY**: Constraints A and B intentionally conflict. The agent should prioritize A (the "from" node). A satisfied = composite
+passes regardless of B. A not satisfied = composite fails regardless of B.
+### Composition Principles
+1. Each atomic constraint may participate in at most ONE composite constraint.
+2. Not all atomic constraints need to join a composite. Independent ones remain standalone.
+3. A composite must be a connected subgraph -- every node reachable from every other node.
+4. A composite can have 2 or more nodes and can mix edge types.
+5. Only create composites where the relationship is natural and meaningful. Do not force unrelated constraints into a composite
+just to hit a quota.
+6. The natural_language field must read like something a real user would write. It must NOT reference constraint IDs like "ac_1".
+## Output Format
+All output text must be in English, including all descriptions, reasons, questions, and natural language fields.
+Output a single JSON object:
+{
+"atomic_constraints": [
+{
+"id": "ac_1",
+"category_id": "3.1.1",
+"category_name": "Directory-level Constraints",
+"content": "Only modify files within the components/camel-file/ module directory; do not touch other component modules or
+core framework code."
+}
+// ... only high-quality, natural constraints
+],
+"composite_constraints": [
+{
+"id": "cc_1",
+"description": "Workflow: reproduce before fixing, verify after fixing.",
+"natural_language": "Before modifying GenericFileConsumer.java, run the existing camel-file unit tests to confirm the
+idempotent repository leak is reproducible. After implementing the fix, re-run the same tests plus any new regression test
+to confirm the leak is resolved and no existing behavior is broken.",
+"nodes": ["ac_3", "ac_7", "ac_5"],
+"edges": [
+{
+"from": "ac_3",
+"to": "ac_7",
+"type": "THEN",
+"description": "Must confirm the bug exists before modifying code."
+},
+{
+"from": "ac_7",
+"to": "ac_5",
+"type": "THEN",
+"description": "Must complete the fix before running verification tests."
+}
+]
+}
+// ... only natural, meaningful composites
+],
+"skipped_categories": [
+{
+"id": "6.2.1",
+"name": "Path & Filesystem",
+"reason": "This bug is about idempotent repository cleanup logic, not about cross-platform path handling. A filesystem
+compatibility constraint would be forced and unnatural for this task."
+}
+// ... categories you chose not to instantiate, with brief reasons
+]
+}
+### Field Descriptions
+For atomic_constraints:
+- "id": unique identifier, format "ac_1", "ac_2", etc.
+- "category_id": the leaf category ID
+- "category_name": the leaf category name
+- "content": the concrete constraint text
+For composite_constraints:
+- "id": unique identifier, format "cc_1", "cc_2", etc.
+- "description": short label for what this composite tests
+- "natural_language": the complete constraint as a user would naturally express it -- coherent, self-contained, no constraint IDs
+- "nodes": all atomic constraint IDs involved
+- "edges": connections with "from", "to", "type", "description"
+33
+
+============================================================
+=== PAGE 34 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+For skipped_categories:
+- "id": the candidate category ID that was skipped
+- "name": the category name
+- "reason": brief explanation of why it was not instantiated
+## Important Reminders
+- Quality over quantity. 10 excellent constraints are better than 25 mediocre ones.
+- Every constraint must pass the "would a senior engineer naturally say this?" test.
+- No constraint should block the primary task. The agent must still be able to fix the bug.
+- Skip categories freely. The skipped_categories list is expected to be non-empty.
+- For PRIORITY edges, the two constraints must genuinely conflict in the context of this task.
+- The natural_language field in composites must NOT reference constraint IDs.
+- Do not fabricate file paths, class names, or method names. Only reference things visible in the provided task information.
+C.4
+Query Synthesis Prompt
+Query synthesis prompt
+You are an experienced software developer who is about to assign a coding task to an AI coding agent. Your task is to write a
+natural, realistic user instruction that combines the task description with engineering constraints, as if you were typing
+it into Claude Code, Cursor, or a similar agentic coding tool.
+## Context
+We are constructing a benchmark for evaluating instruction following in agentic coding. We have:
+1. A coding task (bug fix / feature addition) with its problem description
+2. A set of engineering constraints that the agent should follow while completing the task
+We need to combine these into a single, natural user query where the task description is written as prose and the constraints are
+listed as clear, separable items.
+## Input
+### Problem Statement (from the original task)
+{problem_statement}
+### Independent Atomic Constraints
+These are standalone constraints that are NOT part of any composite constraint. Each should appear in the final query as a
+separate constraint item.
+{independent_constraints}
+### Composite Constraints
+These are groups of related constraints expressed as natural language instructions. Each composite constraint’s natural_language
+field already combines its member atomic constraints into a coherent instruction. Use the natural_language field directly as
+one constraint item.
+{composite_constraints}
+## Instructions
+Write a user query that has two clear parts:
+### Part 1: Task Description (prose)
+Start with a natural prose description of what needs to be done -- the bug to fix, the feature to add, or the refactor to perform.
+This should:
+- Be written as a real developer would describe the task
+- Provide enough context for the agent to understand the problem
+- Flow naturally, in 1-3 paragraphs
+- NOT include the constraints yet -- just the task itself
+### Part 2: Constraints (listed items)
+After the task description, list the constraints as clearly separable items. Follow these rules:
+1. **One item per independent constraint, one item per composite constraint**. Each independent atomic constraint becomes its own
+item. Each composite constraint’s natural_language becomes one item (do NOT break composites into their member atomics --
+the natural_language already integrates them).
+2. **Use a simple numbered list or dash list**. Each item should be self-contained and removable without breaking the others.
+3. **Preserve full specificity**: Every concrete detail from the input constraints must appear in the output items. This includes:
+specific file/directory paths, specific command names and flags, specific configuration option names, specific assertion
+requirements, specific tool names, specific behavioral conditions, specific function/class/method names. Do NOT summarize,
+generalize, or compress. If a constraint mentions ‘./mvnw clean install -Dquickly‘, that exact command must appear. If it
+mentions ‘idempotent=true, idempotentEager=true, and maxMessagesPerPoll‘, all three must appear.
+34
+
+============================================================
+=== PAGE 35 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+4. **Light rephrasing is allowed** for readability, but the information content and specificity level must remain identical to the
+input.
+5. **Do NOT add new constraints**. Only include constraints from the provided inputs.
+6. **Do NOT include the gold patch or solution hints**. Constraints should describe rules and expectations, not the answer.
+7. **Transition naturally** from the prose task description to the constraint list. A simple lead-in sentence like "Please follow
+these constraints:" or "While working on this, keep the following in mind:" is fine.
+## Output Format
+All output text must be in English, including all descriptions, reasons, questions, and natural language fields.
+Output the user query as plain text. Nothing else -- no JSON wrapper, no explanation, no metadata. The format should look roughly
+like:
+‘‘‘
+[1-3 paragraphs of task description in natural prose]
+[Short transition sentence]
+1. [First constraint item]
+2. [Second constraint item]
+3. [Third constraint item]
+...
+‘‘‘
+The total length will vary based on the number and complexity of constraints. Clarity and completeness take priority over brevity.
+C.5
+Checklist Generation Prompt
+Checklist generation prompt
+You are an expert in software engineering evaluation and benchmark design. Your task is to generate a checklist of evaluation
+items for verifying whether an AI coding agent followed the given engineering constraints while completing a coding task.
+## Context
+We are building a benchmark to evaluate instruction following in agentic coding. For each coding task, we have:
+1. A problem statement that was given to the AI coding agent -- this is the GROUND TRUTH of what the agent was asked to do
+2. A set of atomic constraints providing structured metadata (IDs, categories, relationships)
+3. A set of composite constraints defining relationships between atomic constraints
+Your job is to generate checklist items that evaluate whether the agent followed the constraints. Critically, you must only
+generate items for constraints that are actually present in the problem statement.
+## Task Information
+### Repository
+{repo}
+### Programming Language
+{programming_languages}
+### Problem Statement (GROUND TRUTH -- the actual instruction given to the agent)
+{problem_statement}
+## Structural Constraint References
+The following atomic and composite constraints were used to construct the problem statement. Use them as structured references for
+IDs, category metadata, and relationship information. However, the problem statement is authoritative -- if a constraint’s
+details are absent or significantly altered in the problem statement, do not generate a checklist item for it.
+### Atomic Constraints
+{atomic_constraints}
+### Composite Constraints
+{composite_constraints}
+## Ground Truth Verification Rule
+Before generating a checklist item for any atomic constraint, you MUST verify that the constraint’s content is reflected in the
+problem statement. Specifically:
+35
+
+============================================================
+=== PAGE 36 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+1. **Present and consistent**: The constraint’s core requirement appears in the problem statement with matching specificity. ->
+Generate the checklist item normally.
+2. **Present but softened/altered**: The constraint appears but with different details (e.g., a specific path was generalized, a
+strict requirement was softened). -> Generate the checklist item based on the PROBLEM STATEMENT version, not the atomic
+constraint version.
+3. **Absent**: The constraint’s content does not appear in the problem statement at all. -> Do NOT generate a checklist item.
+Record it in the "skipped_constraints" output.
+For composite constraints: if any member atomic constraint is absent from the problem statement, skip the entire composite
+relationship item and record it in "skipped_constraints".
+## Checklist Item Schema
+Each checklist item is a JSON object with the following fields:
+‘‘‘json
+{{
+"check_id": "c_1",
+"source_constraint_id": "ac_1 or cc_1",
+"relation_type": null or "AND" | "THEN" | "PRIORITY",
+"dependent_check_ids": null or ["c_2", "c_3"],
+"category_id": "5.4.1" or null,
+"category_name": "Required Libraries" or null,
+"question": "Human-readable question about what to check",
+"pass_condition": "Concrete, unambiguous condition for passing",
+"judge": ["rule_name"] or ["llm"] or ["rule_name", "rule_name"],
+"judge_params": [{{...}}] or [null],
+"evidence_type": "git_diff" | "trajectory" | "commit_message"
+}}
+‘‘‘
+### Field Descriptions
+- **check_id**: Unique identifier, format "c_1", "c_2", etc. Assigned sequentially.
+- **source_constraint_id**: Which constraint this item evaluates. "ac_X" for atomic constraint items, "cc_X" for composite
+relationship items.
+- **relation_type**: Only for composite relationship items. The edge type being tested: "AND", "THEN", or "PRIORITY". Null for
+atomic constraint items.
+- **dependent_check_ids**: Only for composite relationship items. The check_ids of the atomic constraint items that this
+relationship item depends on. Null for atomic constraint items.
+- **category_id**: Only for atomic constraint items. The taxonomy leaf category ID. Null for composite relationship items.
+- **category_name**: Only for atomic constraint items. The taxonomy leaf category name. Null for composite relationship items.
+- **question**: A clear, human-readable question that asks whether the constraint was followed. Should be self-contained and
+understandable without seeing the constraint definition.
+- **pass_condition**: A precise, unambiguous description of what constitutes passing. Must be concrete enough for either a rule or
+an LLM to make a binary judgment.
+- **judge**: An array of judge methods. Each element is either a rule template name or "llm". ALL judges in the array must pass
+for the item to pass (AND logic).
+- **judge_params**: An array of parameter objects, one per judge. Must exactly match the parameter schema of the corresponding
+rule template. Use null for "llm" judges.
+- **evidence_type**: What evidence is needed to evaluate this item. The evaluation engine will ONLY pass the specified evidence
+type to the judge, so choose carefully.
+## Available Evidence Types
+1. **git_diff**: The git diff of the agent’s changes. Contains: list of modified files with paths, status (added/modified/deleted)
+, added lines, deleted lines, diff text; plus aggregate stats (file counts, line counts). Use for checking WHAT code was
+changed.
+2. **trajectory**: The ordered sequence of all actions the agent took. Contains: step number, tool name, command text, command
+output, timestamps. Use for checking HOW or IN WHAT ORDER the agent worked.
+3. **commit_message**: The commit message(s) the agent wrote. Use for checking commit conventions. **Note**: Many agent workflows
+do not produce git commits, so commit_message evidence may be empty or unavailable. If the constraint is about the agent’s
+final report, explanation, or summary of changes, prefer "trajectory" as the evidence type -- the agent’s textual output
+typically appears in the final assistant messages within the trajectory.
+## Critical Evidence Format Details
+The evaluation engine pre-processes raw evidence before passing it to judges. You MUST understand these formats to write correct
+judge parameters.
+### git_diff format details
+- **added_lines**: Lines added in the diff with the leading ‘+‘ prefix ALREADY STRIPPED. The text contains only the line content
+itself. For example, if the raw diff line is ‘+from foo import bar‘, the added_lines text will contain ‘from foo import bar‘
+(no ‘+‘).
+- **deleted_lines**: Lines removed in the diff with the leading ‘-‘ prefix ALREADY STRIPPED. Same rule as added_lines.
+- **all_diff**: The complete raw diff text INCLUDING ‘diff --git‘, ‘---‘, ‘+++‘ headers, ‘@@‘ hunk markers, and ‘+‘/‘-‘ prefixes
+on changed lines. File paths appear in ‘diff --git a/path b/path‘ lines.
+36
+
+============================================================
+=== PAGE 37 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+**Key implication for regex_match**: When writing regex patterns for ‘added_lines‘ or ‘deleted_lines‘ targets, do NOT include
+‘^\+‘ or ‘^-‘ anchors -- the prefixes are already removed. When writing patterns for ‘all_diff‘ target, the full raw diff
+format is available including ‘+‘/‘-‘ prefixes and file path headers.
+**Key implication for regex_match on added_lines/deleted_lines**: These contain the ENTIRE line that was changed, not just the
+newly introduced portion. In a git diff, when a line is modified, the old version appears in deleted_lines and the new
+version appears in added_lines -- both as complete lines. This means if a line originally contained ‘dict‘ and was changed
+to add ‘SuiteParameterDict‘, BOTH ‘deleted_lines‘ and ‘added_lines‘ will contain ‘dict‘. Therefore, regex_match on
+added_lines/deleted_lines CANNOT reliably distinguish between content that was already present before the change and content
+that was newly introduced. For semantic judgments about what was truly "new" vs "preserved", use "llm" instead.
+### trajectory format details
+The trajectory is normalized into a sequence of steps. Each step has:
+- **tool_name**: The actual tool identifier used by the agent. Common tool names in Claude Code agents are: ‘Bash‘, ‘Read‘, ‘Edit
+‘, ‘MultiEdit‘, ‘Grep‘, ‘Task‘, ‘TodoWrite‘, ‘WebFetch‘. Other agent frameworks may use different tool names.
+- **command**: A normalized text representation of what the tool did. Examples:
+- Bash tool: the shell command itself, e.g. ‘cd /testbed && python -m pytest tests/ -v‘
+- Read tool: ‘read /path/to/file‘
+- Edit/MultiEdit tool: ‘edit /path/to/file‘ or ‘multi_edit /path/to/file (3 edits)‘
+- Grep tool: ‘grep ’pattern’ /path‘
+- Task tool: ‘task: description text‘
+- **output**: The tool’s output text (may be truncated for long outputs)
+**Key implication for action_sequence and command_presence**: When specifying action strings to match, use substrings that will
+actually appear in the normalized tool_name or command fields. Do NOT use abstract action names like ‘file_edit‘ -- instead
+use tool names (‘Edit‘, ‘MultiEdit‘) or command substrings (‘edit‘, ‘multi_edit‘) that appear in the normalized trajectory.
+For file inspection actions, use the file path as the match string (e.g., ‘src/main.py‘). For shell commands, use the
+command name (e.g., ‘pytest‘, ‘python‘, ‘npm test‘).
+## Available Rule Templates
+Use rule templates whenever a constraint can be evaluated programmatically. Only fall back to "llm" when the constraint requires
+semantic understanding that rules cannot capture.
+### 1. path_filter
+**What it checks**: Whether modified file paths comply with whitelist or blacklist rules.
+**When to use**: Constraints about which files or directories can/cannot be modified.
+**evidence_type**: git_diff
+**params schema**:
+‘‘‘json
+{{
+"mode": "whitelist" | "blacklist",
+"patterns": ["src/components/", "*.py"],
+"match_type": "prefix" | "glob"
+}}
+‘‘‘
+- whitelist: ALL modified files must match at least one pattern
+- blacklist: NO modified file may match any pattern
+- prefix: file path starts with the pattern string
+- glob: fnmatch-style matching (supports *, ?, [])
+### 2. file_count
+**What it checks**: Whether the number of files changed meets a threshold.
+**When to use**: Constraints limiting how many files can be modified, added, or deleted.
+**evidence_type**: git_diff
+**params schema**:
+‘‘‘json
+{{
+"scope": "total" | "added" | "deleted" | "modified",
+"min": 1,
+"max": 3
+}}
+‘‘‘
+- min and max are both optional, but at least one must be present
+### 3. line_count
+**What it checks**: Whether line change counts meet a threshold.
+**When to use**: Constraints limiting the volume of code changes.
+**evidence_type**: git_diff
+**params schema**:
+‘‘‘json
+{{
+"scope": "added" | "deleted" | "net",
+"min": 0,
+"max": 50
+}}
+‘‘‘
+- net = added lines minus deleted lines
+- min and max are both optional, but at least one must be present
+37
+
+============================================================
+=== PAGE 38 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+### 4. command_presence
+**What it checks**: Whether a specific command appeared or did not appear in the trajectory.
+**When to use**: Constraints requiring or forbidding specific tool/command usage.
+**evidence_type**: trajectory
+**params schema**:
+‘‘‘json
+{{
+"command": "go test",
+"expect": "present" | "absent",
+"min_count": 1
+}}
+‘‘‘
+- Matching is by substring against the normalized command text and tool_name: "go test" matches "go test ./graphql/... -v", "
+pytest" matches a Bash command containing "pytest"
+- min_count is optional (default 1), only meaningful when expect="present"
+### 5. command_arg_check
+**What it checks**: Whether a command was invoked with or without a specific argument/flag.
+**When to use**: Constraints about required or forbidden flags on specific commands.
+**evidence_type**: trajectory
+**params schema**:
+‘‘‘json
+{{
+"command": "git commit",
+"arg": "--signoff",
+"expect": "present" | "absent",
+"match_scope": "all" | "any"
+}}
+‘‘‘
+- Finds all trajectory entries whose command contains "command" (substring)
+- Checks whether "arg" appears in each matched command string
+- "all": every invocation must satisfy; "any": at least one must satisfy
+### 6. action_sequence
+**What it checks**: Whether actions occurred in the correct order in the trajectory.
+**When to use**: Constraints about workflow ordering (e.g., test before fix, fix before verify).
+**evidence_type**: trajectory
+**params schema**:
+‘‘‘json
+{{
+"actions": ["pytest", "edit", "pytest"],
+"strict": false
+}}
+‘‘‘
+- Subsequence matching: finds actions[0], then actions[1] after that position, etc.
+- Each action matches against the normalized command text and tool_name by substring
+- **Use real tool names or command substrings**: e.g., ‘"edit"‘ (matches Edit/MultiEdit tool commands), ‘"pytest"‘ (matches Bash
+commands containing pytest), ‘"src/main.py"‘ (matches Read/Edit commands on that file). Do NOT use abstract names like ‘"
+file_edit"‘, ‘"run_tests"‘, or ‘"inspect_code"‘ -- these do not exist in the normalized trajectory.
+- strict=false (default): only requires correct relative order
+- strict=true: no repeated same-type actions between consecutive required actions
+### 7. import_check
+**What it checks**: Whether a specific, named module/package is imported or not imported in newly added code.
+**When to use**: Constraints about required or prohibited library imports where you know the exact module name.
+**Limitation**: The ‘module‘ parameter must be a specific module name (e.g., ‘"requests"‘, ‘"numpy"‘, ‘"lodash"‘). It does NOT
+support wildcards or glob patterns. You cannot use ‘"*"‘ to mean "any module". If the constraint is "do not introduce any
+new dependency" (without naming specific modules), use "llm" instead, or combine import_check for known likely candidates
+with file_count or path_filter on dependency manifest files.
+**evidence_type**: git_diff
+**params schema**:
+‘‘‘json
+{{
+"module": "requests",
+"expect": "present" | "absent",
+"language": "python" | "go" | "javascript" | "typescript" | "java" | "c" | "cpp"
+}}
+‘‘‘
+- Only checks ADDED lines in the diff
+- Uses language-specific import syntax patterns
+### 8. regex_match
+**What it checks**: Whether a regex pattern matches in a specified text source.
+**When to use**: General-purpose pattern matching when other rules don’t fit but the check is still pattern-based.
+**evidence_type**: must be consistent with target -- git_diff for added_lines/deleted_lines/all_diff, trajectory for
+trajectory_text, commit_message for commit_message
+**params schema**:
+‘‘‘json
+{{
+"pattern": "console\\.log",
+38
+
+============================================================
+=== PAGE 39 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+"target": "added_lines" | "deleted_lines" | "all_diff" | "trajectory_text" | "commit_message",
+"expect": "match" | "no_match"
+}}
+‘‘‘
+- target determines the text to search within
+- evidence_type must match target:
+- "added_lines", "deleted_lines", "all_diff" -> evidence_type: "git_diff"
+- "trajectory_text" -> evidence_type: "trajectory"
+- "commit_message" -> evidence_type: "commit_message"
+**Reminder**: ‘added_lines‘ and ‘deleted_lines‘ have the ‘+‘/‘-‘ prefix already stripped. Do NOT write patterns like ‘^\+.*foo‘ --
+write ‘foo‘ directly. Use ‘all_diff‘ if you need to match raw diff syntax including ‘+‘/‘-‘ prefixes or file path headers.
+**Reminder**: ‘added_lines‘ contains complete changed lines, not just the newly added portion. If a line was modified (not purely
+inserted), both the old and new versions of the entire line appear in deleted_lines and added_lines respectively. Regex on
+added_lines cannot distinguish preserved content from truly new content. For such semantic distinctions, prefer "llm".
+## Instructions
+### Step 1: Verify Constraints Against Problem Statement
+Read the problem statement carefully. For each atomic constraint, determine whether its content is reflected in the problem
+statement:
+- If present and consistent -> proceed to generate a checklist item
+- If present but altered -> generate the item based on the problem statement version
+- If absent -> skip and record in skipped_constraints
+### Step 2: Generate Atomic Constraint Items
+For each verified atomic constraint, generate exactly one checklist item:
+1. **Prefer rule templates over LLM**: If a constraint can be evaluated -- even partially -- by rule templates, use them. Only use
+"llm" when the constraint fundamentally requires semantic understanding (e.g., "code is well-structured", "explanation is
+clear", "error handling follows the existing pattern").
+2. **Combine multiple rules when needed**: If one constraint requires multiple checks, list multiple rule names in the "judge"
+array with corresponding params. For example, "only modify files in src/ and do not add new files" needs both path_filter
+and file_count.
+3. **Be precise with params**: Every param must exactly match the schema defined above. Do not invent new fields. Do not omit
+required fields.
+4. **Choose evidence_type carefully**: The evaluation engine will ONLY pass the evidence type you specify. If judge uses git_diff-
+based rules, evidence_type must be "git_diff". If judge uses trajectory-based rules, evidence_type must be "trajectory". For
+"llm" judges, choose the single most relevant evidence type.
+5. **Write clear questions and pass_conditions**: The question should be a natural yes/no question. The pass_condition should be
+specific enough that anyone reading it would reach the same pass/fail conclusion given the evidence.
+6. **Respect evidence format when writing rule params**: Remember that added_lines/deleted_lines have ‘+‘/‘-‘ prefixes stripped,
+action_sequence must use real tool names or command substrings from the normalized trajectory, and import_check requires a
+specific module name (no wildcards).
+### Step 3: Generate Composite Relationship Items
+For each composite constraint whose ALL member atomic constraints passed Step 1 verification, generate exactly one relationship
+checklist item:
+- **source_constraint_id**: "cc_X"
+- **relation_type**: The primary edge type of the composite ("AND", "THEN", or "PRIORITY")
+- **dependent_check_ids**: The check_ids of all member atomic items
+- **category_id** and **category_name**: Always null
+- **judge selection guidance**:
+- THEN relationships: prefer "action_sequence" when ordering is observable in the trajectory; use "llm" when the ordering
+involves non-command actions (e.g., "understand before modifying"). When using action_sequence, use real tool names or
+command substrings (e.g., ‘"pytest"‘, ‘"edit"‘, ‘"grep"‘) -- not abstract action labels.
+- PRIORITY relationships: use "llm" (requires understanding which constraint the agent prioritized when they conflict)
+- AND relationships: if the only requirement is that all members are satisfied simultaneously, the relationship is implicitly
+tested by the member items; focus the relationship item on any additional coupling or co-occurrence requirement described in
+the composite’s natural_language
+### Step 4: Self-Check
+Before outputting, verify:
+- Every verified atomic constraint has exactly one checklist item
+- Every verified composite constraint has exactly one relationship item
+- All dependent_check_ids refer to valid check_ids
+- All judge_params exactly match the schema of their judge type
+- evidence_type is consistent with the chosen judge (especially for regex_match targets)
+- No duplicate check_ids
+39
+
+============================================================
+=== PAGE 40 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+- check_ids are sequential: c_1, c_2, c_3, ...
+- regex_match patterns for added_lines/deleted_lines do NOT contain ‘^\+‘ or ‘^-‘ anchors
+- action_sequence actions use real tool names or command substrings, NOT abstract labels like "file_edit"
+- import_check module values are specific module names, NOT wildcards like "*"
+## Output Format
+All output text must be in English, including all descriptions, reasons, questions, and natural language fields.
+Output a single JSON object:
+‘‘‘json
+{{
+"checklist": [
+// all checklist items, atomic items first, then relationship items
+],
+"skipped_constraints": [
+{{
+"id": "ac_X or cc_X",
+"name": "...",
+"reason": "Brief explanation of why this constraint was skipped."
+}}
+// include both skipped atomic and skipped composite constraints
+]
+}}
+‘‘‘
+Output ONLY the JSON. No explanation, no commentary, no markdown fences around the JSON.
+C.6
+LLM Judge Prompt
+LLM judge prompt
+You are an expert evaluator for an agentic coding benchmark. Your task is to determine whether a specific constraint was followed
+by an AI coding agent.
+## Constraint to Evaluate
+**Question**: {check_item.get(’question’, ’’)}
+**Pass Condition**: {check_item.get(’pass_condition’, ’’)}
+## Evidence
+The following is the relevant evidence from the agent’s execution:
+‘‘‘
+{evidence_text}
+‘‘‘
+## Important Context for Evaluation
+1. **Git diff represents the COMPLETE changeset.** The git diff shown above (if provided) contains ALL changes made by the agent.
+If a file does not appear in the diff, it was NOT modified or created by the agent. You can use this to confirm or deny
+claims about what was or wasn’t changed.
+2. **Build steps are prerequisites, not excessive scope.** For compiled languages (C, C++, Java, Go, Rust, etc.), running ‘make‘,
+‘mvn compile‘, ‘gradle build‘, or similar build commands is a NECESSARY prerequisite before running tests. Do not penalize
+the agent for building the project as part of its verification process.
+3. **Conditional constraints.** If the pass condition is phrased as "if X, then Y" (e.g., "if a commit was created, it should be
+atomic"), evaluate it as a logical conditional:
+- If the precondition (X) is clearly NOT met (e.g., no commit exists), the constraint is **satisfied** (vacuously true), and
+you should mark it as passed.
+- Only mark as failed if the precondition IS met but the consequent is NOT.
+4. **Agent’s final report.** If the evidence includes a "FINAL ASSISTANT REPORT" section, treat it as the agent’s own summary of
+what it did. Cross-reference its claims against other evidence (git diff, trajectory) when available, but do not dismiss it
+outright.
+## Instructions
+Based on the evidence above, determine whether the pass condition is met.
+- Answer with a JSON object: {{"passed": true/false, "reasoning": "brief explanation"}}
+- Be objective and fair: mark as passed if the evidence reasonably demonstrates the condition is met. Do not require evidence
+beyond what is provided -- evaluate based on what IS available.
+40
+
+============================================================
+=== PAGE 41 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+- If the evidence is genuinely insufficient (not merely incomplete in one dimension while conclusive in another), mark as failed
+with an explanation.
+Output ONLY the JSON object, nothing else.
+C.7
+Error Attribution Prompt
+Error attribution prompt
+You are an expert analyst for an agentic coding benchmark called SWE-Compass. Your task is to determine WHY a coding agent failed
+to comply with a specific constraint.
+## Error Categories (Rubrics)
+You must classify the root cause into exactly ONE of the following categories:
+### E1: Constraint Not Perceived
+The agent did not notice or register the constraint at all. It shows no evidence of attempting to address this constraint in its
+behavior.
+- E1.1: Constraint buried in long context -- the constraint appeared in a less prominent position and was likely overlooked
+- E1.2: Constraint expressed implicitly/indirectly -- the constraint was not stated as a direct instruction but implied
+- E1.3: Context lost across turns -- the constraint was given earlier but forgotten in subsequent actions
+### E2: Constraint Misunderstood
+The agent noticed the constraint but interpreted it incorrectly. Its behavior shows an attempt to comply, but based on a wrong
+understanding of what was required.
+- E2.1: Scope misinterpretation -- misunderstood which files/modules/components the constraint applies to
+- E2.2: Negation or conditional logic error -- misread "do not X" or "only if Y then X" type instructions
+- E2.3: Technical term ambiguity -- interpreted a technical term or phrase differently from the intended meaning
+### E3: Constraint Perceived but Deprioritized
+The agent understood the constraint but chose to violate it in favor of another goal (e.g., making tests pass, simplifying code,
+completing the task faster).
+- E3.1: Functional correctness over constraint -- violated constraint to achieve a working solution
+- E3.2: Efficiency/simplicity over constraint -- took a shortcut that conflicts with the constraint
+- E3.3: Inter-constraint conflict -- two constraints conflicted and the agent sacrificed this one
+### E4: Execution Capability Limitation
+The agent understood the constraint and attempted to comply, but failed due to insufficient technical ability to carry out the
+required action correctly.
+- E4.1: Coding ability insufficient -- understood the requirement but produced incorrect implementation
+- E4.2: Tool usage error -- attempted the right action but used tools/commands incorrectly
+- E4.3: Multi-step execution gap -- planned correctly but missed steps during execution
+### E5: Scaffold/Environment Interference
+The constraint violation was caused or significantly contributed to by the scaffold framework, context management, or environment
+limitations rather than the model’s own decision.
+- E5.1: Context window truncation -- constraint was likely removed by the scaffold’s context management
+- E5.2: System prompt override -- scaffold’s built-in instructions conflicted with the user constraint
+- E5.3: Tool/API format limitation -- the scaffold’s tool interface made compliance difficult or impossible
+### E6: Partial Compliance
+The agent partially satisfied the constraint but not fully enough to pass the check.
+- E6.1: Main logic compliant, edge case missed -- core behavior is correct but boundary cases violate
+- E6.2: Direct compliance, indirect violation -- directly follows the rule but indirectly violates through side effects
+- E6.3: Incomplete execution -- started to comply but did not finish for all required locations/cases
+## Output Format
+Return ONLY a JSON object (no markdown, no explanation outside the JSON):
+{
+"primary_cause": "E1|E2|E3|E4|E5|E6",
+"sub_cause": "E1.1|E1.2|...|E6.3",
+"confidence": "high|medium|low",
+"reasoning": "2-3 sentences explaining why you chose this category, referencing specific evidence from the judge’s reasoning and
+the constraint text."
+}
+## Important Rules
+1. Choose exactly ONE primary cause. If multiple seem applicable, choose the ROOT cause (the earliest point of failure in the
+chain).
+2. Use "high" confidence when the judge reasoning clearly points to one category. Use "medium" when you need to infer. Use "low"
+when the evidence is ambiguous.
+3. Base your analysis on: (a) the constraint text as written in the query, (b) the judge’s reasoning about what the agent did
+wrong.
+4. Do NOT speculate about what happened if the judge reasoning does not provide evidence. If unclear, pick the most likely
+category and mark confidence as "low".
+41
+
+============================================================
+=== PAGE 42 ===
+============================================================
+
+C
+PROMPT TEMPLATES
+ANCHOR
+5. Return ONLY the JSON object. No other text.
+42

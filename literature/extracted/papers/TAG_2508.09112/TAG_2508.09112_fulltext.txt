@@ -1,0 +1,1845 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+Prepared for submission to JCAP
+Tracing large-scale structure
+morphology with multiwavelength line
+intensity maps
+Manas Mohit Dosibhatla,a Suman Majumdar,a Chandra Shekhar
+Murmu,a,b Samit Kumar Pal,a Saswata Dasgupta,c Satadru Bag,d,e
+Abhirup Dattaa
+aDepartment of Astronomy, Astrophysics and Space Engineering, Indian Institute of Tech-
+nology Indore, Khandwa Road, Indore - 453552, India
+bAstrophysics Research Center of the Open University (ARCO) & Department of Natural
+Sciences, The Open University of Israel, 1 University Road, Ra’anana 4353701, Israel
+cInstitute of Astronomy & Kavli Institute for Cosmology, University of Cambridge, Madin-
+gley Road, Cambridge CB3 0HA, United Kingdom
+dPhysics Department, TUM School of Natural Sciences, Technical University of Munich,
+James-Franck-Straße 1, 85748 Garching, Germany
+eMax-Planck-Institut f¨ur Astrophysik, Karl-Schwarzschild Straße 1, 85748 Garching, Ger-
+many
+E-mail: dosibhatla.mohit@gmail.com
+Abstract. Line intensity mapping (LIM) is an emerging technique for probing the large-scale
+structure (LSS) in the post-reionisation era. This captures the integrated flux of a particular
+spectral line emission from multiple sources within a patch of the sky without resolving
+them. Mapping different galaxy line emissions, such as the HI 21-cm and CO rotational lines
+via LIM, can reveal complementary information about the bias with which the line emitters
+trace the underlying matter distribution and how different astrophysical phenomena affect the
+clustering pattern of these signals. The stage at which the structures in the “cosmic web”
+merge to form a single connected structure is known as the percolation transition. Using
+mock HI 21-cm and CO(1 −0) LIM signals in the post-reionisation universe, we explore the
+connectivity of structures through percolation analysis and compare it with the underlying
+galaxy distribution. We probe the relative contributions of voids, filaments, and sheets to
+the galaxy density and line intensity maps using a morphological measure known as the
+local dimension. The CO(1 −0) map exhibits an increased filamentary behaviour and larger
+contribution from sheets than the 21-cm map. We attempt to explain such an emission of the
+CO(1−0) line from biased environments. The upcoming SKA-Mid will produce tomographic
+intensity maps of the 21-cm signal at z ≲3 in Band-1. CO maps can be produced at these
+redshifts in phase 2 of SKA-Mid, where the frequency coverage is expected to increase up
+to ∼50 GHz. We present forecasts for the recovery of the local dimensions of these line
+intensity maps contaminated by thermal noise and line interlopers in SKA-Mid surveys.
+Keywords: cosmic web, cosmological simulations, hydrodynamical simulations,
+non-gaussianity
+ArXiv ePrint: 2508.09112
+arXiv:2508.09112v3  [astro-ph.CO]  5 Jun 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+Contents
+1
+Introduction
+1
+2
+Simulations
+4
+2.1
+Galaxy catalogue
+4
+2.2
+Density and intensity maps
+4
+2.2.1
+Galaxy mass density (ρg)
+4
+2.2.2
+21-cm brightness temperature (T21cm)
+5
+2.2.3
+CO(1 −0) brightness temperature (TCO)
+5
+2.3
+Thermal noise simulations
+5
+2.4
+Line interloper modelling
+7
+3
+Morphological measures
+8
+3.1
+Percolation analysis
+9
+3.2
+Local dimension
+10
+4
+Results
+11
+4.1
+Percolation analysis
+11
+4.2
+Local dimension
+12
+4.2.1
+Uncontaminated signal maps
+12
+4.2.2
+Thermal noise-contaminated maps
+15
+4.2.3
+Interloper-contaminated maps
+17
+5
+Summary and conclusion
+19
+1
+Introduction
+The large-scale structure (LSS) of the universe takes the form of the so-called “cosmic web”,
+composed of highly dense nodes that host galaxy clusters, filamentary structures that bridge
+these nodes, surface-filling structures called sheets, and large underdense regions called cos-
+mic voids [1–8]. Such a morphology of the matter distribution has been observed both in
+cosmological simulations [4, 9, 10] and observational probes of the LSS, such as galaxy red-
+shift surveys [11–14]. The cosmological model determines the gravitational clustering of dark
+matter that leads to the web-like structure. Baryonic matter falls into the gravitational po-
+tential wells created by dark matter and traces its distribution [15]. The baryonic tracers
+(galaxies and intergalactic gas) are also affected by the complex astrophysics of star forma-
+tion, supernova and AGN feedback, galactic winds, etc. [16–20]. Hence, probing the cosmic
+web is of great interest because it contains a wealth of information on both cosmology and
+astrophysics.
+The most popular approach to studying the LSS is through galaxy redshift surveys,
+which rely on detections of individual galaxies with a high signal-to-noise ratio (SNR) and
+estimating their redshifts via spectroscopic or photometric means [21, and references therein].
+Galaxy surveys have been extensively used to constrain cosmological model parameters [22–
+27]. However, due to the magnitude-limited nature of such surveys, they are biased towards
+a bright sample of the galaxy population within the survey volume. As a result, they yield
+– 1 –
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+clustering and morphology patterns biased towards the brightest sources. Additionally, the
+accuracy of redshift determination is affected by low SNR and contamination from interloper
+lines [28, 29].
+Line intensity mapping (LIM) is an alternative approach to tracing the LSS. It is based
+on the idea that to map the clustering of the matter distribution as a whole, it is not necessary
+to resolve individual gravitationally bound structures (galaxies). LIM involves observing the
+aggregate emission of a target spectral line from coarse patches of the sky, with the line-of-
+sight information embedded in the different frequency channels of the instrument, allowing us
+to construct a tomographic map of the line emission [30–36]. By targeting a specific spectral
+line emission originating from galaxies, it is possible to map the LSS in a relatively unbiased
+manner by capturing the flux contribution towards the line emission from faint galaxies as
+well.
+Probing the LSS through intensity maps of multiple spectral lines allows us to ob-
+tain complementary information from galaxies, as different lines originate from different
+regions of galaxies and are affected by different astrophysical phenomena. Observing and
+cross-correlating lines in separate frequency bands also suppresses the correlation between
+astrophysical foregrounds and other systematics in the observations, resulting in higher SNRs
+[37–39]. Since hydrogen is the most abundant element in the Universe and therefore in galax-
+ies as well, it is suitable to target emissions that can trace it to probe the LSS. The atomic
+phase of hydrogen (HI) can be effectively traced by the hyperfine 21-cm emission, and the
+molecular phase (H2) by the line-emission arising from the transition between the J →J −1
+rotational levels of the carbon monoxide (CO) molecule [40, 41], which is the second most
+abundant molecular species in molecular clouds within galaxies.
+Several experiments are underway to probe the HI 21-cm intensity mapping signal in the
+post-reionisation universe, and statistical detections and upper limits have been reported by
+the survey of the ELAIS-N1 field by the uGMRT [42, 43], the CHIME collaboration [44–46],
+interferometric surveys of MeerKAT [47, 48], and the single dish MeerKLASS survey [38, 49]
+among others. The advent of the Square Kilometre Array Observatory (SKAO) will allow
+tomographic intensity mapping of the 21-cm line across different redshifts. SKA-Mid, the
+mid-frequency component of the SKAO situated in South Africa, will be capable of producing
+tomographic intensity maps of the 21-cm line in the redshift range 0 ≤z ≲3 [50]. Multiple
+experiments have reported upper limits of the CO LIM power spectrum, such as the CO Power
+Spectrum Survey (COPSS), Atacama Large Millimetre Array (ALMA), Atacama Compact
+Array (ACA), Carbon monOxide Mapping Array Project (COMAP), etc. [51–53]. In this
+work, we present a morphological analysis of the cosmic web using tomographic intensity
+maps of the HI 21-cm line and the 115.27 GHz CO(1 −0) line simulated by postprocessing
+IllustrisTNG [54–59] galaxy catalogues. We examine the biases with which these two lines
+trace the underlying galaxy distribution and differences in the overall morphology of the
+intensity maps.
+The relation between the matter distribution and its observable tracers has been quan-
+tified through bias parameters determined using N-point correlation functions in the Fourier
+space [60–62]. The power spectrum is the conventional statistic used to quantify the cluster-
+ing pattern of cosmological fields, but it cannot completely describe the matter distribution
+in the late universe due to its highly non-Gaussian nature [63]. Higher-order statistics, e.g.,
+bispectrum, trispectrum [61, 63, 64], marked correlation functions [65, 66, and references
+therein], etc., capture more information on such fields. However, they cannot preserve the
+complete phase information of the signal in the Fourier domain.
+This leads to informa-
+– 2 –
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+tion loss on the morphological features of the fields. Therefore, we employ morphological
+measures directly in real space (image/map domain) to describe the LIM signals. Various
+image-based statistics, e.g., Minkowski functionals [67–71], tidal tensor [72–74], percolation
+analysis [5, 69, 75–79], local dimension [80–83], etc., have been formulated in the literature
+to describe cosmological fields.
+Percolation analysis [5, 69, 75–79] is the study of the percolation transition in a field,
+which refers to the onset of large-scale connectivity in the field. It was shown in [5] that
+the percolation curve of a non-Gaussian and filamentary cosmological field shows an earlier
+percolation transition than a Poisson random field with the same average density.
+The
+percolation transition can therefore be treated as a measure of the degree of filamentarity
+in a field. In this work, we carry out a percolation analysis of the 21-cm and CO(1 −0)
+intensity maps and compare their percolation transition points with each other and also
+with that of the underlying galaxy mass density field. We then investigate the origin of the
+different degrees of overall filamentarity of 21-cm and CO(1−0) maps by probing the relative
+abundances of regions lying in filaments, sheets, and volume-filling environments (nodes and
+voids). This is done using an exponent known as local dimension [80–83], which determines
+how the number of points in a sphere centred at a given map cell scales with the radius of
+the sphere. This measure was originally defined for galaxy samples [80], and we extend it to
+gridded intensity maps. Through percolation and local dimension analyses, we probe how
+well 21-cm and CO(1 −0) line intensity maps trace the underlying galaxy population. We
+attempt to explain differences in the morphologies of 21-cm and CO(1 −0) intensity maps
+in terms of the astrophysical processes that affect the gas responsible for these emissions.
+In the proposed phase 2 of its operation, the highest frequency at which SKA-Mid can
+observe is expected to be upgraded from the present ≃15 GHz to ≃50 GHz [84]. This
+will open up an opportunity to observe the rotational CO(1 −0) line, having rest frame
+frequency 115.27 GHz, originating from redshifts z ≳1.3 using SKA-Mid.1 This effectively
+yields a redshift window 1.3 ≲z ≲3 in which the SKA-Mid phase 2 (SKA2-Mid) will be, in
+principle, capable of mapping the Universe using both the 21-cm and CO(1−0) lines. In 2.3,
+we demonstrate that tomographic maps of the two lines with ∼Mpc spatial resolutions have
+the best overall signal-to-noise ratio (SNR) at z ≃1.41, considering the array assembly 4
+(AA4) [85] sensitivity estimates of SKA-Mid. Therefore, throughout this article, we present
+an analysis of the morphology of intensity maps of both of these lines at z = 1.41.
+We
+also provide estimates for the detectability of the percolation statistics and local dimensions
+in realistic interferometric surveys by SKA-Mid in the presence of thermal noise and line
+interlopers of the CO(1 −0) line.
+This article is organised as follows: Details of the density map, line intensity map,
+thermal noise, and line interloper simulations are given in section 2; the methodology followed
+and morphological measures used are described in section 3; results of the morphological
+analysis are reported in section 4; conclusions and scope of follow-up work are discussed in
+section 5. We follow the ΛCDM cosmology of [86]: h = 0.6774, Ωm = 0.3089, Ωb = 0.0486,
+ΩΛ = 0.6911. All distances are comoving, and logarithms are base 10.
+1SKA1 Beyond 15GHz: The Science case for Band 6; see Section 6.7.
+– 3 –
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+2
+Simulations
+2.1
+Galaxy catalogue
+We use galaxy catalogues prepared using the subfind algorithm [87] from the publicly avail-
+able TNG300-1 box2 of the cosmological gravo-magnetohydrodynamical simulation suite Il-
+lustrisTNG [54–59], which contains both dark matter and baryonic gas, as the starting point
+to generate mock line intensity maps. The simulation cube considered here has a comoving
+side length of 302.6 Mpc with dark matter and galaxy mass resolutions of 3.98 × 107 h−1M⊙
+and 1.27 × 109 h−1M⊙, respectively. The MHD equations are solved in a moving mesh grid
+of average gas cell mass 7.44 × 106 h−1M⊙. For more details on these simulations, interested
+readers may refer to [54–59]. We extract the centre of mass coordinates of galaxy positions,
+total mass (M), gas mass (Mgas), hydrogen mass fraction (fH), and instantaneous star for-
+mation rate (SFR) of each galaxy in the simulation. The z-axis is chosen to be the line of
+sight, and the z-component of the peculiar velocity (v∥) of each galaxy is used for mapping
+them in redshift space by implementing redshift space distortion (RSD) [88, 89]. The galaxies
+are then gridded into two sets of intensity maps for each line emission under consideration,
+one in real space and the other in redshift space.
+2.2
+Density and intensity maps
+We generate 21-cm and CO(1 −0) intensity maps by postprocessing the galaxy catalogues
+using the Line Intensity Mapping Tool (LIMiT),3 which is an updated version of the LIM
+simulator [37].4 Whereas the LIM simulator tool was limited to the [CII]158µm and CO
+lines, LIMiT contains an HI 21-cm line emission model from galaxies. This tool takes the
+positions, v∥, M, MH = fHMgas and SFR of galaxies as input. For implementing RSD, the
+galaxy positions are displaced along the line of sight by distances proportional to v∥. The
+redshift space positions (s) are related to real space positions (x) as
+s = x + 1 + z
+H(z)v∥.
+(2.1)
+The galaxy positions are then mapped onto a grid of the desired grid size and resolution. We
+generate three cosmological fields:
+1. Galaxy mass density (ρg),
+2. 21-cm brightness temperature (T21cm),
+3. CO(1 −0) brightness temperature (TCO).
+2.2.1
+Galaxy mass density (ρg)
+The galaxy mass density map is generated by assigning galaxy mass densities to grid cells.
+We work with spatial resolutions of the order of hundreds of kpc, which is 1 −2 orders of
+magnitude larger than the typical size of galaxies. A galaxy will hence effectively contribute
+its mass and line luminosity only to a single grid cell of the simulated maps. We therefore
+employ a nearest grid point (NGP) scheme for generating density and intensity maps, where
+a galaxy contributes its mass/luminosity to a single grid cell.
+2https://www.tng-project.org/data/downloads/TNG300-1/
+3https://github.com/dmmohit/LIMiT.git
+4https://github.com/chandra-001/LIM simulator.git
+– 4 –
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+2.2.2
+21-cm brightness temperature (T21cm)
+To generate the 21-cm map, the atomic hydrogen fraction is fixed at a constant value fHI = 0.7
+following [90]. The HI masses of galaxies, related to their total hydrogen mass MH as
+MHI = fHI × MH ,
+(2.2)
+are then mapped onto a grid. The HI density map thus obtained is converted to a 21-cm
+brightness temperature map using equation (36) of [91].
+T21cm(x) = 189 h H0(1 + z)2
+H(z)ρc(z) ρHI(x) ,
+(2.3)
+where h = H0/(100 km s−1Mpc−1) is the dimensionless Hubble constant, H(z) and ρc(z) are
+the Hubble parameter and the critical density at redshift z respectively, and ρHI(x) is the HI
+mass density at a position x.
+2.2.3
+CO(1 −0) brightness temperature (TCO)
+In the case of the CO(1 −0) line, the SFRs of galaxies are converted to infrared luminosities
+(LIR) following [92]:
+LIR
+L⊙
+=
+�SFR
+M⊙/yr
+�
+× 1010 .
+(2.4)
+The LIR’s are converted to CO luminosities LCO using the following relations:
+log
+�
+L′
+CO
+K km s−1 pc2
+�
+= 1
+α
+�
+log
+�LIR
+L⊙
+�
+−β
+�
+,
+(2.5)
+LCO
+L⊙
+= 4.9 × 10−5J3
+�
+L′
+CO
+K km s−1 pc2
+�
+,
+(2.6)
+where the quantum number J specifies the rotational energy level of the CO molecule. The
+CO emission results from a J −→J −1 transition. We follow the parametrisation of [93] and
+[52], which uses the values α = 1.27, β = −1.00 estimated in [94].
+The LCO values are gridded and converted to TCO using equation (1) of [36], which can
+be rewritten as
+TCO = (1 + z)2λ3
+CO
+8πkBH(z)
+��
+i
+LCO(Mi, z)/∆V
+�
+,
+(2.7)
+where the summation is over galaxies within a grid cell of volume ∆V . Corresponding
+slices of the ρg, T21cm and TCO maps at z = 1.41 are shown in Figure 1.
+2.3
+Thermal noise simulations
+We simulate thermal noise for the SKA-Mid AA4 configuration by assuming the noise to be
+Gaussian random in the image domain. In practice, thermal noise is Gaussian random in
+the visibility domain, resulting in pixel-to-pixel correlations in the image domain, which are
+not considered in the present analysis. The noise maps are hence realisations of a zero-mean
+Gaussian with noise standard deviation [95]
+σn =
+SD × SEFD
+ηs
+��nant
+2
+�
+npol∆ν∆τ
+,
+(2.8)
+– 5 –
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+0
+10
+1
+100
+101
+102
+103
+1 +
+g
+0
+10
+3 10
+2 10
+1
+100
+101
+102
+T21cm (mK)
+0
+10
+1
+100
+101
+102
+103
+TCO ( K)
+Figure 1. Corresponding slices of the galaxy mass overdensity 1+δg (left), 21-cm brightness temper-
+ature T21cm (centre), and CO(1 −0) brightness temperature TCO (right) maps at a spatial resolution
+δx ≃0.87 Mpc.
+where SD ≃2 is a degradation factor with respect to the natural array sensitivity, ηs ≃0.9 is
+the system efficiency, nant is the number of antennae in the array, npol = 2 is the number of
+polarisations, ∆ν and ∆τ are the effective spectral resolution and the total integration time
+respectively. The system equivalent flux density (SEFD) is given by
+SEFD = 2kB
+Tsys
+Aeff
+,
+(2.9)
+kB, Tsys, and Aeff being the Boltzmann constant, system temperature and effective area of an
+antenna, respectively. The frequency-dependent ratio Aeff/Tsys is taken from the Anticipated
+SKA1 Science Performance document [84].5 We set nant = 197, which is the number of anten-
+nae in the AA4 configuration of SKA-Mid. The noise σ’s are estimated in Jy/beam units and
+are converted to brightness temperature units (σT ) using the Rayleigh Jeans approximation
+σT =
+λ2
+2kBΩσn ,
+(2.10)
+λ being the redshifted wavelength of the line. The Ωis the solid angle subtended by the δxδy
+resolution element at the observer’s location. It is calculated as Ω= πθ2/(4 ln 2), where θ is
+the corresponding plane angle. In our simulations, the grid cells are cubical, and thus, we
+assume that the resolution of the sky plane (δx = δy) is the same as the resolution along the
+line of sight (δz). The δz is computed from the change in redshift ∆z along the line of sight
+corresponding to the spectral resolution ∆ν,
+∆z = (1 + z)2
+�∆ν
+ν0
+�
+.
+(2.11)
+Detecting filamentary features in the intensity maps requires a high spatial resolution, which
+means a small ∆z. This, in turn, yields a small ∆ν and increases the noise level. An optimal
+5https://www.skao.int/sites/default/files/documents/SKAO-TEL-0000818-V2 SKA1 Science
+Performance.pdf
+– 6 –
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+value for the spectral and, hence, spatial resolution must be chosen for our maps to strike
+a balance between a moderate SNR (≳1) and high spatial resolution. We find the optimal
+value to be ∆ν = 107.52 kHz, which is the effective spectral resolution after averaging over
+eight SKA-Mid frequency channels.6 Even at this resolution, thermal noise remains dominant
+over the signal at most redshifts.
+The variation of the SNR with redshift at δx ≃1 Mpc is shown in Figure 2. The SNR
+is defined as the ratio of the standard deviation of the brightness temperature fluctuations of
+the signal to that of the noise (SNR = σsignal/σT ). The redshift range corresponds to the set
+of redshifts where SKA1-Mid can observe the 21-cm signal, and SKA2-Mid can observe the
+CO(1 −0) signal. The redshift values are those at which the IllustrisTNG galaxy catalogues
+are available. We estimate thermal noise for 5000 hours of SKA1-Mid observation per pointing
+for the 21-cm signal and 100 hours of SKA2-Mid observation per pointing for the CO(1 −0)
+signal. The 21-cm maps are highly noise-dominated at almost all redshifts, and the SNR
+crosses 1 at z ≃1.5. In the rest of the article, we carry out our morphological analysis at
+z = 1.41, where the 21-cm signal fluctuations have SNR > 1 and the CO(1 −0) fluctuations
+have a significant SNR (≃4) as well. The spectral resolution element ∆ν = 107.52 kHz
+corresponds to a comoving spatial resolution ≃0.87 Mpc at z = 1.41.
+A 300 Mpc×300 Mpc patch at z = 1.41 spans ≃16 deg2 on the sky. The field of view (≃
+1.22 λ/Ddish) of SKA-Mid is limited to 5.56 deg2 for the 21-cm line, and ≃92 arcmin2 with a
+phased array feed configuration [96] (see section 5) for the CO(1−0) line, assuming a constant
+Ddish of 15m. This would only allow sub-surveys spanning a fraction of the patch within a
+feasible observation time. We consider 4 deg2 (150 Mpc × 150 Mpc) and 1.77 deg2 (100 Mpc ×
+100 Mpc) sub-surveys for 21-cm and CO(1 −0) maps respectively. CO(1 −0) maps formed
+from 70 non-overlapping pointings must be mosaicked to obtain this sub-survey. We divide
+the ≃(300 Mpc)3 LIM cubes into 8 (150 Mpc)3 21-cm subcubes, and 27 (100 Mpc)3 CO(1−0)
+subcubes.
+The cosmic variance in the SNR of the maps due to the variation of the signal fluctu-
+ations among the subcubes at a constant noise level corresponding to 5000 hours and 100
+hours per pointing for 21-cm and CO(1 −0) maps is given by 1σ error bars in Figure 2. The
+high redshift end is highly noise-dominated for 21-cm maps, and cosmic variance in signal
+fluctuations is found to have a negligible effect on the SNR with increasing redshift. At
+z = 1.41, the SNR ranges between ∼0.8 −1.5, and the noise can be suppressed following the
+methods discussed in 3.2. Because CO(1 −0) maps have a much higher overall SNR, cosmic
+variance is not expected to significantly affect detectability.
+2.4
+Line interloper modelling
+Higher J lines in the rotational ladder of the CO molecule act as interlopers to the CO(1−0)
+line. For the CO(1 −0) line at z = 1.41, some of the line interlopers are: CO(2 −1) at
+z = 3.82, CO(3 −2) at z = 6.23, and CO(4 −3) at z = 8.64. The first two interlopers out of
+these are expected to contribute the most to the observed signal, as the power spectrum of
+CO(4 −3) at z ≃8.6 lies two orders of magnitude below that of the target CO(1 −0) signal.
+As the IllustrisTNG galaxy catalogues are constructed from snapshots of the same
+evolving coeval box, the structures would correspond to the same point in space at different
+cosmic times. This would make interloper signals modelled from coeval boxes at different
+redshifts highly correlated. To decrease the statistical dependence of the target and interloper
+signals, we do the following:
+6https://sensitivity-calculator.skao.int/
+– 7 –
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+1.4
+1.6
+1.8
+2.0
+2.2
+2.4
+2.6
+2.8
+3.0
+Redshift
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+SNR
+21-cm (SKA1-Mid)
+CO(1-0) (SKA2-Mid)
+3.5
+4.0
+4.5
+5.0
+5.5
+SNR
+Figure 2. Signal-to-noise ratios (SNR) of the 21-cm and CO(1 −0) brightness temperature fluc-
+tuations at spatial resolution δx ≃1 Mpc in the overlapping redshift range where SKA1-Mid and
+SKA2-Mid can observe the 21-cm and CO(1 −0) LIM signals, respectively. The noise estimates are
+made assuming Gaussian random thermal noise for 5000 hours per pointing of SKA1-Mid observa-
+tions and 100 hours per pointing of SKA2-Mid observations for the 21-cm and CO(1 −0) signals,
+respectively. The black dashed line corresponds to z = 1.41, the redshift where both the 21-cm and
+CO(1−0) brightness temperature fluctuations have a significant SNR. The 1σ error bars denote stan-
+dard deviation in SNR across 8 (150 Mpc)3 21-cm subcubes and 27 (100 Mpc)3 CO(1 −0) subcubes,
+corresponding to realistic SKA-Mid surveys, due to cosmic variance in signal fluctuations.
+1. Simulate three different CO intensity map lightcones: CO(1 −0) centred at the target
+z = 1.41, CO(2 −1) centred at z = 3.82 and CO(3 −2) centred at z = 6.23.
+2. Rotate the CO(2 −1) lightcone by 90 degrees and the CO(3 −2) lightcone by 180
+degrees about the line of sight.
+To construct the lightcones, the following coeval intensity maps are simulated following
+the prescription in 2.2.3 using the values of α and β as given in Table 4 of [94].
+• CO(1 −0) maps at z = 1.30, 1.36, 1.41, and 1.50,
+• CO(2 −1) maps at z = 3.49, 3.71, 4.01, and 4.18,
+• CO(3 −2) maps at z = 5.85, 6.01, 6.49, and 7.01.
+The lightcones are finally constructed by combining the coeval intensity maps in real
+space and using the LICMAGS7 code that follows the steps described in [37, 97] using the
+Steffen interpolation scheme [98].
+The redshift slices in the lightcones are equispaced in
+comoving distance by 0.87 Mpc, as for the coeval maps. We cut the lightcones so that they
+have the same dimensions along the sky plane and the line of sight for the sake of simplicity.
+3
+Morphological measures
+The clustering pattern of the cosmic LSS has traditionally been quantified by the 2-point
+correlation function (2PCF) and its Fourier conjugate — the power spectrum [63]. However,
+7https://github.com/chandra-001/LICMAGS.git
+– 8 –
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+both of these statistics capture incomplete information on clustering, which becomes increas-
+ingly non-Gaussian with cosmic time due to the gravitational clustering of matter. To provide
+a complete description of the large-scale matter distribution, the infinite hierarchy of N-point
+correlation functions must be computed. This comes with its own computational challenges,
+as they may not be adequately sampled in cosmological simulations of finite volume with
+increasing order N. The three-point correlation function (bispectrum) [61, 63, 64, and ref-
+erences therein] and marked correlation functions [65, 66, and references therein] have been
+studied extensively in the literature in this context, but they lose information on the phase
+correlations, which is vital for quantifying the clustering pattern of the observed structure.
+Alternatively, cosmic structure can be studied directly in the image domain using meth-
+ods such as Minkowski functionals [67–71], percolation analysis [5, 69, 75–79], wavelet trans-
+forms [99, 100], etc. It is possible for a Gaussian and a non-Gaussian field to have an identical
+power spectrum, in which case they cannot be distinguished using the 2PCF. However, such
+scenarios can be distinguished via percolation analysis [5]. This approach involves coarse-
+graining a gridded field or increasing the linking length of a point distribution until a single
+contiguous cluster is formed between the two ends of the box. At this stage, the field is
+said to have percolated, i.e., a pathway would have formed between its ends. Extending this
+argument with periodic boundary conditions, the cluster would have spanned the universe.
+This percolation behaviour will be quantified in 3.1.
+The LSS observed in both galaxy surveys and N-body simulations takes the form of
+the “cosmic web”, which is composed of filaments, sheets, nodes, and voids. Several ways
+of characterising these building blocks have been proposed in the literature [72–74, 80, 101–
+104].
+In this work, we employ the simple yet effective quantity, local dimension [80–83],
+to determine the kind of environment a particular location in an intensity map lies in as
+described in 3.2.
+3.1
+Percolation analysis
+The fraction of cluster volume occupied by the largest cluster in a map is known as the largest
+cluster statistic (LCS) [5, 68, 69, 76, 77, 79]. In the case of a gridded field, a cluster may be
+defined as a connected set of cells with intensity I above or below a threshold value I0. We
+are interested in overdensities in the galaxy density and line intensity maps as they trace the
+matter distribution with a characteristic bias. Since all bright (nonzero) cells host galaxies,
+we fix the threshold at I0 = 0, without considering the noise bias and variance that will be
+present in the maps. Starting from a bright cell, a cluster is formed using the friends of friends
+(FoF) algorithm until the cell intensity falls below the threshold value (I ≤I0). The largest
+of all clusters is identified, and LCS is computed using the SURFGEN2 code [68, 105, 106].
+LCS =
+Volume of the largest cluster
+Total volume occupied by clusters .
+(3.1)
+Another quantity of interest is the filling factor (FF), which is the fraction of the simulation
+volume occupied by clusters.
+FF = Total volume occupied by clusters
+Volume of the simulation box
+.
+(3.2)
+We investigate how the LCS varies with FF by iteratively coarse-graining the maps. At
+every iteration, the cells sharing a face with a bright cell are identified and marked as bright
+[5] as shown in Figure 3. The FF and LCS of a map are computed after every iteration. The
+– 9 –
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+spatial resolution of our maps may not necessarily be adequate to reveal the connectivity
+of the structure. A cluster of galaxies may appear as a set of disconnected regions due to
+a small grid spacing. The above coarse-graining scheme allows the growth of structure and
+reveals its connectivity.
+0
+50
+100
+150
+200
+250
+300
+0
+50
+100
+150
+200
+250
+300
+0
+50
+100
+150
+200
+250
+300
+0
+50
+100
+150
+200
+250
+300
+0
+50
+100
+150
+200
+250
+300
+0
+1
+(Mpc)
+(Mpc)
+Figure 3. Illustration of the iterative coarse-graining scheme used for percolation analysis. The four
+panels show the same slice of a map without coarse-graining (first from left) and after 2, 4, and 6
+iterations in order. On each iteration, the cells sharing a face with a bright cell are marked as bright.
+The maps are binary, with the dark cells marked by zeros and the bright cells by ones.
+Coarse-graining a map increases its FF, and since it generally leads to the merging of
+different clusters, the LCS also changes. It has been established that at a certain point,
+characteristic of the field in question, the LCS shoots up to ∼1 for a small change in the FF
+(see discussions in [5, 75]). At this stage, the field is said to have percolated. We investigate
+this percolation behaviour for the galaxy mass density, 21-cm, and CO(1−0) maps by tracking
+the variation in LCS with FF.
+3.2
+Local dimension
+Given a bright cell in a map, it can be determined whether it lies in a filamentary, sheet-like
+or volume-filling (nodes and voids) environment using its local dimension defined in [80].
+This was originally defined for a discrete point distribution, and we extend this to gridded
+fields (density and line intensity maps).8 First, we randomly sample a given number of cells
+out of bright cells having I > I0. For a given value of I0, we count the number of bright cells
+N(R) in a sphere of radius R centred at a given bright cell and examine how it scales with
+R. The radius R is varied from Rmin to Rmax in steps of size ∆R. We make sure that the
+sampled centres are at least a distance Rmax apart from the faces of the box, so that periodic
+boundary conditions need not be applied. Then, N(R) is fitted with a power law
+N(R) = ARD ,
+(3.3)
+where A is a normalisation constant and D, which determines the scaling behaviour, is called
+the local dimension of the bright cell for the length scale Rmin to Rmax. As in the percolation
+analysis, we set I0 = 0. Later in this work, we examine the impact of thermal noise and line
+interlopers on the local dimension analysis.
+The exponent D is expected to take the values 1, 2, and 3 for cells in straight filaments,
+sheets, and volume-filling environments (nodes and voids), respectively. However, fractional
+values are allowed for intermediate environments between any two types mentioned above
+8https://github.com/dmmohit/local dimension.git
+– 10 –
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+D ∈
+(0.75, 1.25]
+(1.25, 1.75]
+(1.75, 2.25]
+(2.25, 2.75]
+(2.75, 3.25]
+Class
+C1
+I1
+C2
+I2
+C3
+Table 1. Notation used for the different local dimension bins.
+[80]. We impose the condition χ2
+ν ≤1.2 for the power law fit to ensure both goodness of fit
+and a large number of cells where the fits converge. If this condition is satisfied, the local
+dimension is defined for the given cell and the cell is said to be classifiable. The fraction of cells
+where D can be defined depends on the length scale. The morphology of a density/intensity
+map is characterised by plotting the distribution of the D-values in a subset of cells sampled
+from the map. As in [82], we classify the D-values into bins of sizes 0.5, centred at multiples
+of 0.5 between and including 1.0 and 3.0. The notation used for the different D bins is shown
+in Table 1. The distribution function is defined as
+P(D) =
+Number of centres in D-bin
+Bin width × Total number of centres where D is defined .
+(3.4)
+Due to a low SNR, recovery of the local dimensions from noisy maps is challenging. As
+noise is random and uncorrelated, it is expected to wash out the information of the cosmic
+web structure, and a noise-dominated map would yield D ≃3 everywhere. To recover the
+LSS information, we need to either go to the signal-dominated regime or de-noise the maps
+by smoothing them with a suitable kernel. We describe some approaches to recover the LSS
+information from noisy intensity maps below:
+• nσ thresholding: The thermal noise in our simulations is Gaussian random, while
+the signal has a highly skewed distribution. Therefore, on applying a threshold inten-
+sity that is some integer n times the noise σ, we can expect that the cells above the
+threshold will have a larger signal component. Therefore, to obtain the local dimension
+distribution of a noisy map, we sample cells randomly out of all the cells that have
+intensity above nσ, and count N(R) by including cells with intensity > nσ.
+• De-noising by smoothing: We find cases with low SNR in section 4 where the
+structure is washed out even above 1σ and 2σ thresholds. In such cases, we smooth
+the noisy map with a Gaussian smoothing kernel of size (Rs) that is a multiple of the
+spatial resolution. As the noise has zero mean and is uncorrelated across grid cells,
+the smoothed noise component tends to zero for a sufficiently large smoothing kernel
+size. The signal component survives, even though its magnitude decreases, because the
+signal is spatially correlated due to the LSS.
+We follow a combination of the above two methods to recover the local dimension distribution
+from noisy maps.
+4
+Results
+4.1
+Percolation analysis
+Figure 4 shows the percolation curves of the galaxy mass density, 21-cm, and CO(1−0) maps.
+The maps have a spatial resolution of δx ≃0.5 Mpc, as it allows low FFs initially such that
+the percolation transition is visible. The different points on the curve result from the FF
+and LCS computed after every successive iteration in the coarse-graining scheme. CO(1 −0)
+– 11 –
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+emission originates from a subset of galaxies that are star-forming, leading to fewer bright
+cells in the CO(1 −0) map.
+Therefore, initially, it has the lowest FF. However, as we
+iteratively coarse-grain the maps, the CO(1 −0) map percolates faster than the underlying
+galaxy density map, and the percolation curve for the 21-cm map lies in between the two.
+This might indicate that relative to the 21-cm map, the CO(1−0) map has a more filamentary
+morphology, which in turn exhibits a more filamentary morphology than the galaxy density
+map. As both the FF and the LCS are computed after each step of coarse-graining, the
+former cannot be independently varied, and the LCS cannot be compared at the same FF
+values for the three maps for an even comparison. Therefore, the percolation analysis is
+an inconclusive indicator of the overall filamentarity of the maps. Regardless of their exact
+nature, the 21-cm and CO(1 −0) maps having different percolation curves indicate that the
+emission regions have different connectivity patterns, and originate from biased locations in
+the cosmic web.
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+Filling Factor (FF)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Largest Cluster Statistic (LCS)
+Galaxy density
+21-cm
+CO(1-0)
+Figure 4. Percolation curves for the galaxy mass density (solid black), 21-cm (dashed red), and
+CO(1 −0) (dashed blue) maps at spatial resolution δx = 0.5 Mpc.
+4.2
+Local dimension
+The distribution of local dimension values of the map cells shows the contribution of filaments,
+sheets and voids to the galaxy densities and line emissions.
+4.2.1
+Uncontaminated signal maps
+Figure 5 shows the distribution of local dimensions of 105 cells randomly sampled out of the
+bright cells in the galaxy mass density, 21-cm, and CO(1−0) maps. The spatial resolution of
+the maps is set to 0.87 Mpc to achieve a balance between a fine resolution to be able to resolve
+small-scale features, and a coarse enough resolution to reduce thermal noise. As the grid cells
+are cubical, the spatial resolution in the sky plane is coupled with the spectral resolution
+(spatial resolution along the line of sight). Unless specified otherwise, all subsequent maps
+will have a spatial resolution of 0.87 Mpc. The Rmin, Rmax and ∆R values are chosen such
+– 12 –
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+that the number of intermediate radii taken for the local dimension fits is equal for each length
+scale. This is done to maintain consistency and ensure that any difference in D between the
+length scales results from an actual difference in morphology. We note that emissions from
+the C3 class (see Table 1) originate from voids, as the length scales chosen are larger than
+the typical sizes of nodes.
+In each map, the contribution from higher D-values increases with an increase in length
+scale. This is expected because as we go to larger length scales, we keep approaching the
+homogeneity scale where the LSS becomes homogeneous (D ≃3).
+For both the galaxy
+density and the 21-cm maps, the contribution is the highest from class C3 across length
+scales, decreasing monotonically with decreasing D. The contribution from C1 and I1 is
+negligible at the map resolution. The comparison between different spatial resolutions is
+shown in Figure 8 later in this section. However, in the case of the CO(1 −0) map, the
+contribution from C3 is suppressed and the distribution peaks at I2. There is also an increase
+in the fraction of centres in I1 and C2.
+The percentage of classifiable cells decreases with increasing length scale, because the
+neighbourhood of a cell is less likely to maintain a similar morphology throughout a radius
+range as Rmax goes up, which is a necessary condition for the fits to converge. Overall, the
+CO(1 −0) map shows a higher degree of convergence of fits than the others. This might be a
+consequence of most of the CO(1−0) emission originating from cosmic web galaxies (galaxies
+lying in filaments, sheets and nodes), where the environments are expected to maintain a
+similar morphology over large scales. On the contrary, the 21-cm signal traces the underlying
+galaxy distribution more closely, and the fits might not converge in a large fraction of cells
+lying in irregular environments.
+The cosmic variance in the distribution of local dimensions in the observable maps, i.e.,
+the 21-cm and CO(1 −0) intensity maps, is denoted by 1σ error bars in Figure 5. This is
+estimated as the standard deviation in the P(D) values in each D-bin across 8 (150 Mpc)3
+21-cm subcubes and 27 (100 Mpc)3 CO(1 −0) subcubes, corresponding to SKA-Mid survey
+areas as detailed in sections 2.3 and 5. We only find a narrow spread in the local dimension
+distributions about the morphology of the larger cosmological box at the 1σ level.
+Figure 6 shows the fractions of the same 105 cells lying in the different D-bins. The
+fractions in different D-bins do not add up to 1 for either length scale because many fits
+converge to unphysical values above the C3 bin, which have not been shown. A difference
+between the distributions for the galaxy density and 21-cm maps, which was not noticeable
+in Figure 5, shows up, particularly in the 3 −11 Mpc length scale. The fraction of cells in
+C3 remains the same, but the 21-cm map shows an increased contribution from I2 compared
+to the galaxy density map. In contrast, the CO(1 −0) map shows reduced contribution from
+C3 and a significant increase at C2 and I2. The increase in C2 centres comes at the expense
+of a reduced contribution from C3 centres, as the contribution from I2 does not decrease but
+instead increases. As in Figure 5, we find the 1σ errors in P(D) to be small compared to
+the P(D) estimated from the larger box. All subsequent local dimension distributions will
+be obtained from 105 randomly sampled bright cells unless specified otherwise.
+In redshift space, the distribution shifts towards lower D in each map as shown in Figure
+7. The galaxy density and 21-cm maps retain a distribution of local dimensions similar to each
+other; however, the peak shifts to I2. As in real space, the CO(1−0) map shows a morphology
+shifted towards lower D-values across length scales. As the Kaiser effect leads to increased
+clustering along the line of sight, structures become squashed and appear more filamentary
+perpendicular to the line of sight. This leads to the shift in the local dimensions towards lower
+– 13 –
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+0.0
+0.5
+1.0
+Galaxy density
+Galaxy density
+3-11 Mpc; 68.6%
+3-19 Mpc; 22.0%
+0.0
+0.5
+1.0
+21-cm
+21-cm
+3-11 Mpc; 72.7%
+3-19 Mpc; 26.5%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.5
+1.0
+CO(1-0)
+CO(1-0)
+3-11 Mpc; 86.1%
+3-19 Mpc; 43.4%
+local dimension (D)
+P(D)
+Figure 5. Distribution of local dimensions of classifiable cells out of 105 randomly sampled bright
+cells in the galaxy mass density (top), 21-cm (middle), and CO(1 −0) (bottom) maps simulated
+with galaxy positions in real space. The D-values are binned into intervals of size 0.5. The different
+curves correspond to different length scales specified by the Rmin and Rmax values. The percentage of
+classifiable cells is mentioned alongside the length scale. The 1σ error bars denote standard deviation
+in P(D) across 8 (150 Mpc)3 21-cm subcubes and 27 (100 Mpc)3 CO(1−0) subcubes, corresponding to
+realistic SKA-Mid survey areas of 4 deg2 and 1.77 deg2 respectively for 104 randomly sampled bright
+cells.
+0.0
+0.1
+0.2
+0.3
+Galaxy density
+Galaxy density
+3-11 Mpc; 68.6%
+3-19 Mpc; 22.0%
+0.0
+0.1
+0.2
+0.3
+21-cm
+21-cm
+3-11 Mpc; 72.7%
+3-19 Mpc; 26.5%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.2
+0.4
+CO(1-0)
+CO(1-0)
+3-11 Mpc; 86.1%
+3-19 Mpc; 43.4%
+local dimension (D)
+fraction of centres
+Figure 6. Same as Figure 5, normalised with the number of centres sampled instead of the number
+of classifiable centres. This gives the fraction of cells lying in each bin out of the number of bright
+cells sampled.
+– 14 –
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+(more filamentary) values. Henceforth, all maps used for morphological analysis will be in
+redshift space unless specified otherwise. The suppression of CO(1−0) emission contribution
+from the C3 class and the increase in the relative contribution from I1 and C2 might result
+from a lower abundance of star-forming galaxies in void-like environments than inside the
+web.
+0.0
+0.5
+1.0
+Galaxy density
+Galaxy density
+3-11 Mpc; 59.5%
+3-19 Mpc; 12.9%
+0.0
+0.5
+1.0
+21-cm
+21-cm
+3-11 Mpc; 64.6%
+3-19 Mpc; 16.6%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.5
+1.0
+CO(1-0)
+CO(1-0)
+3-11 Mpc; 79.7%
+3-19 Mpc; 31.1%
+local dimension (D)
+P(D)
+Figure 7. Same as Figure 5, but with galaxy positions in redshift space after applying RSD in the
+Kaiser regime.
+The distribution of local dimensions is expected to depend on the spatial resolution of
+the maps. Filamentary features on small scales, which can be resolved at a high resolution,
+get smoothed out on going to a coarser resolution. This is shown in Figure 8 for CO(1 −0)
+maps at four different spatial resolutions: δs ≃0.25, 0.5, 0.75, and 1 Mpc. With increasing
+spatial resolution, the distribution across length scales shifts towards lower D-values.
+4.2.2
+Thermal noise-contaminated maps
+So far, we have seen that the local dimension distributions show different signatures for the
+21-cm and CO(1 −0) maps. We now study the detectability of these features in SKA-Mid
+observations in the presence of thermal noise. We find that at least 5000 hours per pointing
+of SKA1-Mid observation are required to achieve an appreciable SNR for the 21-cm map at
+the required resolution. On the other hand, the CO(1 −0) map attains signal dominance
+after 100 hours of SKA2-Mid observation per pointing.
+We show the results upon adding Gaussian random thermal noise for 5000 hours per
+pointing of SKA1-Mid observations in the AA4 configuration for the 21-cm map in Figure 9.
+The normalised fractions P(D) are estimated by averaging over 100 noise realisations. On
+applying a 1σ threshold, the local dimension distribution gets washed out, and all sampled
+cells occupy C3. This is due to a uniform distribution of bright cells resulting from noise
+dominance even above 1σ. A similar trend is seen with a 2σ threshold as well. We apply
+smoothing filters of sizes Rs = m δs where m = 1, 2, 3, 4 and δs = 0.87 Mpc. On increasing
+the smoothing scale, the distribution starts to appear different from the unsmoothed case.
+The contribution from I2 and C2 classes increases, and at Rs ≃4 Mpc, the distribution starts
+– 15 –
+
+============================================================
+=== PAGE 17 ===
+============================================================
+
+0.00
+0.25
+0.50
+0.75
+1.00
+s
+0.25 Mpc
+s
+0.25 Mpc
+2-10 Mpc; 63.0%
+2-20 Mpc; 14.1%
+0.00
+0.25
+0.50
+0.75
+1.00
+s
+0.5 Mpc
+s
+0.5 Mpc
+2-10 Mpc; 67.2%
+2-20 Mpc; 16.4%
+0.0
+0.5
+1.0
+s
+0.75 Mpc
+s
+0.75 Mpc
+2-10 Mpc; 78.5%
+2-20 Mpc; 21.7%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.5
+1.0
+s
+1 Mpc
+s
+1 Mpc
+2-10 Mpc; 79.7%
+2-20 Mpc; 28.0%
+local dimension (D)
+P(D)
+Figure 8. Comparison of the distributions of local dimensions of CO(1−0) maps at spatial resolutions
+of δs ≃0.25, 0.5, 0.75, and 1 Mpc. The length scales are chosen such that they yield similar numbers
+of R values between Rmin and Rmax at each length scale, and Rmin and Rmax themselves remain
+approximately the same for an even comparison.
+to qualitatively resemble that of the uncontaminated signal in the middle panel of Figure
+7. However, the exact nature of the distribution is markedly different. Additionally, the
+percentage of classifiable cells decreases with increasing smoothing scale.
+Figure 10 shows the distribution of local dimensions of the CO(1 −0) map after adding
+thermal noise corresponding to 100 hours of SKA2-Mid observations per pointing, assuming
+an AA4 configuration of dishes. As in the case of the 21-cm map, the distribution is confined
+to C3 when a 1σ threshold is applied. However, it changes significantly when a 2σ threshold
+is applied, with increased contributions from C2 and I2. The percentage of classifiable cells
+is high, with ∼90% and ∼70% of cells classifiable in the 3 −11 and 3 −19 Mpc length
+scales, respectively. Most importantly, on applying a 3σ threshold, the distribution better
+resembles that of the noiseless CO(1−0) map (bottom panel of Figure 7), and the percentage
+of classifiable cells also remains high. The recovered distribution is shifted towards lower D-
+values, but this behaviour is consistent in both the length scales. This indicates that in the
+presence of thermal noise only, the morphology of CO(1 −0) intensity maps on sub-Mpc
+length scales at z ≃1.4 can be recovered with a minimal bias by SKA2-Mid by means of the
+local dimension.
+– 16 –
+
+============================================================
+=== PAGE 18 ===
+============================================================
+
+0
+1
+2
+Unsmoothed
+Unsmoothed
+3-11 Mpc; 94.5%
+3-19 Mpc; 93.5%
+0
+1
+Rs
+1 Mpc
+Rs
+1 Mpc
+3-11 Mpc; 82.2%
+3-19 Mpc; 48.9%
+0.0
+0.5
+1.0
+Rs
+2 Mpc
+Rs
+2 Mpc
+3-11 Mpc; 61.2%
+3-19 Mpc; 14.1%
+0.0
+0.5
+1.0
+Rs
+3 Mpc
+Rs
+3 Mpc
+3-11 Mpc; 53.9%
+3-19 Mpc; 8.8%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.5
+1.0
+Rs
+4 Mpc
+Rs
+4 Mpc
+3-11 Mpc; 53.5%
+3-19 Mpc; 8.0%
+local dimension (D)
+P(D)
+Figure 9. Distribution of local dimensions recovered from the 21-cm map contaminated with Gaussian
+random thermal noise corresponding to 5000 hours per pointing of SKA1-Mid observations.
+The
+threshold is set at 1σ (noise standard deviation). From top to bottom, we show the distribution
+for the unsmoothed map and after de-noising the map with Gaussian smoothing kernels of sizes
+Rs ≃1, 2, 3, and 4 Mpc. The error bars on P(D) are 3σ uncertainties over 100 noise realisations.
+4.2.3
+Interloper-contaminated maps
+Figure 11 shows slices parallel to the line of sight of the CO(1 −0) lightcone centred at
+z = 1.41 (left), the same lightcone contaminated by the two strongest interlopers: The
+CO(2 −1) emission from z = 3.82 only (middle), and the resultant of CO(2 −1) at z = 3.82
+and CO(3 −2) from z = 6.23 (right). The maps clearly exhibit washing out of the target
+structures by the interlopers.
+The distributions of local dimensions of the target CO(1−0) lightcone and the lightcones
+of the individual interloper lines centred at the redshifts from which they contribute are shown
+in the first three panels of Figure 12. The distribution for the CO(1−0) lightcone looks almost
+identical to that of the coeval CO(1−0) intensity map as shown in the bottom panel of Figure
+5. The distributions for both the interloper-only lightcones are almost identical, with the
+percentages of classifiable centres for the different length scales also agreeing very closely.
+– 17 –
+
+============================================================
+=== PAGE 19 ===
+============================================================
+
+0
+1
+2
+1  threshold
+1  threshold
+3-11 Mpc; 93.8%
+3-19 Mpc; 88.6%
+0.0
+0.5
+1.0
+2  threshold
+2  threshold
+3-11 Mpc; 90.7%
+3-19 Mpc; 69.3%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.00
+0.25
+0.50
+0.75
+3  threshold
+3  threshold
+3-11 Mpc; 88.8%
+3-19 Mpc; 56.5%
+local dimension (D)
+P(D)
+Figure 10. Distribution of local dimensions recovered from the CO(1 −0) map contaminated with
+Gaussian random thermal noise corresponding to 100 hours per pointing of SKA2-Mid observations.
+From top to bottom, we show the distribution for 1σ, 2σ, and 3σ thresholds, where σ is the standard
+deviation of noise. The error bars on P(D) are 3σ uncertainties over 100 noise realisations.
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+CO(1-0) only
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+CO(1-0) + CO(2-1)
+0
+50
+100
+150
+200
+250
+300
+(Mpc)
+CO(1-0) + CO(2-1) + CO(3-2)
+0
+10
+4
+10
+3
+10
+2
+10
+1
+100
+101
+102
+103
+104
+TCO ( K)
+Figure 11. Left: Slice of the CO(1 −0) brightness temperature lightcone centred at z = 1.41 with
+spatial resolution δx ≃0.87 Mpc; the same slice of the lightcone contaminated by CO(2 −1) from
+z = 3.82 only (middle) and the sum of CO(2 −1) from z = 3.82 and CO(3 −2) from z = 6.23 (right).
+The horizontal axis is the line of sight with redshift increasing from left to right.
+– 18 –
+
+============================================================
+=== PAGE 20 ===
+============================================================
+
+The distribution differs from that of the target lightcone noticeably, as the contribution from
+the C3 class increases across length scales. This might be a result of a smoother and less
+clustered LSS at higher redshifts.
+The bottom two panels of Figure 12 show the local dimension distribution for the
+resultant maps after accounting for the interloper contribution from CO(2 −1) only and the
+aggregate of CO(2−1) and CO(3−2). The original distribution for the CO(1−0) lightcone is
+distorted even after accounting for the contamination by CO(2 −1) only, as the contribution
+from the C3 class increases sharply and the peak shifts to C3 for each length scale probed.
+The contribution from the C2 class also almost vanishes at each length scale, and any sheet-
+like behaviour becomes undetectable. Adding the contribution from CO(3−2) further skews
+the distribution towards C3, with the relative contribution from I2 dropping and that from
+C2 vanishing completely. The percentages of classifiable cells increase marginally at all scales
+compared to the panel above, but are lower than those in the target signal. This indicates that
+the structure appears increasingly homogeneous as the interloper contributions are accounted
+for, and that interloper signals must be modelled separately to isolate the morphology of the
+intensity maps of the target signal.
+5
+Summary and conclusion
+Line intensity mapping is a useful complementary probe to galaxy surveys to characterise
+the large-scale structure of the universe, which forms the cosmic web consisting of voids,
+sheets, filaments, and nodes. SKA1-Mid will produce tomographic intensity maps of the
+21-cm line up to z ≃3, and in phase 2 (SKA2-Mid), both the 21-cm and CO(1 −0) lines
+may be observed in an overlapping redshift range of 1.4 ≲z ≲3. To trace the cosmic web,
+we targeted the atomic (HI) and molecular (H2) phases of hydrogen — the most abundant
+element in the universe. The 21-cm line traces HI gas, whereas molecular gas is traced by
+the CO(1−0) rotational line emission. We made one of the first attempts to characterise the
+LSS morphology directly with LIM images in the post-reionisation universe, where HI gas is
+confined to galaxies. This is an alternative strategy to Fourier domain summary statistics,
+such as the power spectrum, and preserves the non-Gaussian and morphological information
+that is lost when the information of a field is compressed into such statistics.
+We post-processed the galaxy catalogues from the TNG300-1 box of the gravo - magne-
+tohydrodynamical simulation IllustrisTNG using the Line Intensity Mapping Tool (LIMiT).
+We produced galaxy mass density, and 21-cm and CO(1 −0) line intensity maps by extract-
+ing the total galaxy masses, gas masses, hydrogen fractions, and SFRs of galaxies. We also
+implemented the effect of RSD using the peculiar velocities of galaxies along the line of sight.
+Simulations of mock observations with thermal noise for the 21-cm and CO(1−0) maps
+followed the specifications of the AA4 configuration for SKA1-Mid and SKA2-Mid (spectral
+bandwidth upgraded), respectively.
+We simulated Gaussian random noise for the above
+telescopes and computed the SNRs at different redshifts for 5000 hours of observation per
+pointing for the 21-cm signal and 100 hours of observation per pointing for the CO(1 −0)
+signal. We found that an optimal SNR, where the morphologies of both line emissions can
+be analysed, is attained at z = 1.41. We also found that a balance between a coarse enough
+resolution, where the noise is minimised, and a fine enough resolution, where sub-Mpc scale
+structure is resolved, is achieved by averaging over eight frequency channels of SKA-Mid.
+This yields an effective spectral resolution of 107.52 kHz, corresponding to a comoving spatial
+resolution of 0.87 Mpc at z = 1.41.
+– 19 –
+
+============================================================
+=== PAGE 21 ===
+============================================================
+
+0.0
+0.5
+1.0
+CO(1-0)
+CO(1-0)
+3-11 Mpc; 80.2%
+3-19 Mpc; 35.0%
+0.0
+0.5
+1.0
+CO(2-1)
+CO(2-1)
+3-11 Mpc; 69.0%
+3-19 Mpc; 21.8%
+0.0
+0.5
+1.0
+CO(3-2)
+CO(3-2)
+3-11 Mpc; 69.0%
+3-19 Mpc; 21.4%
+0.0
+0.5
+1.0
+CO(1-0) + CO(2-1)
+CO(1-0) + CO(2-1)
+3-11 Mpc; 72.1%
+3-19 Mpc; 25.5%
+1.0
+1.5
+2.0
+2.5
+3.0
+0.0
+0.5
+1.0
+1.5
+CO(1-0) + CO(2-1) + CO(3-2)
+CO(1-0) + CO(2-1) + CO(3-2)
+3-11 Mpc; 72.6%
+3-19 Mpc; 27.0%
+local dimension (D)
+P(D)
+Figure 12. Distribution of local dimensions of 105 randomly sampled bright cells in the (from top to
+bottom) (i) target CO(1−0) lightcone centred at z = 1.41, (ii) interloper CO(2−1) lightcone centred
+at z = 3.82, (iii) interloper CO(3 −2) lightcone centred at z = 6.23, (iv) CO(1 −0) contaminated
+by CO(2 −1) only, and (v) CO(1 −0) contaminated by CO(2 −1) and CO(3 −2). The 1σ error
+bars denote standard deviation in P(D) across 27 (100 Mpc)3 subcubes, corresponding to a realistic
+SKA-Mid sub-survey for 104 randomly sampled bright cells.
+A single pointing of SKA-Mid can survey 5.56 deg2 at a central frequency of 589 MHz
+(redshifted frequency of the 21-cm line from z = 1.41). This corresponds to a comoving
+volume of (177 Mpc)3 for a spectral bandwidth of ≃22 MHz. Therefore, a cosmological
+volume can be surveyed using the 21-cm line by observing at a single pointing for 5000 hours.
+However, due to the frequency dependence of the primary beam width, the field of view of the
+same array for the CO(1−0) line is limited to ≃92 arcmin2. This is considering a phased array
+system of feeds offset from each other in such a way that it increases the field of view of the
+array by ∼30 times. Such a strategy has been employed by the Australian SKA Pathfinder
+(ASKAP) [96], and a similar approach has been used by the COMAP Collaboration to
+observe the CO LIM signal in the post-reionisation universe [107]. CO(1 −0) intensity maps
+formed using approximately 70 non-overlapping pointings of the array at central frequency
+48 GHz with spectral bandwidth ≃1 GHz must be mosaicked to survey a comoving volume
+– 20 –
+
+============================================================
+=== PAGE 22 ===
+============================================================
+
+of (100 Mpc)3, which is the minimum cosmological volume that can be assumed to show
+statistical homogeneity and isotropy. The resulting 21-cm and CO(1 −0) sub-surveys will
+effectively require 5000 and 7000 total observing hours, respectively.
+We studied the percolation transition of the galaxy mass density map, as well as the 21-
+cm and CO(1−0) line intensity maps, using the largest cluster statistic (LCS) and filling factor
+(FF) by iteratively coarse-graining the maps. The galaxy density map showed the slowest
+percolation transition, followed by the 21-cm and CO(1 −0) maps. As the FF could not be
+independently varied, the LCS values could not be compared at the same FFs. Nevertheless,
+the CO(1−0) map appeared to percolate faster than the 21-cm map. It was demonstrated in
+[5] that a faster percolation transition indicates a higher degree of overall filamentarity of a
+field. Since a significant difference in the FFs at which the percolation transition occurs for the
+different maps could not be established, a higher degree of filamentarity of the CO(1−0) map
+is not conclusive. However, the three maps tracing different percolation curves, despite being
+biased tracers of the same matter distribution, indicate that they have differing morphologies.
+To confirm whether CO(1 −0) emission in the intensity map originates from biased
+locations in the cosmic web, we computed local dimensions of cells lying in overdensities
+in the galaxy distribution and hot spots in the 21-cm and CO(1 −0) line intensity maps.
+We then determined what fractions of these cells belong to the different structural elements
+in the cosmic web. Out of the grid cells in the maps that were classifiable using the local
+dimension, the largest fraction belonged to void-like environments, followed by regions inter-
+mediate between sheets and voids. This can be expected as voids account for ∼95% of the
+volume of the universe. The 21-cm map showed a similar behaviour, along with an increase
+in the fraction of classifiable cells. This indicates that the 21-cm line emission traces the
+galaxy distribution almost exactly, with slight differences arising due to gas-depleted galax-
+ies. However, the classifiable bright cells in the CO(1 −0) map have the largest contribution
+from environments intermediate between sheets and voids, and the relative contribution from
+void-like regions is suppressed.
+Even the absolute fraction of cells in sheet-like environments, which increases sharply
+in the CO(1 −0) map compared to the 21-cm map, comes at the expense of voids, as the
+fraction in the intermediate environment also increases. Since the CO(1 −0) luminosities of
+galaxies are entirely SFR-dependent in our model, this indicates quenching of star formation
+in such environments. This disagrees with the findings of [108, 109], where voids have high
+fractions of blue and star-forming galaxies.
+The local dimension distribution shifts towards lower D-values for maps in redshift
+space due to increased clustering of structure along the line of sight. This makes structures
+appear more filamentary than they actually are. The negligible contribution of filaments in
+each case is a combination of two factors: Firstly, our resolution element is large, and hence
+filamentary features might go unresolved. Secondly, we computed the normalised fraction of
+bright cells that lie within each structural element, which is related to the volume it occupies.
+As filaments occupy a lesser volume than sheets and voids, the fractions are extremely low.
+We found that the local dimension distribution depends on the spatial resolution of the
+maps, and filamentary features start to get resolved with finer resolutions. We find that the
+cosmic variance introduced in the distribution of local dimensions due to sub-surveys of the
+larger (300 Mpc)3 volume is small compared to the actual distributions obtained from the
+larger volume.
+We studied the prospects of recovering the distribution of local dimensions from 21-cm
+maps contaminated by thermal noise corresponding to 5000 hours of SKA1-Mid observation.
+– 21 –
+
+============================================================
+=== PAGE 23 ===
+============================================================
+
+On applying a 1σ noise threshold to the noise-contaminated map, the ground truth morphol-
+ogy was found to be completely destroyed and unrecoverable. We smoothed the map with
+Gaussian kernels of varying sizes to de-noise the map and found that at kernel sizes of ∼3−4
+Mpc, the nature of the distribution starts to get recovered. However, the exact features of the
+distribution differ from those of the uncontaminated map. We conclude that the morphology
+of 21-cm intensity maps at sub-Mpc length scales at z ≃1.4 cannot be recovered accurately
+even with 5000 hours of SKA1-Mid observation.
+The recovery prospects were found to be better for CO(1 −0) intensity maps contam-
+inated by thermal noise only with SKA2-Mid. On adding thermal noise corresponding to
+100 hours per pointing (7000 total observing hours) of SKA2-Mid observation and applying
+a 1σ noise threshold, the morphology could not be recovered as in the case of the 21-cm
+map. However, applying a 3σ noise threshold yielded the ground truth morphology of the
+CO(1 −0) map more closely, without the need for de-noising.
+The most important limiting factor in the detectability of CO(1 −0) intensity maps
+was found to be the contamination from interlopers. Even when the contribution from the
+closest interloper line CO(2−1) was accounted for, the inferred morphology was very different
+from the true morphology of the CO(1 −0) intensity map. The morphology resembled a
+homogeneous distribution even more when the contamination from CO(3−2) was added. This
+implies that, given an observed CO intensity map with the foregrounds and other systematic
+effects (out of the scope of this study) modelled perfectly, modelling the tomographic intensity
+maps of the interloper lines CO(2 −1) and CO(3 −2) is necessary to recover the target
+CO(1 −0) intensity map and its morphology.
+The intensity map simulations in this work assumed a one-to-one relation between the
+HI masses of galaxies and their 21-cm brightness temperatures, and the SFRs and their
+CO(1 −0) luminosities, without accounting for the line luminosity scatter in these relations.
+Furthermore, a constant neutral fraction of hydrogen in galaxies was assumed.
+Another
+simplifying assumption was made about the comoving grid resolutions being the same along
+the line of sight and on the sky plane, which is not generally true for observed intensity maps.
+The contamination by residual foregrounds, ionospheric distortions, atmospheric absorption,
+etc. were disregarded, which are expected to have a significant impact on signal detectability.
+We plan to make the simulations more realistic by implementing the above effects in future
+work.
+In this work, we have explored the local dimension as an image-based morphological
+measure to describe line intensity maps. It can be employed as a higher-order summary
+statistic for the estimation of astrophysical and cosmological parameters in a Bayesian infer-
+ence framework, as it is sensitive to morphological features. However, despite being a simple
+exponent to compute, the local dimension is highly resolution-dependent and relies on the
+convergence of a power law fit to be defined. The eigenvalues of the tidal tensor [72–74]
+can be a useful alternative method to characterise the contribution of cosmic web environ-
+ments to intensity maps. This has the potential to be a more robust morphological measure,
+overcoming the above-mentioned drawbacks of the local dimension.
+Acknowledgments
+We would like to thank the anonymous reviewer for their comments and suggestions, which
+have strengthened the analysis presented in this work. MMD, SM, and AD would like to
+thank the Science and Engineering Research Board (SERB) and the Department of Science
+– 22 –
+
+============================================================
+=== PAGE 24 ===
+============================================================
+
+and Technology (DST), Government of India, for financial support through Core Research
+Grant No. CRG/2021/004025 titled “Observing the Cosmic Dawn in Multicolour using Next
+Generation Telescopes”. MMD and SM also thank Somnath Bharadwaj for helpful sugges-
+tions on percolation and local dimension analyses. MMD also thanks Leon Noble for useful
+discussions. CSM would like to acknowledge financial support from the Council of Scientific
+and Industrial Research (CSIR) via a CSIR-SRF Fellowship (Grant No. 09/1022(0080)/2019-
+EMR-I) and from the ARCO Prize Fellowship. SKP acknowledges financial support from
+the Department of Science and Technology, Government of India, through the INSPIRE Fel-
+lowship [IF200312]. SD would like to acknowledge the Cambridge Trust and Isaac Newton
+Studentship for funding his PhD. SB acknowledges the funding provided by the Alexander von
+Humboldt Foundation and the Deutsche Forschungsgemeinschaft (DFG, German Research
+Foundation) under Germany’s Excellence Strategy – EXC-2094 – 390783311.
+SB thanks
+Varun Sahni, Prakash Sarkar, and Santanu Das for their contributions to the development
+of SURFGEN2.
+References
+[1] S.A. Gregory and L.A. Thompson, The Coma/A1367 supercluster and its environs., The
+Astrophysical Journal 222 (1978) 784.
+[2] J. Einasto, A. A. Klypin, E. Saar and S.F. Shandarin, Structure of superclusters and
+supercluster formation – III. Quantitative study of the Local Supercluster, Monthly Notices of
+the Royal Astronomical Society 206 (1984) 529.
+[3] I.B. Zeldovich, J. Einasto and S.F. Shandarin, Giant voids in the Universe, Nature 300
+(1982) 407.
+[4] J.R. Bond, L. Kofman and D. Pogosyan, How filaments of galaxies are woven into the cosmic
+web, Nature 380 (1996) 603.
+[5] S. Bharadwaj, V. Sahni, B.S. Sathyaprakash, S.F. Shandarin and C. Yess, Evidence for
+Filamentarity in the Las Campanas Redshift Survey, The Astrophysical Journal 528 (2000) 21.
+[6] M.A. Arag´on-Calvo, R. van de Weygaert and B.J.T. Jones, Multiscale phenomenology of the
+cosmic web, Monthly Notices of the Royal Astronomical Society 408 (2010) 2163.
+[7] N.I. Libeskind, R. van de Weygaert, M. Cautun, B. Falck, E. Tempel, T. Abel et al., Tracing
+the cosmic web, Monthly Notices of the Royal Astronomical Society 473 (2018) 1195.
+[8] R. Tojeiro and K. Kraljic, Large Scale Structure and the Cosmic Web, arXiv e-prints (2025)
+arXiv:2503.21759 [2503.21759].
+[9] D. Gal´arraga-Espinosa, C. Cadiou, C. Gouin, S.D.M. White, V. Springel, R. Pakmor et al.,
+Evolution of cosmic filaments in the MTNG simulation, Astronomy & Astrophysics 684
+(2024) A63.
+[10] Y. Zhang, H. Guo, X. Yang and P. Wang, Statistical properties of filaments in the cosmic web,
+Monthly Notices of the Royal Astronomical Society 533 (2024) 1048.
+[11] R. van de Weygaert and J.R. Bond, Observations and Morphology of the Cosmic Web, in A
+Pan-Chromatic View of Clusters of Galaxies and the Large-Scale Structure, M. Plionis,
+D. Hughes and O. L´opez-Cruz, eds., (Dordrecht), pp. 409–468, Springer Netherlands (2008),
+DOI.
+[12] Q. Xia, N. Robertson, C. Heymans, A. Amon, M. Asgari, Y.-C. Cai et al., A gravitational
+lensing detection of filamentary structures connecting luminous red galaxies, Astronomy &
+Astrophysics 633 (2020) A89.
+– 23 –
+
+============================================================
+=== PAGE 25 ===
+============================================================
+
+[13] R. Bacon, D. Mary, T. Garel, J. Blaizot, M. Maseda, J. Schaye et al., The MUSE Extremely
+Deep Field: The cosmic web in emission at high redshift, Astronomy & Astrophysics 647
+(2021) A107.
+[14] D.C. Martin, B. Darvish, Z. Lin, R. Cen, M. Matuszewski, P. Morrissey et al., Extensive
+diffuse Lyman-α emission correlated with cosmic structure, Nature Astronomy 7 (2023) 1390.
+[15] A. Loeb and S.R. Furlanetto, The First Galaxies in the Universe, Princeton University Press,
+stu - student edition ed. (2013).
+[16] A.C. Fabian, Observational Evidence of Active Galactic Nuclei Feedback, Annual Review of
+Astronomy and Astrophysics 50 (2012) 455.
+[17] J. Tumlinson, M.S. Peeples and J.K. Werk, The Circumgalactic Medium, Annual Review of
+Astronomy and Astrophysics 55 (2017) 389.
+[18] C. P´eroux and J.C. Howk, The Cosmic Baryon and Metal Cycles, Annual Review of
+Astronomy and Astrophysics 58 (2020) 363.
+[19] T.A. Thompson and T.M. Heckman, Theory and Observation of Winds from Star-Forming
+Galaxies, Annual Review of Astronomy and Astrophysics 62 (2024) 529.
+[20] C.M. Harrison and C. Ramos Almeida, Observational Tests of Active Galactic Nuclei
+Feedback: An Overview of Approaches and Interpretation, Galaxies 12 (2024) 17.
+[21] E.F. Schlafly, D. Kirkby, D.J. Schlegel, A.D. Myers, A. Raichoor, K. Dawson et al., Survey
+Operations for the Dark Energy Spectroscopic Instrument, The Astronomical Journal 166
+(2023) 259.
+[22] A.G. S´anchez, C.M. Baugh, W.J. Percival, J.A. Peacock, N.D. Padilla, S. Cole et al.,
+Cosmological parameters from cosmic microwave background measurements and the final 2dF
+Galaxy Redshift Survey power spectrum, Monthly Notices of the Royal Astronomical Society
+366 (2006) 189.
+[23] M. Tegmark, D.J. Eisenstein, M.A. Strauss, D.H. Weinberg, M.R. Blanton, J.A. Frieman
+et al., Cosmological constraints from the SDSS luminous red galaxies, Physical Review D 74
+(2006) 123507.
+[24] C. Blake, T. Davis, G.B. Poole, D. Parkinson, S. Brough, M. Colless et al., The WiggleZ Dark
+Energy Survey: testing the cosmological model with baryon acoustic oscillations at z= 0.6,
+Monthly Notices of the Royal Astronomical Society 415 (2011) 2892.
+[25] M.M. Ivanov, M. Simonovi´c and M. Zaldarriaga, Cosmological parameters from the BOSS
+galaxy power spectrum, Journal of Cosmology and Astroparticle Physics 2020 (2020) 042.
+[26] DES Collaboration, T.M.C. Abbott, M. Aguena, A. Alarcon, S. Allam, O. Alves et al., Dark
+Energy Survey Year 3 results: Cosmological constraints from galaxy clustering and weak
+lensing, Physical Review D 105 (2022) 023520.
+[27] A. Adame, J. Aguilar, S. Ahlen, S. Alam, D. Alexander, M. Alvarez et al., DESI 2024 VI:
+cosmological constraints from the measurements of baryon acoustic oscillations, Journal of
+Cosmology and Astroparticle Physics 2025 (2025) 021.
+[28] M.S. Cagliari, A. Moradinezhad Dizgah and F. Villaescusa-Navarro, Correcting for Interloper
+Contamination in the Power Spectrum with Neural Networks, The Astrophysical Journal 991
+(2025) 48.
+[29] Euclid Collaboration, I. Risso, A. Veropalumbo, E. Branchini, E. Maragliano, S. de la Torre
+et al., Euclid preparation: LXXXIII. The impact of redshift interlopers on the two-point
+correlation function analysis, Astronomy & Astrophysics 707 (2026) A233 [2505.04688].
+[30] S. Bharadwaj, B.B. Nath and S.K. Sethi, Using HI to probe large scale structures at z∼3,
+Journal of Astrophysics and Astronomy 22 (2001) 21.
+– 24 –
+
+============================================================
+=== PAGE 26 ===
+============================================================
+
+[31] E. Visbal and A. Loeb, Measuring the 3D clustering of undetected galaxies through cross
+correlation of their cumulative flux fluctuations from multiple spectral lines, Journal of
+Cosmology and Astroparticle Physics 2010 (2010) 016.
+[32] E. Visbal, H. Trac and A. Loeb, Demonstrating the feasibility of line intensity mapping using
+mock data of galaxy clustering from simulations, Journal of Cosmology and Astroparticle
+Physics 2011 (2011) 010.
+[33] B.D. Uzgil, J.E. Aguirre, C.M. Bradford and A. Lidz, MEASURING GALAXY
+CLUSTERING AND THE EVOLUTION OF [C ii] MEAN INTENSITY WITH FAR-IR
+LINE INTENSITY MAPPING DURING 0.5 < z < 1.5, The Astrophysical Journal 793
+(2014) 116.
+[34] E. Kovetz, P.C. Breysse, A. Lidz, J. Bock, C.M. Bradford, T.-C. Chang et al., Astrophysics
+and Cosmology with Line-Intensity Mapping, Bulletin of the AAS 51 (2019) 101 [1903.04496].
+[35] E. Schaan and M. White, Astrophysics & cosmology from line intensity mapping vs galaxy
+surveys, Journal of Cosmology and Astroparticle Physics 2021 (2021) 067.
+[36] J.L. Bernal and E.D. Kovetz, Line-intensity mapping: theory review with a focus on
+star-formation lines, The Astronomy and Astrophysics Review 30 (2022) 5.
+[37] C.S. Murmu, S. Majumdar and K.K. Datta, C ii and H i 21-cm line intensity mapping from
+the EoR: impact of the light-cone effect on auto and cross-power spectra, Monthly Notices of
+the Royal Astronomical Society 507 (2021) 2500.
+[38] S. Cunnington, Detecting the power spectrum turnover with H i intensity mapping, Monthly
+Notices of the Royal Astronomical Society 512 (2022) 2408.
+[39] M. Berti, M. Spinelli and M. Viel, 21 cm intensity mapping cross-correlation with galaxy
+surveys: Current and forecasted cosmological parameters estimation for the SKAO, Monthly
+Notices of the Royal Astronomical Society 529 (2024) 4803.
+[40] A.D. Bolatto, M. Wolfire and A.K. Leroy, The CO-to-H2 Conversion Factor, Annual Review
+of Astronomy and Astrophysics 51 (2013) 207.
+[41] C. Carilli and F. Walter, Cool Gas in High-Redshift Galaxies, Annual Review of Astronomy
+and Astrophysics 51 (2013) 105.
+[42] A. Chakraborty, A. Datta, N. Roy, S. Bharadwaj, T.R. Choudhury, K.K. Datta et al., First
+Multi-redshift Limits on Post–Epoch of Reionization 21 cm Signal from z = 1.96–3.58 Using
+uGMRT, The Astrophysical Journal Letters 907 (2021) L7.
+[43] K.M.A. Elahi, S. Bharadwaj, S. Pal, A. Ghosh, S.S. Ali, S. Choudhuri et al., Towards 21-cm
+intensity mapping at z = 2.28 with uGMRT using the tapered gridded estimator – IV.
+Wide-band analysis, Monthly Notices of the Royal Astronomical Society 529 (2024) 3372.
+[44] CHIME Collaboration, M. Amiri, K. Bandura, A. Chakraborty, J.-F. Cliche, M. Dobbs et al.,
+Detection of the Cosmological 21 cm Signal in Auto-correlation at z ˜1 with the Canadian
+Hydrogen Intensity Mapping Experiment, arXiv e-prints (2025) arXiv:2511.19620
+[2511.19620].
+[45] M. Amiri, K. Bandura, A. Chakraborty, M. Dobbs, M. Fandino, S. Foreman et al., A
+Detection of Cosmological 21 cm Emission from CHIME in Cross-correlation with eBOSS
+Measurements of the Lyα Forest, The Astrophysical Journal 963 (2024) 23 [2309.04404].
+[46] T.C. Collaboration, M. Amiri, K. Bandura, T. Chen, M. Deng, M. Dobbs et al., Detection of
+Cosmological 21 cm Emission with the Canadian Hydrogen Intensity Mapping Experiment,
+The Astrophysical Journal 947 (2023) 16.
+[47] S. Paul, M.G. Santos, Z. Chen and L. Wolz, A first detection of neutral hydrogen intensity
+mapping on Mpc scales at z ≈0.32 and z ≈0.44, arXiv e-prints (2023) arXiv:2301.11943
+[2301.11943].
+– 25 –
+
+============================================================
+=== PAGE 27 ===
+============================================================
+
+[48] A. Mazumder, L. Wolz, Z. Chen, S. Paul, M.G. Santos, M. Jarvis et al., Hi intensity mapping
+with the MIGHTEE Survey: first results of the Hi power spectrum, Monthly Notices of the
+Royal Astronomical Society 541 (2025) 476.
+[49] MeerKLASS Collaboration, M. Barberi-Squarotti, J.L. Bernal, P. Bull, S. Camera,
+I.P. Carucci et al., MeerKLASS L-band deep-field intensity maps: entering the H i dominated
+regime, Monthly Notices of the Royal Astronomical Society 537 (2025) 3632.
+[50] M. Santos, P. Bull, D. Alonso, S. Camera, P. Ferreira, G. Bernardi et al., Cosmology from a
+SKA HI intensity mapping survey, in Proceedings of Advancing Astrophysics with the Square
+Kilometre Array — PoS(AASKA14), vol. 215, p. 019, SISSA Medialab (2015), DOI.
+[51] G.K. Keating, G.C. Bower, D.P. Marrone, D.R. DeBoer, C. Heiles, T.-C. Chang et al., FIRST
+RESULTS FROM COPSS: THE CO POWER SPECTRUM SURVEY, The Astrophysical
+Journal 814 (2015) 140.
+[52] G.K. Keating, D.P. Marrone, G.C. Bower and R.P. Keenan, An Intensity Mapping Detection
+of Aggregate CO Line Emission at 3 mm, The Astrophysical Journal 901 (2020) 141.
+[53] N.-O. Stutzer, J.G.S. Lunde, P.C. Breysse, D.T. Chung, K.A. Cleary, D.A. Dunne et al.,
+COMAP Pathfinder – Season 2 results - II. Updated constraints on the CO(1–0) power
+spectrum, Astronomy & Astrophysics 691 (2024) A336.
+[54] D. Nelson, V. Springel, A. Pillepich, V. Rodriguez-Gomez, P. Torrey, S. Genel et al., The
+IllustrisTNG simulations: public data release, Computational Astrophysics and Cosmology 6
+(2019) 2 [1812.05609].
+[55] A. Pillepich, D. Nelson, L. Hernquist, V. Springel, R. Pakmor, P. Torrey et al., First results
+from the IllustrisTNG simulations: the stellar mass content of groups and clusters of galaxies,
+Monthly Notices of the Royal Astronomical Society 475 (2018) 648.
+[56] V. Springel, R. Pakmor, A. Pillepich, R. Weinberger, D. Nelson, L. Hernquist et al., First
+results from the IllustrisTNG simulations: matter and galaxy clustering, Monthly Notices of
+the Royal Astronomical Society 475 (2018) 676.
+[57] D. Nelson, A. Pillepich, V. Springel, R. Weinberger, L. Hernquist, R. Pakmor et al., First
+results from the IllustrisTNG simulations: the galaxy colour bimodality, Monthly Notices of
+the Royal Astronomical Society 475 (2018) 624.
+[58] J.P. Naiman, A. Pillepich, V. Springel, E. Ramirez-Ruiz, P. Torrey, M. Vogelsberger et al.,
+First results from the IllustrisTNG simulations: a tale of two elements – chemical evolution of
+magnesium and europium, Monthly Notices of the Royal Astronomical Society 477 (2018)
+1206.
+[59] F. Marinacci, M. Vogelsberger, R. Pakmor, P. Torrey, V. Springel, L. Hernquist et al., First
+results from the IllustrisTNG simulations: radio haloes and magnetic fields, Monthly Notices
+of the Royal Astronomical Society 480 (2018) 5113.
+[60] D. Sarkar, S. Bharadwaj and S. Anathpindika, Modelling the post-reionization neutral
+hydrogen (H i) bias, Monthly Notices of the Royal Astronomical Society 460 (2016) 4310.
+[61] D. Sarkar, S. Majumdar and S. Bharadwaj, Modelling the post-reionization neutral hydrogen
+(H i) 21-cm bispectrum, Monthly Notices of the Royal Astronomical Society 490 (2019) 2880.
+[62] D.T. Chung, P.C. Breysse, K.A. Cleary, D.A. Dunne, J.G.S. Lunde, H. Padmanabhan et al.,
+COMAP Pathfinder – Season 2 results - III. Implications for cosmic molecular gas content at
+z ∼3, Astronomy & Astrophysics 691 (2024) A337.
+[63] P.J.E. Peebles, The large-scale structure of the universe (Jan., 1980).
+[64] K. Moodley, W. Naidoo, H. Prince and A. Penin, A cross-bispectrum estimator for CMB-HI
+intensity mapping correlations, arXiv e-prints (2023) arXiv:2311.05904 [2311.05904].
+– 26 –
+
+============================================================
+=== PAGE 28 ===
+============================================================
+
+[65] E. Massara, F. Villaescusa-Navarro, C. Hahn, M.M. Abidi, M. Eickenberg, S. Ho et al.,
+Cosmological Information in the Marked Power Spectrum of the Galaxy Field, The
+Astrophysical Journal 951 (2023) 70.
+[66] M. Kamran, M. Sahl´en, D. Sarkar and S. Majumdar, The re-markable 21-cm power spectrum.
+part i. probing the hi distribution in the post-reionization era using marked statistics, Journal
+of Cosmology and Astroparticle Physics 2025 (2025) 054.
+[67] K.R. Mecke, T. Buchert and H. Wagner, Robust morphological measures for large-scale
+structure in the Universe, Astronomy & Astrophysics 288 (1994) 697 [astro-ph/9312028].
+[68] S. Bag, R. Mondal, P. Sarkar, S. Bharadwaj and V. Sahni, The shape and size distribution of
+H ii regions near the percolation transition, Monthly Notices of the Royal Astronomical
+Society 477 (2018) 1984.
+[69] A. Pathak, S. Bag, S. Dasgupta, S. Majumdar, R. Mondal, M. Kamran et al., Distinguishing
+reionization models using the largest cluster statistics of the 21-cm maps, Journal of
+Cosmology and Astroparticle Physics 2022 (2022) 027.
+[70] R. Ghara, S. Bag, S. Zaroubi and S. Majumdar, The morphology of the redshifted 21-cm signal
+from the Cosmic Dawn, Monthly Notices of the Royal Astronomical Society 530 (2024) 191.
+[71] M. Bashir, N. S, P. Chingangbam, F. Rahman, P. Goyal, S. Appleby et al., Local patch
+analysis of ACT DR6 convergence map using morphological statistics, arXiv e-prints (2025)
+arXiv:2503.17849 [2503.17849].
+[72] O. Hahn, C. Porciani, C.M. Carollo and A. Dekel, Properties of dark matter haloes in
+clusters, filaments, sheets and voids, Monthly Notices of the Royal Astronomical Society 375
+(2007) 489.
+[73] J.E. Forero–Romero, Y. Hoffman, S. Gottl¨ober, A. Klypin and G. Yepes, A dynamical
+classification of the cosmic web, Monthly Notices of the Royal Astronomical Society 396
+(2009) 1815.
+[74] Ay¸coberry, Emma, Barthelemy, Alexandre and Codis, Sandrine, A theoretical view of the
+t-web statistical description of the cosmic web, Astronomy & Astrophysics 686 (2024) A276.
+[75] S.F. Shandarin, Percolation Theory and the Cell / Lattice Structure of the Universe, Soviet
+Astronomy Letters 9 (1983) 104.
+[76] A. Klypin and S.F. Shandarin, Percolation Technique for Galaxy Clustering, The
+Astrophysical Journal 413 (1993) 48.
+[77] S. Dasgupta, S.K. Pal, S. Bag, S. Dutta, S. Majumdar, A. Datta et al., Interpreting the Hi
+21-cm cosmology maps through Largest Cluster Statistics. Part I. Impact of the synthetic
+SKA1-Low observations, Journal of Cosmology and Astroparticle Physics 2023 (2023) 014.
+[78] E. Reg˝os, V. Springel, S. Bose, B. Hadzhiyska and C. Hern´andez-Aguayo, Percolation
+Statistics in the MillenniumTNG Simulations, The Astrophysical Journal 974 (2024) 126.
+[79] S.K. Pal, S. Dasgupta, A. Datta, S. Majumdar, S. Bag and P. Sarkar, Interpreting the Hi 21
+cm cosmology maps through Largest Cluster Statistics. Part II. Impact of the realistic
+foreground and instrumental noise on synthetic SKA1-Low observations, Journal of
+Cosmology and Astroparticle Physics 2025 (2025) 096.
+[80] P. Sarkar and S. Bharadwaj, The Local Dimension: a method to quantify the Cosmic Web,
+Monthly Notices of the Royal Astronomical Society: Letters 394 (2009) L66.
+[81] P. Sarkar, B. Pandey and S. Bharadwaj, Exploring the Cosmic Web in the Sloan Digital Sky
+Survey Data Release 7 using the Local Dimension: Exploring the Cosmic Web in SDSS DR7,
+Monthly Notices of the Royal Astronomical Society 423 (2012) 955.
+– 27 –
+
+============================================================
+=== PAGE 29 ===
+============================================================
+
+[82] S. Sarkar and B. Pandey, Unravelling the cosmic web: an analysis of the Sloan Digital Sky
+Survey Data Release 14 with the local dimension, Monthly Notices of the Royal Astronomical
+Society 485 (2019) 4743.
+[83] B. Pandey and S. Sarkar, Exploring galaxy colour in different environments of the cosmic web
+with SDSS, Monthly Notices of the Royal Astronomical Society 498 (2020) 6069.
+[84] R. Braun, A. Bonaldi, T. Bourke, E. Keane and J. Wagg, Anticipated Performance of the
+Square Kilometre Array – Phase 1 (SKA1), arXiv e-prints (2019) arXiv:1912.12699
+[1912.12699].
+[85] S. Seethapuram Sridhar, W. Williams, D. Price, S. Breen and L. Ball, Ska low and mid
+subarray templates, June, 2025. 10.5281/zenodo.16951088.
+[86] P.a.R. Ade, N. Aghanim, M. Arnaud, M. Ashdown, J. Aumont, C. Baccigalupi et al., Planck
+2015 results - XIII. Cosmological parameters, Astronomy & Astrophysics 594 (2016) A13.
+[87] V. Springel, S.D.M. White, G. Tormen and G. Kauffmann, Populating a cluster of galaxies –
+I. Results at z = 0, Monthly Notices of the Royal Astronomical Society 328 (2001) 726.
+[88] N. Kaiser, Clustering in real space and in redshift space, Monthly Notices of the Royal
+Astronomical Society 227 (1987) 1.
+[89] A.J.S. Hamilton, Linear redshift distortions: A review, in The Evolving Universe: Selected
+Topics on Large-Scale Structure and on the Properties of Galaxies, D. Hamilton, ed.,
+(Dordrecht), pp. 185–275, Springer Netherlands (1998), DOI.
+[90] G. Sun, B.S. Hensley, T.-C. Chang, O. Dor´e and P. Serra, A Self-consistent Framework for
+Multiline Modeling in Line Intensity Mapping Experiments, The Astrophysical Journal 887
+(2019) 142.
+[91] F. Villaescusa-Navarro, S. Genel, E. Castorina, A. Obuljen, D.N. Spergel, L. Hernquist et al.,
+Ingredients for 21 cm Intensity Mapping, The Astrophysical Journal 866 (2018) 135.
+[92] R.C.K. Jr, STAR FORMATION IN GALAXIES ALONG THE HUBBLE SEQUENCE,
+Annual Review of Astronomy and Astrophysics 36 (1998) 189.
+[93] T.Y. Li, R.H. Wechsler, K. Devaraj and S.E. Church, CONNECTING CO INTENSITY
+MAPPING TO MOLECULAR GAS AND STAR FORMATION IN THE EPOCH OF
+GALAXY ASSEMBLY, The Astrophysical Journal 817 (2016) 169.
+[94] J. Kamenetzky, N. Rangwala, J. Glenn, P.R. Maloney and A. Conley, l′
+co/lfir relations with
+CO rotational ladders of galaxies across the Herschel SPIRE archive, The Astrophysical
+Journal 829 (2016) 93.
+[95] G.B. Taylor, C.L. Carilli and R.A. Perley, Synthesis Imaging in Radio Astronomy II,
+Synthesis Imaging in Radio Astronomy II 180 (1999) .
+[96] A.W. Hotan, J.D. Bunton, A.P. Chippendale, M. Whiting, J. Tuthill, V.A. Moss et al.,
+Australian square kilometre array pathfinder: I. system description, Publications of the
+Astronomical Society of Australia 38 (2021) e009.
+[97] K.K. Datta, G. Mellema, Y. Mao, I.T. Iliev, P.R. Shapiro and K. Ahn, Light-cone effect on
+the reionization 21-cm power spectrum, Monthly Notices of the Royal Astronomical Society
+424 (2012) 1877.
+[98] M. Steffen, A simple method for monotonic interpolation in one dimension., Astronomy &
+Astrophysics 239 (1990) 443.
+[99] D.T. Chung, Exploration of 3D wavelet scattering transform coefficients for line-intensity
+mapping measurements, Monthly Notices of the Royal Astronomical Society 517 (2022) 1625.
+– 28 –
+
+============================================================
+=== PAGE 30 ===
+============================================================
+
+[100] B. Greig, Y.-S. Ting and A.A. Kaurov, Exploring the cosmic 21-cm signal from the epoch of
+reionization using the wavelet scattering transform, Monthly Notices of the Royal
+Astronomical Society 513 (2022) 1719.
+[101] Y. Hoffman, O. Metuki, G. Yepes, S. Gottl¨ober, J.E. Forero-Romero, N.I. Libeskind et al., A
+kinematic classification of the cosmic web, Monthly Notices of the Royal Astronomical Society
+425 (2012) 2049.
+[102] T. Sousbie, DisPerSE: robust structure identification in 2D and 3D, arXiv e-prints (2013)
+arXiv:1302.6221 [1302.6221].
+[103] E. Platen, R. Van De Weygaert and B.J.T. Jones, A cosmic watershed: the WVF void
+detection technique, Monthly Notices of the Royal Astronomical Society 380 (2007) 551.
+[104] M.C. Neyrinck, zobov: a parameter-free void-finding algorithm, Monthly Notices of the Royal
+Astronomical Society 386 (2008) 2101.
+[105] S. Bag, R. Mondal, P. Sarkar, S. Bharadwaj, T.R. Choudhury and V. Sahni, Studying the
+morphology of HI isodensity surfaces during reionization using Shapefinders and percolation
+analysis, Monthly Notices of the Royal Astronomical Society 485 (2019) 2235.
+[106] J.V. Sheth, V. Sahni, S.F. Shandarin and B.S. Sathyaprakash, Measuring the geometry and
+topology of large-scale structure using SURFGEN: methodology and preliminary results,
+Monthly Notices of the Royal Astronomical Society 343 (2003) 22.
+[107] J.G.S. Lunde, N.-O. Stutzer, P.C. Breysse, D.T. Chung, K.A. Cleary, D.A. Dunne et al.,
+COMAP Pathfinder – Season 2 results - I. Improved data selection and processing, Astronomy
+& Astrophysics 691 (2024) A335.
+[108] K. Kraljic, S. Arnouts, C. Pichon, C. Laigle, S. de la Torre, D. Vibert et al., Galaxy evolution
+in the metric of the cosmic web, Monthly Notices of the Royal Astronomical Society 474
+(2018) 547.
+[109] B. Pandey and A. Nandi, Exploring the evolution of red and blue galaxies in different cosmic
+web environments using IllustrisTNG simulation, Journal of Cosmology and Astroparticle
+Physics 2025 (2025) 071.
+– 29 –

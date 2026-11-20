@@ -1,0 +1,1792 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+Preprint
+GRANULARITY-ADAPTIVE
+CREDIT
+ASSIGNMENT
+FOR LONG-HORIZON LLM AGENT REINFORCEMENT
+LEARNING
+Taoran Liang1,2,∗
+Yang Liu3,∗
+Shang Luo2
+Yingguang Yang2
+Rongrong Zhang4
+Yingzong Min4
+Yulin Huang3
+Jianshen Zhang3
+Yongzhi Qi3
+Kefu Xu2
+Congjing Ran5
+Bin Pan1
+Bin Chong2,†
+1Nankai University
+2Peking University
+3Supply Chain Tech Team Y, JD.com
+4Shanghai Waybot Technology Co., Ltd.
+5Wuhan University
+∗Equal contribution
+†Corresponding author
+ABSTRACT
+Long-horizon language-model agents trained with reinforcement learning often
+receive sparse outcome rewards that do not reveal which decisions along a tra-
+jectory deserve credit. Episode-level advantages provide coarse trajectory-wide
+credit, while step-level comparisons offer finer resolution with context-dependent
+estimation noise. We propose Granularity-Adaptive Credit Assignment (GACA),
+a critic-free method that adaptively mixes episode- and step-level credit for each
+decision during policy optimization. GACA normalizes the sampled response’s
+mean per-token negative log-likelihood (NLL) within each trajectory and uses the
+resulting criticality score to determine the step-specific mixture. The computation
+reuses rollout log-probabilities without additional training rollouts or model eval-
+uations. Our analysis characterizes optimal score-dependent mixing and derives
+conditions linking expected NLL to a lower bound on the preferred step-level
+weight. Across ALFWorld and WebShop with 1.5B and 7B backbones, GACA
+achieves the highest reported mean success rates among the compared methods,
+while introducing negligible additional computation.
+1
+INTRODUCTION
+Language-model agents act over many steps to complete household tasks, browse web stores, and
+use external tools (Yao et al., 2022b; Shridhar et al., 2020; Yao et al., 2022a). Reinforcement learning
+can improve these agents using task outcomes (Ouyang et al., 2022; Guo et al., 2025), but a sparse
+terminal reward leaves a difficult credit-assignment problem: which decisions should receive the
+learning signal? A trajectory can contain both consequential choices and actions whose alternatives
+would have little effect on the outcome (Arjona-Medina et al., 2019).
+Critic-free methods avoid training a value model by comparing several rollouts of the same task.
+GRPO (Shao et al., 2024) computes an episode-level relative advantage and broadcasts it to every
+action. GiGPO (Feng et al., 2026) adds local resolution by grouping steps with the same anchor
+observation and comparing their continuation returns. Its fixed combination of episode- and step-
+level signals leaves a further question: should every decision rely on these two credit estimates in
+the same proportion?
+The two granularities offer a decision-dependent estimation trade-off. Episode credit spreads the
+outcome over all decisions, while step credit separates local continuations using finite, context-
+dependent comparison groups.
+We propose Granularity-Adaptive Credit Assignment (GACA),
+which adapts their relative contribution during policy optimization.
+For each completed rollout, GACA computes the sampled response’s mean per-token negative log-
+likelihood (NLL) from old-policy log-probabilities. Dividing by the trajectory mean gives a critical-
+ity score that measures how surprising the response is relative to other responses in that interaction.
+1
+arXiv:2609.12424v2  [cs.LG]  4 Oct 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+Preprint
+A bounded mapping converts this score into a step-specific mixing weight, placing more weight
+on step-level credit at higher scores. These computations reuse quantities already available for the
+policy update, requiring no additional model or training rollouts.
+Our analysis characterizes how a score-dependent mixture balances the errors of the two credit
+estimates. It then identifies conditions under which greater variation in action values favors step-
+level credit and expected NLL provides a lower bound on that variation. These results motivate
+increasing the weight of local credit with the NLL-based score.
+GACA complements methods that refine the step estimator, including history-consistent grouping
+in HGPO (He et al., 2026), behavior-aware grouping in BiPACE (Wang et al., 2026a), and progress-
+conditioned credit in ProGPO (Yang et al., 2026). Uncertainty-based modulation in AEM and
+STARE rescales an existing advantage (Zhao et al., 2026; Luo et al., 2026); GACA uses uncer-
+tainty to control the relative contribution of two credit granularities. Appendix A discusses these
+connections.
+Our evaluation covers ALFWorld and WebShop with Qwen2.5-Instruct at 1.5B and 7B scales. On
+ALFWorld 1.5B, matched ablations compare GACA with five fixed mixtures and within-trajectory
+random score assignment. Adaptive mixing reaches 96.88% success, compared with 93.05% for the
+best tested fixed mixture and 88.54% for random assignment. These comparisons examine both the
+choice of mixing weights and their assignment to individual decisions.
+2
+PRELIMINARIES
+2.1
+SEQUENTIAL INTERACTION AND POLICY OPTIMIZATION
+At step t, the full pre-action state st contains the task, interaction history, and current observation.
+The agent samples a response at ∼πθ(· | st) containing reasoning and an action command. The en-
+vironment executes its parsed action Ut = ϕ(at), returns reward rt, and continues until termination
+at T. The trajectory return is R(τ) = �
+t rt, and the discounted step return is ˆgt = �T
+k=t γk−trk.
+Each task produces a group of G trajectories for relative advantage estimation.
+A per-step advantage AGACA
+t
+is broadcast to the response’s valid tokens. With token importance
+ratio ρt,j = πθ(aj
+t | st, a<j
+t )/πθold(aj
+t | st, a<j
+t ), training uses the clipped surrogate (Schulman
+et al., 2017)
+LPG = −Et
+
+1
+|at|
+�
+j
+min
+�
+ρt,jAGACA
+t
+, clip(ρt,j, 1 −ϵ, 1 + ϵ)AGACA
+t
+�
+
++ βKL �
+KL(πθ∥πref).
+(1)
+GACA supplies the advantage used in this update. For ALFWorld 1.5B, the expectation uses re-
+sponse weights wt = |at|/ �
+k∈B |ak| in optimization batch B, giving a mean over valid tokens.
+Appendix E specifies loss reduction and regularization.
+2.2
+EPISODE- AND STEP-LEVEL CREDIT
+The episode-side advantage compares the outcome score �Rt = R(τ) −pt with its prompt group g,
+where pt is the configured local invalid-action penalty:
+AE
+t =
+�Rt −µg
+σg + ε .
+(2)
+The trajectory outcome is shared across decisions, with the validity adjustment applied before nor-
+malization. Group statistics are computed over step rows; Appendix E gives the conventions.
+Following GiGPO, steps with identical anchor observations form a group G. Their discounted re-
+turns give the step advantage
+AS
+t = ˆgt −µG
+σG + ε ,
+µG = |G|−1 �
+k∈G
+ˆgk.
+(3)
+2
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+Preprint
+a
+Group
+rollouts
+b
+Reuse three
+signals
+c
+Set the
+step weight
+d
+Mix credit
+and update
+Agent
+Env.
+Same task, group G
+Steps 1, …, T
+R(τ)
+Terminal reward
+for each rollout
+Example rollout
+Same anchor
+Episode credit AE
+t
+G
+Task-group contrast
+Step credit AS
+t
+Anchor-group returns
+Response NLL Ht
+Rollout log-probs.
+Reused rollout data
+Normalize NLL
+ct = Ht/Hτ
+Mean score = 1
+Default gate
+λt =
+min{0.5 + 0.25ct, 1}
+One weight per step
+Per-step mixture
+Steps 1, …, T
+λt step
+(1 −λt) episode
+AGACA
+t
+=
+(1 −λt)AE
+t + λtAS
+t
+Broadcast to tokens
+Clipped policy
+update
+0
+1
+2
+3
+ct
+.5
+.75
+1
+λt
+Figure 1: GACA during policy optimization. Completed rollout groups provide episode credit,
+anchor-grouped step credit, and sampled-response NLL. Trajectory normalization gives ct, and the
+default gate assigns the step-level weight λt = min{0.5+0.25ct, 1}. The mixed advantage is broad-
+cast to response tokens for the clipped policy update. Trajectories and signal values are schematic.
+The standard-deviation division in both equations is used for ALFWorld and omitted for WebShop.
+A singleton group uses prompt-group normalization of its step return. Anchor matching uses obser-
+vations and can group steps with different histories; the resulting estimation error is included in the
+analysis below. GiGPO combines the two signals as AE + ωAS with a fixed coefficient ω.
+3
+GRANULARITY-ADAPTIVE CREDIT ASSIGNMENT
+During advantage computation, GACA assigns a mixing weight to each environment step using a
+criticality score computed from the completed rollout (Figure 1). It reuses the two group-relative
+advantages and the logged token probabilities, adding only scalar score and mixing operations.
+3.1
+AN NLL-BASED CRITICALITY SCORE
+For the full response sampled at step t, including reasoning and the action command, define its mean
+per-token NLL and trajectory-normalized criticality as
+Ht = −1
+|at|
+|at|
+�
+j=1
+log πθold(aj
+t | st, a<j
+t ),
+(4)
+ct = Ht
+Hτ
+,
+Hτ = 1
+T
+T
+�
+k=1
+Hk.
+(5)
+The criticality score is an NLL-based proxy for allocating credit: ct > 1 identifies a response that
+is more surprising than the trajectory average. For Hτ > 0, the scores have mean one and preserve
+the ordering of Ht within the trajectory. Normalization puts decisions from the same interaction on
+3
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+Preprint
+Algorithm 1 GACA advantage computation
+Require: group rollouts {τi}G
+i=1 with returns, step returns, action-validity flags, anchor observa-
+tions, and token log-probabilities; hyperparameters λ0, αλ
+1: compute episode advantages AE
+t using prompt-group statistics
+▷Eq. 2
+2: group matching anchor observations and compute AS
+t , with singleton fallback
+▷Eq. 3
+3: for each trajectory τ do
+4:
+compute sampled-response NLL Ht and criticality scores ct
+▷Eqs. 4–5
+5:
+λt ←min{λ0(1 + αλct), 1} for every step
+6:
+AGACA
+t
+←(1 −λt)AE
+t + λtAS
+t for every step
+7: end for
+8: return {AGACA
+t
+} for the policy update in Eq. 1
+a common relative scale. Scores are computed after rollout completion, when the full trajectory is
+available for advantage estimation.
+3.2
+BOUNDED ADAPTIVE MIXING
+We map criticality to a bounded step-level weight and combine the two advantages:
+λt = min{λ0(1 + αλct), 1},
+λ0 ∈[0, 1],
+αλ ≥0,
+(6)
+AGACA
+t
+= (1 −λt)AE
+t + λtAS
+t .
+(7)
+The parameter λ0 sets the step-weight floor, and αλ controls the increase with criticality before
+saturation. Setting αλ = 0 gives a fixed mixture. The defaults λ0 = αλ = 0.5 yield λt = 0.75 at
+ct = 1 and reach the upper cap at ct = 2. The gate retains a positive step-level coefficient at low
+criticality and assigns all weight to the step advantage once ct ≥2.
+Appendix G reports sensitivity to the modulation strength. Rollout-derived scores and advantages
+are held fixed during each policy update. Algorithm 1 summarizes the computation; Appendix E
+gives the normalization and singleton conventions.
+3.3
+WHY ADAPT THE CREDIT GRANULARITY?
+We study the squared error of mixed credit estimates relative to the action advantage under a fixed
+rollout policy π. Let U = ϕ(X) be the environment action parsed from response X, and let Qπ(s, u)
+be its expected discounted return from full state s under π. The action advantage is Aπ(s, u) =
+Qπ(s, u) −EU|sQπ(s, U).
+We use the normalized target Y = Aπ/σA, where σ2
+A = E[(Aπ)2] > 0 is computed over decision
+steps sampled from π. The inputs E = AE and S = AS retain their implemented normalizations.
+Their errors relative to Y include grouping effects, scale mismatch, and shared rollout noise. Full
+statements and proofs are in Appendix B–C.
+Conditional mixing balances the two estimation errors.
+At a given score c, let ME = E[(E −
+Y )2 | c] and MS = E[(S−Y )2 | c] be the two mean squared errors, and χ = E[(E−Y )(S−Y ) | c]
+their error cross-moment. With finite second moments and q = ME + MS −2χ = E[(S −E)2 |
+c] > 0, the optimal conditional weight is
+f ⋆(c) = Π[0,1]
+�
+ME(c) −χ(c)
+ME(c) + MS(c) −2χ(c)
+�
+,
+(8)
+where Π[0,1] projects onto the unit interval. This oracle improves on the best constant mixture
+whenever its unique optimum varies over scores with q > 0 (Proposition 1). For an implemented
+gate f, let u(c) = (ME −χ)/q, λ⋆
+fix = Π[0,1]{E[ME −χ]/E[q]}, and R(f) = E[((1 −f(c))E +
+f(c)S −Y )2]. Proposition 1 gives
+R(f) −R(λ⋆
+fix) = E
+�
+q(c)
+�
+[f(c) −u(c)]2 −[λ⋆
+fix −u(c)]2��
+.
+(9)
+Terms with q = 0 contribute zero. The score is useful when its gate tracks the conditional error
+trade-off more closely than the best constant mixture. Here, closeness is measured by expected
+4
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+Preprint
+squared distance to u(c), weighted by q(c), so weight assignment matters more where the estimators
+disagree. This motivates testing both adaptive weights and their assignment to steps.
+Action-value variation can favor finer credit.
+Consider the coarse-to-fine model
+E = (1 −η)Y + ξE,
+S = Y + ξS,
+0 ≤η ≤1,
+(10)
+with E[Y ξE | s] = E[Y ξS | s] = 0. The episode-side signal attenuates action-specific variation by
+η, while the step-side signal retains it. Define vE = E[ξ2
+E | s], vS = E[ξ2
+S | s], and χ = E[ξEξS | s].
+The action-value heterogeneity C(s) = VarU|sQπ(s, U) measures how much the expected outcome
+changes across available actions. Proposition 2 yields
+λ⋆
+cf(C) = Π[0,1]
+�
+η2C/σ2
+A + vE −χ
+η2C/σ2
+A + vE + vS −2χ
+�
+.
+(11)
+For a positive denominator, holding η, the residual moments, and σA fixed, this weight is nonde-
+creasing in C when vS > χ, and strictly increasing in the interior when η > 0. Greater action-value
+variation then increases the cost of coarse credit and favors the finer estimator. Appendix B gives a
+shared-noise interpretation of the residual condition.
+Expected NLL links the score to this regime.
+Let h(s) = E[−L−1 log π(X | s) | s], where L
+is the full response length in tokens. Suppose the distribution over parsed environment actions
+has finite support of size Ks ≥2, L ≥Lmin > 0, and linguistic variation among responses
+executing the same action satisfies H(X | U, s) ≤Bs. The entropy chain rule gives H(U | s) ≥
+Lminh(s) −Bs. Thus expected NLL exceeding the within-action variation implies uncertainty over
+distinct environment actions.
+For independent actions U, U ′, define diversity as D(s) = Pr(U ̸= U ′ | s). Proposition 3 constructs
+a lower bound Ds such that
+D(s) ≥Ds(h(s)).
+(12)
+For fixed Ks, Bs, Lmin, this bound is nondecreasing in h and positive when Lminh > Bs. If distinct
+actions also have mean squared value separation at least κ0 > 0, then
+C(s) = 1
+2D(s)E[(Qπ(s, U) −Qπ(s, U ′))2 | U ̸= U ′, s] ≥
+κ0
+2 Ds(h(s)).
+(13)
+Composing this bound with Eq. 11 gives a nondecreasing lower bound on the preferred step-level
+weight at fixed regularity and residual-noise parameters. This establishes the conditional route from
+expected NLL to action diversity, action-value heterogeneity, and finer credit.
+GACA follows this direction using the NLL of one sampled response per decision. Trajectory nor-
+malization preserves the ordering of NLL within each trajectory, and the gate increases with the
+normalized score. The ablations below evaluate the resulting allocation and modulation strength.
+Appendix B gives the exact diversity bound, and Appendix C.6 relates expected NLL to the imple-
+mented score.
+4
+EXPERIMENTS
+Our evaluation measures attained task success on two agent benchmarks, progress during training,
+and per-update computational cost. Matched ablations examine stepwise credit allocation, followed
+by diagnostics of the NLL signal.
+4.1
+EXPERIMENTAL SETUP
+Tasks and training.
+We use the verl-agent stack (Feng et al., 2026; Sheng et al., 2025) with
+Qwen2.5-Instruct 1.5B and 7B. ALFWorld involves household tasks with a maximum of 50 steps;
+WebShop involves product search and purchase within 15 steps. GACA samples groups of 8 trajec-
+tories and applies an invalid-action penalty of 0.1. For ALFWorld 1.5B, we use a two-step history
+window, rollout temperature 1, and 16 task groups per update. We train this model for 300 parameter
+updates. We report its update-150, best, and final evaluations to distinguish performance at a shorter
+budget from gains under continued training. Appendix D gives training settings and benchmark
+details.
+5
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+Preprint
+Evaluation and checkpoint selection.
+For ALFWorld, we follow HGPO’s evaluation-seed con-
+vention (He et al., 2026): each selected checkpoint receives three stochastic evaluations, summarized
+by their mean and population SD. Each backbone uses one trained model. The 1.5B run uses the
+in-distribution evaluation split, 128 tasks, and temperature 0.4. It evaluates every 5 updates and se-
+lects the update with the highest mean validation success. The selected ALFWorld updates are 275
+(1.5B) and 265 (7B). Figure 2 also reports progress at fixed updates. Appendix D.1 gives the seed
+values, selection rule, and published-reference protocols.
+Reference methods and internal controls.
+The benchmark comparison focuses on attained task
+success, using selected GACA checkpoints and the strongest published configurations of the listed
+reference methods. GRPO and GiGPO results are quoted from Feng et al. (2026); HGPO and its
+accompanying GiGPO references are quoted from He et al. (2026). Table 1 retains the K = 4
+HGPO configurations, the stronger reported setting in each framework version, and distinguishes
+their WebShop horizons. The complete K = 2, 4 comparison appears in Table 7. Internal ALFWorld
+1.5B ablations retain the same advantage definitions, normalization, and singleton fallback under a
+common training and selection protocol. The fixed-weight controls retain GACA’s convex-mixture
+scale; Appendix E distinguishes this scale from the original GiGPO update.
+4.2
+OVERALL PERFORMANCE
+Table 1 reports success rates across four backbone–benchmark settings. GACA has the highest
+reported mean among the listed methods in each setting, reaching 96.88% and 98.18% on ALFWorld
+and 80.99% and 83.59% on WebShop at 1.5B and 7B, respectively. Relative to updated-framework
+HGPO (K = 4), the differences are 2.03 and 2.22 percentage points on ALFWorld and 2.87 and
+4.30 points on WebShop. The margins over the original GiGPO reference range from 7.4 to 13.6
+points.
+Table 1: Success rates (%, mean ± SD). External rows are quoted from the indicated sources.
+HGPO’s ALFWorld entries are in-distribution results; K is the history-window length. The complete
+history-window comparison is in Table 7. WebShop horizons and framework versions are stated per
+block. GACA’s ALFWorld deviations are across three evaluation seeds at one selected checkpoint.
+Method
+ALFWorld
+WebShop
+1.5B
+7B
+1.5B
+7B
+Feng et al. (2026); WebShop: 15 steps
+GRPO
+72.8 ±3.6
+77.6 ±5.2
+56.8 ±3.8
+66.1 ±3.7
+GiGPO
+86.7 ±1.7
+90.8 ±1.3
+67.4 ±4.5
+75.2 ±3.8
+He et al. (2026), Table 7: earlier framework; WebShop: 15 steps
+HGPO (K = 4)
+92.45 ±0.81
+94.79 ±0.90
+75.91 ±1.19
+77.21 ±0.22
+He et al. (2026), Table 1: updated framework; WebShop: 30 steps
+GiGPO (K = 4)
+93.29 ±1.07
+95.63 ±0.49
+73.24 ±2.25
+77.79 ±0.92
+HGPO (K = 4)
+94.85 ±0.92
+95.96 ±0.49
+78.12 ±2.06
+79.29 ±1.17
+This work; WebShop: 15 steps
+GACA
+96.88 ±0.64
+98.18 ±0.37
+80.99 ±2.24
+83.59 ±3.38
+Comparison with history-aware grouping.
+HGPO improves the local advantage by grouping
+steps at different history depths. GACA retains GiGPO’s anchor grouping and changes the relative
+weight of episode and step credit. The two approaches act on different parts of credit assignment:
+construction of the local estimate and its contribution to the final update. The earlier-framework
+HGPO rows provide a 15-step WebShop reference, while the updated rows retain the stronger pub-
+lished results with their 30-step horizon. These comparisons preserve each source’s training and
+evaluation protocol; the internal ablations below isolate GACA’s allocation choices.
+6
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+Preprint
+0
+50
+100
+150
+200
+250
+300
+Parameter update
+0
+20
+40
+60
+80
+100
+Success (%)
+92.19
+96.88
+Figure 2: ALFWorld 1.5B validation success over 300 parameter updates. The curve and band show
+the mean and population SD across three evaluation seeds for one training run. Markers identify
+update 150, the selected update 275, and the final update 300.
+Performance over training.
+ALFWorld 1.5B reaches 92.19 ± 3.88% by update 150. Continued
+training raises success by 4.69 percentage points to 96.88±0.64% at update 275, with 96.09±1.10%
+retained at the final update 300 (Figure 2). This trajectory shows strong performance within the first
+150 updates and further gains with continued optimization. Table 3 reports the individual evaluation
+scores at these updates.
+Computational cost.
+GACA reuses log-probabilities already computed for the policy update and
+adds scalar NLL, score, and mixing operations. These operations take 0.09 seconds per iteration
+in the ALFWorld 1.5B timing breakdown, against approximately 372 seconds for the complete it-
+eration. The reported peak memory remains 62.4 GB. These timings average 20 iterations on the
+same hardware and quantify the incremental cost of the adaptive rule. Appendix F gives the full
+breakdown.
+4.3
+EFFECT OF ADAPTIVE CREDIT ALLOCATION
+We use ALFWorld 1.5B to test three aspects of credit allocation: combining episode and step signals,
+adapting their mixture beyond a constant weight, and assigning the resulting weights to individual
+decisions. Figure 3 presents the fixed-weight sweep and random assignment control. The historical
+step-weighted mean is ¯λtrain ≈0.748, motivating fixed λ = 0.75 as a near-mean comparator.
+Appendix G gives the complete numerical grid.
+Adaptive versus fixed mixing.
+With adaptation disabled (αλ = 0), we vary the constant weight
+over {0, 0.25, 0.5, 0.75, 1}. The episode-only and step-only endpoints reach 85.94% and 84.60%,
+while every tested interior mixture performs better than both endpoints. Combining the two granu-
+larities therefore helps even with a fixed weight. The best tested constant, λ = 0.5, reaches 93.05%;
+fixed λ = 0.75, close to GACA’s mean weight, reaches 92.41%. With the same episode- and
+step-level estimators, GACA reaches 96.88%, exceeding these controls by 3.83 and 4.47 points,
+respectively. The results support adapting the relative contribution of the two credit signals across
+decisions.
+Does the assignment to steps matter?
+Randomly permuting criticality scores within each trajec-
+tory reduces success from 96.88% to 88.54%. This control retains the trajectory’s collection of gate
+values and changes their pairing with the episode and step advantages. The 8.34-point drop shows
+that performance depends on where the weights are assigned. Together with the fixed-weight sweep,
+it supports using the score to allocate the two credit signals at individual decisions.
+The realized step weights span 0.623–0.900 at the 10th–90th percentiles in frozen-policy rollouts;
+Appendix H.1 gives their distribution and the training mean.
+7
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+Preprint
+0
+0.25
+0.5
+0.75
+1
+Fixed step weight λ
+85
+90
+95
+100
+Success (%)
+Adaptive: 96.88
+Best fixed: 93.05
+(a) Fixed mixtures
+NLL-based
+Permuted
+Weight assignment
+0
+25
+50
+75
+100
+96.88
+88.54
+(b) Assignment control
+Figure 3: Matched ALFWorld 1.5B ablations, using means over three evaluation seeds. Left: adap-
+tive mixing exceeds the best tested fixed weight by 3.83 points. Right: permuting NLL scores
+within each trajectory preserves its weight multiset but reduces success by 8.34 points. All values
+also appear in Table 9.
+Modulation strength.
+All three tested nonzero modulation strengths have higher mean success
+than the modulation-off control, with αλ = 0.5 giving the highest mean. Appendix G reports the
+sensitivity results.
+4.4
+WITHIN-TRAJECTORY ANALYSIS OF THE NLL SCORE
+We examine whether the score used by GACA identifies decisions with greater action diversity
+within a trajectory. Using the frozen ALFWorld 1.5B final@300 checkpoint, we select 32 training
+tasks stratified by task type and collect 8 trajectories per task. From one uniformly sampled trajec-
+tory per task, we draw two decisions uniformly without replacement, giving 64 states. Each pair
+is ordered by its original rollout criticality ct. At each state, 32 independently sampled responses
+estimate action disagreement D, the probability that two responses execute different parsed actions.
+Higher-score states have mean disagreement 0.1789, compared with 0.1041 for lower-score
+states (Figure 4). The mean paired difference is 0.0747, with a 95% task-bootstrap interval of
+[0.0248, 0.1334].
+Higher-score decisions thus exhibit greater action diversity on average within the same trajectory.
+Together, the allocation controls and paired analysis show that the assignment of weights affects
+training performance and that higher weights are associated with more action-diverse decisions.
+Appendix H.2 gives the sampling and estimation details.
+8
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+Preprint
+Lower score
+Higher score
+0.00
+0.25
+0.50
+0.75
+1.00
+Action disagreement D
+(a) Paired decisions
+0.1041
+0.1789
+Task pairs
+(n = 32)
+Mean
+(95% CI)
+−0.2
+0.0
+0.2
+0.4
+0.6
+Difference in D
+0.0747
+(b) Paired differences
+Figure 4: Within-trajectory action diversity for the frozen ALFWorld 1.5B policy. Left: paired
+states ordered by original ct; blue markers show group means. Right: all 32 higher-minus-lower
+differences (blue), with their mean and 95% task-bootstrap interval (orange). Horizontal offsets
+separate overlapping observations. Diversity is estimated from fresh responses.
+5
+CONCLUSION
+GACA uses rollout NLL to adapt the mixture of episode- and step-level credit during policy opti-
+mization, without additional training rollouts or model evaluations. Conditional risk analysis char-
+acterizes score-dependent mixing and conditions favoring finer credit. Across ALFWorld and Web-
+Shop with two backbone sizes, GACA achieves the highest reported mean success rates among
+the compared methods. In matched ALFWorld ablations, GACA improves over the tested fixed
+weights and within-trajectory random assignment. Together, these results support step-dependent
+credit mixing as a practical design choice for critic-free agent training.
+AI USE STATEMENT
+Generative AI tools assisted with manuscript editing, theoretical exposition, figure preparation, and
+diagnostic experiment design. The authors are responsible for verifying the arguments, implemen-
+tation descriptions, references, and reported results.
+REPRODUCIBILITY STATEMENT
+Appendix B–C contain the theoretical statements and proofs. Appendix D–E specify training set-
+tings, advantage normalization, singleton fallback, and criticality construction. Appendix G gives
+the full numerical ablation grid, and Appendix H defines the diagnostic estimators. Section 4.1
+records the checkpoint-selection protocol and the source of external baseline results.
+REFERENCES
+Arash Ahmadian, Chris Cremer, Matthias Gall´e, Marzieh Fadaee, Julia Kreutzer, Olivier Pietquin,
+Ahmet ¨Ust¨un, and Sara Hooker. Back to basics: Revisiting reinforce-style optimization for learn-
+ing from human feedback in llms. In Proceedings of the 62nd Annual Meeting of the Association
+for Computational Linguistics (Volume 1: Long Papers), pp. 12248–12267, 2024.
+Marcin Andrychowicz, Filip Wolski, Alex Ray, Jonas Schneider, Rachel Fong, Peter Welinder, Bob
+McGrew, Josh Tobin, OpenAI Pieter Abbeel, and Wojciech Zaremba. Hindsight experience re-
+play. Advances in neural information processing systems, 30, 2017.
+Jose A Arjona-Medina, Michael Gillhofer, Michael Widrich, Thomas Unterthiner, Johannes Brand-
+stetter, and Sepp Hochreiter. Rudder: Return decomposition for delayed rewards. Advances in
+Neural Information Processing Systems, 32, 2019.
+9
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+Preprint
+Ganqu Cui, Yuchen Zhang, Jiacheng Chen, Lifan Yuan, Zhi Wang, Yuxin Zuo, Haozhan Li, Yuchen
+Fan, Huayu Chen, Weize Chen, et al. The entropy mechanism of reinforcement learning for
+reasoning language models. arXiv preprint arXiv:2505.22617, 2025.
+Lang Feng, Zhenghai Xue, Tingcong Liu, and Bo An. Group-in-group policy optimization for llm
+agent training. Advances in Neural Information Processing Systems, 38:46375–46408, 2026.
+Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu, Runxin Xu, Ruoyu
+Zhang, Shirong Ma, Xiao Bi, et al. Deepseek-r1 incentivizes reasoning in llms through reinforce-
+ment learning. Nature, 645(8081):633–638, 2025.
+Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine. Soft actor-critic: Off-policy
+maximum entropy deep reinforcement learning with a stochastic actor. In International confer-
+ence on machine learning, pp. 1861–1870. Pmlr, 2018.
+Shuo He, Lang Feng, Xin Cheng, Lei Feng, Bo An, et al. Hierarchy-of-groups policy optimization
+for long-horizon agentic tasks. In International Conference on Learning Representations, volume
+2026, pp. 27572–27593, 2026.
+Amirhossein Kazemnejad, Milad Aghajohari, Eva Portelance, Alessandro Sordoni, Siva Reddy,
+Aaron Courville, and Nicolas Le Roux. Vineppo: Refining credit assignment in rl training of
+llms. arXiv preprint arXiv:2410.01679, 2024.
+Hunter Lightman, Vineet Kosaraju, Yuri Burda, Harrison Edwards, Bowen Baker, Teddy Lee, Jan
+Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. In International
+Conference on Learning Representations, volume 2024, pp. 39578–39601, 2024.
+Haipeng Luo, Qingfeng Sun, Songli Wu, Can Xu, Wenfeng Deng, Han Hu, and Yansong Tang.
+Stare: Surprisal-guided token-level advantage reweighting for policy entropy stability.
+arXiv
+preprint arXiv:2606.19236, 2026.
+Andrew Y Ng, Daishi Harada, and Stuart Russell. Policy invariance under reward transformations:
+Theory and application to reward shaping. In Icml, volume 99, pp. 278–287. Citeseer, 1999.
+Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong
+Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to fol-
+low instructions with human feedback. Advances in neural information processing systems, 35:
+27730–27744, 2022.
+John Schulman, Philipp Moritz, Sergey Levine, Michael Jordan, and Pieter Abbeel.
+High-
+dimensional continuous control using generalized advantage estimation.
+arXiv preprint
+arXiv:1506.02438, 2015.
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy
+optimization algorithms. arXiv preprint arXiv:1707.06347, 2017.
+Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang,
+Mingchuan Zhang, YK Li, Yang Wu, et al. Deepseekmath: Pushing the limits of mathemati-
+cal reasoning in open language models. arXiv preprint arXiv:2402.03300, 2024.
+Guangming Sheng, Chi Zhang, Zilingfeng Ye, Xibin Wu, Wang Zhang, Ru Zhang, Yanghua Peng,
+Haibin Lin, and Chuan Wu. Hybridflow: A flexible and efficient rlhf framework. In Proceedings
+of the Twentieth European Conference on Computer Systems, pp. 1279–1297, 2025.
+Mohit Shridhar, Xingdi Yuan, Marc-Alexandre Cˆot´e, Yonatan Bisk, Adam Trischler, and Matthew
+Hausknecht. Alfworld: Aligning text and embodied environments for interactive learning. arXiv
+preprint arXiv:2010.03768, 2020.
+Jonathan Uesato, Nate Kushman, Ramana Kumar, Francis Song, Noah Siegel, Lisa Wang, Antonia
+Creswell, Geoffrey Irving, and Irina Higgins. Solving math word problems with process-and
+outcome-based feedback. arXiv preprint arXiv:2211.14275, 2022.
+10
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+Preprint
+Hanyang Wang, Weijieying Ren, Yuxiang Zhang, Ding Cao, Zhizhao Zeng, Ke Zeng, and Tianxiang
+Zhao. Bipace: Bisimulation-guided policy optimization with action counterfactual estimation for
+llm agents. arXiv preprint arXiv:2606.25556, 2026a.
+Peiyi Wang, Lei Li, Zhihong Shao, Runxin Xu, Damai Dai, Yifei Li, Deli Chen, Yu Wu, and Zhifang
+Sui. Math-shepherd: Verify and reinforce llms step-by-step without human annotations. In Pro-
+ceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume
+1: Long Papers), pp. 9426–9439, 2024.
+Shenzhi Wang, Le Yu, Chang Gao, Chujie Zheng, Shixuan Liu, Rui Lu, Kai Dang, Xiong-Hui Chen,
+Jianxin Yang, Zhenru Zhang, et al. Beyond the 80/20 rule: High-entropy minority tokens drive
+effective reinforcement learning for llm reasoning. Advances in Neural Information Processing
+Systems, 38:115452–115486, 2026b.
+Zihan Wang, Kangrui Wang, Qineng Wang, Pingyue Zhang, Linjie Li, Zhengyuan Yang, Xing Jin,
+Kefan Yu, Minh Nhat Nguyen, Licheng Liu, et al. Ragen: Understanding self-evolution in llm
+agents via multi-turn reinforcement learning. arXiv preprint arXiv:2504.20073, 2025.
+Kaibing Yang, Guangfeng Cai, Shengtian Yang, Shuo He, Yu Li, Mengyi Liu, Pengwei Chen, Jun
+Xu, and Lei Feng. Progress-conditioned group policy optimization for long-horizon agentic tasks.
+arXiv preprint arXiv:2607.22724, 2026.
+Shunyu Yao, Howard Chen, John Yang, and Karthik Narasimhan.
+Webshop: Towards scalable
+real-world web interaction with grounded language agents. Advances in Neural Information Pro-
+cessing Systems, 35:20744–20757, 2022a.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao.
+React: Synergizing reasoning and acting in language models. arXiv preprint arXiv:2210.03629,
+2022b.
+Qiying Yu, Zheng Zhang, Ruofei Zhu, Yufeng Yuan, Xiaochen Zuo, Yu Yue, Weinan Dai, Tiantian
+Fan, Gaohong Liu, Lingjun Liu, et al. Dapo: An open-source llm reinforcement learning system
+at scale. Advances in Neural Information Processing Systems, 38:113222–113244, 2026.
+Haotian Zhao, Songlin Zhou, Yuxin Zhang, Stephen S-T Yau, Wenyu Zhang, Lun Tian, Tianshu
+Zhu, Yifeng Huang, Yucheng Zeng, Jingnan Gu, et al. Aem: Adaptive entropy modulation for
+multi-turn agentic reinforcement learning. arXiv preprint arXiv:2605.00425, 2026.
+11
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+Preprint
+A
+EXTENDED RELATED WORK
+Critic-free RL for LLMs and agents. Replacing the learned value function with a group baseline
+has become a common recipe for RL on language models, from GRPO (Shao et al., 2024; Guo
+et al., 2025) and REINFORCE-style variants (Ahmadian et al., 2024) to refinements of clipping
+and normalization (Yu et al., 2026). Carrying this from single-turn reasoning to multi-turn agents
+required new infrastructure and recipes (Sheng et al., 2025; Wang et al., 2025). GiGPO (Feng
+et al., 2026) is the direct methodological precursor from which our reported implementation inherits
+anchor-observation step grouping. Subsequent work has exposed limitations of observation-only
+step groups: HGPO uses hierarchical history-consistent groups to address context inconsistency (He
+et al., 2026), while BiPACE replaces surface observation hashing with behavior-aware grouping and
+action-conditioned peer baselines (Wang et al., 2026a). ProGPO addresses a complementary long-
+horizon credit trap by introducing progress-conditioned relative advantages in failure-dominated
+groups (Yang et al., 2026). These methods modify the construction of local credit estimates. GACA
+addresses a complementary choice: the relative weight assigned to local and episode-level credit at
+each step. The mixing analysis accommodates alternative step estimators; the reported experiments
+use GiGPO-style anchor grouping.
+Credit assignment and reward redistribution. Assigning delayed outcomes to individual de-
+cisions is a central problem in reinforcement learning.
+Approaches include return decomposi-
+tion (Arjona-Medina et al., 2019), hindsight relabeling (Andrychowicz et al., 2017), generalized
+advantage estimation (Schulman et al., 2015), and potential-based shaping (Ng et al., 1999). For
+LLMs, process reward models supply dense step-level supervision where intermediate correctness is
+checkable (Lightman et al., 2024; Wang et al., 2024; Uesato et al., 2022), and VinePPO replaces the
+critic with Monte-Carlo value estimates from extra rollouts branched at intermediate states (Kazem-
+nejad et al., 2024).
+These approaches use additional process supervision or intermediate-state
+rollouts. GACA reuses rollout log-probabilities to condition the mixture of existing credit esti-
+mates. GAE trades bias and variance through a mixture of temporal estimates; GACA instead mixes
+two critic-free group-relative estimates using a per-step score. Proposition 1 characterizes score-
+dependent mixing relative to local credit, while Proposition 2 isolates a regime in which finer credit
+becomes increasingly valuable as local action values separate.
+Uncertainty-guided advantage modulation. Recent work also uses surprisal to reshape RL up-
+dates. AEM (Zhao et al., 2026) analyzes response-level entropy dynamics in multi-turn agents and
+rescales a base response-level advantage using a response-level uncertainty proxy. STARE (Luo
+et al., 2026) identifies high-surprisal tokens and selectively reweights their effective advantages to
+stabilize policy entropy. These methods rescale a pre-existing credit signal. GACA uses the score to
+construct a mixture of episode- and step-level credit estimates.
+Entropy and the value of uncertain decisions. Entropy has long shaped exploration and stability
+in RL (Haarnoja et al., 2018), and recent analyses of RL for LLM reasoning show that a small, high-
+entropy minority of tokens drives most of the policy improvement while entropy collapse degrades
+learning (Wang et al., 2026b; Cui et al., 2025). GACA uses uncertainty at the environment-step level
+to decide how much to rely on the two credit granularities.
+B
+DETAILED THEORY STATEMENTS
+This appendix gives the full formulations underlying the three results summarized in Section 3.3.
+Throughout, π = πθold is fixed.
+Local-credit target and conditional mixing.
+Let X denote the full sampled response, including
+reasoning and the action command, and let U = ϕ(X) be the corresponding environment action
+after parsing. At a full pre-action state s, define
+Qπ(s, u) = E[ˆgt | st = s, Ut = u],
+V π(s) = EU∼π(·|s)[Qπ(s, U)],
+and the action advantage Aπ(s, u) = Qπ(s, u) −V π(s). Let the old-policy step-row population be
+the reference measure and assume 0 < σ2
+A < ∞and finite second moments for E and S. Define
+σ2
+A = E
+�
+(Aπ(st, Ut))2�
+> 0,
+12
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+Preprint
+and use the dimensionless local-credit target
+Yt = Aπ(st, Ut)
+σA
+.
+(14)
+The target scale is fixed by the old-policy population. Differences between this normalization and
+the implemented group normalizations enter the estimator error. Let E = AE and S = AS denote
+the two implemented inputs to equation 7, after their actual group normalization and any singleton
+fallback. Normalization mismatch, grouping bias, and shared rollout noise are included in
+eE = E −Y,
+eS = S −Y,
+ME(c) = E[e2
+E | c],
+MS(c) = E[e2
+S | c],
+χ(c) = E[eEeS | c],
+q(c) = ME(c) + MS(c) −2χ(c) = E[(S −E)2 | c].
+(15)
+The score c may be statistically dependent on the sampled action, the trajectory, and both estimator
+errors.
+Proposition 1 (Optimal conditional mixing relative to local credit). For λ ∈[0, 1], the conditional
+squared-credit risk of (1 −λ)E + λS is
+Rc(λ) = (1 −λ)2ME(c) + λ2MS(c) + 2λ(1 −λ)χ(c).
+(16)
+On {q(c) > 0}, define
+u(c) = ME(c) −χ(c)
+q(c)
+.
+The risk-minimizing score-dependent weight is
+f ⋆(c) = Π[0,1]
+�
+u(c)
+�
+.
+(17)
+If E[q(c)] > 0, the best constant weight is
+λ⋆
+fix = Π[0,1]
+�E[ME(c) −χ(c)]
+E[q(c)]
+�
+.
+(18)
+Moreover, every measurable gate f(c) ∈[0, 1] satisfies
+R(f) −R(λ⋆
+fix) = E
+�
+q(c)
+�
+[f(c) −u(c)]2 −[λ⋆
+fix −u(c)]2��
+,
+(19)
+where R(f) = E[((1 −f(c))E + f(c)S −Y )2]. If q(c) = 0, then S = E conditionally almost
+surely and the weight is irrelevant. The oracle satisfies R(f ⋆) ≤minλ∈[0,1] R(λ). For E[q] > 0,
+the inequality is strict exactly when no constant agrees with f ⋆(c) almost surely on {q(c) > 0}.
+Why local action-value heterogeneity can favor finer credit.
+To connect the generic risk to
+credit granularity, consider the following explanatory special case. At a fixed full state s, let the
+coarse episode-side signal attenuate action-specific credit while the fine step-side signal retain it:
+E = (1 −η)Y + ξE,
+S = Y + ξS,
+0 ≤η ≤1.
+(20)
+Assume
+E[Y ξE | s] = E[Y ξS | s] = 0,
+and write
+vE = E[ξ2
+E | s],
+vS = E[ξ2
+S | s],
+χ = E[ξEξS | s].
+Because U ∼π(· | s),
+E[Y | s] = 0,
+E[Y 2 | s] = C(s)
+σ2
+A
+,
+C(s) := VarU∼π(·|s)[Qπ(s, U)].
+(21)
+Thus C(s) measures how much the expected continuation value changes across actions available at
+the same full state.
+13
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+Preprint
+Proposition 2 (Coarse-to-fine comparative statics). Under equation 20, the unprojected risk-
+minimizing fine-credit weight is
+ucf(C) =
+η2C/σ2
+A + vE −χ
+η2C/σ2
+A + vE + vS −2χ,
+(22)
+whenever the denominator is positive, and the constrained optimum is λ⋆
+cf = Π[0,1](ucf). Holding
+η, vE, vS, χ, and σA fixed,
+∂ucf
+∂C =
+η2(vS −χ)
+σ2
+A
+�
+η2C/σ2
+A + vE + vS −2χ
+�2 .
+(23)
+Hence, if vS > χ, the preferred fine-credit weight is nondecreasing in local action-value hetero-
+geneity C; it is strictly increasing in the interior whenever η > 0.
+The condition vS > χ has a simple shared-noise interpretation. If
+ξE = ζ + εE,
+ξS = ζ + εS,
+with conditionally zero-mean components, the shared component ζ uncorrelated with the two resid-
+uals, and the residuals mutually uncorrelated, then
+vS −χ = Var(εS) ≥0,
+with strict inequality whenever the fine estimator has nonzero idiosyncratic residual noise. Propo-
+sition 2 describes variation in C within this model at fixed residual moments. Applying it across
+states also requires accounting for changes in those moments.
+Expected NLL as a structural certificate.
+We next relate expected response surprisal to variation
+in the executed action. Condition on the full pre-action state s, including the interaction history. Let
+X ∼π(· | s) be the full response of token length L, and let U = ϕ(X) be its environment-executed
+parsed action identity. Define
+ℓ= −L−1 log π(X | s),
+h(s) = E[ℓ| s].
+(24)
+Let the canonical action distribution at s have finite support size Ks ≥2, let L ≥Lmin > 0, and
+suppose the within-action textual entropy satisfies
+H(X | U, s) ≤Bs.
+The finite-support requirement is natural under a finite tokenizer vocabulary and bounded response
+length; the substantive quantity is Bs, which separates environment-action uncertainty from linguis-
+tic variation among texts that execute the same action.
+Define
+Hs(h) = min{[Lminh −Bs]+, log Ks},
+Ds(h) = 1 −F −1
+Ks
+�
+Hs(h)
+�
+,
+FK(p) = hb(p) + (1 −p) log(K −1),
+hb(p) = −p log p −(1 −p) log(1 −p).
+(25)
+Proposition 3 (Expected NLL certifies canonical-action diversity). Let U, U ′ be independent draws
+from the induced canonical-action law at s, and define
+D(s) = Pr(U ̸= U ′ | s).
+Then
+D(s) ≥Ds(h(s)).
+(26)
+For fixed Ks, Bs, and Lmin, the lower bound is nondecreasing in expected NLL h(s) and is positive
+whenever Lminh(s) > Bs.
+Corollary 4 (From action diversity to local value heterogeneity). Suppose in addition that, whenever
+D(s) > 0,
+κs := E
+��
+Qπ(s, U) −Qπ(s, U ′)
+�2 | U ̸= U ′, s
+�
+≥κ0 > 0.
+(27)
+Then
+C(s) ≥Cs(h(s)) := κ0
+2 Ds(h(s)).
+(28)
+The two conditions serve distinct roles: Bs bounds linguistic variation among responses executing
+the same action, while κ0 links distinct actions to differences in expected outcome.
+14
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+Preprint
+From NLL to a lower envelope on preferred granularity.
+Combining the two preceding pieces
+yields the population-level directional link used to motivate GACA.
+Corollary 5 (NLL-induced lower envelope on fine-credit preference). Consider the coarse-to-fine
+family of Proposition 2 with fixed η, vE, vS, χ, and σA, and suppose vS > χ and equation 27 holds.
+Define
+λ(h) = Π[0,1]
+�
+η2Cs(h)/σ2
+A + vE −χ
+η2Cs(h)/σ2
+A + vE + vS −2χ
+�
+.
+(29)
+Then
+λ⋆
+cf(s) ≥λ(h(s)),
+(30)
+and λ(h) is nondecreasing in h for fixed regularity and residual-noise parameters.
+Alignment with the implemented trajectory-relative gate.
+GACA uses one sampled-response
+NLL per decision and sets ct = Ht/Hτ after rollout completion. For Hτ > 0, normalization
+preserves NLL ordering within the trajectory, and the gate in equation 6 assigns at least as much
+step-level weight to higher-scoring responses. The population analysis motivates this increasing
+direction; the gate floor and modulation strength are empirical design choices.
+C
+PROOFS AND TECHNICAL REMARKS
+All results are fixed-policy statements under π = πθold. The implemented inputs E = AE and
+S = AS may share rollout randomness, may be biased relative to the local-credit target, and may
+use random group normalizations; no independence between E, S, and the gate score is assumed in
+Proposition 1. Entropies use natural logarithms.
+C.1
+PROOF OF PROPOSITION 1
+Expanding equation 16,
+Rc(λ) = ME(c) −2λ[ME(c) −χ(c)] + λ2q(c).
+For q(c) > 0, completing the square gives
+Rc(λ) = ME(c) −[ME(c) −χ(c)]2
+q(c)
++ q(c)[λ −u(c)]2.
+Projection onto [0, 1] therefore gives equation 17. If q(c) = 0, the identity q(c) = E[(S −E)2 | c]
+implies S = E conditionally almost surely. Taking expectation of the quadratic before minimizing
+gives equation 18. Subtracting the completed-square forms gives equation 19. Conditional Cauchy–
+Schwarz implies [ME −χ]2 ≤qME, so the weighted square terms are integrable whenever the
+stated second moments are finite.
+Finally, projection minimizes the conditional quadratic at every score. On {q(c) > 0} the minimizer
+is unique; hence equality with a constant requires that constant to agree with f ⋆(c) almost surely
+there. Contributions from {q(c) = 0} vanish.
+□
+C.2
+PROOF OF PROPOSITION 2
+Under equation 20,
+eE = −ηY + ξE,
+eS = ξS.
+The orthogonality conditions and equation 21 give
+ME(s) = η2 C(s)
+σ2
+A
++ vE,
+MS(s) = vS,
+χ(s) = χ.
+Substitution into the unprojected optimum u = (ME −χ)/(ME + MS −2χ) yields equation 22.
+Differentiating with respect to C while holding η, vE, vS, χ, and σA fixed gives equation 23. Pro-
+jection onto a closed interval is monotone, so the constrained optimum inherits the nondecreasing
+dependence on C. Strict increase holds wherever the unprojected optimum lies in the interior and
+η > 0, vS > χ.
+□
+15
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+Preprint
+Shared-noise sufficient condition.
+If ξE = ζ +εE and ξS = ζ +εS with conditionally zero-mean
+components and all pairwise cross-covariances among ζ, εE, εS equal to zero, then
+vS = Var(ζ) + Var(εS),
+χ = Var(ζ),
+and therefore
+vS −χ = Var(εS) ≥0.
+This shared-noise structure satisfies the second-moment condition in Proposition 2.
+C.3
+PROOF OF PROPOSITION 3
+Condition on a full pre-action state s. The textual action X follows the logged old policy, so
+H(X | s) = E[−log π(X | s) | s] = E[Lℓ| s].
+Because L ≥Lmin and ℓ≥0,
+H(X | s) ≥Lminh(s).
+Since U = ϕ(X) is a deterministic function of X,
+H(X | s) = H(U | s) + H(X | U, s),
+and the bound H(X | U, s) ≤Bs gives
+H(U | s) ≥Lminh(s) −Bs.
+(31)
+Truncating to the feasible range [0, log Ks] yields H(U | s) ≥Hs(h(s)).
+Let pmax
+s
+= maxu ps(u). For two independent canonical actions,
+D(s) = 1 −
+�
+u
+ps(u)2 ≥1 −pmax
+s
+.
+Among distributions on Ks symbols with largest mass p ≥1/Ks, entropy is maximized by assign-
+ing the remaining mass uniformly, giving
+H(U | s) ≤FKs(pmax
+s
+),
+where FK is defined in equation 25. Since F ′
+K(p) = log
+1−p
+p(K−1) < 0 for p > 1/K, its inverse is
+decreasing on [0, log K]. Hence
+pmax
+s
+≤F −1
+Ks
+�
+H(U | s)
+�
+≤F −1
+Ks
+�
+Hs(h(s))
+�
+,
+which proves
+D(s) ≥Ds(h(s)).
+Monotonicity in h follows because Hs(h) is nondecreasing and F −1
+Ks is decreasing. The lower bound
+is positive exactly when Lminh(s) > Bs.
+□
+C.4
+PROOF OF COROLLARY 4
+For independent U, U ′ from the canonical-action law at s,
+E[(Qπ(s, U) −Qπ(s, U ′))2 | s] = 2VarU[Qπ(s, U) | s] = 2C(s).
+The squared difference is zero on U = U ′, so when D(s) > 0,
+2C(s) = D(s) E[(Qπ(s, U) −Qπ(s, U ′))2 | U ̸= U ′, s] = D(s)κs.
+Using κs ≥κ0 and Proposition 3,
+C(s) ≥κ0
+2 D(s) ≥κ0
+2 Ds(h(s)) = Cs(h(s)).
+If D(s) = 0, both sides are zero.
+□
+16
+
+============================================================
+=== PAGE 17 ===
+============================================================
+
+Preprint
+C.5
+PROOF OF COROLLARY 5
+Under the fixed coarse-to-fine parameters in Corollary 5, Proposition 2 shows that the projected
+optimum is a nondecreasing function of C when vS > χ. Corollary 4 gives C(s) ≥Cs(h(s)).
+Applying the nondecreasing mapping to both sides yields equation 30. The lower envelope is non-
+decreasing in h because Cs(h) is nondecreasing and the coarse-to-fine optimum is nondecreasing in
+its C argument.
+□
+C.6
+THE IMPLEMENTED NLL SCORE
+The population analysis uses h(s) = E[Ht | s], the expected mean per-token NLL of the full
+response. GACA uses one sampled Ht at each decision and computes ct = Ht/Hτ from the com-
+pleted rollout. The score can therefore depend on the sampled action and subsequent continuation.
+During policy optimization, scores and advantages are treated as fixed quantities, with no gradients
+propagated through them. Proposition 1 allows their statistical dependence.
+D
+TRAINING CONFIGURATION AND HYPERPARAMETERS
+Table 2 describes the two benchmarks. Table 4 lists training settings; the archived ALFWorld 1.5B
+configuration sets 300 epochs and its log records 300 parameter updates. Table 5 gives gate de-
+faults and search ranges. Appendix E specifies advantage normalization and singleton handling.
+Appendix G reports the parameter sensitivity results.
+Table 2: Benchmarks used in our evaluation. Both use the agent-environment interface of Section 2.1
+with a sparse, episode-level success reward and a small invalid-action penalty.
+Benchmark
+Setting
+Max steps
+Eval tasks
+Metric
+ALFWorld
+text-based embodied household tasks
+50
+128
+success rate
+WebShop
+grounded web shopping and navigation
+15
+128
+success rate
+Table 3: ALFWorld validation success (%) at fixed and selected parameter updates. Evaluation
+columns enumerate the three sampling seeds at the same checkpoint; the summary uses their popu-
+lation standard deviation. Updates 275 (1.5B) and 265 (7B) are selected by validation mean.
+Backbone
+Update
+Eval. 1
+Eval. 2
+Eval. 3
+Mean ± SD
+1.5B
+150
+89.844
+89.063
+97.656
+92.19 ± 3.88
+1.5B
+275
+96.875
+96.094
+97.656
+96.88 ± 0.64
+1.5B
+300
+95.313
+95.313
+97.656
+96.09 ± 1.10
+7B
+265
+98.44
+97.66
+98.44
+98.18 ± 0.37
+17
+
+============================================================
+=== PAGE 18 ===
+============================================================
+
+Preprint
+Table 4: Training settings. The archived epoch count is available for ALFWorld 1.5B. NR denotes a
+setting not specified in the archived configuration. The frozen-policy diagnostics use success reward
+10. Section 4.1 describes evaluation and published references.
+Setting
+ALFWorld
+WebShop
+Backbone
+Qwen2.5-Instruct, 1.5B and 7B
+Group size G
+8
+8
+Configured epochs
+300 (1.5B)
+150
+Learning rate
+1 × 10−6
+1 × 10−6
+KL loss (low-variance estimator)
+0.01
+0.01
+Discount γ
+0.95
+0.95
+Max environment steps
+50
+15
+Max prompt length
+2048
+4096
+Advantage normalization
+mean-and-std-norm
+mean-norm
+Invalid-action penalty magnitude
+0.1
+0.1
+Terminal success reward (training)
+NR
+1
+Table 5: GACA default hyperparameters and search ranges.
+Parameter
+Default
+Search range
+criticality signal
+normalized
+NLL
+NLL and within-trajectory random permutation
+fusion weight αc
+1.0
+{1.0, 0.7, 0.5}
+step-weight floor λ0
+0.5
+{0, 0.25, 0.5, 0.75, 1.0}; fixed-weight sweep uses
+αλ = 0
+modulation αλ
+0.5
+{0, 0.25, 0.5, 1.0}; αλ = 0 turns adaptation off
+advantage normalization
+per-benchmark
+{mean-norm, mean-and-std-norm}
+D.1
+EVALUATION PROTOCOL AND PUBLISHED REFERENCES
+Table 6 records the available evaluation settings. For the ALFWorld 1.5B run, each evaluated update
+supplies three success rates su,j, and the selected update is u⋆= arg maxu 1
+3
+�3
+j=1 su,j. The re-
+ported mean and population SD use the three scores at that same update. The final-update result uses
+u = 300 independently of this maximization. This seed aggregation follows the testing convention
+stated by HGPO; the checkpoint selection described here is GACA’s own protocol.
+Table 6: Evaluation and selection settings for the archived GACA ALFWorld 1.5B run.
+Setting
+GACA, ALFWorld 1.5B
+Environment evaluation split
+eval in distribution
+Evaluation batch size
+128 tasks
+Response sampling
+temperature 0.4, top-p = 1, top-k disabled
+Evaluation seeds
+42, 123, 2024
+Evaluation frequency
+every 5 parameter updates
+Checkpoint selection
+maximum mean validation success over three seeds
+Reported best / final update
+275 / 300
+Training runs underlying SD
+one; SD is across evaluation seeds
+History / episode limit
+2 interactions / 50 environment steps
+18
+
+============================================================
+=== PAGE 19 ===
+============================================================
+
+Preprint
+The original GiGPO study uses 150 updates for ALFWorld and WebShop. HGPO reports 160
+training iterations; its updated-framework setting uses a 30-step WebShop horizon, and its earlier-
+framework results use 15 steps. Table 1 retains representative configurations from both versions,
+and Table 7 gives the full published-reference comparison, including both history-window lengths.
+Source results are carried over with their original mean and SD summaries. GACA’s historical
+training log supplies the 150-update and final-300 evaluations in addition to the selected best result.
+Table 7: Full success-rate comparison (%, mean ± SD), including all published reference configura-
+tions used in this work. External rows are quoted from their sources; K denotes the history-window
+length. HGPO’s ALFWorld entries use its in-distribution setting. WebShop horizons and framework
+versions are indicated separately. GACA’s ALFWorld deviations summarize three evaluation seeds
+at one selected checkpoint. These rows retain their source protocols.
+Method
+ALFWorld
+WebShop
+1.5B
+7B
+1.5B
+7B
+Feng et al. (2026); WebShop: 15 steps
+GRPO
+72.8 ±3.6
+77.6 ±5.2
+56.8 ±3.8
+66.1 ±3.7
+GiGPO
+86.7 ±1.7
+90.8 ±1.3
+67.4 ±4.5
+75.2 ±3.8
+He et al. (2026), Table 7: earlier framework; WebShop: 15 steps
+HGPO (K = 2)
+89.58 ±0.45
+91.15 ±1.19
+72.66 ±1.78
+76.43 ±1.47
+HGPO (K = 4)
+92.45 ±0.81
+94.79 ±0.90
+75.91 ±1.19
+77.21 ±0.22
+He et al. (2026), Table 1: updated framework; WebShop: 30 steps
+GiGPO (K = 2)
+90.16 ±0.22
+93.29 ±0.40
+66.53 ±1.92
+77.60 ±1.68
+HGPO (K = 2)
+92.77 ±1.08
+95.44 ±0.62
+71.54 ±4.00
+78.51 ±1.40
+GiGPO (K = 4)
+93.29 ±1.07
+95.63 ±0.49
+73.24 ±2.25
+77.79 ±0.92
+HGPO (K = 4)
+94.85 ±0.92
+95.96 ±0.49
+78.12 ±2.06
+79.29 ±1.17
+This work; WebShop: 15 steps
+GACA
+96.88 ±0.64
+98.18 ±0.37
+80.99 ±2.24
+83.59 ±3.38
+E
+IMPLEMENTATION DETAILS
+E100 execution.
+The configured score mode is named entropy, but its statistic is the sampled
+response’s mean-token NLL in equation 4. The retention parameter criticality top p=1.0
+assigns every step to the high branch. Each step therefore forms its own segment, segment aggre-
+gation is the identity, and the stored βλ = 0.5 is unused. Equation 6 is the resulting gate. The
+equivalent centered parameterization is given below.
+Normalization conventions.
+Group statistics are computed over step rows. In the reconstructed
+ALFWorld 1.5B computation, each episode-side row carries �Rt = R(τ)−0.1 1{invalid action at t}.
+For Ng
+=
+�
+τ∈g Tτ, the statistics are µg
+=
+N −1
+g
+�
+τ∈g
+�
+t �Rt and σ2
+g
+=
+(Ng −
+1)−1 �
+τ∈g
+�
+t( �Rt −µg)2. Thus longer trajectories contribute more rows, and a local validity
+penalty can change the episode-side credit at the affected step. Discounted step returns are com-
+puted from environment rewards. Their anchor-group sample standard deviation uses divisor |G|−1
+for non-singleton groups. These conventions are retained in the implemented estimator inputs of
+Section 3.3. The step advantage enters the mixture without additional multiplicative rescaling.
+Loss
+reduction
+and
+regularization.
+The
+archived
+ALFWorld
+1.5B
+configuration
+uses
+token-mean: each valid response token has equal weight across the optimization batch. In equa-
+tion 1, this corresponds to response weights wt = |at|/ �
+k |ak| inside Et. The KL coefficient is
+0.01, using low var kl, and the full objective includes −0.001 �
+H, where �
+H is mean policy entropy
+over valid token contexts. This entropy regularizer is distinct from the sampled-response NLL score
+Ht.
+19
+
+============================================================
+=== PAGE 20 ===
+============================================================
+
+Preprint
+Singleton step-group fallback.
+A singleton anchor group admits no within-group contrast. We
+normalize that step’s discounted return against the statistics of its prompt group: AS
+t = ˆgt −µprompt
+in mean-norm mode and (ˆgt−µprompt)/(σprompt+ε) in mean-and-std-norm mode, with the prompt-
+group statistics taken over all steps sharing the prompt index. This provides a group-relative refer-
+ence for states observed only once, following the normalization conventions of equations 2–3.
+Per-step advantage scalar.
+Every quantity entering equation 7 is a per-step scalar: AS
+t and ct are
+computed per step, and the mixed AGACA
+t
+is broadcast back to the tokens of at through the response
+mask. Where an advantage has already been broadcast, its per-step scalar is recovered by averaging
+over the step’s valid response tokens.
+Ablation controls and centered gate.
+In the fixed-weight sweep, αλ = 0 gives λt = λ0 and
+leaves the advantage definitions and singleton fallback unchanged. The modulation-off result at
+λ0 = 0.5 is the same configuration as the 0.5 fixed sweep. With λref = λ0(1+αλ) and κλ = λ0αλ,
+the gate can be written λt = min{λref + κλ(ct −1), 1}. For ct ≡1, the default gate has constant
+weight 0.75. The observed step-weighted training mean is denoted separately by ¯λtrain. The random
+control permutes NLL scores within each trajectory, preserving its weight multiset while changing
+their pairing with the two advantage signals. The original GiGPO rule AE + AS also has a different
+total advantage scale from the fixed λ = 0.5 GACA mixture.
+F
+COMPUTATIONAL COST
+GACA adds no parameters, no rollouts and no forward passes: the per-token log-probabilities that
+equation 4 averages are already materialized for the importance ratio in equation 1, and everything
+downstream of them is elementwise arithmetic on per-step scalars. Table 8 confirms this on the
+setting where the horizon is longest. The two components GACA adds over GiGPO cost 0.09 s
+per iteration together, against an iteration dominated by rollout and policy update, giving a reported
+overhead below 0.2% over GRPO in this component-level timing comparison.
+Table 8: Per-iteration wall-clock breakdown on ALFWorld with Qwen2.5-1.5B-Instruct, averaged
+over 20 training iterations on the same hardware. Rows above the rule are shared by all three
+methods; rows below are the additions each method makes to the advantage computation. The
+reported peak memory is the same for all three configurations.
+Component (s / iteration)
+GRPO
+GiGPO
+GACA
+Environment rollout
+318.6
+Old- and reference-policy log-probabilities
+23.1
+Clipped policy update
+29.5
+Anchor-state grouping (hash lookups)
+—
+0.01
+0.01
+Step-level advantage
+—
+0.53
+0.53
+sampled NLL and surprisal score
+—
+—
+0.07
+Mixing weight and advantage blend
+—
+—
+0.02
+Total
+371.2
+371.7
+371.8
+Overhead vs. GRPO
+—
++0.15%
++0.17%
+Peak GPU memory (GB)
+62.4
+62.4
+62.4
+G
+COMPLETE ABLATION RESULTS
+Table 9 gives the complete ALFWorld 1.5B ablation grid underlying the main allocation comparison
+and the additional sensitivity analyses below. The two fixed-0.5 entries are one configuration and
+one result.
+20
+
+============================================================
+=== PAGE 21 ===
+============================================================
+
+Preprint
+Table 9: Ablation grid on ALFWorld (1.5B): each block varies one design choice with the remaining
+components at their defaults, under a single training and selection protocol and averaged over the
+same three evaluation seeds. Best per block in bold; the full default configuration is shaded. The
+two entries marked † are the same configuration: αλ = 0 and λ0 = 0.5 give a fixed equally weighted
+mixture.
+Variant
+Success rate
+∆vs. default
+Criticality score. Does score-to-step assignment matter?
+NLL proxy (default)
+96.88
+reference
+random permutation
+88.54
+−8.34
+Fixed mixing weight λ0, adaptation off. Which tested constant is best?
+0.0 (episode-level only)
+85.94
+−10.94
+0.25
+91.20
+−5.68
+0.5†
+93.05
+−3.83
+0.75
+92.41
+−4.47
+1.0 (step-level only)
+84.60
+−12.28
+Modulation strength αλ. Which strength is best?
+0 (no modulation)†
+93.05
+−3.83
+0.25
+95.12
+−1.76
+0.5 (default)
+96.88
+reference
+1.0
+95.44
+−1.44
+Fusion weight αc. Does return change help?
+1.0 (default)
+96.88
+reference
+0.7
+96.05
+−0.83
+0.5
+95.20
+−1.68
+G.1
+MODULATION STRENGTH AND THE MIXING LAW
+At λ0 = 0.5, the tested strengths αλ = 0, 0.25, 0.5, 1 give success rates of 93.05%, 95.12%, 96.88%,
+and 95.44%. All three nonzero strengths have higher mean success than the fixed mixture, with the
+default 0.5 giving the largest mean. Increasing αλ raises the weight at a given positive score and
+lowers the criticality threshold for saturation. The sweep therefore varies the mean weight together
+with sensitivity to criticality and the extent of clipping.
+G.2
+CHOICE OF CRITICALITY SIGNAL
+We also test adding normalized changes in discounted return to the NLL score, keeping the gate
+parameters fixed.
+NLL–return-change fusion.
+In the measured non-default control, let ˆet = Ht/H and ˆdt = ∆t/∆
+with ∆t = |ˆgt −ˆgt−1| and ∆1 = 0. When ∆> 0, the optional fusion is
+scoret = αcˆet + (1 −αc) ˆdt,
+αc ∈[0, 1].
+(32)
+The fused score is normalized within the completed trajectory before gating; αc = 1 gives the main
+NLL-only method. The archived configuration does not specify the handling of ∆= 0.
+Pure NLL (αc = 1) reaches 96.88%, compared with 96.05% and 95.20% for NLL shares 0.7 and
+0.5, respectively (Table 9), supporting the NLL-only choice among these tested constructions.
+21
+
+============================================================
+=== PAGE 22 ===
+============================================================
+
+Preprint
+H
+SUPPLEMENTARY DIAGNOSTICS
+The diagnostics use the frozen ALFWorld 1.5B final@300 checkpoint with temperature 1, top-
+p = 1, top-k disabled, and at most 512 response tokens. The environment uses success reward
+10, discount 0.95, a 50-step episode limit, and a two-step history window. The weight-distribution
+sample uses 16 fixed training tasks. The paired diagnostic uses 32 tasks stratified by training-task
+type, fixed before sampling with master seed 2026092602.
+H.1
+TRAINING MEAN AND FROZEN-POLICY WEIGHTS
+Across 300 parameter updates, the logged mixing weights have a step-weighted mean of approx-
+imately 0.748; each update’s mean is weighted by its number of environment steps. Trajectory-
+normalized scores have mean one, giving the default gate a pre-cap mean of 0.75, with clipping
+slightly reducing it. This motivates the fixed-0.75 training control in Section 4.3.
+Stepwise weight distributions use newly collected complete rollout groups from the frozen fi-
+nal@300 checkpoint. Each of 16 fixed training tasks supplies 8 trajectories; 122 of the 128 tra-
+jectories succeed. The sample contains 1,269 environment steps, with non-singleton anchor groups
+covering 96.30% of the steps.
+The sampled weight mean is 0.7484, its median is 0.7390, and its 10th–90th percentiles are 0.6228–
+0.8996; 2.68% of steps reach λt = 1 (Figure 5).
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+Step-level weight λt
+0%
+2%
+4%
+6%
+8%
+Share of steps
+Training mean
+0.748
+Frozen-policy weights (1,269 steps)
+Figure 5: Step weights from the frozen ALFWorld 1.5B final@300 policy, using 128 trajectories
+and 1,269 decisions on training tasks. The vertical line marks the historical training mean.
+H.2
+WITHIN-TRAJECTORY SCORE AND ACTION DIVERSITY
+A full pre-action state includes the task, model input, interaction history, and current environment
+state. Fresh responses sampled independently of the original rollout estimate action diversity. If nu
+of the n samples execute canonical action u, the disagreement estimator is
+�D(s) = 1 −
+�
+u nu(nu −1)
+n(n −1)
+.
+(33)
+The parser groups responses by environment-executed action identity. Invalid responses share an
+identity only when their environment behavior is identical.
+Paired sampling.
+For each of the 32 stratified tasks, we collect eight trajectories, totaling 256
+trajectories and 2,181 decisions. One trajectory per task is selected uniformly, followed by two
+decision steps drawn uniformly without replacement. A step in a trajectory of length T has selection
+probability (1/8)(2/T). The two selected steps are ordered by their original rollout scores ct; all 32
+pairs have distinct scores and mixing weights. At each state, 32 fresh responses estimate diversity,
+22
+
+============================================================
+=== PAGE 23 ===
+============================================================
+
+Preprint
+totaling 2,048 responses. Forty-one of the 64 states have zero observed disagreement. Figure 4
+displays all 32 pairs: 11 diversity differences are positive, 5 negative, and 16 zero.
+Task pairs are the units of analysis and resampling. The 95% percentile intervals in Table 10 use
+2,000 task-bootstrap replicates with seed 2026092602, preserving both states in each sampled task.
+They describe uncertainty across this task panel conditional on the frozen checkpoint. The action-
+diversity difference remains positive after each leave-one-task-out exclusion (0.0569–0.0834). Since
+trajectory normalization divides both scores by the same positive value, original NLL and criticality
+induce the same within-trajectory ordering.
+H.3
+ACTION-VALUE MEASUREMENTS
+The paired diagnostic uses the same 64 states for continuation-value measurements. At each state,
+m = 8 independent response draws give parsed actions Ui, each followed by independent con-
+tinuation blocks b = 1, 2. All 1,024 candidate branches pass restoration checks on observations,
+admissible actions, model-input tokens, and environment-state hashes. Discounted returns include
+the initial action and use the same remaining horizon. ALFWorld stores the parsed action in subse-
+quent policy history, so the continuation context depends on the canonical action.
+Within each block, returns from draws executing the same action are averaged. Let �G(b)
+i
+be the
+resulting mean assigned to draw i, retaining the original action multiplicities, and let �G
+(b)
+=
+m−1 �
+i �G(b)
+i . We estimate action-value variation by
+�C(s) =
+1
+m −1
+m
+�
+i=1
+��G(1)
+i
+−�G
+(1)���G(2)
+i
+−�G
+(2)�
+.
+(34)
+Independent continuation blocks remove noise cross-products in expectation. Shared-action aver-
+aging gives identical estimates to repeated draws of the same action; states with a single sampled
+action therefore have zero estimated variation. The paired sample has 47 such states, and two of the
+remaining state estimates are negative. Negative finite-sample estimates are retained.
+Table 10: Paired measurements ordered by original rollout criticality. Means use all 32 task pairs.
+Differences are higher-score minus lower-score; intervals use task resampling. The value estimates
+use same-action averaging in each continuation block.
+Quantity
+Lower c
+Higher c
+Difference
+95% interval
+Action diversity �D
+0.1041
+0.1789
+0.0747
+[0.0248, 0.1334]
+Action-value variation �C
+0.2502
+0.1710
+−0.0792
+[−0.3599, 0.1954]
+The interval for the action-value difference includes zero, so this panel provides no clear evidence
+of value separation between the higher- and lower-score states.
+23

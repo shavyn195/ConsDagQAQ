@@ -1,0 +1,2273 @@
+文档: 2611.16304_StateAlign.pdf
+页数: 16
+图片: 0 张
+正文字体大小: 11.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) StateAlign:
+  [L2] (p.1) Internalizing State-Aware Decision-Making for Reliable
+  [L2] (p.1) Multi-Turn Tool Agents via Reinforcement Learning
+    [L3] (p.1) Zhexi Lu
+    [L3] (p.1) , Subhajit Chaudhury
+    [L3] (p.1) , Tejaswini Pedapati
+    [L3] (p.1) ,
+    [L3] (p.1) Keerthiram Murugesan
+    [L3] (p.1) ,
+    [L3] (p.1) Lei Yu
+    [L3] (p.1) Rensselaer Polytechnic Institute,
+    [L3] (p.1) IBM Research
+    [L3] (p.1) Model:
+    [L3] (p.1) huggingface.co/ZhexiLu/StateAlign-8B
+    [L3] (p.1) Abstract
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+[L1] (p.1) arXiv:2611.16304v1  [cs.LG]  12 Nov 2026
+    [L3] (p.2) 2
+    [L3] (p.2) Task States and Agent Decisions
+    [L3] (p.3) 3
+      [L4] (p.3) StateAlign:
+      [L4] (p.3) State-Aware Reinforcement
+    [L3] (p.3) Learning
+    [L3] (p.5) 4
+    [L3] (p.5) Experiments
+    [L3] (p.5) 5
+    [L3] (p.5) Analysis
+    [L3] (p.8) 6
+    [L3] (p.8) Related Work
+    [L3] (p.8) 7
+    [L3] (p.8) Conclusion
+    [L3] (p.9) Limitations
+    [L3] (p.9) References
+    [L3] (p.11) A
+    [L3] (p.11) Training Data
+    [L3] (p.11) B
+    [L3] (p.11) Training Details
+    [L3] (p.12) C
+    [L3] (p.12) Evaluation Settings
+    [L3] (p.12) D
+    [L3] (p.12) Additional Analyses
+    [L3] (p.14) E
+    [L3] (p.14) Training Dynamics
+    [L3] (p.14) F
+    [L3] (p.14) Selected Prompts
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## StateAlign: Internalizing State-Aware Decision-Making for Reliable
+
+
+## Multi-Turn Tool Agents via Reinforcement Learning
+
+
+### Zhexi Lu1, Subhajit Chaudhury2, Tejaswini Pedapati2,
+
+
+### Keerthiram Murugesan2, Lei Yu1
+
+
+### 1Rensselaer Polytechnic Institute, 2IBM Research
+
+�Code: github.com/ZhexiLu/StateAlign
+
+### Model: huggingface.co/ZhexiLu/StateAlign-8B
+
+
+### Abstract
+
+Reinforcement learning has improved the tool-
+use capabilities of large language models. How-
+ever, better task performance can coincide with
+increased tool hallucination. Reliable tool use
+requires decisions to follow the current task
+state: available information, tool capabilities,
+and task progress. Our analysis shows that
+agents sometimes execute when they should
+ask for information, retrieve it, or decline an in-
+feasible request, even when reasoning identifies
+missing information. We introduce StateAlign,
+combining task-state construction with state-
+contrastive reinforcement learning. The data
+cover five task conditions and pair states with
+different action requirements.
+Outcome re-
+wards guide task completion; token-level con-
+trasts compare the same generated reasoning
+and actions under paired states to train outputs
+that fit the current state. Experiments across
+five base models from three families show im-
+provements on BFCL v4 multi-turn, ToolSand-
+box, and When2Call. Ablations show that state
+construction improves performance and reli-
+ability under different reward designs. The
+complete method further reduces tool hallucina-
+tion across three Qwen3 sizes. On Qwen3-8B,
+StateAlign improves BFCL v4 multi-turn accu-
+racy from 45.5% to 55.2% and reduces no-tool
+hallucination on SimpleToolHalluBench from
+62.2% under outcome-only training to 56.1%.
+Behavioral analyses show more consistent deci-
+sions, more complete multi-call execution, and
+stronger recovery after tool errors.
+
+### 1
+
+
+### Introduction
+
+Tool calling allows large language models (LLMs)
+to interact with external tools and APIs (Schick
+et al., 2023). These tools enable models to re-
+trieve information, perform calculations, and exe-
+cute operations requested by users. By incorporat-
+ing tool results into subsequent reasoning, models
+can gather information and complete tasks over
+45
+50
+55
+BFCL v4 multi-turn (%)
+55
+60
+65
+Hallucination rate (%)
+Base
+ToolRL
+LoopTool
+AWM
+StateAlign
+better ↘
+(a) Unavailable tool
+45
+50
+55
+BFCL v4 multi-turn (%)
+24
+26
+28
+30
+32
+Base
+ToolRL
+LoopTool
+AWM
+StateAlign
+better ↘
+(b) Distractor tool
+Figure 1: Comparison of tool-use performance and re-
+liability on Qwen3-8B. We plot BFCL v4 multi-turn
+accuracy against SimpleToolHalluBench hallucination
+rates with (a) no available tool and (b) only an irrele-
+vant tool. Arrows connect the base model to StateAlign.
+StateAlign achieves the highest multi-turn accuracy and
+the lowest hallucination rates among the models shown.
+multiple steps (Yao et al., 2023). At each step, an
+agent must select an appropriate function, supply
+its arguments, and use the returned result to deter-
+mine how to proceed.
+To develop these capabilities, existing work con-
+structs tool-use demonstrations for supervised fine-
+tuning (SFT). Datasets such as ToolBench, API-
+Gen, and ToolACE (Qin et al., 2024; Liu et al.,
+2024, 2025) pair user requests and tool descrip-
+tions with target function calls and their arguments,
+teaching models which tools to select and how to in-
+voke them. APIGen-MT, ToolACE-MT, and Tool-
+Mind (Prabhakar et al., 2025; Zeng et al., 2026;
+Yang et al., 2025b) extend this supervision to multi-
+turn conversations with user messages, tool calls,
+and tool responses. However, SFT trains the model
+to imitate reference actions from fixed demonstra-
+tions. During interaction, errors in the model’s
+own calls can lead to histories not covered by these
+demonstrations, where it may struggle to recover
+and complete the task.
+Reinforcement learning (RL) instead trains mod-
+els with reward feedback on their own outputs. Re-
+1
+
+# arXiv:2611.16304v1  [cs.LG]  12 Nov 2026
+
+
+--- PAGE 2 ---
+
+cent work improves tool use through reward de-
+sign (Qian et al., 2025; Zhang et al., 2026b), it-
+erative data refinement (Zhang et al., 2026a), and
+interactive training with code execution or synthe-
+sized tool environments (Feng et al., 2026; Wang
+et al., 2026a). However, higher task performance
+does not necessarily mean more reliable tool use.
+Prior work has documented hallucinations in tool
+selection and use (Xu et al., 2025), and stronger
+reasoning can further increase tool hallucination
+(Yin et al., 2026). As shown in Figure 1, some
+RL-trained agents achieve higher BFCL v4 multi-
+turn accuracy than the base model but also exhibit
+higher tool hallucination rates. To understand this
+problem, we analyze whether agents choose ap-
+propriate actions given the information and tools
+available at each step. Our analysis in Section 2
+shows that agents often proceed with execution
+when they should ask for missing information, re-
+trieve it through a tool, or decline an infeasible
+request. A model can even identify missing infor-
+mation in its reasoning but still generate a tool call
+with fabricated arguments. These findings motivate
+us to train agents to decide whether and how to act
+based on the current task state.
+We introduce StateAlign, a reinforcement learn-
+ing framework for state-aware, reliable tool use.
+Starting from tool-use trajectories, we construct
+task states with different information availability,
+tool capabilities, and task progress. The model
+is trained on these states with outcome rewards
+based on task completion. We further design a
+token-level state-contrastive reward that compares
+the same generated reasoning and actions under
+paired states to encourage outputs consistent with
+the current task state and reduce tool hallucination.
+Our contributions are:
+• We introduce a task-state construction method
+that converts tool-use trajectories into train-
+ing examples covering diverse task conditions,
+with explicit pairs requiring different actions.
+Compared with the original training data, the
+constructed states improve task performance
+and reliability under different reward designs.
+• We propose state-contrastive RL that com-
+bines interaction outcome rewards with token-
+level supervision from paired task states. On
+the same constructed data, StateAlign reduces
+tool hallucination across three Qwen3 model
+sizes compared with training on task outcome
+rewards alone.
+(a) Actions under paired task states
+Call warranted  →  calls the target function
+Condition changed  →  reasoning states the change
+Condition changed  →  action fits the new state
+Value missing
+→ ask the user
+Value retrievable
+→ look it up first
+No suitable tool
+→ decline
+(b) A response when the value is missing
+TASK STATE
+Available: setup2FA · contact required
+User: “My User ID is A1B2C3D4.
+Please proceed with setting up 2FA.”
+Phone number not provided
+REASONING · final sentence
+“So the final answer is to ask the user for their phone
+number to proceed with the 2FA setup.”
+TOOL CALL · excerpt
+setup2FA(userId="A1B2C3D4",
+contact="+1234567890", ...)
+0
+25
+50
+75
+100
+Responses (%)
+98
+95
+65
+97
+81
+75
+97
+79
+82
+Figure 2: Task-state diagnosis on Qwen3-8B. (a) Each
+group pairs a state in which calling the target function
+is warranted with one that differs in a single condition;
+bars give the share of responses. (b) Response excerpts
+when a required phone number is missing. Blue shading
+marks the decision to ask; red shading marks the unpro-
+vided value in the emitted call.
+• Experiments across five base models show
+improved performance on BFCL v4 multi-
+turn, ToolSandbox, and When2Call. Behav-
+ioral analyses show more consistent deci-
+sions across task states, more complete multi-
+call execution, and stronger recovery after
+tool errors.
+
+### 2
+
+
+### Task States and Agent Decisions
+
+Task State.
+A tool agent receives a context h =
+(T , H) containing tool definitions T and interac-
+tion history H. For a user goal, we define the
+task state as the task-relevant conditions specified
+by the tools and evidenced by the history that con-
+strain the next action. These include (i) information
+availability: what information needed for the task
+is available, what is missing, and how it can be ob-
+tained; (ii) tool capabilities: which operations the
+tools support; and (iii) task progress: what is com-
+plete and what remains. User replies, tool results,
+and tool-availability changes can update these con-
+ditions and require different actions. Prior work
+2
+
+--- PAGE 3 ---
+
+1 Construct paired task states
+source trajectory
+Please cancel my order #4521.
+cancel_order(4521)
+edit one condition
+EXEC
+̃h
+id available
+EXECUTE cancel_order(4521)
+NEED_USER
+h
+id from the user
+ASK "Which order?"
+NEED_FETCH id from a lookup
+RETRIEVE get_orders()
+INFEASIBLE no tool can cancel
+DECLINE "I can't cancel it."
+STOP result returned
+REPLY "It is cancelled."
+pair
+2 Learn from interaction outcomes
+Please cancel my order.
+h
+rollout 1
+Which order?
+Order #4521.
+cancel_order(4521)
+cancelled
+Order cancelled.
+rollout 2
+Which order?
+Order #4521.
+get_order(4521)
+cancel_order(4521)
+order 4521 found
+cancelled
+Order cancelled.
+GRPO objective
+3 Learn from state contrasts
+current state h
+no id; cannot fetch
+z: ask, then cancel
+paired state ̃h
+id given: #4521
+̃z: cancel order 4521
+base model
+2
+3
+rollout A: asks
+The order id is missing. No tool can look
+it up, so I should ask. →"Which order?"
+rollout B: uses an id never given
+The user wants a cancellation. I'll cancel
+order 4521 now. →
+cancel_order(4521)
+rt > 0: fits h
+rt < 0: fits ̃h
+Rout =0.8
+Rout =0.4
+out
+π0
+rt =clip(logπ0(yt ∣h,z,pt)
+−logπ0(yt ∣̃h, ̃z,pt), ±1)
+= out + λpair
+Figure 3: Overview of StateAlign on an example task. (1) Editing one condition of a step from a source trajectory
+yields five task states with different required actions; each state keeps a reference path, and states are paired with
+EXEC. (2) The policy acts in a constructed state; shaded cards are user messages and tool results, taken from the
+source trajectory where available. Both rollouts ask for the order ID and then execute; the second also makes an
+unnecessary call in the same step, which halves its reward. Their outcome rewards give group-relative advantages
+in the GRPO objective Jout. (3) The base model π0, kept fixed during training, scores the tokens of two further
+rollouts under the current state and the paired state, each with its reference path; the clipped difference rt weights
+the policy’s token log-likelihoods in Jpair, defined in Eq. 3.
+models decisions over interaction histories (Zhou
+et al., 2024) and combines dialogue-state tracking
+with tool-use training (Acikgoz et al., 2025).
+Decisions across Task States.
+We compare
+Qwen3-8B’s responses to paired task states follow-
+ing the protocol in Appendix D. The states differ
+in one relevant condition: one allows execution,
+and the other requires clarification, retrieval, or de-
+clining an infeasible request. Figure 2a shows that
+target-function selection reaches 97–98% when ex-
+ecution is appropriate, but choosing the required
+action under the contrasting conditions is less reli-
+able. In the missing-information condition, 95% of
+responses identify the missing value in reasoning,
+but only 65% ask the user for it. Figure 2b shows
+the model ending its reasoning with a decision to
+ask for the user’s phone number, then calling the
+tool with a number absent from the context. The
+final call contradicts both the available information
+and the decision expressed in reasoning.
+The training problem is therefore to make reason-
+ing and actions follow the conditions of the current
+task. We construct training states with different
+action requirements and pair states that differ in
+a relevant condition. For example, reasoning that
+assumes a required value is available may fit a state
+that permits execution but conflict with a state re-
+quiring clarification. The same generated content
+can then be evaluated under both states. StateAlign
+combines this supervision with feedback on inter-
+action outcomes to train reasoning and actions that
+fit the current state.
+
+### 3
+
+
+#### StateAlign: State-Aware Reinforcement
+
+
+### Learning
+
+We illustrate StateAlign in Figure 3. Given context
+h, the policy πθ generates reasoning followed by
+tool calls or a user reply. Interaction outcomes train
+task completion; token-level state contrasts train
+reasoning and actions to fit the current conditions.
+3.1
+Constructing Paired Task States
+We construct data from ToolMind (Yang et al.,
+2025b) and LoopTool-23k (Zhang et al., 2026a).
+Structural checks remove invalid calls and incon-
+3
+
+--- PAGE 4 ---
+
+sistent histories. We use Qwen3.8-27B to filter
+calls in ToolMind’s synthetic demonstrations that
+do not serve the request or contain unsupported ar-
+guments. The same model rewrites user messages
+and synthesizes retrieval steps.
+For each selected call, we identify its re-
+quired tools and information, then modify the
+tool definitions or history to construct five types
+of states.
+EXEC supplies the information and
+tools for execution. NEED_USER removes a re-
+quired user-provided value or retains a clarification
+turn, requiring the agent to ask before executing.
+NEED_FETCH removes a relevant tool result or
+introduces a lookup for a required identifier, so a
+tool can obtain the missing information. INFEA-
+SIBLE removes the required tool and its identified
+alternatives. STOP includes a result completing the
+request and requires a reply without further calls.
+Each non-EXEC instance is paired with an EXEC
+counterpart from the same source trajectory when
+available. Source calls and observations provide ex-
+ecution checks and interaction feedback; unpaired
+instances receive outcome supervision alone. Re-
+sampling by condition yields approximately 30k
+instances. Appendix A details construction and
+annotation, with prompts in Appendix F.
+3.2
+Learning from Interaction Outcomes
+An appropriate first action must lead to an appro-
+priate follow-up action. Asking for information
+should enable execution once it arrives; receiving
+a result should lead to further work or termination
+according to the remaining task. We train short
+interactions in which clarification receives stored
+user information; retrieval receives recorded ob-
+servations when function names and designated
+arguments match. The policy acts on the updated
+history. If a continuation is recorded, successful
+target execution is followed by tool results and one
+further policy step, checked against the requirement
+to continue or stop. For a trajectory τ requiring ex-
+ecution,
+Rout(τ) =
+�
+γk−1α(τ)c(τ),
+success,
+0,
+otherwise.
+(1)
+Success
+requires
+matching
+designated
+func-
+tions and arguments.
+In NEED_USER and
+NEED_FETCH, attempting target execution before
+obtaining required information ends the trajectory
+with zero reward. Here, k is the execution step,
+γ = 0.8 favors timely completion, and α(τ) pe-
+nalizes extra calls. The indicator c(τ) requires
+a successful continuation, or equals one if none
+is specified. Thus, reward depends on both tar-
+get execution and acting appropriately after the
+state changes. INFEASIBLE and STOP use terminal
+checks for the required non-call response.
+Groups sampled from each state define relative
+advantages for a token-normalized GRPO objective
+Jout (Shao et al., 2024), with KL regularization to
+the base model π0. This objective trains all policy
+outputs, including continuations. Appendix B gives
+reward settings.
+3.3
+Learning from State Contrasts
+Outcome supervision evaluates actions over an in-
+teraction. State contrasts additionally train how
+generated reasoning and actions fit the current con-
+ditions.
+For paired contexts (hi, ˜hi), reference
+paths zi, ˜zi describe appropriate actions and con-
+tinuations. We construct them from source calls
+and responses, adding clarification or retrieval as
+required. Appendix B provides a scoring example.
+The base model π0, fixed during training, scores
+each policy-generated token yi,t under both con-
+texts using the same prefix pi,t:
+ri,t = clip
+�
+log π0(yi,t | hi, zi, pi,t)
+−log π0(yi,t | ˜hi, ˜zi, pi,t), −1, 1
+�
+.
+(2)
+For example, a missing-value state requires clari-
+fication before execution, whereas its counterpart
+permits immediate execution. Positive scores favor
+content fitting the current state and path; negative
+scores favor the counterpart. Content fitting both
+similarly receives near-zero scores. A response can
+acknowledge a missing value and later speculate
+that it is available. These parts can receive oppos-
+ing preferences that a single outcome score cannot
+express. The prefix contains preceding policy out-
+puts and returned feedback. Paired contexts and
+paths are used only for scoring; the policy acts from
+its tools and history.
+The scores weight generated tokens in the state-
+contrastive objective:
+Jpair(θ) = 1
+Z
+�
+(i,t)∈P
+sg[ri,t]
+· log πθ(yi,t | hi, pi,t).
+(3)
+Here, P contains scored reasoning and action posi-
+tions in paired instances before the appended con-
+tinuation; Z counts all policy-generated tokens be-
+fore that step across the batch; sg stops gradients.
+4
+
+--- PAGE 5 ---
+
+We maximize
+J (θ) = Jout(θ) + λJpair(θ).
+(4)
+In all-failure or equally rewarded all-success
+groups, outcome advantages vanish, but reason-
+ing and actions can still differ in state compatibility.
+The pair objective provides supervision beyond
+these tied outcomes. We prioritize groups with
+varying rewards and retain a portion of paired suc-
+cessful groups, as detailed in Appendix B. Paired
+all-failure groups also contribute when retained.
+
+### 4
+
+
+### Experiments
+
+4.1
+Experimental Setup
+Base Models.
+We train Qwen3-4B/8B/14B
+(Yang et al., 2025a), Granite-4.2-8B (IBM Re-
+search, 2026), and Llama-3.1-8B-Instruct (Dubey
+et al., 2024) to evaluate StateAlign across model
+sizes and families.
+Baselines.
+Comparisons include ToolRL (Qian
+et al., 2025), LoopTool (Zhang et al., 2026a), AWM
+(Wang et al., 2026a), and the base models. ToolRL
+uses Qwen3-8B trained on RLLA-4k; LoopTool
+and AWM use released models. Each retains its
+own training data. Single-step binary GRPO on our
+constructed states compares training objectives.
+Benchmarks.
+BFCL v4 (Patil et al., 2025) mea-
+sures multi-turn tool-use accuracy. ToolSandbox
+(Lu et al., 2025) measures task progress through
+trajectory similarity. When2Call (Ross et al., 2025)
+measures macro accuracy across calling, clarifica-
+tion, and infeasibility. SimpleToolHalluBench (Yin
+et al., 2026) measures hallucination with no avail-
+able tool (NTA) or only an irrelevant tool (DT).
+Implementation Details.
+We train with LoRA
+(Hu et al., 2022) on eight NVIDIA H100 80GB
+GPUs with λ = 0.1. Qwen3 component compar-
+isons use the step-400 checkpoint. Tables 1 and 2
+report evaluation means, with BFCL standard de-
+viations in Table 2. Appendices B and C provide
+training and evaluation settings.
+4.2
+Main Results
+On
+Qwen3-8B,
+StateAlign
+leads
+the
+com-
+pared methods on BFCL v4, ToolSandbox, and
+When2Call in Table 1, including all four BFCL
+categories. Its largest advantage over LoopTool
+is in Missing Parameters, which requires obtain-
+ing information before execution. Higher Missing
+Functions and Long Context scores indicate better
+handling of tool availability and longer histories.
+Hallucination decreases in both NTA and DT rela-
+tive to the Qwen3-8B base model and LoopTool.
+Across all five base models, StateAlign improves
+every BFCL category and When2Call accuracy and
+reduces NTA hallucination. On Qwen3, it exceeds
+AWM on ToolSandbox at all sizes and BFCL at 4B
+and 8B. At 14B, BFCL accuracy is 54.8%, close
+to AWM’s 55.5%, with higher ToolSandbox and
+When2Call scores and lower hallucination in both
+settings. No-tool hallucination is 45.0%, compared
+with 53.9% for AWM-14B.
+4.3
+Ablation Studies
+Task-state construction improves training under
+different reward designs. Table 2A compares bi-
+nary GRPO and ToolRL rewards on original data
+and constructed states. Both achieve higher BFCL,
+ToolSandbox, and When2Call scores, with lower
+NTA and DT hallucination. Neither comparison
+uses the pair objective.
+On the same constructed data,
+complete
+StateAlign reduces NTA and DT hallucination
+across Qwen3-4B, 8B, and 14B compared with
+outcome-only training in Table 2B. At 14B, NTA
+falls from 56.9% to 45.0%, and DT from 25.2% to
+22.6%. When2Call accuracy improves at all three
+sizes, indicating better decisions about calling, clar-
+ification, and infeasibility. BFCL accuracy also
+improves at all three sizes. Appendix E reports
+training dynamics.
+
+### 5
+
+
+### Analysis
+
+5.1
+State-Contrast Signals
+Successful rollouts can differ in how closely rea-
+soning follows the available information. Figure 4
+pairs a request missing an image identifier with one
+that provides it. In rollout A, recognizing the miss-
+ing identifier and proposing clarification receive
+positive mean token scores; speculation that it is
+already known receives a negative score. Within
+one response, the signal rewards reasoning that fits
+the state and penalizes conflicting assumptions.
+Both rollouts ask for the identifier and com-
+plete execution, but much of rollout B’s reason-
+ing receives near-zero scores. All rollouts in this
+group share an outcome reward, giving zero rela-
+tive outcome advantages. State contrasts still pro-
+vide token-level supervision within this group. Ap-
+pendix D.1 extends the analysis across all five con-
+5
+
+--- PAGE 6 ---
+
+Model
+BFCL v4 Multi-turn ↑
+ToolSandbox ↑When2Call ↑
+SimpleToolHalluBench ↓
+Overall
+Base
+MF
+MP
+LC
+Similarity
+Accuracy
+NTA
+DT
+Base models
+Qwen3-4B
+39.8
+46.6
+43.8
+34.6
+34.3
+67.4
+67.9
+49.9
+28.4
+Qwen3-8B
+45.5
+50.3
+49.1
+37.9
+44.6
+73.4
+66.4
+59.8
+28.2
+Qwen3-14B
+47.6
+56.4
+48.3
+37.2
+48.4
+74.6
+70.6
+53.9
+20.7
+Granite-4.2-8B
+49.4
+62.7
+40.0
+43.3
+51.7
+82.1
+75.6
+20.8
+33.3
+Llama-3.1-8B-Instruct
+8.0
+8.3
+8.7
+7.5
+7.7
+35.6
+34.8
+72.6
+98.8
+Baselines
+GRPO-8B
+51.9
+58.7
+54.1
+45.4
+49.4
+78.2
+71.7
+55.6
+26.6
+ToolRL-8B
+48.9
+55.1
+51.3
+39.1
+50.3
+72.5
+65.1
+58.7
+31.1
+LoopTool-8B
+53.1
+61.2
+53.7
+43.8
+53.8
+76.9
+68.8
+64.3
+28.4
+AWM-4B
+41.2
+50.0
+43.0
+34.4
+37.3
+68.2
+68.8
+54.7
+28.7
+AWM-8B
+46.6
+53.5
+49.2
+38.1
+45.8
+71.9
+60.9
+65.9
+28.2
+AWM-14B
+55.5
+66.0
+52.3
+48.3
+55.4
+74.2
+70.2
+53.9
+23.8
+StateAlign
+Qwen3-4B
+48.3+8.5 55.8
+49.0
+43.3
+45.0
+73.3+5.9
+71.4+3.6
+44.1−5.7
+24.3−4.1
+Qwen3-8B
+55.2+9.8 61.4
+56.1
+48.8
+54.6
+79.3+5.9
+72.4+6.0
+56.1−3.7
+25.0−3.2
+Qwen3-14B
+54.8+7.3 66.0
+52.5
+45.4
+55.4
+81.3+6.7
+74.2+3.7
+45.0−8.9
+22.6+1.9
+Granite-4.2-8B
+53.8+4.4 66.5
+43.1
+46.4
+59.0
+82.3+0.2
+78.3+2.8
+10.5−10.4
+26.4−7.0
+Llama-3.1-8B-Instruct
+26.1+18.1 34.3
+17.3
+21.7
+31.2
+44.6+8.9
+59.6+24.8
+15.7−57.0
+42.6−56.2
+Table 1: Comparison of StateAlign with base models and tool-use training baselines on task performance and tool
+hallucination across four benchmarks. ToolSandbox similarity reflects how well execution trajectories satisfy task
+milestones. MF, MP, and LC denote Missing Functions, Missing Parameters, and Long Context. NTA and DT
+denote the no-tool and distractor-tool settings. All scores are on a 0–100 scale. Gray subscripts indicate score
+differences from the corresponding base model; bold marks the best result for each base model and size.
+BFCL v4
+TS
+W2C NTA↓DT↓
+(A) State construction
+GRPO
+Original
+47.2 ±1.8 73.7 66.9
+63.3
+37.2
+Constructed
+51.9 ±0.5 78.2 71.7
+55.6
+26.6
+ToolRL Original
+48.9 ±0.6 72.5 65.1
+58.7
+31.1
+Constructed
+53.0 ±0.6 78.5 71.3
+55.5
+29.8
+(B) Training configuration
+4B
+Outcome only 46.9 ±1.3 73.6 69.7
+54.7
+31.8
+StateAlign
+48.3 ±1.0 73.3 71.4
+44.1
+24.3
+8B
+Outcome only 53.0 ±0.9 76.2 71.0
+62.2
+30.3
+StateAlign
+55.2 ±1.3 79.3 72.4
+56.1
+25.0
+14B
+Outcome only 54.3 ±1.5 81.0 72.8
+56.9
+25.2
+StateAlign
+54.8 ±1.1 81.3 74.2
+45.0
+22.6
+Table 2: State construction and training ablations. TS:
+ToolSandbox; W2C: When2Call; NTA, DT: halluci-
+nation rates (lower is better). (A) Qwen3-8B trained
+on original data (ToolMind for GRPO; RLLA-4k for
+ToolRL) and constructed states. (B) Outcome-only train-
+ing and complete StateAlign on constructed states. Bold:
+better of each pair.
+ditions and describes example selection.
+5.2
+From State Conditions to Actions
+Table 3A revisits the diagnosis in Section 2. All
+four models identify the missing value in approx-
+imately 95% of reasoning traces. Correct clarifi-
+cation among these responses reaches 83.2% for
+StateAlign, compared with 68.8% for the base
+model and 80.6% for LoopTool. Target-function
+selection when the value is available remains above
+97% for all four. StateAlign improves clarification
+and retains accurate tool selection when execution
+is appropriate.
+Panel B distinguishes reasoning decisions from
+subsequent actions. Among traces identifying the
+missing value, StateAlign proposes execution with
+an unprovided value or missing argument in 6.4%
+of cases, compared with 10.5% for ToolRL and
+10.2% for LoopTool. When reasoning proposes
+clarification or another step first, target calls still
+occur in 4.5% of StateAlign responses, compared
+with 5.8% for LoopTool. Appendix D.2 covers
+other states and the irrelevant-history control.
+5.3
+Multi-Step Execution and Recovery
+Multi-step tasks require agents to update what re-
+mains after each tool result and continue until
+the request is complete.
+Figure 5a shows that
+StateAlign leads turn success on two-call and three-
+or-more-call BFCL turns. Among its multi-call
+turns, 6.8% fail after issuing some but fewer calls
+than required, compared with 9.9% for GRPO and
+9.2% for LoopTool in panel b. It also leads Tool-
+Sandbox multi-call similarity in panel c. These
+6
+
+--- PAGE 7 ---
+
+Current state h
+“Could you check the creation date for the image? I need to verify it aligns with our project timeline.”
+→  reference z: ask for the ID
+Paired state
+̃h
+“Could you check the creation date for the image with ID '7890'? I need to verify it aligns with our project timeline.”
+→  reference ̃z: call Get Image by ID
+Score
+rt = clip(logπ0(yt j h, z, pt) −logπ0(yt j ̃h, ̃z, pt), ± 1)
+≥0.1  current state
+≤−0.1  paired state
+|mean| < 0.1
+Rollout A
+mean +0.10
+highest of 8
+reward 0.8
+Okay, the user is asking about the creation date of an image to check if it aligns with their project timeline. Let me see what tools I
+have available. +0.28 The only tool provided is "Get Image by ID," which requires a uniqueID to retrieve image details. +0.20 Wait, the
+user didn't mention an ID yet. +0.38 They just asked about the creation date. +0.20 Without the unique ID, I can't call the
+function. +0.26 So I need to ask them for the image's ID first. +0.33 Once I have that, I can use the Get Image by ID function to fetch
+the details, including the creation date. Then I can provide the date and help verify it against their timeline. Hmm, but maybe the
+user assumes I already know the ID? −0.34 No, the system doesn't store that information. So definitely, I need to prompt them for
+the uniqueID. Let me make sure to respond by requesting the ID so I can proceed.
+Rollout B
+mean +0.03
+lowest of 8
+reward 0.8
+Okay, the user is asking to check the creation date of an image to verify it aligns with their project timeline. Let me see what tools I
+have available. Looking at the provided tools, there's only one function called "Get Image by ID." The description says it returns
+details of a generated image based on the provided ID. −0.13 The parameters require a "uniqueID" as a string. Wait, the user didn't
+mention the image ID yet. +0.34 They just asked about the creation date. +0.10 So I can't retrieve the image details without the ID. I
+need to ask them for the unique ID of the image they're referring to. I should respond by requesting the specific ID so I can use the
+Get Image by ID function to fetch the creation date. Without that, I can't proceed. +0.11 Let me make sure to prompt them for the ID
+clearly.
+Figure 4: State-contrast scores for two successful rollouts when the image ID is missing; the paired state provides it.
+Labels show mean token scores within each sentence. Blue indicates scores ≥0.1, red indicates scores ≤−0.1,
+and unshaded sentences have scores between these thresholds. Both rollouts ask for the ID; their reasoning differs
+in state compatibility.
+(A) State-conditioned actions
+Value missing
+Value available Paired states
+Model
+Mentions Clarifies
+Target call
+Both correct
+Base
+94.9
+68.8
+97.7
+63.5
+ToolRL
+94.6
+70.4
+97.9
+65.1
+LoopTool
+95.4
+80.6
+98.0
+75.4
+StateAlign
+95.2
+83.2
+97.1
+76.9
+(B) Decisions when the value is missing
+Model
+Plans to execute ↓
+Calls after deferring ↓
+Base
+9.9
+17.4
+ToolRL
+10.5
+16.4
+LoopTool
+10.2
+5.8
+StateAlign
+6.4
+4.5
+Table 3: State-conditioned reasoning and actions for
+Qwen3-8B (%). (A) Mentions: identifies the missing
+value; Clarifies: correct clarification given that mention;
+Target call: correct function when the value is available;
+Both correct: mean product of per-state action accu-
+racies within each pair. (B) Among traces identifying
+the missing value, Plans to execute measures proposals
+to call despite it; Calls after deferring measures target
+calls conditional on reasoning proposing to ask or take
+another step first. Lower is better for both metrics.
+results connect state-aware decisions to more com-
+plete execution of the required calls.
+Tool errors identify conditions the agent must
+address before continuing.
+Figure 5d shows
+a larger improvement over LoopTool on error-
+BFCL
+ToolSandbox
+Model
+Reply+fail ↓
+Similarity ↑
+Base
+11.6
+68.9
+GRPO
+5.7
+71.3
+ToolRL
+11.4
+69.3
+LoopTool
+6.3
+67.7
+StateAlign
+2.7
+73.5
+Table 4: Behavior and task completion after tool errors
+on Qwen3-8B. BFCL Reply+fail is the percentage of
+error-containing turns with no tool call in the next as-
+sistant response after the first error and a final failure.
+ToolSandbox reports similarity for error-containing sce-
+narios. Values use a 0–100 scale; bold marks the best
+result in each column.
+containing turns than on turns without errors. In
+Table 4, StateAlign makes no call immediately af-
+ter the first error and ultimately fails in 2.7% of
+error-containing turns, compared with 5.7% for
+GRPO and 6.3% for LoopTool. StateAlign also
+achieves the highest ToolSandbox similarity on
+error-containing scenarios.
+A BFCL example illustrates these updates. After
+startEngine reports that the doors must be locked,
+the base model reports the failure and asks whether
+to lock them. StateAlign locks the doors and re-
+tries. When the next error indicates that the brake
+pedal must be pressed, it performs that action and
+starts the engine successfully. Each result reveals
+a requirement for the next action, and the policy
+7
+
+--- PAGE 8 ---
+
+1
+2
+3+
+Reference calls per turn
+60
+70
+80
+90
+Turn success (%) ↑
+79.0
+76.6
+(a) BFCL: call count
+Base
+ToolRL
+GRPO
+LoopTool
+StateAlign
+0
+5
+10
+Incomplete turns (%) ↓
+12.7 13.5
+9.9
+9.2
+6.8
+(b) BFCL: incomplete calls
+Base
+ToolRL
+GRPO
+LoopTool
+StateAlign
+60
+65
+70
+75
+80
+Similarity (%) ↑
+68.4
+70.7
+74.5
+76.3
+78.2
+(c) ToolSandbox: multi-call
+Base
+ToolRL
+GRPO
+LoopTool
+StateAlign
+60
+70
+80
+90
+Turn success (%) ↑
+71.6 70.1
+75.9 76.8
+80.5
+(d) BFCL: error recovery
+Without tool errors
+Base
+ToolRL
+GRPO
+LoopTool
+StateAlign
+Figure 5: Multi-step execution and recovery on Qwen3-8B. (a) BFCL v4 turn success by reference-call count. (b)
+Percentage of multi-call turns that fail after issuing at least one call but fewer than the reference requires. Panels
+a and b use ordinary execution turns reached without an earlier failure. (c) ToolSandbox similarity on multi-call
+scenarios. (d) BFCL v4 turn success with tool errors (bars) and without tool errors (open circles). Colors identify
+methods; arrows indicate the preferred direction.
+continues until the requested operation succeeds.
+Appendix D.3 provides the recorded sequence and
+further recovery comparisons.
+
+### 6
+
+
+### Related Work
+
+Tool
+Learning.
+Synthetic
+datasets
+provide
+demonstrations of API calls, multi-turn interac-
+tions, and reasoning traces (Liu et al., 2025; Prab-
+hakar et al., 2025; Yang et al., 2025b).
+Task
+construction extends this coverage to ambiguous,
+changing, and infeasible requests (Wang et al.,
+2026b). RL methods improve tool use through re-
+ward design (Zhang et al., 2026b; Qian et al., 2025),
+adaptive data refinement (Zhang et al., 2026a),
+and interactive training environments (Wang et al.,
+2026a). ARTIST trains interleaved reasoning and
+tool use (Singh et al., 2025), and MUA-RL incor-
+porates simulated users into policy rollouts (Zhao
+et al., 2025). Step-level credit assignment (Feng
+et al., 2025), rewards for information acquisition
+(Kong et al., 2026), and self-distillation under
+privileged contexts (Zhao et al., 2026) provide
+more fine-grained training feedback. SIPO con-
+trasts contexts containing correct and incorrect
+answers (Yue et al., 2026); CC-OPD compares
+full instructions with contexts that omit individ-
+ual constraints (Zheng et al., 2026). RC-GRPO
+uses reward-conditioned sampling to increase re-
+ward diversity within rollout groups (Zhong et al.,
+2026). StateAlign contrasts task states that each
+have a valid action requirement, making their dif-
+ferences a source of supervision for how behavior
+should change.
+Reliable Tool Use.
+Prior work combines rea-
+soning with actions and observations (Yao et al.,
+2023), incorporates dialogue state tracking into
+tool-use training (Acikgoz et al., 2025), and sep-
+arates state interpretation from action generation
+(Guo et al., 2026). However, stronger reasoning
+can accompany increased tool hallucination (Yin
+et al., 2026). TRUST addresses decision reliabil-
+ity through uncertainty-aligned rewards at key in-
+teraction turns (Zhou et al., 2026). Proxy state-
+based evaluation uses inferred environment states
+to simulate interactions and assess task comple-
+tion (Chuang et al., 2026). We use paired states
+with different action requirements as supervision.
+StateAlign compares the same generated reasoning
+and actions under both states and their reference
+paths to train behavior that fits each state.
+
+### 7
+
+
+### Conclusion
+
+We presented StateAlign, combining task-state con-
+struction with state-contrastive reinforcement learn-
+ing. Our diagnosis shows that agents can violate
+current information and tool conditions even af-
+ter stating them in reasoning. Constructed states
+improve task performance and reliability under
+different reward designs. On the same data, the
+complete method further reduces tool hallucination
+compared with outcome-only training across three
+Qwen3 model sizes. Experiments across five base
+models show improved tool use, and behavioral
+analyses show more consistent decisions, more
+complete multi-call execution, and stronger recov-
+ery after tool errors.
+8
+
+--- PAGE 9 ---
+
+
+### Limitations
+
+StateAlign is trained on five types of constructed
+task states through short interactions with recorded
+feedback. Training feedback is limited to the inter-
+actions covered by the source trajectories. Extend-
+ing this setup to longer workflows with changing
+user goals or tool behavior is a direction for fu-
+ture work. We evaluate five base models ranging
+from 4B to 14B parameters on text-based tool-use
+benchmarks. The effectiveness of the approach at
+larger scales and in multimodal tool environments
+remains to be studied.
+
+### References
+
+Emre Can Acikgoz, Jeremiah Greer, Akul Datta,
+Ze Yang, William Zeng, Oussama Elachqar, Em-
+manouil Koukoumidis, Dilek Hakkani-Tür, and
+Gokhan Tur. 2025. Can a single model master both
+multi-turn conversations and tool use? CoALM: A
+unified conversational agentic language model. In
+Proceedings of the 63rd Annual Meeting of the As-
+sociation for Computational Linguistics (Volume 1:
+Long Papers), pages 12370–12390, Vienna, Austria.
+Association for Computational Linguistics.
+Yun-Shiuan Chuang, Chaitanya Kulkarni, Alec M. Chiu,
+Avinash Thangali, Zijie Pan, Shivani Shekhar, Yirou
+Ge, Yixi Li, Uma Kona, Linsey Pang, and Prakhar
+Mehrotra. 2026. Toward scalable verifiable reward:
+Proxy state-based evaluation for multi-turn tool-
+calling LLM agents. In Proceedings of the 64th An-
+nual Meeting of the Association for Computational
+Linguistics (Volume 6: Industry Track), pages 1251–
+1264, San Diego, California. Association for Compu-
+tational Linguistics.
+Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey,
+Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman,
+Akhil Mathur, Alan Schelten, Amy Yang, Angela
+Fan, Anirudh Goyal, Anthony Hartshorn, Aobo Yang,
+Archi Mitra, Archie Sravankumar, Artem Korenev,
+Arthur Hinsvark, Arun Rao, Aston Zhang, and 512
+others. 2024. The Llama 3 herd of models. arXiv
+preprint arXiv:2407.21783.
+Jiazhan Feng, Shijue Huang, Xingwei Qu, Ge Zhang,
+Yujia Qin, Baoquan Zhong, Chengquan Jiang, Jinxin
+Chi, and Wanjun Zhong. 2026. ReTool: Reinforce-
+ment learning for strategic tool use in LLMs. In In-
+ternational Conference on Learning Representations,
+volume 2026, pages 37909–37926.
+Lang Feng, Zhenghai Xue, Tingcong Liu, and Bo An.
+2025. Group-in-group policy optimization for LLM
+agent training. In Advances in Neural Information
+Processing Systems, volume 38, Main Conference,
+pages 46375–46408. Curran Associates, Inc.
+Rongfeng Guo, Yinxuan Huang, Yusen Wu, Mao-
+qing Zhong, Yunlu Chen, Meng Tang, Teng Long,
+and Vincent Tao Hu. 2026. From state to action:
+OODA-Tool for reliable multi-turn tool use. Preprint,
+arXiv:2608.24368.
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan
+Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and
+Weizhu Chen. 2022. LoRA: Low-rank adaptation of
+large language models. In International Conference
+on Learning Representations.
+IBM Research. 2026. Granite 4.2 language models.
+Accessed: 2026-10-18.
+Fanqi Kong, Jiayi Zhang, Mingyi Deng, Chenglin Wu,
+Yuyu Luo, and Bang Liu. 2026. InfoPO: Information-
+driven policy optimization for user-centric agents. In
+Proceedings of the 43rd International Conference
+on Machine Learning, volume 306 of Proceedings
+of Machine Learning Research, pages 60135–60165.
+PMLR.
+Weiwen Liu, Xu Huang, Xingshan Zeng, Xinlong Hao,
+Shuai Yu, Dexun Li, Shuai Wang, Weinan Gan,
+Zhengying Liu, Yuanqing Yu, Zezhong Wang, Yux-
+ian Wang, Wu Ning, Yutai Hou, Bin Wang, Chuhan
+Wu, Xinzhi Wang, Yong Liu, Yasheng Wang, and
+8 others. 2025. ToolACE: Winning the points of
+LLM function calling. In International Conference
+on Learning Representations, volume 2025, pages
+41359–41381.
+Zuxin Liu, Thai Hoang, Jianguo Zhang, Ming Zhu,
+Tian Lan, Shirley Kokane, Juntao Tan, Weiran Yao,
+Zhiwei Liu, Yihao Feng, Rithesh Murthy, Liangwei
+Yang, Silvio Savarese, Juan Carlos Niebles, Huan
+Wang, Shelby Heinecke, and Caiming Xiong. 2024.
+APIGen: Automated pipeline for generating verifi-
+able and diverse function-calling datasets. In Ad-
+vances in Neural Information Processing Systems,
+volume 37, pages 54463–54482. Curran Associates,
+Inc.
+Jiarui Lu, Thomas Holleis, Yizhe Zhang, Bernhard Au-
+mayer, Feng Nan, Haoping Bai, Shuang Ma, Shen
+Ma, Mengyu Li, Guoli Yin, Zirui Wang, and Ruom-
+ing Pang. 2025. ToolSandbox: A stateful, conver-
+sational, interactive evaluation benchmark for LLM
+tool use capabilities. In Findings of the Association
+for Computational Linguistics: NAACL 2025, pages
+1160–1183. Association for Computational Linguis-
+tics.
+Shishir G Patil, Huanzhi Mao, Fanjia Yan, Char-
+lie Cheng-Jie Ji, Vishnu Suresh, Ion Stoica, and
+Joseph E. Gonzalez. 2025. The berkeley function
+calling leaderboard (BFCL): From tool use to agentic
+evaluation of large language models. In Proceedings
+of the 42nd International Conference on Machine
+Learning, volume 267 of Proceedings of Machine
+Learning Research, pages 48371–48392. PMLR.
+Bowen Peng, Jeffrey Quesnelle, Honglu Fan, and Enrico
+Shippole. 2024. YaRN: Efficient context window ex-
+tension of large language models. In The Twelfth
+International Conference on Learning Representa-
+tions.
+9
+
+--- PAGE 10 ---
+
+Akshara Prabhakar, Zuxin Liu, Ming Zhu, Jianguo
+Zhang, Tulika Manoj Awalgaonkar, Shiyu Wang,
+Zhiwei Liu, Haolin Chen, Thai Hoang, Juan Carlos
+Niebles, Shelby Heinecke, Weiran Yao, Huan Wang,
+Silvio Savarese, and Caiming Xiong. 2025. APIGen-
+MT: Agentic pipeline for multi-turn data generation
+via simulated agent-human interplay. In Advances in
+Neural Information Processing Systems, volume 38,
+Main Conference. Curran Associates, Inc.
+Cheng Qian, Emre Can Acikgoz, Qi He, Hongru Wang,
+Xiusi Chen, Dilek Hakkani-Tur, Gokhan Tur, and
+Heng Ji. 2025. ToolRL: Reward is all tool learning
+needs. In Advances in Neural Information Process-
+ing Systems, volume 38, Main Conference, pages
+105523–105553. Curran Associates, Inc.
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan
+Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang,
+Bill Qian, Sihan Zhao, Lauren Hong, Runchu Tian,
+Ruobing Xie, Jie Zhou, Mark Gerstein, Dahai Li,
+Zhiyuan Liu, and Maosong Sun. 2024. ToolLLM:
+Facilitating large language models to master 16000+
+real-world APIs. In International Conference on
+Learning Representations, volume 2024, pages 9695–
+9717.
+Hayley Ross, Ameya Sunil Mahabaleshwarkar, and
+Yoshi Suhara. 2025. When2Call: When (not) to call
+tools. In Proceedings of the 2025 Conference of the
+Nations of the Americas Chapter of the Association
+for Computational Linguistics: Human Language
+Technologies (Volume 1: Long Papers), pages 3391–
+3409. Association for Computational Linguistics.
+Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta
+Raileanu, Maria Lomeli, Eric Hambro, Luke Zettle-
+moyer, Nicola Cancedda, and Thomas Scialom. 2023.
+Toolformer: Language models can teach themselves
+to use tools.
+In Advances in Neural Information
+Processing Systems, volume 36, pages 68539–68551.
+Curran Associates, Inc.
+Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu,
+Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan
+Zhang, Y. K. Li, Y. Wu, and Daya Guo. 2024.
+DeepSeekMath: Pushing the limits of mathemati-
+cal reasoning in open language models. Preprint,
+arXiv:2402.03300.
+Joykirat Singh, Raghav Magazine, Yash Pandya, and
+Akshay Nambi. 2025. Agentic reasoning and tool
+integration for LLMs via reinforcement learning.
+Preprint, arXiv:2505.01441.
+Zhaoyang Wang, Canwen Xu, Boyi Liu, Yite Wang,
+Siwei Han, Zhewei Yao, Huaxiu Yao, and Yuxiong
+He. 2026a. Agent world model: Infinity synthetic
+environments for agentic reinforcement learning. In
+Proceedings of the 43rd International Conference on
+Machine Learning, volume 306 of Proceedings of
+Machine Learning Research, pages 131469–131511.
+PMLR.
+Ziyi Wang, Yuxuan Lu, Yimeng Zhang, Pei Chen, Ziwei
+Dong, Jing Huang, Jiri Gesi, Xianfeng Tang, Chen
+Luo, Qun Liu, Yisi Sang, Hanqing Lu, Manling Li,
+Jin Lai, and Dakuo Wang. 2026b. Trajectory2Task:
+Training robust tool-calling agents with synthesized
+yet verifiable data for complex user intents. In Pro-
+ceedings of the 64th Annual Meeting of the Associa-
+tion for Computational Linguistics (Volume 1: Long
+Papers), pages 44021–44044, San Diego, Califor-
+nia, United States. Association for Computational
+Linguistics.
+Hongshen Xu, Zichen Zhu, Lei Pan, Zihan Wang,
+Su Zhu, Da Ma, Ruisheng Cao, Lu Chen, and Kai
+Yu. 2025. Reducing tool hallucination via reliability
+alignment. In Proceedings of the 42nd International
+Conference on Machine Learning, volume 267 of
+Proceedings of Machine Learning Research, pages
+69992–70006. PMLR.
+An Yang, Anfeng Li, Baosong Yang, Beichen Zhang,
+Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao,
+Chengen Huang, Chenxu Lv, Chujie Zheng, Dayi-
+heng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao Ge,
+Haoran Wei, Huan Lin, Jialong Tang, and 41 oth-
+ers. 2025a. Qwen3 technical report. arXiv preprint
+arXiv:2505.09388.
+Chen Yang, Ran Le, Yun Xing, Zhenwei An, Zongchao
+Chen, Wayne Xin Zhao, Yang Song, and Tao
+Zhang. 2025b. ToolMind technical report: A large-
+scale, reasoning-enhanced tool-use dataset. Preprint,
+arXiv:2511.15718.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak
+Shafran, Karthik Narasimhan, and Yuan Cao. 2023.
+ReAct: Synergizing reasoning and acting in language
+models. In International Conference on Learning
+Representations.
+Chenlong Yin, Zeyang Sha, Shiwen Cui, Changhua
+Meng, and Zechao Li. 2026. The reasoning trap:
+How enhancing LLM reasoning amplifies tool hallu-
+cination. In Proceedings of the 64th Annual Meeting
+of the Association for Computational Linguistics (Vol-
+ume 1: Long Papers), pages 8310–8328, San Diego,
+California, United States. Association for Computa-
+tional Linguistics.
+Zhenrui Yue, Huimin Zeng, Yueqi Wang, Yaokun Liu,
+Fengran Mo, Jinghan Zhang, Mung Yao Jia, Gyuseok
+Lee, Yang Zhang, Na Wei, and Dong Wang. 2026.
+SIPO: Unifying reinforcement learning with on-
+policy self-distillation. Preprint, arXiv:2609.36742.
+Xingshan Zeng, Weiwen Liu, Lingzhi Wang, Liangyou
+Li, Fei Mi, Yasheng Wang, Lifeng Shang, Xin
+Jiang, and Qun Liu. 2026.
+ToolACE-MT: Non-
+autoregressive generation for agentic multi-turn in-
+teraction. In International Conference on Learning
+Representations.
+Kangning Zhang, Wenxiang Jiao, Kounianhua Du, Yong
+Yu, Yuan Lu, Weiwen Liu, and Weinan Zhang. 2026a.
+LoopTool: Closing the data–training loop for robust
+LLM tool calls.
+In Proceedings of the 64th An-
+nual Meeting of the Association for Computational
+10
+
+--- PAGE 11 ---
+
+Linguistics (Volume 1: Long Papers), pages 21144–
+21164, San Diego, California, United States. Associ-
+ation for Computational Linguistics.
+Shaokun Zhang, Yi Dong, Jieyu Zhang, Jan Kautz,
+Bryan Catanzaro, Andrew Tao, Qingyun Wu, Zhid-
+ing Yu, and Guilin Liu. 2026b. Nemotron-Research-
+Tool-N1: Exploring tool-using language models with
+reinforced reasoning. In International Conference on
+Learning Representations (ICLR).
+Siyan Zhao, Zhihui Xie, Mengchen Liu, Jing Huang,
+Guan Pang, Feiyu Chen, and Aditya Grover. 2026.
+Self-distilled reasoner: On-policy self-distillation for
+large language models. In Proceedings of the 43rd
+International Conference on Machine Learning, vol-
+ume 306 of Proceedings of Machine Learning Re-
+search, pages 162433–162448. PMLR.
+Weikang Zhao, Xili Wang, Chengdi Ma, Lingbin Kong,
+Zhaohua Yang, Mingxiang Tuo, Xiaowei Shi, Yitao
+Zhai, and Xunliang Cai. 2025. MUA-RL: Multi-
+turn user-interacting agent reinforcement learning for
+agentic tool use. Preprint, arXiv:2508.18669.
+Yanzhao Zheng, Yuanqiang Yu, Tianze Xu, Chao
+Ma, Zhentao Zhang, Jihuai Zhu, Baohua Dong,
+Hangcheng Zhu, and Ruohui Huang. 2026. Counter-
+factual constraint-conditioned on-policy distillation
+for multi-constraint instruction following. Preprint,
+arXiv:2609.27421.
+Haitian Zhong, Jixiu Zhai, Lei Song, Jiang Bian,
+Qiang Liu, and Tieniu Tan. 2026.
+RC-GRPO:
+Reward-conditioned group relative policy optimiza-
+tion for multi-turn tool calling agents.
+Preprint,
+arXiv:2602.03025.
+Yifei Zhou, Andrea Zanette, Jiayi Pan, Sergey Levine,
+and Aviral Kumar. 2024.
+ArCHer: Training lan-
+guage model agents via hierarchical multi-turn RL.
+In Proceedings of the 41st International Conference
+on Machine Learning, volume 235 of Proceedings
+of Machine Learning Research, pages 62178–62209.
+PMLR.
+Yijin Zhou, Linqian Zeng, Xiaoya Lu, Wenyuan
+Xie, Dongrui Liu, Junchi Yan, and Jing Shao.
+2026. Exploring agentic tool-calling decisions via
+uncertainty-aligned reinforcement learning. Preprint,
+arXiv:2606.06976. Accepted to EMNLP 2026.
+
+### A
+
+
+### Training Data
+
+Data construction.
+We apply structural checks
+and Qwen3.8-27B filtering to remove low-quality
+source examples. The same model rewrites user
+messages, synthesizes retrieval steps, and checks
+the resulting states. Missing-value rewrites pre-
+serve the request and other supplied information;
+validation removes cases where the omitted value
+remains inferable.
+Retrieval examples require
+a lookup before execution, and tool-availability
+checks account for alternative tools that could ful-
+fill the request. Construction uses temperature 1.0,
+top-p 0.95, and top-k 20. Selected prompts are
+provided in Appendix F.
+Training data.
+The training pool contains ap-
+proximately 30k instances covering all five task
+states, with 55% linked to a paired counterpart. Ta-
+ble 5 reports their distribution alongside existing
+tool-use datasets.
+Dataset comparison.
+We estimate each exter-
+nal dataset’s distribution from 1,000 reference re-
+sponses classified by Qwen3.8-27B using the tools,
+history, and reference response; StateAlign uses its
+construction labels. Direct execution accounts for
+approximately 87% of LoopTool-23k and RLLA-
+4k. When2Call mainly covers clarification and in-
+feasibility, and retrieval and clarification are the
+largest categories in APIGen-MT-5k. Our data
+cover all five conditions and provide explicit state
+pairs.
+The constructed collection is checked for ques-
+tion overlap with BFCL multi-turn and When2Call
+using normalized exact matching and n-gram com-
+parisons. No question matches are detected under
+these checks.
+
+### B
+
+
+### Training Details
+
+Training setup.
+We implement StateAlign using
+TRL with LoRA adaptation and vLLM rollout gen-
+eration. Training uses AdamW on eight NVIDIA
+H100 80GB GPUs, with the shared hyperparam-
+eters in Table 6. The StateAlign checkpoints are
+step 400 for Qwen3 and step 300 for Granite and
+Llama. For ToolRL on RLLA-4k, we use step 200.
+Reward
+computation.
+Target
+execution
+is
+checked against the recorded function names and
+argument values. In Eq. 1, extra calls set α(τ) =
+0.5; otherwise, α(τ) = 1. The continuation check
+requires the recorded next execution or termination
+to succeed. Recorded user replies and tool obser-
+vations are excluded from the policy loss. State-
+contrast scores are clipped to [−1, 1] and apply to
+reasoning and action tokens before the appended
+continuation; the continuation receives outcome
+supervision only.
+State-contrast scoring.
+Both scoring inputs in-
+clude the same instruction to identify the current
+goal, required information, and appropriate action.
+Each input also contains a reference path for its
+11
+
+--- PAGE 12 ---
+
+Dataset
+Size
+EXEC
+NEED_FETCH
+NEED_USER
+INFEASIBLE
+STOP
+Other
+Paired
+ToolACE
+11,300 dialogues
+73.5
+0.8
+6.5
+8.1
+7.2
+3.9
+—
+Glaive-v2
+112,960 dialogues
+23.5
+0.0
+5.0
+8.6
+24.0
+38.9
+—
+APIGen-MT-5k
+5,000 dialogues
+19.7
+27.6
+26.5
+0.4
+12.2
+13.6
+—
+When2Call
+15,000 samples
+0.0
+0.0
+49.6
+50.3
+0.0
+0.1
+—
+ToolMind (synthetic)
+40,161 dialogues
+54.4
+4.9
+7.1
+1.3
+23.4
+8.9
+—
+LoopTool-23k
+23,040 samples
+87.1
+1.2
+1.3
+1.1
+9.0
+0.3
+—
+RLLA-4k
+4,000 samples
+86.9
+0.7
+2.9
+3.2
+3.8
+2.5
+—
+StateAlign
+30,433 samples
+58.7
+9.9
+13.1
+6.5
+11.8
+0.0
+55%
+Table 5: Task-state composition of tool-use training datasets (%). Size uses each release’s reporting unit. Other
+covers reference responses outside the five task-state categories. Paired is the share of training samples linked to a
+counterpart requiring a different action; — indicates that no such links are provided.
+Hyperparameter
+Value
+Hyperparameter
+Value
+Learning rate
+2 × 10−5
+Trajectories per batch
+320
+KL coefficient
+0.04
+Policy clipping
+0.2
+LoRA rank
+64
+LoRA α
+128
+Trajectories per state
+8
+Rollout steps
+4
+Tokens per step
+1,536
+Sampling temperature
+1.0
+State-contrast coefficient
+0.1
+Successful-group share
+20%
+Table 6: Training hyperparameters for StateAlign. The successful-group share is the fraction of batch groups
+reserved for paired successful trajectories.
+task state. These paths reuse the source calls and
+responses and specify clarification, retrieval, or
+non-execution when required; values obtained in
+later steps are described by their source rather than
+supplied in advance. Figure 6 shows a recorded
+pair and the shared policy continuation. The ad-
+ditional instructions and reference paths are used
+only by the scorer.
+Ablation settings.
+The component ablations in
+Table 2B use the same constructed states, 320 tra-
+jectories per batch, and checkpoints at step 400
+across Qwen3-4B, 8B, and 14B. Each configura-
+tion samples eight trajectories per starting state.
+The StateAlign batch includes the reserved success-
+ful groups.
+
+### C
+
+
+### Evaluation Settings
+
+Decoding.
+BFCL and SimpleToolHalluBench
+use their benchmark-provided decoding defaults.
+When2Call retains each model’s default genera-
+tion configuration, and ToolSandbox uses a shared
+decoding configuration across model families. Ta-
+ble 7 lists the resulting settings for Qwen3-based
+models. For BFCL, we apply YaRN (Peng et al.,
+2024) to all Qwen3 models with scaling factor 2
+and a 65,536-token serving context; other model
+families retain their native positional encodings.
+Each base model and its trained counterpart share
+the same evaluation settings and tool-call format.
+Benchmarks.
+ToolSandbox
+uses
+728
+sce-
+narios
+without
+RapidAPI
+dependencies
+and
+deepseek-chat as the user simulator. When2Call
+uses 300 examples balanced across tool call-
+ing, clarification, and infeasibility, and reports
+macro accuracy.
+SimpleToolHalluBench uses
+296 examples for each of the no-tool and
+distractor-tool conditions. When2Call and Sim-
+pleToolHalluBench use their judge prompts with
+deepseek-chat.
+Reported results.
+Tables 1 and 2 report means
+over six BFCL evaluations and three evaluations on
+each other benchmark. BFCL standard deviations
+in Table 2 reflect repeated evaluations of the same
+checkpoint.
+
+### D
+
+
+### Additional Analyses
+
+D.1
+State-Contrast Signals
+The responses in Figure 4 have the highest and
+lowest mean reasoning scores among eight roll-
+outs sharing outcome reward 0.8; shading shows
+sentence means of token scores. We extend this
+comparison to 50 successful groups from steps 100–
+400, with ten groups per condition and eight roll-
+outs per group. Mean first-response scores differ
+within every group despite identical outcome re-
+wards, providing differentiated supervision when
+group-relative outcome advantages are zero.
+12
+
+--- PAGE 13 ---
+
+Shared tool definition
+Get Image by ID: Returns the details of a generated image based on the provided ‘id‘.
+Required parameter: uniqueID (string), The unique ID of the generated image.
+Current state h: identifier missing
+Could you check the creation date for the image? I need to
+verify it aligns with our project timeline.
+Reference path z
+1. To do this I need the unique ID. Could you
+please provide it?
+2. After the user replies: call ‘Get Image by
+ID‘ with the value from the reply.
+Paired state ˜h: identifier available
+Could you check the creation date for the image with ID
+’7890’? I need to verify it aligns with our project timeline.
+Reference path ˜z
+1. <tool_call>
+{"name": "Get Image by ID", "arguments":
+{"uniqueID": "7890"}}
+</tool_call>
+Policy-generated prefix p shared by both scoring inputs
+<think> Okay, the user is asking to check the creation date of an image to verify it aligns with
+their project timeline. Let me see what tools I have available.
+Looking at the provided tools, there’s only one function called "Get Image by ID." The description
+says it returns details of a generated image based on the provided ID. The parameters require a
+"uniqueID" as a string.
+Wait, the user didn’t
+Next token scored under both inputs: ␣mention
+Figure 6: Excerpts of a recorded state-contrast scoring pair. The tool definition and policy-generated prefix are
+shared; the user message and reference path differ. The next token is scored under (h, z, p) and (˜h, ˜z, p).
+Benchmark
+Temperature
+Top-p
+Top-k
+Response token limit
+BFCL v4
+0.001
+1.0
+—
+4,096
+ToolSandbox
+0.6
+0.95
+20
+16,384
+When2Call
+0.6
+0.95
+20
+Remaining context
+SimpleToolHalluBench
+0.5
+0.95
+20
+2,048
+Table 7: Evaluation decoding settings for Qwen3-based models. The response limit includes reasoning tokens. A
+dash indicates no top-k filtering; remaining context denotes the available token budget after the input.
+D.2
+State-Conditioned Actions
+The additional analyses retain the original Qwen3-
+8B outcome-only checkpoint. Table 8 extends the
+clarification analysis to 300 retrieval pairs from the
+training pool. Each pair requires a lookup when in-
+formation is missing and execution when it is avail-
+able. StateAlign improves retrieval and paired ac-
+tion accuracy over Outcome only, retaining 97.0%
+target-function accuracy. Removing irrelevant his-
+tory in a separate 300-pair control preserves action
+types in 92.6–96.2% of comparisons across Base,
+ToolRL, LoopTool, and StateAlign.
+Section 2 uses 300 pairs per information condi-
+tion and 276 for tool availability. The clarification
+pairs used in Section 2 and Table 3 are derived
+from source trajectories excluded from the training
+pool. Sampling uses four responses per state, tem-
+perature 0.6, top-p 0.95, and a 4,096-token limit.
+Action checks evaluate response type and target-
+function selection. Figure 2 counts unparsed labels
+as non-mentions; Mentions in Table 3 averages per-
+pair rates over valid labels. Panel B conditions on
+recognizing the missing value; Calls after deferring
+Model
+Retrieves
+Executes
+Both correct
+Base
+75.2
+96.9
+73.2
+ToolRL
+74.3
+96.9
+72.2
+LoopTool
+77.5
+97.5
+75.8
+Outcome only
+81.9
+97.8
+80.2
+StateAlign
+88.2
+97.0
+85.8
+Table 8: State-conditioned action accuracy on Qwen3-
+8B retrieval pairs (%). Retrieves measures lookup se-
+lection when information must be fetched; Executes
+measures target-function selection when the required
+information is available. Both correct averages the prod-
+uct of the two per-state accuracies within each pair. Bold
+marks the best result in each column.
+additionally requires an explicit decision to ask or
+take another step first. Decision judges see only
+reasoning.
+Annotation validation.
+Qwen3.8-27B labels are
+compared with three independent Claude Opus an-
+notations on 200 condition judgments and 80 deci-
+sions, using the same codebook and hiding source-
+model identities and original labels. Agreement
+with the majority label is 70.4% for condition judg-
+13
+
+--- PAGE 14 ---
+
+Model
+Precondition
+Not found
+Other
+Shared
+Base
+80.5
+58.3
+75.8
+74.6
+GRPO
+84.8
+62.2
+77.7
+77.4
+ToolRL
+79.6
+56.1
+76.4
+72.8
+LoopTool
+89.9
+63.5
+69.5
+79.3
+StateAlign
+92.3
+64.0
+79.9
+81.5
+Table 9: BFCL recovery success on Qwen3-8B (%).
+The first three columns group turns by the first tool
+error: an unmet precondition, a missing resource, or
+another error. Shared restricts the comparison to task
+positions where every method encounters a tool error.
+Bold marks the best result in each column.
+ments and 90.0% for decisions, excluding items
+without a majority. Rare labels are oversampled;
+population-weighted agreement is 97.2% for con-
+dition judgments and 97.5% for decisions. Addi-
+tional trained-model checks yield 83.3% agreement
+on 60 condition judgments and 100% on 30 deci-
+sions.
+D.3
+Tool-Error Recovery
+Table 9 groups first-error messages by keywords,
+with precondition matches taking precedence.
+StateAlign achieves the highest success rate in all
+three categories. Its advantage also persists at 333
+shared case/turn positions where every method en-
+counters an error in at least one evaluation; each
+policy contributes its own error-containing histo-
+ries. This comparison supports the recovery result
+after restricting task positions.
+Table 10 extends recovery analysis to Qwen3-
+4B/8B/14B. Panel A compares Outcome only with
+the complete StateAlign configuration on BFCL.
+Panel B compares base and trained policies on Tool-
+Sandbox, showing higher similarity after errors at
+all three sizes.
+Analysis settings.
+BFCL errors have an error
+field; ToolSandbox error messages begin with a
+named Error or Exception. Recovery pools official
+turn verdicts across six BFCL evaluations or simi-
+larity scores across three ToolSandbox evaluations.
+Eligible BFCL turns have no earlier conversation
+failure; ToolSandbox requires scored, readable tra-
+jectories. Reply+fail divides failed turns with no
+call immediately after the first error by all error-
+containing turns; absent responses are excluded
+from the numerator. Panels a–c of Figure 5 re-
+port mean per-evaluation scores. Panel b counts
+failing turns with at least one but fewer than the re-
+quired calls, divided by all eligible multi-call turns.
+(A) BFCL turn success
+Base model
+Outcome only
+StateAlign
+Qwen3-4B
+69.6
+71.5
+Qwen3-8B
+78.4
+80.5
+Qwen3-14B
+79.7
+79.8
+(B) ToolSandbox similarity
+Base model
+Base
+StateAlign
+Qwen3-4B
+68.0
+71.9
+Qwen3-8B
+68.9
+73.5
+Qwen3-14B
+71.3
+74.4
+Table 10: Tool-error recovery across Qwen3 sizes. (A)
+BFCL turn success, comparing Outcome only with
+StateAlign. (B) ToolSandbox similarity, comparing
+Base with StateAlign. Both panels include only error-
+containing interactions. Higher is better on both 0–100
+scales; bold marks the better result in each row.
+Panel d pools BFCL turns by error presence.
+The
+case
+in
+Section
+5.3
+is
+BFCL
+multi_turn_base_93, turn 2, evaluation 1. Its
+recovery sequence is lockDoors, startEngine,
+pressBrakePedal, and startEngine, ending
+with engineState: running.
+
+### E
+
+
+### Training Dynamics
+
+Figure 7 shows the first 400 training steps. GRPO
+uses binary single-step rewards on constructed
+states; ToolRL uses its reward on RLLA-4k. Out-
+come only and StateAlign share the constructed
+states and outcome reward. Compared with Out-
+come only, StateAlign reaches higher rewards late
+in training, with lower token entropy and greater
+KL divergence from the base model. It also gen-
+erates shorter responses, and its truncation rate de-
+clines over training.
+
+### F
+
+
+### Selected Prompts
+
+Figures 8–10 present three prompts used with
+Qwen3.8-27B for source filtering and state con-
+struction. Each system prompt is paired with a
+user message containing the case-specific input de-
+scribed in its caption.
+14
+
+--- PAGE 15 ---
+
+0
+200
+400
+Training step
+0.78
+0.80
+0.82
+0.84
+(a) Training reward
+0
+200
+400
+Training step
+500
+600
+700
+800
+900
+(b) Response length
+0
+200
+400
+Training step
+0.10
+0.12
+0.14
+0.16
+0.18
+0.20
+(c) Entropy
+0
+200
+400
+Training step
+0.00
+0.01
+0.02
+0.03
+(d) KL divergence
+0
+200
+400
+Training step
+0.00
+0.02
+0.04
+0.06
+0.08
+(e) Truncation ratio
+GRPO (single-step)
+ToolRL
+Outcome only
+StateAlign
+Figure 7: Training dynamics on Qwen3-8B. (a) Mean outcome reward for Outcome only and StateAlign on
+constructed states; (b) mean response length; (c) token entropy; (d) KL divergence to the base model; (e) the
+proportion of responses reaching the per-step token limit. Curves are 40-step centered moving averages.
+Source-data filtering
+You check training data for a tool-calling assistant. Each case shows the tools the assistant can
+use, the conversation so far, and the assistant’s next step (one or more tool calls). Judge that
+next step using only what the case shows, and answer six yes/no questions:
+J1 user_voice: Is the last user message written from the user’s side (a request, or information the
+user provides), rather than in the assistant’s voice (offering help, announcing an action,
+presenting results)?
+J2 relevance: Does every call in the next step serve something the user asked for in this
+conversation that has not already been done?
+J3 support: Is every argument value in the next step one of these: stated in the conversation;
+returned by an earlier tool result; a default or allowed value from the tool description; a standard
+conversion of such a value (units, formats, dates relative to today); common public knowledge (for
+example a company’s ticker or a city’s coordinates)? Answer no if any ID, account or order number,
+e-mail, URL, file name or personal detail appears to be made up.
+J4 completeness: Does the next step pass every value the user gave for this request to the matching
+parameter, unchanged?
+J5 better_tool: Is there another tool in the list that clearly fits the user’s request better than
+the tool(s) called?
+J6 timing: At this point, should the assistant call a tool, rather than first ask the user for
+missing information or answer from what is already in the conversation?
+Reply with one JSON object and nothing else:
+{"J1": "yes|no", "J2": "yes|no", "J3": "yes|no", "J4": "yes|no", "J5": "yes|no", "J6": "yes|no",
+"reason": "<one short sentence about every failing answer (J1-J4 or J6 no, J5 yes); empty if none>"}
+Example 1
+TOOLS:
+- get_stock_quote: Current price of a listed stock.
+- symbol (string, required): Ticker symbol, e.g. MSFT
+CONVERSATION:
+USER: What is Tesla trading at right now?
+NEXT STEP:
+get_stock_quote({"symbol": "TSLA"})
+ANSWER: {"J1": "yes", "J2": "yes", "J3": "yes", "J4": "yes", "J5": "no", "J6": "yes", "reason": ""}
+Example 2
+TOOLS:
+- get_order_status: Status of a customer order.
+- order_id (string, required): The order number.
+- search_products: Search the product catalog.
+- query (string, required): Search words.
+CONVERSATION:
+USER: Where is my order? It was supposed to arrive yesterday.
+NEXT STEP:
+get_order_status({"order_id": "ORD-12345"})
+ANSWER: {"J1": "yes", "J2": "yes", "J3": "no", "J4": "yes", "J5": "no", "J6": "no", "reason": "The
+order number was never given; the assistant should ask for it."}
+Figure 8: System prompt for filtering tool-use demonstrations. The input contains the available tools, conversation,
+and recorded next calls.
+15
+
+--- PAGE 16 ---
+
+Missing-information construction
+You edit user messages for a tool-calling dataset. You get the last user message of a conversation,
+the tool the assistant is about to call, one of its parameters, and the value the user stated for it.
+Rewrite the message so that the user no longer gives that value, and keep everything else.
+Rules:
+- Remove the value and anything that would let the assistant work it out: the same value written
+differently, an alias, a code, or a name that identifies it. If it appears more than once, remove
+every mention.
+- Keep the request, every other detail (names, numbers, dates, preferences), the tone and roughly
+the length. Keep all other values exactly as written.
+- The result must read naturally, as if the user simply forgot to mention it. Do not add placeholders
+such as [city] or "X", do not ask about the missing value, and do not say that something is missing.
+Reply with one JSON object and nothing else: {"rewritten": "<the rewritten user message>"}
+Example 1
+MESSAGE: Can you check tomorrow’s weather in Lyon for my cycling trip?
+TOOL: get_forecast | PARAMETER: city (Name of the city) | VALUE: "Lyon"
+ANSWER: {"rewritten": "Can you check tomorrow’s weather for my cycling trip?"}
+Example 2
+MESSAGE: Pull the latest SEC filings for Apple (AAPL), I only need the 10-K from 2023.
+TOOL: get_sec_filings | PARAMETER: symbol (Stock ticker) | VALUE: "AAPL"
+ANSWER: {"rewritten": "Pull the latest SEC filings for the company I’m researching, I only need the
+10-K from 2023."}
+Figure 9: System prompt for constructing missing-information states. The input specifies the user message, target
+function, parameter description, and value to remove.
+Retrieval-state construction
+You convert examples for training tool-calling assistants. In the example, the user gives an
+identifier (an id, code, username, slug, ...) and the assistant passes it to a function. Turn it
+into an example where the user describes the entity instead, so the assistant must first look the
+identifier up with a tool.
+Produce:
+1. rewritten: the user’s message rewritten so that the user refers to the same entity by a natural
+description (its name, title, owner, date, place, or other attributes a user would know) and no
+longer gives the identifier or anything it can be derived from. Keep the request and every other
+detail, the tone and roughly the length.
+2. lookup_tool: a new read-only function {name, description, parameters (JSON schema with properties
+and required)} that searches such entities by those attributes and returns matching records with
+their identifiers. Use a name that is not already in the tool list.
+3. lookup_call: {name, arguments} - the call the assistant would make; every argument value must be
+copied verbatim from the rewritten message.
+4. result: the JSON the lookup returns for that call: a list of 2-4 records with plausible fields;
+exactly one record matches the description and carries the identifier exactly as given; the others
+have different identifiers.
+Reply with one JSON object and nothing else: {"rewritten": "...", "lookup_tool": {...}, "lookup_
+call": {...}, "result": [...]}
+Example
+USER MESSAGE: Can you pull the full order details for order ORD-55821?
+NEXT CALL: get_order_details({"order_id": "ORD-55821"})
+IDENTIFIER: order_id = "ORD-55821"
+ANSWER: {"rewritten": "Can you pull the full order details for the blue standing desk I ordered on
+March 3rd?", "lookup_tool": {"name": "search_orders", "description": "Search the customer’s orders
+by product name and order date; returns order ids with summaries.", "parameters": {"type": "object",
+"properties": {"product": {"type": "string", "description": "Product name or keywords"}, "order_
+date": {"type": "string", "description": "Order date as written by the customer"}}, "required":
+["product"]}}, "lookup_call": {"name": "search_orders", "arguments": {"product": "blue standing
+desk", "order_date": "March 3rd"}}, "result": [{"order_id": "ORD-55821", "product": "Blue standing
+desk", "order_date": "2024-03-03", "status": "shipped"}, {"order_id": "ORD-55377", "product": "Blue
+desk lamp", "order_date": "2024-02-19", "status": "delivered"}]}
+Figure 10: System prompt for constructing retrieval states. The input supplies the existing tool names, user message,
+target call, and identifier with its parameter description.
+16

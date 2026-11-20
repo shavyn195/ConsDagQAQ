@@ -1,0 +1,738 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a
+CZT-based Detection System at DAΦNE
+Francesco Artibani1,2,∗, Simone Manti1, Leonardo Abbene3,1, Antonino Buttacavoli3,1, Manuele Bettelli4, Gaetano
+Gerardi3, Fabio Principato3,1, Andrea Zappettini4, Massimiliano Bazzi1, Giacomo Borghi5,6, Damir Bosnar7,1, Mario
+Bragadireanu8, Marco Carminati5,6, Alberto Clozza1, Francesco Clozza1,10, Raffaele Del Grande11,1, Luca De Paolis1,
+Carlo Fiorini5,6, Ivica Friscic7, Carlo Guaraldo1†, Mihail Iliescu1, Masahiko Iwasaki14, Aleksander Khreptak12,13,1,
+Johann Marton9, Pawel Moskal12,13, Fabrizio Napolitano15,16,1, Hiroaki Ohnishi17, Kristian Piscicchia18,1, Francesco
+Sgaramella1, Michal Silarski12, Diana Laura Sirghi1,8,18, Florin Sirghi1,8, Magdalena Skurzok12,13,1, Antonio
+Spallone1, Kairo Toho17,1, Oton Vazquez Doce1, Johann Zmeskal†, Catalina Curceanu1, Alessandro Scordo1
+1Laboratori Nazionali di Frascati, INFN, Via E. Fermi 54, 00044 Frascati, Italy
+2Dipartimento di Matematica e Fisica, Universit`a di Roma Tre, Via della Vasca Navale 84, 00146 Roma,
+Italy
+3Dipartimento di Fisica e Chimica - Emilio Segr`e, Universit`a di Palermo, Viale Delle Scienze Edificio 18,
+90128 Palermo, Italy
+4Istituto Materiali per l’Elettronica e il Magnetismo, Consiglio Nazionale delle Ricerche, Parco Area delle
+Scienze 37/A, 43124 Parma, Italy
+5Dipartimento di Elettronica, Informazione e Bioingegneria, Politecnico di Milano, Piazza Leonardo da Vinci 32,
+20133 Milano, Italy
+6INFN Sezione di Milano, Via Giovanni Celoria 16, 20133 Milano, Italy
+7Department of Physics, Faculty of Science, University of Zagreb, Bijeniˇcka cesta 32, 10000 Zagreb, Croa-
+tia
+8Horia Hulubei National Institute of Physics and Nuclear Engineering (IFIN-HH), No. 30, Reactorului Street, 077125
+Magurele, Ilfov, Romania
+9Atominstitut, Technical University Vienna, Stadionallee 2, 1020 Vienna, Austria
+10Dipartimento di Scienze Matematiche Fisiche e Naturali, Universit`a degli Studi di Roma Tor Vergata, Via
+Cracovia 90, 00133 Roma, Italy
+11Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University in Prague, Bˇrehov´a 7,
+115 19 Prague, Czech Republic
+12Faculty of Physics, Astronomy, and Applied Computer Science, Jagiellonian University, Lojasiewicza 11,
+30-348 Krakow, Poland
+arXiv:2605.10477v2  [nucl-ex]  15 May 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+13Centre for Theranostics, Jagiellonian University, Kopernika 40, 31-501 Krakow, Poland
+14RIKEN, 2-1 Hirosawa, Wako, Saitama 351-0198, Japan
+15Via A. Pascoli 06123, Perugia (PG), Italy, Dipartimento di Fisica e Geologia, Universit`a degli studi di Pe-
+rugia
+16INFN Sezione di Perugia, Via A. Pascoli – 06123 Perugia – Italia
+17Research Center for Accelerator and Radioisotope Science (RARIS), Tohoku University, 1-2-1 Mikamine,
+Taihaku-ku, 982-0826 Sendai, Japan
+18Centro Ricerche Enrico Fermi - Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi”, Via
+Panisperna 89A, 00184 Roma, Italy
+† Deceased.
+∗Author to whom any correspondence should be addressed.
+francesco.artibani@infn.it, francesco.artibani@uniroma3.it
+Keywords CZT Detectors, Kaonic atoms, X-ray spectroscopy
+ABSTRACT
+In this work, new measurements of absolute X-ray yields for several transitions in kaonic copper and,
+for the first time, in kaonic fluorine are reported. The data were collected by the SIDDHARTA-2
+collaboration at the DAΦNE collider using a novel room-temperature Cadmium Zinc Telluride (CZT)
+detection system. Detection efficiencies were evaluated through a dedicated Geant4 Monte Carlo
+simulation of the full experimental setup, enabling the extraction of absolute yields per stopped kaon.
+The measured yields exhibit a systematic dependence on the principal quantum number, reflecting the
+interplay between radiative transitions, Auger de-excitation, and strong-interaction-induced nuclear
+capture. In kaonic fluorine, a suppression of the 4→3 transition yield relative to higher-n transitions
+is observed, providing evidence for the onset of strong-interaction effects already at the n = 4 level.
+From this behaviour, a conservative lower limit on the corresponding strong-interaction width is
+derived.
+These results provide new quantitative constraints for cascade models of exotic atoms and extend
+experimental access to intermediate atomic levels where strong-interaction effects are not directly
+observable via level shifts and widths. They also establish CZT-based detection as a powerful and
+versatile approach for high-resolution X-ray spectroscopy of kaonic atoms in collider environments.
+1
+Introduction
+Kaonic atoms provide a relevant experimental framework to investigate strong interactions involving strangeness at
+low energies [1, 2, 3, 4, 5]. These exotic systems are formed when a negatively charged kaon stops inside a material
+and binds to a nucleus via the electromagnetic interaction. The capture occurs in a highly excited state, when the
+wavefunction overlap of the kaon with the outermost electron orbit of the target atom becomes significant [6].
+2
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+The kaon subsequently undergoes an atomic cascade de-excitation, governed by the competition between three
+competing processes: Auger electron emission, which dominates at high principal quantum numbers where the kaon
+wavefunction is far from the nucleus; radiative X-ray emission, which becomes increasingly important at lower quantum
+numbers as the kaon approaches the nucleus; strong interaction induced nuclear capture, which becomes competitive
+only in the very last atomic levels when the kaon is sufficiently close to the nucleons to enable strong interaction
+between the meson and the hadrons. The relative importance of these three processes encodes information about
+both atomic and molecular dynamics [7] and the low-energy kaon-nucleon (K-N) and kaon-multinucleon (K-multiN)
+interaction [8].
+Kaonic atom spectroscopy offers three complementary observables to constrain theoretical models of the strong
+interaction with strangeness [1, 4, 9]. The first two observables consist of the energy shifts (ϵ) and widths (Γ) of the
+last observable X-ray transitions, which provide direct information on the strong interaction in the final atomic levels.
+The third observable is the measurement of radiative yields of two consecutive transition, which, in some case, can
+provide access to the intrinsic widths Γu of levels where the strong interaction is too weak to be directly resolved by
+conventional X-ray detectors [10]. Both quantities serve as unique observables for testing theoretical models of K-N
+and K-multiN interactions in the nuclear medium [8, 11].
+Moreover, measuring X-ray yields for transitions where the strong interaction is negligible, is essential for benchmarking
+cascade models. These models [7, 12, 13] aim to predict the de-excitation path of kaon through the atomic levels. To do
+so, they must account for complex and poorly understood processes, such as electron refilling, collisional effects, and
+the initial population distribution of atomic states. As a result, cascade models still suffer from significant uncertainties
+and rely on parameters previously constrained by direct yield measurements in exotic atoms [7].
+Over the last decades, a new generation of kaonic atoms experiments performed at facilities such as DAΦNE, KEK, and J-
+PARC has significantly improved the spectroscopic information in the light kaonic atom mass region [14, 15, 16, 17, 18],
+enabling high-precision measurements of X-ray transitions. The intermediate and high mass region, however, still
+remains poorly explored, particularly regarding absolute yield measurements.
+In this paper, the first measurements ever of absolute X-ray yields for kaonic fluorine (Z=9) transitions in teflon, and
+new measurements of kaonic copper transitions (Z=29), performed by the SIDDHARTA-2 collaboration, are presented.
+These measurements span two different regions of the nuclear chart in terms of mass and density, and provide crucial
+test cases for cascade models. Furthermore, the kaonic fluorine measurements explore a regime where the strong
+interaction induced nuclear capture signature is observable at the measured atomic transitions. To achieve this goal, for
+the first time, a novel room-temperature Cadmium Zinc Telluride (CZT) detection system, purposely developed by the
+collaboration for high-resolution kaonic atom X-ray spectroscopy, was deployed in a collider environment.
+Section 2 describes the experimental apparatus. Section 3 presents the data taking, analysis, and Monte Carlo simulations.
+Section 4 discusses the results, followed by the conclusions, Section 5.
+2
+CZT Detectors in the SIDDHARTA-2 Experiment at DAΦNE
+The SIDDHARTA-2 experiment [4, 5, 9] is a dedicated apparatus for precision X-ray spectroscopy of kaonic atoms,
+installed at the interaction point (IP) of the DAΦNE electron-positron collider [19, 20, 21, 22] at the Laboratori
+Nazionali di Frascati of the Istituto Nazionale di Fisica Nucleare (INFN-LNF).
+DAΦNE operates as a ϕ-factory, with the centre-of-mass energy tuned to 1.022 GeV, corresponding to the mass of the
+ϕ meson. The ϕ meson decays almost at rest into pairs of charged kaons with a branching ratio of 48.9%. This feature
+provides a clean and nearly monochromatic source of low-momentum K−mesons, well suited for the formation of
+kaonic atoms.
+3
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+The SIDDHARTA-2 apparatus is described in detail in [23]. In the present work, only the subsystem relevant to the
+CZT-based detection of kaonic atom X-rays is discussed, corresponding to the configuration used in this work.
+In the data-taking campaigns, the CZT detection system [24, 25, 26] was installed in the plane of the collider rings, in
+their inner part. The system consists of eight quasi-hemispherical CZT detectors with dimensions of 13 × 15 × 5 mm3,
+grown using the Traveling Heater Method (THM) by REDLEN Technology (Canada). The detectors are housed in a
+thin aluminum enclosure equipped with a 0.27 mm-thick aluminum window, which contains both the detector crystals
+and the front-end electronics. The enclosure was positioned at a distance of 29.3 cm from the collider IP.
+Between the beam pipe and the CZT detection system, a 80 × 40 × 2 mm3 Scionix BC-408 organic scintillator coupled
+to two photomultiplier tubes via plastic light guides was installed [27]. This detector (LUMI boost), in combination
+with an identical module placed on the opposite side (LUMI antiboost), was used for luminosity monitoring and for
+charged kaon selection via time-of-flight techniques as discussed in Section 3. The scintillator was located at a distance
+of 10.2 cm from the IP.
+The targets, in which the negative kaons are stopped to form kaonic atoms, consisted of two different material foils, and
+were placed downstream of the plastic scintillator, facing the detector enclosure. Table 1 summarizes the thickness and
+the main characteristics of each target.
+Table 1: Target materials together with their densities and thicknesses.
+Material
+Chemical composition
+Density (g/cm3)
+Thickness (mm)
+Teflon
+C2F4
+2.2
+4
+Copper
+Cu
+8.96
+1
+Figure 1 represents the experimental setup during all the runs.
+Figure 1: Schematic view of the experimental CZT detection system setup in DAΦNE used for the data taking presented
+in this work.
+4
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+3
+Data Taking and Analysis
+Being used for the first time in a collider, the CZT detection system underwent an initial commissioning, testing, and
+optimization phase in which the stability of the operations [28] and the timing performances [29] were accurately tested.
+As a result the number of CZT detectors actively operating and used for physics analysis varied across the data-taking.
+Table 2 summarizes the 2024 data-taking periods considered in the present analysis, together with the corresponding
+delivered integrated luminosity and the number of CZT detectors included in the data analysis for each target.
+Table 2: Summary of the runs used in the data analysis for each target.
+Target
+Delivered Integrated
+Active Detectors
+Luminosity (pb−1)
+(for Data Analysis)
+Cu
+35
+8
+66
+7
+Teflon
+33
+6
+41
+6
+3.1
+Data Selection
+The events are selected by requiring a trigger coincidence between the two luminometers and the detector within a 10
+µs time window. For each triggered event the full CZT detectors waveform is recorded. A typical raw energy spectrum
+corresponding to one of the data-taking periods is shown in Figure 2.
+Figure 2: Spectrum of triggered events collected during the second run with copper target.
+Lead fluorescence lines (75 keV and 85 keV) are observed over the background. To extract X-rays originating from
+kaonic atom transitions, a dedicated data-selection procedure, based on timing information from both the luminometers
+and the CZT detectors, was applied as described in [29].
+Since the primary goal of this work is the measurement of absolute yields, conservative and uniform selection criteria
+were applied to all datasets, in order to maximise efficiency over purity. The kaon time selection window was chosen to
+be 1 ns wide, while a time window of 170 ns width was applied to the CZT-luminometer time difference distribution for
+all targets and data-taking periods (see [29] for technical details).
+5
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+3.2
+Fit Functions
+The final energy spectra, calibrated following the procedure described in [28], were summed target-by-target and
+subsequently analysed to extract the energy and the number of events for each kaonic atoms X-ray transitions.
+The background contribution was modelled using the function
+fbkg(x) = a + b x + c exp(d x) + erfc
+�e −x
+f
+�
+,
+(1)
+where the linear part (a and b parameters) describes the electronics baseline, the exponential part (c and d parameters)
+describes background generated by photons and electrons undergoing Compton scattering, and the complementary
+error function part (e and f parameters) accounts for the low-energy cutoff resulting from the presence of shielding and
+electronic components. This background was previously validated in [28] using beam-on data with a known radioactive
+source.
+The X-ray peaks corresponding to kaonic atom transitions were described by Gaussian functions,
+fpeak(x) = N exp
+�
+−(x −µ)2
+2σ2
+�
+,
+(2)
+where N is the peak area, µ the centroid energy, and σ the detector resolution.
+For the 75 keV peak arising from fluorescence of the lead shielding after activation, an additional low energy tail
+component accounting for incomplete charge collection in the CZT detectors was included. The tail was modeled as
+ftail(x) = ϵ N exp
+�x −µ
+βσ
+�
+erfc
+�x −µ
+√
+2σ +
+1
+√
+2β
+�
+,
+(3)
+where ϵ represents the relative intensity of the tail and β its characteristic width.
+For all other fitted peaks, the tail contribution was found to be statistically insignificant and was therefore omitted.
+To account for the intrinsic resolution of the detector, the σ parameters of the Gaussian, were described as a function of
+the energy, following the formula
+σ(x) =
+�
+aσ · x + bσ
+(4)
+with aσ and bσ free parameters common to all the peaks.
+3.3
+Fit Method
+The two spectra corresponding to copper and teflon target were simultaneously fitted, by means of χ2 minimisation,
+with the following common parameters:
+• The Gaussian σ parameters aσ and bσ;
+• The mean of the lead Kα and Kβ fluorescence peaks;
+• The relative amplitude of the lead Kβ with respect to the Kα fluorescence peak;
+• The tail parameters ϵ and β for the lead Kα fluorescence peak;
+while the background and kaonic atom transition parameters were kept independent for each dataset. The fit was
+performed in this way to have a better description of the background due to the lead fluorescence (Pb Kα and Pb Kβ
+fluorescence lines), and of the parameters of the energy resolution.
+6
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Figure 3: Upper: Kaonic fluorine energy spectrum and fit. The experimental counts are shown in black, with error bars
+representing the statistical uncertainty on the bin counts. The contributions from lead fluorescence transitions are shown
+in blue, kaonic atom transitions in magenta, the background in dashed red, and the total fit in green. Lower: Relative
+residuals of the fit.
+3.4
+Results
+The results of the fit are presented in Figures 3 and 4. The reduced chi-squared of the simultaneous fit resulted to be
+χ2
+red = 1.27.
+The measured energies and the corresponding numbers of events for the observed kaonic atom transitions, as obtained
+from the fits, are summarized in Table 3.
+Table 3: Energy and number of events extracted from the fits, with the corresponding theoretical energies calculated
+using the MCDFGME code [30]
+Transition
+Measured Energy
+Theoretical Energy (keV)
+Number of Events
+± stat. ± sys. (keV)
+± stat. ± sys.
+Fluorine
+KF 5 →4
+23.34 ± 0.34 ± 0.09
+23.33
+488 ± 72 ± 30
+KF 4 →3
+50.14 ± 0.54 ± 0.15
+50.59
+427 ± 74 ± 42
+Copper
+KCu 8 →7
+52.89 ± 0.50 ± 0.30
+52.63
+578 ± 84 ± 38
+KCu 7 →6
+80.89 ± 0.98 ± 0.60
+81.17
+1078 ± 297 ± 190
+KCu 6 →5
+134.48 ± 0.35 ± 0.31
+134.81
+1206 ± 132 ± 42
+7
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Figure 4: Upper: Kaonic copper energy spectrum and fit. The experimental counts are shown in black, with error bars
+representing the statistical uncertainty on the bin counts. The contributions from lead fluorescence transitions are shown
+in blue, kaonic atom transitions in magenta, the background in dashed red, and the total fit in green. Lower: Relative
+residuals of the fit.
+The systematic uncertainties were evaluated by repeating the fitting procedure under different analysis conditions,
+following the approach already adopted in [29].
+3.5
+Monte Carlo Simulation
+In order to account for the geometrical acceptance and the detector response, and to determine the number of kaons
+stopped in the target, essential ingredients for the extraction of absolute X-ray yields per stopped kaon, a Monte Carlo
+simulation based on the GEANT4 toolkit was developed. The simulation reproduces the experimental setup, including
+the exact geometry of the CZT crystals and their spacing, the aluminium entrance window, the luminometer system,
+and the DAΦNE beam pipe.
+The simulation starts with the production of a ϕ meson at the interaction point, with a momentum distribution boosted
+toward the detector side, consistently with the DAΦNE machine parameters. The subsequent ϕ decays, including the
+decay into charged kaon pairs, are simulated, and the transport of the kaons through the experimental apparatus is
+tracked until their decay or stopping in the target or surrounding materials.
+Whenever a negatively charged kaon stops in the target material, and forms a kaonic atom, the X-ray transitions of
+interest within the energy range of the CZT detectors are isotropically generated with a radiative yield set to 100%
+(i.e. used as a normalization reference for efficiency determination). This choice provides a normalization reference,
+allowing the experimental yields to be extracted by comparison with the simulated X-ray intensities.
+8
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Being teflon a compound element (C2F4), kaons stopped in the material can bind to either fluorine or carbon nuclei,
+and the exact capture process remains uncertain. In Reference [31], kaons were assumed to stop on the elements of a
+compound in proportion to the atomic charge fraction, which for fluorine gives a factor fZ = ZF · NF /(ZF · NF +
+ZC · NC) = 0.75, with ZF and ZC atomic number of fluorine and carbon, and NF and NC atomic abundance in teflon
+respectively for fluorine and carbon. This approach was originally suggested by Fermi and Teller in their study of exotic
+atoms, but significant deviations from this behaviour were found in muonic and pionic atoms [32]. The SIDDHARTA
+collaboration, in measurements on kapton (C22H10N2O5) [15], used instead a factor proportional to the number of
+nuclei in the molecule, which for fluorine in teflon gives fN = NF /(NF + NC) = 0.66. Given these theoretical
+uncertainties, it was decided to generate an X-ray every time a kaon stops in the compound, and to correct the result a
+posteriori using both factors.
+3.6
+Yields Measurement
+Following the approach adopted in previous kaonic atom experiments [33], the absolute X-ray yield Y per stopped kaon
+for a given transition is defined as the ratio between the experimental and simulated number of X-rays from kaonic
+atoms, normalized to the kaon pairs detected by the luminometers.
+Yrad =
+N EXP
+X-ray/N EXP
+KLUMI
+N MC
+X-ray/N MC
+KLUMI
+,
+(5)
+where N EXP
+X-ray and N EXP
+KLUMI denote, respectively, the number of X-ray events observed for the selected kaonic atom
+transition and the number of kaons measured by the luminometer in the experimental data. The quantities N MC
+X-ray and
+N MC
+KLUMI are the corresponding values obtained from the Monte Carlo simulation.
+The systematic errors from the Monte Carlo simulation were evaluated by moving the target from its nominal position
+(just downstream of the LUMI) by 0.5 mm, varying the target thickness by ±0.1 mm, and including the statistical
+uncertainty on the simulated counts.
+In Table 4 the measured yields for kaonic copper are presented.
+Table 4: Kaonic copper absolute yields per kaon stopped, with the corresponding statistical and systematic error.
+* The KCu 6 →5 transition in the measurement is contaminated by the KCu 8 →6 transition. This contribution was
+considered in the systematics (see text).
+Transition
+Yield (%)
+KCu 8 →7
+17.6 ± 2.6 +1.5
+−1.5
+KCu 7 →6
+18.5 ± 5.1 +3.0
+−3.0
+KCu 6 →5 *
+21.4 ± 2.3 +1.3
+−3.0
+In kaonic copper, as in several other kaonic atoms [32], the energies of the 6 →5 transitions overlap with those of the
+8 →6 transitions, making them experimentally indistinguishable for a yield measurement. Nevertheless, the ∆n = 2
+transitions are disfavoured by selection rules, and their contribution to the total yield is approximately 10% of that
+of the principal ∆n = 1 transition [32]. In the present case, the latter is the 8 →7 transition, measured to be 17.6%.
+Consequently, the contribution of the 8 →6 transition to the overall yield of the 6 →5 transition is expected to be of
+the order of 2-3%, considered in the systematic error.
+In Table 5 the measured yields for kaonic fluorine are presented.
+9
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Table 5: Kaonic fluorine absolute yields, with the corresponding statistical error and systematic error
+Transition
+Yield in Teflon (%)
+Yield in F with fZ = 0.75 (%)
+Yield in F with fN = 0.66 (%)
+± stat. ± sys.
+± stat. ± sys.
+± stat. ± sys.
+KF 5 →4
+9.8 ± 1.5 ± 0.6
+13.1 ± 2.0 ± 0.9
+14.8 ± 2.3 ± 1.1
+KF 4 →3
+7.5 ± 1.3 ± 0.8
+10.0 ± 1.7 ± 0.9
+11.4 ± 1.9 ± 1.1
+The measured yield per kaon stopped in copper for the 8 →7 and 6 →5 in Table 4 represent the new most precise
+measurement, and together with the 7 →6 show a good compatibility with the old measurement done in [32], while the
+yield for the transitions in Table 5 represent the first measurement ever.
+4
+Discussion
+The intensity of the spectral lines, and consequently the X-ray yields per stopped kaon, produced by kaonic atoms
+as a function of the principal quantum number result from a complex interplay between radiative transitions, Auger
+de-excitation from the electronic shells, and nuclear capture induced by the strong interaction.
+From cascade considerations [13], the radiative transition rate increases as the principal quantum number ni decreases,
+while the Auger rate shows the opposite trend, becoming more important at higher ni. The nuclear capture probability
+associated with the strong interaction, on the other hand, remains negligible at large atomic radii and starts to increase
+only when the kaon wave function significantly overlaps with the nuclear density. Within this framework, the
+experimental X-ray yields encode the cumulative effect of these competing processes.
+For kaonic copper, this trend is confirmed by the observations in Table 5: the yields increase smoothly as ni decreas-
+ing, consistent with a radiative-dominated cascade in which Auger processes lose importance, and nuclear capture
+contribution is negligible.
+A different behaviour is observed for kaonic fluorine. The yield of the 4 →3 transition is suppressed with respect to the
+higher-n transitions, suggesting the onset of strong interaction effects at the n = 4 level.
+To support this interpretation, Figures 5 and 6 show, for kaonic copper and kaonic fluorine, respectively, the calculated
+radiative and Auger K-shell rates for circular transitions (∆n = 1, l = n −1) starting from level ni, and the measured
+X-ray yields.
+10
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Figure 5: Upper panel: radiative (blue) and Auger K-shell (orange) transition rates for circular states (l = n −1) with
+∆n = 1. A conservative systematic uncertainty of −5% (red) was assigned to the 6 →5 transition yield due to the
+uncertainty in the 8 →6 transition’s yield (see text).
+Figure 6: Upper panel: radiative (blue) and Auger K-shell (orange) transition rates for circular states (l = n −1) with
+∆n = 1 starting from level ni in kaonic fluorine. Lower panel: measured X-ray yield per stopped kaon.
+11
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Following [34], as done in [35], the radiative rates Γrad were derived using Equation 6, assuming electric dipole
+transitions, hydrogenic wave functions with reduced mass µ:
+Γrad
+(n,l)→(n′,l±1) = 4µZ4α3
+3
+·
+���R(n,l)
+(n′,l±1)
+���
+2
+·
+�
+∆E(n,n′)
+�3 ,
+(6)
+where Z is the atomic number, µ the reduced mass of the exotic atom system, α the fine structure constant, and R2 is
+the dipole radial integral evaluated analytically.
+The Auger K-shell rate was estimated assuming a single K-shell electron with effective nuclear charge Ze = Z −1
+with the following formula:
+ΓAug,1s
+(n,l)→(n′,l±1) = 16
+3 · πZ2
+e
+µ2Z2 ·
+l
+2l + 1 ·
+���R(n,l)
+(n′,l±1)
+���
+2
+·
+y2
+K
+1 + y2
+K
+· exp
+�
+yK(4 tan−1 yK −π)
+�
+sinh(πyK)
+,
+(7)
+where R2 is the dipole radial integral, and yK is the Sommerfeld parameter:
+yK =
+Ze
+√2EK
+(8)
+with EK is the electron energy in the K shell.
+Looking at Figure 6, the observed suppression of the 4 →3 yield in kaonic fluorine suggests that nuclear capture
+already contributes at n = 4. The strong interaction width Γstrong for a level n can be estimated from the radiative yield
+attenuation, assuming negligible Auger rates [8]:
+Ψn =
+Γ(n)
+rad
+Γ(n)
+rad + Γ(n)
+strong
+=
+Yn→n−1;rad
+�
+N>n(YN→n;rad + (YN→n;Aug),
+(9)
+where the sum in the denominator runs over all transitions feeding level n from higher-lying states. A determination of
+Γstrong would therefore require a full cascade calculation to evaluate this feeding contribution.
+In the absence of a dedicated cascade model for kaonic fluorine, we instead use the measured X-ray yields per stopped
+kaon to set a constraint on Γstrong for n = 4. From the experimental data we obtain the ratio
+R = Y4→3;rad
+Y5→4;rad
+= 0.77 ± 0.17.
+(10)
+The relative yield of the 4 →3 transition includes not only direct population from the 5 →4 transition, but also
+additional feeding from higher levels (e.g. 6 →4, 7 →4, ...), which are not accounted for in the denominator. As a
+consequence, the ratio R overestimates the true radiative yield of the n = 4 level,
+Ψ4 =
+Γ(4)
+rad
+Γ(4)
+rad + Γ(4)
+strong
+,
+(11)
+implying R ≥Ψ4. This leads to the inequality
+Γ(4)
+strong ≥Γ(4)
+rad
+�1
+R −1
+�
+.
+(12)
+To obtain a conservative lower limit, we consider the maximum value of R within one standard deviation, Rmax = 0.94,
+yielding
+12
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+Γ(4)
+strong > 0.056 ·
+�1
+0.94 −1
+�
+= 0.0036 eV
+(90% C.L.),
+(13)
+with Γ(4)
+rad = 0.056 eV, calculated using Equation 6.
+This lower limit is compatible with the theoretical estimate of ≈0.006 eV, obtained by theoretical calculation based on
+[36, 11].
+The present work also provides a quantitative constraint that will allow future cascade calculations to be tested against
+data through new precise measurement of kaonic copper and fluorine transition not affected by strong interaction.
+5
+Conclusions
+The present work reports new measurements of absolute X-ray yields for various transitions in kaonic copper and
+fluorine. For kaonic copper, the two most precise measurements to date are obtained for the 8 →7 and 6 →5
+transitions, while for kaonic fluorine the absolute yields of the 5 →4 and 4 →3 transitions are reported for the
+first time. These results provide key observables that are sensitive to the atomic cascade dynamics and to the nuclear
+absorption.
+In particular, a reduction of the yield between consecutive transitions is observed in kaonic fluorine suggesting the onset
+of nuclear capture at the n = 4 level, that led to the evaluation of a lower limit for the strong interaction in this level.
+From this perspective, the present measurements complement traditional spectroscopic observables such as level shifts
+and widths induced by the strong interaction. With a reliable cascade model, a quantitative determination of the nuclear
+capture rate at these levels becomes possible, probing a regime inaccessible to shift and width measurements alone.
+The measured yields also provide valuable inputs for cascade model development, in particular for constraining the role
+of electron refilling and the density of states during the de-excitation process, with implications across a broad range of
+exotic atom studies.
+Finally, the present results establish CZT-based detection systems as a mature technology for high-precision kaonic atom
+spectroscopy, providing the experimental precision needed for yield extraction at the levels required by cascade models.
+This work opens a new experimental window onto the interplay of atomic cascade dynamics and nuclear absorption in
+kaonic atoms, establishing absolute yield measurements as a crucial experimental probe of the kaon-nucleon interaction
+at low energies.
+Acknowledgements
+The authors gratefully acknowledge Riccardo Gargana for access to computational resources. We thank Jaroslava
+Obertova for estimating the strong interaction shifts and widths. We thank C. Capoccia from INFN-LNF for his
+fundamental contribution in designing and building the SIDDHARTA-2 setup. We thank as well the INFN, INFN-LNF
+and the DAΦNE staff in particular to Dr. Catia Milardi for the excellent working conditions and permanent support.
+Part of this work was supported by the Austrian Science Fund (FWF): [P24756-N20 and P33037-N]; the Croatian
+Science Foundation under the project HRZZ-IP-2022-10-3878; the EU STRONG-2020 project (Grant Agreement
+No. 824093); the EU Horizon 2020 project under the MSCA (Grant Agreement 754496); the Japan Society for
+the Promotion of Science JSPS KAKENHI Grant No. JP18H05402; the SciMat and qLife Priority Research Areas
+budget under the program Excellence Initiative - Research University at the Jagiellonian University, and the Polish
+National Agency for Academic Exchange (Grant No. PPN/BIT/2021/1/00037); the EU Horizon 2020 research and
+innovation programme under project OPSVIO (Grant Agreement No. 101038099). This work was also supported by
+the Italian Ministry for University and Research (MUR), under PRIN 2022 PNRR project CUP: B53D23024100001.
+13
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+This article/publication is based upon work from COST ActionCA24131-ENRICH, supported by COST (European
+Cooperation in Science and Technology, http://www.cost.eu/).
+References
+[1] E. Friedman, A. Gal, C. J. Batty, Density dependent K- nuclear optical potentials from kaonic atoms, Nucl. Phys.
+A 579 (1994) 518–538. doi:10.1016/0375-9474(94)90921-0.
+[2] C. J. Batty, E. Friedman, A. Gal, Strong interaction physics from hadronic atoms, Phys. Rept. 287 (1997) 385–445.
+doi:10.1016/S0370-1573(97)00011-2.
+[3] A. Ciepl´y, M. Mai, U.-G. Meißner, J. Smejkal, On the pole content of coupled channels chiral approaches used for
+the ¯KN system, Nucl. Phys. A 954 (2016) 17–40. arXiv:1603.02531, doi:10.1016/j.nuclphysa.2016.
+04.031.
+[4] C. Curceanu, et al., The modern era of light kaonic atom experiments, Rev. Mod. Phys. 91 (2) (2019) 025006.
+doi:10.1103/RevModPhys.91.025006.
+[5] F. Artibani, et al., The Odyssey of Kaonic Atoms Studies at the DAΦNE Collider: From DEAR to SIDDHARTA-2,
+Acta Phys. Polon. B 55 (5) (2024) 5–A2. doi:10.5506/APhysPolB.55.5-A2.
+[6] J. Zmeskal, From kaonic atoms to kaonic nuclei: A search for antikaon-mediated bound nuclear systems, Prog.
+Part. Nucl. Phys. 61 (2008) 512–550. doi:10.1016/j.ppnp.2008.02.002.
+[7] T. Aramaki, et al., A Measurement of Atomic X-ray Yields in Exotic Atoms and Implications for an
+Antideuteron-Based Dark Matter Search, Astropart. Phys. 49 (2013) 52–62. arXiv:1303.3871, doi:10.1016/
+j.astropartphys.2013.08.003.
+[8] T. E. O. Ericson, F. Scheck, K- nuclear interactions and yields of kaonic x-rays, Nucl. Phys. B 19 (1970) 450–476.
+doi:10.1016/0550-3213(70)90361-5.
+[9] C. Curceanu, F. Sgaramella, M. Bazzi, T. Hashimoto, M. Iliescu, A. Scordo, D. Sirghi, F. Sirghi, Light kaonic
+atoms as probes of fundamental interactions in strange systems, Prog. Part. Nucl. Phys. 147 (2026) 104226.
+doi:10.1016/j.ppnp.2026.104226.
+[10] E. Friedman, S. Okada, Feasibility guidelines for kaonic-atom experiments with ultra-high-resolution X-ray
+spectrometry, Nucl. Phys. A 915 (2013) 170–178. arXiv:1306.4147, doi:10.1016/j.nuclphysa.2013.07.
+005.
+[11] J. ´Obertov´a, `A. Ramos, J. Mareˇs, Antikaon absorption in the nuclear medium: The role of hadron self-energies
+and implications for kaonic atoms, Phys. Rev. C 112 (5) (2025) 055201. arXiv:2508.07921, doi:10.1103/
+xqs5-v55b.
+[12] V. E. Markushin, T. S. Jensen, Atomic cascade and X-ray yields in light exotic atoms, Nucl. Phys. A 691 (2001)
+318–321. doi:10.1016/S0375-9474(01)01051-X.
+[13] T. Koike, Cascade Calculation of Kaonic Nitrogen Atoms Involving the Electron Refilling Process, in: 3rd
+Asia Pacific Conference on Few-Body Problems in Physics (APFB05), 2007, pp. 171–174. doi:10.1142/
+9789812706881_0032.
+[14] T. Ishiwatari, et al., Kaonic nitrogen X-ray transition yields in a gaseous target, Phys. Lett. B 593 (2004) 48–54.
+doi:10.1016/j.physletb.2004.04.055.
+[15] M. Bazzi, et al., X-ray transition yields of low-Z kaonic atoms produced in Kapton, Nucl. Phys. A 916 (2013)
+30–47. arXiv:1306.5912, doi:10.1016/j.nuclphysa.2013.07.007.
+[16] M. Bazzi, et al., K-series X-ray yield measurement of kaonic hydrogen atoms in a gaseous target, Nucl. Phys. A
+954 (2016) 7–16. arXiv:1603.00094, doi:10.1016/j.nuclphysa.2016.03.047.
+14
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+[17] F. Sgaramella, et al., Kaonic Helium-4 L-series Yield Measurement at 2.25 g/l Density by SIDDHARTA-2 at
+DAΦNE, Acta Phys. Polon. Supp. 17 (1) (2024) 1–A8. doi:10.5506/APhysPolBSupp.17.1-A8.
+[18] F. Sgaramella, et al., High precision X-ray spectroscopy of kaonic neon, Phys. Lett. B 865 (2025) 139492.
+arXiv:2412.16101, doi:10.1016/j.physletb.2025.139492.
+[19] C. Milardi, et al., Present status of the DAFNE upgrade and perspectives, Int. J. Mod. Phys. A 24 (2009) 360–368.
+doi:10.1142/S0217751X09043687.
+[20] C. Milardi, et al., Preparation Activity for the Siddharta-2 Run at DAΦNE, in: 9th International Particle Accelerator
+Conference, IPAC2018, Vancouver BC Canada, 2018. doi:10.18429/JACoW-IPAC2018-MOPMF088.
+[21] C. Milardi, et al., DAΦNE Commissioning for SIDDHARTA-2 Experiment, JACoW IPAC2021 (2021) TUPAB001.
+doi:10.18429/JACoW-IPAC2021-TUPAB001.
+[22] C. Milardi, et al., DAFNE operation strategy for the observation of the kaonic deuterium, JACoW IPAC2024
+(2024) WEPR17. doi:10.18429/JACoW-IPAC2024-WEPR17.
+[23] F. Sirghi, et al., SIDDHARTA-2 apparatus for kaonic atoms research on the DAΦNE collider, JINST 19 (11)
+(2024) P11006. arXiv:2311.16144, doi:10.1088/1748-0221/19/11/P11006.
+[24] L. Abbene, G. Gerardi, High-rate dead-time corrections in a general purpose digital pulse processing system,
+Journal of Synchrotron Radiation 22 (5) (2015) 1190–1201, publisher: International Union of Crystallography.
+doi:10.1107/S1600577515013776.
+URL //scripts.iucr.org/cgi-bin/paper?pp5071
+[25] L. Abbene, G. Gerardi, G. Raso, F. Principato, N. Zambelli, G. Benassi, M. Bettelli, A. Zappettini, Development
+of new CdZnTe detectors for room-temperature high-flux radiation measurements, J Synchrotron Rad 24 (2)
+429–438, publisher: International Union of Crystallography. doi:10.1107/S1600577517000194.
+URL //scripts.iucr.org/cgi-bin/paper?pp5097
+[26] L. Abbene, F. Principato, G. Gerardi, A. Buttacavoli, D. Cascio, M. Bettelli, N. S. Amad`e, P. Seller, M. C.
+Veale, O. Fox, K. Sawhney, S. Zanettini, E. Tomarchio, A. Zappettini, Room-temperature x-ray response of
+cadmium–zinc–telluride pixel detectors grown by the vertical bridgman technique 27 (2) 319–328, publisher:
+International Union of Crystallography. doi:10.1107/S1600577519015996.
+URL https://journals.iucr.org/s/issues/2020/02/00/ve5118/
+[27] M. Skurzok, et al., Characterization of the SIDDHARTA-2 luminosity monitor, JINST 15 (10) (2020) P10010.
+arXiv:2008.05472, doi:10.1088/1748-0221/15/10/P10010.
+[28] L. Abbene, et al., First Stability Characterization for a CZT Detection System in an e+e−Collider Environment,
+Sensors 24 (23) (2024) 7562. arXiv:2410.11294, doi:10.3390/s24237562.
+[29] F. Artibani, et. al., Time-based selection of kaonic atom x-ray events with quasi-hemispherical czt detectors at
+the daϕne collider, Measurement Science and Technology 37 (3) (2026) 035108. doi:10.1088/1361-6501/
+ae3203.
+URL https://doi.org/10.1088/1361-6501/ae3203
+[30] J. P. Santos, F. Parente, S. Boucard, P. Indelicato, J. P. Desclaux, X-ray energies of circular transitions and electron
+screening in kaonic atoms, Physical Review A 71 (3) (2005) 032501, publisher: American Physical Society.
+doi:10.1103/PhysRevA.71.032501.
+URL https://link.aps.org/doi/10.1103/PhysRevA.71.032501
+[31] C. E. Wiegand, Measurement of k-minus-mesonic x-ray spectra of medium and heavy elements, Phys. Rev. Lett.
+22 (1969) 1235–1238. doi:10.1103/PhysRevLett.22.1235.
+[32] C. E. Wiegand, G. L. Godfrey, MEASUREMENTS OF X-RAYS AND gamma RAYS FROM STOPPED KAONS,
+Phys. Rev. A 9 (1974) 2282. doi:10.1103/PhysRevA.9.2282.
+15
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+Kaonic Copper and Fluorine Absolute Yields Measurement with a CZT-based Detection System at DAΦNE
+[33] F. Sgaramella, et al., First measurement of kaonic helium-4 M-series transitions, J. Phys. G 51 (5) (2024) 055103.
+arXiv:2310.20584, doi:10.1088/1361-6471/ad34ea.
+[34] G. R. Burbidge, A. H. de Borde, The mesonic auger effect, Phys. Rev. 89 (1953) 189–193. doi:10.1103/
+PhysRev.89.189.
+URL https://link.aps.org/doi/10.1103/PhysRev.89.189
+[35] S. Manti, et al., Precision test of bound-state QED at intermediate Z with kaonic neon, Phys. Rev. A 113 (2) (2026)
+022815. arXiv:2508.08161, doi:10.1103/rry5-tdqb.
+[36] J. ´Obertov´a, E. Friedman, J. Mareˇs, A. Ramos, On K−-nuclear interaction, K−-nuclear quasibound states and
+K−atoms, EPJ Web Conf. 271 (2022) 07003. doi:10.1051/epjconf/202227107003.
+16

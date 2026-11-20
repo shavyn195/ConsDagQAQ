@@ -1,0 +1,718 @@
+{
+  "meta": {
+    "file": "NCP-Benchmark_2605.04826.pdf",
+    "page_count": 30,
+    "title": "Faster Algorithms for Shortest Unique or Absent Substrings",
+    "author": "Panagiotis Charalampopoulos; Manal Mohamed; Solon P. Pissis; Hilde Verbeek; Wiktor Zuba",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:a6404ea)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 10.9,
+    "heading_font_sizes": [
+      20.0,
+      17.2,
+      14.3,
+      12.2,
+      12.0,
+      11.4
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "17.2": 1,
+      "14.3": 11,
+      "12.2": 30,
+      "12.0": 20,
+      "11.4": 3,
+      "10.9": 15113,
+      "10.2": 16,
+      "10.0": 242,
+      "8.8": 5,
+      "8.0": 1661,
+      "7.9": 6,
+      "7.3": 17,
+      "7.1": 49,
+      "6.1": 104
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "Faster Algorithms for Shortest Unique or Absent Substrings",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Panagiotis Charalampopoulos",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Manal Mohamed",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Solon P. Pissis",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", Hilde Verbeek",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": ", and",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Wiktor Zuba",
+        "size": 12.0,
+        "level": 5,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2605.04826v1  [cs.DS]  6 May 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "v",
+        "size": 11.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "ℓ",
+        "size": 11.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "v",
+        "size": 11.4,
+        "level": 6,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "2",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 3,
+        "text": "Preliminaries",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "0",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "1",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "3",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "5",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "6",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "2",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "4",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "g",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "t",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "c",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "S",
+        "size": 12.2,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "3",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 6,
+        "text": "Computing a Shortest Unique Substring",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 6,
+        "text": "3.1",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 6,
+        "text": "Short Case",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 7,
+        "text": "3.2",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 7,
+        "text": "Medium Aperiodic Case",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 12,
+        "text": "3.3",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 12,
+        "text": "SUS as a Skyline Problem",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 15,
+        "text": "3.4",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 15,
+        "text": "Long Aperiodic Case",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 18,
+        "text": "3.5",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 18,
+        "text": "Periodic Case",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "3.6",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "Putting It All Together",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "4",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 21,
+        "text": "Reduction of Packed SUS to Binary Alphabets",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 22,
+        "text": "5",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 22,
+        "text": "Computing a Shortest Absent Substring",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      },
+      {
+        "page": 24,
+        "text": "5.1",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 24,
+        "text": "Computing a Shortest Exclusive Substring",
+        "size": 12.0,
+        "level": 5,
+        "bold": true
+      },
+      {
+        "page": 27,
+        "text": "References",
+        "size": 14.3,
+        "level": 3,
+        "bold": true
+      }
+    ]
+  },
+  "images": [],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3479,
+      "block_count": 11,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 3318,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 3,
+      "text_length": 3992,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 4,
+      "text_length": 2565,
+      "block_count": 22,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 5,
+      "text_length": 3642,
+      "block_count": 35,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 6,
+      "text_length": 3802,
+      "block_count": 21,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 3675,
+      "block_count": 16,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 3425,
+      "block_count": 18,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 9,
+      "text_length": 3059,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 10,
+      "text_length": 3273,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 11,
+      "text_length": 3609,
+      "block_count": 25,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 12,
+      "text_length": 4030,
+      "block_count": 23,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 13,
+      "text_length": 2816,
+      "block_count": 42,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 14,
+      "text_length": 3913,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 15,
+      "text_length": 4211,
+      "block_count": 16,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 16,
+      "text_length": 3729,
+      "block_count": 11,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 17,
+      "text_length": 4382,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 18,
+      "text_length": 3510,
+      "block_count": 22,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 19,
+      "text_length": 3193,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 20,
+      "text_length": 3153,
+      "block_count": 25,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 21,
+      "text_length": 3808,
+      "block_count": 24,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 22,
+      "text_length": 3361,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 23,
+      "text_length": 3691,
+      "block_count": 19,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 24,
+      "text_length": 3526,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 25,
+      "text_length": 3108,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 26,
+      "text_length": 2666,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 27,
+      "text_length": 3660,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 28,
+      "text_length": 3509,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 29,
+      "text_length": 3436,
+      "block_count": 15,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 30,
+      "text_length": 2523,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": false
+    }
+  ]
+}

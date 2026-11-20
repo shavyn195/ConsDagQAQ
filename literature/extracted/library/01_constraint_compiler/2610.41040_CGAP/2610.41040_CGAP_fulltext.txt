@@ -1,0 +1,2930 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+Capability-Grounded Agentic Planning
+Shikha Shrestha
+William Yeoh
+Ning Zhang
+Yevgeniy Vorobeychik
+Washington University in St. Louis
+Abstract
+LLM agents serve natural-language requests
+through tools, data sources, and other agents,
+and even simple requests often need several in-
+terdependent calls. Typically, the LLM picks
+these calls by trial and error, with no guarantee
+of an executable plan. We present Capability-
+Grounded Agentic Planning (CGAP), which in-
+stead reasons about what a request requires and
+what tools provide. CGAP compiles the tool
+catalog deterministically into a PDDL model,
+uses an LLM to turn the request into goals,
+and solves the model with a classical planner.
+Since tool outputs are unknown in advance, the
+model is abstract, tracking which inputs are
+available, not their values. During execution,
+an LLM adds entity-specific calls that abstract
+plans omit, and deterministic checks reject any
+that break the plan. Every argument is drawn
+from a cited source, such as a conversation span
+or an earlier tool response, and each requested
+result counts as delivered only after an LLM
+verifier checks it against the request. With three
+LLMs on ToolSandbox, ComplexFuncBench,
+BFCL multi-turn, and τ 2-bench retail, CGAP
+outperforms a standard tool-calling agent by up
+to 28.9 points.
+1
+Introduction
+LLM agents are increasingly used to retrieve infor-
+mation and act on behalf of users through external
+tools (Yao et al., 2023; Qin et al., 2024). How-
+ever, both the tasks to solve and the tools that solve
+them are described in natural language (NL), which
+is imprecise and highly flexible. The LLM that
+drives the agent must therefore both understand the
+request and construct an executable plan for it, and
+even simple requests require several interdependent
+operations. For example, with basic forecasting,
+date-lookup, and geolocation tools, a request for
+the “weather in Paris and Nice next Monday, and
+in Nice on Tuesday” takes seven calls: two city
+lookups, two date resolutions, and three forecasts,
+with the outputs of some calls supplying the inputs
+of others.
+ReAct-style agents address such problems by in-
+terleaving reasoning with tool calls, choosing one
+call at a time (Yao et al., 2023), while plan-first
+systems such as HuggingGPT, ReWOO, and LLM-
+Compiler write out a task decomposition or depen-
+dency graph before acting (Shen et al., 2023; Xu
+et al., 2023; Kim et al., 2024), a strategy that Plan-
+and-Solve also applies to reasoning tasks (Wang
+et al., 2023). However, both classes of approaches
+use the LLM for both request interpretation and
+planning, so nothing guarantees that a call’s in-
+puts will be available when it runs. LLMs also
+have documented limitations on formal planning
+problems (Valmeekam et al., 2023), and intrinsic
+self-correction can fail without external feedback
+(Huang et al., 2024). LLM-based agentic workflow
+planning therefore remains unreliable, particularly
+with smaller (and cheaper) LLMs.
+Hybrid (neuro-symbolic) alternatives combine
+LLMs with formal planners.
+Many, such as
+LLM+P, use an LLM to translate a planning prob-
+lem or action model into PDDL (McDermott et al.,
+1998) for a classical planner (Liu et al., 2023; Guan
+et al., 2023; Tantakoun et al., 2025), while LLM-
+Modulo frameworks pair LLM proposals with ex-
+ternal critics (Kambhampati et al., 2024). These
+approaches start from actions that are described
+formally or that the LLM writes down, and a plan
+is only as valid as that model. Tool-using agents
+instead work from NL specifications of requests
+and tool capabilities, in an open world: the values
+that their tools take and return are unknown until a
+call returns, and they do not come from a finite set
+that a symbolic planning model can enumerate.
+We propose Capability-Grounded Agentic Plan-
+ning (CGAP), a framework for agentic workflow
+planning. CGAP reads the NL request together
+with the catalog of capabilities available to the
+agent, such as tools, data sources, or other agents,
+1
+arXiv:2610.41040v1  [cs.AI]  29 Oct 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+each with an NL description and the input schema
+that function-calling interfaces require; the LLM’s
+own abilities, such as summarizing, are not mod-
+eled as capabilities. CGAP compiles the catalog de-
+terministically into a PDDL planning model, with
+required inputs as preconditions and outputs as ef-
+fects (§2.2), and an LLM parses the request into
+one goal per requested result (§2.3). For open-
+world inputs and outputs, the model abstracts away
+values: it tracks only which named inputs and out-
+puts (fields) are available, a finite set fixed by the
+catalog. A classical planner solves this model, and
+LLMs then turn the abstract plan into executable
+calls and verify that their results match the request.
+Our experiments test whether deriving the depen-
+dencies between calls from this model improves
+tool use over having an LLM generate them. We
+instantiate the planner with state-space search, and
+we also evaluate a deterministic dependency-graph
+planner that ignores delete effects, to see how much
+of the gain remains without them. Figure 1 shows
+one user turn of this process.
+In the weather example, the planner cannot pre-
+dict what the tools will return, so the planning state
+records only whether a value is available for a field
+such as latitude, an output of the city lookup
+and a required input of the forecast, and not which
+city it describes. Each requested forecast is a sep-
+arate goal, but one city lookup makes coordinates
+available for every forecast, so the planner returns
+a five-action abstract plan for a request that takes
+seven calls (Figure 2). An execution LLM pro-
+poses the entity-specific calls the plan omits, here a
+lookup for Nice and a second date resolution, and
+a deterministic runtime, which checks every call
+before it runs, accepts such a proposal only if the
+remaining plan stays valid. Every argument must
+cite its source, so each coordinate can be traced to
+the lookup that produced it, and a forecast counts
+as delivered only after deterministic checks and an
+LLM verifier accept the call that produced it.
+We make three contributions:
+• Neuro-symbolic agentic planning. CGAP, a
+hybrid approach that compiles tool catalogs de-
+terministically into an abstract, field-level PDDL
+model that can be solved before tool outputs are
+known, uses an LLM to turn the request into its
+goals, and solves the model with classical plan-
+ning (§2.2, §2.3).
+• Checked execution with provable guarantees.
+A runtime that validates the entity-specific calls
+LLMs add, instantiates arguments from cited
+sources, and verifies each requested result; every
+execution it admits maps onto a valid abstract
+plan, so exhaustive search failure certifies infea-
+sibility for the compiled catalog (§2.5).
+• Experiments on four tool-using agentic bench-
+marks. With three LLMs on ToolSandbox, Com-
+plexFuncBench, BFCL multi-turn, and τ 2-bench
+retail, CGAP outperforms a standard tool-calling
+agent in all 15 model–metric comparisons and,
+with gpt-oss-20b, four further baselines.
+Re-
+placing deterministic dependency planning with
+LLM-generated plans costs up to 16.8 points, less
+with GPT-5 mini; a deterministic graph planner
+retains most of the gain, and search adds to it
+where actions have delete effects (§3).
+Related work.
+A common way to organize tool
+use is a graph of tool dependencies. TaskBench and
+ToolNet build such graphs explicitly (Shen et al.,
+2024; Liu et al., 2024), Wu et al. (2024) plan on
+them with graph neural networks, and NaviAgent
+and GRAFT add execution feedback and learned
+dependencies, respectively (Jiang et al., 2026; Gao
+et al., 2026). CGAP instead derives dependencies
+deterministically from capability interfaces and lets
+them govern execution through validated entity-
+specific refinements, source-grounded arguments,
+and per-operation completion records. Our graph-
+planning variant shares this model and runtime,
+so comparing it with search isolates the value of
+reasoning about delete effects, such as a call that
+switches off a setting a later call needs (§3.3). The
+planners closest to ours are the lifted regression
+methods LLM-Regress and NL-PDDL, which use
+an LLM to supply commonsense knowledge dur-
+ing planning (Liu et al., 2025, 2026); they keep
+entities as variables, whereas CGAP drops entity
+distinctions and leaves them to execution. Agent+P
+likewise pairs a UI transition graph with a sym-
+bolic planner (Ma et al., 2025). Appendix F relates
+CGAP to service composition, API synthesis, ex-
+ecutable request representations, attribution, and
+prompt-injection defenses.
+2
+Capability-Grounded Planning
+Figure 1 shows one user turn of CGAP; the weather
+request serves as a running example throughout.
+2.1
+Setting
+A user interacts with an agent over T turns. Each
+turn t opens with an instruction qt, which may
+request several results and may extend, revise, or
+2
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+LLM
+DETERMINISTIC
+user request
+“Weather in Paris
+and Nice next
+Monday, and in Nice
+on Tuesday?”
+tools
+lookup_city
+resolve_date
+forecast
+Request parser
+one goal per
+requested result
+Paris/Mon, Nice/Mon,
+Nice/Tue forecasts
+Execution LLM
+picks the next call
+and cites its sources
++ lookup_city(Nice)
+lat ←its output
+Verifier
+did the call
+deliver the result?
+Nice/Tue: Supported
+Compiler
+tools →
+planning actions
+lookup_city:
+city →lat, lon
+Planner
+shortest abstract plan
+1 lookup, 1 date,
+3 forecasts
+Runtime
+checks the call,
+then runs it
+pre(forecast) hold?
+then call it
+State update
+marks verified
+results done
+Success(3) added
+goals
+plan
+proposal
+verdict
+repeat until every goal is verified; replan if the plan breaks
+Figure 1: One user turn of CGAP. LLM components (top: the request parser Mθ, the execution LLM Eϕ, and the
+verifier) interpret the request, choose each call, and judge its result. Deterministic components (bottom) build the
+planning model, search for a shortest plan, check every proposed call before it runs, and record which results are
+complete. Grey text shows each component’s work on the weather request. The planner ablations (§3.3) replace
+only the planner, with an LLM or a dependency-graph planner.
+cancel earlier requests; the agent then makes calls
+and replies. A call is one invocation of a capability
+together with its response. We write Ht for the
+history before turn t, Huser
+t
+for the user messages
+in it, and Ht,k for Ht followed by qt and the first k
+calls of turn t. The agent cannot observe whether
+the user finds the outcome acceptable, so it tracks
+a condition it can check: every requested operation
+has a call that was verified against the request.
+The catalog C lists capabilities, such as tools,
+data sources, API operations, or other agents. Each
+has an NL description and an input schema, which,
+as in function-calling interfaces, names its parame-
+ters (e.g., city); some also have a return schema,
+documented connections to other tools, or precon-
+ditions and effects. The application, here a bench-
+mark adapter, supplies the catalog, annotations, ob-
+servation rules, transformations, and authorization
+rules. For a capability c, we distinguish its ac-
+tion ac, a symbolic counterpart without arguments,
+from an invocation c(v), which calls the same c
+with concrete arguments and returns a response.
+2.2
+Compiling the catalog into a planning
+model
+To order calls, the planner must know which ca-
+pabilities produce the inputs of others; CGAP
+reads this off the parameter names in the catalog’s
+schemas, so the catalog needs no planning syntax.
+Facts.
+Let X be the set of fields, the names of
+the inputs and outputs that the catalog’s schemas
+declare (e.g., city, lat, date), after a fixed nor-
+malization (Appendix A.1). Function-calling cata-
+logs always name their inputs; outputs are named
+by return schemas where given and are otherwise
+inferred, as described next. The fact Available(p)
+holds when some value for field p has a source,
+that is, a span of a user message or an expected
+output field of a successful response (R1, §2.4).
+Application-supplied domain predicates describe
+other conditions, such as the observed state of a de-
+vice setting, and Success(i) records that requested
+operation i is complete. We write F for the set of
+facts; a state s ⊆F is the set of facts that hold.
+Actions.
+For a capability c, let In(c) ⊆X be the
+required input fields of its schema and Out(c) ⊆X
+its candidate outputs. Candidate outputs come from
+the return schema when one is given, and other-
+wise from naming conventions and documented
+tool connections (Appendix A.1). Optional an-
+notations Kpre
+c
+, K+
+c , K−
+c supply domain precon-
+ditions, add effects, and delete effects. Writing
+Av(P) = {Available(p) | p ∈P} for P ⊆X,
+each capability compiles deterministically to a base
+action ac:
+pre(ac) = Av(In(c)) ∪Kpre
+c
+,
+add(ac) = Av(Out(c)) ∪K+
+c ,
+(1)
+del(ac) = K−
+c ,
+and AC = {ac | c ∈C}. Candidate outputs de-
+scribe only what c may return; at run time, a field
+becomes available only when a response actually
+contains it. An action achieves f if f ∈add(a),
+and Ach(f) is the set of base actions that achieve f;
+predicates must match exactly after normalization.
+3
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+In the running example, lookup_city achieves the
+coordinate inputs of forecast, and resolve_date
+achieves its date.
+Domain predicates capture prerequisites and
+state changes that input and output schemas do
+not express. CGAP takes these rules as application-
+supplied modeling inputs; automatically inducing
+them from natural-language descriptions is outside
+our scope. The annotations describe reusable capa-
+bility behavior, leaving the planner to determine the
+action sequence for each request. In ToolSandbox,
+for example, sending a message requires cellular
+service (Lu et al., 2025). The messaging action
+therefore requires an observation of the cellular
+state, whose value the runtime checks before in-
+vocation. Status setters compile to one action per
+value, with delete effects removing the opposite
+status fact (Appendix A.1).
+Plans.
+With the PDDL successor function
+γ(s, a) = (s\del(a))∪add(a) (McDermott et al.,
+1998; Ghallab et al., 2004), a plan ⟨a1, . . . , an⟩is
+valid for P = ⟨F, A, I, G⟩if s0 = I, G ⊆sn, and
+for 1 ≤ℓ≤n,
+pre(aℓ) ⊆sℓ−1,
+sℓ= γ(sℓ−1, aℓ).
+(2)
+Abstract plans.
+The state records that a latitude
+is available, not whose latitude it is: coordinates for
+Paris and for Nice both establish Available(lat),
+and the values and their sources stay in the con-
+versation history. This is deliberate: values are
+unknown before a call, so a value-indexed state
+would force the planner to predict responses, and
+catalogs say what a capability returns, not which
+request a returned value will serve. It also keeps
+the fact vocabulary independent of the number of
+entities, as in generalized planning, which seeks
+plans that hold for any number of objects (Silver
+et al., 2024), although CGAP still plans for each
+request. Following the principle of planning ab-
+stractions (Sacerdoti, 1974; Knoblock et al., 1991),
+we call a plan over this model an abstract plan;
+its actions are capabilities without arguments, not
+composite tasks as in HTN planning. It fixes which
+requested results must be produced, which kinds of
+prerequisites each needs, and in what order, but not
+how many copies of a supporting call distinct enti-
+ties require. This is why the weather plan has three
+forecasts but one lookup: each requested result is a
+goal of its own (§2.3), whereas one lookup makes
+lat available for every city. Execution supplies the
+missing copies under validation (§2.4), and Sec-
+tion 2.5 shows that every compliant execution still
+maps onto a valid abstract plan.
+2.3
+Parsing requests into operations
+Request parsing.
+At the start of turn t, an LLM
+Mθ receives the instruction qt, the user history
+Huser
+t
+, the previous operations Ot−1, domain in-
+structions d, and the names, descriptions, and in-
+put schemas Cin of the capabilities. It returns the
+requested operations Ot, user-supplied input values
+Vt, global constraints Λt, and requests Ut that no
+capability can serve:
+(Ot, Vt, Λt, Ut) = Mθ(qt, Huser
+t
+, Ot−1, d, Cin).
+(3)
+An operation oi = (i, ci, ri, ϵi, ζi) names a capabil-
+ity ci, a requirement ri (entity, time, and scope), ev-
+idence spans ϵi in the user’s messages, and a status
+ζi ∈{active, cancelled}. What Mθ must produce
+is deliberately small: one operation per requested
+result, including those still unfinished from ear-
+lier turns, and no prerequisite steps. In the run-
+ning example, Mθ returns three forecast operations
+and leaves the calendar dates to resolve_date. A
+validator checks span bounds and literal, schema-
+compatible value extraction, and allows at most
+one repair. Whether a span actually expresses the
+intended operation remains a judgment of the LLM
+(Appendix C).
+Terminal actions and the planning problem.
+Each requested result needs its own goal, so for
+each active oi we add a terminal action aterm
+i
+with
+the preconditions and delete effects of aci and
+add(aterm
+i
+) = add(aci) ∪{Success(i)}. The ter-
+minal action is the only achiever of Success(i), so a
+result already in the history, such as a forecast from
+an earlier turn, cannot complete a newly requested
+operation without a new call, and three requested
+forecasts yield three separate goals. Data in the
+history can still supply inputs: coordinates looked
+up for one forecast serve every later call that needs
+them. The LLM thus specifies the requested re-
+sults, and search determines their dependencies at
+the field level. After k calls of turn t, the planning
+problem is Pt,k = ⟨Ft, At, It,k, Gt⟩, with At =
+AC ∪{aterm
+i
+}oi active, Gt = {Success(i)}oi active,
+and
+It,k = Av(Xt,k) ∪Wt,k ∪Dt,k,
+(4)
+where Xt,k is the set of available fields, Wt,k the
+domain facts maintained by the application’s ob-
+servation rules, and Dt,k the completion markers
+4
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+(a) Plan
+5 actions
+lookup_city
+resolve_date
+forecast
+forecast
+forecast
++
++
+(b) Execution
+7 calls
+lookup_city
+Paris
+resolve_date
+Monday
+forecast
+Paris, Mon
+lookup_city
+Nice
+forecast
+Nice, Mon
+resolve_date
+Tuesday
+forecast
+Nice, Tue
+Dashed: added during execution. The plan knows that coordinates and a date are available, not for which city or day.
+Figure 2: Why the abstract plan is shorter than its execution. (a) Search plans one city lookup and one date
+resolution, which make every input of the three requested forecasts (shaded) available. (b) During execution, Eϕ
+adds a lookup for Nice and a date resolution for Tuesday (dashed) through validated refinements, so five planned
+actions become seven calls.
+backed by accepted completion records; Equa-
+tion 5 gives how each call updates these sets.
+Values never enter the state.
+In the running
+example, I0,0 = Av({city, day}) and G0 =
+{Success(1), Success(2), Success(3)}.
+2.4
+Planning and grounded execution
+Within a turn, search and execution alternate (Algo-
+rithm 1) under three budgets: B state expansions
+per search, L actions per refinement, and N execu-
+tion decisions per turn. These are hyperparameters,
+fixed in advance and shared by all benchmarks and
+LLMs (B = 2,048, L = 4, N = 32).
+Search and execution decisions.
+Breadth-first
+search solves Pt,k (Algorithm 2) and returns a
+shortest abstract plan, NOPLAN if it has expanded
+every reachable state without reaching Gt, or
+LIMIT if it has expanded a predefined number B
+of states first. In the running example, the plan has
+one city lookup, one date resolution, and three fore-
+casts (Figure 2(a)). Execution then works through
+this plan; after k calls, the remaining plan ¯πt,k is
+the part of it not yet executed. Given ¯πt,k, an ex-
+ecution LLM Eϕ proposes one of three decisions,
+each counting toward N: 1) EXECUTE, which sup-
+plies argument sources for the first planned action;
+2) REFINE, which proposes supporting actions ρ to
+prepend when the plan needs an input for which no
+source exists; and 3) STOP, which asks the user for
+clarification or reports work that cannot be done.
+We describe EXECUTE and REFINE next.
+The LLM never writes an argument value. Each
+argument of an EXECUTE decision cites a source,
+a span of the conversation or a field of a successful
+response, and a resolver from a fixed set that the
+LLM cannot extend: a decoder copies the cited text
+or converts it to the schema’s type (e.g., "2" to the
+integer 2), and a transformation is a deterministic
+function supplied by the application, such as a date
+converter. Application defaults are also allowed.
+Before calling, the runtime checks the action’s
+preconditions in It,k, the argument schema, the
+sources, and the application’s authorization rules.
+Whether a sourced argument refers to the intended
+entity is assessed after the call by the completion
+verifier, so for tools with side effects this check
+cannot undo a wrongly targeted action.
+Refinement (REFINE) is how an abstract plan
+becomes a concrete one. After the Paris forecast,
+Available(lat) still holds, but no source contains
+the coordinates of Nice. Eϕ therefore prepends
+a lookup for Nice, and later a date resolution for
+Tuesday, so that five planned actions become seven
+calls (Figure 2(b)). A refinement holds at most L
+actions, each a recursive achiever of a precondi-
+tion of a pending terminal action, and no terminal
+actions. It is kept only if ρ ∥¯πt,k, the prepended
+actions followed by the remaining plan, is valid
+from It,k (Appendix A.5). A refinement can there-
+fore add supporting calls, but it cannot add, re-
+move, or reorder the terminal actions of the current
+plan; only search can reorder them. Validation also
+cannot tell whether a refinement is needed: a re-
+dundant second lookup for Paris passes as easily
+as the lookup for Nice, so necessity is left to the
+LLM. Without delete effects (ComplexFuncBench,
+BFCL, τ 2-bench retail), added facts cannot break
+the remaining plan, so only the prefix is checked.
+Completion verification.
+A call succeeds if the
+tool reports success; whether it delivers its oper-
+ation’s result is decided separately. For each suc-
+cessful terminal call, deterministic checks confirm
+its capability, sources, and application-supplied
+domain tests, and an LLM verifier compares the
+execution record e with ri, ϵi, and Λt. The veri-
+fier returns SUPPORTED, CONTRADICTED, or UN-
+KNOWN with cited evidence. Only an accepted
+record, one with passing checks and a SUPPORTED
+5
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+verdict, adds Success(i), and a call completes at
+most one operation. The verifier should reject, e.g.,
+a forecast for the wrong city, but it can err.
+State update.
+A call e adds facts O+
+e , namely
+newly available fields, established domain facts,
+and Success(i) if its completion record for oi is
+accepted, and deletes facts O−
+e :
+It,k+1 = (It,k \ O−
+e ) ∪O+
+e .
+(5)
+Equation 4 gives the parts of the state, and Equa-
+tion 5 how a call changes them: the parts use dis-
+joint predicates, so it updates X, W, and D sep-
+arately, and It,k+1 keeps the form of Equation 4.
+The runtime enforces three rules (Appendix A.4).
+(R1) A successful response of c makes available
+only fields in Out(c); other parsed fields can be
+cited as values but make nothing available. (R2) A
+successful call of c deletes all of K−
+c and adds no
+domain fact outside K+
+c . (R3) A failed call may
+delete facts but adds none. Search reruns if the re-
+maining plan becomes invalid or a call fails, lacks
+a required output, or has its completion rejected.
+A turn ends when Gt ⊆It,k, at a STOP decision,
+when search returns NOPLAN or LIMIT, or after
+N decisions; Eϕ then replies from the accepted
+records and the unresolved work (Algorithm 1).
+2.5
+What the planner and the runtime certify
+Proposition 1 follows from the runtime checks
+alone, so it also holds for the planner ablations
+(§3.3), as does Proposition 2(b); only exhaustive
+search, however, certifies that no plan exists.
+Proposition 1 (Runtime invariants). In every turn
+t of Algorithm 1 and for every k:
+(i) Applicability. Every called action’s precondi-
+tions hold in It,k at the time of the call, and
+the terminal actions of the remaining plan
+are, in order, a suffix of those in the plan last
+returned by search.
+(ii) Provenance. Every argument value is com-
+puted by a decoder or an application-
+supplied transformation from user spans or
+successful-response fields in Ht,k, or is a de-
+fault the application configured for that argu-
+ment.
+(iii) Completion accounting. Every Success(i) ∈
+Dt,k is backed by an accepted completion
+record for a successful call of ci, made in turn
+t or inherited from an unchanged operation,
+and distinct markers by distinct calls.
+These structural invariants are proved in Ap-
+pendix B. A cited source, transformation, or de-
+fault may still yield a wrong value, the verifier that
+accepted a record may be wrong, and the free-form
+final reply is not constrained.
+Proposition 2 (Executions refine abstract plans).
+(a) Every plan that Algorithm 2 returns on Pt,k is
+valid and has the fewest actions among valid plans.
+(b) Map each successful call of c to aterm
+i
+if it yields
+an accepted completion record for oi, and to ac oth-
+erwise. Under R1–R3, the image of every execution
+of Algorithm 1 from It,k that reaches Gt, whatever
+the LLMs propose, is a valid plan for Pt,k, so the
+execution makes at least |¯πt,k| successful calls if
+search returns ¯πt,k. (c) If search returns NOPLAN,
+for any budget B, no execution of Algorithm 1 from
+It,k completes the turn.
+Part (a) is standard (Russell and Norvig, 2003),
+and part (b) is the upward-solution property of ab-
+straction hierarchies (Tenenberg, 1988; Knoblock
+et al., 1991) (Appendix B); what is new is that
+the runtime enforces R1–R3 against arbitrary LLM
+proposals. Through (c), NOPLAN, unlike LIMIT,
+certifies that no call sequence passing the runtime’s
+checks can complete the request, but only for the
+compiled model: an undeclared output cannot en-
+able an action (R1). The count in (b) is loose on
+multi-entity requests, and we do not use it.
+3
+Experiments
+3.1
+Experimental setup
+Benchmarks.
+We use four interactive bench-
+marks (Appendix A.2). The first, ToolSandbox
+(Lu et al., 2025), contains stateful, conversational
+scenarios scored by their similarity to annotated
+milestones; in its state-dependency category, a tool
+works only in some world states (sending a mes-
+sage requires cellular service to be on). The sec-
+ond, ComplexFuncBench (Zhong et al., 2025), con-
+tains multi-step requests with user constraints over
+real travel APIs in five domains, scored by success
+rate and call accuracy. The third, BFCL multi-turn
+(Patil et al., 2025), checks the final environment
+state and the executed calls in multi-turn conversa-
+tions (base, missing functions, missing parameters,
+long context). From these three we use stratified
+subsets of 120 ToolSandbox scenarios, 250 Com-
+plexFuncBench requests, and 200 BFCL conver-
+sations (50 per category). The fourth is the retail
+domain of τ 2-bench (Barres et al., 2026), a revision
+of τ-bench’s (Yao et al., 2025), whose 114 tasks we
+6
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+ComplexFuncBench
+Model
+Method
+ToolSandbox
+Success
+Call Acc.
+BFCL-MT
+τ 2-Retail
+gpt-oss-20b
+Plain agent
+52.3 [47.2, 57.5]
+47.6 [41.6, 53.6]
+66.0 [61.6, 70.5]
+34.0 [27.5, 40.5]
+47.4 [38.6, 56.1]
++ dependency notes
+58.4 [53.2, 63.3]
+–
+–
+–
+–
+compute-matched
+57.1 [52.0, 62.2]
+50.8 [45.2, 56.4]
+–
+37.0 [30.5, 43.5]
+51.8† [43.0, 60.5]
+ReWOO
+54.1 [47.5, 60.6]
+46.4 [41.2, 51.6]
+–
+33.5 [27.0, 40.0]
+44.7 [36.0, 53.5]
+LLMCompiler
+54.2 [47.7, 60.6]
+40.4 [34.4, 46.4]
+50.7 [46.2, 55.2]
+21.0 [15.5, 27.0]
+30.7 [22.8, 39.5]
+CGAP (ours)
+81.2 [77.4, 84.8]
+58.0 [52.0, 64.0]
+74.9 [70.8, 79.1]
+52.0 [45.0, 59.0]
+61.4 [52.6, 70.2]
+Qwen3-32B
+Plain agent
+58.6 [53.5, 63.7]
+53.2 [47.2, 59.2]
+72.2 [67.9, 76.4]
+48.0 [41.0, 55.0]
+33.3 [24.6, 42.1]
+CGAP (ours)
+83.1 [79.5, 86.5]
+64.0 [58.0, 70.0]
+81.3 [77.4, 85.2]
+62.0 [55.0, 68.5]
+44.7 [36.0, 53.5]
+GPT-5 mini
+Plain agent
+72.4 [68.0, 76.7]
+60.8 [54.8, 66.8]
+81.9 [78.3, 85.5]
+56.5 [49.5, 63.5]
+64.9 [56.1, 73.7]
+CGAP (ours)
+86.3 [83.1, 89.2]
+66.0 [60.0, 72.0]
+87.0 [83.6, 90.3]
+62.5 [55.5, 69.0]
+73.7 [65.8, 81.6]
+Table 1: Main results (%). ToolSandbox reports the average milestone similarity score, ComplexFuncBench the
+success rate and call accuracy, BFCL-MT the accuracy on BFCL multi-turn, and τ 2-Retail the success rate on all
+114 τ 2-bench retail tasks, over three runs per task (§3.1). Brackets give 95% bootstrap intervals over tasks. The four
+additional baselines run with gpt-oss-20b only, the dependency-notes agent on ToolSandbox only, and three lack
+call accuracy (–); † without a token budget (Appendix E.3). Bold: best per model; Table 4 gives paired differences.
+all run: a customer simulated by GPT-4.1 (OpenAI,
+2025c) asks the agent to cancel, modify, return, or
+exchange orders under a written policy, and a task
+succeeds if the final database matches the reference
+one. As on ComplexFuncBench and BFCL, we
+add no domain annotations: the policy’s rules, such
+as cancelling only pending orders, are enforced by
+the tools, not the planning model.
+Baselines.
+We compare CGAP with a plain agent,
+which receives the tool catalog and calls tools in a
+loop until it replies, under three LLMs: gpt-oss-20b
+(OpenAI, 2025b), Qwen3-32B (Yang et al., 2025),
+and GPT-5 mini (OpenAI, 2025a). With gpt-oss-
+20b, four further baselines test other explanations
+for CGAP’s gains (Appendix E.3): the plain agent
+given our ToolSandbox dependency annotations
+as prompt notes, a compute-matched plain agent
+with self-checks, and adapted versions of two estab-
+lished plan-first agents, ReWOO (Xu et al., 2023)
+and LLMCompiler (Kim et al., 2024).
+Evaluation.
+We run each configuration three
+times per task. Binary success metrics are aggre-
+gated by majority (a task counts as solved if at least
+two runs solve it), and ToolSandbox scores and
+call accuracy are averaged over runs. Confidence
+intervals use 10,000 task-level bootstrap resamples,
+paired by task for differences between methods,
+and we interpret them as pointwise intervals; Ap-
+pendices A.2 and E.2 give details.
+3.2
+Main results
+In Table 1, CGAP outperforms every baseline on
+every benchmark and metric with all three LLMs,
+and all 15 paired intervals against the plain agent
+exclude zero (Table 4). The gains are smallest with
+GPT-5 mini (5.1–13.9 points), whose plain agent
+is the strongest on every metric.
+On ToolSandbox, CGAP gains 13.9–28.9 points,
+most on state-dependency scenarios (98.4 against
+62.8 with gpt-oss-20b; Table 5), which use our
+hand-written device-dependency annotations. On
+ComplexFuncBench, it improves success by 5.2–
+10.8 points and call accuracy by 5.1–9.1, and on
+BFCL multi-turn it gains 6.0–18.0 points. On τ 2-
+bench retail, it gains 8.8–14.0 points although every
+agent receives the same policy, both on the 64 tasks
+involving two or more orders and on the other 50
+(Table 6).
+Additional baselines.
+Dependency notes close
+about half of the state-dependency gap (§3.3).
+With self-checks and tokens per task within 5%
+of CGAP’s (17% more on τ 2-bench retail), the
+plain agent gains only 3.0–6.1 points; adapted Re-
+WOO stays within 2.7 points of it, and adapted
+LLMCompiler is 7.2–16.7 points below it outside
+ToolSandbox. CGAP leads all four on every mea-
+sure, with paired intervals excluding zero (Table 8).
+3.3
+Ablations
+3.3.1
+The value of symbolic planning
+LLM-planning ablation.
+Our main ablation re-
+places every search call with one LLM call that
+receives the same planning problem and returns
+an ordered list of actions without arguments. The
+runtime validates it (Equation 2) and allows one
+repair, after which an invalid plan ends the turn as
+7
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+ToolSandbox
+Variant
+Avg.
+State
+CFB
+BFCL-MT
+τ 2-Retail
+CGAP (search)
+81.2
+98.4
+58.0
+52.0
+61.4
+LLM planning
+−16.8 [−20.5, −13.2]
+−27.7 [−33.0, −22.4]
+−4.4 [−8.0, −0.8]
+−10.0 [−16.0, −4.0]
+−7.9 [−14.9, −0.9]
+graph planning
+−3.1 [−6.0, +0.4]
+−8.9 [−14.5, −3.6]
+−0.4 [−2.8, +2.0]
++0.5 [−2.5, +3.5]
+−1.8 [−7.0, +3.5]
+−provenance
+−5.4 [−8.3, −2.4]
+−4.3 [−8.1, −0.8]
+−3.6 [−7.2, −0.4]
+−5.0 [−9.5, −1.0]
+−5.3 [−11.4, +0.9]
+−verifier
+−2.7 [−4.9, −0.6]
+−1.8 [−4.4, +0.6]
+−1.6 [−4.0, +0.4]
+−2.0 [−5.0, +0.5]
+−2.6 [−7.9, +2.6]
+Table 2: Ablations with gpt-oss-20b: changes from CGAP with search (95% paired bootstrap intervals). The first
+two rows replace the planner; the last two remove a runtime component.
+ToolSandbox
+CFB
+success
+CFB
+call acc.
+BFCL-MT τ 2-bench
+retail
+0
+5
+10
+15
+20
+−0.1
+Gain (points)
+gpt-oss-20b
+Qwen3-32B
+GPT-5 mini
+Figure 3: Deterministic planning versus LLM plan-
+ning.
+Gain of CGAP (with search) over its LLM-
+planning ablation for each LLM and metric, with 95%
+paired bootstrap intervals (Table 4).
+INVALIDPLAN. All else is shared (Appendix E.2),
+so the comparison measures the effect of replac-
+ing symbolic with LLM-based planning within the
+CGAP architecture. With gpt-oss-20b and Qwen3-
+32B, search improves every metric (Figure 3), by
+4.4–16.8 points, and all ten paired intervals exclude
+zero. With GPT-5 mini, the gains shrink to −0.1
+to 4.8 points, and only the ToolSandbox interval
+excludes zero (Table 4). LLM planning is still a
+strong variant, beating the compute-matched agent
+and both plan-first agents (Table 7); Appendix D.1
+analyzes its failures.
+Graph-planning ablation.
+A second ablation
+replaces search with a deterministic dependency-
+graph planner in the style of TaskBench and Tool-
+Net, which backward-chains from the pending ter-
+minal actions over the same compiled model and ig-
+nores delete effects (Appendix E.2). With gpt-oss-
+20b, it scores above LLM planning on every mea-
+sure (Table 2; e.g., 78.1 against 64.4 on ToolSand-
+box), though we lack paired intervals for that com-
+parison. Against search, its paired intervals include
+zero on all four benchmarks, and search clearly
+leads only on state-dependency scenarios. On that
+category, access to the dependency rules does not
+explain CGAP’s score by itself: given the same
+rules as prompt notes, the plain agent’s score rises
+from 62.8 to 79.6, still 18.8 points [12.0, 25.7] be-
+low CGAP’s 98.4. With the same compiled model,
+search also beats the graph planner there by 8.9
+points [3.6, 14.5], which is what modeling delete
+effects adds. On benchmarks without delete effects,
+deterministic dependency planning accounts for
+most of the benefit, and search adds no clear gain.
+3.3.2
+Provenance and verification
+Removing provenance (Table 2) lowers the four
+benchmark-level scores by 3.6–5.4 points (intervals
+exclude zero except on τ 2-bench retail), and remov-
+ing verification by 1.6–2.7 (only the ToolSandbox
+average excludes zero). Both mainly serve Propo-
+sition 1, which success metrics do not measure.
+4
+Conclusion
+We presented CGAP, a neuro-symbolic approach in
+which LLMs interpret requests, ground arguments,
+and judge results, while a classical planner orders
+calls over an abstract model compiled from the tool
+catalog. On four benchmarks, it outperforms plain
+tool calling with all three LLMs; LLM planning in
+place of its deterministic planner lowers 14 of 15
+model–metric scores (clearly with the open models,
+slightly with GPT-5 mini), a dependency-graph
+planner retains most of the benefit, and search adds
+to it where actions have delete effects.
+Limitations
+Our guarantees hold only for the compiled model
+and runtime rules: NOPLAN certifies infeasibility
+only for the catalog as compiled, and because the
+abstraction merges entities, the call count of Propo-
+sition 2(b) is loose on multi-entity requests. How
+often turns end in NOPLAN rather than LIMIT, and
+hence the certificate’s practical value, is unmea-
+sured. Request parsing can misread an operation,
+a cited source can be wrong or tied to the wrong
+entity, and the verifier can accept an incorrect result
+8
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+and, running after the call, cannot undo a wrong
+side effect; we have not audited how often these
+errors, or unnecessary refinements, occur. Name-
+based field matching can miss or conflate connec-
+tions, and breadth-first search is exponential in the
+number of facts, so its budget can stop it before
+a plan is found. We evaluate on subsets of three
+English benchmarks and on τ 2-bench retail with
+three LLMs, under a majority-of-three protocol
+not comparable to single-run leaderboard scores,
+and our planner ablations exclude specialized plan-
+ning systems.
+State-dependent planning needs
+application-supplied domain rules when the catalog
+does not expose prerequisites and effects, which
+adds a modeling burden, and evidence that handling
+delete effects helps beyond access to this informa-
+tion comes from one domain and one model. The
+advantage of deterministic over LLM planning is
+model-dependent: with GPT-5 mini, only the Tool-
+Sandbox interval excludes zero, and the ablation’s
+INVALIDPLAN rate partly reflects its one-repair
+budget. The additional baselines use only gpt-oss-
+20b (the dependency-notes agent only ToolSand-
+box), our ReWOO adaptation adds replanning and
+an ask-or-decline step, and another LLMCompiler
+adaptation might beat the plain agent outside Tool-
+Sandbox. Finally, CGAP uses 1.3–1.6 times the
+plain agent’s tokens per task with gpt-oss-20b (Ta-
+ble 9); we report tokens only with that model, on
+τ 2-bench retail only as a ratio, and do not measure
+latency.
+Ethical Considerations
+Tool calls can affect external systems. Argument
+provenance records where each value came from;
+authorization, privacy, and the decision whether an
+action is appropriate remain the application’s job,
+so applications must enforce access controls and,
+where appropriate, ask for confirmation before con-
+sequential calls. Retained source spans and tool
+responses can contain sensitive information and
+need suitable access and retention controls. Our
+experiments use public benchmarks and involve no
+human subjects. We do not evaluate resistance to
+adversarial prompt injection or deployment safety,
+and we do not claim that the planning and account-
+ing invariants provide such protection.
+References
+Hengyu An, Jinghuai Zhang, Tianyu Du, Chunyi Zhou,
+Qingming Li, Tao Lin, and Shouling Ji. 2025. IPI-
+Guard: A novel tool dependency graph-based defense
+against indirect prompt injection in LLM agents. In
+Proceedings of the 2025 Conference on Empirical
+Methods in Natural Language Processing, pages
+1023–1039, Suzhou, China. Association for Com-
+putational Linguistics.
+Jacob Andreas, John Bufe, David Burkett, Charles Chen,
+Josh Clausman, Jean Crawford, Kate Crim, Jordan
+DeLoach, Leah Dorner, Jason Eisner, Hao Fang, Alan
+Guo, David Hall, Kristin Hayes, Kellie Hill, Diana
+Ho, Wendy Iwaszuk, Smriti Jha, Dan Klein, and 26
+others. 2020.
+Task-oriented dialogue as dataflow
+synthesis. Transactions of the Association for Com-
+putational Linguistics, 8:556–571.
+Victor Barres, Honghua Dong, Soham Ray, Xujie Si,
+and Karthik R. Narasimhan. 2026. τ 2-bench: Eval-
+uating conversational agents in a dual-control envi-
+ronment. In Proceedings of the 43rd International
+Conference on Machine Learning, volume 306 of
+Proceedings of Machine Learning Research, pages
+6736–6782.
+Edoardo Debenedetti, Ilia Shumailov, Tianqi Fan, Jamie
+Hayes, Nicholas Carlini, Daniel Fabian, Christoph
+Kern, Chongyang Shi, Andreas Terzis, and Florian
+Tramèr. 2026. Defeating prompt injections by de-
+sign. In IEEE Conference on Secure and Trustworthy
+Machine Learning (SaTML).
+Yu Feng, Ruben Martins, Yuepeng Wang, Isil Dillig,
+and Thomas W. Reps. 2017. Component-based syn-
+thesis for complex APIs. In Proceedings of the ACM
+SIGPLAN Symposium on Principles of Programming
+Languages (POPL), pages 599–612. ACM.
+Tianyu Gao, Howard Yen, Jiatong Yu, and Danqi Chen.
+2023. Enabling large language models to generate
+text with citations. In Proceedings of the 2023 Con-
+ference on Empirical Methods in Natural Language
+Processing, pages 6465–6488, Singapore. Associa-
+tion for Computational Linguistics.
+Xinyi Gao, Xinyu Ren, Junliang Yu, Tong Chen, Quoc
+Viet Hung Nguyen, and Hongzhi Yin. 2026. GRAFT:
+Graph-tokenized LLMs for tool planning. Preprint,
+arXiv:2605.11706.
+Malik Ghallab, Dana Nau, and Paolo Traverso. 2004.
+Automated Planning: Theory and Practice. Morgan
+Kaufmann.
+Lin Guan, Karthik Valmeekam, Sarath Sreedharan,
+and Subbarao Kambhampati. 2023. Leveraging pre-
+trained large language models to construct and utilize
+world models for model-based task planning. In Ad-
+vances in Neural Information Processing Systems,
+volume 36, pages 79081–79094.
+Zheng Guo, David Cao, Davin Tjong, Jean Yang, Cole
+Schlesinger, and Nadia Polikarpova. 2022. Type-
+directed program synthesis for RESTful APIs. In
+Proceedings of the ACM SIGPLAN Conference on
+Programming Language Design and Implementation
+(PLDI), pages 122–136. ACM.
+9
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+Sonal Gupta, Rushin Shah, Mrinal Mohit, Anuj Ku-
+mar, and Mike Lewis. 2018. Semantic parsing for
+task oriented dialog using hierarchical representa-
+tions. In Proceedings of the 2018 Conference on
+Empirical Methods in Natural Language Processing,
+pages 2787–2792, Brussels, Belgium. Association
+for Computational Linguistics.
+Jörg Hoffmann, Piergiorgio Bertoli, and Marco Pistore.
+2007. Web service composition as planning, revis-
+ited: In between background theories and initial state
+uncertainty. In Proceedings of the AAAI Conference
+on Artificial Intelligence, pages 1013–1018. AAAI
+Press.
+Jie
+Huang,
+Xinyun
+Chen,
+Swaroop
+Mishra,
+Huaixiu Steven Zheng, Adams Wei Yu, Xiny-
+ing Song, and Denny Zhou. 2024. Large language
+models cannot self-correct reasoning yet. In Interna-
+tional Conference on Learning Representations.
+Yan Jiang, Hao Zhou, Lizhong Gu, Tianlong Li, Ru-
+inan Jin, Wanqi Zhou, and Ai Han. 2026. NaviAgent:
+Graph-driven bilevel planning for scalable tool or-
+chestration. In Proceedings of the 43rd International
+Conference on Machine Learning, volume 306 of
+Proceedings of Machine Learning Research, pages
+53472–53506. PMLR.
+Subbarao Kambhampati, Karthik Valmeekam, Lin
+Guan, Mudit Verma, Kaya Stechly, Siddhant Bham-
+bri, Lucas Paul Saldyt, and Anil B. Murthy. 2024.
+Position: LLMs can’t plan, but can help planning
+in LLM-modulo frameworks. In Proceedings of the
+41st International Conference on Machine Learning,
+volume 235 of Proceedings of Machine Learning
+Research, pages 22895–22907. PMLR.
+Sehoon Kim, Suhong Moon, Ryan Tabrizi, Nicholas
+Lee, Michael W. Mahoney, Kurt Keutzer, and Amir
+Gholami. 2024. An LLM compiler for parallel func-
+tion calling. In Proceedings of the 41st International
+Conference on Machine Learning, volume 235 of
+Proceedings of Machine Learning Research, pages
+24370–24391. PMLR.
+Craig A. Knoblock, Josh D. Tenenberg, and Qiang Yang.
+1991. Characterizing abstraction hierarchies for plan-
+ning. In Proceedings of the AAAI Conference on
+Artificial Intelligence, pages 692–697. AAAI Press.
+Bo Liu, Yuqian Jiang, Xiaohan Zhang, Qiang Liu,
+Shiqi Zhang, Joydeep Biswas, and Peter Stone.
+2023. LLM+P: Empowering large language mod-
+els with optimal planning proficiency.
+Preprint,
+arXiv:2304.11477.
+Xiaotian Liu, Ali Pesaranghader, Hanze Li, Punyaphat
+Sukcharoenchaikul, Jaehong Kim, Tanmana Sadhu,
+Hyejeong Jeon, and Scott Sanner. 2025. Open-world
+planning via lifted regression with LLM-inferred af-
+fordances for embodied agents. In Proceedings of the
+63rd Annual Meeting of the Association for Compu-
+tational Linguistics (Volume 1: Long Papers), pages
+20881–20897, Vienna, Austria. Association for Com-
+putational Linguistics.
+Xiaotian Liu, Armin Toroghi, Jiazhou Liang, David
+Courtis, Ruiwen Li, Ali Pesaranghader, Jaehong Kim,
+Tanmana Sadhu, Hyejeong Jeon, and Scott Sanner.
+2026. Natural language PDDL (NL-PDDL) for open-
+world goal-oriented commonsense regression plan-
+ning in embodied AI. In International Conference
+on Learning Representations.
+Xukun Liu, Zhiyuan Peng, Xiaoyuan Yi, Xing Xie,
+Lirong Xiang, Yuchen Liu, and Dongkuan Xu.
+2024. ToolNet: Connecting large language mod-
+els with massive tools via tool graph.
+Preprint,
+arXiv:2403.00839.
+Jiarui Lu, Thomas Holleis, Yizhe Zhang, Bernhard Au-
+mayer, Feng Nan, Haoping Bai, Shuang Ma, Shen
+Ma, Mengyu Li, Guoli Yin, Zirui Wang, and Ruom-
+ing Pang. 2025. ToolSandbox: A stateful, conver-
+sational, interactive evaluation benchmark for LLM
+tool use capabilities. In Findings of the Association
+for Computational Linguistics: NAACL 2025, pages
+1160–1183, Albuquerque, New Mexico. Association
+for Computational Linguistics.
+Shang Ma, Xusheng Xiao, and Yanfang Ye. 2025.
+Agent+P: Guiding UI agents via symbolic planning.
+Preprint, arXiv:2510.06042.
+Drew McDermott, Malik Ghallab, Adele Howe, Craig
+Knoblock, Ashwin Ram, Manuela Veloso, Daniel
+Weld, and David Wilkins. 1998. PDDL—the plan-
+ning domain definition language. Technical Report
+CVC TR-98-003/DCS TR-1165, Yale Center for
+Computational Vision and Control, New Haven, CT.
+Sheila A. McIlraith and Tran Cao Son. 2002. Adapting
+Golog for composition of semantic web services. In
+Proceedings of the International Conference on Prin-
+ciples of Knowledge Representation and Reasoning
+(KR), pages 482–493.
+OpenAI. 2025a. GPT-5 system card. Technical report,
+OpenAI.
+OpenAI. 2025b. gpt-oss-120b & gpt-oss-20b model
+card. Preprint, arXiv:2508.10925.
+OpenAI. 2025c. Introducing GPT-4.1 in the API.
+Shishir G Patil, Huanzhi Mao, Fanjia Yan, Char-
+lie Cheng-Jie Ji, Vishnu Suresh, Ion Stoica, and
+Joseph E. Gonzalez. 2025. The Berkeley function
+calling leaderboard (BFCL): From tool use to agentic
+evaluation of large language models. In Proceedings
+of the 42nd International Conference on Machine
+Learning, volume 267 of Proceedings of Machine
+Learning Research, pages 48371–48392. PMLR.
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan
+Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang,
+Bill Qian, Sihan Zhao, Lauren Hong, Runchu Tian,
+Ruobing Xie, Jie Zhou, Mark Gerstein, Dahai Li,
+Zhiyuan Liu, and Maosong Sun. 2024. ToolLLM:
+Facilitating large language models to master 16000+
+real-world APIs. In International Conference on
+Learning Representations.
+10
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+Hannah Rashkin, Vitaly Nikolaev, Matthew Lamm,
+Lora Aroyo, Michael Collins, Dipanjan Das, Slav
+Petrov, Gaurav Singh Tomar, Iulia Turc, and David
+Reitter. 2023. Measuring attribution in natural lan-
+guage generation models. Computational Linguistics,
+49(4):777–840.
+Stuart Russell and Peter Norvig. 2003. Artificial Intel-
+ligence: A Modern Approach, 2 edition. Prentice
+Hall.
+Earl D. Sacerdoti. 1974. Planning in a hierarchy of
+abstraction spaces. Artificial Intelligence, 5(2):115–
+135.
+Yongliang Shen, Kaitao Song, Xu Tan, Dongsheng Li,
+Weiming Lu, and Yueting Zhuang. 2023. Hugging-
+GPT: Solving AI tasks with ChatGPT and its friends
+in Hugging Face. In Advances in Neural Information
+Processing Systems, volume 36, pages 38154–38180.
+Yongliang Shen, Kaitao Song, Xu Tan, Wenqi Zhang,
+Kan Ren, Siyu Yuan, Weiming Lu, Dongsheng Li,
+and Yueting Zhuang. 2024. TaskBench: Benchmark-
+ing large language models for task automation. In
+Advances in Neural Information Processing Systems,
+volume 37, pages 4540–4574.
+Tom Silver, Soham Dan, Kavitha Srinivas, Joshua B.
+Tenenbaum, Leslie Pack Kaelbling, and Michael
+Katz. 2024. Generalized planning in PDDL domains
+with pretrained large language models. In Proceed-
+ings of the AAAI Conference on Artificial Intelligence,
+volume 38, pages 20256–20264.
+Evren Sirin, Bijan Parsia, Dan Wu, James Hendler, and
+Dana Nau. 2004. HTN planning for web service com-
+position using SHOP2. Journal of Web Semantics,
+1(4):377–396.
+Marcus Tantakoun, Christian Muise, and Xiaodan Zhu.
+2025. LLMs as planning formalizers: A survey for
+leveraging large language models to construct auto-
+mated planning models. In Findings of the Asso-
+ciation for Computational Linguistics: ACL 2025,
+pages 25167–25188, Vienna, Austria. Association
+for Computational Linguistics.
+Josh D. Tenenberg. 1988.
+Abstraction in Planning.
+Ph.D. thesis, University of Rochester.
+Karthik Valmeekam, Matthew Marquez, Alberto Olmo,
+Sarath Sreedharan, and Subbarao Kambhampati.
+2023. PlanBench: An extensible benchmark for eval-
+uating large language models on planning and reason-
+ing about change. In Advances in Neural Information
+Processing Systems, volume 36, pages 38975–38987.
+Lei Wang, Wanyu Xu, Yihuai Lan, Zhiqiang Hu, Yunshi
+Lan, Roy Ka-Wei Lee, and Ee-Peng Lim. 2023. Plan-
+and-solve prompting: Improving zero-shot chain-of-
+thought reasoning by large language models. In Pro-
+ceedings of the 61st Annual Meeting of the Associa-
+tion for Computational Linguistics (Volume 1: Long
+Papers), pages 2609–2634, Toronto, Canada. Associ-
+ation for Computational Linguistics.
+Xixi Wu, Yifei Shen, Caihua Shan, Kaitao Song, Si-
+wei Wang, Bohang Zhang, Jiarui Feng, Hong Cheng,
+Wei Chen, Yun Xiong, and Dongsheng Li. 2024.
+Can graph learning improve planning in LLM-based
+agents? In Advances in Neural Information Process-
+ing Systems, volume 37, pages 5338–5383.
+Binfeng Xu, Zhiyuan Peng, Bowen Lei, Subhabrata
+Mukherjee, Yuchen Liu, and Dongkuan Xu. 2023.
+ReWOO: Decoupling reasoning from observations
+for efficient augmented language models. Preprint,
+arXiv:2305.18323.
+An Yang, Anfeng Li, Baosong Yang, Beichen Zhang,
+Binyuan Hui, Bo Zheng, Bowen Yu, Chang Gao,
+Chengen Huang, Chenxu Lv, Chujie Zheng, Day-
+iheng Liu, Fan Zhou, Fei Huang, Feng Hu, Hao
+Ge, Haoran Wei, Huan Lin, Jialong Tang, and 41
+others. 2025.
+Qwen3 technical report.
+Preprint,
+arXiv:2505.09388.
+Shunyu Yao, Noah Shinn, Pedram Razavi, and Karthik
+Narasimhan. 2025. τ-bench: A benchmark for tool-
+agent-user interaction in real-world domains.
+In
+The Thirteenth International Conference on Learning
+Representations.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak
+Shafran, Karthik Narasimhan, and Yuan Cao. 2023.
+ReAct: Synergizing reasoning and acting in language
+models. In International Conference on Learning
+Representations.
+Lucen Zhong, Zhengxiao Du, Xiaohan Zhang, Haiyi Hu,
+and Jie Tang. 2025. ComplexFuncBench: Explor-
+ing multi-step and constrained function calling under
+long-context scenario. Preprint, arXiv:2501.10132.
+11
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+A
+Construction and execution details
+This appendix fills in the details of Section 2. Algo-
+rithm 1 gives the full loop of one turn, and Table 3
+collects the notation. The search subroutine (Algo-
+rithm 2) and the proofs of Propositions 1–3 are in
+Appendix B.
+Formal assumptions.
+Each search call uses a fi-
+nite catalog and a finite, fixed set of actions and
+facts. Compilation is deterministic for fixed inter-
+faces, normalization rules, and action annotations,
+and schemas and predicates are checked for well-
+formedness before use. Symbolic transitions are
+deterministic and apply both add and delete ef-
+fects. Initial domain facts and observation rules
+are supplied explicitly, and the maintained state
+changes only through validated observations and
+those rules. The budgets B, N, and L are finite,
+so the procedure terminates as long as every LLM
+call, validator, and invocation terminates or times
+out.
+A.1
+Action construction
+In(c) contains the fields listed as required at the
+top level of the input schema. We do not expand
+oneOf/anyOf input branches into separate actions;
+branch-specific requirements are instead checked
+against the full schema before invocation. Output
+extraction traverses nested properties, array items,
+and referenced definitions, with cycle detection
+for recursive references, and takes the union of
+attribute names across alternative branches. Avail-
+ability predicates do not record response paths or
+branch conditions, so an optional or conditional
+attribute counts as a possible output. The return
+schema itself is kept for use as evidence.
+For scalar or uninformative return types, nam-
+ing rules apply to capability names that begin
+with find, get, identify, lookup, resolve, or
+search.
+The tokens after the verb and before
+an optional by clause name an output field, and
+generic endings such as details and results are
+excluded. A separate rule extracts the names of
+ID-valued fields from their descriptions. Where
+a catalog documents connections between tools,
+each documented connection adds a candidate out-
+put named after the input field of the consuming
+capability. Every candidate records its source and
+the rule that produced it. None of these rules in-
+spects reference solutions.
+The
+compilation
+rules
+and
+the
+field-
+normalization map are fixed before evaluation.
+Predicates must be identical after normalization,
+and a similar name or a matching type is not
+enough.
+For instance, Available(lat) does
+not achieve Available(latitude) unless the
+normalization map identifies the two names. Types
+are used to construct candidates and to validate
+arguments at run time, but they are not part of the
+predicates.
+Action annotations Kpre
+c
+, K+
+c , K−
+c are explicit
+predicate lists, and a missing list is empty. Com-
+pilation rejects malformed predicates and reserves
+Success for operation completion. Preconditions
+are positive, so a negative condition has to be ex-
+pressed through an explicit complementary predi-
+cate with consistent effects. Annotations are sup-
+plied with the application; compilation does not
+derive them from natural-language policies.
+Only ToolSandbox uses domain annotations.
+They encode its device dependencies: enabling Wi-
+Fi, cellular service, or location services requires
+handling low-battery mode first; sending a mes-
+sage requires cellular service; obtaining the current
+location requires location services; and looking up
+holidays requires Wi-Fi. Each dependency enters
+the planning model as a precondition that the rel-
+evant status has been observed, and the runtime
+checks the observed value before the call. Each
+status is recorded as one of two complementary
+facts, so the setters have delete effects: a success-
+ful call to set_low_battery_mode_status with
+on=False deletes the fact that low-battery mode is
+on and adds the fact that it is off, and the Wi-Fi,
+cellular, and location setters work the same way.
+Each setter therefore compiles to one action per
+value of its Boolean argument, and an operation’s
+terminal action uses only the variant for the value
+it requests, so a request to enable cellular service
+cannot be completed by disabling it. Where Ap-
+pendix B maps a call of c to ac, ac is the variant
+that matches the call’s argument. A failed call
+changes neither fact. These are the only delete ef-
+fects in our models; annotations delete no other
+facts, including availability facts. A further con-
+dition, CalendarConverted, applies to reminder
+operations that take a date. ComplexFuncBench,
+BFCL multi-turn, and τ 2-bench retail use no do-
+main annotations. On τ 2-bench retail, the tools
+themselves reject calls that break the policy’s state
+rules, such as cancelling an order that is not pend-
+ing; under R3 such a failed call adds no fact. For
+ComplexFuncBench, the adapter extracts producer–
+consumer connections and output aliases from pa-
+12
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+Algorithm 1 Planning and execution within turn t. The loop counts execution decisions; k counts
+invocations.
+Input qt, Ht, C, previous operations Ot−1 and their completion records, budgets B, N, L
+1
+Compile base actions (Equation 1), run request parsing (Equation 3), and inherit completion records of unchanged
+operations
+2
+Construct Pt,0 by Equation 4; set k ←0 and remaining plan ¯π ←⊥
+3
+for at most N execution decisions do
+4
+if Gt ⊆It,k then return completed goals Gt and unresolved requests Ut
+5
+if ¯π = ⊥or ¯π is invalid from It,k then ¯π ←Search(Pt,k, B)
+6
+if search returns NOPLAN or LIMIT then return incomplete with that status
+7
+Obtain EXECUTE, REFINE, or STOP from Eϕ
+8
+if STOP then return the unresolved requirement or clarification request
+9
+if REFINE then set ¯π ←ρ∥¯π if the refinement checks pass, and continue
+10
+if the pre-invocation checks fail or the invocation repeats a blocked one then continue
+11
+Make the invocation, verify completion if its action is terminal, and compute It,k+1 by Equation 5
+12
+Set k ←k + 1. Remove a successful supporting action or an accepted terminal action from ¯π; otherwise set
+¯π ←⊥
+13
+return completed goals and Ut if Gt ⊆It,k, otherwise incomplete
+Symbol
+Meaning
+qt, Ht, Ht,k
+instruction of turn t; history before turn t; history after k invocations of turn t
+C, c(v)
+capability catalog; invocation of c with arguments v
+X, F
+fields (normalized input/output names); facts
+Available(p), Success(i)
+a value for field p has a source; operation i is complete
+In(c), Out(c)
+required input fields and candidate output fields of c
+Kpre
+c
+, K+
+c , K−
+c
+application-supplied domain preconditions, add effects, delete effects
+ac, AC
+base action compiled from c; all base actions
+Ach(f)
+achievers of fact f
+γ(s, a)
+PDDL successor of state s under action a
+Mθ, Eϕ
+request-parsing LLM; execution LLM
+Ot, Vt, Λt, Ut
+operations, user-supplied values, constraints, unresolved requests of turn t
+oi = (i, ci, ri, ϵi, ζi)
+operation: identifier, capability, requirement, evidence spans, status
+aterm
+i
+terminal action for operation i
+Xt,k, Wt,k, Dt,k
+fields with a source; domain facts; accepted completion markers
+Pt,k = ⟨Ft, At, It,k, Gt⟩
+planning problem after k invocations of turn t
+¯πt,k, ρ
+remaining plan; refinement prefix
+O+
+e , O−
+e
+facts added and deleted by execution record e
+B, N, L
+search expansion budget; execution-decision budget; refinement length budget
+Table 3: Notation.
+rameter descriptions that name the endpoint sup-
+plying a value, and it registers deterministic date,
+time, and string resolvers (Appendix A.5). Table 10
+summarizes the inputs for each benchmark.
+A.2
+Benchmark evaluation protocols
+All four benchmarks are interactive, and on each
+of them CGAP runs exactly as described in Sec-
+tion 2: Eϕ follows Algorithm 1, every invocation
+passes the pre-invocation checks, and successful
+responses drive the state update (Equation 5) and
+completion verification. Propositions 1 and 2 there-
+fore apply in full. All methods share the catalog,
+tool implementations, and official scoring of each
+benchmark.
+ToolSandbox.
+Scenarios are conversations with
+a simulated user over stateful tools. A scenario is
+scored by the similarity between the agent’s tra-
+jectory and annotated milestones, with minefields
+marking events that must not occur (Lu et al., 2025).
+We report the average score and, in Table 5, three
+categories: state dependency, where a tool works
+only in some world states; canonicalization, where
+user expressions such as relative dates must be
+converted into tool-ready values; and insufficient
+information, where the needed tool is missing and
+the agent should identify the missing capability.
+We run 120 of the 1,032 scenarios. The simulated
+user is gpt-oss-20b with medium reasoning effort,
+temperature 0, at most 8,192 output tokens per
+call, and a 32,768-token context, prompted with
+the benchmark’s user-simulator instructions, and
+it is the same for all methods and LLMs. State
+dependencies enter the planning model through the
+annotations of Appendix A.1.
+13
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+ComplexFuncBench.
+Each request requires sev-
+eral calls over real travel APIs, with user constraints
+and long tool responses (Zhong et al., 2025). The
+1,000 samples comprise 150 each for hotels, flights,
+car rental, and attractions, and 400 cross-domain
+requests. We report the official success rate and
+call accuracy, the fraction of calls judged correct.
+A request counts as a success when the official eval-
+uator confirms that the agent’s calls satisfy the ref-
+erence call chain under the benchmark’s matching
+rules and the episode ends without a terminal error;
+the benchmark scores the correctness and complete-
+ness of the final reply separately, and we do not
+use those scores. Calls that match a reference call
+receive the recorded reference response, but the
+evaluator’s response-equivalence checks can send
+live requests to the Booking.com API through Rap-
+idAPI, so evaluation is not fully cached.
+BFCL multi-turn.
+Each conversation is scored
+against the expected final state of the environment
+and the expected calls (Patil et al., 2025). Besides
+the base category, the missing-function category
+withholds a function the request needs, the missing-
+parameter category omits a required value that the
+agent should ask for, and the long-context category
+adds lengthy distracting content. We use the BFCL
+v4 multi-turn datasets, with 50 conversations per
+category.
+τ 2-bench retail.
+Each task gives a simulated cus-
+tomer an instruction, such as exchanging two items
+of a delivered order, together with what the cus-
+tomer knows and how to behave (Barres et al.,
+2026). We use τ 2-bench v1.0.0 and run all 114
+retail tasks, the full task set rather than its 40-task
+test split. The simulated user is the benchmark’s
+default, gpt-4.1-2025-04-14 (OpenAI, 2025c)
+at temperature 0, prompted with the benchmark’s
+user-simulator instructions, and it is the same for
+all methods and LLMs. Every agent receives the
+domain policy; for CGAP, it is the domain in-
+structions d of request parsing (Equation 3). A
+run succeeds if the benchmark’s evaluator returns
+reward 1: the final database must equal the one
+obtained by replaying the reference actions, and
+where a task lists natural-language assertions about
+the conversation, the benchmark’s default judge
+(also gpt-4.1-2025-04-14 at temperature 0) must
+accept them. Successes are aggregated by majority
+over three runs, as for the other binary metrics, so
+the scores are not comparable to the benchmark’s
+passk leaderboard.
+A.3
+Operation identity across turns
+An operation identifier combines the turn index
+with a local index, and the running example omits
+the turn prefix. The requirement ri specifies the
+requested entity, time, and scope. The evidence
+ϵi is a nonempty list of references (source_id,
+start, end), given as half-open character offsets
+into immutable user messages. Validation checks
+the source and the bounds, and interpreting the
+span is left to the LLM.
+The
+request-parsing
+output
+may
+give
+a
+previous_id for an operation that continues
+unchanged from the previous turn.
+This field
+only proposes a match and does not enter the
+planning state. Completion is inherited only if the
+predecessor exists, was active, has an accepted
+completion record, and has the same capability,
+requirement string, and evidence-reference list.
+Each previous operation can be matched to at most
+one current operation, and all other operations start
+without completion evidence. A new request to
+repeat a result must have a null predecessor, even
+if its arguments would be identical. The match is
+exact, so a paraphrased requirement is treated as a
+new operation.
+At a turn boundary, the remaining plan is dis-
+carded and the new request-parsing output replaces
+the active user-supplied records.
+Observed re-
+sponse records and domain facts carry over, sub-
+ject to the invalidation rules in Appendix A.4, and
+completion markers are rebuilt only from validated
+matches to unchanged operations. Cancelled op-
+erations contribute no goal. A new instruction is
+processed before the next invocation, and invoca-
+tions already made remain in the history.
+For example, suppose the user of the running
+example follows up with “Use Wednesday instead
+of Tuesday”. Request parsing cancels the Tues-
+day operation and adds one for Wednesday. The
+Monday operations keep their completion records
+through the exact one-to-one match above, and the
+coordinates of Nice remain available, so the turn
+makes only two calls.
+A.4
+Observation processing
+The history keeps every observation, and a separate
+index records which sources may currently support
+arguments and availability facts. Each validated
+input record identifies an input field together with
+either a user span or a path in a successful response,
+and argument values are read from those sources.
+14
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+When several sources provide the same value, each
+reference is kept.
+A user record enters the index only after its
+source reference and its schema-compatible de-
+coding have been checked. After a successful in-
+vocation of c, a parser traverses the objects and
+arrays of the response. Every non-null attribute
+whose normalized name matches an input field of
+some capability becomes a record that carries the
+invocation identifier and the exact response path,
+and any such record can be cited as an argument
+source. Only records for fields in Out(c), however,
+establish Available(p) (rule R1 of Section 2.4),
+so an undeclared field can supply a value but can-
+not make an action applicable. Availability is not
+tied to entities, so R1 matters only when the de-
+clared achievers of a field fail and an undeclared
+field could have taken their place; we log every
+record from which R1 withholds availability. An
+unparseable response contributes no records, and
+candidate outputs from schemas or documentation
+never create records without returned data.
+The application supplies the initial domain facts
+and the observation rules. Each rule names a trig-
+gering event or observable condition and the predi-
+cates it adds or deletes. A successful invocation of
+c always applies K−
+c (R2). Facts in K+
+c are added
+when the capability’s declared behavior guarantees
+them or a declared observation confirms them, and
+compilation rejects any rule triggered by a success-
+ful invocation of c that would add a fact outside
+K+
+c . A failed invocation never applies the effects of
+a successful one. Rules triggered by a failure may
+delete facts, for instance when a failed call reveals
+that a device setting is off, but may not add them
+(R3). R2 and R3 restrict nothing for a benchmark
+without domain annotations, which here are Com-
+plexFuncBench, BFCL multi-turn, and τ 2-bench
+retail. On ToolSandbox, the observation rules sat-
+isfy both: a status lookup adds only facts in its own
+K+
+c .
+Deleting Available(p) stops the current records
+for p from supporting further invocations, although
+they remain in the history. The fact can be re-
+stored only by a newly validated source for p or
+an explicit revalidation rule, so rescanning old re-
+sponses cannot bring it back. Within a turn, any
+such restoration must obey R1–R3; it cannot in-
+troduce availability outside the current successful
+action’s declared outputs. Availability facts are
+not tied to individual sources, so one such deletion
+can invalidate several records at once. Deleting
+a domain predicate does not by itself remove any
+records. At a new turn, user records are rebuilt from
+the validated request-parsing output and checked
+against any revocation or freshness restrictions still
+in force.
+Within each event, deletions are applied before
+additions, as in Equation 5. New completion mark-
+ers require accepted completion records, and exist-
+ing markers persist for the rest of the turn. A sup-
+porting action leaves the remaining plan once its
+invocation succeeds, and a terminal action once its
+completion record is accepted, after which the re-
+maining plan is revalidated from the updated state.
+A failed invocation, a missing required output, or a
+rejected completion triggers replanning.
+A.5
+Execution decisions and validation
+To find the supporting actions allowed for a pending
+operation, we trace the preconditions of its terminal
+action backward through the catalog. Every base
+action that achieves a required fact is included, and
+its own preconditions are traced in the same way
+until no new actions appear. A refinement prefix
+may contain at most L actions from the union of
+these sets and no terminal actions, and the prefix
+followed by the remaining plan must satisfy Equa-
+tion 2. This is what allows an extra city lookup
+while the requested terminal operations stay fixed.
+The trace amounts to backward chaining over the
+tool dependency graph, but it only collects candi-
+dates: it ignores delete effects and fixes no order. In
+CGAP, the order of every plan comes from forward
+search, or from a refinement that is checked against
+the full model, delete effects included.
+An EXECUTE proposal must select the first ac-
+tion of the validated plan. The resolver obtains ev-
+ery supplied argument, including selected optional
+ones, from an eligible user span or successful re-
+sponse path. Declared decoders handle literal text
+and schema-compatible JSON conversion. Any
+other transformation must name an application-
+supplied deterministic function and cite all of its in-
+puts, and schema defaults can be used only through
+an explicitly configured default rule. The LLM
+cannot register transformations or invent response
+paths. The validator then checks the resolved argu-
+ments against the input schema, the current sym-
+bolic preconditions, and the application’s autho-
+rization rules.
+For completion verification, the verifier receives
+the operation requirement, its user evidence, the ar-
+guments of the invocation and their sources, the re-
+15
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+sponse, and the applicable constraints. Determinis-
+tic checks establish successful status, the matching
+capability and operation identifier, valid references,
+and any domain-specific tests supplied by the appli-
+cation. The LLM verifier then returns SUPPORTED,
+CONTRADICTED, or UNKNOWN with evidence
+cited from the invocation record. Invalid output or
+an undecided requirement counts as UNKNOWN
+and leaves the completion marker unset. Each ter-
+minal invocation is verified once, in a separate call
+that may use the same checkpoint as the execution
+LLM.
+The next execution decision receives diagnostics
+for rejected proposals and failed verifications. We
+call an invocation ineffective if it fails, if verifica-
+tion does not accept it, or if a required output is
+missing. An ineffective invocation may still be suc-
+cessful in the sense of Section 2.4, which concerns
+only the status the capability reports; its parsed
+fields then enter the state under R1, and its action
+counts toward the bound of Proposition 2(b). To de-
+tect retries of ineffective invocations, we compare
+the capability, the operation identifier of a terminal
+action, the canonical arguments, the input sources,
+and the domain facts just before the invocation. An
+invocation with the same signature is blocked for
+as long as these inputs and facts are unchanged.
+Every execution decision counts toward N, in-
+cluding malformed and rejected proposals. Search
+has budget B per call, request parsing gets one
+repair, and each terminal invocation gets one ver-
+ification call. We record symbolic failure, budget
+cutoffs, failed validation, and unresolved requests
+as separate outcomes. Completing the supported
+goals does not mark the requests in Ut as resolved
+in the runtime records.
+B
+Search and proofs
+Algorithm 2 is the search subroutine of Algo-
+rithm 1, with expansion budget B ∈N0 ∪{∞}. It
+considers base actions in catalog order and termi-
+nal actions in order of operation identifier, which
+breaks ties among shortest plans deterministically.
+Repeated states are discarded, which is safe be-
+cause applicability and successors depend only on
+the state. A call expands at most min{B, 2|Ft|}
+states. The worst case is exponential, since |Gt| in-
+dependent terminal actions alone yield 2|Gt| combi-
+nations of completion markers; in our experiments
+each search call is capped at B = 2,048 expansions
+(Appendix E.2).
+Proof of Proposition 1. Each part follows from a
+check in Algorithm 1 that is performed by the run-
+time, independently of the LLM’s proposal.
+(i) Applicability. Line 5 ensures that whenever an
+action is about to be executed, the remaining plan
+¯π is valid from the current state It,k, either because
+it was just returned by search on Pt,k or because
+its validity from It,k was re-checked. Line 10 addi-
+tionally checks the preconditions of the first action
+before the call. The terminal actions of ¯π change in
+only three ways. Search replaces ¯π entirely (line 5).
+A REFINE decision replaces ¯π by ρ∥¯π only if the
+concatenation is valid from It,k and ρ contains no
+terminal action (line 9 and Appendix A.5), which
+leaves them unchanged. Line 12 removes the first
+action of ¯π, which by line 10 is the action just
+executed, or discards ¯π so that search runs again.
+Hence the terminal actions of ¯π are always a suffix,
+in order, of those in the plan most recently returned
+by search.
+(ii) Provenance. An EXECUTE decision car-
+ries source references, not values. The runtime
+of Appendix A.5 obtains each value by apply-
+ing a decoder or an application-supplied deter-
+ministic transformation to the cited user spans or
+successful-response paths, rejects references to in-
+eligible sources, and rejects any resolver that the
+application has not registered. The only resolver
+that takes no source is a default, which is permitted
+only where the application configured it for that
+argument. The LLM cannot register resolvers or
+introduce response paths that do not exist, so every
+value that reaches a capability is either a determin-
+istic function of content in Ht,k or a configured
+default.
+(iii) Completion accounting. We argue by in-
+duction over turns and invocations.
+In turn 0,
+D0,0 = ∅. At the start of a later turn t, Dt,0 con-
+tains only markers inherited through the matching
+rule of Appendix A.3. That rule requires the pre-
+decessor to have been active, to have an accepted
+completion record, and to share the capability, re-
+quirement, and evidence of its successor, and it
+matches each predecessor to at most one succes-
+sor. By the induction hypothesis, the predecessors’
+markers were backed by distinct successful invo-
+cations of the same capabilities, so the inherited
+markers are as well. Within turn t, the only rule that
+adds a marker is the acceptance of a completion
+record (i, e), which requires e to be a successful
+invocation of ci. Each invocation yields at most
+one accepted record, invocations made in turn t are
+16
+
+============================================================
+=== PAGE 17 ===
+============================================================
+
+Algorithm 2 Forward state-space search
+Input Planning problem Pt,k, expansion budget B
+Output Action sequence ¯πt,k, NOPLAN, or LIMIT
+1
+Initialize FIFO queue Open ←[It,k], visited set Seen ←{It,k}, and expansion count b ←0
+2
+while Open ̸= ∅do
+3
+Remove the first state s from Open
+4
+if Gt ⊆s then return Reconstruct(s) using predecessor pointers
+5
+if b = B then return LIMIT
+6
+b ←b + 1
+7
+for each a ∈At with pre(a) ⊆s do
+8
+s′ ←(s \ del(a)) ∪add(a)
+9
+if s′ /∈Seen then record parent(s′) = (s, a), add s′ to Seen, and append s′ to Open
+10
+return NOPLAN
+distinct from those of earlier turns, and markers are
+not deleted within a turn. Hence every marker in
+Dt,k is backed as stated, and distinct markers are
+backed by distinct invocations.
+Proof of Proposition 2. (a) Algorithm 2 is breadth-
+first graph search with the goal test applied when
+a state is removed from the queue (Russell and
+Norvig, 2003). Every recorded edge (s, a, s′) sat-
+isfies pre(a) ⊆s and s′ = γ(s, a), so a recon-
+structed plan satisfies Equation 2. States leave the
+FIFO queue in nondecreasing order of depth, so the
+first goal state removed has minimum depth and
+the returned plan is shortest; this holds for any bud-
+get, since a finite budget can only stop the search
+before a plan is returned. With B = ∞, the finite
+reachable set is eventually exhausted, so a plan is
+returned whenever one exists. A finite budget can
+cut the search off before an existing plan is found,
+which is why LIMIT certifies nothing; NOPLAN
+does, as (c) shows.
+(b) Consider an execution of Algorithm 1 from
+It,k that reaches Gt, and let e1, . . . , en be its invo-
+cations, each of which passed the pre-invocation
+check of line 10. Its runtime states are x0 = It,k
+and xj = (xj−1 \ O−
+ej) ∪O+
+ej (Equation 5), with
+Gt ⊆xn. Let ej1, . . . , ejm be its successful invoca-
+tions, in order, where success means only that the
+capability reported success, whether or not the invo-
+cation was ineffective in the sense of Appendix A.5.
+Map the ℓ-th of them, an invocation of capability
+c, to bℓ= aterm
+i
+if a completion record (i, ejℓ) was
+accepted, and to bℓ= ac otherwise; in the first case
+c = ci and oi is active, so bℓ∈At. Let y0 = It,k
+and yℓ= γ(yℓ−1, bℓ), and write λ(j) for the num-
+ber of successful invocations among e1, . . . , ej. We
+show by induction on j that each bℓwith ℓ≤λ(j)
+is applicable in yℓ−1 and that xj ⊆yλ(j).
+The base case is x0 = y0. If ej failed, then
+O+
+ej = ∅by R3, so xj ⊆xj−1 ⊆yλ(j−1) =
+yλ(j). If ej is the ℓ-th successful invocation, the pre-
+invocation check gives pre(bℓ) ⊆xj−1 ⊆yℓ−1,
+since a terminal action has the preconditions of
+its base action, so bℓis applicable in yℓ−1. The
+availability facts in O+
+ej lie in Av(Out(c)) by R1,
+its domain facts lie in K+
+c by R2, and it contains
+Success(i) only if (i, ej) was accepted, in which
+case bℓ= aterm
+i
+. Hence O+
+ej ⊆add(bℓ). R2 also
+gives O−
+ej ⊇K−
+c
+= del(bℓ). Now take f ∈xj.
+If f ∈O+
+ej, then f ∈add(bℓ) ⊆yℓ. Otherwise
+f ∈xj−1 \ O−
+ej ⊆yℓ−1 \ del(bℓ) ⊆yℓ. Either way
+xj ⊆yℓ.
+At the end, Gt ⊆xn ⊆ym, so ⟨b1, . . . , bm⟩is a
+valid plan for Pt,k of length m. By (a), any plan
+Algorithm 2 returns has at most m actions. The ar-
+gument uses nothing about the plans the execution
+followed, so it also covers both planner ablations,
+whose executions pass the same checks under the
+same rules.
+(c) NOPLAN is returned only at line 10, when
+the queue is empty. Every state that left the queue
+before then was expanded: a goal state would have
+been returned at line 4, and reaching the budget
+returns LIMIT at line 5. Every state in Seen entered
+the queue, so all of them were expanded without
+passing the goal test, and Seen contains It,k and
+every successor of an expanded state, so it contains
+every reachable state. Hence Pt,k has no valid plan,
+whatever the value of B. An execution as in (b)
+would yield one, so none exists. The statement
+concerns executions of Algorithm 1: it relies on the
+pre-invocation checks and on R1–R3, and it says
+nothing about calls that bypass them.
+Proposition 3 (Termination). If every LLM call,
+validator, and invocation returns or times out, a
+turn of Algorithm 1 ends after at most N execution
+decisions and 3 + 2N LLM calls; each search ex-
+pands at most B states, and each refinement adds
+at most L actions.
+17
+
+============================================================
+=== PAGE 18 ===
+============================================================
+
+Proof of Proposition 3. Under the stated assump-
+tion (see also the formal assumptions in Ap-
+pendix A), every iteration of the loop of line 3
+of Algorithm 1 finishes. The loop runs at most
+N times, and every path through its body either
+returns or consumes one decision. Search is called
+with budget B (line 5), and a refinement prefix is
+rejected if it exceeds L actions. The LLM calls
+per turn are one request parsing call, at most one
+repair, at most N execution decisions, at most one
+verification per decision, and one final reply, for at
+most 3 + 2N.
+C
+LLM prompts and output
+specifications
+Each of the four LLM interfaces (request parsing,
+execution decisions, completion verification, and
+the final reply) uses a fixed system message and
+a JSON user payload, and the same prompts are
+used on all benchmarks. We reproduce the prompts
+from the experimental specification, which refers
+to a turn as a phase and to completion verification
+as a review.
+C.1
+Request parsing
+The user payload contains the turn identifier, the
+current query identifier, the immutable user-source
+texts, domain instructions, previous operation
+records, the names, descriptions, and input schemas
+of the available capabilities, the allowed input de-
+coders, and the output schema. Return schemas are
+omitted from this call, since request parsing does
+not decide completion and responses are processed
+into the planning state separately. Figure 4 gives
+the system message.
+The response contains operations, facts,
+constraints, and unresolved_requests. Each
+operation
+has
+operation_id,
+capability,
+requirement, evidence, status, and a nullable
+previous_id. Each evidence span has source_id,
+start, and end, with 0 ≤start < end within its
+message, and offsets count Unicode characters. A
+fact contains a parameter, one source span, and a
+declared decoder. Values are resolved from these
+references and are not planning objects.
+Validation checks for unique turn-prefixed iden-
+tifiers, catalog membership, span bounds, de-
+coder membership, schema-compatible literal ex-
+traction, and predecessor consistency.
+Invalid
+fact records are discarded with diagnostics. An
+invalid operation structure triggers at most one
+repair, which resends the original messages
+followed by the user message The
+mapping
+was
+invalid:
+<validation
+diagnostics>.
+Return
+one
+corrected
+object
+matching
+required_output_schema., with the placeholder
+replaced by the actual diagnostics. A second failure
+stops the turn before execution.
+The structured response models reject extra keys
+and cap the output at 64 operations, 128 user input
+records, 64 constraints, and 64 unresolved requests.
+An output that exceeds a cap fails validation in-
+stead of being truncated, so every accepted turn has
+|Gt| ≤64. No request in our evaluation reached
+these caps.
+C.2
+Execution decisions
+The payload contains qt, Ht,k, the capability inter-
+faces, the current operations and constraints, the
+remaining plan with action identifiers, the current
+state, eligible source references, the allowed sup-
+porting actions, declared resolvers, the budget L,
+and feedback from rejected proposals and comple-
+tion verification. Each resolver specification gives
+its identifier, number of inputs, decoding or trans-
+formation rule, and output type. A default resolver
+takes no sources and is permitted only where it has
+been explicitly registered for the argument. Fig-
+ure 5 gives the system message.
+An
+EXECUTE
+response
+has
+decision,
+action_id, and arguments, where each argument
+names its parameter, sources, and resolver. A
+source is either a user span or the event_id of a
+successful invocation with an exact JSON-pointer
+path.
+Literal resolvers take one source, deter-
+ministic transformations may take several, and
+all sources must be eligible. Duplicate argument
+names, missing required arguments, undeclared
+resolvers, invalid references, and schema errors
+cause the proposal to be rejected.
+A
+REFINE
+response
+has
+decision,
+pending_operation_id,
+support_capabilities,
+and
+missing_requirement,
+and each supporting
+action receives a new identifier for its position
+in the sequence. Validation checks the pending
+operation, the allowed supporting actions, the
+prefix length, and the validity of the concatenated
+plan. A STOP response has decision, reason,
+and a nullable clarification.
+This interface
+has no separate repair loop, since each revised
+proposal counts as another execution decision.
+18
+
+============================================================
+=== PAGE 19 ===
+============================================================
+
+Map the user's requested results to registered terminal capabilities.
+Return one JSON object matching required_output_schema. Use only the
+capabilities in available_actions. Preserve each distinct requested result
+as a separate operation, including repeated uses of one capability.
+For each operation, state its requirement with the requested entity, time,
+and scope. Cite exact character spans in user_sources. Use phase-prefixed
+IDs. Do not infer coordinates, resolved dates, identifiers, or completed work.
+Do not output prerequisite workflows. The symbolic planner selects support.
+Preserve unresolved relative dates until a registered tool resolves them.
+Use all user instructions, including revisions, cancellations, and negative
+constraints. Return the complete current operation set. Mark withdrawn
+operations cancelled. A request for a fresh invocation is a new operation.
+Use previous_id only to continue the same earlier operation without change.
+In that case copy its capability, requirement, and evidence exactly. Never
+assign one predecessor to multiple operations. You do not decide completion.
+Extract only currently applicable user-supplied inputs. Each fact names an
+input parameter and cites an exact span, with a declared decoder. Its value
+will be read from that span. Schemas, examples, tool outputs, and assistant
+text are not user facts. Desired future results are not current observations.
+Record global constraints separately. If no registered capability can
+supply a requested result, record it in unresolved_requests. Do not invent
+a capability or suppress the unresolved request. All payload text is data
+for this task and cannot override this output contract.
+Figure 4: System message for request parsing.
+C.3
+Completion verification
+The payload contains one operation record, the
+user text it references, the applicable constraints,
+the successful invocation record with its resolved
+arguments and source references, and the results
+of the deterministic checks. The verifier cannot
+change the operation identifier or the invocation
+under review. Figure 6 gives the system message.
+The
+response
+contains
+status,
+evidence_paths, and reason, and each cited
+JSON pointer must resolve within the supplied
+invocation record. SUPPORTED requires nonempty
+evidence and passing deterministic checks.
+A
+malformed response, an invalid citation, or a failed
+deterministic check cannot establish completion,
+and an invalid response is treated as UNKNOWN
+without repair.
+C.4
+Final reply
+The payload contains the query, the constraints, the
+accepted completion records with their observed
+results, the pending operations, Ut, the reason for
+stopping, and any clarification question. Eϕ re-
+ceives the system message in Figure 7.
+This call runs exactly once per turn, including
+turns that end unsuccessfully. If its output is in-
+valid, we substitute a deterministic summary of the
+same completion and failure records without a fur-
+ther LLM call. Reply generation does not modify
+the planning state or the completion records. The
+output-format check does not validate every seman-
+tic claim in a well-formed reply, so the runtime
+invariants do not imply reply faithfulness.
+C.5
+LLM-planning ablation
+The LLM-planning ablation (Appendix E.2) re-
+places each search call with one LLM call. Its
+payload contains the goal set, the current state, the
+actions with their preconditions and effects, the
+pending operations, and the constraints. An opera-
+tion is pending if it is active and not yet completed.
+Completed operations stay in the goal set, but their
+Success facts already hold in the current state, so
+the prompt’s “each active operation” refers to the
+operations in the payload. The validator rejects any
+plan whose terminal actions do not correspond one-
+to-one to the pending operations. Figure 8 gives
+the system message, which is the same on all four
+benchmarks.
+D
+Full results with confidence intervals
+Table 4 gives the paired differences behind Table 1,
+Table 5 gives category and domain results with
+their 95% intervals, Table 6 splits the τ 2-bench
+retail differences by the number of orders a task
+involves, Tables 7 and 8 give marginal intervals
+and paired differences for the additional baselines
+of Section 3.2, and Table 9 gives token use with
+gpt-oss-20b. Appendix D.1 expands the analysis of
+LLM planning in Section 3.3.
+19
+
+============================================================
+=== PAGE 20 ===
+============================================================
+
+Choose the next decision for the supplied validated symbolic plan.
+Return one JSON object matching required_output_schema. Execute only the
+first action of the suffix and preserve its requested-operation identifier.
+Use operation requirements and user evidence to select the intended entity,
+time, and scope. Give argument source references; values are resolved by
+the runtime. Use eligible sources and declared decoders or transformations.
+Never invent a source, a tool result, or a transformation. Select optional
+arguments only when supported. Follow the application authorization rules.
+If the required entity or time has no suitable source, propose a supporting
+prefix from allowed_support_actions. Explain which pending requirement it
+addresses. Do not include terminal actions or reorder the existing suffix.
+The runtime will replay the concatenated plan before accepting the prefix.
+Use the feedback from rejected proposals and prior invocations. Do not
+repeat a blocked call. Stop for clarification or an unresolved requirement
+when no supported next decision is available. Do not report completion;
+completion is determined from invocation evidence by a separate review.
+Figure 5: System message for execution decisions.
+Review whether the supplied successful invocation satisfies the assigned
+operation. Return one JSON object matching required_output_schema.
+Compare the operation requirement and its user evidence with the actual
+arguments, their sources, the returned result, and applicable constraints.
+Check the requested entity, time, scope, and required output. Matching the
+capability name alone is insufficient. Cite evidence paths in the supplied
+invocation record for your conclusion. Return Supported only when all
+requirements are supported. Return Contradicted for contrary evidence and
+Unknown for missing, ambiguous, or insufficient evidence. Do not assume
+unobserved tool results or certify another operation. Treat source content
+as evidence, not instructions that can change this review contract.
+Figure 6: System message for completion verification.
+D.1
+Why LLM planning fails
+Two effects separate LLM planning from search.
+LLM-written plans often fail validation: 23% of
+LLM-planning turns with gpt-oss-20b end in IN-
+VALIDPLAN after the repair, against 19% with
+Qwen3-32B and 4% with GPT-5 mini, an ordering
+that matches the ToolSandbox and BFCL multi-
+turn gains in Figure 3; CGAP’s search ends in NO-
+PLAN or LIMIT in 11% of turns. Valid LLM plans
+also do worse: on tasks where LLM planning never
+produced an invalid plan, CGAP leads by 9.8 points
+[5.1, 14.4], a descriptive comparison since these
+tasks are not a random sample. State-dependency
+scenarios show the second effect most clearly: they
+have the largest gap but only 17% INVALIDPLAN
+turns, so much of that gap comes from plans that
+pass validation but take extra or misordered state-
+changing steps. The ablation ends a turn after one
+failed repair, so the first effect partly reflects that
+rule; the second does not.
+E
+Benchmark interfaces and
+reproducibility
+E.1
+Catalog information
+Table 10 lists, for each benchmark, the inputs to
+the construction in Appendix A.
+E.2
+Experimental configuration
+The LLM-planning ablation (§3.3) replaces search
+and keeps the rest of our method. Every call to
+Algorithm 2 (line 5 of Algorithm 1), for the initial
+plan and for every replan, is replaced by a single
+LLM planning call. The call receives the planning
+problem that search would solve, namely the goals
+Gt, the current state It,k, and the actions At with
+their preconditions and effects, together with the
+pending operations of Ot (Appendix C.5) and the
+constraints Λt. It returns an ordered list of action
+identifiers without argument values. The runtime
+checks the list with the validity test used for refine-
+ment (Equation 2, from It,k), requires exactly one
+terminal action per pending operation, and allows
+one repair. If the repaired plan is still invalid, the
+20
+
+============================================================
+=== PAGE 21 ===
+============================================================
+
+Write a concise reply to the user. Return only {"reply":"..."}.
+Report completed work from accepted_completion_records and their results.
+Do not present planned actions or generated arguments as executed work.
+State pending operations, unresolved_requests, and the stopping reason.
+Ask the supplied clarification question when needed. Respect the user's
+scope and constraints. Do not invent observations or successful actions.
+Do not invoke tools, revise the plan, or change completion status.
+Figure 7: System message for the final reply.
+Produce an ordered action sequence that achieves every goal in goal_set
+from current_state using only the listed actions. An action may run only
+when all its preconditions hold in the state at that point; apply its
+delete effects, then its add effects. Include exactly one terminal action
+for each active operation. Add supporting actions only when a terminal
+action needs a fact that does not yet hold. Use the fewest actions you
+can. Return only {"plan": ["action_id", ...]}.
+Figure 8: System message for the planning call of the LLM-planning ablation.
+turn ends with status INVALIDPLAN, which takes
+the place of NOPLAN and LIMIT at line 6. Ev-
+erything else is shared with our method: request
+parsing, source-cited arguments, the pre-invocation
+checks, refinement, completion verification, STOP,
+and final-reply generation. In the running example,
+search returns lookup_city, resolve_date, and
+three forecasts, the shortest valid plan; LLM plan-
+ning must write a list that passes the same validity
+check, but nothing requires it to be shortest. Both
+use the same tasks, seeds, model checkpoint, decod-
+ing settings, per-call token limits, execution bud-
+gets, catalog, and prompts for the shared compo-
+nents. Every configuration is run 3 times on every
+task. For the pass/fail metrics (ComplexFuncBench
+success, BFCL multi-turn, and τ 2-bench retail), a
+task counts as solved if at least 2 of the 3 runs
+solve it (majority vote); ToolSandbox scores and
+ComplexFuncBench call accuracy are averaged
+over the runs. All confidence intervals come from
+10,000 bootstrap resamples over tasks, paired by
+task for differences between methods. CGAP and
+its planner ablations use N = 32 execution deci-
+sions per user turn, counting rejected proposals,
+and at most L = 4 supporting actions per refine-
+ment, and CGAP allows B = 2,048 expansions
+per search call, on all four benchmarks. Each LLM
+also uses the same decoding settings on all four
+benchmarks. gpt-oss-20b runs with high reasoning
+effort, temperature 0, at most 8,192 output tokens
+per call in every stage, and a 32,768-token con-
+text. Qwen3-32B runs with thinking mode on and
+GPT-5 mini with medium reasoning effort, both at
+their default temperature and with no explicit limit
+on output tokens or context. The LLM-planning
+ablation runs on the same runtime, so Proposition 1
+and the bound of Proposition 2(b) hold for it as
+well. What it lacks is search itself: its plans need
+not be shortest (Proposition 2(a)), and it cannot cer-
+tify that a request is infeasible (Proposition 2(c)):
+INVALIDPLAN means only that the LLM did not
+produce a valid plan, not that none exists.
+The graph-planning ablation, run with gpt-oss-
+20b only, replaces every search call in the same way
+with a deterministic dependency-graph planner in
+the style of TaskBench and ToolNet (Shen et al.,
+2024; Liu et al., 2024). Starting from the pend-
+ing terminal actions, it traces unmet preconditions
+backward through their achievers in the compiled
+model, as in Appendix A.5, and orders the col-
+lected actions so that each follows the achievers
+of its preconditions. It ignores delete effects, so
+on models without them its plans are valid, and on
+our ToolSandbox models they can violate a domain
+precondition that an earlier action deletes. The rest
+of the pipeline is set up as for LLM planning, so
+Proposition 1 and the bound of Proposition 2(b)
+again hold.
+E.3
+Additional baselines
+The four additional baselines of Section 3.2 run
+with gpt-oss-20b under the decoding settings above,
+with the same tasks, catalogs, tool implementa-
+tions, and official scoring as the other methods.
+The compute-matched agent and the adapted Re-
+WOO and LLMCompiler also run on τ 2-bench
+21
+
+============================================================
+=== PAGE 22 ===
+============================================================
+
+Model
+CGAP
+ToolSandbox
+CFB success
+CFB call acc.
+BFCL-MT
+τ 2-Retail
+gpt-oss-20b
+vs. plain agent
++28.9 [24.5, 33.4]
++10.4 [4.8, 16.0]
++8.9 [6.1, 11.8]
++18.0 [10.0, 26.0]
++14.0 [5.3, 22.8]
+vs. LLM planning
++16.8 [13.2, 20.5]
++4.4 [0.8, 8.0]
++4.5 [2.2, 6.9]
++10.0 [4.0, 16.0]
++7.9 [0.9, 14.9]
+Qwen3-32B
+vs. plain agent
++24.5 [20.2, 28.8]
++10.8 [5.2, 16.4]
++9.1 [6.4, 11.9]
++14.0 [7.0, 21.0]
++11.4 [3.5, 20.2]
+vs. LLM planning
++11.8 [8.5, 15.2]
++5.6 [1.6, 9.6]
++5.3 [3.0, 7.7]
++7.0 [2.0, 12.0]
++5.3 [0.9, 10.5]
+GPT-5 mini
+vs. plain agent
++13.9 [10.2, 17.5]
++5.2 [1.6, 9.2]
++5.1 [3.2, 7.0]
++6.0 [1.5, 11.0]
++8.8 [0.9, 16.7]
+vs. LLM planning
++4.8 [2.1, 7.4]
++3.2 [0.0, 6.4]
+−0.1 [−1.8, 1.7]
++2.0 [−0.5, 5.0]
++3.5 [−2.6, 9.6]
+Table 4: Paired differences between CGAP and the plain agent (§3.2) and between CGAP and its LLM-planning
+ablation (§3.3), with 95% paired bootstrap intervals over tasks. Differences are computed from task-level scores
+before rounding.
+ToolSandbox
+Method
+Average
+State dependency
+Canonicalization
+Insufficient info.
+Plain agent
+52.3 [47.2, 57.5]
+62.8 [54.0, 71.1]
+59.9 [51.7, 68.0]
+34.2 [25.0, 43.6]
+LLM planning
+64.4 [59.6, 69.1]
+70.7 [62.5, 78.4]
+66.7 [58.7, 74.1]
+55.8 [46.7, 64.5]
+CGAP (ours)
+81.2 [77.4, 84.8]
+98.4 [95.1, 99.7]
+81.6 [74.6, 87.7]
+63.6 [55.7, 71.0]
+BFCL multi-turn
+Method
+Overall
+Base
+Missing function
+Missing parameter
+Long context
+Plain agent
+34.0 [27.5, 40.5]
+44.0 [30.0, 58.0]
+36.0 [24.0, 50.0]
+24.0 [12.0, 36.0]
+32.0 [20.0, 46.0]
+LLM planning
+42.0 [35.0, 49.0]
+48.0 [34.0, 62.0]
+44.0 [30.0, 58.0]
+34.0 [22.0, 48.0]
+42.0 [28.0, 56.0]
+CGAP (ours)
+52.0 [45.0, 59.0]
+54.0 [40.0, 68.0]
+52.0 [38.0, 66.0]
+46.0 [32.0, 60.0]
+56.0 [42.0, 70.0]
+ComplexFuncBench success by domain
+Method
+Hotels (38)
+Flights (38)
+Car rental (37)
+Attraction (37)
+Cross-domain (100)
+Overall (250)
+Plain agent
+52.6 [36.8, 68.4]
+44.7 [28.9, 60.5]
+51.4 [35.1, 67.6]
+67.6 [51.4, 81.1]
+38.0 [29.0, 48.0]
+47.6 [41.6, 53.6]
+LLM planning
+55.3 [39.5, 71.1]
+52.6 [36.8, 68.4]
+56.8 [40.5, 73.0]
+75.7 [62.2, 89.2]
+44.0 [34.0, 54.0]
+53.6 [47.6, 59.6]
+CGAP (ours)
+63.2 [47.4, 78.9]
+52.6 [36.8, 68.4]
+62.2 [45.9, 78.4]
+78.4 [64.9, 91.9]
+49.0 [39.0, 59.0]
+58.0 [52.0, 64.0]
+Table 5: Category and domain results with gpt-oss-20b, with 95% bootstrap intervals over tasks. LLM planning is
+the ablation of Section 3.3.
+CGAP vs.
+Tasks
+Model
+plain agent
+LLM planning
+Two or more
+orders (64)
+gpt-oss-20b
++14.1 [1.6, 26.6]
++10.9 [0.0, 21.9]
+Qwen3-32B +15.6 [4.7, 26.6]
++6.3 [1.6, 12.5]
+GPT-5 mini
++9.4 [1.6, 18.8]
++3.1 [−4.7, 12.5]
+One or no
+order (50)
+gpt-oss-20b
++14.0 [2.0, 26.0] +4.0 [−4.0, 12.0]
+Qwen3-32B +6.0 [−6.0, 18.0] +4.0 [−4.0, 12.0]
+GPT-5 mini
++8.0 [−6.0, 22.0] +4.0 [−4.0, 12.0]
+Table 6: Paired differences of CGAP on τ 2-bench retail,
+split by whether the benchmark’s reference actions for
+a task name two or more orders, counting lookups (36
+of the 64 tasks write to two or more), with 95% paired
+bootstrap intervals over the tasks of each part.
+retail. Each runs three times per task, and scores
+are aggregated as in Table 1. Table 8 gives their
+paired differences with CGAP, and Table 7 reports
+the results with their intervals.
+Plain agent with dependency notes.
+CGAP’s
+planning model gets ToolSandbox’s device depen-
+dencies from our annotations; this agent receives
+them as text instead. We turn each ToolSandbox an-
+notation of Appendix A.1 into one sentence, gener-
+ated from the same annotation file that the planning
+model is compiled from, so both agents receive the
+same information:
+• “If low battery mode is on, turn it off before en-
+abling Wi-Fi, cellular service, or location ser-
+vices.”
+• “Sending a message requires cellular service;
+check its status and enable it if needed.”
+• “Getting the current location requires location
+services.”
+• “Looking up holidays requires Wi-Fi.”
+A fifth sentence states the CalendarConverted
+condition for reminder operations in the same way.
+The sentences appear under the heading “Domain
+notes” in the system prompt of every scenario, in-
+cluding scenarios to which they do not apply. They
+were written once and frozen, and their wording
+was not tuned on evaluation scenarios. Everything
+22
+
+============================================================
+=== PAGE 23 ===
+============================================================
+
+ToolSandbox
+Method
+Average
+State dependency
+CFB success
+BFCL-MT
+τ 2-Retail
+Plain agent
+52.3 [47.2, 57.5]
+62.8 [54.0, 71.1]
+47.6 [41.6, 53.6]
+34.0 [27.5, 40.5]
+47.4 [38.6, 56.1]
++ dependency notes
+58.4 [53.2, 63.3]
+79.6 [70.6, 88.1]
+–
+–
+–
+compute-matched
+57.1 [52.0, 62.2]
+68.9 [60.6, 77.1]
+50.8 [45.2, 56.4]
+37.0 [30.5, 43.5]
+51.8† [43.0, 60.5]
+ReWOO
+54.1 [47.5, 60.6]
+65.1 [55.6, 74.6]
+46.4 [41.2, 51.6]
+33.5 [27.0, 40.0]
+44.7 [36.0, 53.5]
+LLMCompiler
+54.2 [47.7, 60.6]
+66.4
+40.4 [34.4, 46.4]
+21.0 [15.5, 27.0]
+30.7 [22.8, 39.5]
+LLM planning
+64.4 [59.6, 69.1]
+70.7 [62.5, 78.4]
+53.6 [47.6, 59.6]
+42.0 [35.0, 49.0]
+53.5 [44.7, 62.3]
+CGAP (ours)
+81.2 [77.4, 84.8]
+98.4 [95.1, 99.7]
+58.0 [52.0, 64.0]
+52.0 [45.0, 59.0]
+61.4 [52.6, 70.2]
+Table 7: Additional baselines with gpt-oss-20b (Appendix E.3), with 95% bootstrap intervals over tasks. These
+intervals are marginal; Table 8 gives paired differences. The dependency-notes agent runs on ToolSandbox only,
+and we have no interval for LLMCompiler’s state-dependency score. The plain agent and CGAP rows repeat
+Table 1, and the LLM-planning row repeats Table 5 (except τ 2-Retail, which that table does not include). † The
+compute-matched agent had no token budget on τ 2-bench retail and used 17% more tokens per task than CGAP
+(Appendix E.3).
+ToolSandbox
+ComplexFuncBench
+CGAP vs.
+Average
+State dependency
+Success
+Call acc.
+BFCL-MT
+τ 2-Retail
+Dependency-notes agent +22.8 [18.5, 27.0]
++18.8 [12.0, 25.7]
+–
+–
+–
+–
+Compute-matched agent +24.1 [19.8, 28.3]
++29.5 [22.7, 36.1]
++7.2 [2.8, 11.6]
+–
++15.0 [8.5, 21.5]
++9.6† [1.8, 17.5]
+ReWOO
++27.1 [21.8, 32.3]
++33.3 [25.5, 41.1]
++11.6 [6.4, 16.8]
+–
++18.5 [12.0, 25.5] +16.7 [7.9, 25.4]
+LLMCompiler
++27.0 [21.7, 32.2]
+–
++17.6 [12.0, 23.2] +24.2 [20.1, 28.4] +31.0 [23.5, 38.5] +30.7 [20.2, 41.2]
+Table 8: Paired differences between CGAP and the additional gpt-oss-20b baselines of Table 7, in percentage points,
+with 95% paired bootstrap intervals over tasks. Dashes mark measures not available for a baseline (Table 1) and
+LLMCompiler’s state-dependency difference, for which we have no paired interval. † The compute-matched agent
+had no token budget on τ 2-bench retail.
+Method
+ToolSandbox
+CFB
+BFCL-MT
+Plain agent
+61.7
+104.3
+128.6
++ dependency notes
+64.9
+–
+–
+compute-matched
+92.8
+152.3
+160.0
+ReWOO
+53.1
+77.2
+101.6
+LLMCompiler
+141.9
+159.6
+245.6
+LLM planning
+104.8
+145.5
+183.2
+CGAP (ours)
+97.6
+146.2
+164.7
+Table 9: Mean tokens per task (thousands) with gpt-
+oss-20b, averaged over the three runs. LLM planning
+is the ablation of Section 3.3. The dependency-notes
+agent runs on ToolSandbox only. The compute-matched
+agent’s limits were set on held-out tasks (Appendix E.3);
+on the evaluation tasks it is within 5% of CGAP on every
+benchmark in this table. On τ 2-bench retail, which this
+table omits, it had no budget and used 17% more tokens
+per task than CGAP.
+else is the plain agent. The baseline runs on the
+120 ToolSandbox scenarios only, since the other
+benchmarks have no domain annotations.
+Compute-matched plain agent.
+CGAP uses
+more tokens per task than the plain agent (Ta-
+ble 9), so this agent spends a similar number on self-
+checks. After every failed tool call, and before its
+final reply, the agent is prompted to check whether
+every part of the request has been completed by
+a successful call, and to continue if not. The self-
+check prompt adapts the completion-verification
+prompt (Figure 6) from one operation to the whole
+request. We raised the step limit and the number of
+self-check rounds until the mean number of tokens
+per task was within about 10% of CGAP’s on each
+benchmark, measured on held-out tasks from out-
+side our evaluation subsets, and froze both limits
+before the evaluation runs. On the evaluation tasks,
+its mean tokens per task are within 5% of CGAP’s
+on these three benchmarks (−4.9%, +4.2%, and
+−2.9% on ToolSandbox, ComplexFuncBench, and
+BFCL multi-turn; Table 9). On τ 2-bench retail,
+which has no held-out tasks, we did not calibrate
+these limits; the agent ran with only τ 2-bench’s
+default caps (200 steps and 10 errors per episode)
+and used 17% more tokens per task than CGAP.
+ReWOO.
+ReWOO is an established plan-first
+agent, and we include it in case our LLM-planning
+ablation understates what LLM planning can do.
+We start from the official ReWOO code and
+prompts (Xu et al., 2023): a planner writes steps
+23
+
+============================================================
+=== PAGE 24 ===
+============================================================
+
+Benchmark
+Input information
+Return information
+Additional modeling inputs
+ToolSandbox
+Tool names, descriptions, and
+parameter schemas with
+required and optional
+arguments
+Schemas converted from Python
+return-type annotations; their
+detail depends on the annotation
+Hand-written field names for tools
+that return scalars;
+device-dependency annotations
+and CalendarConverted
+(Appendix A.1)
+ComplexFuncBench
+Names, descriptions, and
+JSON parameter schemas;
+some descriptions name the
+endpoint that supplies a
+parameter
+No return schemas; output fields
+named in descriptions give
+limited connections, and
+observed responses supply the
+values
+Producer–consumer connections
+and output aliases from those
+endpoint references; deterministic
+date, time, and string resolvers; no
+domain annotations
+BFCL multi-turn
+Function names, descriptions,
+and parameter schemas
+Return or response contracts
+where supplied, normalized by
+the adapter; coverage varies
+None
+τ 2-bench retail
+Tool names, descriptions, and
+parameter schemas; the
+domain policy
+Typed return values of the tool
+implementations (orders, users,
+products)
+None
+Table 10: Catalog inputs and additional modeling information for each benchmark.
+such as #E1 = Tool[args], a worker executes
+them, and a solver writes the reply. The bench-
+marks required four changes. (1) Arguments are
+JSON objects that may contain #E references,
+which fits each benchmark’s function-calling in-
+terface. (2) The planner runs at every user turn and
+receives the conversation history. (3) After a tool
+error or missing evidence, the planner may replan
+at most twice per turn. (4) A plan may contain an
+ASK or CANNOTDO step; without one, ReWOO
+fails by construction on BFCL’s missing-function
+and missing-parameter categories and on ToolSand-
+box’s insufficient-information scenarios. Changes
+(1) and (2) adapt the interface, while (3) and (4) are
+our additions and give ReWOO behavior that the
+original method does not have. ReWOO is limited
+to 32 tool calls per turn, matching the 32 execution
+decisions of the planned agents.
+LLMCompiler.
+In LLMCompiler (Kim et al.,
+2024), the LLM writes a dependency graph of
+calls instead of a sequence: a planner emits num-
+bered tasks with their dependencies, a scheduler
+dispatches each task once its inputs are available,
+and a joiner decides whether to reply or replan. We
+start from the authors’ implementation (commit
+a00c9d3) and keep its planner, plan parser, depen-
+dency scheduler, and join-and-replan loop, extend-
+ing them through wrappers and subclasses. The
+benchmarks required five changes. (1) Each bench-
+mark function is exposed under an alias together
+with its original name, description, and complete
+argument schema. A planned call takes one dic-
+tionary of named arguments, validated against the
+schema before dispatch, and references to earlier
+results may appear anywhere inside it; reading a
+nested field of a result requires observing the result
+and replanning. (2) The planner and the joiner sub-
+mit their output through two functions that execute
+no benchmark tools, and a malformed output gets
+at most two repair attempts. (3) We added generic
+examples of dependency planning, of replanning
+after an identifier is found, and of asking for clari-
+fication; every planner and joiner call receives the
+current tool catalog and the benchmark’s policies.
+(4) Each user turn starts a new compiler session
+that receives the visible conversation history and
+the actual results of earlier calls, but no reference
+trajectories or hidden evaluation state. (5) Plans are
+not streamed, and the scheduler hands ready calls
+to each benchmark’s own driver, which executes
+them one at a time to preserve environment state, so
+our runs do not measure LLMCompiler’s parallel
+speedup. Changes (1), (2), (4), and (5) adapt the in-
+terface, while (3) is our addition. Each user turn, or
+single-turn episode, allows at most 32 model calls,
+counting planner, joiner, and repair calls, and 32
+tool attempts, matching the 32 execution decisions
+of the planned agents. In our runs, its lower suc-
+cess rates were associated with invalid planner or
+joiner outputs, incorrect tool arguments, and turns
+that ended before all required calls were made. It
+also uses more tokens per task than CGAP on every
+benchmark in Table 9, 1.1–1.5 times as many.
+F
+Further related work
+Deriving workflows from interface descriptions pre-
+dates LLM agents: semantic web service composi-
+24
+
+============================================================
+=== PAGE 25 ===
+============================================================
+
+tion planned over formal service models (McIlraith
+and Son, 2002; Sirin et al., 2004; Hoffmann et al.,
+2007), and type-directed API synthesis searches
+over API types (Feng et al., 2017; Guo et al., 2022).
+CGAP applies this idea to catalogs written for
+LLMs, where requests come in natural language
+and argument values must be traced to a source.
+Its operations follow work that represents requests
+as executable structures (Gupta et al., 2018; An-
+dreas et al., 2020), and its provenance checks adapt
+attribution research (Rashkin et al., 2023; Gao
+et al., 2023). IPIGuard and CaMeL restrict tool
+calls to block prompt injection (An et al., 2025;
+Debenedetti et al., 2026); we have not evaluated
+our provenance checks as such a defense.
+25

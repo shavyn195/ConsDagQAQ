@@ -1,0 +1,4161 @@
+文档: 2602.05863_ConstrainedGRPO.pdf
+页数: 22
+图片: 2 张
+正文字体大小: 10.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) Constrained Group Relative Policy Optimization
+    [L3] (p.1) Abstract
+      [L4] (p.1) Group
+      [L4] (p.1) Relative
+      [L4] (p.1) Policy
+      [L4] (p.1) Optimization
+      [L4] (p.1) (GRPO)
+      [L4] (p.1) remains
+      [L4] (p.1) the
+      [L4] (p.1) dominant
+      [L4] (p.1) critic-free
+      [L4] (p.1) highly
+      [L4] (p.1) sensitive
+      [L4] (p.1) to
+      [L4] (p.1) how
+      [L4] (p.1) multi-component
+      [L4] (p.1) learning
+      [L4] (p.1) signals
+      [L4] (p.1) are
+      [L4] (p.1) aggregated.
+      [L4] (p.1) We
+      [L4] (p.1) coupling, so that changing one multiplier alters not only the emphasis on its cor-
+      [L4] (p.1) responding
+      [L4] (p.1) constraint,
+      [L4] (p.1) but
+      [L4] (p.1) also
+      [L4] (p.1) the
+      [L4] (p.1) relative
+      [L4] (p.1) weighting
+      [L4] (p.1) of
+      [L4] (p.1) the
+      [L4] (p.1) reward
+      [L4] (p.1) and
+      [L4] (p.1) other
+      [L4] (p.1) constraints.
+      [L4] (p.1) We address this with a simple but crucial modification:
+      [L4] (p.1) scalarizing
+      [L4] (p.1) standardized
+      [L4] (p.1) advantages
+      [L4] (p.1) rather
+      [L4] (p.1) than
+      [L4] (p.1) rewards.
+      [L4] (p.1) This
+      [L4] (p.1) yields
+      [L4] (p.1) a
+      [L4] (p.1) better-conditioned
+      [L4] (p.1) update by addressing the coupling induced by reward scalarization, resulting in
+      [L4] (p.1) benchmark, and a mathematical reasoning task, Constrained GRPO consistently
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+      [L4] (p.1) Recent
+      [L4] (p.1) progress
+      [L4] (p.1) in
+      [L4] (p.1) reinforcement
+      [L4] (p.1) learning
+      [L4] (p.1) (RL)
+      [L4] (p.1) has
+      [L4] (p.1) shown
+      [L4] (p.1) that
+      [L4] (p.1) large
+      [L4] (p.1) multimodal
+      [L4] (p.1) models
+      [L4] (p.1) can
+      [L4] (p.1) be
+      [L4] (p.1) removes the reliance on a critic for advantage estimation by a within-group normalization of the
+[L1] (p.1) arXiv:2602.05863v4  [cs.LG]  2 Sep 2026
+      [L4] (p.2) ally weighting the importance of different reward terms [
+      [L4] (p.2) –
+      [L4] (p.2) ].
+      [L4] (p.2) In contrast, the constrained policy
+      [L4] (p.2) constrained optimization framework.
+      [L4] (p.2) In this work, we propose
+      [L4] (p.2) Constrained GRPO
+      [L4] (p.2) , a constrained
+      [L4] (p.2) framework,
+      [L4] (p.2) we
+      [L4] (p.2) specify
+      [L4] (p.2) desirable
+      [L4] (p.2) behaviours
+      [L4] (p.2) with
+      [L4] (p.2) indicator
+      [L4] (p.2) cost
+      [L4] (p.2) functions
+      [L4] (p.2) [
+      [L4] (p.2) ]
+      [L4] (p.2) and
+      [L4] (p.2) enforce
+      [L4] (p.2) target
+      [L4] (p.2) estimation through within-group standardization.
+      [L4] (p.2) A simple approach is to first
+      [L4] (p.2) scalarize rewards
+      [L4] (p.2) ,
+      [L4] (p.2) apply the within-group standardization.
+      [L4] (p.2) However, we show that this seemingly innocuous choice
+      [L4] (p.2) only its corresponding objective term, but also the relative contribution of of other components to
+      [L4] (p.2) the policy update.
+      [L4] (p.2) We provide a formal analysis of the gradient estimator sensitivity to changes in
+      [L4] (p.2) the multipliers, as well as an intuitive framing of how multiplier distortion occurs (e.g.
+      [L4] (p.2) Figure 1).
+      [L4] (p.2) imply exact preservation of the original unnormalized Lagrangian objective; rather, it produces a
+      [L4] (p.2) Prior and concurrent work has also found advantage scalarization beneficial in the realm of multi-
+      [L4] (p.2) objective GRPO [
+      [L4] (p.2) ,
+      [L4] (p.2) ]; our contribution places this observation in the context of constrained opti-
+      [L4] (p.2) framework built on GRPO, using indicator cost functions,
+      [L4] (p.2) Lagrangian relaxation and scalarizing
+    [L3] (p.2) 2
+    [L3] (p.2) Related Work
+      [L4] (p.2) the agent toward desired behaviours [
+      [L4] (p.2) ] or to prevent catastrophic errors during exploration [
+      [L4] (p.2) ].
+      [L4] (p.3) tasks [
+      [L4] (p.3) ,
+      [L4] (p.3) ].
+      [L4] (p.3) While this can provide a more intuitive interface for human designers, language is
+      [L4] (p.3) inherently ambiguous and can be exploited by agents (reward hacking).
+      [L4] (p.3) Moreover, these methods
+      [L4] (p.3) reward functions.
+      [L4] (p.3) This is particularly useful in settings with changing environments, but our work
+      [L4] (p.3) learning [
+      [L4] (p.3) –
+      [L4] (p.3) ].
+      [L4] (p.3) For example, Constitutional AI [
+      [L4] (p.3) ] can be viewed as balancing multiple objec-
+      [L4] (p.3) tives—most notably
+      [L4] (p.3) helpfulness
+      [L4] (p.3) and harmlessness—yet
+      [L4] (p.3) in practice
+      [L4] (p.3) these
+      [L4] (p.3) objectives
+      [L4] (p.3) are
+      [L4] (p.3) typically
+      [L4] (p.3) Similarly,
+      [L4] (p.3) Dai et al.
+      [L4] (p.3) formulate alignment as maximizing reward subject to cost constraints in
+      [L4] (p.3) While several recent methods target safety alignment for RL-finetuned (vision-)language models,
+      [L4] (p.3) scores
+      [L4] (p.3) exceed
+      [L4] (p.3) a
+      [L4] (p.3) minimum
+      [L4] (p.3) threshold.
+      [L4] (p.3) In
+      [L4] (p.3) contrast,
+      [L4] (p.3) we
+      [L4] (p.3) study
+      [L4] (p.3) advantage
+      [L4] (p.3) scalarization
+      [L4] (p.3) through
+      [L4] (p.3) the
+      [L4] (p.3) lens
+      [L4] (p.3) of
+      [L4] (p.3) constrained
+      [L4] (p.3) policy
+      [L4] (p.3) optimization.
+      [L4] (p.3) Our
+      [L4] (p.3) goal
+      [L4] (p.3) is
+      [L4] (p.3) to
+      [L4] (p.3) ensure
+      [L4] (p.3) that
+      [L4] (p.3) increases
+      [L4] (p.3) in
+      [L4] (p.3) the
+      [L4] (p.3) Lagrangian
+    [L3] (p.3) 3
+    [L3] (p.3) Background
+      [L4] (p.3) penalty for the
+      [L4] (p.3) -th constraint
+      [L4] (p.3) .
+      [L4] (p.3) Letting
+      [L4] (p.3) and
+      [L4] (p.3) denote the expected returns of the
+      [L4] (p.4) typically
+      [L4] (p.4) implemented
+      [L4] (p.4) with
+      [L4] (p.4) a
+      [L4] (p.4) learning
+      [L4] (p.4) rate
+      [L4] (p.4) and
+      [L4] (p.4) a
+      [L4] (p.4) projection
+      [L4] (p.4) onto
+      [L4] (p.4) using
+      [L4] (p.4) max-clipping.
+      [L4] (p.4) If
+      [L4] (p.4) constraint
+      [L4] (p.4) is
+      [L4] (p.4) violated
+      [L4] (p.4) (
+      [L4] (p.4) ),
+      [L4] (p.4) increases,
+      [L4] (p.4) strengthening
+      [L4] (p.4) its
+      [L4] (p.4) penalty;
+      [L4] (p.4) if
+      [L4] (p.4) it
+      [L4] (p.4) is
+      [L4] (p.4) satisfied
+      [L4] (p.4) Group-Relative Policy Optimization (GRPO).
+      [L4] (p.4) Reinforcement learning has proven effective for
+      [L4] (p.4) regimes [
+      [L4] (p.4) ].
+      [L4] (p.4) Early work used PPO with learned reward models for preference optimization [
+      [L4] (p.4) ].
+      [L4] (p.4) Shao et al.
+      [L4] (p.4) proposed eliminating the value model by estimating advantages within a group of
+      [L4] (p.4) a
+      [L4] (p.4) fixed
+      [L4] (p.4) reference
+      [L4] (p.4) policy
+      [L4] (p.4) ,
+      [L4] (p.4) rather
+      [L4] (p.4) than
+      [L4] (p.4) being
+      [L4] (p.4) folded
+      [L4] (p.4) into
+      [L4] (p.4) the
+      [L4] (p.4) reward.
+      [L4] (p.4) GRPO
+      [L4] (p.4) has
+      [L4] (p.4) shown
+      [L4] (p.4) strong
+    [L3] (p.4) 4
+    [L3] (p.4) Constrained GRPO
+      [L4] (p.4) In large-model finetuning, a common practice is to manually set the weights
+      [L4] (p.4) and keep them
+      [L4] (p.4) a cost function
+      [L4] (p.4) with a target threshold
+      [L4] (p.4) and normalized multiplier
+      [L4] (p.4) (Eq. 2).
+      [L4] (p.4) A key design
+      [L4] (p.4) choice
+      [L4] (p.4) is
+      [L4] (p.4) how
+      [L4] (p.4) to
+      [L4] (p.4) express
+      [L4] (p.4) these
+      [L4] (p.4) thresholds
+      [L4] (p.4) in
+      [L4] (p.4) an
+      [L4] (p.4) intuitive
+      [L4] (p.4) and
+      [L4] (p.4) behavior-agnostic
+      [L4] (p.4) way.
+      [L4] (p.4) Following
+      [L4] (p.4) , for which the threshold
+      [L4] (p.4) directly corresponds to a
+      [L4] (p.4) desired behavior rate.
+      [L4] (p.4) In this work, we focus on trajectory-level constraints and therefore drop the
+      [L4] (p.5) GRPO
+      [L4] (p.5) Advantage
+      [L4] (p.5) Estimation.
+      [L4] (p.5) GRPO
+      [L4] (p.5) estimates
+      [L4] (p.5) advantages
+      [L4] (p.5) by
+      [L4] (p.5) within-group
+      [L4] (p.5) standardization:
+      [L4] (p.5) costs with the Lagrange multipliers before estimating the advantage.
+      [L4] (p.5) The second scalarizes at the
+      [L4] (p.5) advantage level by first computing component-wise advantages for each reward and cost and then
+      [L4] (p.5) dynamics.
+      [L4] (p.5) Note
+      [L4] (p.5) that
+      [L4] (p.5) this
+      [L4] (p.5) sensitivity
+      [L4] (p.5) analysis
+      [L4] (p.5) is
+      [L4] (p.5) taken
+      [L4] (p.5) with
+      [L4] (p.5) respect
+      [L4] (p.5) to
+      [L4] (p.5) the
+      [L4] (p.5) logits
+      [L4] (p.5) (see
+      [L4] (p.5) Eq.
+      [L4] (p.5) 2)
+      [L4] (p.5) rather
+      [L4] (p.5) than
+      [L4] (p.5) treating
+      [L4] (p.5) the
+      [L4] (p.5) multipliers
+      [L4] (p.5) as
+      [L4] (p.5) independent
+      [L4] (p.5) coordinates.
+      [L4] (p.5) This
+      [L4] (p.5) is
+      [L4] (p.5) a
+      [L4] (p.5) consequence
+      [L4] (p.5) of
+      [L4] (p.5) the
+      [L4] (p.5) Scalarized rewards.
+      [L4] (p.5) The most direct approach first forms a scalarized signal
+      [L4] (p.5) as done in
+      [L4] (p.5) ,
+      [L4] (p.5) Theorem
+      [L4] (p.5) 4.1
+      [L4] (p.5) (Multiplier
+      [L4] (p.5) sensitivity
+      [L4] (p.5) under
+      [L4] (p.5) scalarized
+      [L4] (p.5) rewards)
+      [L4] (p.5) .
+      [L4] (p.5) For
+      [L4] (p.5) a
+      [L4] (p.5) fixed
+      [L4] (p.5) sampled
+      [L4] (p.5) group,
+      [L4] (p.5) the
+      [L4] (p.5) Proof in Appendix A.1.
+      [L4] (p.5) Observe that scalarized rewards induces
+      [L4] (p.5) two
+      [L4] (p.5) forms of coupling.
+      [L4] (p.5) First, the
+      [L4] (p.5) softmax normalization means that increasing one logit decreases the effective weight on the other
+      [L4] (p.5) mediated
+      [L4] (p.5) coupling
+      [L4] (p.5) through
+      [L4] (p.5) and
+      [L4] (p.5) .
+      [L4] (p.5) Consequently,
+      [L4] (p.5) changing
+      [L4] (p.5) one
+      [L4] (p.5) logit
+      [L4] (p.5) affects not only the corresponding constraint term, but also the relative contribution of the reward
+      [L4] (p.5) Scalarized
+      [L4] (p.5) advantages.
+      [L4] (p.5) Our
+      [L4] (p.5) method
+      [L4] (p.5) instead
+      [L4] (p.5) normalizes
+      [L4] (p.5) each
+      [L4] (p.5) component
+      [L4] (p.5) separately
+      [L4] (p.5) and
+      [L4] (p.5) then
+      [L4] (p.6) Unlike
+      [L4] (p.6) scalarized
+      [L4] (p.6) rewards,
+      [L4] (p.6) scalarized
+      [L4] (p.6) advantages
+      [L4] (p.6) does
+      [L4] (p.6) not
+      [L4] (p.6) introduce
+      [L4] (p.6) any
+      [L4] (p.6) additional
+      [L4] (p.6) shared-
+      [L4] (p.6) away
+      [L4] (p.6) from
+      [L4] (p.6) the
+      [L4] (p.6) others.
+      [L4] (p.6) However,
+      [L4] (p.6) under
+      [L4] (p.6) scalarized
+      [L4] (p.6) advantages
+      [L4] (p.6) this
+      [L4] (p.6) is
+      [L4] (p.6) the
+      [L4] (p.6) only
+      [L4] (p.6) source
+      [L4] (p.6) of
+      [L4] (p.6) coupling:
+      [L4] (p.6) scalarized rewards the same simplex competition is compounded by the dependence of
+      [L4] (p.6) on the
+      [L4] (p.6) by construction (i.e., Eq.
+      [L4] (p.6) 7).
+      [L4] (p.6) Whereas, Theorem A.3 shows that when scalarizing rewards, the
+    [L3] (p.6) 5
+    [L3] (p.6) Experiments
+      [L4] (p.6) We begin with an illustrative example in a simple gridworld.
+      [L4] (p.6) An agent is randomly initialized in
+      [L4] (p.6) a
+      [L4] (p.6) grid and must navigate to a randomly sampled goal location,
+      [L4] (p.6) receiving a sparse scalar
+      [L4] (p.6) in the four cardinal directions or staying in place to recharge.
+      [L4] (p.6) This simple environment provides a
+      [L4] (p.6) We
+      [L4] (p.6) enforce
+      [L4] (p.6) constraint
+      [L4] (p.6) thresholds
+      [L4] (p.6) and
+      [L4] (p.6) train
+      [L4] (p.6) for
+      [L4] (p.6) k
+      [L4] (p.6) episodes.
+      [L4] (p.6) Figure
+      [L4] (p.6) 2
+      [L4] (p.6) row) adapt to allow the constraint rates to increase toward the threshold,
+      [L4] (p.6) effectively encouraging
+      [L4] (p.6) the
+      [L4] (p.6) policy
+      [L4] (p.6) to
+      [L4] (p.6) use
+      [L4] (p.6) its
+      [L4] (p.6) available
+      [L4] (p.6) cost
+      [L4] (p.6) budget.
+      [L4] (p.6) On
+      [L4] (p.6) the
+      [L4] (p.6) other
+      [L4] (p.6) hand,
+      [L4] (p.6) scalarized
+      [L4] (p.6) rewards
+      [L4] (p.6) rapidly
+      [L4] (p.6) drives
+      [L4] (p.6) both constraint rates close to zero early in training (column 2, top row), and keeps them near-zero
+      [L4] (p.7) Our
+      [L4] (p.7) next
+      [L4] (p.7) experiments
+      [L4] (p.7) are
+      [L4] (p.7) on
+      [L4] (p.7) the
+      [L4] (p.7) NAVSIM-v2
+      [L4] (p.7) driving
+      [L4] (p.7) benchmark
+      [L4] (p.7) [
+      [L4] (p.7) ,
+      [L4] (p.7) ],
+      [L4] (p.7) which
+      [L4] (p.7) contains
+      [L4] (p.7) k
+      [L4] (p.7) NAVSIM-v2 evaluates planning using explicit behavioural safety constraints alongside task-level
+      [L4] (p.7) are evaluated using a two-stage pseudo-simulation protocol:
+      [L4] (p.7) Stage 1 evaluates the policy’s ability
+      [L4] (p.7) (2) drivable area compliance (DAC), (3) driving direction compliance (DDC), and (4) traffic light
+      [L4] (p.7) Model Baselines.
+      [L4] (p.7) We initialize all experiments with the Qwen2.5-VL 3B Instruct model [
+      [L4] (p.7) ],
+      [L4] (p.7) and consider two weighting schemes:
+      [L4] (p.7) (i) equal weights
+      [L4] (p.7) (
+      [L4] (p.7) GRPO, ScRew/ScAdv,
+      [L4] (p.7) Equal
+      [L4] (p.8) (6–7)
+      [L4] (p.8) Constrained GRPO:
+      [L4] (p.8) treat WAT is as the main objective and enforce NC/DAC/DDC as con-
+      [L4] (p.8) straints,
+      [L4] (p.8) setting all constraint satisfaction rate thresholds to
+      [L4] (p.8) .
+      [L4] (p.8) We again compare scalarized
+      [L4] (p.8) (8) We also compare against
+      [L4] (p.8) PPO and Constrained PPO
+      [L4] (p.8) . The former uses EPDMS as the reward
+      [L4] (p.8) while
+      [L4] (p.8) the
+      [L4] (p.8) latter
+      [L4] (p.8) uses
+      [L4] (p.8) the
+      [L4] (p.8) standard
+      [L4] (p.8) Lagrangian
+      [L4] (p.8) variant
+      [L4] (p.8) of
+      [L4] (p.8) PPO
+      [L4] (p.8) [
+      [L4] (p.8) ,
+      [L4] (p.8) ]
+      [L4] (p.8) where
+      [L4] (p.8) the
+      [L4] (p.8) constraints
+      [L4] (p.8) are
+      [L4] (p.8) also include the performance of the rule-based PDM planner [
+      [L4] (p.8) ], whose trajectories are used to
+      [L4] (p.8) Behavior
+      [L4] (p.8) specification
+      [L4] (p.8) through
+      [L4] (p.8) constrained
+      [L4] (p.8) RL
+      [L4] (p.8) outperforms
+      [L4] (p.8) alternative
+      [L4] (p.8) strategies.
+      [L4] (p.8) Our
+      [L4] (p.8) results
+      [L4] (p.8) indicate that constrained RL provides a more effective mechanism for behavior specification than
+      [L4] (p.8) alternative
+      [L4] (p.8) reward-design
+      [L4] (p.8) approaches.
+      [L4] (p.8) In
+      [L4] (p.8) particular,
+      [L4] (p.8) the
+      [L4] (p.8) two
+      [L4] (p.8) constrained
+      [L4] (p.8) GRPO
+      [L4] (p.8) variants
+      [L4] (p.8) (bottom
+      [L4] (p.8) advantages
+      [L4] (p.8) attaining
+      [L4] (p.8) the
+      [L4] (p.8) highest
+      [L4] (p.8) S1
+      [L4] (p.8) EPDMS
+      [L4] (p.8) and
+      [L4] (p.8) second
+      [L4] (p.8) highest
+      [L4] (p.8) S2
+      [L4] (p.8) EPDMS.
+      [L4] (p.8) On
+      [L4] (p.8) in-distribution
+      [L4] (p.8) whereas the unconstrained baselines do not consistently yield gains.
+      [L4] (p.8) On the more challenging out-
+      [L4] (p.8) of-distribution
+      [L4] (p.8) Stage
+      [L4] (p.8) 2
+      [L4] (p.8) split,
+      [L4] (p.8) all
+      [L4] (p.8) methods
+      [L4] (p.8) exhibit
+      [L4] (p.8) degraded
+      [L4] (p.8) performance
+      [L4] (p.8) relative
+      [L4] (p.8) to
+      [L4] (p.8) S1
+      [L4] (p.8) scores,
+      [L4] (p.8) as
+      [L4] (p.8) expected.
+      [L4] (p.8) Nevertheless, our approach remains the most competitive among GRPO baselines and
+      [L4] (p.8) weights,
+      [L4] (p.8) informed
+      [L4] (p.8) weights,
+      [L4] (p.8) and
+      [L4] (p.8) constrained),
+      [L4] (p.8) scalarizing
+      [L4] (p.8) advantages
+      [L4] (p.8) yields
+      [L4] (p.8) consistently
+      [L4] (p.8) higher
+      [L4] (p.9) steps, the NC multiplier increases sharply as DAC becomes satisfactory but collision compliance
+      [L4] (p.9) EPDMS
+      [L4] (p.9) as
+      [L4] (p.9) a
+      [L4] (p.9) reward
+      [L4] (p.9) (i.e.,
+      [L4] (p.9) GRPO
+      [L4] (p.9) with
+      [L4] (p.9) EPDMS)
+      [L4] (p.9) underperforms
+      [L4] (p.9) the
+      [L4] (p.9) soft-constraint
+      [L4] (p.9) formulations,
+      [L4] (p.9) Model Baselines.
+      [L4] (p.9) We initialize all experiments from Qwen2.5-Instruct models at three scales:
+      [L4] (p.9) B,
+      [L4] (p.9) B,
+      [L4] (p.9) and
+      [L4] (p.9) B
+      [L4] (p.9) parameters.
+      [L4] (p.9) For
+      [L4] (p.9) the
+      [L4] (p.9) baselines,
+      [L4] (p.9) we
+      [L4] (p.9) compare
+      [L4] (p.9) to
+      [L4] (p.9) GDPO
+      [L4] (p.9) and
+      [L4] (p.9) PPO-Lagrangian
+      [L4] (p.9) .
+      [L4] (p.9) GDPO [
+      [L4] (p.9) ] is a prior advantage-scalarization baseline designed for multi-objective GRPO training.
+      [L4] (p.9) integer validity as constraints, and optimize the length objective as the primary reward.
+      [L4] (p.9) Our goal
+      [L4] (p.9) is
+      [L4] (p.9) not
+      [L4] (p.9) to
+      [L4] (p.9) claim
+      [L4] (p.9) that
+      [L4] (p.9) correctness
+      [L4] (p.9) is
+      [L4] (p.9) only
+      [L4] (p.9) required
+      [L4] (p.9) up
+      [L4] (p.9) to
+      [L4] (p.9) a
+      [L4] (p.9) threshold;
+      [L4] (p.9) rather,
+      [L4] (p.9) the
+      [L4] (p.9) thresholds
+      [L4] (p.9) serve
+      [L4] (p.9) as
+      [L4] (p.9) Results.
+      [L4] (p.9) Tables
+      [L4] (p.9) 2
+      [L4] (p.9) reports
+      [L4] (p.9) our
+      [L4] (p.9) GSM8K
+      [L4] (p.9) results.
+      [L4] (p.9) Across
+      [L4] (p.9) all
+      [L4] (p.9) three
+      [L4] (p.9) model
+      [L4] (p.9) scales,
+      [L4] (p.9) constrained
+      [L4] (p.9) GRPO achieves higher correctness than GDPO while maintaining strong performance on format
+      [L4] (p.9) adherence and integer validity.
+      [L4] (p.9) The gains are most pronounced at larger scale:
+      [L4] (p.9) at
+      [L4] (p.9) B, constrained
+      [L4] (p.9) GRPO
+      [L4] (p.9) improves
+      [L4] (p.9) correctness
+      [L4] (p.9) from
+      [L4] (p.9) to
+      [L4] (p.9) ,
+      [L4] (p.9) and
+      [L4] (p.9) at
+      [L4] (p.9) B
+      [L4] (p.9) from
+      [L4] (p.9) to
+      [L4] (p.9) .
+      [L4] (p.9) These
+      [L4] (p.9) results
+      [L4] (p.9) easier auxiliary objectives such as reducing output length.
+      [L4] (p.9) We observe that GDPO often produces
+      [L4] (p.9) on average but at the expense of correctness.
+      [L4] (p.9) Compared to PPO-Lagrangian,
+      [L4] (p.9) constrained GRPO
+      [L4] (p.9) achieves comparable or better performance on all four metrics at the
+      [L4] (p.9) B and
+      [L4] (p.9) B scales.
+      [L4] (p.9) At
+      [L4] (p.9) B,
+    [L3] (p.10) 6
+    [L3] (p.10) Conclusion
+      [L4] (p.10) We introduced Constrained GRPO, a Lagrangian extension of GRPO that enforces user-specified
+      [L4] (p.10) constraints via indicator costs and learned multipliers.
+      [L4] (p.10) We showed that scalarizing rewards before
+      [L4] (p.10) normalization introduces shared-denominator coupling, so that changing one multiplier can affect
+      [L4] (p.10) not only its corresponding constraint term, but also the relative contribution of the other terms to
+      [L4] (p.10) the
+      [L4] (p.10) policy
+      [L4] (p.10) update.
+      [L4] (p.10) By
+      [L4] (p.10) instead
+      [L4] (p.10) scalarizing
+      [L4] (p.10) standardized
+      [L4] (p.10) advantages,
+      [L4] (p.10) Constrained
+      [L4] (p.10) GRPO
+      [L4] (p.10) yields
+      [L4] (p.10) a
+    [L3] (p.10) 7
+    [L3] (p.10) Acknowledgements
+    [L3] (p.10) References
+      [L4] (p.10) Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al.
+      [L4] (p.10) Training verifiers to
+      [L4] (p.10) Jason
+      [L4] (p.10) Wei,
+      [L4] (p.10) Xuezhi
+      [L4] (p.10) Wang,
+      [L4] (p.10) Dale
+      [L4] (p.10) Schuurmans,
+      [L4] (p.10) Maarten
+      [L4] (p.10) Bosma,
+      [L4] (p.10) Ed
+      [L4] (p.10) H.
+      [L4] (p.10) Chi,
+      [L4] (p.10) F.
+      [L4] (p.10) Xia,
+      [L4] (p.10) Quoc
+      [L4] (p.10) Le,
+      [L4] (p.10) and Denny Zhou.
+      [L4] (p.10) Chain of thought prompting elicits reasoning in large language mod-
+      [L4] (p.10) Aitor
+      [L4] (p.10) Lewkowycz,
+      [L4] (p.10) Anders
+      [L4] (p.10) Andreassen,
+      [L4] (p.10) David
+      [L4] (p.10) Dohan,
+      [L4] (p.10) Ethan
+      [L4] (p.10) Dyer,
+      [L4] (p.10) Henryk
+      [L4] (p.10) Michalewski,
+      [L4] (p.10) Vinay
+      [L4] (p.10) Venkatesh
+      [L4] (p.10) Ramasesh,
+      [L4] (p.10) Ambrose
+      [L4] (p.10) Slone,
+      [L4] (p.10) Cem
+      [L4] (p.10) Anil,
+      [L4] (p.10) Imanol
+      [L4] (p.10) Schlag,
+      [L4] (p.10) Theo
+      [L4] (p.10) Gutman-
+      [L4] (p.10) Solo,
+      [L4] (p.10) Yuhuai
+      [L4] (p.10) Wu,
+      [L4] (p.10) Behnam
+      [L4] (p.10) Neyshabur,
+      [L4] (p.10) Guy
+      [L4] (p.10) Gur-Ari,
+      [L4] (p.10) and
+      [L4] (p.10) Vedant
+      [L4] (p.10) Misra.
+      [L4] (p.10) Solving
+      [L4] (p.10) quan-
+      [L4] (p.10) titative
+      [L4] (p.10) reasoning
+      [L4] (p.10) problems
+      [L4] (p.10) with
+      [L4] (p.10) language
+      [L4] (p.10) models.
+      [L4] (p.10) ArXiv
+      [L4] (p.10) ,
+      [L4] (p.10) abs/2206.14858,
+      [L4] (p.10) 2022.
+      [L4] (p.10) URL
+      [L4] (p.10) Yang.
+      [L4] (p.10) Safevla:
+      [L4] (p.10) Towards
+      [L4] (p.10) safety
+      [L4] (p.10) alignment
+      [L4] (p.10) of
+      [L4] (p.10) vision-language-action
+      [L4] (p.10) model
+      [L4] (p.10) via
+      [L4] (p.10) constrained
+      [L4] (p.10) language
+      [L4] (p.10) models.
+      [L4] (p.10) ArXiv
+      [L4] (p.10) ,
+      [L4] (p.10) abs/2402.03300,
+      [L4] (p.10) 2024.
+      [L4] (p.10) URL
+      [L4] (p.10) Xuying
+      [L4] (p.10) Li,
+      [L4] (p.10) Zhuo
+      [L4] (p.10) Li,
+      [L4] (p.10) Yuji
+      [L4] (p.10) Kosuga,
+      [L4] (p.10) and
+      [L4] (p.10) Victor
+      [L4] (p.10) Bian.
+      [L4] (p.10) Optimizing
+      [L4] (p.10) safe
+      [L4] (p.10) and
+      [L4] (p.10) aligned
+      [L4] (p.10) language
+      [L4] (p.10) generation:
+      [L4] (p.10) A
+      [L4] (p.10) multi-objective
+      [L4] (p.10) grpo
+      [L4] (p.10) approach.
+      [L4] (p.10) ArXiv
+      [L4] (p.10) ,
+      [L4] (p.10) abs/2503.21819,
+      [L4] (p.10) 2025.
+      [L4] (p.10) URL
+      [L4] (p.10) Uchibe.
+      [L4] (p.10) Mo-grpo:
+      [L4] (p.10) Mitigating reward hacking of group relative policy optimization on multi-
+      [L4] (p.10) Shih-Yang Liu,
+      [L4] (p.10) Xin Dong,
+      [L4] (p.10) Ximing Lu,
+      [L4] (p.10) Shizhe Diao,
+      [L4] (p.10) Peter Belcak,
+      [L4] (p.10) Mingjie Liu,
+      [L4] (p.10) Min-Hung
+      [L4] (p.11) Julien
+      [L4] (p.11) Roy,
+      [L4] (p.11) Roger
+      [L4] (p.11) Girgis,
+      [L4] (p.11) Joshua
+      [L4] (p.11) Romoff,
+      [L4] (p.11) Pierre-Luc
+      [L4] (p.11) Bacon,
+      [L4] (p.11) and
+      [L4] (p.11) Christopher
+      [L4] (p.11) Joseph
+      [L4] (p.11) Pal.
+      [L4] (p.11) Paul
+      [L4] (p.11) Christiano,
+      [L4] (p.11) Jan
+      [L4] (p.11) Leike,
+      [L4] (p.11) Tom
+      [L4] (p.11) B
+      [L4] (p.11) Brown,
+      [L4] (p.11) Miljan
+      [L4] (p.11) Martic,
+      [L4] (p.11) Shane
+      [L4] (p.11) Legg,
+      [L4] (p.11) and
+      [L4] (p.11) Dario
+      [L4] (p.11) Amodei.
+      [L4] (p.11) Prasoon Goyal, Scott Niekum, and Raymond J Mooney.
+      [L4] (p.11) Using natural language for reward
+      [L4] (p.11) Sören Mindermann, Rohin Shah, Adam Gleave, and Dylan Hadfield-Menell.
+      [L4] (p.11) Active inverse
+      [L4] (p.11) Ted
+      [L4] (p.11) Moskovitz,
+      [L4] (p.11) Aaditya
+      [L4] (p.11) K.
+      [L4] (p.11) Singh,
+      [L4] (p.11) DJ
+      [L4] (p.11) Strouse,
+      [L4] (p.11) Tuomas
+      [L4] (p.11) Sandholm,
+      [L4] (p.11) Ruslan
+      [L4] (p.11) Salakhutdinov,
+      [L4] (p.11) Josef
+      [L4] (p.11) Dai,
+      [L4] (p.11) Xuehai
+      [L4] (p.11) Pan,
+      [L4] (p.11) Ruiyang
+      [L4] (p.11) Sun,
+      [L4] (p.11) Jiaming
+      [L4] (p.11) Ji,
+      [L4] (p.11) Xinbo
+      [L4] (p.11) Xu,
+      [L4] (p.11) Mickel
+      [L4] (p.11) Liu,
+      [L4] (p.11) Yizhou
+      [L4] (p.11) Wang,
+      [L4] (p.11) and
+      [L4] (p.11) Yaodong
+      [L4] (p.11) Yang.
+      [L4] (p.11) Safe
+      [L4] (p.11) rlhf:
+      [L4] (p.11) Safe
+      [L4] (p.11) reinforcement
+      [L4] (p.11) learning
+      [L4] (p.11) from
+      [L4] (p.11) human
+      [L4] (p.11) feedback.
+      [L4] (p.11) ArXiv
+      [L4] (p.11) ,
+      [L4] (p.11) abs/2310.12773,
+      [L4] (p.11) 2023.
+      [L4] (p.11) URL
+      [L4] (p.11) Yang.
+      [L4] (p.11) Safe
+      [L4] (p.11) rlhf-v:
+      [L4] (p.11) Safe
+      [L4] (p.11) reinforcement
+      [L4] (p.11) learning
+      [L4] (p.11) from
+      [L4] (p.11) human
+      [L4] (p.11) feedback
+      [L4] (p.11) in
+      [L4] (p.11) multimodal
+      [L4] (p.11) large
+      [L4] (p.11) language
+      [L4] (p.11) models.
+      [L4] (p.11) ArXiv
+      [L4] (p.11) ,
+      [L4] (p.11) abs/2503.17682,
+      [L4] (p.11) 2025.
+      [L4] (p.11) URL
+      [L4] (p.11) Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, John Kernion, Andy Jones,
+      [L4] (p.11) Anna
+      [L4] (p.11) Chen,
+      [L4] (p.11) Anna
+      [L4] (p.11) Goldie,
+      [L4] (p.11) Azalia
+      [L4] (p.11) Mirhoseini,
+      [L4] (p.11) Cameron
+      [L4] (p.11) McKinnon,
+      [L4] (p.11) Carol
+      [L4] (p.11) Chen,
+      [L4] (p.11) Catherine
+      [L4] (p.11) Olsson,
+      [L4] (p.11) Chris
+      [L4] (p.11) Olah,
+      [L4] (p.11) Danny
+      [L4] (p.11) Hernandez,
+      [L4] (p.11) Dawn
+      [L4] (p.11) Drain,
+      [L4] (p.11) Deep
+      [L4] (p.11) Ganguli,
+      [L4] (p.11) Dustin
+      [L4] (p.11) Li,
+      [L4] (p.11) Eli
+      [L4] (p.11) Tran-
+      [L4] (p.11) Sheer
+      [L4] (p.11) El
+      [L4] (p.11) Showk,
+      [L4] (p.11) Stanislav
+      [L4] (p.11) Fort,
+      [L4] (p.11) Tamera
+      [L4] (p.11) Lanham,
+      [L4] (p.11) Timothy
+      [L4] (p.11) Telleen-Lawton,
+      [L4] (p.11) Tom
+      [L4] (p.11) Conerly,
+      [L4] (p.11) T.
+      [L4] (p.11) J.
+      [L4] (p.11) Henighan,
+      [L4] (p.11) Tristan
+      [L4] (p.11) Hume,
+      [L4] (p.11) Sam
+      [L4] (p.11) Bowman,
+      [L4] (p.11) Zac
+      [L4] (p.11) Hatfield-Dodds,
+      [L4] (p.11) Benjamin
+      [L4] (p.11) Mann,
+      [L4] (p.11) Dario
+      [L4] (p.11) ai:
+      [L4] (p.11) Harmlessness
+      [L4] (p.11) from
+      [L4] (p.11) ai
+      [L4] (p.11) feedback.
+      [L4] (p.11) ArXiv
+      [L4] (p.11) ,
+      [L4] (p.11) abs/2212.08073,
+      [L4] (p.11) 2022.
+      [L4] (p.11) URL
+      [L4] (p.12) Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin,
+      [L4] (p.12) Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton,
+      [L4] (p.12) Jan
+      [L4] (p.12) Leike,
+      [L4] (p.12) and
+      [L4] (p.12) Ryan
+      [L4] (p.12) Lowe.
+      [L4] (p.12) Training
+      [L4] (p.12) language
+      [L4] (p.12) models
+      [L4] (p.12) to
+      [L4] (p.12) follow
+      [L4] (p.12) instructions
+      [L4] (p.12) with
+      [L4] (p.12) human
+      [L4] (p.12) John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+      [L4] (p.12) Proximal
+      [L4] (p.12) Methods
+      [L4] (p.12) in
+      [L4] (p.12) Natural
+      [L4] (p.12) Language
+      [L4] (p.12) Processing
+      [L4] (p.12) ,
+      [L4] (p.12) 2024.
+      [L4] (p.12) URL
+      [L4] (p.12) Alex Ray, Joshua Achiam, and Dario Amodei.
+      [L4] (p.12) Benchmarking safe exploration in deep rein-
+      [L4] (p.12) BT Polyak.
+      [L4] (p.12) Iterative methods using lagrange multipliers for solving extremal problems with
+      [L4] (p.12) Tianyi Lin, Chi Jin, and Michael Jordan.
+      [L4] (p.12) On gradient descent ascent for nonconvex-concave
+      [L4] (p.12) minimax
+      [L4] (p.12) problems.
+      [L4] (p.12) In
+      [L4] (p.12) International
+      [L4] (p.12) Conference
+      [L4] (p.12) on
+      [L4] (p.12) Machine
+      [L4] (p.12) Learning
+      [L4] (p.12) ,
+      [L4] (p.12) pages
+      [L4] (p.12) 6083–6093.
+      [L4] (p.12) Tuomas
+      [L4] (p.12) Haarnoja,
+      [L4] (p.12) Aurick
+      [L4] (p.12) Zhou,
+      [L4] (p.12) Kristian
+      [L4] (p.12) Hartikainen,
+      [L4] (p.12) George
+      [L4] (p.12) Tucker,
+      [L4] (p.12) Sehoon
+      [L4] (p.12) Ha,
+      [L4] (p.12) Jie
+      [L4] (p.12) Tan,
+      [L4] (p.12) Tianzhe
+      [L4] (p.12) Chu,
+      [L4] (p.12) Yuexiang
+      [L4] (p.12) Zhai,
+      [L4] (p.12) Jihan
+      [L4] (p.12) Yang,
+      [L4] (p.12) Shengbang
+      [L4] (p.12) Tong,
+      [L4] (p.12) Saining
+      [L4] (p.12) Xie,
+      [L4] (p.12) Dale
+      [L4] (p.12) Schuur-
+      [L4] (p.12) mans,
+      [L4] (p.12) Quoc
+      [L4] (p.12) V.
+      [L4] (p.12) Le,
+      [L4] (p.12) Sergey
+      [L4] (p.12) Levine,
+      [L4] (p.12) and
+      [L4] (p.12) Yi
+      [L4] (p.12) Ma.
+      [L4] (p.12) Sft
+      [L4] (p.12) memorizes,
+      [L4] (p.12) rl
+      [L4] (p.12) generalizes:
+      [L4] (p.12) A
+      [L4] (p.12) com-
+      [L4] (p.12) parative
+      [L4] (p.12) study
+      [L4] (p.12) of
+      [L4] (p.12) foundation
+      [L4] (p.12) model
+      [L4] (p.12) post-training.
+      [L4] (p.12) ArXiv
+      [L4] (p.12) ,
+      [L4] (p.12) abs/2501.17161,
+      [L4] (p.12) 2025.
+      [L4] (p.12) URL
+      [L4] (p.12) Drive-r1:
+      [L4] (p.12) Bridging
+      [L4] (p.12) reasoning
+      [L4] (p.12) and
+      [L4] (p.12) planning
+      [L4] (p.12) in
+      [L4] (p.12) vlms
+      [L4] (p.12) for
+      [L4] (p.12) autonomous
+      [L4] (p.12) driving
+      [L4] (p.12) with
+      [L4] (p.12) reinforce-
+      [L4] (p.12) Keyu Chen,
+      [L4] (p.12) Wenchao Sun,
+      [L4] (p.12) Hao Cheng,
+      [L4] (p.12) and Sifa Zheng.
+      [L4] (p.12) Rift:
+      [L4] (p.12) Group-relative rl fine-tuning
+      [L4] (p.12) Muleilan
+      [L4] (p.12) Pei,
+      [L4] (p.12) Shaoshuai
+      [L4] (p.12) Shi,
+      [L4] (p.12) and
+      [L4] (p.12) Shaojie
+      [L4] (p.12) Shen.
+      [L4] (p.12) Advancing
+      [L4] (p.12) multi-agent
+      [L4] (p.12) traffic
+      [L4] (p.12) simulation
+      [L4] (p.12) via
+      [L4] (p.12) r1-style
+      [L4] (p.12) reinforcement
+      [L4] (p.12) fine-tuning.
+      [L4] (p.12) ArXiv
+      [L4] (p.12) ,
+      [L4] (p.12) abs/2509.23993,
+      [L4] (p.12) 2025.
+      [L4] (p.12) URL
+      [L4] (p.13) Wei Cao, Marcel Hallgarten, Tianyu Li, Daniel Dauner, Xunjiang Gu, Caojun Wang, Yakov
+      [L4] (p.13) Geiger, and Kashyap Chitta.
+      [L4] (p.13) Pseudo-simulation for autonomous driving.
+      [L4] (p.13) In
+      [L4] (p.13) Conference on
+      [L4] (p.13) Daniel
+      [L4] (p.13) Dauner,
+      [L4] (p.13) Marcel
+      [L4] (p.13) Hallgarten,
+      [L4] (p.13) Tianyu
+      [L4] (p.13) Li,
+      [L4] (p.13) Xinshuo
+      [L4] (p.13) Weng,
+      [L4] (p.13) Zhiyu
+      [L4] (p.13) Huang,
+      [L4] (p.13) Zetong
+      [L4] (p.13) Yang,
+      [L4] (p.13) Songyou Peng, Kyle Genova, Chiyu "Max" Jiang, Andrea Tagliasacchi, Marc Pollefeys, and
+      [L4] (p.13) Holger Caesar, Juraj Kabzan, Kok Seang Tan, Whye Kit Fong, Eric Wolff, Alex Lang, Luke
+      [L4] (p.13) Fletcher,
+      [L4] (p.13) Oscar
+      [L4] (p.13) Beijbom,
+      [L4] (p.13) and
+      [L4] (p.13) Sammy
+      [L4] (p.13) Omari.
+      [L4] (p.13) Nuplan:
+      [L4] (p.13) A
+      [L4] (p.13) closed-loop
+      [L4] (p.13) ml-based
+      [L4] (p.13) planning
+      [L4] (p.13) Shuai Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Sibo Song, Kai Dang, Peng
+      [L4] (p.13) Wang,
+      [L4] (p.13) Shijie
+      [L4] (p.13) Wang,
+      [L4] (p.13) Jun
+      [L4] (p.13) Tang,
+      [L4] (p.13) Humen
+      [L4] (p.13) Zhong,
+      [L4] (p.13) Yuanzhi
+      [L4] (p.13) Zhu,
+      [L4] (p.13) Mingkun
+      [L4] (p.13) Yang,
+      [L4] (p.13) Zhaohai
+      [L4] (p.13) Li,
+      [L4] (p.13) Xie,
+      [L4] (p.13) Zesen
+      [L4] (p.13) Cheng,
+      [L4] (p.13) Hang
+      [L4] (p.13) Zhang,
+      [L4] (p.13) Zhibo
+      [L4] (p.13) Yang,
+      [L4] (p.13) Haiyang
+      [L4] (p.13) Xu,
+      [L4] (p.13) and
+      [L4] (p.13) Junyang
+      [L4] (p.13) Lin.
+      [L4] (p.13) Qwen2.5-vl
+      [L4] (p.13) Daniel
+      [L4] (p.13) Dauner,
+      [L4] (p.13) Marcel
+      [L4] (p.13) Hallgarten,
+      [L4] (p.13) Andreas
+      [L4] (p.13) Geiger,
+      [L4] (p.13) and
+      [L4] (p.13) Kashyap
+      [L4] (p.13) Chitta.
+      [L4] (p.13) Parting
+      [L4] (p.13) with
+      [L4] (p.13) mis-
+      [L4] (p.13) Martin
+      [L4] (p.13) Treiber,
+      [L4] (p.13) Ansgar
+      [L4] (p.13) Hennecke,
+      [L4] (p.13) and
+      [L4] (p.13) Dirk
+      [L4] (p.13) Helbing.
+      [L4] (p.13) Congested
+      [L4] (p.13) traffic
+      [L4] (p.13) states
+      [L4] (p.13) in
+      [L4] (p.13) empirical
+      [L4] (p.13) Hidehisa Arai, Keita Miwa, Kento Sasaki, Yu Yamaguchi, Kohei Watanabe, Shunsuke Aoki,
+      [L4] (p.13) and Issei Yamamoto.
+      [L4] (p.13) Covla:
+      [L4] (p.13) Comprehensive vision-language-action dataset for autonomous
+    [L3] (p.14) A
+    [L3] (p.14) Additional theorems and Proofs
+      [L4] (p.14) Since
+      [L4] (p.14) the
+      [L4] (p.14) sampled
+      [L4] (p.14) group
+      [L4] (p.14) is
+      [L4] (p.14) fixed,
+      [L4] (p.14) the
+      [L4] (p.14) quantities
+      [L4] (p.14) and
+      [L4] (p.14) do
+      [L4] (p.14) not
+      [L4] (p.14) depend
+      [L4] (p.14) on
+      [L4] (p.14) .
+      [L4] (p.14) The
+      [L4] (p.17) and define the scalarized reward
+      [L4] (p.17) .
+      [L4] (p.17) Denote the within-group mean and covariance of
+      [L4] (p.17) by
+      [L4] (p.17) and
+      [L4] (p.17) ,
+      [L4] (p.17) and let
+      [L4] (p.17) .
+      [L4] (p.17) Further define
+      [L4] (p.17) where
+      [L4] (p.17) and
+      [L4] (p.17) denote
+      [L4] (p.17) the
+      [L4] (p.17) within-group
+      [L4] (p.17) mean
+      [L4] (p.17) and
+      [L4] (p.17) standard
+      [L4] (p.17) deviation
+      [L4] (p.17) of
+      [L4] (p.17) the
+      [L4] (p.17) corresponding
+      [L4] (p.17) where we index
+      [L4] (p.17) as the main reward component (
+      [L4] (p.17) ,
+      [L4] (p.17) ) and
+      [L4] (p.17) corresponds
+      [L4] (p.17) to cost
+      [L4] (p.17) .
+      [L4] (p.17) Consequently, the effective contribution of each standardized component
+      [L4] (p.17) is scaled
+    [L3] (p.18) B
+    [L3] (p.18) Preliminaries
+      [L4] (p.18) Markov
+      [L4] (p.18) Decision
+      [L4] (p.18) Processes
+      [L4] (p.18) (MDPs).
+      [L4] (p.18) A
+      [L4] (p.18) Markov
+      [L4] (p.18) decision
+      [L4] (p.18) process
+      [L4] (p.18) (MDP)
+      [L4] (p.18) is
+      [L4] (p.18) defined
+      [L4] (p.18) by
+      [L4] (p.18) [
+      [L4] (p.18) ],
+      [L4] (p.18) where
+      [L4] (p.18) is
+      [L4] (p.18) the
+      [L4] (p.18) state
+      [L4] (p.18) space,
+      [L4] (p.18) the
+      [L4] (p.18) action
+      [L4] (p.18) space,
+      [L4] (p.18) the
+      [L4] (p.18) transition
+      [L4] (p.18) ker-
+      [L4] (p.18) where
+      [L4] (p.18) the
+      [L4] (p.18) objective
+      [L4] (p.18) is
+      [L4] (p.18) to
+      [L4] (p.18) learn
+      [L4] (p.18) a
+      [L4] (p.18) policy
+      [L4] (p.18) that
+      [L4] (p.18) maximizes
+      [L4] (p.18) the
+      [L4] (p.18) expected
+      [L4] (p.18) discounted
+      [L4] (p.18) return,
+      [L4] (p.18) i.e.
+      [L4] (p.18) MDP objective with
+      [L4] (p.18) expected cost constraints [
+      [L4] (p.18) ].
+      [L4] (p.18) Given cost functions
+      [L4] (p.18) and
+    [L3] (p.18) C
+    [L3] (p.18) Gridworld Environment
+      [L4] (p.18) Our
+      [L4] (p.18) gridworld
+      [L4] (p.18) is
+      [L4] (p.18) a
+      [L4] (p.18) grid
+      [L4] (p.18) in
+      [L4] (p.18) which
+      [L4] (p.18) the
+      [L4] (p.18) agent
+      [L4] (p.18) is
+      [L4] (p.18) initialized
+      [L4] (p.18) uniformly
+      [L4] (p.18) at
+      [L4] (p.18) random
+      [L4] (p.18) and
+      [L4] (p.18) must
+      [L4] (p.18) .
+      [L4] (p.18) At the start of each episode,
+      [L4] (p.18) of the tiles are designated as lava; stepping onto a lava tile
+      [L4] (p.18) incurs a penalty of
+      [L4] (p.18) (i.e., a cost).
+      [L4] (p.18) The agent is also equipped with a battery that drains by
+      [L4] (p.18) at
+      [L4] (p.18) of five discrete actions:
+      [L4] (p.18) moving in the four cardinal directions, or staying in place to recharge at a
+      [L4] (p.18) We
+      [L4] (p.18) train
+      [L4] (p.18) a
+      [L4] (p.18) categorical
+      [L4] (p.18) policy
+      [L4] (p.18) parameterized
+      [L4] (p.18) by
+      [L4] (p.18) a
+      [L4] (p.18) two-layer
+      [L4] (p.18) MLP
+      [L4] (p.18) (hidden
+      [L4] (p.18) size
+      [L4] (p.18) with
+      [L4] (p.18) ReLU
+      [L4] (p.18) activations)
+      [L4] (p.18) that
+      [L4] (p.18) outputs
+      [L4] (p.18) action
+      [L4] (p.18) logits.
+      [L4] (p.18) Policies
+      [L4] (p.18) are
+      [L4] (p.18) optimized
+      [L4] (p.18) with
+      [L4] (p.18) the
+      [L4] (p.18) GRPO
+      [L4] (p.18) clipped
+      [L4] (p.18) objective
+      [L4] (p.18) (
+      [L4] (p.18) )
+      [L4] (p.18) using
+      [L4] (p.18) epochs
+      [L4] (p.18) per
+      [L4] (p.18) update,
+      [L4] (p.18) minibatches
+      [L4] (p.18) of
+      [L4] (p.18) size
+      [L4] (p.18) ,
+      [L4] (p.18) and
+      [L4] (p.18) an
+      [L4] (p.18) entropy
+      [L4] (p.18) bonus
+      [L4] (p.18) of
+      [L4] (p.18) .
+      [L4] (p.18) Training runs for
+      [L4] (p.18) update steps; each update collects
+      [L4] (p.18) episodes via grouped rollouts (group
+      [L4] (p.19) Figure
+      [L4] (p.19) 3:
+      [L4] (p.19) Final
+      [L4] (p.19) performance
+      [L4] (p.19) of
+      [L4] (p.19) GRPO
+      [L4] (p.19) policies
+      [L4] (p.19) evaluated
+      [L4] (p.19) over
+      [L4] (p.19) 1,000
+      [L4] (p.19) episodes
+      [L4] (p.19) in
+      [L4] (p.19) the
+      [L4] (p.19) gridworld
+      [L4] (p.19) with fixed penalty weights, comparing
+      [L4] (p.19) scalarized rewards
+      [L4] (p.19) (blue) and
+      [L4] (p.19) scalarized advantages
+      [L4] (p.19) (red).
+      [L4] (p.19) size
+      [L4] (p.19) across
+      [L4] (p.19) groups).
+      [L4] (p.19) We use Adam for the policy optimizer (learning rate
+      [L4] (p.19) by default)
+      [L4] (p.19) every step and initialized to
+      [L4] (p.19) logits.
+      [L4] (p.19) All experiments were run on 16 CPU cores, and each run
+      [L4] (p.19) to
+      [L4] (p.19) illustrate
+      [L4] (p.19) the
+      [L4] (p.19) benefit
+      [L4] (p.19) of
+      [L4] (p.19) scalarizing
+      [L4] (p.19) advantages
+      [L4] (p.19) in
+      [L4] (p.19) the
+      [L4] (p.19) unconstrained
+      [L4] (p.19) setting
+      [L4] (p.19) [
+      [L4] (p.19) ].
+      [L4] (p.19) For
+      [L4] (p.19) simplicity,
+      [L4] (p.19) we
+      [L4] (p.19) restrict
+      [L4] (p.19) the
+      [L4] (p.19) battery-penalty
+      [L4] (p.19) weight
+      [L4] (p.19) to
+      [L4] (p.19) and
+      [L4] (p.19) sweep
+      [L4] (p.19) the
+      [L4] (p.19) lava-penalty
+      [L4] (p.19) weight
+      [L4] (p.19) as
+      [L4] (p.19) we
+      [L4] (p.19) sweep
+      [L4] (p.19) for
+      [L4] (p.19) the
+      [L4] (p.19) two
+      [L4] (p.19) fixed
+      [L4] (p.19) settings
+      [L4] (p.19) of
+      [L4] (p.19) .
+      [L4] (p.19) Overall,
+      [L4] (p.19) we
+      [L4] (p.19) observe
+      [L4] (p.19) consistently
+      [L4] (p.19) higher
+      [L4] (p.19) goal-reaching rates with
+      [L4] (p.19) scalarized advantages
+      [L4] (p.19) , along with more stable performance across seeds
+      [L4] (p.19) (through smaller error bars).
+      [L4] (p.19) Moreover,
+      [L4] (p.19) scalarized rewards
+      [L4] (p.19) tends to unilaterally optimize the lava
+      [L4] (p.19) argue better reflects the intended meaning of the weights.
+      [L4] (p.19) When multiple penalty terms are active
+      [L4] (p.19) whereas
+      [L4] (p.19) scalarized rewards
+      [L4] (p.19) behaves identically to the
+      [L4] (p.19) setting, effectively optimizing
+    [L3] (p.19) D
+    [L3] (p.19) NAVSIM v2
+      [L4] (p.19) simply replayed recorded agent trajectories, NAVSIM-v2 introduces reactive behavior from other
+      [L4] (p.19) vehicles through the Intelligent Driver Model (IDM) [
+      [L4] (p.19) ], improving simulation realism.
+      [L4] (p.19) Stage 2
+      [L4] (p.19) evaluates robustness under compounding error by synthesizing new driving rollouts using Multi-
+      [L4] (p.19) Traversal Gaussian Splatting [
+      [L4] (p.19) ].
+      [L4] (p.19) These scenarios are initialized from perturbed ego states (e.g.,
+      [L4] (p.20) Figure
+      [L4] (p.20) 4:
+      [L4] (p.20) Learning
+      [L4] (p.20) dynamics
+      [L4] (p.20) on
+      [L4] (p.20) the
+      [L4] (p.20) gridworld
+      [L4] (p.20) under
+      [L4] (p.20) Constrained
+      [L4] (p.20) GRPO,
+      [L4] (p.20) comparing
+      [L4] (p.20) scalarized
+      [L4] (p.20) advantages
+      [L4] (p.20) (left)
+      [L4] (p.20) and
+      [L4] (p.20) scalarized
+      [L4] (p.20) rewards
+      [L4] (p.20) (right).
+      [L4] (p.20) In
+      [L4] (p.20) this
+      [L4] (p.20) experiment,
+      [L4] (p.20) we
+      [L4] (p.20) set
+      [L4] (p.20) and
+      [L4] (p.20) do
+      [L4] (p.20) Figure
+      [L4] (p.20) 5:
+      [L4] (p.20) Learning
+      [L4] (p.20) dynamics
+      [L4] (p.20) on
+      [L4] (p.20) the
+      [L4] (p.20) gridworld
+      [L4] (p.20) under
+      [L4] (p.20) Constrained
+      [L4] (p.20) GRPO,
+      [L4] (p.20) comparing
+      [L4] (p.20) scalarized
+      [L4] (p.20) advantages
+      [L4] (p.20) (left)
+      [L4] (p.20) and
+      [L4] (p.20) scalarized
+      [L4] (p.20) rewards
+      [L4] (p.20) (right).
+      [L4] (p.20) In
+      [L4] (p.20) this
+      [L4] (p.20) experiment,
+      [L4] (p.20) we
+      [L4] (p.20) set
+      [L4] (p.20) and
+      [L4] (p.20) thresholds in order to allow for success on the main task.
+      [L4] (p.20) In contrast,
+      [L4] (p.20) scalarizing rewards drives
+      [L4] (p.20) final performance.
+      [L4] (p.20) Interestingly, we see that when it tries to creep higher, the effective multipliers
+      [L4] (p.20) suboptimal
+      [L4] (p.20) position
+      [L4] (p.20) and/or
+      [L4] (p.20) heading),
+      [L4] (p.20) requiring
+      [L4] (p.20) the
+      [L4] (p.20) planner
+      [L4] (p.20) to
+      [L4] (p.20) produce
+      [L4] (p.20) corrective
+      [L4] (p.20) behavior.
+      [L4] (p.20) The
+      [L4] (p.20) To
+      [L4] (p.20) improve
+      [L4] (p.20) fairness,
+      [L4] (p.20) the
+      [L4] (p.20) function
+      [L4] (p.20) ignores
+      [L4] (p.20) penalty
+      [L4] (p.20) violations
+      [L4] (p.20) (i.e.,
+      [L4] (p.20) returns
+      [L4] (p.20) instead
+      [L4] (p.20) of
+      [L4] (p.20) )
+      [L4] (p.20) whenever
+      [L4] (p.20) the
+      [L4] (p.20) human
+      [L4] (p.20) expert
+      [L4] (p.20) driver
+      [L4] (p.20) makes
+      [L4] (p.20) the
+      [L4] (p.20) same
+      [L4] (p.20) violation.
+      [L4] (p.20) The
+      [L4] (p.20) weights
+      [L4] (p.20) for
+      [L4] (p.20) the
+      [L4] (p.20) weighted
+      [L4] (p.20) average terms are:
+      [L4] (p.20) (1)
+      [L4] (p.20) for EP, (2)
+      [L4] (p.20) for TTC, (3)
+      [L4] (p.20) for HC, (4)
+      [L4] (p.20) for
+      [L4] (p.21) We initialize all experiments from the Qwen2.5-VL 3B Instruct vision-language model [
+      [L4] (p.21) ].
+      [L4] (p.21) We
+      [L4] (p.21) To
+      [L4] (p.21) promote
+      [L4] (p.21) richer
+      [L4] (p.21) planning
+      [L4] (p.21) behavior,
+      [L4] (p.21) we
+      [L4] (p.21) additionally
+      [L4] (p.21) include
+      [L4] (p.21) automatically
+      [L4] (p.21) generated
+      [L4] (p.21) chain-of-
+      [L4] (p.21) thought annotations, produced in a zero-shot manner by Qwen2.5-VL 72B Instruct, and prepend
+      [L4] (p.21) these to the target trajectory sequences during training.
+      [L4] (p.21) After this initialization stage,
+      [L4] (p.21) we further
+      [L4] (p.21) All our experiments are performed on 8 A100 GPUs, with each RLFT run taking nearly 20 hours.
+      [L4] (p.21) We set
+      [L4] (p.21) to constrain the policy to the reference SFT policy, the learning rate to
+      [L4] (p.21) , and
+      [L4] (p.21) The value network is a separate Qwen2.5-VL 3B model initialized from the same SFT checkpoint
+      [L4] (p.21) as
+      [L4] (p.21) the
+      [L4] (p.21) policy.
+      [L4] (p.21) This
+      [L4] (p.21) backbone
+      [L4] (p.21) is
+      [L4] (p.21) finetuned
+      [L4] (p.21) using
+      [L4] (p.21) LoRA
+      [L4] (p.21) [
+      [L4] (p.21) ]
+      [L4] (p.21) and
+      [L4] (p.21) we
+      [L4] (p.21) attach
+      [L4] (p.21) separate
+      [L4] (p.21) linear
+      [L4] (p.21) value
+      [L4] (p.21) are computed per-token using GAE (
+      [L4] (p.21) ,
+      [L4] (p.21) ), with the value network trained for 200
+      [L4] (p.21) In Figure 6, we show representative learning dynamics of the multipliers and corresponding con-
+    [L3] (p.21) E
+    [L3] (p.21) GSM8K
+      [L4] (p.21) We employ huggingface pretrained Qwen2.5-Instruct models with varying sizes.
+      [L4] (p.21) All models are
+      [L4] (p.21) of training, which was sufficient.
+      [L4] (p.21) We use the AdamW optimizer with a learning rate of
+      [L4] (p.21) for
+      [L4] (p.21) 3B and 7B models, and a learning rate of
+      [L4] (p.21) for 1.5B models; the Lagrangian parameters are
+      [L4] (p.21) The constraint violation thresholds are different for different model sizes,
+      [L4] (p.21) since each has its own
+      [L4] (p.21) capability and setting thresholds too high can result in infeasible policies.
+      [L4] (p.21) For all model size, the
+    [L3] (p.21) F
+    [L3] (p.21) Limitations
+      [L4] (p.21) In
+      [L4] (p.21) this
+      [L4] (p.21) section,
+      [L4] (p.21) we
+      [L4] (p.21) describe
+      [L4] (p.21) some
+      [L4] (p.21) of
+      [L4] (p.21) the
+      [L4] (p.21) limitations
+      [L4] (p.21) of
+      [L4] (p.21) constrained
+      [L4] (p.21) GRPO.
+      [L4] (p.21) In
+      [L4] (p.21) constrained
+      [L4] (p.21) policy
+      [L4] (p.21) constraints.
+      [L4] (p.21) While
+      [L4] (p.21) in
+      [L4] (p.21) this
+      [L4] (p.21) work
+      [L4] (p.21) we
+      [L4] (p.21) mitigate
+      [L4] (p.21) this
+      [L4] (p.21) problem
+      [L4] (p.21) by
+      [L4] (p.21) using
+      [L4] (p.21) interpretable
+      [L4] (p.21) indicator
+      [L4] (p.21) cost
+      [L4] (p.22) with
+      [L4] (p.22) (a)
+      [L4] (p.22) scalarized rewards with
+      [L4] (p.22) (b)
+      [L4] (p.22) scalarized advantages.
+      [L4] (p.22) Focusing on the ego progress and the
+      [L4] (p.22) drivable
+      [L4] (p.22) area
+      [L4] (p.22) compliance,
+      [L4] (p.22) we
+      [L4] (p.22) see
+      [L4] (p.22) that
+      [L4] (p.22) with
+      [L4] (p.22) the
+      [L4] (p.22) scalarized
+      [L4] (p.22) rewards,
+      [L4] (p.22) the
+      [L4] (p.22) policy
+      [L4] (p.22) does
+      [L4] (p.22) not
+      [L4] (p.22) adhere
+      [L4] (p.22) to
+      [L4] (p.22) the
+      [L4] (p.22) multiplier
+      [L4] (p.22) settings
+      [L4] (p.22) as
+      [L4] (p.22) we
+      [L4] (p.22) intend.
+      [L4] (p.22) First,
+      [L4] (p.22) the
+      [L4] (p.22) drivable
+      [L4] (p.22) area
+      [L4] (p.22) compliance
+      [L4] (p.22) (DAC)
+      [L4] (p.22) stays
+      [L4] (p.22) below
+      [L4] (p.22) its
+      [L4] (p.22) takes a sharp dip, the Lagrangian optimization pushes the NC multiplier higher and squashes the
+      [L4] (p.22) functions, it is unclear how to effectively choose these thresholds such that the constraint remain
+      [L4] (p.22) constraints could stall completely when one of the constraints is infeasible, effectively killing the
+      [L4] (p.22) curriculum-style mechanisms that adapt constraint thresholds over training, potentially improving
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## Constrained Group Relative Policy Optimization
+
+Roger Girgis∗
+Mila – Quebec AI Institute
+École Polytechnique de Montréal
+Rodrigue de Schaetzen∗
+Mila – Quebec AI Institute
+Université de Montréal
+Luke Rowe
+Mila – Quebec AI Institute
+Université de Montréal
+Azalée Robitaille
+Mila – Quebec AI Institute
+Université de Montréal
+Christopher Pal
+Mila – Quebec AI Institute
+École Polytechnique de Montréal
+Université de Montréal, CIFAR AI Chair
+Liam Paull
+Mila – Quebec AI Institute
+Université de Montréal, CIFAR AI Chair
+
+### Abstract
+
+
+#### Group Relative Policy Optimization (GRPO) remains the dominant critic-free
+
+approach for fine-tuning LLMs and VLMs, but its compatibility with constrained
+policy optimization (e.g. for safety-critical domains) has not been carefully exam-
+ined. In this work, we introduce Constrained GRPO, a Lagrangian-based extension
+of GRPO for constrained policy optimization. We show that the standard practice of
+scalarizing rewards before normalization introduces a critical Lagrangian-specific
+failure mode: GRPO’s within-group normalization makes constrained optimization
+
+#### highly sensitive to how multi-component learning signals are aggregated. We
+
+show that scalarizing rewards before normalization introduces shared-denominator
+
+#### coupling, so that changing one multiplier alters not only the emphasis on its cor-
+
+
+#### responding constraint, but also the relative weighting of the reward and other
+
+
+#### constraints. We address this with a simple but crucial modification: scalarizing
+
+
+#### standardized advantages rather than rewards. This yields a better-conditioned
+
+
+#### update by addressing the coupling induced by reward scalarization, resulting in
+
+better-behaved multiplier dynamics and more stable constraint enforcement in prac-
+tice. Empirically, across a controlled gridworld, a real-world autonomous driving
+
+#### benchmark, and a mathematical reasoning task, Constrained GRPO consistently
+
+achieves better adherence to specified constraints while maintaining or improving
+task performance.
+
+### 1
+
+
+### Introduction
+
+
+#### Recent progress in reinforcement learning (RL) has shown that large multimodal models can be
+
+optimized with outcome-based signals. This has enabled the finetuning of models on mathematical
+reasoning tasks [1–3], embodied decision making [4], among other domains where success can be
+evaluated with programmatic or learned rewards. Group Relative Policy Optimization (GRPO) [5]
+
+#### removes the reliance on a critic for advantage estimation by a within-group normalization of the
+
+rewards obtained over multiple sampled outputs for the same query. The critic-free structure of GRPO
+is appealing when using a value function during training is challenging / computationally expensive.
+∗Equal contribution. Primary contact: roger.girgis@gmail.com
+Preprint.
+
+# arXiv:2602.05863v4  [cs.LG]  2 Sep 2026
+
+
+--- PAGE 2 ---
+
+Figure 1: Overview of our proposed approach. We extend GRPO to constrained policy optimization by enforcing user-specified
+behavioral constraints with thresholds (left). Naively scalarizing reward distorts reward–constraint trade-offs, producing
+inconsistent effective weights (middle; e.g., red/green swap). Scalarized advantages maintains the relative multiplier weighting
+between advantage components, yielding more stable learning and effective constraint enforcement (right).
+Existing GRPO-based methods have largely approached multi-objective optimization through manu-
+
+#### ally weighting the importance of different reward terms [6–8]. In contrast, the constrained policy
+
+optimization literature offers a principled framework, namely Constrained Markov Decision Processes
+(CMDPs), for enforcing behavioural preferences and constraints by explicitly defining thresholds on
+behaviours rather than employing fixed weights. However, GRPO has not yet been integrated into a
+
+#### constrained optimization framework. In this work, we propose Constrained GRPO, a constrained
+
+policy optimization framework employing GRPO as the policy optimization algorithm. Within our
+
+#### framework, we specify desirable behaviours with indicator cost functions [9] and enforce target
+
+behaviour rates (in percentage) using a Lagrangian relaxation with learned multipliers.
+A central challenge arises from the interaction between Lagrangian methods and GRPO’s advantage
+
+#### estimation through within-group standardization. A simple approach is to first scalarize rewards,
+
+i.e., combine reward and cost terms into a single scalar value using the current multipliers, and then
+
+#### apply the within-group standardization. However, we show that this seemingly innocuous choice
+
+introduces an additional source of coupling in the constrained update: because the scalarized signal is
+normalized by a shared, multiplier-dependent denominator, changing one multiplier can affect not
+
+#### only its corresponding objective term, but also the relative contribution of of other components to
+
+
+#### the policy update. We provide a formal analysis of the gradient estimator sensitivity to changes in
+
+
+#### the multipliers, as well as an intuitive framing of how multiplier distortion occurs (e.g. Figure 1).
+
+Motivated by this analysis, Constrained GRPO employs scalarizing advantages, i.e., standardize each
+component within group first, and then combine the standardized components using the Lagrangian
+multipliers. This design yields better-conditioning and well-behaved multiplier dynamics by removing
+the shared-denominator coupling that is induced by reward scalarization. Importantly, this does not
+
+#### imply exact preservation of the original unnormalized Lagrangian objective; rather, it produces a
+
+more stable learning signal in the normalized component basis, which we validate empirically.
+
+#### Prior and concurrent work has also found advantage scalarization beneficial in the realm of multi-
+
+
+#### objective GRPO [6, 7]; our contribution places this observation in the context of constrained opti-
+
+mization, showing why it is essential for effective Lagrangian constraint enforcement under GRPO.
+Our main contributions are: (1) We introduce Constrained GRPO, a constrained policy optimization
+
+#### framework built on GRPO, using indicator cost functions, Lagrangian relaxation and scalarizing
+
+advantages to effectively enforce behaviour rates without manually tuning reward weights. (2) We
+analyze the common approach of scalarizing rewards before normalizing, and formally characterize
+the local response of the primal update to changes in the dual variables in Theorem 4.1. (3) We study
+the alternative approach of scalarizing advantages and empirically demonstrate improved stability and
+faithfulness of the behaviour specification in a gridworld environment, a realistic simulation-based
+autonomous driving setting, and a mathematical reasoning task.
+
+### 2
+
+
+### Related Work
+
+Reward Specification. A central motivation for our work is the difficulty of specifying complex be-
+haviours through a single reward function. This challenge has inspired several alternative approaches
+in the literature. Imitation Learning [10] bypasses reward engineering entirely by using expert demon-
+strations to define the task. Other methods introduce human feedback during training, either to guide
+
+#### the agent toward desired behaviours [11] or to prevent catastrophic errors during exploration [12].
+
+Our approach shares a similar motivation—capturing designer intent more directly—but does so by
+2
+
+  [本页图片: page2_img1.png, page2_img2.png]
+
+--- PAGE 3 ---
+
+specifying constraints via indicator functions and thresholds, avoiding the need for demonstrations or
+continuous human intervention. Another promising direction is the use of natural language to specify
+
+#### tasks [13, 14]. While this can provide a more intuitive interface for human designers, language is
+
+
+#### inherently ambiguous and can be exploited by agents (reward hacking). Moreover, these methods
+
+typically require training an additional language-to-reward model, adding further complexity. Another
+interesting approach is Inverse Reward Design [15–17], which treats the provided reward function as
+a single observation of the designer’s latent intent and learns a probabilistic model over possible true
+
+#### reward functions. This is particularly useful in settings with changing environments, but our work
+
+focuses on fixed-distribution environments where explicit behaviour specification is more appropriate.
+Multi-Objective Optimization with Large Models. In the context of large multimodal (vision-) lan-
+guage models, there is extensive work on safety and multi-objective optimization via reinforcement
+
+#### learning [18–22]. For example, Constitutional AI [22] can be viewed as balancing multiple objec-
+
+
+#### tives—most notably helpfulness and harmlessness—yet in practice these objectives are typically
+
+reduced to a single scalar reward and optimized with standard RLHF [23] pipelines, for instance PPO-
+style updates [24]. Moskovitz et al. [18] frame composite reward models in RLHF as a constrained
+optimization problem, enforcing thresholds on individual reward components via a CMDP formula-
+tion and using dynamic weight adjustment (i.e., Lagrange multipliers) to mitigate over-optimization.
+
+#### Similarly, Dai et al. [20] formulate alignment as maximizing reward subject to cost constraints in
+
+RLHF, explicitly trading off helpfulness against safety-related costs. Finally, Wang et al. [25] study
+multi-objective reward models in RLHF, emphasizing interpretability as a means to help designers
+verify adherence to human preferences.
+
+#### While several recent methods target safety alignment for RL-finetuned (vision-)language models,
+
+they are largely developed outside the GRPO setting. More recent work [6] train a multi-head reward
+model that predicts K=4 attributes (politeness, meaningfulness, actionability, safety) and then form
+a single scalar reward via a fixed weighted sum (using wk=1 for all components), before optimizing
+the resulting objective with GRPO. Ichihara et al. [7] propose Multi-Objective GRPO (MO-GRPO)
+to reduce reward-hacking behavior under multiple objectives, and advocate scalarized advantages to
+equalize the influence of components with different variances. Concurrent to our work, GDPO [8] also
+supports advantage scalarization and emphasizes the difficulty of selecting reward weights that reflect
+desired priorities, proposing conditional objectives that activate certain terms only once prerequisite
+
+#### scores exceed a minimum threshold. In contrast, we study advantage scalarization through the
+
+
+#### lens of constrained policy optimization. Our goal is to ensure that increases in the Lagrangian
+
+multipliers in Constrained GRPO translate into stronger enforcement of the specified behaviors. As
+shown experimentally, scalarizing advantages provides this property, whereas scalarizing rewards can
+implicitly reweight objectives and undermine effective Lagrangian optimization.
+
+### 3
+
+
+### Background
+
+Lagrangian methods. Constrained Markov Decision Processes (CMDPs) are commonly addressed
+with Lagrangian methods [26–29, 4], which cast the problem as a saddle-point optimization [30–32].
+These methods introduce K nonnegative multipliers λ = {λk}K
+k=1, where each λk ≥0 controls the
+
+#### penalty for the k-th constraint Ck. Letting JR(π) and JCk(π) denote the expected returns of the
+
+reward R and the constraint Ck under policy π, with constraint threshold dk, the resulting min–max
+problem is
+max
+π
+min
+λ≥0 L(π, λ),
+where
+L(π, λ) = JR(π) −
+K
+�
+k=1
+λk
+�
+JCk(π) −dk
+�
+.
+(1)
+A standard approach applies gradient ascent in π and gradient descent in λ [33], which often yields
+good feasible solutions on CMDP benchmarks [26–29].
+Prior work [9] employed multiplier normalization:
+λk =
+exp(zk)
+exp(zR) + �K
+k′=1 exp(zk′)
+, k = 1, . . . , K.
+(2)
+which includes a dummy variable zR for the main reward function such that λR := 1 −�K
+k=1 λk and
+zk’s are the unnormalized multipliers (logits). In this work, we adopt this mechanism since it ensures
+3
+
+--- PAGE 4 ---
+
+that one constraint can dominate the policy updates if necessary while maintaining stability [9]. The
+policy update (i.e., primal update) now corresponds to optimizing a linear combination of the reward
+and constraint signals,
+Sλ = λRR −
+K
+�
+k=1
+λkCk,
+(3)
+and can be carried out with any policy optimization method (e.g., PPO [24], SAC [34]). The multiplier
+update (i.e., dual update) follows
+∇λkL(π, λ) = −(JCk(π) −dk),
+(4)
+
+#### typically implemented with a learning rate and a projection onto λk ≥0 using max-clipping.
+
+
+#### If constraint k is violated (JCk > dk), λk increases, strengthening its penalty; if it is satisfied
+
+(JCk < dk), λk decreases, allowing optimization to focus on return and other active constraints.
+
+#### Group-Relative Policy Optimization (GRPO). Reinforcement learning has proven effective for
+
+finetuning large models, complementing supervised finetuning (SFT): while SFT supports instruction
+and format adherence, RL finetuning often improves generalization, particularly in out-of-distribution
+
+#### regimes [35]. Early work used PPO with learned reward models for preference optimization [23].
+
+Assuming access to a queryable scalar reward (e.g., BLEU/ROUGE, verifier-based math checking),
+
+#### Shao et al. [5] proposed eliminating the value model by estimating advantages within a group of
+
+samples drawn from the same prompt. Given a start state s0, GRPO samples G candidate trajectories
+{τi = (s0, ai
+0, . . . , si
+T −1, ai
+T −1, si
+T )}G
+i=1, from the behavior policy τi ∼πθold(· | s0), and computes
+group-relative advantages by standardizing returns:
+Ai = R(τi) −mean(r)
+std(r)
+,
+r = [R(τ1), . . . , R(τG)].
+Using Ai, the PPO objective is modified into GRPO:
+JGRPO(θ) = E{τi}G
+i=1∼πθold
+�
+1
+G
+G
+�
+i=1
+T −1
+�
+t=0
+{min[b1 · Ai, b2 · Ai] −βDKL[πθ || πref]}
+�
+,
+where
+b1 = πθ(ai
+t | si
+t)
+πθold(ai
+t | si
+t),
+b2 = clip
+�πθ(ai
+t | si
+t)
+πθold(ai
+t | si
+t), 1 + ϵ, 1 −ϵ
+�
+,
+where the KL term (scaled by hyperparameter β ≥0) directly regularizes the trained policy toward
+
+#### a fixed reference policy πref, rather than being folded into the reward. GRPO has shown strong
+
+performance in mathematical reasoning [5] and has been adopted in various robotics work [36–39].
+
+### 4
+
+
+### Constrained GRPO
+
+We study constrained policy optimization with GRPO as the policy-gradient algorithm and Lagrangian
+relaxation as the constraint-handling mechanism. Our analysis examines how the choice of advantage
+estimation in GRPO under multiple reward and constraint signals affects the primal-dual dynamics,
+and identifies the conditions under which the dual updates reliably translate into primal behavior. We
+assume one reward and K behavioral constraints; the extension to multiple rewards is straightforward.
+
+#### In large-model finetuning, a common practice is to manually set the weights {λk} and keep them
+
+fixed throughout training. We model each desired behavior k as a constraint and enforce it through
+
+#### a cost function Ck with a target threshold dk and normalized multiplier λk (Eq. 2). A key design
+
+
+#### choice is how to express these thresholds in an intuitive and behavior-agnostic way. Following
+
+prior work on direct behavior specification [9], we restrict our attention to indicator cost functions
+Ck(s, a) = I
+�
+constraint k violated in (s, a)
+�
+
+#### , for which the threshold ˜dk directly corresponds to a
+
+
+#### desired behavior rate. In this work, we focus on trajectory-level constraints and therefore drop the
+
+explicit dependence on (s, a).2 We estimate constraint violations from a batch of experience by the
+empirical average of the cost Ck. The Lagrangian parameters are optimized using the update rule in
+Eq. (4), with dk →˜dk and JCk(π) computed as the average over {Ck}N
+i=1.
+2The analysis in this work easily extends to state-action-level constraints.
+4
+
+--- PAGE 5 ---
+
+
+#### GRPO Advantage Estimation. GRPO estimates advantages by within-group standardization:
+
+subtracting the group mean and dividing by the group standard deviation. There are two natural ways
+to compute the advantage. The first scalarizes at the reward level by linearly combining rewards and
+
+#### costs with the Lagrange multipliers before estimating the advantage. The second scalarizes at the
+
+
+#### advantage level by first computing component-wise advantages for each reward and cost and then
+
+linearly combining them with the Lagrange multipliers. In what follows, we analyze the differences
+between these two approaches using a sensitivity analysis on the unclipped policy-gradient, revealing
+why scalarized advantages offers a more practical approach from the perspective of primal learning
+
+#### dynamics. Note that this sensitivity analysis is taken with respect to the logits zk (see Eq. 2)
+
+
+#### rather than treating the multipliers λk as independent coordinates. This is a consequence of the
+
+multiplier normalization that we employ and we provide the corresponding sensitivity analysis for
+the unnormalized case in Appendix A.1 (up to Eq. 13).
+
+#### Scalarized rewards.
+
+
+#### The most direct approach first forms a scalarized signal Sλ as done in (3),
+
+and then applies GRPO normalization:
+AScRew
+i
+= Sλ
+i −¯Sλ
+ˆσSλ
+,
+ˆσSλ = std(Sλ
+1 , . . . , Sλ
+G).
+Subscript i denotes the i-th sample in the group, and¯· denotes the empirical mean over the group. Let
+ψi :=
+T −1
+�
+t=0
+∇θ log πθ(ai
+t | si
+t),
+and define
+NR := 1
+G
+G
+�
+i=1
+(Ri −¯R)ψi,
+Nk := 1
+G
+G
+�
+i=1
+(Ck,i −¯Ck)ψi.
+Then the scalarized-reward constrained GRPO estimator can be written as
+gScRew(λ) = λRNR −�K
+k=1 λkNk
+ˆσSλ
+.
+(5)
+We now compute the multiplier sensitivities of gScRew:
+
+#### Theorem 4.1 (Multiplier sensitivity under scalarized rewards). For a fixed sampled group, the
+
+sensitivity of the scalarized-reward GRPO estimator gScRew to the logit zk of constraint k is
+∂gScRew
+∂zk
+= λk
+
+∂gScRew
+∂λk
+−
+�
+j∈{R,1,...,K}
+λj
+∂gScRew
+∂λj
+
+,
+(6)
+where, letting D := λRNR −�K
+k=1 λkNk, the partial sensitivities are
+∂gScRew
+∂λR
+=
+NR
+ˆσSλ −D
+ˆσ3
+Sλ
+�
+Cov(Sλ, R),
+∂gScRew
+∂λk
+= −Nk
+ˆσSλ + D
+ˆσ3
+Sλ
+�
+Cov(Sλ, Ck),
+and �
+Cov(Sλ, X) := 1
+G
+�G
+i=1(Sλ
+i −¯Sλ)(Xi −¯X) denotes the empirical group covariance.
+
+#### Proof in Appendix A.1. Observe that scalarized rewards induces two forms of coupling. First, the
+
+
+#### softmax normalization means that increasing one logit decreases the effective weight on the other
+
+components by construction. Second, the shared denominator ˆσSλ introduces additional covariance-
+
+#### mediated coupling through ∂gScRew/∂λR and ∂gScRew/∂λk. Consequently, changing one logit
+
+
+#### affects not only the corresponding constraint term, but also the relative contribution of the reward
+
+and all other constraints, while simultaneously modifying the normalization of the mixed signal; the
+resulting primal update is therefore altered both in magnitude and in direction.
+
+#### Scalarized advantages.
+
+
+#### Our method instead normalizes each component separately and then
+
+combines the resulting standardized advantages:
+ZR,i = Ri −¯R
+ˆσR
+,
+ZCk,i = Ck,i −¯Ck
+ˆσCk
+.
+5
+
+--- PAGE 6 ---
+
+The scalarized advantage is
+AScAdv
+i
+= λRZR,i −
+K
+�
+k=1
+λkZCk,i.
+(7)
+The corresponding estimator is
+gScAdv(λ) = λR
+NR
+ˆσR
+−
+K
+�
+k=1
+λk
+Nk
+ˆσCk
+.
+(8)
+Corollary 4.2 (Multiplier sensitivity under scalarized advantages). For a fixed sampled group, the
+sensitivity of the scalarized-advantage GRPO estimator to the logit zk of constraint k is
+∂gScAdv
+∂zk
+= λk
+�
+−Nk
+ˆσCk
+−λR
+NR
+ˆσR
++
+K
+�
+k′=1
+λk′ Nk′
+ˆσCk′
+�
+.
+(9)
+
+#### Unlike scalarized rewards, scalarized advantages does not introduce any additional shared-
+
+denominator coupling through the within-group normalization. With softmax-normalized multipliers,
+some competition between components is unavoidable, since increasing one logit reallocates mass
+
+#### away from the others. However, under scalarized advantages this is the only source of coupling:
+
+the logit update is a competition over already-normalized component directions. In contrast, under
+
+#### scalarized rewards the same simplex competition is compounded by the dependence of ˆσS on the
+
+current reward-cost mixture, which adds covariance-mediated cross-coupling to the primal response.
+For these reasons, we adopt scalarized advantages in constrained GRPO.
+With scalarized advantages, the effective multipliers being applied to the advantage components is
+
+#### λk by construction (i.e., Eq. 7). Whereas, Theorem A.3 shows that when scalarizing rewards, the
+
+multipliers are rescaled by ˜λk = λk
+σCk
+σSλ (likewise ˜λR) such that AScRew
+i
+= ˜λRZR,i−�K
+k=1 ˜λkZCk,i.
+
+### 5
+
+
+### Experiments
+
+5.1
+Illustrative Environment
+
+#### We begin with an illustrative example in a simple gridworld. An agent is randomly initialized in
+
+
+#### a 10 × 10 grid and must navigate to a randomly sampled goal location, receiving a sparse scalar
+
+reward upon reaching it. Each episode contains 20% lava tiles; stepping onto lava incurs a penalty
+(i.e., a cost). In addition, the agent has a battery that depletes at every timestep and incurs a penalty
+whenever its battery level falls below 10%. The action space consists of five discrete actions: moving
+
+#### in the four cardinal directions or staying in place to recharge. This simple environment provides a
+
+controlled testbed for isolating the differences between scalarized rewards and scalarized advantages
+in constrained GRPO. Additional setup details and more experiments are provided in Appendix C.
+
+#### We enforce constraint thresholds ˜dlava = ˜dbattery = 0.01 and train for 512k episodes. Figure 2
+
+compares Constrained GRPO with scalarized advantages (ours) against a scalarized rewards baseline.
+We see that scalarized advantages yields more stable learning across seeds (5 seeds), as reflected by
+the narrower shaded region throughout training (column 1). Moreover, scalarized advantages leads to
+richer behavior-rate dynamics (column 2, bottom row): the Lagrangian multipliers (column 3, bottom
+
+#### row) adapt to allow the constraint rates to increase toward the threshold, effectively encouraging
+
+
+#### the policy to use its available cost budget. On the other hand, scalarized rewards rapidly drives
+
+
+#### both constraint rates close to zero early in training (column 2, top row), and keeps them near-zero
+
+thereafter, even as the learned multipliers (columb 3, top row) remain small.
+This behavior can be understood through the implicit reweighting predicted by Theorem A.3. Observe
+that despite the small learned multipliers λlava and λbattery, the induced effective weights are larger and
+significantly noisier due to within-group variance and covariance effects (row 4, left column). This is
+especially problematic when the ordering of importance changes, as observed around 150K steps for
+the goal and lava weights (red/green swap). Overall, these results support scalarized advantages as a
+more reliable advantage construction for Constrained GRPO, as it preserves the intended role of the
+Lagrangian multipliers in enforcing behavior specifications.
+6
+
+--- PAGE 7 ---
+
+Figure 2: Gridworld under Constrained GRPO, comparing scalarized rewards (top) with scalarized advantages (bottom).
+Scalarized advantages yields more stable training and uses the available cost budget, with behavior rates adapting toward the
+specified thresholds as the Lagrangian multipliers adjust. In contrast, scalarized rewards collapses constraint rates toward
+near-zero early in training with the effective weights remaining larger and noisier despite small learned multipliers.
+5.2
+NAVSIM Experiments
+Benchmark Details.
+
+#### Our next experiments are on the NAVSIM-v2 driving benchmark [40, 41], which contains 103k
+
+training scenarios (Navtrain) and 12k testing scenarios (Navtest) curated from OpenScene [42, 43].
+
+#### NAVSIM-v2 evaluates planning using explicit behavioural safety constraints alongside task-level
+
+objectives such as progress and comfort, enabling targeted analysis of behaviour specification. We
+do our evaluations on the Navhard split containing more challenging driving scenarios and planners
+
+#### are evaluated using a two-stage pseudo-simulation protocol: Stage 1 evaluates the policy’s ability
+
+to drive in unseen nominal driving scenarios while stage 2 evaluates the policy’s ability to produce
+corrective behaviors. More details are in Appendix D.
+The primary evaluation metric is Extended PDM Score (EPDMS ∈[0, 1]) which aggregates multiple
+subscores via a product of hard penalty terms and a weighted average of auxiliary terms (Eq. 22 in
+Appendix D). The penalty terms, each taking values in {0, 1}, include: (1) no at-fault collisions (NC),
+
+#### (2) drivable area compliance (DAC), (3) driving direction compliance (DDC), and (4) traffic light
+
+compliance (TLC). Since these penalties are combined multiplicatively, violating any one of them
+sets EPDMS= 0 for that scene. The weighted average terms consist of: (1) ego progress (EP) along
+the route, (2) time-to-collision (TTC), (3) history comfort (HC), (4) extended comfort (EC), and (5)
+lane keeping (LK). We also report the 4-second Average Displacement Error (ADE@4s) on Stage 1
+scenes, computed with respect to the human trajectory.
+Although the penalty terms are designed as hard constraints at evaluation time, directly optimizing
+a multiplicative hard-gated objective can lead to sparse learning signals and unstable optimization,
+as we show. We therefore treat penalty terms as soft behavioural constraints, targeting near-perfect
+satisfaction (0.99) while preserving informative gradients throughout training.
+
+#### Model Baselines.
+
+
+#### We initialize all experiments with the Qwen2.5-VL 3B Instruct model [44],
+
+which we pre-train following the Poutine supervised finetuning (SFT) recipe [45]. We then perform
+additional SFT on the NAVSIM training set [40, 41] (see Appendix D), reserving ≈11k scenes as a
+held-out split for RL finetuning (RLFT). Our baselines are as follows:3
+(1) GRPO with EPDMS: optimize EPDMS as the reward, in the spirit of CaRL [46] (which optimizes
+a similar objective with PPO). Because EPDMS is multiplicative, any NC/DAC/DDC/TLC violation
+collapses the reward to zero, acting as a hard constraint.
+(2–5) Linear scalarization: a weighted sum of constraints and the weighted-average terms (WAT):
+R(τ) = w1NC+w2DAC+w3DDC+w4WAT. This follows prior multi-objective GRPO setups [6, 7].
+We evaluate both scalarization choices: scalarize rewards (ScRew) and scalarize advantages (ScAdv)
+
+#### and consider two weighting schemes: (i) equal weights wi = 0.25 (GRPO, ScRew/ScAdv, Equal
+
+Weights), and (ii) informed weights tuned from SFT behavior w1=0.1, w2=0.8, w3=0.05, w4=0.05
+(GRPO, ScRew/ScAdv, Informed Weights).
+3Traffic light compliance (TLC) was almost always satisfied in preliminary experiments and is therefore omitted as an
+explicit objective, except when optimizing EPDMS.
+7
+
+--- PAGE 8 ---
+
+Method
+Constraints
+Stage
+NC ↑
+DAC ↑
+DDC ↑
+TLC ↑
+EP ↑
+HC ↑
+EPDMS ↑
+ADE@4s ↓
+PDM-Closed (privileged) [47]
+–
+S1
+0.944
+0.988
+1.000
+0.995
+1.000
+0.877
+0.834
+–
+S2
+0.881
+0.906
+0.963
+0.985
+1.000
+0.915
+0.687
+–
+SFT Checkpoint
+–
+S1
+0.953
+0.789
+0.978
+0.993
+0.836
+0.976
+0.651
+2.539
+S2
+0.800
+0.756
+0.869
+0.981
+0.878
+0.963
+0.444
+–
+GRPO with EPDMS [46]
+Hard
+S1
+0.897
+0.800
+0.947
+0.990
+0.944
+0.978
+0.612
+6.900
+S2
+0.749
+0.759
+0.829
+0.969
+0.979
+0.945
+0.381
+–
+GRPO, ScRew, Equal Weights [6]
+None
+S1
+0.891
+0.625
+0.876
+0.989
+0.968
+0.976
+0.445
+9.050
+S2
+0.751
+0.696
+0.787
+0.968
+0.986
+0.954
+0.347
+–
+GRPO, ScAdv, Equal Weights [7]
+None
+S1
+0.908
+0.661
+0.900
+0.989
+0.954
+0.973
+0.490
+7.172
+S2
+0.767
+0.705
+0.813
+0.971
+0.981
+0.949
+0.370
+–
+GRPO, ScRew, Informed Weights
+None
+S1
+0.887
+0.643
+0.887
+0.987
+0.967
+0.978
+0.463
+8.509
+S2
+0.754
+0.695
+0.791
+0.969
+0.986
+0.954
+0.350
+–
+GRPO, ScAdv, Informed Weights
+None
+S1
+0.932
+0.765
+0.971
+0.993
+0.890
+0.976
+0.623
+3.495
+S2
+0.778
+0.731
+0.831
+0.972
+0.944
+0.962
+0.385
+–
+PPO with EPDMS
+Hard
+S1
+0.944
+0.731
+0.945
+0.991
+0.862
+0.976
+0.589
+4.057
+S2
+0.794
+0.727
+0.855
+0.969
+0.908
+0.963
+0.415
+–
+PPO-Lagrangian [27]
+Soft
+S1
+0.986
+0.891
+0.994
+0.998
+0.721
+0.978
+0.737
+4.558
+S2
+0.895
+0.812
+0.912
+0.990
+0.767
+0.980
+0.536
+–
+Constrained GRPO, ScRew
+Soft
+S1
+0.955
+0.887
+0.987
+0.993
+0.868
+0.976
+0.743
+3.344
+S2
+0.810
+0.784
+0.866
+0.976
+0.939
+0.952
+0.436
+–
+Constrained GRPO, ScAdv (ours)
+Soft
+S1
+0.957
+0.928
+0.989
+0.998
+0.796
+0.977
+0.774
+3.361
+S2
+0.853
+0.830
+0.897
+0.986
+0.863
+0.967
+0.516
+–
+Table 1: Results on NAVSIM-v2 Navhard. We compare several baselines with Constrained GRPO in Stage 1 (S1, real
+scenes) and Stage 2 (S2, synthetic scenes). The Constraints column indicates whether NC/DAC/DDC/TLC are treated as hard
+constraints, soft constraints, or not enforced. ScRew: Scalarized Rewards; ScAdv: Scalarized Advantages.
+
+#### (6–7) Constrained GRPO: treat WAT is as the main objective and enforce NC/DAC/DDC as con-
+
+
+#### straints, setting all constraint satisfaction rate thresholds to 0.99 4. We again compare scalarized
+
+rewards and scalarized advantages (Constrained GRPO, ScRew vs. Constrained GRPO, ScAdv).
+
+#### (8) We also compare against PPO and Constrained PPO. The former uses EPDMS as the reward
+
+
+#### while the latter uses the standard Lagrangian variant of PPO [27, 28] where the constraints are
+
+identical to Constrained GRPO described above.
+Results. Tables 1 reports results on NAVSIM-v2 Stage 1 and Stage 2, respectively. For context, we
+
+#### also include the performance of the rule-based PDM planner [47], whose trajectories are used to
+
+compute EP. We now summarize the key findings:
+
+#### Behavior specification through constrained RL outperforms alternative strategies. Our results
+
+
+#### indicate that constrained RL provides a more effective mechanism for behavior specification than
+
+
+#### alternative reward-design approaches. In particular, the two constrained GRPO variants (bottom
+
+two rows of Table 1) achieve strong overall performance, with constrained GRPO using scalarized
+
+#### advantages attaining the highest S1 EPDMS and second highest S2 EPDMS. On in-distribution
+
+Stage 1 driving scenarios, both constrained variants substantially improve upon the SFT checkpoint,
+
+#### whereas the unconstrained baselines do not consistently yield gains. On the more challenging out-
+
+
+#### of-distribution Stage 2 split, all methods exhibit degraded performance relative to S1 scores, as
+
+
+#### expected. Nevertheless, our approach remains the most competitive among GRPO baselines and
+
+achieves comparable performance with PPO-Langagrian, showcasing the usefulness of our behavior
+specification framework for limiting bad driving behaviors.
+Scalarized advantages outperforms scalarizing rewards. Across all three linear formulations (equal
+
+#### weights, informed weights, and constrained), scalarizing advantages yields consistently higher
+
+EPDMS than scalarizing rewards, for both Stage 1 and Stage 2. This trend aligns with our analysis in
+Section 4: when objective components have mismatched scales, scalarizing rewards can implicitly
+bias the optimization toward high-variance terms, distorting the intended trade-offs.
+We further illustrate this effect in Figure 6 in Appendix D. Under constrained GRPO with ScRew, the
+learned Lagrangian multipliers do not translate into effective constraint enforcement. This is most
+evident for DAC and EP, which is a proxy for the WAT objective: despite DAC being assigned nearly
+the maximum multiplier weight (and the main reward weight approaching zero), DAC does not reach
+the target satisfaction level, while EP continues to increase and only slowly decays later in training. In
+contrast, constrained GRPO with ScAdv responds rapidly to multiplier updates. DAC improves within
+4Note that to maintain the upper-bound form of the constraint, we instead enforce a ˜dk = 0.01 threshold on the negation
+of the penalty terms NC/DAC/DDC.
+8
+
+--- PAGE 9 ---
+
+Method
+# params
+Length ↓
+Format ↑
+Integer ↑
+Correctness ↑
+PPO-Lagrangian
+1.5B
+346.93
+0.886
+0.935
+0.604
+GDPO [8]
+1.5B
+296.89
+0.953
+0.981
+0.629
+Constrained GRPO, ScRew
+1.5B
+246.82
+0.934
+0.941
+0.640
+Constrained GRPO, ScAdv (ours)
+1.5B
+293.36
+0.953
+0.966
+0.712
+PPO-Lagrangian
+3B
+753.10
+0.759
+0.867
+0.642
+GDPO [8]
+3B
+330.11
+0.911
+0.977
+0.770
+Constrained GRPO, ScRew
+3B
+334.61
+0.965
+0.968
+0.751
+Constrained GRPO, ScAdv (ours)
+3B
+349.93
+0.987
+0.994
+0.802
+PPO-Lagrangian
+7B
+327.74
+0.980
+0.995
+0.891
+GDPO [8]
+7B
+127.49
+0.990
+0.995
+0.768
+Constrained GRPO, ScRew
+7B
+119.65
+0.988
+0.993
+0.731
+Constrained GRPO, ScAdv (ours)
+7B
+256.62
+0.989
+0.996
+0.887
+Table 2: GSM8K results across model scales. We compare PPO-Lagrangian, GDPO [8], and constrained GRPO with
+scalarized rewards and scalarized advantages with Qwen2.5-Instruct models at 1.5B, 3B, and 7B parameters. Constrained
+GRPO consistently improves correctness over GDPO at all scales while maintaining strong format and integer validity, and
+achieves competitive or better performance at 1.5B and 3B without requiring a learned critic (i.e., PPO-Lagrangian). Bold
+indicates the best; Underlined values indicate results that are close to the best.
+the first ∼1000 training steps, while EP decreases as its multiplier is reduced, demonstrating that the
+Lagrangian weights exert their intended influence on the learning dynamics. Finally, around ∼2500
+
+#### steps, the NC multiplier increases sharply as DAC becomes satisfactory but collision compliance
+
+degrades, showing that the optimizer adaptively reallocates emphasis across constraints.
+Hard constraints lead to suboptimal learning dynamics. Finally, observe that directly optimizing
+
+#### EPDMS as a reward (i.e., GRPO with EPDMS) underperforms the soft-constraint formulations,
+
+yielding lower overall EPDMS on both Stage 1 and Stage 2. Intuitively, EPDMS couples constraints
+through a multiplicative structure, collapsing the learning signal whenever any penalty term is violated.
+This removes the ability to trade off and prioritize objectives smoothly during training, and prevents
+variance-aware balancing of component signals. In contrast, our soft-constraint formulation retains
+informative gradients even when constraints are partially violated, enabling more stable optimization
+and ultimately improved behavior specification.
+5.3
+GSM8K Experiments
+Benchmark Details.
+We further evaluate our approach in a language reasoning setting using the
+GSM8K dataset, which consists of grade-school math word problems requiring multi-step reasoning.
+For each completion, we consider four signals: correctness, format adherence, integer validity, and
+length (which favors shorter reasoning chains).
+
+#### Model Baselines.
+
+
+#### We initialize all experiments from Qwen2.5-Instruct models at three scales:
+
+
+#### 1.5B, 3B, and 7B parameters. For the baselines, we compare to GDPO and PPO-Lagrangian.
+
+
+#### GDPO [8] is a prior advantage-scalarization baseline designed for multi-objective GRPO training.
+
+PPO-Lagrangian uses a learned value function and enforces constraints through the standard primal-
+dual PPO formulation. For our constrained formulation, we treat correctness, format adherence, and
+
+#### integer validity as constraints, and optimize the length objective as the primary reward. Our goal
+
+
+#### is not to claim that correctness is only required up to a threshold; rather, the thresholds serve as
+
+optimization targets that prevent the policy from trivially improving length by sacrificing correctness
+or output validity.
+
+#### Results.
+
+
+#### Tables 2 reports our GSM8K results. Across all three model scales, constrained
+
+
+#### GRPO achieves higher correctness than GDPO while maintaining strong performance on format
+
+
+#### adherence and integer validity. The gains are most pronounced at larger scale: at 3B, constrained
+
+
+#### GRPO improves correctness from 0.770 to 0.802, and at 7B from 0.768 to 0.887. These results
+
+suggest that explicitly enforcing correctness as a constraint prevents the model from over-optimizing
+
+#### easier auxiliary objectives such as reducing output length. We observe that GDPO often produces
+
+substantially shorter generations, especially at the 7B scale, where it reduces length to 127.49 tokens
+
+#### on average but at the expense of correctness. Compared to PPO-Lagrangian, constrained GRPO
+
+
+#### achieves comparable or better performance on all four metrics at the 1.5B and 3B scales. At 7B,
+
+9
+
+--- PAGE 10 ---
+
+PPO-Lagrangian attains slightly higher correctness (0.891 vs. 0.887), but constrained GRPO remains
+competitive and produces shorter outputs without requiring expensive critic training.
+
+### 6
+
+
+### Conclusion
+
+
+#### We introduced Constrained GRPO, a Lagrangian extension of GRPO that enforces user-specified
+
+
+#### constraints via indicator costs and learned multipliers. We showed that scalarizing rewards before
+
+
+#### normalization introduces shared-denominator coupling, so that changing one multiplier can affect
+
+
+#### not only its corresponding constraint term, but also the relative contribution of the other terms to
+
+
+#### the policy update. By instead scalarizing standardized advantages, Constrained GRPO yields a
+
+better-conditioned update and more stable multiplier dynamics in practice.
+
+### 7
+
+
+### Acknowledgements
+
+We thank Samsung, the IVADO and the Canada First Research Excellence Fund (CFREF) / Apogee
+Funds, the Canada CIFAR AI Chairs Program, Fonds de Recherche Nature et Technologies (FRQNT),
+and the NSERC Discovery Grants program for their financial support. We thank Mila - Quebec AI
+Institute for compute resources. This research was supported by grants from NVIDIA and utilized
+NVIDIA 15K A100 GPU-hours on Saturn Cloud.
+
+### References
+
+[1] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,
+
+#### Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al. Training verifiers to
+
+solve math word problems. arXiv preprint arXiv:2110.14168, 2021.
+
+#### [2] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed H. Chi, F. Xia, Quoc
+
+
+#### Le, and Denny Zhou. Chain of thought prompting elicits reasoning in large language mod-
+
+els. ArXiv, abs/2201.11903, 2022. URL https://api.semanticscholar.org/CorpusID:
+246411621.
+
+#### [3] Aitor Lewkowycz, Anders Andreassen, David Dohan, Ethan Dyer, Henryk Michalewski,
+
+
+#### Vinay Venkatesh Ramasesh, Ambrose Slone, Cem Anil, Imanol Schlag, Theo Gutman-
+
+
+#### Solo, Yuhuai Wu, Behnam Neyshabur, Guy Gur-Ari, and Vedant Misra.
+
+
+#### Solving quan-
+
+
+#### titative reasoning problems with language models.
+
+
+#### ArXiv, abs/2206.14858, 2022.
+
+
+#### URL
+
+https://api.semanticscholar.org/CorpusID:250144408.
+[4] Borong Zhang, Yuhao Zhang, Jiaming Ji, Yingshan Lei, Josef Dai, Yuanpei Chen, and Yaodong
+
+#### Yang. Safevla: Towards safety alignment of vision-language-action model via constrained
+
+learning. arXiv preprint arXiv:2503.03480, 2025.
+[5] Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Jun-Mei Song, Mingchuan Zhang, Y. K. Li,
+Yu Wu, and Daya Guo. Deepseekmath: Pushing the limits of mathematical reasoning in open
+
+#### language models. ArXiv, abs/2402.03300, 2024. URL https://api.semanticscholar.
+
+org/CorpusID:267412607.
+
+#### [6] Xuying Li, Zhuo Li, Yuji Kosuga, and Victor Bian. Optimizing safe and aligned language
+
+
+#### generation: A multi-objective grpo approach. ArXiv, abs/2503.21819, 2025. URL https:
+
+//api.semanticscholar.org/CorpusID:277435738.
+[7] Yuki Ichihara, Yuu Jinnai, Tetsuro Morimura, Mitsuki Sakamoto, Ryota Mitsuhashi, and Eiji
+
+#### Uchibe. Mo-grpo: Mitigating reward hacking of group relative policy optimization on multi-
+
+objective problems. arXiv preprint arXiv:2509.22047, 2025.
+
+#### [8] Shih-Yang Liu, Xin Dong, Ximing Lu, Shizhe Diao, Peter Belcak, Mingjie Liu, Min-Hung
+
+Chen, Hongxu Yin, Yu-Chiang Frank Wang, Kwang-Ting Cheng, et al. Gdpo: Group reward-
+decoupled normalization policy optimization for multi-reward rl optimization. arXiv preprint
+arXiv:2601.05242, 2026.
+10
+
+--- PAGE 11 ---
+
+
+#### [9] Julien Roy, Roger Girgis, Joshua Romoff, Pierre-Luc Bacon, and Christopher Joseph Pal.
+
+Direct behavior specification via constrained reinforcement learning. In International Confer-
+ence on Machine Learning, 2021. URL https://api.semanticscholar.org/CorpusID:
+245424738.
+[10] Boyuan Zheng, Sunny Verma, Jianlong Zhou, Ivor Tsang, and Fang Chen. Imitation learning:
+Progress, taxonomies and opportunities. arXiv preprint arXiv:2106.12177, 2021.
+
+#### [11] Paul Christiano, Jan Leike, Tom B Brown, Miljan Martic, Shane Legg, and Dario Amodei.
+
+Deep reinforcement learning from human preferences. arXiv preprint arXiv:1706.03741, 2017.
+[12] William Saunders, Girish Sastry, Andreas Stuhlmueller, and Owain Evans. Trial without error:
+Towards safe reinforcement learning via human intervention. arXiv preprint arXiv:1707.05173,
+2017.
+
+#### [13] Prasoon Goyal, Scott Niekum, and Raymond J Mooney. Using natural language for reward
+
+shaping in reinforcement learning. arXiv preprint arXiv:1903.02020, 2019.
+[14] James MacGlashan, Monica Babes-Vroman, Marie desJardins, Michael L Littman, Smaranda
+Muresan, Shawn Squire, Stefanie Tellex, Dilip Arumugam, and Lei Yang. Grounding english
+commands to reward functions. In Robotics: Science and Systems, 2015.
+[15] Dylan Hadfield-Menell, Smitha Milli, Pieter Abbeel, Stuart Russell, and Anca Dragan. Inverse
+reward design. arXiv preprint arXiv:1711.02827, 2017.
+
+#### [16] Sören Mindermann, Rohin Shah, Adam Gleave, and Dylan Hadfield-Menell. Active inverse
+
+reward design. arXiv preprint arXiv:1809.03060, 2018.
+[17] Ellis Ratner, Dylan Hadfield-Menell, and Anca D Dragan. Simplifying reward design through
+divide-and-conquer. arXiv preprint arXiv:1806.02501, 2018.
+
+#### [18] Ted Moskovitz, Aaditya K. Singh, DJ Strouse, Tuomas Sandholm, Ruslan Salakhutdinov,
+
+Anca D. Dragan, and Stephen Marcus McAleer. Confronting reward model overoptimization
+with constrained rlhf. ArXiv, abs/2310.04373, 2023. URL https://api.semanticscholar.
+org/CorpusID:263829192.
+[19] Borong Zhang, Yuhao Zhang, Jiaming Ji, Yingshan Lei, Josef Dai, Yuanpei Chen, and Yaodong
+Yang. Safevla: Towards safety alignment of vision-language-action model via safe reinforce-
+ment learning. ArXiv, abs/2503.03480, 2025. URL https://api.semanticscholar.org/
+CorpusID:276782535.
+
+#### [20] Josef Dai, Xuehai Pan, Ruiyang Sun, Jiaming Ji, Xinbo Xu, Mickel Liu, Yizhou Wang,
+
+
+#### and Yaodong Yang.
+
+
+#### Safe rlhf:
+
+
+#### Safe reinforcement learning from human feedback.
+
+
+#### ArXiv, abs/2310.12773, 2023.
+
+
+#### URL https://api.semanticscholar.org/CorpusID:
+
+264306078.
+[21] Jiaming Ji, Xinyu Chen, Rui Pan, Han Zhu, Conghui Zhang, Jiahao Li, Donghai Hong, Boyuan
+Chen, Jiayi Zhou, Kaile Wang, Juntao Dai, Chi-Min Chan, Sirui Han, Yike Guo, and Yaodong
+
+#### Yang. Safe rlhf-v: Safe reinforcement learning from human feedback in multimodal large
+
+
+#### language models. ArXiv, abs/2503.17682, 2025. URL https://api.semanticscholar.
+
+org/CorpusID:277271998.
+
+#### [22] Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, John Kernion, Andy Jones,
+
+
+#### Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, Carol Chen, Catherine
+
+
+#### Olsson, Chris Olah, Danny Hernandez, Dawn Drain, Deep Ganguli, Dustin Li, Eli Tran-
+
+Johnson, E Perez, Jamie Kerr, Jared Mueller, Jeffrey Ladish, J Landau, Kamal Ndousse, Kamil˙e
+Lukosuite, Liane Lovitt, Michael Sellitto, Nelson Elhage, Nicholas Schiefer, Noem’i Mercado,
+Nova Dassarma, Robert Lasenby, Robin Larson, Sam Ringer, Scott Johnston, Shauna Kravec,
+
+#### Sheer El Showk, Stanislav Fort, Tamera Lanham, Timothy Telleen-Lawton, Tom Conerly,
+
+
+#### T. J. Henighan, Tristan Hume, Sam Bowman, Zac Hatfield-Dodds, Benjamin Mann, Dario
+
+Amodei, Nicholas Joseph, Sam McCandlish, Tom B. Brown, and Jared Kaplan. Constitutional
+
+#### ai: Harmlessness from ai feedback.
+
+
+#### ArXiv, abs/2212.08073, 2022.
+
+
+#### URL https://api.
+
+semanticscholar.org/CorpusID:254823489.
+11
+
+--- PAGE 12 ---
+
+
+#### [23] Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin,
+
+
+#### Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, John Schulman, Jacob Hilton,
+
+Fraser Kelton, Luke Miller, Maddie Simens, Amanda Askell, Peter Welinder, Paul Christiano,
+
+#### Jan Leike, and Ryan Lowe. Training language models to follow instructions with human
+
+feedback, 2022. URL https://arxiv.org/abs/2203.02155.
+
+#### [24] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal
+
+policy optimization algorithms. arXiv preprint arXiv:1707.06347, 2017.
+[25] Haoxiang Wang, Wei Xiong, Tengyang Xie, Han Zhao, and Tong Zhang. Interpretable prefer-
+ences via multi-objective reward modeling and mixture-of-experts. In Conference on Empirical
+
+#### Methods in Natural Language Processing, 2024. URL https://api.semanticscholar.
+
+org/CorpusID:270562658.
+[26] Joshua Achiam, David Held, Aviv Tamar, and Pieter Abbeel. Constrained policy optimization.
+In International Conference on Machine Learning, pages 22–31. PMLR, 2017.
+
+#### [27] Alex Ray, Joshua Achiam, and Dario Amodei. Benchmarking safe exploration in deep rein-
+
+forcement learning. arXiv preprint arXiv:1910.01708, 7, 2019.
+[28] Adam Stooke, Joshua Achiam, and Pieter Abbeel. Responsive safety in reinforcement learning
+by pid lagrangian methods. In International Conference on Machine Learning, pages 9133–9143.
+PMLR, 2020.
+[29] Yiming Zhang, Quan Vuong, and Keith W Ross. First order constrained optimization in policy
+space. arXiv preprint arXiv:2002.06506, 2020.
+[30] H Uzawa, K Anow, and L Hurwicz. Studies in linear and nonlinear programming, 1958.
+
+#### [31] BT Polyak. Iterative methods using lagrange multipliers for solving extremal problems with
+
+constraints of the equation type. USSR Computational Mathematics and Mathematical Physics,
+10(5):42–52, 1970.
+[32] G.M. Korpelevich. An extragradient method for finding saddle points and for other problems.
+1976.
+
+#### [33] Tianyi Lin, Chi Jin, and Michael Jordan. On gradient descent ascent for nonconvex-concave
+
+
+#### minimax problems. In International Conference on Machine Learning, pages 6083–6093.
+
+PMLR, 2020.
+
+#### [34] Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen, George Tucker, Sehoon Ha, Jie Tan,
+
+Vikash Kumar, Henry Zhu, Abhishek Gupta, Pieter Abbeel, et al. Soft actor-critic algorithms
+and applications. arXiv preprint arXiv:1812.05905, 2018.
+
+#### [35] Tianzhe Chu, Yuexiang Zhai, Jihan Yang, Shengbang Tong, Saining Xie, Dale Schuur-
+
+
+#### mans, Quoc V. Le, Sergey Levine, and Yi Ma.
+
+
+#### Sft memorizes, rl generalizes: A com-
+
+
+#### parative study of foundation model post-training.
+
+
+#### ArXiv, abs/2501.17161, 2025.
+
+
+#### URL
+
+https://api.semanticscholar.org/CorpusID:275932560.
+[36] Yue Li, Meng Tian, Dechang Zhu, Jiangtong Zhu, Zhenyu Lin, Zhiwei Xiong, and Xinhai Zhao.
+
+#### Drive-r1: Bridging reasoning and planning in vlms for autonomous driving with reinforce-
+
+ment learning. ArXiv, abs/2506.18234, 2025. URL https://api.semanticscholar.org/
+CorpusID:279999326.
+
+#### [37] Keyu Chen, Wenchao Sun, Hao Cheng, and Sifa Zheng. Rift: Group-relative rl fine-tuning
+
+for realistic and controllable traffic simulation, 2025. URL https://arxiv.org/abs/2505.
+03344.
+
+#### [38] Muleilan Pei, Shaoshuai Shi, and Shaojie Shen. Advancing multi-agent traffic simulation
+
+
+#### via r1-style reinforcement fine-tuning. ArXiv, abs/2509.23993, 2025. URL https://api.
+
+semanticscholar.org/CorpusID:281675127.
+[39] Yan Wang, Wenjie Luo, Junjie Bai, Yulong Cao, Tong Che, Ke Chen, Yuxiao Chen, Jenna Dia-
+mond, Yifan Ding, Wenhao Ding, et al. Alpamayo-r1: Bridging reasoning and action prediction
+for generalizable autonomous driving in the long tail. arXiv preprint arXiv:2511.00088, 2025.
+12
+
+--- PAGE 13 ---
+
+
+#### [40] Wei Cao, Marcel Hallgarten, Tianyu Li, Daniel Dauner, Xunjiang Gu, Caojun Wang, Yakov
+
+Miron, Marco Aiello, Hongyang Li, Igor Gilitschenski, Boris Ivanovic, Marco Pavone, Andreas
+
+#### Geiger, and Kashyap Chitta. Pseudo-simulation for autonomous driving. In Conference on
+
+Robot Learning (CoRL), 2025.
+
+#### [41] Daniel Dauner, Marcel Hallgarten, Tianyu Li, Xinshuo Weng, Zhiyu Huang, Zetong Yang,
+
+Hongyang Li, Igor Gilitschenski, Boris Ivanovic, Marco Pavone, Andreas Geiger, and Kashyap
+Chitta. Navsim: Data-driven non-reactive autonomous vehicle simulation and benchmarking.
+In Advances in Neural Information Processing Systems (NeurIPS), 2024.
+
+#### [42] Songyou Peng, Kyle Genova, Chiyu "Max" Jiang, Andrea Tagliasacchi, Marc Pollefeys, and
+
+Thomas Funkhouser. Openscene: 3d scene understanding with open vocabularies, 2023. URL
+https://arxiv.org/abs/2211.15654.
+
+#### [43] Holger Caesar, Juraj Kabzan, Kok Seang Tan, Whye Kit Fong, Eric Wolff, Alex Lang, Luke
+
+
+#### Fletcher, Oscar Beijbom, and Sammy Omari. Nuplan: A closed-loop ml-based planning
+
+benchmark for autonomous vehicles, 2022. URL https://arxiv.org/abs/2106.11810.
+
+#### [44] Shuai Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Sibo Song, Kai Dang, Peng
+
+
+#### Wang, Shijie Wang, Jun Tang, Humen Zhong, Yuanzhi Zhu, Mingkun Yang, Zhaohai Li,
+
+Jianqiang Wan, Pengfei Wang, Wei Ding, Zheren Fu, Yiheng Xu, Jiabo Ye, Xi Zhang, Tianbao
+
+#### Xie, Zesen Cheng, Hang Zhang, Zhibo Yang, Haiyang Xu, and Junyang Lin. Qwen2.5-vl
+
+technical report. ArXiv, abs/2502.13923, 2025. URL https://api.semanticscholar.org/
+CorpusID:276449796.
+[45] Luke Rowe, Rodrigue de Schaetzen, Roger Girgis, Christopher Pal, and Liam Paull. Poutine:
+Vision-language-trajectory pre-training and reinforcement learning post-training enable robust
+end-to-end autonomous driving, 2025. URL https://arxiv.org/abs/2506.11234.
+[46] Bernhard Jaeger, Daniel Dauner, Jens Beißwenger, Simon Gerstenecker, Kashyap Chitta, and
+Andreas Geiger. Carl: Learning scalable planning policies with simple rewards. arXiv preprint
+arXiv:2504.17838, 2025.
+
+#### [47] Daniel Dauner, Marcel Hallgarten, Andreas Geiger, and Kashyap Chitta. Parting with mis-
+
+conceptions about learning-based vehicle motion planning. In Conference on Robot Learning,
+pages 1268–1281. PMLR, 2023.
+[48] Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction. MIT press,
+2018.
+[49] Eitan Altman. Constrained Markov decision processes, volume 7. CRC Press, 1999.
+
+#### [50] Martin Treiber, Ansgar Hennecke, and Dirk Helbing. Congested traffic states in empirical
+
+observations and microscopic simulations. Physical review E, 62(2):1805, 2000.
+[51] Tianyu Li, Yihang Qiu, Zhenhua Wu, Carl Lindström, Peng Su, Matthias Nießner, and Hongyang
+Li. Mtgs: Multi-traversal gaussian splatting. arXiv preprint arXiv:2503.12552, 2025.
+
+#### [52] Hidehisa Arai, Keita Miwa, Kento Sasaki, Yu Yamaguchi, Kohei Watanabe, Shunsuke Aoki,
+
+
+#### and Issei Yamamoto. Covla: Comprehensive vision-language-action dataset for autonomous
+
+driving. 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), pages
+1933–1943, 2025. URL https://api.semanticscholar.org/CorpusID:271909725.
+[53] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Liang
+Wang, Weizhu Chen, et al. Lora: Low-rank adaptation of large language models. Iclr, 1(2):3,
+2022.
+13
+
+--- PAGE 14 ---
+
+
+### A
+
+
+### Additional theorems and Proofs
+
+Theorem A.1 (Theorem 4.1 restated). For a fixed sampled group, the sensitivity of the scalarized-
+reward GRPO estimator gScRew to the logit zk of constraint k is
+∂gScRew
+∂zk
+= λk
+
+∂gScRew
+∂λk
+−
+�
+j∈{R,1,...,K}
+λj
+∂gScRew
+∂λj
+
+,
+(10)
+where, letting D := λRNR −�K
+k=1 λkNk, the partial sensitivities are
+∂gScRew
+∂λR
+= NR
+ˆσSλ −D
+ˆσ3
+Sλ
+�
+Cov(Sλ, R),
+∂gScRew
+∂λk
+= −Nk
+ˆσSλ + D
+ˆσ3
+Sλ
+�
+Cov(Sλ, Ck),
+and �
+Cov(Sλ, X) := 1
+G
+�G
+i=1(Sλ
+i −¯Sλ)(Xi −¯X) denotes the empirical group covariance.
+Proof. For a fixed sampled group, define (as before)
+gScRew(λ) = D
+ˆσSλ ,
+NR := 1
+G
+G
+�
+i=1
+(Ri −¯R)ψi,
+Nk := 1
+G
+G
+�
+i=1
+(Ck,i −¯Ck)ψi.
+
+#### Since the sampled group is fixed, the quantities NR and {Nk}K
+
+
+#### k=1 do not depend on λ. The
+
+dependence on λ enters through the linear numerator D and through the denominator ˆσSλ.
+We first compute the partial sensitivities with respect to the multiplier coordinates. Recall that
+Sλ
+i = λRRi −
+K
+�
+k=1
+λkCk,i,
+¯Sλ = 1
+G
+G
+�
+i=1
+Sλ
+i .
+Derivative with respect to λk.
+For any constraint k,
+∂Sλ
+i
+∂λk
+= −Ck,i,
+∂¯Sλ
+∂λk
+= −¯Ck,
+so
+∂(Sλ
+i −¯Sλ)
+∂λk
+= −(Ck,i −¯Ck).
+Now write
+ˆσSλ =
+�
+�
+�
+�1
+G
+G
+�
+i=1
+(Sλ
+i −¯Sλ)2 .
+Differentiating gives,
+∂ˆσSλ
+∂λk
+=
+1
+2ˆσSλ
+∂
+∂λk
+�
+1
+G
+G
+�
+i=1
+(Sλ
+i −¯Sλ)2
+�
+= −1
+ˆσSλ
+1
+G
+G
+�
+i=1
+(Sλ
+i −¯Sλ)(Ck,i −¯Ck)
+= −
+�
+Cov(Sλ, Ck)
+ˆσSλ
+.
+(11)
+Also,
+∂gScRew
+∂λk
+=
+1
+ˆσSλ
+∂D
+∂λk
++ D ∂
+∂λk
+�1
+ˆσSλ
+�
+= −Nk
+ˆσSλ −D
+ˆσ2
+Sλ
+∂ˆσSλ
+∂λk
+.
+(12)
+14
+
+--- PAGE 15 ---
+
+Substituting (11) into (12) gives
+∂gScRew
+∂λk
+= −Nk
+ˆσSλ + D
+ˆσ3
+Sλ
+�
+Cov(Sλ, Ck).
+(13)
+Note that (13) shows the sensitivity of the policy gradient with respect to multipliers λi if these were
+not softmax-normalized.
+The derivative with respect to λR follows a near identical derivation:
+Derivative with respect to λR.
+We have
+∂(Sλ
+i −¯Sλ)
+∂λR
+= Ri −¯R.
+Differentiating gives
+∂ˆσSλ
+∂λR
+=
+1
+2ˆσSλ
+∂
+∂λR
+�
+1
+G
+G
+�
+i=1
+(Sλ
+i −¯Sλ)2
+�
+=
+1
+ˆσSλ
+1
+G
+G
+�
+i=1
+(Sλ
+i −¯Sλ)(Ri −¯R)
+=
+�
+Cov(Sλ, R)
+ˆσSλ
+.
+and so
+∂gScRew
+∂λR
+=
+1
+ˆσSλ
+∂D
+∂λR
++ D ∂
+∂λR
+�1
+ˆσSλ
+�
+= NR
+ˆσSλ −D
+ˆσ2
+Sλ
+∂ˆσSλ
+∂λR
+= NR
+ˆσSλ −D
+ˆσ3
+Sλ
+�
+Cov(Sλ, R).
+(14)
+Chain rule through the multiplier logits.
+Since the multipliers are softmax-normalized,
+λj =
+exp(zj)
+�
+j′∈{R,1,...,K} exp(zj′),
+their Jacobian is
+∂λj
+∂zk
+= λj(δjk −λk),
+j ∈{R, 1, . . . , K}.
+Applying chain rule,
+∂gScRew
+∂zk
+=
+�
+j∈{R,1,...,K}
+∂gScRew
+∂λj
+∂λj
+∂zk
+=
+�
+j∈{R,1,...,K}
+∂gScRew
+∂λj
+λj(δjk −λk)
+= λk
+∂gScRew
+∂λk
+−λk
+�
+j∈{R,1,...,K}
+λj
+∂gScRew
+∂λj
+.
+(15)
+Factoring out λk yields
+∂gScRew
+∂zk
+= λk
+
+∂gScRew
+∂λk
+−
+�
+j∈{R,1,...,K}
+λj
+∂gScRew
+∂λj
+
+,
+(16)
+and combining (13), (14) with (16) proves the result.
+15
+
+--- PAGE 16 ---
+
+Corollary A.2 (Corollary 4.2 restated). For a fixed sampled group, the sensitivity of the scalarized-
+advantage GRPO estimator to the logit zk of constraint k is
+∂gScAdv
+∂zk
+= λk
+�
+−Nk
+ˆσCk
+−λR
+NR
+ˆσR
++
+K
+�
+k′=1
+λk′ Nk′
+ˆσCk′
+�
+.
+(17)
+Proof. For a fixed sampled group, the scalarized-advantage GRPO estimator can be written as
+gScAdv(λ) = λR
+NR
+ˆσR
+−
+K
+�
+k=1
+λk
+Nk
+ˆσCk
+.
+Since the sampled group is fixed, the quantities NR, Nk, ˆσR, and ˆσCk do not depend on λ. Therefore,
+the partial sensitivities with respect to the multiplier coordinates are immediate:
+∂gScAdv
+∂λR
+= NR
+ˆσR
+,
+∂gScAdv
+∂λk
+= −Nk
+ˆσCk
+.
+(18)
+Note that (18) shows the sensitivity of the policy gradient with respect to multipliers λi if these were
+not softmax-normalized. However, since
+λj =
+exp(zj)
+�
+j′∈{R,1,...,K} exp(zj′),
+Then combining (15) with (18), we get
+∂gScAdv
+∂zk
+= λk
+�
+−Nk
+ˆσCk
+−λR
+NR
+ˆσR
++
+K
+�
+k′=1
+λk′ Nk′
+ˆσCk′
+�
+,
+which proves the result.
+16
+
+--- PAGE 17 ---
+
+Theorem A.3 (Effective Multiplier for Scalarized Rewards). Let
+x :=
+
+
+R
+C1
+...
+CK
+
+∈RK+1,
+λ :=
+
+
+λR
+−λ1
+...
+−λK
+
+∈RK+1,
+
+#### and define the scalarized reward Sλ := λ⊤x. Denote the within-group mean and covariance of
+
+
+#### x by µ := E[x] and Σ := Cov(x), and let σSλ
+
+:=
+�
+Var(Sλ) =
+�
+
+#### λ⊤Σ λ. Further define
+
+per-component standardizations
+z := D−1(x −µ),
+D := diag(σR, σC1, . . . , σCK)
+so that
+ZR := R −µR
+σR
+,
+ZCk := Ck −µCk
+σCk
+,
+k = 1, . . . , K,
+(19)
+
+#### where µ(·) and σ(·) denote the within-group mean and standard deviation of the corresponding
+
+component. Then the GRPO advantage obtained by standardizing the scalarized reward,
+AScRew := Sλ −E[Sλ]
+σSλ
+,
+admits the expansion
+AScRew = (Dλ)⊤z
+σSλ
+=
+K
+�
+j=0
+�λj σj
+σSλ
+�
+Zj,
+(20)
+
+#### where we index j = 0 as the main reward component (λ0 ≡λR, σ0 ≡σR) and j = k corresponds
+
+
+#### to cost Ck. Consequently, the effective contribution of each standardized component Zj is scaled
+
+by λjσj/σSλ, and therefore depends on within-group scales and (through σSλ) the full covariance
+structure Σ.
+Proof. By definition, Sλ = λ⊤x and E[Sλ] = λ⊤µ, hence
+Sλ −E[Sλ] = λ⊤(x −µ).
+(21)
+Moreover,
+Var(Sλ) = Var(λ⊤x) = λ⊤Cov(x) λ = λ⊤Σ λ,
+which yields σSλ =
+�
+λ⊤Σ λ.
+Substituting into (21) gives
+Sλ −E[Sλ] = λ⊤Dz = (Dλ)⊤z.
+Dividing both sides by σSλ yields
+AScRew = Sλ −E[Sλ]
+σSλ
+= (Dλ)⊤z
+σSλ
+,
+which is the first equality in (20). Expanding the dot product gives the summation form
+AScRew =
+K
+�
+j=0
+�λj σj
+σSλ
+�
+Zj,
+completing the proof.
+17
+
+--- PAGE 18 ---
+
+
+### B
+
+
+### Preliminaries
+
+
+#### Markov Decision Processes (MDPs).
+
+
+#### A Markov decision process (MDP) is defined by
+
+
+#### (S, A, P, R) [48], where S is the state space, A the action space, P(· | s, a) the transition ker-
+
+nel, and R(s, a) the reward function. At time t, the agent samples an action at ∼π(· | st), transitions
+according to st+1 ∼P(· | st, at), and receives reward R(st, at). The trajectory distribution under π
+and the expected discounted return are
+pπ(τ) = P0(s0)
+T −1
+�
+t=0
+P(st+1 | st, at) π(at | st),
+JR(π) = Eτ∼pπ
+�T −1
+�
+t=0
+γtR(st, at)
+�
+,
+
+#### where the objective is to learn a policy π∗that maximizes the expected discounted return, i.e.
+
+π∗= arg maxπ JR(π).
+Constrained Markov Decision Processes (CMDPs). A constrained MDP (CMDP) augments the
+
+#### MDP objective with K expected cost constraints [49]. Given cost functions Ck : S × A →R and
+
+thresholds dk, define the feasible set of policies as
+ΠC =
+�
+π ∈Π : JCk(π) ≤dk, k = 1, . . . , K
+�
+,
+JCk(π) = Eτ∼pπ
+�T −1
+�
+t=0
+γtCk(st, at)
+�
+.
+The constrained optimal policy maximizes return subject to feasibility:
+π∗= arg max
+π∈Π JR(π)
+s.t.
+JCk(π) ≤dk, k = 1, . . . , K,
+where stationary stochastic policies may be required for optimality [49].
+
+### C
+
+
+### Gridworld Environment
+
+C.1
+Environment Details
+
+#### Our gridworld is a 10 × 10 grid in which the agent is initialized uniformly at random and must
+
+navigate to a randomly sampled goal location. Reaching the goal yields a sparse terminal reward of
+
+#### 1.0. At the start of each episode, 20% of the tiles are designated as lava; stepping onto a lava tile
+
+
+#### incurs a penalty of 1.0 (i.e., a cost). The agent is also equipped with a battery that drains by 5% at
+
+every timestep and incurs a penalty whenever its charge falls below 10%. The action space consists
+
+#### of five discrete actions: moving in the four cardinal directions, or staying in place to recharge at a
+
+rate of 20% per timestep. The agent observes a compact state representation consisting of:
+• its (x, y) position, normalized to [0, 1]2;
+• the goal (x, y) coordinates, normalized to [0, 1]2;
+• the current battery level in [0, 1];
+• a 5×5 local occupancy map centered on the agent, where entries indicate lava tiles (flattened
+to a 25-dimensional vector).
+Episodes last at most 80 timesteps and terminate early only upon reaching the goal.
+C.2
+Implementation Details
+
+#### We train a categorical policy parameterized by a two-layer MLP (hidden size 128 with ReLU
+
+
+#### activations) that outputs action logits. Policies are optimized with the GRPO clipped objective
+
+
+#### (ϵ = 0.2) using 2 epochs per update, minibatches of size 2048, and an entropy bonus of 0.001.
+
+
+#### Training runs for 8000 update steps; each update collects 64 episodes via grouped rollouts (group
+
+18
+
+--- PAGE 19 ---
+
+0.4
+0.6
+0.8
+1.0
+battery_weight=0.0
+Goal Rate
+0.000
+0.025
+0.050
+0.075
+0.100
+0.125
+0.150
+0.175
+Lava Rate
+scalarized reward
+scalarized advantage
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Lava fixed weight
+0.2
+0.4
+0.6
+0.8
+1.0
+battery_weight=0.1
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Lava fixed weight
+0.00
+0.05
+0.10
+0.15
+
+#### Figure 3: Final performance of GRPO policies evaluated over 1,000 episodes in the gridworld
+
+
+#### with fixed penalty weights, comparing scalarized rewards (blue) and scalarized advantages (red).
+
+Scalarized advantages consistently achieves higher goal-reaching rates while tracking the intended
+trade-off induced by the lava-weight sweep more faithfully, whereas scalarized rewards suppresses
+lava visitation disproportionately.
+
+#### size 8 across 8 groups). We use Adam for the policy optimizer (learning rate 5 × 10−4 by default)
+
+and, when constraints are enabled, a separate Adam optimizer for cost weights (learning rate 10−2).
+Cost weights are parameterized via a softmax over {reward, lava, battery} parameters and updated
+
+#### every step and initialized to 0.02 logits. All experiments were run on 16 CPU cores, and each run
+
+type required approximately 3 hours to complete across all five seeds.
+C.3
+Additional Results
+We compare scalarized rewards and scalarized advantages under fixed reward and penalty weights
+
+#### to illustrate the benefit of scalarizing advantages in the unconstrained setting [7]. For simplicity,
+
+
+#### we restrict the battery-penalty weight to λfixed
+
+
+#### battery ∈{0.0, 0.1} and sweep the lava-penalty weight
+
+over λfixed
+lava ∈{0.0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0}. Figure 3 illustrates how performance varies
+
+#### as we sweep λfixed
+
+
+#### lava for the two fixed settings of λfixed
+
+
+#### battery. Overall, we observe consistently higher
+
+
+#### goal-reaching rates with scalarized advantages, along with more stable performance across seeds
+
+
+#### (through smaller error bars). Moreover, scalarized rewards tends to unilaterally optimize the lava
+
+rate: even the smallest non-zero lava weight, λfixed
+lava = 0.01, leads to near-minimal lava visitation. In
+contrast, scalarized advantages provides smoother, more gradual control over the lava rate, which we
+
+#### argue better reflects the intended meaning of the weights. When multiple penalty terms are active
+
+(λfixed
+battery = 0.1, i.e., bottom row in Fig. 3), scalarized advantages relaxes the lava rate for λfixed
+lava ≤0.5,
+
+#### whereas scalarized rewards behaves identically to the λfixed
+
+
+#### battery = 0.0 setting, effectively optimizing
+
+the lava penalty in the same way regardless of the battery penalty.
+Additionally, we show results for a single constraint in Figure 4, and for two constraints (battery and
+lava) in Figure 5. We refer the reader to the caption for more details.
+
+### D
+
+
+### NAVSIM v2
+
+D.1
+Benchmark Details
+In Stage 1, the benchmark evaluates closed-loop planning quality in an open-loop manner. Concretely,
+each planner outputs a 4-second trajectory sampled at 10 Hz, which is then executed forward without
+feedback using a kinematic bicycle model with an LQR controller. Unlike NAVSIM-v1 [41], which
+
+#### simply replayed recorded agent trajectories, NAVSIM-v2 introduces reactive behavior from other
+
+
+#### vehicles through the Intelligent Driver Model (IDM) [50], improving simulation realism. Stage 2
+
+
+#### evaluates robustness under compounding error by synthesizing new driving rollouts using Multi-
+
+
+#### Traversal Gaussian Splatting [51]. These scenarios are initialized from perturbed ego states (e.g.,
+
+19
+
+--- PAGE 20 ---
+
+
+#### Figure 4: Learning dynamics on the gridworld under Constrained GRPO, comparing scalarized
+
+
+#### advantages (left) and scalarized rewards (right). In this experiment, we set ˜dlava = 0.01 and do
+
+not enforce the battery constraint. Scalarized advantages again produces a stronger final policy and
+makes effective use of the allowable cost budget, with the lava rate touching the specified threshold in
+order to allow for success on the main task. In contrast, scalarized rewards drives the constraint rate
+to near-zero early in training; despite small multipliers values, the corresponding effective weights
+remain larger and noisier, leading to less stable learning and lower final performance.
+
+#### Figure 5: Learning dynamics on the gridworld under Constrained GRPO, comparing scalarized
+
+
+#### advantages (left) and scalarized rewards (right). In this experiment, we set ˜dlava = 0.01 and
+
+˜dbattery = 0.1. Scalarized advantages again produces a stronger final policy and makes effective use
+of its allowable costs’ budget, with both the lava rate and battery rate stabilizing near their specified
+
+#### thresholds in order to allow for success on the main task. In contrast, scalarizing rewards drives
+
+both constraints’ cost rate to near-zero early in training. Even with small values of multipliers, the
+corresponding effective weights remain larger and noisier, leading to less stable learning and lower
+
+#### final performance. Interestingly, we see that when it tries to creep higher, the effective multipliers
+
+react excessively, resulting in the agent not adequately navigating the environment, as shown by the
+poor goal success rate.
+
+#### suboptimal position and/or heading), requiring the planner to produce corrective behavior. The
+
+resulting Navhard evaluation split contains 450 observations for Stage 1 and 5,462 observations for
+Stage 2.
+The following is the expression for EPDMS:
+EPDMS =
+�
+m∈Mpen
+filterm(agent, human)
+�
+��
+�
+penalty terms
+·
+��
+m∈Mavg wm filterm(agent, human)
+�
+m∈Mavg wm
+�
+�
+��
+�
+weighted average terms
+.
+(22)
+
+#### To improve fairness, the function filterm ignores penalty violations (i.e., returns 1 instead of 0)
+
+
+#### whenever the human expert driver makes the same violation. The weights wm for the weighted
+
+
+#### average terms are: (1) wm = 5 for EP, (2) wm = 5 for TTC, (3) wm = 2 for HC, (4) wm = 2 for
+
+EC, and (5) wm = 2 for LK.
+20
+
+--- PAGE 21 ---
+
+D.2
+Base Model Pretraining
+
+#### We initialize all experiments from the Qwen2.5-VL 3B Instruct vision-language model [44]. We
+
+first perform supervised finetuning on the CoVLA dataset [52], which contains 83 hours of nominal
+driving collected in Japan. Following Rowe et al. [45], we represent planned trajectories as serialized
+text and train the model using next-token prediction in the original vocabulary.
+
+#### To promote richer planning behavior, we additionally include automatically generated chain-of-
+
+
+#### thought annotations, produced in a zero-shot manner by Qwen2.5-VL 72B Instruct, and prepend
+
+
+#### these to the target trajectory sequences during training. After this initialization stage, we further
+
+supervise finetune the model on 92,000 scenes from the NAVSIM training set [40, 41]. The remaining
+≈11,000 scenes are held out and used exclusively for reinforcement learning finetuning (RLFT) in
+our benchmark experiments.
+D.3
+Hyperparameters
+We finetune all our models for two epochs through the 11k held-out scenes for RL finetuning (RLFT).
+
+#### All our experiments are performed on 8 A100 GPUs, with each RLFT run taking nearly 20 hours.
+
+
+#### We set β = 0.02 to constrain the policy to the reference SFT policy, the learning rate to 1e−6, and
+
+the group size to 16. We perform two iterations of policy optimization per batch of data. We update
+the Lagrangian multipliers at the same rate as the policy.
+D.4
+PPO and PPO Lagrangian Details
+
+#### The value network is a separate Qwen2.5-VL 3B model initialized from the same SFT checkpoint
+
+
+#### as the policy. This backbone is finetuned using LoRA [53] and we attach separate linear value
+
+heads for each reward and constraint signal to the last hidden state of the Qwen model. Advantages
+
+#### are computed per-token using GAE (λ = 0.95, γ = 0.99), with the value network trained for 200
+
+warmup steps before policy optimization begins.
+D.5
+Additional Results
+
+#### In Figure 6, we show representative learning dynamics of the multipliers and corresponding con-
+
+straints, highlighting differences between the two advantage estimation approaches for constrained
+GRPO in NAVSIM.
+
+### E
+
+
+### GSM8K
+
+E.1
+Hyperparameters
+
+#### We employ huggingface pretrained Qwen2.5-Instruct models with varying sizes. All models are
+
+RL-finetuned on a single node of 8x H200 GPUs, taking under three hours to complete four epochs
+
+#### of training, which was sufficient. We use the AdamW optimizer with a learning rate of 1e −6 for
+
+
+#### 3B and 7B models, and a learning rate of 5e −6 for 1.5B models; the Lagrangian parameters are
+
+optimized with the Adam optimizer with a learning rate of 1e −4.
+
+#### The constraint violation thresholds are different for different model sizes, since each has its own
+
+
+#### capability and setting thresholds too high can result in infeasible policies. For all model size, the
+
+format adherence and integer validity thresholds were set at 0.99; so the policy needed to respect the
+format and integer constraint 99% of the time. For the correctness constraint, the 1.5B sized model
+all employed a 75%; the 3B employed a 90% threshold; and the 7B employed a 95%. On the training
+set, these thresholds were all respected; however, as can be seen in Table 2, there is a small shift in
+the performance across the board (ppo-lagrangian and constrained GRPO).
+
+### F
+
+
+### Limitations
+
+
+#### In this section, we describe some of the limitations of constrained GRPO. In constrained policy
+
+optimization, a general problem is how one should choose the thresholds of the different behavioural
+
+#### constraints. While in this work we mitigate this problem by using interpretable indicator cost
+
+21
+
+--- PAGE 22 ---
+
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+(a)
+drivable_area_compliance
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00driving_direction_compliance
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+no_at_fault_collisions
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+ego_progress
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+multipliers (all)
+0
+500
+1000 1500 2000 2500 3000
+training step
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+(b)
+0
+500
+1000 1500 2000 2500 3000
+training step
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+0
+500
+1000 1500 2000 2500 3000
+training step
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+0
+500
+1000 1500 2000 2500 3000
+training step
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+0
+500
+1000 1500 2000 2500 3000
+training step
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Figure 6: Constrained GRPO plots of constraint and multiplier values through training, comparing
+
+#### with (a) scalarized rewards with (b) scalarized advantages. Focusing on the ego progress and the
+
+
+#### drivable area compliance, we see that with the scalarized rewards, the policy does not adhere to
+
+
+#### the multiplier settings as we intend. First, the drivable area compliance (DAC) stays below its
+
+minimum threshold 0.99 throughout its training even though the multiplier value had moved close to
+its maximum value of 1.0. Moreover, we see that even though the ego-progress (a component of the
+WAT reward) is set to a very low value, the scalarized rewards variant still maximizes it. Conversely,
+the scalarized advantage model allows the different components to adhere to the multiplier setting. In
+addition, we see that at around 2500 training steps, something interesting happens in the scalarized
+advantage model’s multipliers; since the DAC constraint is satisfied and the no at-fault collision (NC)
+
+#### takes a sharp dip, the Lagrangian optimization pushes the NC multiplier higher and squashes the
+
+DAC multiplier. This confirms our theoretical findings that scalarizing the advantages leads to better
+adherence to the specified multiplier weights.
+
+#### functions, it is unclear how to effectively choose these thresholds such that the constraint remain
+
+feasible. In addition, with multiple constraints interacting and competing together, progress on certain
+
+#### constraints could stall completely when one of the constraints is infeasible, effectively killing the
+
+optimization process. An interesting direction for future work is to couple Constrained GRPO with
+
+#### curriculum-style mechanisms that adapt constraint thresholds over training, potentially improving
+
+exploration and enabling satisfaction of stricter constraints.
+22

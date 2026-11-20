@@ -1,0 +1,2175 @@
+文档: 2610.25552_SCA.pdf
+页数: 16
+图片: 0 张
+正文字体大小: 11.0
+
+============================================================
+目录结构（根据字体大小推断）:
+============================================================
+
+  [L2] (p.1) Symbolic Constraint Agents:
+  [L2] (p.1) Mining Formal Tool-Call Constraints to
+  [L2] (p.1) Prevent Agent Errors
+    [L3] (p.1) Jinu Lee
+    [L3] (p.1) University of Illinois Urbana-Champaign
+    [L3] (p.1) jinulee2@illinois.edu
+    [L3] (p.1) Shraddha Barke
+    [L3] (p.1) Microsoft Research
+    [L3] (p.1) sbarke@microsoft.com
+    [L3] (p.1) Abstract
+    [L3] (p.1) 1
+    [L3] (p.1) Introduction
+[L1] (p.1) arXiv:2610.25552v1  [cs.AI]  18 Oct 2026
+    [L3] (p.2) 2
+    [L3] (p.2) Related Work
+    [L3] (p.3) 3
+    [L3] (p.3) Symbolic Constraint Agents
+    [L3] (p.5) 4
+    [L3] (p.5) Experimental Setup
+    [L3] (p.6) 5
+    [L3] (p.6) Results
+    [L3] (p.8) 6
+    [L3] (p.8) Conclusion
+    [L3] (p.9) Limitations
+    [L3] (p.9) Ethical Considerations
+    [L3] (p.9) References
+    [L3] (p.10) A
+    [L3] (p.10) Formal Definition of SCA
+    [L3] (p.11) B
+    [L3] (p.11) Implementation details
+    [L3] (p.12) C
+    [L3] (p.12) Prompts
+    [L3] (p.13) D
+    [L3] (p.13) Constraint Catalogs
+    [L3] (p.13) E
+    [L3] (p.13) Detailed Audit on Constraints
+    [L3] (p.14) F
+    [L3] (p.14) Additional Experiments
+
+============================================================
+正文（含结构标注）:
+============================================================
+
+
+--- PAGE 1 ---
+
+
+## Symbolic Constraint Agents: Mining Formal Tool-Call Constraints to
+
+
+## Prevent Agent Errors
+
+
+### Jinu Lee*
+
+
+### University of Illinois Urbana-Champaign
+
+
+### jinulee2@illinois.edu
+
+
+### Shraddha Barke
+
+
+### Microsoft Research
+
+
+### sbarke@microsoft.com
+
+
+### Abstract
+
+Symbolic constraints (programmatic, determin-
+istic checks for tool calls) enable deterministic
+verification of LLM agents’ tool calls, but ex-
+isting approaches primarily enforce predefined
+safety policies rather than tool dependencies
+in complex tool environments. We explore
+whether symbolic constraints can be mined
+from environments and observations beyond
+predefined policies, and whether they can im-
+prove end-to-end task performance. We present
+Symbolic Constraint Agents (SCA), a frame-
+work that mines symbolic constraints from API
+documentation, refines them against execution
+traces, and checks the agent’s tool calls with
+an SMT solver at runtime. A violation triggers
+a natural-language warning or, when the valid
+replacement is uniquely determined, an auto-
+matic repair. On AppWorld, refinement raises
+error-detection F1 from 37.0 to 58.3 on GPT-
+5.5 traces and from 39.3 to 61.9 on Qwen3.5-
+27B traces. At runtime, repair raises GPT-5.4-
+mini’s task success by 5.4 points under a 40-call
+budget and 9.8 points when environment errors
+are hidden, while removing 59–87% of failed
+calls across models, and transfers to τ 2-bench
+with gains of up to 5.6 points. These findings
+show that automatically acquired symbolic con-
+straints can improve tool-calling reliability and
+task completion, particularly when failures are
+costly or difficult to diagnose.
+
+### 1
+
+
+### Introduction
+
+Large language model (LLM)-based agents are
+increasingly used to automate real-world tasks,
+from customer service to complex workspace du-
+ties (Trivedi et al., 2024; Gao et al., 2025; Fang
+et al., 2026). A critical component of these agents
+is tools, or external functions that allow agents to
+read information from the environment and update
+the environment state (Schick et al., 2023). As
+*Work done during an internship at Microsoft Research.
+agents interact with increasingly complex environ-
+ments, how can we ensure that their tool calls are
+valid?
+Previous work primarily focuses on formalizing
+predefined safety policies into symbolic constraints
+and enforcing them on all tool calls by blocking vi-
+olations for better policy adherence (Kamath et al.,
+2025; Zwerdling et al., 2025). However, complex
+tool-calling environments impose many rules that
+are not explicitly codified as policies. These in-
+clude dependencies between tool calls, argument
+provenance requirements, and restrictions on the
+current environment state (Trivedi et al., 2024; Shi
+et al., 2025). Although some of these conditions
+can be inferred from API documentation, others
+become apparent only through successful or failed
+interactions with the environment.
+This raises two questions: How can we gener-
+ate executable tool-call constraints without man-
+ually specified policies, and can these constraints
+improve agents’ ability to complete tasks rather
+than merely enforce compliance? Addressing these
+questions requires a coherent system that mines
+constraints from diverse sources like policy and
+tool documentation, refines inaccurate rules us-
+ing observed execution behavior, and translates
+detected violations into runtime interventions.
+We propose Symbolic Constraint Agents (SCA),
+which generate tool dependency constraints as
+first-order logic rules and verify agents’ tool
+calls with SMT (Satisfiability Modulo Theories)
+solvers (de Moura and Bjørner, 2008) when each
+call is executed in complex tool environments.
+First, an initializer agent mines candidate rules
+from the API documentation. Since relying solely
+on API documents yields constraints that do not
+reflect the real environment, a second refiner agent
+removes overly strict rules and adds missing rules
+using sample agent traces. At runtime, the agent re-
+ceives information about violated constraints each
+turn, guiding the agent to retry. Furthermore, for
+1
+
+# arXiv:2610.25552v1  [cs.AI]  18 Oct 2026
+
+
+--- PAGE 2 ---
+
+Symbolic Constraint Agent
+(a) Constraint generation:
+Generate rules from API docs and agent trace
+Target tool
+Initializer agent
+Refiner agent
+Agent trace
+(Train set)
+Constraint Memory
+(b) Constraint application:
+Warning and reparing tool calls on runtime
+Agent trace
+Login(id=...)
+→ api_key = ABC
+ListDir(api_key=DEF, ...)
+⚠ Constraint warning
+ListDir(api_key=ABC, ...)UNSAT
+Forall ListDir:
+param api_key = V
+→ Exists Login:
+return api_key = V
+Constraint Memory
+Figure 1: Overview of SCA. Constraint generation (top)
+runs once per environment: an initializer agent mines
+candidate rules from API documentation and a refiner
+agent corrects them against sample agent traces. At the
+constraint application stage (bottom), each proposed call
+is checked against the constraint memory using an SMT
+solver. The rule shown requires LISTDIR’s api_key to
+originate from an earlier LOGIN; the call passing DEF is
+unsatisfiable and can be repaired to ABC.
+constraint violations with a unique correction (e.g.,
+passwords), SCA can instead repair the broken ar-
+gument using MaxSMT model checking.
+We make three contributions. First, we introduce
+an environment-grounded constraint mining frame-
+work that mines executable tool-call rules from API
+documentation and iteratively refines them against
+execution traces, even without requiring manually
+specified task-success criteria. Second, we develop
+solver-based interventions that translate detected
+violations into natural-language feedback, or au-
+tomatic repairs for uniquely determined argument
+errors. Third, we demonstrate that symbolic con-
+straints can improve end-to-end task completion
+through experiments on AppWorld (Trivedi et al.,
+2024) and τ 2-bench (Barrès et al., 2025), particu-
+larly when tool-call failures are costly or hard to
+diagnose, while reducing failed calls and inference
+costs.
+
+### 2
+
+
+### Related Work
+
+Tool-calling environments.
+Tool-calling envi-
+ronments evaluate agents’ ability to manage per-
+sistent state, cross-application dependencies, and
+long action sequences. Benchmarks like τ 2-Bench
+(Barrès et al., 2025) focus on evaluating policy
+adherence and user intent clarification via con-
+versation, while benchmarks like AppWorld and
+TheMCPCompany focus on tool planning and ex-
+ecution for completing complex real-world tasks
+(Trivedi et al., 2024; Esfandiarpoor et al., 2025;
+Wang et al., 2025c). We evaluate on both kinds: Ap-
+pWorld, whose large tool catalog, cross-application
+tasks, and executable evaluator make tool depen-
+dencies both necessary and measurable, and τ 2-
+bench, where the dependencies come from a writ-
+ten policy and many violations go unreported by
+the environment.
+Symbolic constraints for tool-calling agents.
+Agent-C (Kamath et al., 2025) and ToolGuard (Zw-
+erdling et al., 2025) translate safety policies into
+first-order constraints, symbolically check whether
+each tool call violates the constraints, and ap-
+ply constrained generation or resampling to pro-
+duce safe tool calls. Recent systems vary in what
+a human must supply: AgentSpec (Wang et al.,
+2025a) prompts an LLM with developer-written
+seed rules, AgentLTL (Elkoussy and Perez, 2026)
+instantiates constraints from a gold trace per task,
+and AutoSpec (Ma et al., 2026) refines an expert-
+authored guardrail against safety-labelled traces.
+Instead, ours dynamically learns executable con-
+straints from the environment’s response, minimiz-
+ing human intervention and generalizing beyond
+preexisting policies.
+These works do not scale to environments with
+hundreds of tools and no compliance criterion
+(Trivedi et al., 2024; Esfandiarpoor et al., 2025),
+because each still requires a constraint artifact au-
+thored by hand for the target environment. None
+evaluates whether constraints improve task com-
+pletion either; for instance, Agent-C reports gains
+only when a policy violation counts as a failure.
+Memory for complex tool-calling environments.
+With many tools, agents typically retrieve what they
+need from API documentation on the fly (Qin et al.,
+2024), so nothing learned in one episode carries to
+the next. This motivates treating tool knowledge
+as a reusable memory rather than as a per-query
+retrieval problem. Initial work (Gao et al., 2025;
+Lee et al., 2025) represented tool dependencies
+as directed graphs and used them as memory to
+augment relevant tool retrieval. However, these
+graphs are obtained by expert annotation or a fine-
+tuned classifier, and remain static between episodes.
+This prevents the agent from actively updating and
+2
+
+--- PAGE 3 ---
+
+API Docs
+Target tool
+Login()
+Parameters:
+id (str) Your email
+password (str) ...
+Returns:
+file_list (List[str]) ...
+Retrieve related tools
+Initializer agent
+For all Login(),
+if previous Register() exists,
+Login must use same id.
+Add/Edit/Delete
+Constraint Memory
+Forall t1, c1, v1:
+call(t1, c1, Login)
+∧ params(c1, id, v1)
+∧ Exists t2, c2, v2:
+call(t2, c2, Register)
+∧ params(c2, id, v2)
+∧ t2 < t1
+→ v1 = v2
+Rule #109
+Agent trace
+Register(id=...)
+Login(id=...)
+→ Error: Validate email.
+SAT
+API Docs
+Refiner agent
+For all Login() call,
+if previous Register() exists,
+Login must use same id, AND
+Call OpenEmailInbox(), AND
+Call ReadEmail(), AND ...
+Refiner: Constraint too lenient
+Figure 2: Constraint generation. Left: Given the target tool’s specification, the initializer agent generates constraints
+by reasoning about the given tool and searching other potentially relevant tools’ definitions. Right: After the
+initializer agent, the refiner agent updates the catalog based on how the current constraints apply to agent traces.
+modifying the knowledge about the environment.
+ToolAtlas (Fang et al., 2026) pushes the abstraction
+further by maintaining a persistent, provider-side
+tool memory graph through exploration and reuses
+it across agents and tasks. Symbolic Constraint
+Agent maintains a dynamic and executable memory
+based on formal logic: tool-calling rules can be
+updated using the environment’s signals and can
+directly check whether a tool-call attempt is valid.
+
+### 3
+
+
+### Symbolic Constraint Agents
+
+3.1
+Expressing tool calls in formal logic
+Tool calls are sequential activities, which we model
+using first-order logic. Specifically, we define the
+sequence of tool calls using three predicates (unin-
+terpreted functions).
+call(t, c, f)
+tool f is invoked at time t, with
+unique call ID c,
+params(c, k, v)
+argument k of c has value v,
+returns(c, k, v)
+return field k of c has value v.
+Values v are of primitive types including strings,
+integers, reals, Booleans, and null. Complex data
+structures, including maps and lists, are unrolled so
+each primitive value is attached to the closest key.
+Tool and field names are finite symbolic domains.
+We introduce closed-world assumption state-
+ments to prevent the SMT solver from inventing
+unasserted facts about the tool-calling history. First,
+we assume that for each timestep t, there exists a
+unique call(t, c, f). Then, we assume that for all
+past tool calls, parameters, and return values are
+final; that is, for every call ID c, no params or
+returns predicates with c exist other than the con-
+junction of existing predicates. Appendix A gives
+the full sorts, predicates, and axioms. Rules over
+the call history or the call’s outcome account for
+98% of flagged calls.
+Under this formulation, constraints are formu-
+lated as universally quantified rules. For example,
+the constraint “If REGISTER tool was called, a sub-
+sequent LOGIN must use the same id as used for
+REGISTER" can be expressed as
+∀t1, c1, v1, t2, c2, v2.
+call(t1, c1, LOGIN) ∧params(c1, ID, v1)
+∧call(t2, c2, REGISTER) ∧params(c2, ID, v2)
+∧t2 < t1 →v1 = v2.
+If the constraint is unsatisfiable (UNSAT) under
+the current tool call facts, it indicates a violation.
+For instance, the example above is unsatisfiable
+if the LOGIN tool uses a different ID parameter
+than what the previous REGISTER call returns. A
+naive cumulative check can repeatedly report a con-
+tradiction caused by an earlier call. We therefore
+compute an unsatisfiable core and intervene only
+when at least one rule in the core is instantiated by
+the current call. Since solvers do not guarantee a
+minimal core, this attribution is approximate rather
+than exact. However, we observe that multiple
+constraints being violated together is rare.
+3.2
+Constraint generation
+The constraint generation process mines constraints
+across different tools, including parameter value
+dependencies and environment state dependencies.
+Initialization from documentation.
+The initial-
+izer agent generates constraints for one target API
+at a time. Since the full tool collection cannot fit
+3
+
+--- PAGE 4 ---
+
+in a model’s context window, retrieval supplies the
+target definition together with related tools selected
+by name and description. From this context, the
+model identifies candidate preconditions, such as
+value provenance (e.g., an identifier must originate
+from an earlier lookup), temporal ordering (e.g.,
+authentication must precede a protected operation),
+type and domain restrictions (e.g., a quantity must
+be positive or a status must come from a fixed set
+of values), and observable-state preconditions (e.g.,
+a requested amount must not exceed the available
+inventory). For each candidate, it emits both a
+natural-language description and a corresponding
+Z3 expression. For example, in Figure 2, the target
+tool is LOGIN. Retrieval brings in the REGISTER
+definition, and the initializer produces a rule requir-
+ing a LOGIN to reuse the id from an earlier REGIS-
+TER, along with the description “LOGIN must use
+same id as used for REGISTER.”
+Constraint generation proceeds incrementally
+across target APIs rather than processing each API
+independently: the model can attach a tool to an
+existing parameter-level rule, create a new rule,
+edit a rule shared across related tools, or remove
+one found to be invalid, retrieving additional API
+definitions whenever a dependency is unclear. Be-
+fore entering the catalog, every candidate expres-
+sion is parsed and type-checked. (Prompts in Ap-
+pendix C).
+Refinement
+from
+traces.
+Documentation-
+derived constraints generated by the initializer
+agent are likely imperfect. They might be too strict
+by rejecting a successful tool call, or too lenient
+when no rule accounts for an environment-rejected
+call.
+This discrepancy between the generated
+constraints and the real environment can be easily
+found by applying the constraints to actual agent
+execution traces. The Refiner agent updates the set
+of constraints by sampling a trajectory from the
+training set. It receives the full agent trajectory
+with tool calls and return values, along with the
+satisfiability results and UNSAT core for each tool
+call obtained from the current set of constraints.
+It then reasons about whether each step’s verdict
+(UNSAT or SAT) is valid using the provided
+information. The refiner agent then proposes edits
+to the constraint memory by adding rules that
+capture failures that slipped through and modifying
+rules that are overly restrictive on correct tool calls.
+The results of applying the edited constraints to
+the current trace are returned to the agent, and the
+(a) Warning
+Append warning messages to guide agents
+Agent trace
+Constraint Memory
+Register(id=”myname”)
+Forall t1, c1, v1:
+call(t1, c1, Login)
+∧ params(c1, id, v1)
+∧ Exists t2, c2, v2:
+call(t2, c2, Register)
+∧ params(c2, id, v2)
+∧ t2 < t1
+→ v1 = v2
+Login(id=”new_id”, ...)
+⚠ Constraint violated:
+For all Login(),
+if previous Register() exists,
+Login must use same id.
+UNSAT
+(b) Repair
+Replace wrong param. with unique correct value
+call(1, call_1, Register)
+LLM Agent
+params(call_1, id, “myname”)
+call(2, call_2, Login)
+params(call_2, id, V)
+Stage 1: Repair value existence
+V = “new_id” :weight 1 // Soft constraints
+(model-check) => V = “myname”
+Stage 2: Uniqueness
+V != “myname”
+(model-check) => UNSAT
+Login(id=”new_id”, ...)
+Login(id=”myname”, ...)
+Environment
+Repair (Z3)
+Figure 3: Constraint application. (a) In warning mode,
+the call is left unmodified, and the violated constraint
+is appended to the agent’s context in natural language.
+Here, a LOGIN that uses a different id from the preced-
+ing REGISTER. (b) In repair mode, SCA treats each
+argument as a soft constraint and finds the assignment
+with minimal change (Stage 1), then asserts v ̸= v⋆and
+re-checks to confirm the replacement is unique (Stage
+2). The repaired call is then passed to the environment.
+refiner agent is allowed to propose edits multiple
+times until it decides to terminate or exceeds the
+maximum number of tool calls1.
+To ensure fair comparison with baselines, we
+do not provide the oracle evaluation results of the
+input trace (whether the trace fulfilled the user’s
+intent or not), and leave the judgment to the re-
+finer agent. This design alleviates the burden of
+authoring and validating evaluation criteria for the
+training tasks, and allows integration with data aug-
+mentation methods for better tool coverage.
+3.3
+Constraint application to agents
+After refinement, we apply the symbolic constraints
+to the agent runtime to improve performance.
+Warning.
+In
+warning
+mode,
+SCA
+checks
+whether any constraint was violated after the en-
+vironment returns the tool execution result, allow-
+ing constraints to process both parameter-side er-
+rors and return value-based recommendations. It
+leaves the call unmodified and appends the violated
+natural-language constraints to the agent context.
+The model can then revise its plan or arguments.
+1Turn limits were set to 20 in practice. However, none of
+the refiner agent’s attempts exceeded this limit.
+4
+
+--- PAGE 5 ---
+
+Warnings preserve agent autonomy and are appro-
+priate when corrections or alternative plans may be
+valid; Figure 4 shows a recorded instance.
+Repair.
+Some invalid arguments have a unique
+correct value already present in the trajectory, es-
+pecially service-specific access tokens and entity
+identifiers. In repair mode, SCA first detects an
+unsatisfiable constraint before the tool call is made,
+treats each argument leaf as a candidate change,
+and uses MaxSMT (Bjørner et al., 2015) to find
+a minimum-change assignment that satisfies the
+previously violated constraints. Figure 5 shows a
+recorded repair of a mistyped access token.
+Repairs are applied conservatively only when
+the replacement is unique, to prevent malformed
+repairs that do not preserve user intent. After ob-
+taining a candidate value v⋆via MaxSMT, SCA
+asserts v ̸= v⋆and runs the solver again. If v ̸= v⋆
+is unsatisfiable, v⋆is the only possible replacement
+and is then passed to the environment. If more
+than one value remains possible, SCA falls back
+to a warning rather than silently choosing among
+valid alternatives. If the constraints’ verdict was
+UNSAT but without a unique repair, it behaves as
+in warning mode, appending violated constraints
+to the agent’s context.
+
+### 4
+
+
+### Experimental Setup
+
+Benchmark.
+We evaluate SCA on two tool-
+calling benchmarks with different error structures.
+AppWorld (Trivedi et al., 2024): we use the
+test-challenge set (417 instructions). The App-
+World environment exposes 457 APIs across nine
+diverse stateful applications, including email, mu-
+sic, notes, and contacts. Using these tools, the
+agent should complete users’ tasks such as ac-
+cepting Venmo transactions and sending emails
+to friends. The default environment provides an
+informative error message whenever the tool call
+fails due to incorrect parameter values, authentica-
+tion error, etc. (Standard) However, an agent can
+often recover from a rejected call by reading the er-
+ror message and retrying, so a prevented error may
+only save cost. We therefore introduce two chal-
+lenging variants of AppWorld that make tool errors
+increasingly expensive: 40-call budget, where the
+agent may make at most 40 tool calls instead of the
+Standard setting’s 300, so every call spent on an
+error is lost to the task; and silent errors, where the
+environment rejects erroneous calls with an empty
+response, which are harder for agents to recover
+from failures (Zhang et al., 2026). For the silent
+errors setting, the constraint generation/refinement
+stage also does not access the full error message.
+τ 2-bench (Barrès et al., 2025): we use the airline
+and retail domains with 20 and 40 held-out tasks,
+respectively. The agent serves an LLM-simulated
+customer through booking and order-management
+tools while following a written company policy,
+and the official evaluator checks the final database
+state and the required actions. Unlike AppWorld,
+the environment does not reject malformed tool
+calls, including ones that violate the policy (e.g.,
+cancelling a reservation that the policy does not
+allow to be cancelled), making it difficult for agents
+to detect their own errors.
+For tool navigation, the AppWorld environment
+provides a default BM25-based search tool as a sep-
+arate app. Initializer and Refiner agents in SCA’s
+constraint generation stage utilize this endpoint to
+search for relevant tools when generating/editing
+constraints. τ 2-bench domains have few tools (14
+in airline, 16 in retail), so the initializer and refiner
+receive all tool definitions along with the full policy
+in its context.
+Constraint refinement data.
+Refinement uses
+the training set of AppWorld and τ 2-bench, con-
+taining 90 and 104 prompts, respectively. We use
+plain tool-calling LLM agents’ tool-calling histo-
+ries to identify discrepancies between the current
+constraint catalog and the actual environment, then
+freeze the refined catalog before applying it to the
+test set. We use GPT-5.5 for both initializer and
+refiner agents. The refined catalogs contain 295
+constraints for AppWorld, 51 for airline, and 63
+for retail (Appendix D). We do not use the oracle
+grader’s task-success evaluations to ensure SCA’s
+generalizability when such graders are unavailable.
+Models and conditions.
+We evaluate GPT-5.5
+and GPT-5.4-mini (OpenAI, 2026), Sonnet 5 (An-
+thropic, 2026), Qwen3.5-9B and Qwen3.5-27B
+(Qwen Team, 2026) as agent models; Qwen3.5-
+27B is evaluated in Appendix F.1. For each model,
+we compare standard tool-calling mode, SCA with
+warnings, and SCA with automatic repair. Runs
+share the task evaluator, agent harness, and tool
+infrastructure (Appendix B); only the symbolic in-
+tervention mode changes.
+5
+
+--- PAGE 6 ---
+
+Precision (%)
+Recall (%)
+F1 (%)
+GPT-5.5 traces
+Initialize
+61.5
+26.4
+37.0
++ Refine
+90.4
+43.0
+58.3
+Qwen3.5-27B traces
+Initialize
+58.8
+29.6
+39.3
++ Refine
+83.9
+49.1
+61.9
+Table 1: Detection of environment-rejected calls. Re-
+finement improves precision and recall on trajectories
+from both model families.
+
+### 5
+
+
+### Results
+
+5.1
+Quality of Generated Constraints
+Tool-call error detection.
+First, we evaluate
+whether SCA can detect faulty calls that the en-
+vironment will reject. The AppWorld environment
+returns an error message whenever a tool call is
+invalid for any reason, e.g., authentication errors,
+an empty cart when submitting an order, etc. SCA’s
+proposed constraints can therefore be evaluated via
+binary classification: the ground truth is whether
+a tool call returns an error, and the prediction is
+whether a constraint is violated at the given step.2
+Table 1 reports precision, recall, and F1 on tra-
+jectories generated by GPT-5.5 and Qwen3.5-27B,
+capturing both a strong proprietary model and a
+weaker open-weight model. The results show that
+using tool definitions alone (Initialize) produces
+noisy constraints. Refinement with a small number
+of traces raises precision by 28.9 points on GPT-
+5.5 trajectories and 25.1 points on Qwen3.5-27B
+trajectories in the test set, while recall increases by
+16.6 and 19.5 points, respectively. This shows the
+necessity and effectiveness of the refinement stage.
+Maximum recall remains lower than precision,
+primarily because some errors depend on environ-
+mental conditions that cannot be inferred from
+tool documentation or agent trace alone. For in-
+stance, in AppWorld, whether a file actually exists
+in the environment cannot be determined in ad-
+vance. Consequently, the constraints cannot (and
+should not be expected to) detect tool calls that
+reference nonexistent files. Such calls are rejected
+by the environment and counted as false negatives,
+limiting achievable recall.
+We further audit the constraint catalogs mined
+from AppWorld and τ 2-bench using LLMs as a
+judge. The results show that around 92% of the
+2We run this evaluation on AppWorld only, as the τ 2-bench
+environment does not reject most invalid calls and thus the
+environment signal is not trustworthy.
+rules are valid, as they define constraints that accu-
+rately reflect tool description/environment behav-
+iors, and faithful to their natural language descrip-
+tions. Further details, including manual inspections
+to measure calibration between human and LLM
+judges, can be found in Appendix E.
+5.2
+Task Success and Efficiency
+We compare three agents that differ only in how
+the constraints are used: no constraints (the vanilla
+tool-calling agent), warning (after each call, vio-
+lated constraints are reported to the agent in the tool
+response), and repair (before each call, a violating
+argument is replaced by the value that satisfies the
+constraints, when a unique such value exists in
+the call history). All constraint runs use the same
+refined catalog per benchmark, built once with
+GPT-5.5 and frozen. We evaluate three proprietary
+models (GPT-5.5, GPT-5.4-mini, Sonnet-5) and the
+open-weight Qwen3.5-9B. We present single-run
+results for Qwen3.5-27B in Appendix F.1, which
+follows similar performance improvement trends.
+Table 2 reports mean task success for every
+(model, setting, mode) combination, along with
+the standard deviation over three independent runs.
+Table 3 reports the per-task cost of the same runs.
+Constraints improve task success, most when
+steps are limited. Constraints improve task suc-
+cess for GPT-5.4-mini, Sonnet-5 and Qwen3.5-9B
+in the standard and budget-limited AppWorld set-
+tings with at least one of the two modes (Table 2);
+for GPT-5.5, which already solves most tasks, suc-
+cess rates remain stable. In the standard setting
+with up to 300 calls, agents can usually recover
+from a rejected call by retrying. This gives rela-
+tively small gains: repair raises success rate from
+73.5% to 75.1% for GPT-5.4-mini and from 77.3%
+to 78.1% for Sonnet-5. Warnings can even cost
+here: they lower GPT-5.4-mini and Sonnet-5 by
+1.5–2.3 points, since a false alarm makes an agent
+retry a valid call. Therefore, in the unrestricted
+setting, preventing an error mainly saves cost (Ta-
+ble 3). Under a tight 40-call budget, calls cannot
+be wasted recovering from errors, so preventing
+errors leads to higher success. Constraints improve
+the performance for both models: repair improves
+GPT-5.4-mini from 45.1% to 50.5% (+5.4 points),
+and warning improves Sonnet-5 from 60.9% to
+64.0% (+3.1 points). GPT-5.5 does not gain under
+the budget, although repair again removes 21% of
+its failed calls; it makes few errors to begin with,
+6
+
+--- PAGE 7 ---
+
+Task success (%)
+Failed calls per task
+Benchmark (Setting)
+Agent model
+No constraints
++ Warning
++ Repair
++ Warning
++ Repair
+AppWorld (Standard)
+Qwen3.5-9B
+18.1 ± 2.2
+17.6 ± 1.2
+20.4 ± 2.0
+4.6 →1.1 (−76)
+4.6 →0.6 (−87)
+AppWorld (Standard)
+GPT-5.4-mini
+73.5 ± 1.5
+71.2 ± 2.0
+75.1 ± 3.7
+6.6 →5.1 (−24)
+6.6 →2.7 (−59)
+AppWorld (Standard)
+Sonnet-5
+77.3 ± 2.9
+75.8 ± 1.7
+78.1 ± 0.5
+1.0 →0.9 (−5)
+1.0 →0.8 (−14)
+AppWorld (Standard)
+GPT-5.5
+90.8 ± 0.8
+91.1 ± 1.0
+91.4 ± 1.0
+0.95 →0.97 (+3)
+0.95 →0.74 (−22)
+AppWorld (40-call budget) Qwen3.5-9B
+12.5 ± 0.0
+11.1 ± 0.6
+12.8 ± 0.1
+1.1 →0.61 (−43)
+1.1 →0.56 (−48)
+AppWorld (40-call budget) GPT-5.4-mini
+45.1 ± 0.7
+44.5 ± 2.5
+50.5 ± 0.5*
+1.8 →1.7 (−8)
+1.8 →0.7 (−59)
+AppWorld (40-call budget) Sonnet-5
+60.9 ± 1.7
+64.0 ± 0.3*
+61.2 ± 3.7
+0.4 →0.4 (−7)
+0.4 →0.4 (−5)
+AppWorld (40-call budget) GPT-5.5
+65.3 ± 1.2
+65.0 ± 0.3
+65.1 ± 1.5
+0.57 →0.56 (−2)
+0.57 →0.45 (−21)
+AppWorld (Silent errors)
+Qwen3.5-9B
+19.3 ± 0.2
+20.5 ± 0.8
+20.3 ± 0.5
+9.7 →5.6 (−43)
+9.7 →2.8 (−71)
+AppWorld (Silent errors)
+GPT-5.4-mini
+59.5 ± 1.7
+65.2 ± 1.7* 69.3 ± 1.0*
+7.4 →4.5 (−40)
+7.4 →2.5 (−67)
+AppWorld (Silent errors)
+Sonnet-5
+77.8 ± 0.8
+75.8 ± 1.7
+76.1 ± 1.2
+1.3 →1.4 (+3)
+1.3 →1.2 (−6)
+AppWorld (Silent errors)
+GPT-5.5
+90.4 ± 0.3
+89.6 ± 0.5
+90.4 ± 0.3
+0.97 →0.78 (−20) 0.97 →0.82 (−16)
+τ 2-bench
+Qwen3.5-9B
+23.9 ± 4.2
+28.3 ± 3.3
+29.4 ± 2.5
+0.40 →0.49 (+23) 0.40 →0.32 (−21)
+τ 2-bench
+GPT-5.4-mini
+67.2 ± 2.5
+68.9 ± 4.2
+72.8 ± 1.0
+0.14 →0.10 (−28) 0.14 →0.09 (−36)
+τ 2-bench
+Sonnet-5
+83.3 ± 2.9
+80.0 ± 1.7
+81.1 ± 4.8
+0.12 →0.11 (−9)
+0.12 →0.11 (−13)
+Table 2: Task success and failed tool calls. AppWorld: 417 test tasks; τ 2-bench: 60 test tasks (airline and retail);
+mean ± standard deviation over three runs. Success: bold marks an improvement over no constraints, and * marks
+a statistically significant difference (paired task bootstrap, p < 0.05). Failed calls: calls per task rejected by the
+environment, without constraints →with the given mode (change in %); bold marks reductions of 50% or more.
+Per task
+Standard
+40-call
+Silent
+Qwen3.5-9B
+Tool calls
+32→29 (−9)
+22→22 (−2)
+46→38 (−17)
+LLM calls
+45→43 (−3)
+30→30 (0)
+68→62 (−10)
+Prompt (k) 954→869 (−9)
+514→519 (+1) 1428→1291 (−10)
+Compl. (k) 23.8→21.4 (−10) 11.9→13.7 (+15) 16.1→13.8 (−14)
+GPT-5.4-mini
+Tool calls
+55→48 (−14)
+34→33 (−1)
+51→45 (−13)
+LLM calls
+26→21 (−20)
+14→14 (0)
+22→19 (−13)
+Prompt (k) 840→679 (−19)
+358→365 (+2)
+696→606 (−13)
+Compl. (k) 25.8→18.8 (−27) 8.8→8.5 (−3)
+17.7→14.5 (−18)
+Sonnet-5
+Tool calls
+37→36 (−2)
+30→30 (0)
+38→38 (−1)
+LLM calls
+23→23 (0)
+20→20 (0)
+24→24 (−1)
+Prompt (k) 822→817 (−1)
+640→643 (0)
+914→898 (−2)
+Compl. (k)
+7.7→7.4 (−4)
+5.8→5.8 (0)
+7.9→7.9 (0)
+GPT-5.5
+Tool calls
+43→42 (−1)
+33→33 (0)
+42→42 (0)
+LLM calls
+16→16 (0)
+12→11 (−1)
+15→15 (−1)
+Prompt (k)
+546→544 (0)
+315→310 (−1)
+488→481 (−1)
+Compl. (k)
+7.4→7.3 (−1)
+4.8→4.8 (0)
+7.1→7.1 (0)
+Table 3: Cost per AppWorld task without constraints
+→repair (change in %). Prompt/Compl.: prompt and
+completion tokens. Shading: savings more than 10%.
+so preventing them frees little budget. The gains
+concentrate in mid-strength models, which make
+enough errors for constraints to catch and have
+budget left to use the corrections.
+Constraints lead to fewer failed calls and lower
+cost. Because nearly every call that violates a con-
+straint is one the environment would reject (Ta-
+ble 1), repair effectively prevents failures before
+they happen: it removes 59–67% of failed calls
+for GPT-5.4-mini and 48–87% for Qwen3.5-9B
+across different settings. Each prevented failure
+also saves the turns the agent would have spent re-
+covering, so GPT-5.4-mini needs 20% fewer LLM
+calls and 27% fewer completion tokens per task in
+the standard setting, consistently across all three
+runs (Table 3). The checker’s cost is mostly negli-
+gible; Z3 checking adds a median of 0.1–0.4 s per
+call (Details in Appendix F.3).
+When errors are silent, constraints can restore
+the missing signal. When the environment returns
+blank error messages, GPT-5.4-mini costs 14 points
+(73.5% →59.5%) in AppWorld end-to-end perfor-
+mance, showing its low ability to recover from er-
+ror. However, the constraints can still flag the faulty
+call with high precision, even though the constraint
+generation/refinement stage receives blank error
+messages. In GPT-5.4, warning mode recovers 5.7
+points and repair recovers 9.8 points (p < 0.05 for
+both), which takes account of about 70% of the
+loss compared to the Standard setting. The number
+of failed calls that go unnoticed also falls from 7.4
+per task to 4.5 with warnings and 2.5 with repair,
+signaling strong improvement.
+τ 2-bench also provides uninformative error mes-
+sages, making it comparable to the Silent errors set-
+ting of Appworld. With constraints that explicitize
+domain policy and tool contracts, repair raises suc-
+cess by 5.6 points for GPT-5.4-mini and 5.5 points
+7
+
+--- PAGE 8 ---
+
+User:
+"Place an order for everything in my Amazon cart and wishlist,
+shipped to my home address."
+...
+Agent:
+place_order(payment_card_id=64, address_id=29,
+access_token="0ac87b...")
+Env:
+Invalid promo code.
+Warning: "If Amazon place_order call fails due to an
+invalid promo code, use
+remove_promo_code_from_cart tool to remove it."
+Agent:
+I need to remove the invalid promo code first. Let me
+double-check the signature:
+show_api_doc(app_name="amazon",
+api_name="remove_promo_code_from_cart")
+Env:
+Description: Removes a promo code from the cart.
+Parameters: access_token (str) ...
+Agent:
+remove_promo_code_from_cart(
+access_token="0ac87b...")
+Env:
+"Removed the promo code from the cart."
+Agent:
+place_order(payment_card_id=64, address_id=29,
+access_token="0ac87b...")
+Env:
+"Order placed successfully. Debited a total of 2690.76 from
+your card."
+Agent:
+complete_task(status="success")
+Figure 4: Example of warning.
+for Qwen3.5-9B, and warnings raise Qwen3.5-9B
+by 4.4 points.
+5.3
+Examples of constraint application
+The warning and repair modes show complemen-
+tary strengths. Warning mode catches failures that
+only show in the outcome, such as an expired pay-
+ment card or an invalid promo code, which no
+check before the call can detect. On the other hand,
+repair mode fixes mistakes visible in the call itself.
+For instance, GPT-5.4-mini often mistypes long
+access tokens (82% of its failed calls are authen-
+tication errors), and repair removes 68% of these
+errors. In this section, we show two qualitative ex-
+amples of how the warning and repair mechanisms
+guide the agent towards correct tool calling.
+Warning.
+(AppWorld task 77bcb81_3, Sonnet
+5) In this task, the user asked the agent to place
+an order for every item in the Amazon cart and
+wish list. After moving the wish-list items into the
+cart, the agent attempted checkout, but an expired
+promotion code was registered to the cart and in-
+validated the order. The constraint identified the
+failure case by the returned error message of the
+PLACEORDER tool, providing the detailed reason
+for the failure and guiding the agent to the correct
+tool. The excerpt in Figure 4 preserves the recorded
+inputs and outputs while redacting the access to-
+ken. The agent directly called the correct tool for
+removing the promotion code, retried the original
+order, and passed the task.
+Agent:
+gmail_login(id="", password="")
+Env:
+Access token: "378c1a..."
+Agent:
+filesystem_login(id="", password="")
+Env:
+Access token: "f01829..."
+...
+Agent:
+show_file(file_path="~/documents/
+personal/bradley_trip_expenses.pdf",
+access_token="378c1a...")
+Repair:
+access_token: "378c1a..." �→"f01829..."
+Env:
+File metadata and contents returned successfully.
+Agent:
+upload_attachments_to_draft(draft_id=518,
+attachment_file_paths=[...],
+access_token="378c1a...",
+file_system_access_token="378c1a...")
+Repair:
+file_system_access_token:
+"378c1a..." �→"f01829..."
+Env:
+The local PDF was attached to draft 518.
+Agent:
+send_email_from_draft(draft_id=518,
+access_token="378c1a...",
+file_system_access_token="378c1a...")
+Repair:
+file_system_access_token:
+"378c1a..." �→"f01829..."
+Env:
+Draft 518 was sent successfully.
+...
+Agent:
+complete_task(status="success")
+Figure 5: Example of repair.
+Repair.
+(AppWorld task 4ac4a8d_3, GPT-5.4-
+mini) In this task, the user asked the agent to for-
+ward an email thread to a given contact and at-
+tach the given file. When searching for the file
+via FileSystem APIs, the agent repeatedly supplied
+the email application’s credentials instead, which
+should have failed the tool execution. The plain
+tool-calling baseline repeated the tool call with the
+invalid token, not realizing the mistake, and even-
+tually exhausted the turn limit. Figure 5 shows
+SCA with repair mode automatically corrects the
+invalid credential token to a correct one, as the cor-
+rect token for the show_file tool uniquely exists
+in the agent’s previous tool-calling history. Each
+substitution changed only one argument leaf and
+preserved the remainder of the agent’s call. After
+automatic repair, the agent proceeds to attach the
+file and forward the email, completing the task.
+
+### 6
+
+
+### Conclusion
+
+SCA mines tool-call constraints in formal logic
+from tool definitions and corrects them against
+agent traces. Checked by a solver at runtime, these
+constraints detect faulty calls and raise task suc-
+cess while cutting failed calls and tokens through
+warnings and repair. We demonstrate that these im-
+provements generalize to realistic settings without
+explicit domain policies or informative error mes-
+sages, highlighting the potential of our approach for
+building more controllable and trustworthy agents.
+8
+
+--- PAGE 9 ---
+
+
+### Limitations
+
+Constraints are built once with a strong proprietary
+model (GPT-5.5) and refined on execution traces
+of training tasks, which requires access to such
+traces and incurs a one-time cost. Our constraints
+check each tool call against the call history, so they
+detect errors that are visible in that history: wrong
+or miscopied arguments, calls in the wrong state,
+missing prerequisites. They cannot detect failures
+that depend on hidden environment state (e.g., a
+credit limit the agent has not queried), and they
+cannot detect omissions, where the agent never
+makes a necessary call. This is why recall is much
+lower than precision (Table 1), and why constraints
+help little for agents whose failures are mostly of
+these kinds, such as Qwen3.5-9B.
+Improvements in task success are largest when
+tool errors are costly or invisible and when the
+agent makes many call-level errors. In the standard
+AppWorld setting, success gains are small, and a
+strong model that rarely makes these errors (Claude
+Sonnet-5) benefits little. Warnings can also mis-
+lead: a false alarm may cause an agent to retry a
+call that was valid.
+
+### Ethical Considerations
+
+Symbolic constraints make tool-use agents more
+reliable, but they are not a safety guarantee: mined
+rules can be wrong or too strict, and a too-strict
+rule can flag or alter a legitimate action. More reli-
+able agents can also be used to automate harmful
+actions, which our checker does not prevent. All
+experiments run in simulated environments (App-
+World, τ 2-bench) with synthetic users and no per-
+sonal data. Constraint mining is a one-time cost per
+environment, and repair reduces failed tool calls
+and, for the weaker models, LLM calls and tokens
+per task (Table 3).
+
+### References
+
+Anthropic. 2026. Introducing claude sonnet 5. https:
+//www.anthropic.com/news/claude-sonnet-5.
+Victor Barrès, Honghua Dong, Soham Ray, Xujie Si,
+and Karthik Narasimhan. 2025. τ 2-Bench: Evaluat-
+ing Conversational Agents in a Dual-Control Envi-
+ronment. CoRR, abs/2506.07982.
+Nikolaj Bjørner, Anh-Dung Phan, and Lars Flecken-
+stein. 2015. νz-an optimizing smt solver. In Inter-
+national conference on Tools and Algorithms for the
+Construction and Analysis of Systems, pages 194–
+199. Springer.
+Leonardo de Moura and Nikolaj Bjørner. 2008. Z3: An
+efficient SMT solver. In Tools and Algorithms for
+the Construction and Analysis of Systems (TACAS),
+volume 4963 of LNCS, pages 337–340.
+Laïla Elkoussy and Julien Perez. 2026. Agentltl: A
+trace-verification framework for measuring, enforc-
+ing, and training procedural compliance in tool-using
+llm agents. arXiv preprint arXiv:2607.02599.
+Reza
+Esfandiarpoor,
+Vishwas
+Suryanarayanan,
+Stephen H. Bach, Vishal Chowdhary, and Anthony
+Aue. 2025. TheMCPCompany: Creating General-
+purpose Agents with Task-specific tools.
+CoRR,
+abs/2510.19286.
+Yue Fang, Zhibang Yang, Fangkai Yang, Xiaoting Qin,
+Liqun Li, Qingwei Lin, Saravan Rajmohan, and
+Dongmei Zhang. 2026. ToolAtlas: Learning Once,
+Reusing Everywhere with Tool-Side Memory. CoRR,
+abs/2607.11126.
+Linfeng Gao, Yaoxiang Wang, Minlong Peng, Jialong
+Tang, Yuzhe Shang, Mingming Sun, and Jinsong Su.
+2025. Tool Graph Retriever: Exploring Dependency
+Graph-based Tool Retrieval for Large Language Mod-
+els. CoRR, abs/2508.05152.
+Adharsh Kamath, Sishen Zhang, Calvin Xu, Shubham
+Ugare, Gagandeep Singh, and Sasa Misailovic. 2025.
+Enforcing Temporal Constraints for LLM Agents.
+CoRR, abs/2512.23738.
+Seungkyu Lee, Nalim Kim, and Yohan Jo. 2025. In-N-
+Out: A Parameter-Level API Graph Dataset for Tool
+Agents. CoRR, abs/2509.01560.
+Pingchuan Ma, Zhaoyu Wang, Zimo Ji, Yuguang Zhou,
+Zhantong Xue, Zongjie Li, Shuai Wang, and Xiaoqin
+Zhang. 2026. Autospec: Safety rule evolution for
+llm agents via inductive logic programming. arXiv
+preprint arXiv:2606.24245.
+OpenAI.
+2026.
+Introducing
+GPT-5.4
+mini
+and
+nano.
+https://openai.com/index/
+introducing-gpt-5-4-mini-and-nano/.
+Yujia Qin, Shihao Liang, Yining Ye, Kunlun Zhu, Lan
+Yan, Yaxi Lu, Yankai Lin, Xin Cong, Xiangru Tang,
+Bill Qian, Sihan Zhao, Lauren Hong, Runchu Tian,
+Ruobing Xie, Jie Zhou, Mark Gerstein, Dahai Li,
+Zhiyuan Liu, and Maosong Sun. 2024. ToolLLM: Fa-
+cilitating Large Language Models to Master 16000+
+Real-world apis. In The Twelfth International Con-
+ference on Learning Representations, ICLR 2024,
+Vienna, Austria, May 7-11, 2024. OpenReview.net.
+Qwen Team. 2026. Qwen3.5: Towards native multi-
+modal agents. https://qwen.ai/blog?id=qwen3.
+5.
+Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta
+Raileanu, Maria Lomeli, Eric Hambro, Luke Zettle-
+moyer, Nicola Cancedda, and Thomas Scialom. 2023.
+9
+
+--- PAGE 10 ---
+
+Toolformer: Language Models Can Teach Them-
+selves to Use Tools.
+In Advances in Neural In-
+formation Processing Systems 36: Annual Confer-
+ence on Neural Information Processing Systems 2023,
+NeurIPS 2023, New Orleans, LA, USA, December 10
+- 16, 2023.
+Zhengliang Shi, Yuhan Wang, Lingyong Yan, Pengjie
+Ren, Shuaiqiang Wang, Dawei Yin, and Zhaochun
+Ren. 2025. Retrieval Models Aren’t Tool-Savvy:
+Benchmarking Tool Retrieval for large Language
+Models. In Findings of the Association for Com-
+putational Linguistics, ACL 2025, Vienna, Austria,
+July 27 - August 1, 2025, pages 24497–24524. Asso-
+ciation for Computational Linguistics.
+Harsh Trivedi, Tushar Khot, Mareike Hartmann, Ruskin
+Manku, Vinty Dong, Edward Li, Shashank Gupta,
+Ashish Sabharwal, and Niranjan Balasubramanian.
+2024. AppWorld: A Controllable World of Apps and
+People for Benchmarking interactive Coding Agents.
+In Proceedings of the 62nd Annual Meeting of the
+Association for Computational Linguistics (Volume 1:
+Long Papers), ACL 2024, Bangkok, Thailand, August
+11-16, 2024, pages 16022–16076. Association for
+Computational Linguistics.
+Haoyu Wang, Christopher M Poskitt, and Jun Sun.
+2025a. Agentspec: Customizable runtime enforce-
+ment for safe and reliable llm agents. arXiv preprint
+arXiv:2503.18666.
+Xingyao Wang, Yangyi Chen, Lifan Yuan, Yizhe Zhang,
+Yunzhu Li, Hao Peng, and Heng Ji. 2024. Executable
+code actions elicit better llm agents. arXiv preprint
+arXiv:2402.01030.
+Xingyao Wang, Boxuan Li, Yufan Song, Frank F Xu,
+Xiangru Tang, Mingchen Zhuge, Jiayi Pan, Yueqi
+Song, Bowen Li, Jaskirat Singh, et al. 2025b. Open-
+hands: An open platform for ai software developers
+as generalist agents. In International Conference
+on Learning Representations, volume 2025, pages
+65882–65919.
+Zhenting Wang, Qi Chang, Hemani Patel, Shashank
+Biju, Cheng-En Wu, Quan Liu, Aolin Ding, Alireza
+Rezazadeh, Ankit Shah, Yujia Bao, and Eugene Siow.
+2025c.
+MCP-Bench: Benchmarking Tool-Using
+LLM Agents with Complex Real-World tasks via
+MCP Servers. CoRR, abs/2508.20453.
+Zhiwei Zhang, Fei Zhao, Rui Wang, Zezhong Wang, Bin
+Liang, Jiakang Wang, Yao Hu, Shaosheng Cao, and
+Kam-Fai Wong. 2026. Robust Tool Use via Fission-
+GRPO: Learning to Recover from Execution errors.
+In Proceedings of the 64th Annual Meeting of the
+Association for Computational Linguistics (Volume
+1: Long Papers), ACL 2026, San Diego, California,
+United States, July 2-7, 2026, pages 40477–40491.
+Association for Computational Linguistics.
+Naama Zwerdling, David Boaz, Ella Rabinovich, Guy
+Uziel, David Amid, and Ateret Anaby-Tavor. 2025.
+Towards Enforcing Company Policy Adherence in
+Agentic Workflows. In Proceedings of the 2025 Con-
+ference on Empirical Methods in Natural Language
+Processing, EMNLP 2025 - Industry Track, Suzhou,
+China, November 4-9, 2025, pages 595–606. Associ-
+ation for Computational Linguistics.
+
+### A
+
+
+### Formal Definition of SCA
+
+This section describes the formal logic machinery
+for detecting and repairing constraint-violating tool
+calls under SCA.
+A.1
+Sorts and Predicates
+SCA introduces four sorts: a unique ID for each
+tool call, an enumeration of possible tool names
+and field names, and parameter/return values. Ev-
+ery concrete parameter or return value observed in
+a trace is lifted into exactly one of the five construc-
+tors.
+CallID : String
+ToolName : enumerated sort
+FieldName : enumerated sort
+Value ::= v_str(String) | v_int(Z) | v_real(R)
+| v_bool(B) | v_null
+Using these sorts, we define four predicates (unin-
+terpreted functions) to express tool-call events.
+call : N0 × CallID × ToolName →B
+params : CallID × FieldName × Value →B
+returns : CallID × FieldName × Value →B
+finish : N0 →B
+Here call(i, c, T) states that step i is call c of tool
+T; params(c, f, v) states that call c was invoked
+with parameter f = v; returns(c, f, v) states that
+call c returned field f = v; and finish(i) states that
+step i is the trace’s terminal action.
+A.2
+Axioms
+Closed-world assumptions.
+Simply asserting
+the uninterpreted functions as ground facts would
+leave models free to also satisfy the predicate on tu-
+ples never observed. In other words, SMT solvers
+may invent non-existent values or allow duplicate
+values registered for the same tool call. Hence, we
+add closed-world axioms.
+Specifically, let Fp be the domain as the set of
+all observed tuples for each uninterpreted predicate
+p ∈{call, params, returns}, and Fid be the set of
+already instantiated CallIDs. At turn it, we define
+10
+
+--- PAGE 11 ---
+
+the axioms as:
+cwa_call:
+∀i, c, T.
+�
+call(i, c, T) ∧i ≤it
+�
+→
+�
+(ik,ck,Tk)∈Fcall
+�
+i=ik ∧c=ck ∧T=Tk
+�
+cwa_params:
+∀c, f, v.
+�
+params(c, f, v) ∧�
+ck∈Fid c=ck
+�
+→
+�
+(ck,fk,vk)∈Fparams
+�
+c=ck ∧f=fk ∧v=vk
+�
+cwa_returns:
+∀c, f, v.
+�
+returns(c, f, v) ∧�
+ck∈Fid c=ck
+�
+→
+�
+(ck,fk,vk)∈Freturns
+�
+c=ck ∧f=fk ∧v=vk
+�
+Structural axioms.
+We further introduce more
+axioms to make sure that future traces are also
+valid.
+call_id_uniq:
+∀c, i, j, T1, T2. call(i, c, T1) ∧call(j, c, T2)
+→(i=j ∧T1=T2)
+one_call_per_ts_exist:
+∀i. finish(i) ∨∃c, T. call(i, c, T)
+one_call_per_ts_uniq:
+∀i, c1, c2, T1, T2. call(i, c1, T1) ∧call(i, c2, T2)
+→(c1=c2 ∧T1=T2)
+param_field_exist[T, f]:
+∀i, c. call(i, c, T) →∃v. params(c, f, v)
+param_field_uniq:
+∀c, f, v1, v2. params(c, f, v1) ∧params(c, f, v2)
+→v1=v2
+param_call_id_exist:
+∀c, f, v. params(c, f, v) →∃i, T. call(i, c, T)
+return_field_exist[T, f]:
+∀i, c. call(i, c, T) →∃v. returns(c, f, v)
+return_field_uniq:
+∀c, f, v1, v2. returns(c, f, v1) ∧returns(c, f, v2)
+→v1=v2
+return_call_id_exist:
+∀c, f, v. returns(c, f, v) →∃i, T. call(i, c, T)
+no_calls_after_finish:
+∀i, j, c, T. finish(i) ∧j≥i →¬ call(j, c, T)
+∀i, j. finish(i) ∧j>i →¬ finish(j)
+Two
+parameterized
+existence
+axioms,
+param_field_exist
+and
+return_field_exist,
+are instantiated with all combinations of tool and
+its corresponding required fields.
+In reality, instantiating rules for all tools and
+their parameters/return values incurs a significant
+runtime increase in Z3. To reduce the delay, we
+limit the universe of tools to those exposed to the
+agent via tool search.
+A.3
+Realizability Query
+Given a trace and the current catalog of mined con-
+straints {φ1, . . . , φn} (each φi a closed first-order
+formula over call/params/returns in the vocabu-
+lary above), the checker asks, under the closed-
+world and structural axioms:
+SAT
+��
+k
+axk ∧
+�
+i
+φi
+�
+.
+Each axiom and each constraint is asserted as a
+separately-tracked assumption. An UNSAT ver-
+dict yields an UNSAT core, a subset of axioms
+and constraints that are jointly unsatisfiable, which
+is then used to attribute a violation to a specific
+call in the trace. This information is used for the
+constraint refinement (Section 3.2) and warning
+(Section 3.3).
+
+### B
+
+
+### Implementation details
+
+SCA is implemented as an agent in Open-
+Hands (Wang et al., 2025b). It subclasses the Code-
+Act agent (Wang et al., 2024), so the underlying
+LLM agent, its prompts, and its tool handling are
+unchanged. The environment’s tools are served to
+the agent over a Model Context Protocol (MCP)
+server. SCA operates by intercepting each MCP
+observation before it reaches the LLM. It observes
+the called tool, its arguments, and response, and
+appends them to a running set of trace facts which
+are then passed to the constraint checker.
+Constraint checking uses Z3 (v4.16) through its
+Python API. Tool and field names are Z3 enumer-
+ation sorts, and argument and return values are an
+algebraic datatype covering strings, integers, re-
+als, booleans and null; lists and maps are unrolled
+into their primitive leaves. For each check, the
+trace facts are substituted into the uninterpreted
+predicates call, params, returns and finish of
+the scoped rules. Z3 then checks the result with
+tracked assertions, and the unsat core identifies the
+violated rules. To keep checks fast, SCA lifts trace
+facts into Z3 terms incrementally and caches them
+across steps. It asserts only the rules scoped to
+the called tool, and each check has a 5 s timeout.
+A warning is appended in place to the text of the
+MCP observation. A repair runs as a dry-run check
+on the proposed MCP action before dispatch, us-
+ing a snapshot of the trace and cache that is rolled
+back afterwards. When the repair is unique, SCA
+rewrites the action’s arguments in place, so the en-
+vironment executes only the corrected call. Repairs
+11
+
+--- PAGE 12 ---
+
+are computed with Z3’s Optimize (MaxSAT with
+soft constraints on the original values), followed
+by a second solver call that checks uniqueness. Ev-
+ery check, warning, and repair is logged with its
+verdict and the rules involved.
+
+### C
+
+
+### Prompts
+
+We reproduce the prompts of the initializer and re-
+finer agents below. Bracketed segments in capitals
+are placeholders filled in at runtime.
+Initializer agent prompt
+Final-answer format (no markdown fences, no prose,
+no tool calls): a single JSON object with exactly
+these two keys:
+- "join": list[{"rid": int, "rationale": str}]
+Add the CURRENT TARGET TOOL to the `applies_to`
+set of the existing rule #rid shown under EXISTING
+RULES. Use this -- instead of writing a near-
+duplicate -- when the target tool's same-named
+parameter obeys the SAME invariant as that rule (
+same provenance source, same type or value-domain
+constraint). Joining reuses the rule's z3 verbatim
+; do NOT restate it.
+- "add": list[{"nl_constraint": str, "
+z3_constraint": str, "source_tools": list[str], "
+rationale": str}]
+Author a brand-new rule that (for now) applies
+only to the current target tool. The `
+z3_constraint` MUST name the target call with the
+`call(i1, c1, __TARGET__)` placeholder. `
+source_tools` lists any concrete tools a
+provenance rule reads from (omit / [] otherwise).
+Use [] for either key you do not need. Return {"
+join": [], "add": []} if no high-quality
+constraint applies to this tool. Every assistant
+turn must be either (a) one or more search-tool
+calls, or (b) the final JSON object.
+========================================
+TARGET TOOL DEFINITION:
+[TARGET TOOL DEFINITION]
+EXISTING RULES that constrain a parameter whose
+name matches one of this tool's parameters (
+candidates to JOIN):
+[EXISTING RULES, or: (no existing rules constrain
+a parameter of this tool yet)]
+For EACH existing rule above, decide whether this
+target tool's same-named parameter obeys the SAME
+invariant (same provenance source, same type /
+value-domain constraint). If so, `join` that rule
+(rid) -- do NOT write a new rule. If this tool's
+parameter follows a DIFFERENT invariant, or a
+needed invariant is not covered by any rule above,
+`add` a new rule using the `call(i1, c1,
+__TARGET__)` placeholder for the target call.
+You do NOT need to search for sibling tools that
+share a parameter -- the catalog grows
+incrementally as each tool is processed. Use the
+search-tool functions only to inspect a provenance
+SOURCE tool you must reference. Make sure each
+constraint triggers on incorrect traces but never
+invalidates correct ones. Data-provenance rules
+must be high quality: only require a parameter to
+come from a prior return when the exact source
+tool and return field are supported by inspected
+schemas; if the data could legitimately come from
+arbitrary different tools, do not generate a
+constraint. Do NOT add constraints about the tool'
+s own return values unless an obvious invariant
+exists.
+Refiner agent prompt
+Respond with a single JSON object (no markdown
+fences, no prose) with exactly these keys:
+- "remove": list[{"rid": int, "rationale": str}]
+Delete rule #rid from the catalog. `rationale`
+must concisely justify the removal (e.g. "
+spuriously fired: trace shows X is allowed without
+Y", "subsumed by #42", "wrong scope: applies to
+tool A not B").
+- "edit": list[{"rid": int, "nl_constraint": str,
+"z3_constraint": str, "rationale": str}]
+Replace rule #rid with the given new nl/z3 pair.
+`rationale` must explain *why* the rule is being
+changed and what specifically in the trace or
+current rule motivated it (e.g. "tightened scope
+to only apps_phone:show_account", "fixed off-by-
+one on price comparison"). The new nl_constraint /
+z3_constraint MUST be a generic, reusable
+invariant -- not phrased in terms of "this task" /
+"this prompt" / prompt-specific literals (see
+GENERALITY REQUIREMENT in the user message).
+- "add": list[{"tool_name": str, "nl_constraint":
+str, "z3_constraint": str, "rationale": str}]
+Append a brand-new rule under the named tool
+group. The tool_name must exactly match a name in
+the RELEVANT TOOLS or CURRENT RULE CATALOG. `
+rationale` must explain what violation in the
+trace this new rule would have prevented and why
+no existing rule catches it. The nl_constraint /
+z3_constraint MUST be a generic invariant that
+will fire on ANY future trace exhibiting the same
+violation pattern -- not a rule scoped to this
+specific user prompt or its literal values (see
+GENERALITY REQUIREMENT in the user message).
+Use [] for any operation you do not need. Do not
+include any other top-level keys. Every op MUST
+include a non-empty `rationale` string; ops
+missing a rationale will be dropped.
+You have access to a `suggest_edit` tool. Use it
+to TEST your proposed changes BEFORE committing
+them:
+1. For each unsat-core rule, examine the specific
+tool call(s) that triggered it. Check the exact
+parameter values against the return values of
+prior calls.
+2. Also examine tool calls that FAILED (returned
+error messages). If a call failed due to an API
+contract violation (wrong type, missing required
+field, invalid value) and no existing rule
+captures that invariant, propose ADDING a new rule.
+3. If you determine a rule is genuinely wrong,
+remove it. If you want to change a rule, remove
+the old rule and add a replacement rule. If you
+want to add a new rule, include an add operation
+with `applies_to`, `nl_constraint`, `z3_constraint
+`, and `rationale`.
+4. Inspect the returned SAT verdict, final UNSAT
+core, and step-wise UNSAT cores. Use `
+current_call_core_rids` to identify which proposed
+catalog rules are still blamed on each specific
+tool call; `full_unsat_core_rids` may include
+stale cumulative poison from earlier calls.
+12
+
+--- PAGE 13 ---
+
+5. If you cannot find a valid reason to change any
+rule AND no uncaptured violations exist, output
+an empty ops object: {"remove": [], "add": []}.
+This means the constraint catalog is already
+correct for this trace.
+========================================
+USER PROMPT:
+[ORIGINAL TASK INSTRUCTION]
+EXECUTION TRACE (chronological tool calls):
+[TRACE + PER-STEP CONSTRAINT CHECK RESULTS]
+IMPORTANT -- GENERALITY REQUIREMENT: this catalog
+is GLOBAL and is enforced against ALL FUTURE
+traces from ALL FUTURE user prompts, not only the
+one above. Every `add` you propose MUST therefore
+be phrased as a generic, reusable invariant about
+the tools / API surface -- not a rule scoped to
+this specific trace's user prompt.
+IMPORTANT -- EXHAUSTIVE SOURCE ENUMERATION: when
+writing a constraint that says 'the value X used
+by tool A must have been produced earlier by some
+tool', you MUST:
+(1) Use the search tool EXHAUSTIVELY to discover
+ALL tools whose response schemas can produce that
+value. A common mistake is listing only the
+obvious sources while missing others that also
+return the same field in their response.
+(2) Remember that a user's task instruction can
+supply values directly (e.g. a file path, a name,
+an ID). A constraint that demands a value MUST
+come from a prior tool return will spuriously fire
+when the user simply told the agent the value.
+Only write provenance constraints for values that
+genuinely cannot be known without a prior API call.
+Benchmark Catalog
+Rules Arg. Hist. Outc. Tools
+AppWorld
+refined
+295 239
+47
+9
+457
+τ 2 airline
+policy, initial
+51
+36
+15
+0
+13
+policy, refined
+51
+37
+14
+0
+13
+no policy, initial
+44
+41
+3
+0
+13
+no policy, refined
+44
+41
+3
+0
+13
+τ 2 retail
+policy, initial
+69
+36
+33
+0
+16
+policy, refined
+63
+36
+26
+1
+16
+no policy, initial
+47
+32
+15
+0
+15
+no policy, refined
+47
+31
+16
+0
+15
+Table 4: Constraint catalogs: number of rules by type
+(argument, history, outcome) and number of tools they
+apply to. AppWorld rules cover 9 apps. On τ 2-bench,
+refinement on the training split replaced 10 of 51 airline
+and 18 of 69 retail policy rules (adding 10 and 12), and
+4 of 44 airline and 6 of 47 retail no-policy rules (adding
+4 and 6).
+
+### D
+
+
+### Constraint Catalogs
+
+Each constraint pairs a natural-language rule with
+an SMT formula over the call history. The for-
+mula quantifies over calls call(i,
+c,
+tool)
+(position i, call c), their parameters params(c,
+field, value), and the fields of their responses
+rfield(c, field, value), the returns predi-
+cate of Section 3.1; __TARGET__ stands for each
+tool the rule applies to. We group rules by what
+their formula refers to: argument rules check only
+the arguments of the call itself (e.g., value ranges
+and formats); history rules relate the call to other
+calls in the history, e.g., that an access token was
+returned by a prior login to the same app; outcome
+rules read the response of the call itself, e.g., that
+an order did not fail because the payment card has
+expired, and can therefore only be checked after the
+call returns (warning mode). Table 4 summarizes
+the catalogs used in our experiments, and Table 5
+shows one example from each type.
+
+### E
+
+
+### Detailed Audit on Constraints
+
+We audit every rule of the five catalogs used in
+our experiments (500 rules; Table 4). Three LLM
+judges from two model families (GPT-5.6 Sol, GPT-
+6 Astra, and Claude Opus 5.5) label each rule in-
+dependently. Each judge sees the natural-language
+rule, its corresponding Z3 formula, the definitions
+of the tools mentioned in the formula, and the do-
+main policy (for τ-bench). The judge answers two
+questions: faithful – does the formula express the
+same condition as the natural-language rule? – and
+validity – is the rule correct (violating calls would
+fail or break a domain rule, and valid calls satisfy
+it), too strict (it also rejects some legitimate calls),
+wrong, or unsure. We take the majority label; there
+was a majority for every rule. All three judges
+agree on 87% of rules for faithfulness and 78% for
+validity.
+To validate the LLM judge evaluations, one au-
+thor labeled 50 rules without seeing the three LLM
+judges’ labels: 35 rules flagged by 2 or more judges
+and 15 rules accepted by all three. The author
+agreed with the judges on 94% of rules for faithful-
+ness and 90% for validity, showing strong human-
+LLM agreement. There were 5 cases where the au-
+thor judged the rule as valid, but the judges did not;
+for example, the judges called “task_comment_id
+must come from an earlier call that created or listed
+comments” too strict because an ID could come
+from the task, but in AppWorld such IDs can only
+come from those calls.
+Table 6 summarizes the results. The ratios of
+faithful and valid rules are both measured around
+92%. While argument rules and outcome rules
+are almost always correct (99% and 100%, re-
+spectively), history rules remain only 67% correct.
+13
+
+--- PAGE 14 ---
+
+AppWorld, argument rule
+applies to amazon__add_product_to_cart (+4 more)
+If the quantity parameter is provided, it must be an integer greater than or equal to 1.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, __TARGET__), params(c1, quantity_f, v1)), And(Value.is_v_int(v1),
+Value.v_int_get(v1) >= 1)))
+AppWorld, history rule
+applies to gmail__create_draft (+41 more)
+The access_token parameter must be the access_token returned by a prior gmail login call.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, __TARGET__), params(c1, access_token_f, v1)), Exists([i2, c2], And(i2 < i1,
+And(call(i2, c2, appworld_gmail__login), rfield(c2, access_token_f, v1))))))
+AppWorld, outcome rule
+applies to amazon__place_order
+An Amazon place_order call must not be attempted while the cart has an invalid promo code applied; it must not return the
+invalid-promo-code failure message.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, __TARGET__), rfield(c1, message_f, v1), Value.is_v_str(v1)), Value.v_str_get(v1) !=
+StringVal("The promo code applied to your cart is no longer valid.")))
+τ 2 retail, policy, history rule
+applies to calculate
+Before any calculate tool call, the user must already have been authenticated by a prior lookup using email or name plus zip
+code.
+ForAll([i1, c1], Implies(call(i1, c1, calculate), Exists([i2, c2], And(i2 < i1, Or(call(i2, c2, find_user_id_by_email), call(i2,
+c2, find_user_id_by_name_zip))))))
+τ 2 airline, no policy, history rule
+applies to update_reservation_passengers
+Before updating passengers for a reservation, the same reservation_id must have been looked up earlier with
+get_reservation_details.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, update_reservation_passengers), params(c1, reservation_id_f, v1),
+Value.is_v_str(v1)), Exists([i2, c2], And(i2 < i1, call(i2, c2, get_reservation_details), params(c2, reservation_id_f, v1)))))
+Table 5: Example constraints, copied verbatim from the catalogs used in our experiments: the natural-language rule
+(italics) and its SMT formula. The outcome rule is the one that fires in the warning example (Figure 4); nearly every
+repair in our runs enforces an access-token history rule like the gmail one shown.
+Catalog
+Rules #
+Faithful%
+Validity%
+AppWorld
+295
+94
+89
+τ 2 airline, policy
+51
+84
+96
+τ 2 airline, no policy
+44
+91
+100
+τ 2 retail, policy
+63
+81
+95
+τ 2 retail, no policy
+47
+100
+94
+Argument rules
+384
+93
+99
+History rules
+106
+89
+67
+Outcome rules
+10
+70
+100
+All
+500
+92
+92
+Table 6: Rule audit by three LLM judges (majority vote).
+No rule was judged wrong or unsure for validity; every
+rule that was not correct (1-validity) is too strict.
+Most of the errors concentrate on rules that as-
+sume an identifier (an address, a payment card, a
+comment) to be returned by an earlier call, since
+a legitimate value could also come from the task
+description (Table 7, second example).
+
+### F
+
+
+### Additional Experiments
+
+F.1
+Qwen3.5-27B on AppWorld
+Table 8 reports the performance of Qwen3.5-27B
+(single run) on the three AppWorld settings (Stan-
+dard, 40-call budget, and silent error; Table 2). The
+performance pattern matches the other models: re-
+pair gains most under silent errors (+3.9), little in
+the standard setting (+1.2), and nothing under the
+40-call budget (−1.2), while warnings help slightly
+under budget and silent errors. The number of
+failed tool calls per task drops in every cell, by up
+to 29% with repair in the standard setting and 42%
+with warnings under silent errors. Cost (Table 9)
+follows the pattern of GPT-5.4-mini (Table 3): in
+the standard setting, repair cuts tool calls by 17%,
+LLM calls by 20% and prompt tokens by 16%. Un-
+der the 40-call budget and silent errors, the cost is
+essentially flat.
+F.2
+Ablation
+In Section 5.1, we show that refinement is essential
+for improving the error detection performance. We
+next examine whether refinement is necessary for
+end-to-end performance. In the warning mode on
+AppWorld, we compare agents using the catalog
+produced by initialization alone against agents us-
+ing the refined catalog. As Table 10 shows, remov-
+ing refinement lowers task success by 3.5 points
+for GPT-5.5 and 2.4 points for Qwen3.5-27B. In-
+specting the trajectories, we find that agents given
+spurious warnings often retry, and sometimes loop
+on, tool calls that were in fact valid: the low preci-
+sion of the unrefined catalog (Table 1) propagates
+directly into lower task success.
+14
+
+--- PAGE 15 ---
+
+Unfaithful (3/3 judges), correct (3/3)
+AppWorld, argument rule, applies to amazon__signup (+15 more)
+Every signup call must provide a first_name parameter that is a non-empty string.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, __TARGET__), params(c1, first_name_f, v1)), And(Value.is_v_str(v1),
+Length(Value.v_str_get(v1)) >= 1)))
+Judge (Opus): “The formula only checks first_name when it is supplied and never requires it to be present, while the rule
+says every signup call must provide it.”
+Faithful (3/3), too strict (3/3)
+AppWorld, history rule, applies to amazon__place_order (+2 more)
+The address_id parameter must be an address_id returned by a prior Amazon add_address or show_addresses call.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, __TARGET__), params(c1, address_id_f, v1)), Exists([i2, c2], And(i2 < i1,
+Or(call(i2, c2, appworld_amazon__add_address), call(i2, c2, appworld_amazon__show_addresses)), rfield(c2, address_id_f,
+v1)))))
+Judge (Opus): “Address IDs could legitimately come from other sources, such as order details or IDs given in the task, so
+valid calls without a prior add_address or show_addresses would be rejected.”
+Faithful (3/3), too strict (3/3)
+τ 2 retail, no policy, history rule, applies to cancel_pending_order
+An order may not be cancelled more than once, so no earlier cancel_pending_order call may have used the same order_id.
+ForAll([i1, c1, v1], Implies(And(call(i1, c1, cancel_pending_order), params(c1, order_id_f, v1)), Not(Exists([i2, c2], And(i2
+< i1, call(i2, c2, cancel_pending_order), params(c2, order_id_f, v1))))))
+Judge (Opus): “The formula does not check whether the earlier call succeeded, so a legitimate retry after a failed attempt
+(e.g., one rejected for an invalid reason string) would wrongly be flagged.”
+Faithful (3/3), correct (2/3)
+AppWorld, history rule, applies to gmail__create_draft (+41 more); the rule behind most
+repairs
+The access_token parameter must be the access_token returned by a prior gmail login call.
+Judge (Opus, correct): “The documentation says the access_token is ‘obtained from gmail app login’, so a valid call needs a
+token returned by a prior gmail login.”
+Judge (Astra, too strict): “A valid Gmail access token obtained before the recorded call history can authenticate a legitimate
+call without a prior login call in that history.”
+Table 7: Examples from the rule audit: the judges’ labels, the rule (italics) and its formula, and the judges’ reasons,
+quoted verbatim.
+Task success (%)
+Failed calls per task
+Benchmark (Setting)
+Agent model
+No constraints + Warning + Repair
++ Warning
++ Repair
+AppWorld (Standard)
+Qwen3.5-27B
+49.9
+49.4
+51.1
+6.9 →6.6 (−5) 6.9 →5.0 (−29)
+AppWorld (40-call budget) Qwen3.5-27B
+44.6
+45.1
+43.4
+1.0 →0.8 (−18) 1.0 →0.8 (−22)
+AppWorld (Silent errors)
+Qwen3.5-27B
+48.4
+50.1
+52.3
+2.3 →1.3 (−42) 2.3 →1.8 (−23)
+Table 8: Task success and failed tool calls for Qwen3.5-27B on AppWorld (417 test tasks), one run per cell. Same
+catalog, settings, and agent configurations as Table 2. Failed calls: tool calls per task rejected by the environment
+(under silent errors: answered with an empty response), without constraints →with the given mode (change in %).
+Per task
+Standard
+40-call
+Silent
+Qwen3.5-27B
+Tool calls
+76→64 (−17)
+30→30 (0)
+34→34 (+1)
+LLM calls
+66→52 (−20)
+20→20 (0)
+23→22 (−4)
+Prompt (k) 1670→1399 (−16) 440→440 (0) 553→523 (−5)
+Compl. (k)
+16.4→16.3 (0)
+5.1→5.3 (+4) 6.2→6.2 (−1)
+Table 9: Cost per AppWorld task for Qwen3.5-27B
+without constraints →with repair (change in %), one
+run per cell. Prompt/Compl.: prompt and completion
+tokens, in thousands. Shading: savings more than 10%.
+Same runs as Table 8.
+F.3
+Solver Experiments
+We measure the Z3 solver’s throughput on every
+tool call of the no-constraint runs, using the full
+catalogs (AppWorld: four models, 417 tasks; τ 2-
+bench: three models).
+Task success (%)
+Agent model
+Init+Refine
+Init only
+∆
+GPT-5.5
+89.3
+85.9
+−3.5
+Qwen3.5-27B
+59.7
+57.3
+−2.4
+Table 10: Ablation of refinement. AppWorld task suc-
+cess (%) in the warning mode with the catalog refined
+with agent traces (Init+Refine) and without (Init only);
+∆is the change from removing refinement.
+15
+
+--- PAGE 16 ---
+
+Catalog
+Model
+Median
+p95
+Time- Share of
+(ms)
+(ms)
+outs
+ep. time
+AppWorld
+GPT-5.4-mini
+351 5136
+4.4%
+3.9%
+Sonnet-5
+133 1433
+1.0%
+1.9%
+GPT-5.5
+211 5369
+7.2%
+3.2%
+Qwen3.5-9B
+136 2814
+0.7%
+0.2%
+Airline
+GPT-5.4-mini
+21
+207
+0.5%
+1.2%
+(policy)
+Sonnet-5
+42
+242
+2.0%
+2.9%
+Qwen3.5-9B
+35
+191
+0.0%
+0.3%
+Airline
+GPT-5.4-mini
+26 5043 14.4%
+9.4%
+(no policy) Sonnet-5
+46 5061 13.0%
+12.3%
+Qwen3.5-9B
+41 2448
+4.2%
+1.5%
+Retail
+GPT-5.4-mini
+17
+63
+0.5%
+1.0%
+(policy)
+Sonnet-5
+21
+61
+0.4%
+1.1%
+Qwen3.5-9B
+10
+50
+0.7%
+0.2%
+Retail
+GPT-5.4-mini
+17
+65
+0.0%
+0.6%
+(no policy) Sonnet-5
+21
+60
+0.0%
+0.7%
+Qwen3.5-9B
+10
+51
+0.0%
+0.1%
+Table 11: Checker cost per tool call over the no-
+constraint runs (AppWorld: 417 tasks; τ 2-bench: 20
+airline and 40 retail tasks). p95 is the 95th-percentile
+check time. A timeout is a check where Z3 returns un-
+known at the 5 s limit. Share of episode time is total
+check time divided by episode wall-clock time, aver-
+aged over tasks.
+Cost.
+The cost of checking is negligible relative
+to the LLM agent (Table 11). The median check
+takes 10–350 ms, and the checker accounts for 0.1–
+4% of episode wall-clock time on every catalog
+except airline without policy. On that catalog, Z3
+times out on up to 14% of checks, which costs up
+to 12% of episode time. The live checks during the
+AppWorld warning and repair runs agree: a median
+of 92–248 ms per call (p95 0.8–5.6 s), or 0.3–3.2%
+of episode time. Check time grows with the length
+of the call history rather than with catalog size.
+On AppWorld, the median check takes 58 ms with
+fewer than 10 prior calls and 2.6 s beyond 80.
+16

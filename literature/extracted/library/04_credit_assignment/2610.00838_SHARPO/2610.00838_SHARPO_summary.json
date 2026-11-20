@@ -1,0 +1,7885 @@
+{
+  "meta": {
+    "file": "2610.00838_SHARPO.pdf",
+    "page_count": 13,
+    "title": "SHARPO: Segment-Level Credit Assignment for Agentic Reinforcement Learning",
+    "author": "Xinchen Du; Zhengze Zhou; Wenhui Zhu; Han Yu; Sen Na; Rohit Jain; Alborz Geramifard",
+    "subject": "",
+    "creator": "arXiv GenPDF (tex2pdf:0d14211)",
+    "producer": "pikepdf 8.15.1",
+    "creation_date": "",
+    "mod_date": ""
+  },
+  "structure": {
+    "body_font_size": 10.0,
+    "heading_font_sizes": [
+      20.0,
+      17.2,
+      12.0,
+      10.1
+    ],
+    "font_size_distribution": {
+      "20.0": 1,
+      "17.2": 2,
+      "12.0": 14,
+      "10.1": 1089,
+      "10.0": 1686,
+      "9.9": 238,
+      "9.1": 2,
+      "9.0": 439,
+      "8.1": 6,
+      "8.0": 15,
+      "7.1": 12,
+      "7.0": 319,
+      "6.0": 1,
+      "5.0": 11
+    },
+    "headings": [
+      {
+        "page": 1,
+        "text": "SHARPO: Segment-Level Credit Assignment for",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Agentic Reinforcement Learning",
+        "size": 17.2,
+        "level": 2,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Abstract",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "long,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "multi-step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "interactions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "However,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "single",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "localized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "error",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "can",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "cause",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "credit to individual decisions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "To address this limitation, we introduce Segment-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "level Hindsight Advantage Reweighting for Policy Optimization (SHARPO), a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "credit-assignment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "mechanism",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "refines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Group",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Relative",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Optimization",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(GRPO)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "environment-facing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "segments.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Inspired",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "existing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "on-policy self-distillation (OPSD) method, SHARPO computes teacher–student",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "bounded",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "multiplier",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "GRPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "advantage.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "multiplier",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "shared",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "1",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Introduction",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Post-training",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "plays",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "key",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "role",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "adapting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "large",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "models",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "(LLMs)",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "specific",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "tasks",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "improving",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "their",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "performance",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "interactive",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "environments",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "[Ouyang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "et",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "al.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "2022,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "Jin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "et",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "al.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "2025].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "direct",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reward",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "signal",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "training,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "demonstrated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "mathematical",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "reasoning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "search-based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "In multi-turn interactions, however, an agent must make a sequence of decisions before receiving",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "option",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "before",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "completing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "purchase.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "If",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "resulting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "trajectory",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "receives",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "negative",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "advantage,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 1,
+        "text": "arXiv:2610.00838v2  [cs.LG]  4 Oct 2026",
+        "size": 20.0,
+        "level": 1,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "SHARPO improves on GRPO at both mixing weights on both benchmarks,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "reaching",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "ALFWorld (",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "points) and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "on WebShop (",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "points).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Bars are means over three",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "independent runs at training step 200; the vertical axis starts at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Table 1 reports all baselines",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "by using the same LLM as both teacher and student under different conditioning contexts [Zhao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "differences.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "These",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "differences",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "indicate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "how",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "strongly",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "teacher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "supports",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "sampled",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "behavior",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "tool calls, and actions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "We refer to these spans as interaction segments and use those as the units",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "refining",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "credit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "assignment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "For",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "selected",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "segment,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "SHARPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "assigns",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "weight",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "based",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "teacher–student",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "log-probability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "difference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "segment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "weight",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "scales",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "GRPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "intermediate",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "substeps.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "By",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "incorporating",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "teacher’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "assessment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "substep,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "SHARPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "provides",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "local",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "guidance",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "strength",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "reinforcement",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "penalization,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "alleviating",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "credit-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "segment-level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "formulation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "distinguishes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "SHARPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "related",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "approaches",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "how",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "teacher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "feedback",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "organized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "used",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "credit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "assignment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "Unlike",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "RLSD",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "[Yang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "et",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "al.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "2026],",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 2,
+        "text": "rollouts to guide the weighting of intermediate decisions in GRPO. By aggregating self-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "2",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Method",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "consider",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "LLM",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "initialized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "pretrained",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "model,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "trainable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "parameters",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Its",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "autoregressive policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "defines a probability distribution over the next token given the available",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "context.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Starting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "prompt",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "generates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "responses",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "receives",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "observations",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "from the environment after executing actions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "Together, these responses and observations form an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "episode, a verifier assigns",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "if the task succeeds and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "otherwise.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "We use RL post-training",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "better",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "worse",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "than",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "its",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "group",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "average",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "shared",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "generated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "tokens",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "that",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "trajectory.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "term",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "denotes the sampled KL penalty against a fixed reference policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ", with its strength",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "On-Policy Self-Distillation (OPSD).",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "OPSD [Zhao et al., 2026] uses the same LLM as student",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "teacher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "under",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "different",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "conditioning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "contexts.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "For",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "prompt",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "reference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "information",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 3,
+        "text": "distributions are held fixed when differentiating this objective, hence gradients flow only through",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Figure",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "2:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "SHARPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Framework.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "A",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "successful",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "peer",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "supplies",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "context",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "policy-copy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "teacher.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "A length-normalized likelihood comparison of each selected segment produces a bounded weight.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "With terminal rewards, GRPO assigns the same trajectory advantage in Eq.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "to every generated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "base",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "advantage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "level.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "adjusted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "advantages",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "then",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "used",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "objective",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "Step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "1:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "identify",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "interaction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "segments.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "An",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "interaction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "contiguous",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "span",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "agent’s",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "response",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "expressing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "coherent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "unit",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "behavior,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "such",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "an",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "action",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "enclosed",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "or a reasoning passage enclosed in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "For",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "-th selected segment and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "its length.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "We denote by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the context available to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "agent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "immediately",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "before",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "generating",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "It",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "consists",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "prompt",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "preceding",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 4,
+        "text": "agent-generated content and environment observations, including any content earlier in the same",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Step 2:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "construct a teacher context from successful peers.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Within each group, we select one",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "share this reference text.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "We denote the reference used to evaluate trajectory",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "The teacher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "reference information.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "We write",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "for the teacher’s context,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "which augments the original",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "interaction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "context",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "successful",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "reference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "student",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "receives",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Their",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "the subsequent policy update.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "A positive gap indicates stronger support for the segment from the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "reference-informed teacher than from the student, while a negative gap indicates weaker support.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "The sigmoid function smoothly converts the signed gap into a positive weight, and the factor of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "This factor compensates for differences in segment length, reducing the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "individual decisions.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "Let",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", a bounded transform that preserves the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "To",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "judge",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "adjustment,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "let",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "consider",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "length",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "context",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": ", where",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "denotes terminal success.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "The baseline",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 5,
+        "text": "is the success",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "segment’s local value.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Thus",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "means choosing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "improves success probability, and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We now consider the ideal reference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Successful-peer conditioning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Proposition 1.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Assume",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Let",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "have",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "same",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "direction.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Therefore,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "scaling",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "this",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "signal",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "hindsight",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "adjustment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "(cf.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Eq.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ")",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "also",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "aligns",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "direction",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "local",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "value",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "means",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "It is positive when",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "opposes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "and zero otherwise.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "When a useful decision in a failed rollout",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "has",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "but receives the advantage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ", we have",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "This indicates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "a credit-assignment error, as a useful decision receives negative credit because its trajectory fails.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "3",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "Experiments",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We fine-tune Qwen2.5-7B-Instruct [Yang et al., 2024] on two interactive benchmarks, ALFWorld",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "All methods share the same backbone, prompts, environments, reward function, optimizer, rollout",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "settings, and evaluation protocol.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We train each configuration for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "optimization steps with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "set",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ", and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": "We evaluate two mixing weights,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 6,
+        "text": ", each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "GRPO, in percentage points.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Red",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "blue",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "indicate the best and second-best mean results in each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "percentage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "ALFWorld",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "–",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "WebShop.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Compared",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "StepOPSD",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "at the corresponding reported",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "values, SHARPO gains",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points on ALFWorld at both settings",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "–",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points on WebShop.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "These results support the effectiveness of using segment-level",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "by a factor of four,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "their mean success rates differ by only",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "percentage points on ALFWorld",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points on WebShop.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Across the three independent runs, SHARPO has lower variability",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "than GRPO on ALFWorld, with standard deviations of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "points compared with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "task families.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "At both tested mixing weights",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ", it outperforms all evaluated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "baselines on Pick, Clean, Cool, and Pick2, and remains within",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "percentage points of the best",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "improvements",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "extend",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "to",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "complicated",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "tasks",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "such",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "as",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Heat,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Cool,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "Pick2,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "which",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "requires",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "baseline by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "percentage points at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": ", respectively.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 7,
+        "text": "On Cool,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Table 2:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "ALFWorld success rate (%) by task family",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "at step 200,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "mean over three independent",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the shopping request.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "WebShop’s task score provides a finer-grained assessment of how well the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Here",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "requested",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "attributes",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "options",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "respectively.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "describe",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "benchmark’s rules.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "The product price",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "is compared with the budget",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": ", and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "measures product-type matching.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Episodes without a purchase receive zero.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "At training step",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "we average",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "over all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "validation episodes to obtain each run’s task score.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "We then report the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "color, and budget but have the wrong size.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "A second shirt may meet the same budget but have the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Table 3 shows gains over StepOPSD of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": ", respectively.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Both",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "of the shopping requirements.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Unlike StepOPSD’s token-specific weights,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "our method assigns a",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "shared hindsight-derived weight to each complete interaction segment.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "The higher task scores are",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Table",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "3:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "WebShop",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "task",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "score.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Higher",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "better.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Red",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "4",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "Related Work",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 8,
+        "text": "PPO [Schulman et al., 2017] commonly pair a learned value function with generalized advantage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "et al., 2024].",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Other approaches use recurring environment states [Feng et al., 2025], Monte Carlo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "facing segments, then adds predefined role-specific rewards to their GRPO advantages [Xu et al.,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "selected segment, allowing the adjustment to depend on its hindsight feedback without predefined",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "instead",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "aggregates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "feedback",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "each",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "selected",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "before",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "weighting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "its",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "GRPO",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "advantage.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Concurrent AgentOPSD aggregates feedback over full turns using a retrieved skill and a recursive",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "5",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Conclusion",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "In long-horizon tasks, RL agents often receive rewards only when an episode ends.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "These sparse",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "pletion.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "SHARPO addresses this credit-assignment problem through successful-peer hindsight.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "It",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Our analysis explains how the hindsight correction aligns with local decision value under an ideal",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "References",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Shirong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Ma,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Xiao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Bi,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Xiaokang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Xingkai",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Yu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Wu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Z.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "F.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Wu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Zhibin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Gou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Zhihong Shao, Zhuoshu Li, Ziyi Gao, Aixin Liu, Bing Xue, Bingxuan Wang, Bochao Wu, Bei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "Ji, Erhang Li, Fangyun Lin, Fucong Dai, Fuli Luo, Guangbo Hao, Guanting Chen, Guowei Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 9,
+        "text": "H. Zhang, Hanwei Xu, Honghui Ding, Huazuo Gao, Hui Qu, Hui Li, Jianzhong Guo, Jiashi Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang, Lecong Zhang, Liang Zhao, Litong Wang, Liyue Zhang, Lei Xu, Leyi Xia, Mingchuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Minghua",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Minghui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Mingxu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Meng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Miaojun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Mingming",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tian,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Panpan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Huang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Peng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Qiancheng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Qinyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Qiushi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Du,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ruiqi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ge, Ruisong Zhang, Ruizhe Pan, Runji Wang, R. J. Chen, R. L. Jin, Ruyi Chen, Shanghao Lu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shangyan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shanhuang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shengfeng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ye,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shiyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shuiping",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shunfeng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shuting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Pan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "S.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "S.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shuang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shaoqing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yun,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tian",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Pei,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tianyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Sun,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "T.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xie,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xingchao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Liu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xinyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xinyuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xuecheng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Su,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xuheng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Lin,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "X.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Q.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiangyue",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Jin,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiaojin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiaosha",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiaowen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Sun,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiaoxiang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xinnan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Song,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xinyi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yao Zhao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yaofeng Sun,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yaohui Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yi Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yichao Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yifan Shi,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yiliang Xiong,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ying",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "He, Yishi Piao, Yisong Wang, Yixuan Tan, Yiyang Ma, Yiyuan Liu, Yongqiang Guo, Yuan Ou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuduan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yue",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Gong,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuheng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zou,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yujia",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "He,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yunfan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiong,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuxiang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Luo,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuxiang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "You,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ma,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ying",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yukun",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zha,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yuting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yan,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Z.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Z.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ren,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zehui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Ren,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhangli",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Sha,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhe",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Fu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhean",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xu, Zhenda Xie, Zhengyan Zhang, Zhewen Hao, Zhicheng Ma, Zhigang Yan, Zhiyu Wu, Zihui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xu, Zhongyu Zhang, and Zhen Zhang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "DeepSeek-R1 incentivizes reasoning in LLMs through",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "reinforcement learning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Nature",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": ", 645(8081):633–638, September 2025a.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "ISSN 1476-4687.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "doi:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhihong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Peiyi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Qihao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Runxin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Junxiao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Song,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xiao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Bi,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Haowei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Mingchuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Y.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "K.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Y.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Wu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Daya",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Guo.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "DeepSeekMath:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Pushing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "limits",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Geist,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Olivier",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Bachem.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "On-policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "distillation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "models:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Learning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "from",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "self-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Siyan Zhao, Zhihui Xie, Mengchen Liu, Jing Huang, Guan Pang, Feiyu Chen, and Aditya Grover.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Self-distilled",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "reasoner:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "On-policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "self-distillation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "large",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "language",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Forty-third",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "An",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Baosong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Beichen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Binyuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Hui,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Bo",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zheng,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Bowen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chengyuan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yang, Jiaxi Yang, Jingren Zhou, Junyang Lin, Kai Dang, Keming Lu, Keqin Bao, Kexin Yang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Le",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Mei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Mingfeng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Xue,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Pei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Qin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Zhu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Rui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Men,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Runji",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Lin,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tianhao",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Tianyi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Hausknecht.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "ALFWorld:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Aligning text and embodied environments for interactive learning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Shunyu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Howard",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "John",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Yang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Karthik",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Narasimhan.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "WebShop:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Towards",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "scalable",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "real-world web interaction with grounded language agents.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 10,
+        "text": "Advances in Neural Information",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "continuous",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "control",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "using",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "generalized",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "advantage",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "estimation.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "International",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Conference",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Amirhossein",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Kazemnejad,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Milad",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Aghajohari,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Eva",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Portelance,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Alessandro",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sordoni,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Siva",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Reddy,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Aaron Courville, and Nicolas Le Roux.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "VinePPO: Refining credit assignment in RL training of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yiran",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Guo,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lijie",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Xu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Jie",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Liu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Dan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ye,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Shuang",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Qiu.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "policy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "optimization:",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Effec-",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "tive segment-level credit assignment in RL for large language models.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Advances in Neural",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Hunter",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lightman,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Vineet",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Kosaraju,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yura",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Burda,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Harri",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Edwards,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Bowen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Baker,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Teddy",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lee,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Jan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Peiyi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Lei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhihong",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Shao,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Runxin",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Xu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Damai",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Dai,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yifei",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Deli",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Chen,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yu",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Wu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Proceedings",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "62nd",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Annual",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Meeting",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "of",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Association",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "for",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Computational",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Linguistics",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Muning Wen, Ziyu Wan, Jun Wang, Weinan Zhang, and Ying Wen.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Reinforcing LLM agents via",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "policy optimization with action decomposition.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "In",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Advances in Neural Information Processing",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Yuanda Xu, Zhengze Zhou, Kayhan Behdin, Jelena Markovic-Voronov, Hejian Sang, Xiaomin Li,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Wenhui",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhu,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Xinchen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Du,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Aida",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Rahmattalabi,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ran",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "He,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sen",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Na,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhipeng",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Wang,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Alborz",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "learning.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "arXiv",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "preprint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "arXiv:2606.32017",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "2026b.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "URL",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Charlie",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Snell,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Dan",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Klein,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ruiqi",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Zhong.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Learning",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "by",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "distilling",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "context.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "arXiv",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "preprint",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Ye, Linji Hao, Qi Gu, Xunliang Cai, Yongliang Shen, and Yujiu Yang.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "AgentOPSD: Recursive",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "A",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Theory of segment-level credit refinement",
+        "size": 12.0,
+        "level": 3,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "We use the notation of Section 2.3.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 11,
+        "text": "Sampled trajectories, base advantages, teacher feedback, and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "The",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "function",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "is",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "odd,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "preserves",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "sign,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Since",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "preserves",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "sign,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Eq.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "follows.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "When",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "same",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "conclusion",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "holds",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "since",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "If",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ", part (a) gives a positive correction, so",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "If",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Let",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "be a sampled segment with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Assume both policies assign",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "prefix",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "with the student evaluated at",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "and the teacher additionally conditioned on",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "By",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "We",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "compare",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "coefficient",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "totals",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "over",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "nonempty",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "selected",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "segments",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "within",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "one",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "trajectory,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "omitting their common normalization",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Equation",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "gives",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "with",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": ".",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "Without",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "length",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "balancing,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "reweighted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "component",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "accumulates",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 12,
+        "text": "absolute",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "coefficient",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": ", which contains an explicit factor of segment length.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "Suppose all length",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "This",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "balances",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "coefficients",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "reweighted",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "component,",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "not",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "the",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "full",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "update",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "or",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "segment",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "gradient",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "When all",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "the total advantage coefficient over selected segments is unchanged.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "Weight",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "clipping in Eq.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "remains in effect, so",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "and the common multiplier lies in",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "Eqs.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "–",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": ",",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "remain positive and bounded.",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "Hence",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      },
+      {
+        "page": 13,
+        "text": "is positive and bounded, and",
+        "size": 10.1,
+        "level": 4,
+        "bold": false
+      }
+    ]
+  },
+  "images": [
+    {
+      "page": 4,
+      "filename": "page4_img1.png",
+      "width": 1536,
+      "height": 1024,
+      "format": "png",
+      "size_bytes": 1685861
+    }
+  ],
+  "page_stats": [
+    {
+      "page": 1,
+      "text_length": 3390,
+      "block_count": 13,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 2,
+      "text_length": 4036,
+      "block_count": 25,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 3,
+      "text_length": 3359,
+      "block_count": 33,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 4,
+      "text_length": 2291,
+      "block_count": 7,
+      "image_count": 1,
+      "has_drawings": false
+    },
+    {
+      "page": 5,
+      "text_length": 3540,
+      "block_count": 24,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 6,
+      "text_length": 3676,
+      "block_count": 20,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 7,
+      "text_length": 3550,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 8,
+      "text_length": 3292,
+      "block_count": 14,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 9,
+      "text_length": 4507,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 10,
+      "text_length": 4320,
+      "block_count": 12,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 11,
+      "text_length": 3496,
+      "block_count": 17,
+      "image_count": 0,
+      "has_drawings": false
+    },
+    {
+      "page": 12,
+      "text_length": 2243,
+      "block_count": 33,
+      "image_count": 0,
+      "has_drawings": true
+    },
+    {
+      "page": 13,
+      "text_length": 1330,
+      "block_count": 10,
+      "image_count": 0,
+      "has_drawings": false
+    }
+  ]
+}

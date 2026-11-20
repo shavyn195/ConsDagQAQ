@@ -1,0 +1,2235 @@
+
+============================================================
+=== PAGE 1 ===
+============================================================
+
+CIRCE Divines LLM Task Complexity from Constraint Structure
+Chenhao Hong
+Jiakai Xu
+Kaushiki Singh
+Yusen Zhang
+Eugene Wu
+Columbia University
+{chenhao.hong,ax2155,ks4402,yz5296}@columbia.edu
+ewu@cs.columbia.edu
+Abstract
+Estimating whether a problem is too complex
+for a large language model (LLM) before the
+model attempts it can guide model routing, how
+to allocate test-time compute, and suggest the
+need for new tools to aid the agent. While
+existing estimators rely on the problem text,
+LLM-annotated task difficulty labels, or sig-
+nals obtained after a model attempts to solve
+the problem, such as its hidden states, none
+explicitly leverage the constraint structure in-
+herent in the problem: the variables to assign
+and how the constraints over them interact.
+We introduce CIRCE,1 which extracts a prob-
+lem’s structure by using a cheap LLM to con-
+struct a Constraint Intermediate Representation
+that deterministically compiles into the con-
+straint graph. Across seven reasoning bench-
+marks (including SAT, logic, and math) and
+four LLMs, even a randomly initialized GNN
+encoder improves predictions of LLM response
+correctness, reducing negative log-likelihood
+from 0.465 to 0.423 and increasing AUROC
+from 0.691 to 0.727 relative to the strongest
+baseline for each metric.
+1
+Introduction
+Large language models (LLMs) are increasingly
+asked to solve complex problems in which con-
+straints create dependencies among decisions.
+These problems include constraint satisfaction (e.g.,
+arranging wedding seating while keeping some
+guests together and others apart), resource man-
+agement and scheduling (e.g., assigning staff to
+shifts while respecting availability and coverage
+requirements), logical entailment (e.g., determin-
+ing whether an expense qualifies for reimbursement
+under a company’s policy), and database editing un-
+der integrity constraints (e.g., deleting a customer
+record without leaving orders linked to a nonex-
+istent customer). Although task success may be
+1Code
+will
+be
+released
+at
+https://github.com/
+hchenhao/CIRCE.
+assessed from an LLM’s result, it remains difficult
+to predict in advance whether a particular problem
+is too complex for the model to solve reliably.
+Complexity estimation predicts the probability
+that a given LLM will answer a problem correctly
+under a fixed inference protocol (prompting and
+generation settings). Estimates made before gener-
+ation can support model routing (Chen et al., 2023;
+Ong et al., 2025), allocation of test-time compute
+(Snell et al., 2024), and abstention on likely failures
+(Kamath et al., 2020).
+Existing approaches use text embeddings of the
+problem (Pacchiardi et al., 2025), LLM-generated
+ratings of required abilities such as logical reason-
+ing and domain knowledge (Zhou et al., 2026), or
+the target model’s internal activations (Zhu et al.,
+2025). The latter requires internal model access
+unavailable in proprietary model APIs. These ap-
+proaches also do not explicitly represent the prob-
+lem’s variables and interacting constraints.
+Constraint structure helps predict computational
+difficulty: random 3-SAT formulas are hardest near
+a critical clause-to-variable ratio (Mitchell et al.,
+1992), and SATzilla uses structural features to pre-
+dict runtimes and select the solver expected to
+be fastest (Xu et al., 2008). Constraint structure
+also guides LLM task decomposition (Zhou et al.,
+2025).
+We therefore ask: (1) does constraint structure
+predict LLM response correctness, and (2) can it
+be recovered reliably from problem text?
+One challenge is that natural-language prob-
+lems often do not specify variables and constraints
+explicitly, and LLM-generated constraint graphs
+are unreliable: only 136 of 200 Hamiltonian path
+graphs are correct in our evaluation (68.0%; Ta-
+ble 3). Our key observation is that an LLM need
+only describe the variables, constraints, and query
+in an intermediate representation, which a deter-
+ministic compiler converts into a graph.
+We introduce Constraint Intermediate Represen-
+1
+arXiv:2610.41089v1  [cs.AI]  30 Oct 2026
+
+============================================================
+=== PAGE 2 ===
+============================================================
+
+tation for Complexity Estimation (CIRCE), a work-
+flow built on this separation of semantic extraction
+and graph construction. On the Hamiltonian path,
+this approach raises correctness to 92.5%. We de-
+velop 41 handcrafted graph features (CIRCE-Stats)
+and find that richer feature sets generally improve
+prediction. To capture interactions beyond aggre-
+gate statistics, we also use a graph neural network
+(CIRCE-GNN). We compare frozen encoders with
+random initialization or self-supervised pretrain-
+ing on separate unlabeled problems. A lightweight,
+model-specific predictor maps either representation
+to the probability of a correct response.
+We evaluate CIRCE against four prediction base-
+lines and a constant predictor on seven reason-
+ing benchmarks and four LLMs. Five-fold cross-
+validation over 200 problems per benchmark fits
+each predictor on approximately 160 training prob-
+lems, with ten responses per problem supplying
+correctness labels. Relative to the strongest base-
+line overall for each metric, the pretrained variant
+reduces average negative log-likelihood of response
+correctness by 9.5% (0.465 to 0.421) and increases
+AUROC by 3.9 percentage points (0.691 to 0.730).
+Even a frozen, randomly initialized GNN encoder
+outperforms every baseline on average and nearly
+matches the pretrained variant. These results show
+that constraint structure recovered from text is a
+useful signal for predicting LLM failures before
+generation. Text-to-SQL and program synthesis
+are promising targets for future evaluation.
+2
+Related Work
+2.1
+Complexity Estimation for LLMs
+Recent work predicts instance-level LLM perfor-
+mance using textual assessors (Pacchiardi et al.,
+2025; Schellaert et al., 2025), semantic task-
+demand annotations (Zhou et al., 2026), or the
+target model’s hidden representations (Zhu et al.,
+2025).
+Complementary work estimates diffi-
+culty from problem content or answer plausibil-
+ity (Truong et al., 2025; Mozafari et al., 2026), or
+uses difficulty estimates to adapt reasoning strate-
+gies (Xu et al., 2024). A related line of work es-
+timates response correctness using elicited confi-
+dence, inter-model response agreement, or histor-
+ical correctness patterns (Tian et al., 2023; Xia
+et al., 2025; Xiao et al., 2026). Although these ap-
+proaches provide useful textual, semantic, represen-
+tational, and behavioral signals, they do not explic-
+itly model reasoning problems as constraint struc-
+tures with interacting variables and constraints.
+2.2
+Structured Representations for LLM
+Reasoning
+Prior work has explored symbolic representations
+for LLM reasoning (Pan et al., 2023; Olausson
+et al., 2023), relationships between problem struc-
+ture and reasoning complexity (Kang et al., 2024),
+and limitations in LLM reasoning over complex
+data structures (He et al., 2026). Related work ex-
+amines formal specification inference and reliable
+theorem proving (Le-Cong et al., 2025; Quan et al.,
+2025). Other studies examine compositional prob-
+lem complexity (Xie et al., 2026) and constraint-
+based problem decomposition (Zhou et al., 2025).
+Research on multi-constraint instruction following
+further shows that constraint composition and de-
+pendencies affect model performance (Wen et al.,
+2024; Liu et al., 2026). While these studies show
+that problem structure and constraints matter for
+LLM reasoning, whether structural features ex-
+tracted from a common constraint representation
+can predict correctness on individual problem in-
+stances remains underexplored.
+2.3
+Learning from Graph Representations
+Studies show that LLMs struggle with structured
+graph reasoning problems, motivating explicit rep-
+resentations of relationships and dependencies (Dai
+et al., 2025; Agrawal et al., 2024). Structural prop-
+erties have also been used to predict solver per-
+formance through handcrafted features (Xu et al.,
+2008) and graph-based learning (Chang et al., 2022;
+Fu et al., 2025). Graph neural networks, in contrast,
+learn representations through neighborhood aggre-
+gation (Kipf and Welling, 2017; Xu et al., 2019),
+including for language reasoning over knowledge
+graphs (Yasunaga et al., 2021). Self-supervised
+methods such as GraphMAE (Hou et al., 2022)
+further enable graph representation learning with-
+out problem-specific labels. However, rather than
+using these representations to solve problems or
+support reasoning directly, we leverage the con-
+straint structure to estimate the empirical difficulty
+of individual problems for a target LLM.
+3
+Method
+The way constraints connect variables can affect
+the reasoning required to answer a problem. We use
+these relationships as a signal for complexity esti-
+mation. Extracting them directly from the problem
+using an LLM is challenging. CIRCE addresses
+2
+
+============================================================
+=== PAGE 3 ===
+============================================================
+
+this by asking the LLM to describe the variables
+and constraints in an intermediate representation
+(CIR), from which a rule-based compiler constructs
+the graph.
+Figure 1 illustrates the workflow of CIRCE. We
+first extract a CIR and compile it into a constraint
+graph (Section 3.2). We then represent the graph
+using handcrafted features in CIRCE-Stats (Sec-
+tion 3.3) or a GNN with or without self-supervised
+pretraining in CIRCE-GNN (Section 3.4). Finally,
+a gradient-boosted predictor maps the structural
+representation to a correctness probability for the
+target model (Section 3.5).
+3.1
+Problem Formulation
+Given a problem x, a language model m, and an
+inference protocol π, we measure how complex
+x is for m by the probability that a response is
+correct,
+pm,π(x) = Pr(a response to x is correct | m, π),
+(1)
+where lower means that x is more complex for m.
+To obtain enough labels for training and evaluation,
+we observe R = 10 responses per problem for each
+model, using a fixed inference protocol. With cr ∈
+{0, 1} indicating whether a response is correct, the
+empirical correctness rate is
+y =
+R
+�
+r=1
+cr/R.
+(2)
+3.2
+From Problem to Constraint Graph
+A CIR describes variables, constraints, types, do-
+mains, and the requested query. We prompt an
+LLM to translate the problem into this represen-
+tation without solving it or asserting an answer.
+A rule-based graph builder checks the CIR for-
+mat, reports parsing errors for correction, and com-
+piles accepted outputs into a typed constraint graph
+G = (V, E).
+There are two types of graph nodes. Factor
+nodes represent constraints and the query, while
+variable nodes represent declared variables, propo-
+sitions, entities, and shared domain values. Edges
+connect factor nodes to their corresponding vari-
+able nodes. For example, 50B=W creates a factor
+connected to bag count B and weight W; C=18B
+creates another connected to cost C and B. The
+query factor connects to the requested cost C.
+The same graph builder is shared across bench-
+marks. Both syntax checking and semantic vali-
+dation help assess whether the CIR preserves the
+problem’s variables, constraints, and query. Au-
+tomated checks can trigger repair. Appendix B
+provides the checks, repairs, and validation details.
+3.3
+CIRCE-Stats: Handcrafted Features
+Structural features have been used to predict the
+difficulty of constraint-solving problems, as exem-
+plified by SATzilla (Xu et al., 2008). As a first step
+of examining whether such features can be used
+to predict the correctness of LLMs on constraint
+problems, we introduce CIRCE-Stats, where we
+handcrafted 41 features to capture the structural
+information of the constraint graph: size (5), factor
+occurrences (4), degree (8), topology (5), query
+(3), and CIR operators (16). Appendix C lists the
+features and their definitions.
+3.4
+CIRCE-GNN: GNN-based Features
+Experiments in Section 5.1 show that writing more
+handcrafted features continued to improve the
+model’s predictive accuracy. Yet, manual feature
+engineering may omit complex but predictive inter-
+actions between the constraints and the variables.
+We therefore use a GNN to encode the graph struc-
+ture. We project each node’s attributes to an initial
+vector h(0)
+v
+and use six GIN-style layers (Xu et al.,
+2019). Each node vector h(ℓ)
+v
+and edge embedding
+e(ℓ)
+uv has 64 dimensions. At layer ℓ∈{1, . . . , 6},
+e(ℓ)
+uv is a trainable embedding, and m(ℓ)
+v sums incom-
+ing neighbor messages. N(v) denotes the nodes
+connected to v, ϵℓis a learned scalar, MLPℓa feed-
+forward network, and LN layer normalization. The
+update is
+m(ℓ)
+v
+=
+�
+u∈N(v)
+ReLU
+�
+h(ℓ−1)
+u
++ e(ℓ)
+uv
+�
+,
+(3)
+h(ℓ)
+v
+= LN
+�
+h(ℓ−1)
+v
++ MLPℓ
+�
+(1 + ϵℓ)h(ℓ−1)
+v
++ m(ℓ)
+v
+��
+. (4)
+A randomly initialized GNN is already a pow-
+erful tool in encoding graph features through its
+message-passing mechanism, while self-supervised
+pretraining may further enhance its accuracy (Hou
+et al., 2023). Thus, CIRCE-GNN-P uses encoder
+pretraining, and CIRCE-GNN-R skips pretrain-
+ing and uses the randomly initialized parameters.
+CIRCE-GNN-P trains the GNN in a self-supervised
+manner by masking a portion of the node attributes
+and the edge attributes (Hou et al., 2022). The
+decoders predict six attributes: node kind, node
+3
+
+============================================================
+=== PAGE 4 ===
+============================================================
+
+|V|, |E|, deg(v), …
+#¬, #∨, …
+(a) From Question to Constraint Graph
+(b) Graph Representations
+(c) Complexity Prediction
+Variable
+Constraint
+Query
+Natural-language question
+CIR
+Constraint graph
+LLM
+Graph builder
+SATBench
+Emma is available and needs Olivia.
+Olivia needs Jack; Jack cannot join Emma.
+Can all conditions hold?
+A: Emma; B: Jack; C: Olivia
+c1 : ¬B ∨¬A c2 : ¬A ∨C
+c3 : A
+c4 : ¬C ∨B
+Query: feasibility
+c1
+c2
+c3
+c4
+q
+A
+B
+C
+GSM8K
+If 6 potatoes make 36 hash browns,
+how many can 96 potatoes make?
+r: rate; h: hash browns
+c1 : 36 = 6r
+c2 : h = 96r
+Query: h
+c1
+c2
+q
+h
+r
+Input graph
+Optional pretraining
+Mask
+Reconstruct
+?
+?
++
+CIRCE-Stats
+41 features
+· · ·
+CIRCE-GNN
+Message passing
+256-d vector
+· · ·
+Training
+Correctness labels
+NLL ↓
+Gradient-boosted trees
+ˆp
+Figure 1: CIRCE workflow. (a) An LLM extracts a CIR from the question, and a rule-based graph builder constructs
+its constraint graph. Examples from SATBench and GSM8K are abbreviated. (b) CIRCE-Stats uses handcrafted
+features. CIRCE-GNN produces a feature vector with GNN. Optional pretraining of the GNN masks and reconstructs
+node and edge attributes. (c) A gradient-boosted predictor maps the representation to an estimated score.
+subtype, factor type, operator counts, edge role and
+edge polarity. Let A denote these six attributes
+and La the average reconstruction loss for attribute
+a. Node decoders receive h(6)
+v , and edge decoders
+receive [h(6)
+u ; h(6)
+v ]. The pretraining objective is
+Lpretrain = 1
+6
+�
+a∈A
+La.
+(5)
+We freeze the GNN in both encoder variants
+after 100 pretraining epochs for CIRCE-GNN-P,
+and right after initialization for CIRCE-GNN-R.
+Let qv = 1 for a query node and 0 otherwise. We
+concatenate the coordinate-wise sum, mean, query
+sum and standard deviation of the final node vectors
+into the graph representation
+z(G) =
+��
+v
+h(6)
+v ; meanv h(6)
+v ;
+�
+v
+qvh(6)
+v ; stdv h(6)
+v
+�
+.
+(6)
+3.5
+Complexity Estimation
+Both CIRCE-Stats and CIRCE-GNN give a struc-
+tural representation u(x) without using correct-
+ness labels. We then fit a predictor ˆpm,π(x) =
+fm,π(u(x)) to predict the correctness probability.
+We use histogram gradient-boosted trees
+fGB(u) = σ
+�
+b + η
+T
+�
+t=1
+gt(�u)
+�
+,
+(7)
+where gt is a fitted regression tree, and �u is the rep-
+resentation after training-fold preprocessing. The
+predictor is fitted by Bernoulli log-loss against
+ten-attempt correctness rates and is used for both
+CIRCE-Stats and CIRCE-GNN.
+4
+Experiments
+4.1
+Evaluation Metrics and Baselines
+We use grouped five-fold cross-validation for each
+benchmark/model pair. All methods are evaluated
+with three different random splits. In addition, both
+CIRCE-GNN variants average four encoder seeds,
+with matched random initializations. The primary
+metric is Bernoulli negative log-likelihood, defined
+as
+NLL = −1
+n
+�
+i
+[yi log ˆpi + (1 −yi) log(1 −ˆpi)].
+(8)
+Here yi = ki/10 is the observed success rate over
+ten attempts, and ˆpi is the predicted correctness
+probability, clipped to [10−6, 1 −10−6]. We also
+report AUROC (Bradley, 1997).
+4
+
+============================================================
+=== PAGE 5 ===
+============================================================
+
+We compare our methods against the following
+baselines:
+• C0: training-fold mean predictor
+• Self probability:
+calibrated model self-
+reported probability
+• ADeLe (Zhou et al., 2026): a random forest
+predictor using 18 task-demand dimensions
+annotated by GPT-6 Sol, and an unguessabil-
+ity dimension
+• PredictaBoard (Pacchiardi et al., 2025): an as-
+sessor that predicts correctness from OpenAI
+text embeddings
+• Already Knows (Zhu et al., 2025):
+a
+hidden-state predictor trained with temporal-
+difference learning
+4.2
+Models and Benchmarks
+Our methods and baselines are evaluated on
+Qwen3.5-9B (Qwen Team, 2026a), Qwen3.8-27B
+(Qwen Team, 2026b), Inkling (Thinking Machines
+Lab, 2026) and GPT-6 Luna (OpenAI, 2026), rep-
+resenting the latest generation of open-weight and
+proprietary LLMs at the time of our study.
+A diverse set of reasoning benchmarks with ex-
+plicit or implicit constraints is used (Table 1). For
+each benchmark, a subset of the problems is used
+for evaluation, and a larger, non-overlapping subset
+is used for pretraining our GNN. Qwen3.8-27B is
+used to generate the CIR for all the benchmarks
+(Appendix B). We set the thinking effort of the
+models based on the difficulty of each benchmark
+to prevent saturated accuracy on easier benchmarks
+(Appendix A). Among the models we evaluate,
+Qwen3.5-9B is the only model that we can deploy
+locally given the limitations of model weight ac-
+cess and GPU memory. It is therefore used as the
+only model to evaluate the Already Knows predic-
+tor. To match the behavior of the models used in
+the original paper, we set the thinking mode to off
+for Qwen3.5-9B.
+4.3
+Main Results
+Our methods, CIRCE-Stats and both variants of
+CIRCE-GNN, have lower NLL and higher AUROC
+on average across the seven benchmarks than every
+baseline (Table 2). To summarize overall perfor-
+mance, we additionally compute macro averages,
+giving equal weight to all 28 benchmark/model
+pairs.
+CIRCE-Stats is a strong method in its own right,
+achieving a macro NLL of 0.4311 and AUROC of
+0.7029. Compared with the respective best base-
+Benchmark
+Pretrain Evaluation Thinking
+SATBench (Wei et al., 2025)
+900
+200 Default
+FOLIO (Han et al., 2024)
+900
+200 Default
+NLCO (KP/QKP/MIS/MVC)
+(Jiang et al., 2026)
+400
+200 Default
+Enigmata: Hamiltonian Path
+(Chen et al., 2025)
+900
+200 Low
+Enigmata: Zebra Logic
+(Chen et al., 2025)
+900
+200 Low
+GSM8K (Cobbe et al., 2021)
+900
+200 Off
+BBH: Logical Deduction (5/7
+objects) (Suzgun et al., 2023)
+300
+200 Off
+Total
+5,200
+1,400 –
+Table 1: Question counts and thinking effort settings for
+models other than Qwen3.5-9B, whose thinking mode
+is always set to Off. Pretrain questions are used only
+for pretraining the GNN encoder of CIRCE-GNN-P.
+Evaluation questions are used for fitting and evaluating
+the predictors in all methods.
+lines, it reduces NLL by 7.26% relative to Pre-
+dictaBoard (0.4648) and improves AUROC by 1.19
+percentage points over ADeLe (0.6910). Without
+encoder pretraining, CIRCE-GNN-R achieves a
+macro NLL of 0.4227 and AUROC of 0.7266, also
+outperforming every external baseline on average.
+Pretraining further reduces NLL by 0.51% and im-
+proves AUROC by 0.38 percentage points relative
+to the random encoder. The results demonstrate the
+effectiveness of utilizing the structural information
+of the reasoning tasks through the extracted CIRs
+to improve the prediction of correctness. The re-
+sults also support the use of GNN-encoded graph
+representations over the handcrafted features.
+Compared with CIRCE-GNN-R, the pretrained
+variant brings the largest improvement on FO-
+LIO, where AUROC is improved by 2.6 percent-
+age points. The changes on the other six bench-
+marks are smaller. This modest improvement sug-
+gests that the graph representation and GNN ar-
+chitecture already provide useful features with-
+out pretraining. The advantage of CIRCE-GNN-P
+over CIRCE-Stats also varies across benchmarks.
+The largest gains occur on the Logical benchmark,
+where CIRCE-GNN-P reduces NLL from 0.5835
+to 0.5227 (−10.4%) and increases AUROC from
+0.6698 to 0.7649 (+9.5 percentage points), aver-
+aged over four models.
+Among the three external baselines, ADeLe
+achieves the highest macro AUROC, whereas Pre-
+dictaBoard achieves the lowest macro NLL across
+the four models. However, neither consistently out-
+performs Self probability on all models. We also
+5
+
+============================================================
+=== PAGE 6 ===
+============================================================
+
+SATBench
+FOLIO
+NLCO
+Hamiltonian
+Zebra
+GSM8K
+Logical
+Avg
+Method
+NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑NLL↓/ AUC↑
+Qwen3.5-9B
+C0
+.5040/.4290 .6692/.4855 .5838/.4506 .6481/.4732 .2746/.4499 .6224/.4748 .6904/.4791 .5703/.4631
+Self probability .4999/.5228 .6760/.4662 .5683/.6240 .6497/.4551 .2693/.4896 .6036/.6146 .7034/.4347 .5672/.5153
+ADeLe
+.5592/.7034 .7044/.6295 .4895/.7641 .5944/.6918 .2657/.6238 .5947/.7087 .6158/.7243 .5462/.6922
+PredictaBoard
+.4517/.7093 .6693/.4855 .5198/.7021 .5952/.6931 .2701/.5956 .6322/.5128 .6868/.5585 .5464/.6081
+Already Knows .5823/.5167 .6796/.4975 .6381/.5059 .6262/.7040 .4417/.5192 .6276/.5458 .6922/.4879 .6125/.5396
+CIRCE-Stats
+.4141/.7727 .6577/.6144 .4609/.8016 .5735/.7245 .2476/.6914 .5580/.7169 .6299/.6799 .5060/.7145
+CIRCE-GNN-R .4265/.7539 .6482/.6332 .4569/.8064 .5657/.7384 .2518/.7013 .5644/.7111 .5670/.7745 .4972/.7313
+CIRCE-GNN-P .4289/.7521 .6520/.6278 .4544/.8085 .5630/.7415 .2530/.6962 .5566/.7199 .5634/.7779 .4959/.7320
+Qwen3.8-27B
+C0
+.1621/.3446 .6360/.4766 .3581/.3927 .3823/.4637 .1995/.4291 .6879/.4794 .5828/.4756 .4298/.4374
+Self probability .1671/.4923 .6228/.6054 .2442/.8802 .3085/.8098 .1934/.6412 .6941/.5023 .5606/.5738 .3987/.6436
+ADeLe
+.2151/.6193 .8534/.6056 .2700/.8508 .3080/.8037 .2000/.6670 .7568/.7171 .4618/.7786 .4379/.7203
+PredictaBoard
+.1661/.4677 .6557/.4873 .2761/.8344 .3239/.8096 .1940/.6384 .6680/.6004 .5739/.5625 .4082/.6286
+Already Knows
+–
+–
+–
+–
+–
+–
+–
+–
+CIRCE-Stats
+.1619/.5685 .6320/.6088 .2389/.8822 .2956/.8355 .1810/.7422 .6125/.7174 .5052/.7387 .3753/.7276
+CIRCE-GNN-R .1605/.5974 .6359/.6064 .2521/.8682 .2918/.8405 .1847/.7195 .5971/.7371 .4295/.8268 .3645/.7423
+CIRCE-GNN-P .1606/.6018 .6221/.6295 .2495/.8725 .2909/.8402 .1826/.7339 .6022/.7330 .4297/.8241 .3625/.7479
+Inkling
+C0
+.0864/.3069 .6548/.4751 .2411/.4144 .2020/.4518 .6934/.4815 .6226/.4813 .5609/.4839 .4373/.4421
+Self probability .0880/.4178 .6539/.5558 .2124/.8111 .1946/.6102 .6982/.4953 .5709/.6952 .5463/.6965 .4235/.6117
+ADeLe
+.1588/.4653 .6995/.6341 .2185/.7654 .1783/.7848 .7023/.6048 .6807/.6625 .4967/.7661 .4478/.6690
+PredictaBoard
+.0874/.3421 .6604/.4750 .2100/.7563 .1796/.8181 .6879/.5689 .6227/.4813 .5625/.4712 .4301/.5590
+Already Knows
+–
+–
+–
+–
+–
+–
+–
+–
+CIRCE-Stats
+.0891/.3894 .6551/.5961 .1909/.8248 .1575/.8455 .6452/.6626 .5437/.7419 .5338/.6550 .4022/.6736
+CIRCE-GNN-R .0862/.5562 .6455/.6196 .1931/.8403 .1589/.8467 .6531/.6583 .5358/.7520 .4677/.7710 .3915/.7206
+CIRCE-GNN-P .0856/.5869 .6308/.6439 .1948/.8309 .1591/.8471 .6543/.6579 .5492/.7334 .4713/.7653 .3922/.7236
+GPT-6 Luna
+C0
+.2744/.4203 .6369/.4822 .3388/.4138 .1701/.4417 .6622/.4808 .6320/.4836 .6838/.4733 .4855/.4565
+Self probability .2758/.4985 .6256/.5774 .2969/.7180 .1562/.7198 .6592/.5598 .6309/.5895 .6849/.4817 .4756/.5921
+ADeLe
+.2802/.6175 .8300/.5765 .3039/.7410 .1566/.7495 .5618/.7604 .6785/.7234 .7146/.6085 .5036/.6824
+PredictaBoard
+.2651/.6460 .6703/.5005 .3132/.7009 .1614/.7230 .5945/.7366 .6458/.5420 .6717/.5820 .4746/.6330
+Already Knows
+–
+–
+–
+–
+–
+–
+–
+–
+CIRCE-Stats
+.2588/.6396 .6140/.6418 .3008/.7249 .1550/.7393 .5394/.7782 .5528/.7411 .6652/.6054 .4409/.6958
+CIRCE-GNN-R .2545/.6801 .6380/.6044 .3006/.7366 .1543/.7523 .5359/.7831 .5499/.7418 .6307/.6863 .4377/.7121
+CIRCE-GNN-P .2588/.6642 .6022/.6672 .3025/.7287 .1557/.7368 .5346/.7846 .5422/.7505 .6263/.6924 .4318/.7178
+Table 2: The NLL and AUROC (denoted as AUC) of all methods on four models across seven benchmarks. Each
+cell reports NLL/AUC. Avg is the mean across seven benchmarks. Lower NLL and higher AUC are better. The best
+scores within each model are marked in red and bold.
+observe an unstable performance of the Already
+Knows predictor, with its average NLL (0.6125)
+higher than that of C0 (0.5703) on the only model
+we tested, Qwen3.5-9B. We suspect that the Al-
+ready Knows predictor is sensitive to the number of
+correctness labels: we provided only approximately
+160 labels for training in each fold, compared with
+thousands of labels used in the original paper. The
+full implementation details are in Appendix D.
+5
+Further Analysis
+5.1
+Effect of Feature Count
+We examine how prediction changes as more hand-
+crafted features are included. We use greedy for-
+ward selection, starting from an empty feature set.
+At each step, we evaluate every remaining feature
+together with the selected features and add the one
+yielding the lowest inner-validation NLL.
+Figure 2 shows that richer feature sets generally
+improve prediction. Improvements continue near
+the full 41-feature set on several benchmarks, in-
+6
+
+============================================================
+=== PAGE 7 ===
+============================================================
+
+1
+10
+20
+30
+41
+.230
+.232
+.235
+SATBench
+.583
+.597
+.611
+1
+10
+20
+30
+41
+.640
+.647
+.655
+FOLIO
+.578
+.597
+.615
+1
+10
+20
+30
+41
+.297
+.299
+.301
+NLCO
+.797
+.803
+.809
+1
+10
+20
+30
+41
+.295
+.297
+.299
+Hamiltonian
+.766
+.776
+.786
+1
+10
+20
+30
+41
+.402
+.404
+.406
+Zebra
+.692
+.707
+.722
+1
+10
+20
+30
+41
+.565
+.575
+.585
+GSM8K
+.687
+.709
+.731
+1
+10
+20
+30
+41
+.583
+.585
+.588
+Logical
+.645
+.658
+.670
+Number of features
+NLL ↓ (left axis)
+AUROC ↑ (right axis)
+Figure 2: CIRCE-Stats with features added one at a time using training-only forward selection. NLL (left axis) and
+AUROC (right axis) are averaged over four models and three splits.
+cluding FOLIO, GSM8K, and Logical. Averaged
+across benchmarks and models, increasing the fea-
+ture count from 30 to 41 reduces NLL from 0.4325
+to 0.4311 and increases AUROC from 0.7007 to
+0.7029. These results suggest that capturing addi-
+tional structural properties can improve complexity
+estimation.
+5.2
+Qualitative Analysis
+Graph representations versus statistics.
+The
+Logical benchmark shows the largest average ad-
+vantage of CIRCE-GNN over CIRCE-Stats. To
+examine what the graph representation adds, con-
+sider two problems about the same seven golfers,
+L1 and L2 (Figure 3). Their six ordering clues
+are identical: Amy finishes last, Ana third-to-last,
+Eve third, and Eli above Dan above Ada above
+Mel. L1 asks who finishes last, and L2 asks who
+finishes second-to-last. Forty of their 41 Stats fea-
+tures match exactly, including their graph sizes and
+operator counts.
+The relevant difference is how the query con-
+nects to the stated constraints. In L1, the query’s
+position node is shared with the clue fixing Amy’s
+position. In L2, the requested position has no such
+fixed-position clue. Identifying its occupant re-
+quires combining the ordering chain with the oc-
+cupied positions. Message passing can distinguish
+these query neighborhoods, whereas the present
+aggregate statistics largely omit their arrangement.
+For Qwen3.5-9B, CIRCE-GNN-P predicts 0.804
+and 0.282, consistent with the observed success
+rates of 10/10 and 0/10. CIRCE-Stats predicts
+0.366 and 0.503, reversing their ordering. This
+pair illustrates a structural distinction the GNN can
+represent.
+L1: last
+Amy
+fixed clue
+query candidate
+=
+=
+7
+6
+5
+L2: second-to-last
+Amy
+fixed clue
+query candidate
+=
+=
+7
+6
+5
+Figure 3: Selected Amy-candidate connections in L1
+and L2. Orange and blue squares denote fixed-position
+and query factors. Circles marked 5–7 are position
+nodes. Gray squares connect adjacent domain positions.
+The query shares the fixed clue’s position node only in
+L1. Other candidates and constraints are omitted.
+Explicit constraints versus external assessors.
+A GSM8K problem asks the cost of 850 kilograms
+of coal, delivered in 50-kilogram bags costing
+18 dollars each. The CIR exposes the relations
+W = 850, 50B = W and C = 18B, where W
+is the total weight, B the number of bags and C
+the requested cost. Its graph is a short, acyclic de-
+pendency chain: each quantity depends on one pre-
+ceding quantity, without branching alternatives or
+additional interacting conditions. These properties
+provide a concrete description of the required rea-
+soning independent of the story’s wording. CIRCE-
+Stats summarizes such graph properties, while
+CIRCE-GNN learns from the connected sequence
+of constraint types.
+In comparison, ADeLe represents the prob-
+lem through broad reasoning-demand scores, Pre-
+dictaBoard uses a text embedding, and Already
+Knows uses the target model’s initial hidden state.
+These inputs do not explicitly supply the extracted
+7
+
+============================================================
+=== PAGE 8 ===
+============================================================
+
+dependency chain: relations must be summarized
+by the demand scores or recovered implicitly from
+the learned representations. For Qwen3.5-9B, both
+CIRCE variants give this question higher probabili-
+ties than the external assessors: 0.667 for Stats and
+0.737 for pretrained GNN, versus 0.253–0.419 for
+the three external baselines, where the target model
+answers all ten attempts correctly. This example
+illustrates a case where the explicit constraint struc-
+ture is a more informative representation than the
+external assessors’ features.
+5.3
+Reliability of CIR
+We measure two metrics to assess the reliability of
+the CIRs: parsability and correctness. Parsability
+measures whether the CIR has a valid syntax, and
+correctness measures whether the CIR correctly
+represents the constraint structure of the problem.
+For SATBench, Logical, and Hamiltonian, a rule-
+based checker can verify the constraint structure,
+so we check both parsability and correctness on
+all 200 problems. For FOLIO, NLCO, Zebra, and
+GSM8K, rule-based checker only covers part of
+the constraint structure, so we check parsability on
+all 200 problems and manually review the correct-
+ness of 20 randomly sampled source–CIR pairs per
+benchmark. On the three benchmarks with a full
+checker, we also check the parsability and correct-
+ness of direct graph generation, where the LLM is
+prompted to generate the graph directly from the
+natural-language question.
+Method
+Parsable
+Correct
+SATBench
+CIR
+198/200 = 99.0%
+194/200 = 97.0%
+Direct graph 197/200 = 98.5%
+192/200 = 96.0%
+Logical
+CIR
+200/200 = 100.0% 194/200 = 97.0%
+Direct graph 200/200 = 100.0% 185/200 = 92.5%
+Hamiltonian
+CIR
+200/200 = 100.0% 185/200 = 92.5%
+Direct graph 196/200 = 98.0%
+136/200 = 68.0%
+Table 3: Parsability and correctness of the CIR and
+direct graph generation methods on three benchmarks,
+with 200 questions per benchmark. The numbers are
+before LLM repairs.
+As shown in Table 3, the CIR method has higher
+parsability and correctness than the direct graph
+generation method on the three benchmarks with
+an available correctness checker, especially on the
+Hamiltonian benchmark, where the correctness of
+the direct graph generation method is only 68.0%,
+Benchmark Parsable
+Correct
+FOLIO
+200/200 = 100.0% 18/20 = 90.0%
+NLCO
+200/200 = 100.0% 20/20 = 100.0%
+Zebra
+200/200 = 100.0% 20/20 = 100.0%
+GSM8K
+200/200 = 100.0% 20/20 = 100.0%
+Table 4: Parsability and correctness of the CIR on four
+benchmarks. Parsability is checked on 200 questions
+per benchmark before LLM repairs, while correctness
+is human-reviewed on a random sample of 20 questions
+per benchmark after repairs.
+while the correctness of the CIR method is 92.5%.
+Furthermore, as shown in Table 3 and Table 4, the
+CIR method achieves at least 90% correctness on
+all seven benchmarks, supporting that the LLM-
+generated CIR reliably represents the constraint
+structure of the problem.
+Rule-based checkers can trigger CIR repair or
+regeneration, while human review only assesses
+correctness and does not trigger repairs. Details
+about processing the CIRs are described in Ap-
+pendix B.
+5.4
+Comparison of Predictors
+We examine whether the advantage of graph em-
+beddings depends on the downstream predictor.
+Keeping the input representations and outer evalua-
+tion folds fixed, we compare gradient-boosted trees
+(GB), logistic regression (LR), and a multilayer
+perceptron (MLP).
+Predictor CIRCE-Stats CIRCE-GNN-R CIRCE-GNN-P
+GB
+.4311 / .7029
+.4227 / .7266
+.4206 / .7303
+LR
+.4339 / .7024
+.4209 / .7172
+.4198 / .7200
+MLP
+.4341 / .6947
+.4206 / .7158
+.4194 / .7211
+Table 5: Effect of the downstream predictor. Each cell
+reports NLL ↓/ AUROC ↑, averaged equally across
+seven benchmarks and four target models.
+Table 5 shows that both GNN variants achieve
+lower average NLL and higher average AUROC
+than CIRCE-Stats with all three predictors. The
+advantage of graph embeddings therefore persists
+across linear, tree-based, and neural predictors. The
+pretrained variant also has slightly higher AUROC
+and lower NLL than the random one across the
+three predictors. Compared with LR and MLP,
+GB achieves the highest average AUROC for each
+representation, whereas LR and MLP yield slightly
+lower NLL for the GNN variants.
+8
+
+============================================================
+=== PAGE 9 ===
+============================================================
+
+6
+Conclusion
+CIRCE demonstrates that constraint structure re-
+covered from problem text is a useful signal for
+predicting LLM task complexity before generation.
+Strong results from handcrafted statistics and ran-
+domly initialized GNNs show that this signal can be
+used without encoder pretraining. Graph encodings
+improve over statistics on average, with pretrain-
+ing providing further small gains. These findings
+support separating task representation from model-
+specific prediction: a shared constraint graph can
+serve different target models through lightweight
+predictors trained on black-box labels. Extending
+this representation to richer constraints and queries
+is a promising direction for future work.
+7
+Limitations
+While CIRCE applies to a wide range of reasoning
+benchmarks, its scope is limited to the problems
+whose constraints are part of the input. It does
+not cover the problems where inferring constraints
+is part of the reasoning process. CIRCE also es-
+timates only the part of problem complexity that
+constraint structure reflects, while other methods
+that depend on the model’s states could potentially
+reveal the failure cases such as a misread question.
+Combining our method with their features remains
+future work.
+We showed the reliability of the CIRs, but they
+are generated by a single LLM, and their correct-
+ness cannot be fully verified: rule-based checkers
+cover three benchmarks, and the other four were
+spot-checked on 20 questions each. We also used
+a fixed set of problems for pretraining the GNN
+encoder and evaluating the predictors. Evaluating
+how the number of problems affects the encoder
+and predictor performance would further establish
+the scalability of our method. Exploring predictor
+transfer across benchmarks and models could pro-
+vide further evidence of the generalizability of our
+method.
+Acknowledgments
+This work used Jetstream2 (Hancock et al., 2021) at
+Indiana University through allocation TRA120004
+from the Advanced Cyberinfrastructure Coordina-
+tion Ecosystem: Services & Support (ACCESS)
+program (Boerner et al., 2023), which is supported
+by National Science Foundation grants #2138259,
+#2138286, #2138307, #2137603, and #2138296.
+This research also received DAPLab corporate sup-
+port in the form of funding and/or compute from
+Amazon, IntellectAI, Infosys, Tidalwave, Veris,
+Shopify, Microsoft, Thinking Machines, Dandy,
+Perplexity, and Daytona. The views and conclu-
+sions presented here are those of the authors and
+should not be interpreted as representing the offi-
+cial positions of the funding organizations.
+References
+Palaash Agrawal, Shavak Vasania, and Cheston Tan.
+2024. Can llms perform structured graph reasoning?
+Preprint, arXiv:2402.01805.
+Timothy J. Boerner, Stephen Deems, Thomas R. Furlani,
+Shelley L. Knuth, and John Towns. 2023. ACCESS:
+Advancing innovation: NSF’s advanced cyberinfras-
+tructure coordination ecosystem: Services & support.
+In Proceedings of the Practice and Experience in
+Advanced Research Computing (PEARC ’23), pages
+1–4, New York, NY, USA. Association for Comput-
+ing Machinery.
+Andrew P. Bradley. 1997. The use of the area under
+the roc curve in the evaluation of machine learning
+algorithms. Pattern Recognition, 30(7):1145–1159.
+Wenjing Chang, Hengkai Zhang, and Junwei Luo. 2022.
+Predicting propositional satisfiability based on graph
+attention networks. International Journal of Compu-
+tational Intelligence Systems, 15(1):84.
+Jiangjie Chen, Qianyu He, Siyu Yuan, Aili Chen,
+Zhicheng Cai, Weinan Dai, Hongli Yu, Qiying Yu,
+Xuefeng Li, Jiaze Chen, Hao Zhou, and Mingxuan
+Wang. 2025. Enigmata: Scaling logical reasoning
+in large language models with synthetic verifiable
+puzzles. Preprint, arXiv:2505.19914.
+Lingjiao Chen, Matei Zaharia, and James Zou. 2023.
+FrugalGPT: How to use large language models while
+reducing cost and improving performance. Preprint,
+arXiv:2305.05176.
+Tianqi Chen and Carlos Guestrin. 2016. Xgboost: A
+scalable tree boosting system. In Proceedings of
+the 22nd ACM SIGKDD International Conference
+on Knowledge Discovery and Data Mining, pages
+785–794.
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian,
+Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias
+Plappert, Jerry Tworek, Jacob Hilton, Reiichiro
+Nakano, Christopher Hesse, and John Schulman.
+2021. Training verifiers to solve math word prob-
+lems. Preprint, arXiv:2110.14168.
+Xinnan Dai, Qihao Wen, Yifei Shen, Hongzhi Wen,
+Dongsheng Li, Jiliang Tang, and Caihua Shan. 2025.
+Revisiting the graph reasoning ability of large lan-
+guage models: Case studies in translation, connectiv-
+ity and shortest path. Preprint, arXiv:2408.09529.
+9
+
+============================================================
+=== PAGE 10 ===
+============================================================
+
+Yi Fu, Anthony Tompkins, Yang Song, and Maurice
+Pagnucco. 2025.
+Structure based sat dataset for
+analysing gnn generalisation. In Proceedings of The
+28th International Conference on Artificial Intelli-
+gence and Statistics, volume 258 of Proceedings
+of Machine Learning Research, pages 4834–4842.
+PMLR.
+Aric A. Hagberg, Daniel A. Schult, and Pieter J. Swart.
+2008. Exploring network structure, dynamics, and
+function using networkx. In Proceedings of the 7th
+Python in Science Conference, pages 11–15.
+Simeng Han, Hailey Schoelkopf, Yilun Zhao, Zhent-
+ing Qi, Martin Riddell, Wenfei Zhou, James Coady,
+David Peng, Yujie Qiao, Luke Benson, Lucy Sun,
+Alexander Wardle-Solano, Hannah Szabó, Ekaterina
+Zubova, Matthew Burtell, Jonathan Fan, Yixin Liu,
+Brian Wong, Malcolm Sailor, and 16 others. 2024.
+FOLIO: Natural language reasoning with first-order
+logic. In Proceedings of the 2024 Conference on
+Empirical Methods in Natural Language Processing,
+pages 22017–22031, Miami, Florida, USA. Associa-
+tion for Computational Linguistics.
+David Y. Hancock, Jeremy Fischer, John Michael Lowe,
+Winona Snapp-Childs, Marlon Pierce, Suresh Marru,
+J. Eric Coulter, Matthew Vaughn, Brian Beck, Ni-
+rav Merchant, Edwin Skidmore, and Gwen Jacobs.
+2021. Jetstream2: Accelerating cloud computing via
+jetstream. In Proceedings of the Practice and Expe-
+rience in Advanced Research Computing (PEARC
+’21), pages 1–8, New York, NY, USA. Association
+for Computing Machinery.
+Yu He, Yingxi Li, Colin White, and Ellen Vitercik. 2026.
+Can LLMs reason structurally? Benchmarking via
+the lens of data structures. In Proceedings of the
+43rd International Conference on Machine Learning,
+volume 306 of Proceedings of Machine Learning
+Research, pages 41602–41650. PMLR.
+Zhenyu Hou, Yufei He, Yukuo Cen, Xiao Liu,
+Yuxiao Dong, Evgeny Kharlamov, and Jie Tang.
+2023.
+Graphmae2:
+A
+decoding-enhanced
+masked self-supervised graph learner.
+Preprint,
+arXiv:2304.04779.
+Zhenyu Hou, Xiao Liu, Yukuo Cen, Yuxiao Dong,
+Hongxia Yang, Chunjie Wang, and Jie Tang. 2022.
+Graphmae: Self-supervised masked graph autoen-
+coders. Preprint, arXiv:2205.10803.
+Xia Jiang, Jing Chen, Cong Zhang, Jie Gao, Cheng-
+peng Hu, Chenhao Zhang, Yaoxin Wu, and Yingqian
+Zhang. 2026.
+Reasoning in a combinatorial and
+constrained world: Benchmarking LLMs on natural-
+language combinatorial optimization. In Findings of
+the Association for Computational Linguistics: ACL
+2026, pages 30592–30648, San Diego, California,
+United States. Association for Computational Lin-
+guistics.
+Amita Kamath, Robin Jia, and Percy Liang. 2020. Se-
+lective question answering under domain shift. In
+Proceedings of the 58th Annual Meeting of the Asso-
+ciation for Computational Linguistics, pages 5684–
+5696, Online. Association for Computational Lin-
+guistics.
+Liwei Kang, Zirui Zhao, David Hsu, and Wee Sun Lee.
+2024. On the empirical complexity of reasoning and
+planning in LLMs. In Findings of the Association
+for Computational Linguistics: EMNLP 2024, pages
+2897–2936, Miami, Florida, USA. Association for
+Computational Linguistics.
+Thomas N. Kipf and Max Welling. 2017.
+Semi-
+supervised classification with graph convolutional
+networks. Preprint, arXiv:1609.02907.
+Thanh Le-Cong, Bach Le, and Toby Murray. 2025. Can
+llms reason about program semantics? a compre-
+hensive evaluation of llms on formal specification
+inference. Preprint, arXiv:2503.04779.
+Jiayu Liu, Cheng Qian, Zhenhailong Wang, Bingxuan
+Li, Jiateng Liu, Qing Zong, Heng Wang, Jeongh-
+wan Kim, Yumeng Wang, Bingxiang He, Xiusi Chen,
+Yi R. Fung, and Heng Ji. 2026. Adaplanbench: Eval-
+uating adaptive planning in large language model
+agents under world and user constraints. Preprint,
+arXiv:2606.05622.
+David G. Mitchell, Bart Selman, and Hector J. Levesque.
+1992. Hard and easy distributions of SAT problems.
+In Proceedings of the Tenth National Conference on
+Artificial Intelligence, pages 459–465. AAAI Press.
+Jamshid Mozafari, Bhawna Piryani, and Adam Jatowt.
+2026. Question difficulty estimation for large lan-
+guage models via answer plausibility scoring. In
+Proceedings of the 64th Annual Meeting of the As-
+sociation for Computational Linguistics (Volume 1:
+Long Papers), pages 11124–11151, San Diego, Cali-
+fornia, United States. Association for Computational
+Linguistics.
+Theo Olausson, Alex Gu, Ben Lipkin, Cedegao Zhang,
+Armando Solar-Lezama, Joshua Tenenbaum, and
+Roger Levy. 2023. LINC: A neurosymbolic approach
+for logical reasoning by combining language models
+with first-order logic provers. In Proceedings of the
+2023 Conference on Empirical Methods in Natural
+Language Processing, pages 5153–5176, Singapore.
+Association for Computational Linguistics.
+Isaac Ong, Amjad Almahairi, Vincent Wu, Wei-Lin Chi-
+ang, Tianhao Wu, Joseph E. Gonzalez, M Waleed
+Kadous, and Ion Stoica. 2025. Routellm: Learn-
+ing to route llms with preference data.
+Preprint,
+arXiv:2406.18665.
+OpenAI. 2026. GPT-6 Luna model documentation. Ac-
+cessed October 4, 2026.
+Lorenzo Pacchiardi, Konstantinos Voudouris, Ben
+Slater, Fernando Martínez-Plumed, Jose Hernandez-
+Orallo, Lexin Zhou, and Wout Schellaert. 2025. Pre-
+dictaBoard: Benchmarking LLM score predictability.
+In Findings of the Association for Computational
+10
+
+============================================================
+=== PAGE 11 ===
+============================================================
+
+Linguistics: ACL 2025, pages 15245–15266, Vienna,
+Austria. Association for Computational Linguistics.
+Liangming Pan, Alon Albalak, Xinyi Wang, and
+William Yang Wang. 2023. Logic-LM: Empower-
+ing large language models with symbolic solvers for
+faithful logical reasoning. In Findings of the Associ-
+ation for Computational Linguistics: EMNLP 2023,
+pages 3806–3824, Singapore. Association for Com-
+putational Linguistics.
+Adam Paszke, Sam Gross, Francisco Massa, Adam
+Lerer, James Bradbury, Gregory Chanan, et al. 2019.
+Pytorch: An imperative style, high-performance deep
+learning library. In Advances in Neural Information
+Processing Systems, volume 32.
+Fabian Pedregosa, Gael Varoquaux, Alexandre Gram-
+fort, Vincent Michel, Bertrand Thirion, Olivier Grisel,
+Mathieu Blondel, et al. 2011. Scikit-learn: Machine
+learning in python. Journal of Machine Learning
+Research, 12:2825–2830.
+Xin Quan, Marco Valentino, Louise A. Dennis, and An-
+dré Freitas. 2025. Faithful and robust llm-driven
+theorem proving for nli explanations.
+Preprint,
+arXiv:2505.24264.
+Qwen Team. 2026a. Qwen3.5-9B model card. Hugging
+Face. Accessed October 4, 2026.
+Qwen Team. 2026b. Qwen3.8-27B model card. Hug-
+ging Face. Accessed October 4, 2026.
+Wout Schellaert, Fernando Martínez-Plumed, and José
+Hernández-Orallo. 2025. Analysing the predictabil-
+ity of language model performance. ACM Trans.
+Intell. Syst. Technol., 16(2).
+Charlie Snell, Jaehoon Lee, Kelvin Xu, and Aviral Ku-
+mar. 2024. Scaling llm test-time compute optimally
+can be more effective than scaling model parameters.
+Preprint, arXiv:2408.03314.
+Aarohi Srivastava, Abhinav Rastogi, Abhishek Rao,
+Abu Awal Md Shoeb, Abubakar Abid, Adam Fisch,
+Adam Brown, Adam Santoro, Aditya Gupta, et al.
+2023. Beyond the imitation game: Quantifying and
+extrapolating the capabilities of language models.
+Transactions on Machine Learning Research.
+Mirac Suzgun, Nathan Scales, Nathanael Schärli, Se-
+bastian Gehrmann, Yi Tay, Hyung Won Chung,
+Aakanksha Chowdhery, Quoc Le, Ed Chi, Denny
+Zhou, and Jason Wei. 2023. Challenging BIG-bench
+tasks and whether chain-of-thought can solve them.
+In Findings of the Association for Computational Lin-
+guistics: ACL 2023, pages 13003–13051, Toronto,
+Canada. Association for Computational Linguistics.
+Thinking Machines Lab. 2026. Inkling model card.
+Accessed October 4, 2026.
+Katherine Tian, Eric Mitchell, Allan Zhou, Archit
+Sharma, Rafael Rafailov, Huaxiu Yao, Chelsea Finn,
+and Christopher Manning. 2023. Just ask for cali-
+bration: Strategies for eliciting calibrated confidence
+scores from language models fine-tuned with human
+feedback. In Proceedings of the 2023 Conference
+on Empirical Methods in Natural Language Process-
+ing, pages 5433–5442, Singapore. Association for
+Computational Linguistics.
+Sang T. Truong, Yuheng Tu, Percy Liang, Bo Li, and
+Sanmi Koyejo. 2025. Reliable and efficient amor-
+tized model-based evaluation. In Proceedings of the
+42nd International Conference on Machine Learn-
+ing, volume 267 of Proceedings of Machine Learning
+Research, pages 60238–60265. PMLR.
+Anjiang Wei, Yuheng Wu, Yingjia Wan, Tarun Suresh,
+Huanmi Tan, Zhanke Zhou, Sanmi Koyejo, Ke Wang,
+and Alex Aiken. 2025. SATBench: Benchmarking
+LLMs’ logical reasoning via automated puzzle gen-
+eration from SAT formulas. In Proceedings of the
+2025 Conference on Empirical Methods in Natural
+Language Processing, pages 33832–33849, Suzhou,
+China. Association for Computational Linguistics.
+Bosi Wen, Pei Ke, Xiaotao Gu, Lindong Wu, Hao
+Huang, Jinfeng Zhou, Wenchuang Li, Binxin Hu,
+Wendy Gao, Jiaxin Xu, Yiming Liu, Jie Tang, Hongn-
+ing Wang, and Minlie Huang. 2024. Benchmark-
+ing complex instruction-following with multiple con-
+straints composition. In Advances in Neural Informa-
+tion Processing Systems.
+Yuxi Xia, Pedro Henrique Luz De Araujo, Klim Za-
+porojets, and Benjamin Roth. 2025. Influences on
+LLM calibration: A study of response agreement,
+loss functions, and prompt styles. In Proceedings
+of the 63rd Annual Meeting of the Association for
+Computational Linguistics (Volume 1: Long Papers),
+pages 3740–3761, Vienna, Austria. Association for
+Computational Linguistics.
+Hanqi Xiao, Vaidehi Patil, Hyunji Lee, Elias Stengel-
+Eskin, and Mohit Bansal. 2026. Generalized correct-
+ness models: Learning calibrated and cross-model
+correctness predictors from historical patterns. In
+Proceedings of the 43rd International Conference on
+Machine Learning, volume 306 of Proceedings of
+Machine Learning Research, pages 138884–138908.
+PMLR.
+Chen Xie, Xiaodong Gu, Yuling Shi, and Beijun
+Shen. 2026. Rethinking code complexity through
+the lens of large language models.
+Preprint,
+arXiv:2602.07882.
+Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie
+Jegelka. 2019. How powerful are graph neural net-
+works? Preprint, arXiv:1810.00826.
+Lin Xu, Frank Hutter, Holger H. Hoos, and Kevin
+Leyton-Brown. 2008. Satzilla: Portfolio-based al-
+gorithm selection for sat. Journal of Artificial Intelli-
+gence Research, 32:565–606.
+Mayi Xu, Yongqi Li, Ke Sun, and Tieyun Qian. 2024.
+Adaption-of-thought: Learning question difficulty
+11
+
+============================================================
+=== PAGE 12 ===
+============================================================
+
+improves large language models for reasoning. In
+Proceedings of the 2024 Conference on Empirical
+Methods in Natural Language Processing, pages
+5468–5495, Miami, Florida, USA. Association for
+Computational Linguistics.
+Michihiro Yasunaga, Hongyu Ren, Antoine Bosselut,
+Percy Liang, and Jure Leskovec. 2021. QA-GNN:
+Reasoning with language models and knowledge
+graphs for question answering. In Proceedings of
+the 2021 Conference of the North American Chapter
+of the Association for Computational Linguistics: Hu-
+man Language Technologies, pages 535–546, Online.
+Association for Computational Linguistics.
+Lexin Zhou, Lorenzo Pacchiardi, Fernando Martínez-
+Plumed, Katherine M Collins, Yael Moros-Daval,
+Seraphina Zhang, Qinlin Zhao, Yitian Huang, Luning
+Sun, Jonathan E Prunty, et al. 2026. General scales
+unlock ai evaluation with explanatory and predictive
+power. Nature, 652(8108):58–67.
+Tianle Zhou, Jiakai Xu, Guanhong Liu, Jiaxiang Liu,
+Haonan Wang, and Eugene Wu. 2025. An approach
+for systematic decomposition of complex llm tasks.
+arXiv preprint arXiv:2510.07772.
+Yubo Zhu, Dongrui Liu, Zecheng Lin, Wei Tong, Sheng
+Zhong, and Jing Shao. 2025.
+The LLM already
+knows: Estimating LLM-perceived question diffi-
+culty via hidden representations. In Proceedings of
+the 2025 Conference on Empirical Methods in Natu-
+ral Language Processing, pages 1160–1176, Suzhou,
+China. Association for Computational Linguistics.
+A
+Data and Evaluation Protocol
+The evaluation contains 200 problems per bench-
+mark, four target models, and ten responses per
+problem (56,000 responses). The 5,200 question-
+disjoint Pretraining (SSL) instances comprise 4,684
+training and 516 validation graphs.
+Benchmark
+SSL train SSL val. Groups Fold train
+SATBench
+810
+90
+27
+154–165
+FOLIO
+810
+90
+152
+158–161
+NLCO
+364
+36
+200
+160
+Hamiltonian
+810
+90
+200
+160
+Zebra
+810
+90
+200
+160
+GSM8K
+810
+90
+200
+160
+Logical
+270
+30
+200
+160
+Table 6: SSL split sizes, downstream groups and outer-
+training-fold sizes. Each benchmark has 200 evaluation
+questions.
+Subsets.
+We use FOLIO v2; NLCO’s KP, QKP,
+MIS, and MVC tasks; Enigmata’s Hamiltonian
+Path and Zebra Logic; and BBH’s five- and seven-
+object Logical Deduction subsets (Srivastava et al.,
+2023).
+Target sampling.
+Qwen3.5-9B has thinking dis-
+abled throughout. For Qwen3.8-27B and Inkling,
+SATBench/FOLIO/NLCO use default reasoning,
+Hamiltonian/Zebra use Low, and GSM8K/Logical
+use Off. Luna uses Medium, Low, and None for
+these respective groups.
+Qwen and Inkling use temperature 0.7 and top-p
+0.95 for the five longer-format benchmarks under
+the 64K effective-context protocol. GSM8K and
+Logical use temperature 0.7, top-p 0.8 and output
+caps of 128 and 2,048. Luna leaves temperature
+and top-p unset in Medium/Low mode; None mode
+uses 0.7/1.0. Its output cap is unset. Responses
+are scored using final labels, choices, numerical
+answers or instance-specific feasibility/objective
+checks.
+Benchmark
+9B
+27B Inkling
+Luna
+SATBench
+80.00 96.30
+98.35 92.25
+FOLIO
+60.95 66.80
+63.85 66.65
+NLCO
+73.15 88.65
+93.55 89.50
+Hamiltonian 65.00 87.25
+94.90 95.95
+Zebra
+92.20 95.00
+49.10 37.55
+GSM8K
+31.35 44.70
+68.60 67.35
+Logical
+54.00 73.10
+75.15 57.10
+Avg
+65.24 78.83
+77.64 72.34
+Table 7: Target response accuracy (percent) over ten
+attempts per question. Qwen3.5-9B has thinking dis-
+abled.
+A.1
+Grouped Cross-Validation
+We use five outer and three inner folds, with split
+seeds 11, 23, and 37. SATBench groups by dimen-
+sion configuration; FOLIO groups by story; other
+benchmarks group by instance (Table 6). All at-
+tempts for a question stay together. Methods share
+frozen folds within each benchmark/model pair.
+Preprocessing and hyperparameter selection use
+training folds only.
+Metrics.
+Let ki be correct attempts out of ten
+and pi the out-of-fold prediction. NLL is Bernoulli
+cross-entropy against yi = ki/10, using natural
+logarithms and clipping probabilities to [10−6, 1 −
+10−6]. Attempt-weighted AUROC is
+AUROC =
+�
+i,j ki(10 −kj) w(pi, pj)
+(�
+i ki)(�
+j(10 −kj))
+,
+(9)
+where w(a, b) is 1 for a > b, 1/2 for ties and 0
+otherwise. This corresponds to ten binary outcomes
+per question sharing one probability.
+Metrics are computed on all 200 out-of-fold pre-
+dictions, then averaged over three split seeds and
+12
+
+============================================================
+=== PAGE 13 ===
+============================================================
+
+four encoder seeds for GNNs. Overall averages
+weight the 28 benchmark/model pairs equally; Al-
+ready Knows covers seven Qwen3.5-9B pairs. C0
+predicts the training-fold mean.
+Feature selection.
+Stats forward selection adds
+the remaining feature yielding the lowest inner-
+validation NLL, jointly selecting tree settings
+within each outer training fold.
+B
+CIR Extraction, Compilation and
+Validation
+Extraction
+and
+repair.
+We
+use
+Qwen/Qwen3.8-27B
+to
+extract
+entities,
+vari-
+ables, constraints, and a query. Prompts and input
+formats vary by benchmark. Parsing, reference
+checks, and task-specific source checks identify
+repair candidates.
+Repair inputs contain the
+question, candidate CIR, and diagnostic.
+The
+general format-repair prompt permits one LLM
+retry.
+The main results use 1,400 evaluation graphs and
+5,200 SSL graphs after recorded processing, fixed
+before predictor cross-validation. Table 8 counts
+adopted LLM repairs. All retained graphs compile.
+Benchmark
+Questions Format repairs Content repairs
+Evaluation data
+SATBench
+200
+1
+0
+FOLIO
+200
+0
+0
+NLCO
+200
+0
+0
+Hamiltonian
+200
+0
+15
+Zebra
+200
+0
+1
+GSM8K
+200
+0
+0
+Logical
+200
+1
+6
+Pretraining (SSL) data
+SATBench
+900
+1
+7
+FOLIO
+900
+0
+11
+NLCO
+400
+0
+4
+Hamiltonian
+900
+0
+101
+Zebra
+900
+0
+11
+GSM8K
+900
+0
+1
+Logical
+300
+6
+11
+Table 8: Numbers of questions with recorded format
+repair, content repair based on the visible question. For-
+mat and content counts can overlap.
+Compilation.
+Factors represent constraints and
+the query. Non-factor nodes represent variables,
+propositions, entities, and shared domain values.
+Each occurrence creates a connection carrying role
+and Boolean polarity, with messages in both direc-
+tions.
+B.1
+Validation Protocol
+The reliability tables assess the correctness outputs
+on the three benchmarks before subsequent LLM
+repairs, while human-review of FOLIO, NLCO,
+Zebra, and GSM8K already include those repairs.
+Rule checks.
+SATBench compares Boolean
+clauses, identities, and polarity with visible con-
+ditions. Logical checks variables, ordering clues,
+and query candidates. Hamiltonian checks vertex
+coverage, distinctness, and allowable transitions.
+These checks derive references from the visible
+problem description, without gold answers or tar-
+get outcomes. The other four benchmarks have
+partial rule checks.
+Human review.
+Independent human reviewers
+check 20 source–CIR pairs per remaining bench-
+mark. A question passes if variables, domains,
+constraints, and query are preserved without un-
+stated conditions or an answer. Review measures
+reliability and does not trigger repairs.
+B.2
+CIR Example
+The coal question in the qualitative analysis
+(gsm8k_direct:formal:1184) produces the fol-
+lowing CIR.
+{
+"cir_version": "1",
+"constraints": [
+{
+"expr": {
+"left": {
+"id": "total_kg",
+"op": "var"
+},
+"op": "eq",
+"right": {
+"op": "const",
+"value": 850
+}
+},
+"id": "total_kg_fact"
+},
+{
+"expr": {
+"left": {
+"op": "linear_sum",
+"terms": [
+{
+"coef": 50,
+"var": "bags"
+}
+]
+},
+"op": "eq",
+"right": {
+"id": "total_kg",
+"op": "var"
+}
+},
+13
+
+============================================================
+=== PAGE 14 ===
+============================================================
+
+"id": "bag_weight_relation"
+},
+{
+"expr": {
+"left": {
+"op": "linear_sum",
+"terms": [
+{
+"coef": 18,
+"var": "bags"
+}
+]
+},
+"op": "eq",
+"right": {
+"id": "cost",
+"op": "var"
+}
+},
+"id": "cost_relation"
+}
+],
+"entities": [],
+"query": {
+"expr": {
+"id": "cost",
+"op": "var"
+},
+"sense": "minimize",
+"type": "optimization"
+},
+"variables": [
+{
+"domain": "nonnegative",
+"id": "total_kg",
+"meaning": "total kilograms of coal
+ordered",
+"type": "numeric"
+},
+{
+"domain": "nonnegative integer",
+"id": "bags",
+"meaning": "number of 50 kg bags in the
+order",
+"type": "numeric"
+},
+{
+"domain": "nonnegative",
+"id": "cost",
+"meaning": "total cost of the order in
+dollars",
+"type": "numeric"
+}
+]
+}
+C
+Features and Training Details
+Feature definitions.
+Size includes auxiliary fac-
+tors; constraint nodes are non-query factors. Fac-
+tor counts repeated occurrences, whereas De-
+gree counts distinct neighbors. Summaries use
+mean, maximum, 90th percentile, and population
+SD/mean (zero when the mean is zero).
+Den-
+sity is 2|E|/(|V |(|V | −1)); 2-core and largest
+biconnected-component fractions divide by |V |;
+Family
+Features
+Count
+Size
+Counts of all nodes, variable nodes,
+factor nodes, non-query factor nodes,
+and edges
+5
+Factor
+Occurrences of variables, propositions,
+or entities in each factor∗
+4
+Degree
+Degrees of variable nodes∗(4) and
+factor nodes∗(4)
+8
+Topology Connected components; density; 2-core
+fraction; largest biconnected-component
+fraction; cycle rank
+5
+Query
+Query degree; fraction of reachable
+constraints; mean distance to reachable
+constraints
+3
+CIR
+operators
+Occurrence counts of
+¬, ∧, ∨, ⇒, ∀, ∃, =, ̸=, <, ≤, >, ≥,
+linear sum, predicate, variable, and
+constant
+16
+Total
+41
+Table 9: CIRCE-Stats features, grouped by family. Vari-
+able nodes denote all non-factor nodes.
+∗We compute mean, maximum, 90th percentile and coefficient
+of variation for these quantities.
+cycle rank is |E| −|V | + c for c components. We
+compute topology with NetworkX (Hagberg et al.,
+2008).
+Query features use the first query factor’s degree,
+reachable non-query factor fraction, and mean dis-
+tance, with missing values when undefined. Opera-
+tor features recursively count occurrences, includ-
+ing query expressions.
+C.1
+Encoder and Pretraining
+Kind, subtype and factor-type embeddings have
+dimensions 8, 8 and 4, with 5, 64 and 4 categories.
+Node subtypes record variable or entity types and
+predicate argument counts. The 20 embedding co-
+ordinates and 16 log-transformed operator counts
+are projected from 36 to 64 dimensions with ReLU
+and layer normalization.
+Each of the six layers has role/polarity embed-
+dings of size 32 × 64/4 × 64, a learned scalar ϵ, a
+64–128–64 MLP, ReLU, dropout 0.1, and residual
+layer normalization. Readout concatenates sum,
+mean, query sum, and population SD into 256 di-
+mensions, using variance stabilizer 10−8.
+Node/edge masking probabilities are 0.4/0.2.
+Learned vectors replace masked attributes; reverse
+edges share a mask and connectivity is retained.
+One mask is forced when a nonempty set receives
+none. Six equally weighted losses reconstruct kind,
+subtype, factor type, operator counts, edge role,
+and polarity. Subtype applies to non-factors, fac-
+14
+
+============================================================
+=== PAGE 15 ===
+============================================================
+
+tor type/operators to factors, and edge losses to
+one orientation per masked pair. Empty losses are
+zero. Linear decoders use 64D node states or 128D
+endpoint concatenations.
+We use AdamW, learning rate 0.001, weight de-
+cay 0.001, batch size 32, gradient-norm clipping 5,
+and fixed 100 epochs. Each epoch samples 4,684
+graphs with equal source weight; validation bal-
+ances 516 entries with mask seed 777001. Encoder
+seeds are 20260919, 20260922, 20260923, and
+20260924. Evaluation freezes the encoder and dis-
+ables dropout and masking.
+C.2
+Gradient-Boosted Predictor
+We
+use
+scikit-learn’s
+HistGradientBoostingClassifier
+(Pe-
+dregosa et al., 2011), with the shared grid
+(maximum leaves, iterations, ℓ2):
+{(3, 50, 1), (3, 100, 10), (5, 50, 1), (5, 100, 10)}.
+(10)
+Fixed settings are learning rate 0.05, maximum
+depth 3, minimum leaf size 40, early stopping dis-
+abled, and seed 713. Each question supplies binary
+rows 0/1 weighted by 1 −yi/yi; leaf size counts
+these rows.
+Training-fold preprocessing performs median
+imputation (zero for all-missing columns), appends
+missingness indicators, drops constant columns,
+and standardizes. Inner-validation NLL selects the
+candidate, with grid order breaking ties; final fit-
+ting uses the outer training fold. This procedure is
+shared by Stats and both GNN variants.
+D
+Baseline Implementations
+Baselines share CIRCE’s evaluation labels and
+outer folds. We retain their published predictor
+families, with the settings below.
+C0 and self probability.
+C0 predicts the training-
+fold mean. Self probability asks the target once
+for a pre-answer JSON probability in [0, 1], using
+its answering settings (Appendix G). Training-only
+calibration fits a regularized logistic intercept and
+slope on standardized log-odds, with regulariza-
+tion 0.001. Missing estimates use C0: eight for
+Qwen3.8-27B (SATBench 1, NLCO 6, Hamilto-
+nian 1), zero for other targets.
+ADeLe.
+The 18 original demand rubrics are
+scored by GPT-6 Sol with temperature 0, top-p
+1, reasoning None, and output cap unset. Unguess-
+ability is 100(1 −1/K) for K choices and 100
+for open-ended tasks. A random forest uses 100
+trees, entropy criterion, and minimum split size 50,
+with remaining defaults. Training expands each
+question into ten grouped binary attempt rows.
+PredictaBoard.
+text-embedding-3-large em-
+beds the visible question into 3,072 dimensions.
+Inner-validation NLL selects default L2 logistic
+regression, L1 logistic regression (liblinear, C ∈
+{1, 0.1}) or default XGBoost (Chen and Guestrin,
+2016) with one CPU thread. Binary rows have
+weights ki and 10 −ki.
+Already Knows.
+Qwen3.5-9B generates one
+thinking-off trajectory per question.
+Last-layer
+4,096D states train a 4096–64–1 MLP with GELU
+and sigmoid: AdamW, learning rate 10−4, weight
+decay 10−3, 40 epochs and discount 1. The next-
+state target is detached. Terminal reward is the tra-
+jectory’s response correctness. Squared TD errors
+are summed across the whole response, followed by
+one optimizer step. Chunks of 1,024 states bound
+memory; caches are FP16 and computations FP32.
+TD training uses 199 complete NLCO trajecto-
+ries and 200 per other benchmark. Evaluation uses
+the pre-generation state h0 for all questions. Our
+setup uses approximately 160 training questions
+per fold and attempt-weighted AUROC.
+E
+Compute and Software
+CIRCE pretraining and predictors run on local CPU
+virtual machines with 8 cores. Each pretraining
+worker uses two CPU threads, while tree-fitting
+workers use one. The reconstruction module has
+127,995 parameters, comprising 117,118 encoder,
+10,429 decoder, and 448 mask parameters. Qwen
+targets have 9B/27B parameters. Inkling has 975B
+total and 41B active. Hosted GPT-6 model sizes
+are undisclosed.
+Training through epoch 100
+Encoder seed Minutes Train loss Val. loss
+20260919
+22.39
+0.01149
+0.01090
+20260922
+22.27
+0.01145
+0.01003
+20260923
+23.18
+0.01082
+0.01059
+20260924
+22.50
+0.01035
+0.02221
+Table 10: 100-epoch pretraining: worker wall time
+in minutes and final training/validation reconstruction
+losses. Each seed uses two CPU threads.
+across four encoder seeds totals 1.51 worker wall-
+hours. The 336 pretrained predictor evaluations
+total 0.56 worker wall-hours. Across 479 recorded
+15
+
+============================================================
+=== PAGE 16 ===
+============================================================
+
+exploratory SSL runs, the summed worker wall
+time is 379.67 hours.
+The encoder uses PyTorch (Paszke et al., 2019),
+graph features use NetworkX, and predictors use
+scikit-learn and XGBoost. Software versions for
+metric recomputation appear in Table 11.
+Package
+Version
+torch
+2.13.0+cu130
+numpy
+2.4.3
+scipy
+1.17.1
+sklearn
+1.8.0
+networkx
+3.6.1
+xgboost
+3.4.1
+transformers
+5.12.1
+safetensors
+0.8.0
+python
+3.13.12
+Table 11: Software versions used for metric recomputa-
+tion.
+F
+Responsible Research
+Use and data.
+CIRCE estimates correctness un-
+der a specified model and inference protocol. Incor-
+rect confidence can encourage over-reliance; new
+languages and applications require validation. We
+use released English reasoning benchmarks. A
+contact-pattern screen of 1,400 evaluation prompts
+found no email addresses, HTTP(S) URLs, or inter-
+national phone-number matches. Names defining
+problem entities are retained in text and omitted
+from graph features.
+Asset terms.
+Upstream licenses and sources are:
+• SATBench
+(Apache-2.0):
+https:
+//huggingface.co/datasets/LLM4Code/
+SATBench.
+• FOLIO
+v2
+(MIT
+dataset
+card):
+https:
+//huggingface.co/datasets/yale-nlp/
+FOLIO; legacy repository: CC-BY-SA-4.0.
+• NLCO
+(MIT):
+https://huggingface.co/
+datasets/summer142857jiang/NLCO.
+• Enigmata (Apache-2.0): https://github.com/
+BytedTsinghua-SIA/Enigmata.
+• GSM8K
+(MIT):
+https://github.com/
+openai/grade-school-math.
+• BBH
+(MIT):
+https://github.com/
+suzgunmirac/BIG-Bench-Hard;
+BIG-Bench
+(Apache-2.0): https://github.com/google/
+BIG-bench. Task-specific notices apply.
+G
+Prompt Templates
+G.1
+General CIR Translation
+You convert natural-language structured
+reasoning problems into CIR v1 JSON.
+Your job is REPRESENTATION ONLY. Do not solve
+the problem, do not choose an
+answer option, do not derive the final
+assignment, and do not use any hidden or
+gold information.
+CIR v1 has exactly five root fields:
+- cir_version: "1"
+- entities: list of {"id": string, "type":
+string, "label": string}
+- variables: unknown Boolean/numeric/assignment
+decisions. Each has id and type,
+and may have meaning/domain/bounds.
+- constraints: list of {"id": string, "expr":
+EXPR}
+- query: one of
+{"type":"feasibility"}
+{"type":"entailment","expr":EXPR}
+{"type":"optimization","sense":"minimize"|"
+maximize","expr":EXPR}
+Registered expressions include:
+- variable/entity/constant:
+{"op":"var","id":"..."}
+{"op":"entity","id":"..."}
+{"op":"const","value":...}
+- Boolean:
+{"op":"not","arg":EXPR}
+{"op":"and","args":[...]}
+{"op":"or","args":[...]}
+{"op":"xor","args":[...]}
+{"op":"implies","left":EXPR,"right":EXPR}
+{"op":"iff","left":EXPR,"right":EXPR}
+- comparisons:
+{"op":"eq"|"ne"|"le"|"lt"|"ge"|"gt","left":
+EXPR,"right":EXPR}
+- linear sums:
+{"op":"linear_sum","terms":[{"coef":1,"var":"x
+"}, ...]}
+- predicates:
+{"op":"predicate","name":"Relation","args":["
+entity_or_bound_var", ...]}
+- quantifiers:
+{"op":"forall"|"exists","vars":[{"id":"x","
+type":"entity"}],"body":EXPR}
+- scheduling relations when explicitly
+appropriate:
+precedence, no_overlap, within_window,
+cumulative_resource.
+Representation rules:
+1. Use ONLY the problem text below.
+2. Preserve all stated constraints that
+determine the latent reasoning world.
+3. Do not invent unstated facts or commonsense
+rules unless the text explicitly
+states that they are task rules.
+4. For ordering/allocation/grid/full-assignment
+puzzles, encode the latent
+decision variables and constraints and use a
+feasibility query. The task of
+finding the assignment is represented by the
+feasible solution space; do not
+put the answer assignment in CIR.
+5. If the question asks whether a proposition
+follows and that proposition can
+be expressed without solving, use an
+16
+
+============================================================
+=== PAGE 17 ===
+============================================================
+
+entailment query.
+6. If the visible problem is multiple choice or
+asks for a selected value but
+CIR v1 cannot faithfully express the
+selection query without solving, encode
+the underlying world constraints and use
+feasibility. Never encode the
+correct choice as a constraint.
+7. Answer choices are not facts. They may help
+identify what relation the query
+refers to, but they must not be asserted as
+constraints.
+8. For truth-teller/liar puzzles, represent each
+person's identity as an
+unknown Boolean decision and encode the
+semantic relationship between the
+speaker's identity and the truth value of
+their stated proposition.
+9. For logic-grid puzzles, use generic
+assignment/position decisions and
+all-different/exactly-one structure expressed
+with Boolean variables and
+linear sums where practical.
+10. Output exactly one CIR JSON object after any
+thinking. No Markdown and no
+answer/solution/commentary fields.
+PROBLEM TEXT:
+{visible_text}
+Produce CIR v1 JSON only.
+G.2
+Format-Only Repair
+Reformat the raw model output below as exactly
+one valid CIR v1 JSON
+object. Preserve only the representation already
+stated in the raw output. Do
+not solve the task, choose an answer, add/remove
+a condition, or consult any
+outside input. Return no Markdown.
+Exactly these root fields are allowed:
+{"cir_version":"1","entities":[],"variables
+":[],"constraints":[],"query":{}}
+RAW OUTPUT:
+G.3
+Pre-Answer Self Probability
+Estimate your own probability of producing a
+correct final answer to the task below on
+ONE independent attempt, following the task'
+s original instructions and the answering
+settings listed below.
+Do not answer the task, provide a candidate
+answer, or work out its solution. Assess the
+task requirements and your own likely
+performance before attempting an answer. The
+instructions inside <task> describe the
+hypothetical answering task; do not execute
+them now.
+Answering settings: {settings}
+<task>
+{question}
+</task>
+Return only one JSON object in this format:
+{{"probability_correct": <number between 0 and
+1>}}
+This is the probability that your final answer
+would be correct on one attempt, not the
+probability of being correct on every
+attempt. Do not include an answer,
+explanation, or any other fields.
+17
