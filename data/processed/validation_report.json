@@ -1,0 +1,35 @@
+{
+  "dataset": "synthetic_evidence_bound_compiler_pilot_v1",
+  "synthetic_only": true,
+  "oracle_or_human_reviewed": false,
+  "groups": 67,
+  "records": {
+    "train": 150,
+    "test": 51
+  },
+  "variants_per_group": [
+    "explicit",
+    "implicit",
+    "none"
+  ],
+  "constraint_types": [
+    "budget",
+    "deadline",
+    "order",
+    "privacy",
+    "tool_auth"
+  ],
+  "all_witnesses_feasible": true,
+  "template_overlap": [],
+  "template_overlap_count": 0,
+  "pair_validation_errors": [],
+  "train_sha256": "debea66efd843d6d7a504781321ca777234258ce277e9f5a3b1b5b68f5cad704",
+  "test_sha256": "6017137194e469c26262ba91c1159b432c5f88eebb5da8705d4200407a999fab",
+  "limitations": [
+    "Hand-authored controlled examples are not a naturalistic corpus.",
+    "Implicit cue recoverability has not been checked by an independent oracle or human annotators.",
+    "All gold confidence values are construction-time 1.0 and do not provide a calibration target.",
+    "No ambiguous or abstention-required examples are included in this first pilot.",
+    "Train and test constrained wording templates are disjoint; role/type/graph families remain shared."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "model_id": "Qwen/Qwen3-0.6B",
+  "train_records": 150,
+  "test_records": 51,
+  "seed": 42,
+  "max_steps": 75,
+  "gradient_accumulation_steps": 4,
+  "prompt_structured": {
+    "records": 51,
+    "state_accuracy": 0.3333333333333333,
+    "state_accuracy_by_variant": {
+      "explicit": 1.0,
+      "implicit": 0.0,
+      "none": 0.0
+    },
+    "abstain_accuracy": 1.0,
+    "constraint_micro_precision": 0.0,
+    "constraint_micro_recall": 0.0,
+    "constraint_micro_f1": 0.0,
+    "constraint_exact_accuracy": 0.0,
+    "evidence_exact_rate": 0.0,
+    "json_parse_rate": 1.0
+  },
+  "prompt_abstaining": {
+    "records": 51,
+    "state_accuracy": 0.37254901960784315,
+    "state_accuracy_by_variant": {
+      "explicit": 1.0,
+      "implicit": 0.0,
+      "none": 0.11764705882352941
+    },
+    "abstain_accuracy": 0.9215686274509803,
+    "constraint_micro_precision": 0.0,
+    "constraint_micro_recall": 0.0,
+    "constraint_micro_f1": 0.0,
+    "constraint_exact_accuracy": 0.0392156862745098,
+    "evidence_exact_rate": 0.0392156862745098,
+    "json_parse_rate": 0.9215686274509803
+  },
+  "trained_lora": {
+    "records": 51,
+    "state_accuracy": 1.0,
+    "state_accuracy_by_variant": {
+      "explicit": 1.0,
+      "implicit": 1.0,
+      "none": 1.0
+    },
+    "abstain_accuracy": 1.0,
+    "constraint_micro_precision": 1.0,
+    "constraint_micro_recall": 1.0,
+    "constraint_micro_f1": 1.0,
+    "constraint_exact_accuracy": 1.0,
+    "evidence_exact_rate": 0.9607843137254902,
+    "json_parse_rate": 1.0
+  }
+}

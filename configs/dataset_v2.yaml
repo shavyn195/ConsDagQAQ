@@ -1,0 +1,12 @@
+# dataset_v2 构造配置（预注册：S1-S8 流水线参数，生成前冻结）
+seed: 42
+groups:
+  train: 4000        # 训练组（模板 train 池 + 角色 train 池）
+  dev: 300           # in-domain 验证组（同 train 池）
+  test_tpl_ho: 350   # 模板 held-out 测试组（test 模板池 + train 角色）
+  test_tool_ho: 350  # 工具组合 held-out 测试组（train 模板池 + held-out 角色）
+output_dir: data/processed_v2
+# 每组渲染 E/I/N 三版；规模 = 组数 x 3
+# 约束类：budget/deadline/privacy/tool_auth/order（severity 按类默认，C-LOOP-2）
+# I 版线索：consequence/fact/convention x 难度 1-3（权重 0.30/0.45/0.25）
+# 红线：I 版线索只指向金标约束；N 版仅删约束句保持同信息面

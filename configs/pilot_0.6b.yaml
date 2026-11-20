@@ -1,0 +1,34 @@
+# Pre-registered bounded pilot. This file is metadata for the fresh experiment only.
+model_id: Qwen/Qwen3-0.6B
+device: hosted GPU (runtime detected)
+precision: fp16
+method: lora
+lora:
+  rank: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+data:
+  train: data/processed/train.jsonl
+  test: data/processed/test.jsonl
+  max_seq_len: 1024
+training:
+  seed: 42
+  max_train_examples: 500
+  epochs: 3
+  per_device_batch_size: 1
+  gradient_accumulation_steps: 4
+  learning_rate: 0.0002
+  max_steps: 75
+  save_steps: 100
+  logging_steps: 10
+evaluation:
+  prompt_baselines: [structured, abstaining]
+  max_new_tokens: 256
+  temperature: 0.0
+gates:
+  require_cpu_preflight: true
+  require_prompt_baseline: true
+  require_schema_pass_rate: 1.0
+  require_pair_integrity: true
+  require_witness_verifier: true
