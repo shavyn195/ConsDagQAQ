@@ -94,6 +94,7 @@ def normalise_prediction(value: dict[str, Any] | None) -> dict[str, Any]:
     constraints = value.get("constraints")
     if not isinstance(constraints, list):
         constraints = []
+    constraints = [c for c in constraints if isinstance(c, dict)]
     return {
         "query_state": value.get("query_state", "none"),
         "abstain": bool(value.get("abstain", False)),
