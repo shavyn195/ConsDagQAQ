@@ -1,0 +1,54 @@
+{
+  "dataset": "consdag_trusted_constraint_dataset_v2",
+  "synthetic_only": true,
+  "seed": 42,
+  "groups": {
+    "train": 4000,
+    "dev": 300,
+    "test_tpl_ho": 350,
+    "test_tool_ho": 350
+  },
+  "records": {
+    "train": 12000,
+    "dev": 900,
+    "test_tpl_ho": 1050,
+    "test_tool_ho": 1050
+  },
+  "constraint_type_distribution": {
+    "budget": 3754,
+    "order": 3758,
+    "privacy": 3042,
+    "tool_auth": 3396,
+    "deadline": 3624
+  },
+  "implicit_hint_distribution": {
+    "consequence-d1": 864,
+    "consequence-d2": 1427,
+    "consequence-d3": 701,
+    "convention-d1": 839,
+    "convention-d2": 1309,
+    "convention-d3": 744,
+    "fact-d1": 873,
+    "fact-d2": 1280,
+    "fact-d3": 750
+  },
+  "constraint_count_per_group": {
+    "2": 1987,
+    "1": 2113,
+    "3": 900
+  },
+  "generation_failures": 0,
+  "sha256": {
+    "train": "4c51cd77a8e425acbb8288d20a055108971b95097adfdedda192655e8a1b751c",
+    "dev": "15350602d6f5485fd673a6284c1fd3fe994c5ec3dcf87829a230ea1ae7ba0c7a",
+    "test_tpl_ho": "10e232941c62631653298b20d3042e81af5a7a775c75d9d36ef7a64ee046378d",
+    "test_tool_ho": "41f1932279d7c02e1c4aac7ffc9a76de2d3760e4a9ebf52fe710a7e92e16753b"
+  },
+  "limitations": [
+    "Synthetic, hand-templated corpus; not naturalistic user language.",
+    "Oracle recoverability check (S6) not yet run; PE oracle pending API key.",
+    "All gold confidence values are construction-time 1.0; no calibration target.",
+    "No ambiguous or abstention-required examples by design (implicit red line).",
+    "test_tool_ho subset contains no tool_auth constraints (no held-out auth pairs)."
+  ]
+}

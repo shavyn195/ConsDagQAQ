@@ -1,0 +1,14 @@
+# dataset_v3 构造配置（v2 泄漏修复版：goal 全局唯一 + 词表扩容）
+# 与 v2 唯一差异：output_dir；规模与分组策略不变。
+seed: 42
+groups:
+  train: 4000        # 训练组（模板 train 池 + 角色 train 池）
+  dev: 300           # in-domain 验证组（同 train 池；goal 与 train 全局不重）
+  test_tpl_ho: 350   # 模板 held-out 测试组（test 模板池 + train 角色）
+  test_tool_ho: 350  # 工具组合 held-out 测试组（train 模板池 + held-out 角色）
+output_dir: data/processed_v3
+# v3 修复（C-LEAK-1）：
+# - goal 模板 10->20、DATASETS 10->30、TEAMS 6->12（组合空间 600->7200）
+# - 生成器全局 used_goals 硬约束：goal 跨 split 唯一 => query 全局唯一
+# - deadline hours 采样 1-5 -> 1-8（扩大金标参数空间）
+# 每组渲染 E/I/N 三版；规模 = 组数 x 3

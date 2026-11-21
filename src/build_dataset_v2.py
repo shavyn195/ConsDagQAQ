@@ -163,7 +163,7 @@ def make_constraint(
         mapping = {"limit": f"{limit:,}"}
     elif ctype == "deadline":
         total_min = sum(n["duration_min"] for n in graph["nodes"])
-        hours = max(1, -(-total_min // 60) + rng.randint(1, 5))
+        hours = max(1, -(-total_min // 60) + rng.randint(1, 8))
         params = {"max_duration_hours": hours}
         terminal = next(n for n in graph["nodes"] if n["terminal_output"])
         scope = [f"role:{terminal['role']}"]
@@ -257,15 +257,19 @@ BUDGET_INJECT_ROLES = ["purchase_data_asset", "pay_with_wallet", "call_external_
 
 
 def gen_group(
-    rng: random.Random, group_id: str, subset: str,
+    rng: random.Random, group_id: str, subset: str, used_goals: set[str] | None = None,
 ) -> dict[str, Any] | None:
     """生成一个任务组（E/I/N 三版共享 goal/DAG/约束集）。
 
     约束驱动构造：先采约束类型，再把支撑角色注入 DAG（保证五类均衡且支持度成立）。
+    v3 修复：goal 全局唯一（used_goals 跨 split 共享）。goal 唯一 => N 版 query 唯一，
+    且 E/I query 以 goal 为前缀 => 全部 query 全局唯一（C-LEAK-1 根治）。
     """
     # 池选择：tpl_ho 用 test 模板池；tool_ho 用 held-out 角色；其余 train
     tpl_pool = "test" if subset == "test_tpl_ho" else "train"
     dag_pool = HELDOUT_ROLE_POOL if subset == "test_tool_ho" else TRAIN_ROLE_POOL
+    if used_goals is None:
+        used_goals = set()
     # tool_ho 子集无 tool_auth 配对（held-out 无授权惯例对），如实降级
     type_menu = [t for t in CONSTRAINT_TYPES if not (subset == "test_tool_ho" and t == "tool_auth")]
 
@@ -329,11 +333,18 @@ def gen_group(
                 constraints.append(c)
         if not constraints:
             continue
-        # goal 渲染
-        goal = fill_template(
-            GOAL_TEMPLATES[tpl_pool][rng.randrange(len(GOAL_TEMPLATES[tpl_pool]))],
-            {"dataset": rng.choice(DATASETS), "team": rng.choice(TEAMS)},
-        )
+        # goal 渲染（全局唯一：重采至不与 used_goals 撞；池子 20x30x12=7200 足够）
+        goal = None
+        for _g_attempt in range(80):
+            cand = fill_template(
+                GOAL_TEMPLATES[tpl_pool][rng.randrange(len(GOAL_TEMPLATES[tpl_pool]))],
+                {"dataset": rng.choice(DATASETS), "team": rng.choice(TEAMS)},
+            )
+            if cand not in used_goals:
+                goal = cand
+                break
+        if goal is None:
+            return None
         available_roles = sorted(f"role:{r}" for r in catalog)
         tool_catalog = [
             {"role": r, "category": ROLES[r][1], "subsystem": ROLES[r][0]} for r in catalog
@@ -414,19 +425,21 @@ def main() -> None:
 
     all_rows: list[dict[str, Any]] = []
     groups_by_subset: dict[str, int] = Counter()
+    used_goals: set[str] = set()  # 全局 goal 唯一性（跨 split 共享；C-LEAK-1 修复）
     failures = 0
     for subset, n in counts.items():
         made = 0
         idx = 0
         while made < n:
             group_id = f"{subset}-{idx:05d}"
-            group = gen_group(rng, group_id, subset)
+            group = gen_group(rng, group_id, subset, used_goals)
             idx += 1
             if group is None:
                 failures += 1
                 if failures > 200:
                     raise SystemExit("生成失败次数过多，请检查支持度配置")
                 continue
+            used_goals.add(group["records"][0]["task_goal"])
             all_rows.extend(group["records"])
             groups_by_subset[subset] += 1
             made += 1

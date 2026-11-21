@@ -143,14 +143,25 @@ DEFAULT_SEVERITY = {
     "tool_auth": "medium", "order": "medium",
 }
 
+# v3 修复：池子扩容（10->30 数据集、6->12 团队），goal 组合空间 600->7200，
+# 配合生成器全局 goal 唯一性硬约束，杜绝跨 split query 原题泄漏（C-LEAK-1）。
 DATASETS = [
     "customer records", "sales ledger", "sensor telemetry", "support tickets",
     "market research panel", "HR roster", "inventory snapshot", "contract corpus",
     "partner orders", "device logs",
+    "customer churn panel", "pricing experiments log", "fraud alerts archive",
+    "supplier scorecards", "warehouse movement logs", "clinical trial extracts",
+    "insurance claims feed", "loyalty program data", "clickstream extracts",
+    "ad campaign metrics", "weather station feed", "energy meter readings",
+    "fleet GPS traces", "help-center macros", "training enrollment data",
+    "payroll adjustment files", "procurement bid sheets", "quality inspection records",
+    "churn survey responses", "app crash reports",
 ]
 TEAMS = [
     "operations team", "finance team", "compliance office",
     "data governance board", "product team", "marketing team",
+    "risk committee", "analytics chapter", "supply chain desk",
+    "clinical affairs unit", "revenue ops circle", "executive briefing group",
 ]
 
 # ---------------------------------------------------------------- 任务 goal 模板
@@ -166,6 +177,16 @@ GOAL_TEMPLATES: dict[str, list[str]] = {
         "Turn the {dataset} into a validated deliverable for the {team}.",
         "Orchestrate the analysis of the {dataset} and submit the result to the {team}.",
         "Produce the standing report on the {dataset} and share it with the {team}.",
+        "Prepare the {dataset} briefing and circulate it to the {team}.",
+        "Assemble the {dataset} package and stage it for the {team}.",
+        "Work the {dataset} into a polished summary for the {team}.",
+        "Coordinate the {dataset} analysis and route the output to the {team}.",
+        "Pull the {dataset} into a reviewed deliverable for the {team}.",
+        "Draft the {dataset} digest and hand it off to the {team}.",
+        "Scaffold the {dataset} run and present results to the {team}.",
+        "Consolidate the {dataset} and brief the {team} on the outcome.",
+        "Move the {dataset} into production reporting for the {team}.",
+        "Frame the {dataset} analysis and deliver the pack to the {team}.",
     ],
     "test": [
         "Put together this cycle's {dataset} summary for the {team}.",
@@ -178,6 +199,16 @@ GOAL_TEMPLATES: dict[str, list[str]] = {
         "Shape the {dataset} into the standing report the {team} expects.",
         "Drive the {dataset} analysis to completion and hand the pack to the {team}.",
         "Convert the {dataset} into the scheduled digest for the {team}.",
+        "Sketch out the {dataset} rollup and get it to the {team}.",
+        "See the {dataset} through to a signed-off deliverable for the {team}.",
+        "Fetch the {dataset}, run the numbers, and pass the pack to the {team}.",
+        "Pull together the {dataset} story for the {team}.",
+        "Push the {dataset} through the pipeline and drop the result with the {team}.",
+        "Line up the {dataset} hand-off for the {team}.",
+        "Nail down the {dataset} deliverable and send it to the {team}.",
+        "Round out the {dataset} analysis for the {team}.",
+        "Stitch the {dataset} into the report the {team} is waiting on.",
+        "Walk the {dataset} end to end and close the loop with the {team}.",
     ],
 }
 
