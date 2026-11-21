@@ -1,6 +1,11 @@
 # ConsDAG 改进设计方案 v4（面向 CCF-B）
 
-日期：2026-11-21。依据：`literature/extracted/` 全部 73 个全文（其中 `papers/` 下 9 个目录装错了论文，见 §2.4）、蓝本 `Pasted text.txt`、v3 数据与 0.6B v3 结果、全部源码。
+日期：2026-11-21；2026-11-22 修订（见 §9）。
+
+依据：
+- 蓝本 `Pasted text.txt`、v3 数据与 0.6B v3 结果、全部源码；
+- 文献部分：首版依据的是子代理摘要（二手）；修订版依据主会话逐篇核对，见 `reports/literature_audit_v4.md`（116 条原文全部带行号）。`papers/` 下 9 个目录错装，见 §2.4。
+
 中期报告只取了可信约束的定义，**它的实验数据一律没有使用**。
 
 ---
@@ -47,20 +52,20 @@
 
 | 创新点 | 最危险邻居 | 威胁 | 我们必须拿出的差异化证据 |
 | --- | --- | --- | --- |
-| ① 训练的证据绑定编译器 | CGAP（零样本 LLM 解析、带字符偏移 evidence span、喂给 PDDL 规划器、执行级加配对统计）；NOMOS / PolicyGuide（"编译器"叙事、typed IR、safe completion）；BeyondReAct（同为 Qwen3 0.6–8B，"小模型编译、强模型执行"） | "为什么不直接 prompt 一个大模型？" | 同 schema、同策略卡下，**强模型 PE 对照**和执行级 safe-success 对比，并按 I 档、tool_ho 分开报告 |
-| ② 约束锚定奖励分解 | TAG（证明静态权重在 GRPO 下会坍塌，提出乘性锚门控）；RLVP（逐动作罚、折叠标量对比、outcome-gating，原则是 "penalize commission, never omission"）；Constrained GRPO（ScRew 会扭曲非对称比例）；DAGent（GRPO 中的 DAG 节点信用） | g(A) 很容易被看成"TAG 换成外部锚" | 外部锚、节点归因、非对称罚三者**各自独立的增益**；ScAdv/GDPO 对照臂；同预算 TAG 臂 |
-| ③ E/I/N 配对可执行基准 | AM-Bench（同任务约束的显式/模糊/缺失配对，约束域就是授权和机密数据）；ExecutionFirst（同 DAG 三档显式度，构造期执行验证）；LIFT（合成、配对渲染、训练集、17 个模型）；新检索到的 **LogiSafetyBench 2601.08196**（通过"safety masking"迫使模型推断隐式合规约束）和 **ToolPrivacyBench 2606.28061**（2,150 例隐私授权基准） | "显式/隐式配对已经有人做过" | 我们的 I 版"**可恢复且 gold 唯一**"；有 N 负对照（近似干扰句）；约束**咬合且逐条必要**；双 held-out；带训练用途；执行级刻度 |
+| ① 训练的证据绑定编译器 | **CGAP**：由 prompt 驱动的 LLM（gpt-oss-20b / Qwen3-32B / GPT-5 mini，未训练；原文没有"zero-shot"一词）把请求解析成带 evidence span 的 operation，外加**无类型**的全局约束 Λt；授权和隐私明确留给应用（audit Q22–Q25）。**Sapien（修订新增）**：用现成 LLM 把**逐个 prompt**编译成可执行策略（Q14）。**NOMOS / PolicyGuide**：编译的是**域级书面 policy**；本机 26B 编译不显著劣于前沿模型（Q15–Q17）。**BeyondReAct**：同为 Qwen3 0.6–8B，训练的是 planner（Q1） | "为什么不直接 prompt 一个大模型？""Sapien 不就是逐 query 编译吗？" | 同 schema、同策略卡下的**强模型 PE 对照**（零样本 + few-shot）；faithful 执行级指标；按 I 档和 tool_ho 分开报告 |
+| ② 约束锚定奖励分解 | TAG：门控辅助信用；在其简化的二通道模型中证明，存在难题时静态权重不安全（Q49 Q50）。RLVP：逐动作罚 + 结果奖励，折叠成标量会变慢，原则是"penalize commission, never omission"（Q35 Q40）；首版写的"outcome-gating"**无原文支撑**，已删除。Constrained GRPO：先标量化奖励再归一化，会造成共享分母耦合（Q28）；"会扭曲非对称比例"是**我方推论**。DAGent：GRPO 中按 DAG 拓扑分配**结果奖励**的信用（Q45）。SiLR：计数型违规奖励的组内区分度会坍塌（Q108） | g(A) 很容易被看成"TAG 换成外部锚" | 外部锚、节点归因、非对称罚三者**各自独立的增益**；ScAdv/GDPO 对照臂；同预算 TAG 臂；φ 不用计数型 |
+| ③ E/I/N 配对可执行基准 | **LogiSafetyBench 2601.08196**（已读全文）：自称首个隐式合规工具评测；240 个人工验证任务；可执行 + LTL 预言。但其隐式来源是系统提示里的法规全文，只有两种时序模板，自认无法处理参数级约束（Q100–Q104）。AM-Bench：同任务约束的显式/模糊/缺失配对，其 KM 档的 gold 不可从输入恢复（Q67–Q70）。ExecutionFirst：同一轨迹生成三档显式度，但变的是执行细节，校验由同一 LLM 完成（Q62 Q63）。LIFT：合成 + 同一约束双渲染 + 训练集，约束全部显式（Q72）。ToolPrivacyBench：隐私执行级审计（Q105） | "隐式约束工具基准已经有人做过" | 放弃一切"首个"表述；只主张**参数级约束** + query 内可恢复的隐式线索 + N 近似干扰对照 + 咬合且逐条必要 + 训练集 + faithful 执行刻度 |
 
 另外，Implicit Intelligence 定义隐式为 "requirements that users expect but never explicitly state"。按这个定义，我们 I 版的证据仍在 query 里，所以论文里必须把 implicit 定义为**表达状态**（不陈述指令，但可由 query 内事实推出），并引用它来划界。
 
-### 2.3 新检索补充（WebSearch；全文暂未入库，WebFetch 被网络策略拦截，**只核实到摘要和搜索结果层面**）
+### 2.3 补检索（修订：全文已下载入库 `literature/extracted/library/06_web_supplement_20261121/`）
 
-- LogiSafetyBench（2601.08196）：隐式法规合规，工具调用，"safety masking"。对③和"隐式"叙事构成**高危**，必须正面引用并对照。
-- ToolPrivacyBench（2606.28061）：2,150 例，字段–工具授权矩阵，结论是"任务完成 ≠ 隐私合规"。可作为执行级联合指标的直接先例和外部 OOD 评测集候选。
-- SiLR（2609.04629）：计数型违规奖励在 GRPO 下组内区分度很低。E2 奖励设计要引用。
-- When Lower Privileges Suffice（2606.20023）：SFT 后接 GRPO，奖励对过早使用高权限工具施罚。是 E2 的近邻。
-- PeakBench（2608.24509）、PlanBench-XL（2606.22388）：工具规划中的隐式数据流和隐式子目标。
-- 待办：用 `scripts/fetch_papers.py` 把上述论文拉进 `literature/library` 精读，然后更新划界表。
+- **LogiSafetyBench（2601.08196）**：已深读。对③构成高威胁，差异点见 §2.2。
+- **ToolPrivacyBench（2606.28061）**：已读摘要、引言和标注协议。规模 2,150 例；policy KB 只用于事后审计（Q106）；κ 是抽样复标（Q107）。属于可对照和外部 OOD 候选。
+- **SiLR（2609.04629）**：已核实"计数奖励最多只有 B+1 个取值"（Q108）。
+- **When Lower Privileges Suffice（2606.20023）**：已核实 SFT→GRPO，奖励对过早升权重罚（Q109 Q110）。
+- **PlanBench-XL（2606.22388）**：其"implicit subgoals"指检索式规划中的子目标，与约束无关，**降为低相关**。
+- **PeakBench（2608.24509）**：PDF 只能抽出 2 页，**只读了摘要与引言**；内容是依赖/并发结构加资源调度，降为低相关。
 
 ### 2.4 文献库卫生
 
@@ -70,12 +75,21 @@
 
 ## 3. 创新点口径（收窄后，能立住的版本）
 
-- **①**：一个**可训练、planner-agnostic、输出可审计**的约束编译器，输出 typed 约束对象（type/params/state/severity/scope/evidence_span）。主张落在"同一信息条件下，小模型训练后的编译质量和下游执行级安全成功率，不低于（或优于）强模型 PE，并且可本机部署"。
+- **①**：一个**可训练、planner-agnostic、输出可审计**的约束编译器，输出 typed 约束对象（type/params/state/severity/scope/evidence_span）。主张落在"同一信息条件下，小模型训练后的编译质量和下游 **faithful** 执行级成功率，不低于（或优于）强模型 PE"。
+  - 修订：划界表必须加入 Sapien（逐 prompt 编译）和 CGAP（带 span 的解析）。
+  - "可本机部署"不能单独作为卖点，因为 NOMOS 已报告本机 26B 编译不显著劣于前沿模型（Q17）。
   - **不得**声称训练编译器、evidence span、隐式约束、拒判是"零先例"。
   - **校准/拒判在 v4 中不主张**：gold confidence 已删除；E5 改为用序列对数概率做 selective risk 的事后分析，且需要单独构造歧义集（§4.4）。
 - **②**：只有在 E2 跑出"外部锚、节点归因、非对称罚各自有独立增益"之后才能写成贡献。在那之前只写成方法设计。
-- **③**：主张"**咬合 + 逐条必要的约束集 + E/I/N 最小三元组 + 双 held-out + 执行级刻度**"这个组合。**禁写"三版语义等价"**，改写为"(E, I) 等价对 + N 对比臂"。
-- 首创句式沿用蓝本 §1.5 的模板，并必须附检索协议（日期、库、查询式），把 LogiSafetyBench、AM-Bench、ExecutionFirst、LIFT 加进划界表。
+- **③**：主张"**参数级约束 + 咬合且逐条必要的约束集 + E/I/N 最小三元组 + 训练集 + faithful 执行刻度**"这个组合。
+  - **禁写"三版语义等价"**，改写为"(E, I) 等价对 + N 对比臂"。
+  - **禁写"首个隐式约束 / 隐式合规工具基准"**，因为 LogiSafetyBench 已经这样自称（Q103）。
+  - tool_ho 只能写成"名称级 held-out"（见 §4.3）。
+- 蓝本里"CGAP、RLVP 两次点名 open problem，由我们闭合"的说法需要修正：
+  - CGAP 的"outside our scope"指从自然语言诱导**能力的状态依赖规则**（Q114），不是用户约束；
+  - RLVP 的"open challenge"指从**环境 affordance** 自动发现约束（Q36）。
+  - 改写为："与 RLVP 人工指定罚、CGAP 把授权/隐私留给应用不同，我们从用户 query 学习编译约束。"
+- 首创句式必须附检索协议（日期、库、查询式），并把 LogiSafetyBench、AM-Bench、ExecutionFirst、LIFT、Sapien、CGAP 加进划界表。
 
 ---
 
@@ -88,7 +102,7 @@
 | 任务世界 | 单一 DAG = 唯一计划 | 5 个阶段、每阶段 1–3 个备选工具（费用/时长/本地或外发/是否清除 PII），可插入审批、脱敏、校验步骤，finish 两步顺序可交换 |
 | 约束咬合 | 0%（全部被默认计划满足） | **100%**：默认计划违反每条金标约束（V3）；**逐条必要**：去掉 c 后的最小改动计划必违反 c（V4，5000 组全量复核） |
 | N 版 | = goal 原句 | 同一句槽换成**同主题近似干扰句**（豁免、否定、他人适用、已撤销）；40% 的组另带一条三版共享的干扰槽 |
-| I 版 | 指令改写 | 无指令词（词边界正则，V6）；budget/deadline 的 d2/d3 需要减法或加法，金标数值不出现在句中（含"1,350 含 350"这类尾数捷径，V6）；privacy 的 d2/d3 只给字段名，要按策略卡映射到数据类 |
+| I 版 | 指令改写 | 无指令词（词边界正则，V6）；budget/deadline 的 d2/d3 需要减法或加法，金标数值不出现在句中（含"1,350 含 350"这类尾数捷径，V6）。privacy 的 d2/d3 只给字段名。**修订**：策略卡把 test 池的字段短语也列成了示例（`src/dataset_v4_spec.py` L178），所以这一步实际上是在 prompt 里**查表**，不是推理。真正需要算术的只占隐式约束的 21.6%（1,693/7,826）。order 类 I 模板在 train/test 两池都是 5/6 条先提 after 角色，存在位置伪影 |
 | held-out 工具 | 训练目录里出现 held-out 名 | held-out 世界 22 个工具名**从未出现**在 train/dev/tpl_ho 的任何模型输入中（V7） |
 | 契约公平性 | severity/scope 是隐藏约定 | 策略卡随 prompt 给出类型、参数键、severity、scope 规则和 state 定义；删掉恒定的 confidence/description |
 | 规模 | 5000 组 × 3 | 相同：train 4000 / dev 300 / tpl_ho 350 / tool_ho 350 组（15,000 条） |
@@ -101,14 +115,19 @@ SHA256（LF）：train `eaabe109…`、dev `e7ff77f1…`、test_tpl_ho `04de746c
 
 编译输出经严格解析后交给**最小改动约束感知规划器**（代表完美服从约束的 planner），产出计划，再由**独立检查器**用金标约束判定 safe_success（完成目标且零违反）。
 
-- 刻度两端：none 档在 E/I 上为 0、在 N 上为 1；gold 档处处为 1。
+- 刻度两端：none 档（默认计划）在 E/I 上为 0、在 N 上为 1；gold 档处处为 1。
 - 附带指标：逐类型违反率；N 版的不必要偏离率；E/I 版安全时的过度改动率；group bootstrap 95% CI；两系统间做配对 bootstrap + 精确 McNemar。
 
-这一项回答了"F1 高是否有用"，也让对不同契约表述宽容的指标（核心键 type+params）有了执行意义。
+**修订（被证伪的部分）**：首版说"这一项回答了 F1 高是否有用"，这是夸大。
+- 一个**不看约束的保守规划器**（每阶段选本地且最便宜的工具，并插入全部可选步骤），在 E 版上的 safe_success 为 dev 0.673 / tpl_ho 0.634 / tool_ho 0.614。原因是它会顺带满足 budget、privacy、tool_auth。
+- 因此 safe_success 单独不能把成功归因到编译。
+- 必须以 **faithful_success** 为主指标（E/I：安全且改动数等于金标最小改动计划；N：安全且不偏离默认计划），并把保守规划器列为参考档。保守规划器的计划与金标计划一致率为 0。
+- 这两项改动要等队列结束后再改代码（audit §6 T1）。
 
 ### 4.3 仍有的局限（如实写进 limitations）
 
-- 纯模板合成；held-out 世界与训练世界**结构同构**，只是名字和属性没见过。
+- 纯模板合成；held-out 世界与训练世界**结构同构**（阶段数、备选位置、配对模式、数值区间都相同，`src/dataset_v4_spec.py` L71–150），只是名字和属性没见过。零样本下 tool_ho 并不比 dev 难（受约束 safe 0.107 对 0.077）。所以 tool_ho 只能称为"名称级 held-out"。对照 EffectWorld 的未见 commerce 域，要主张结构泛化，需要另造结构不同的世界。
+- 模板池小（每类每池 E 8 条、I 6 条、N 4 条）。tool_auth/order 的 difficulty 只是名义标签。
 - 规划器是符号的最小改动规划器，不是 LLM planner。E6 再换 LLM planner。
 
 ### 4.4 数据侧待补（P0/P1）
@@ -146,7 +165,7 @@ SHA256（LF）：train `eaabe109…`、dev `e7ff77f1…`、test_tpl_ho `04de746c
 
 ### 5.2 E4 泛化
 
-- dev（in-domain）、tpl_ho（模板、goal、背景、PII 别名全部 held-out）、tool_ho（未见工具世界）分列。
+- dev（in-domain）、tpl_ho（模板、goal、背景 held-out；**修订**：PII 字段别名经策略卡泄漏，不算 held-out）、tool_ho（未见的工具**名称**；结构同构）分列。
 - 预注册判据：I 档在 tpl_ho 上的下降幅度；tool_ho 的 safe-success。若崩溃，结论改写为"组合泛化仍是 open problem"。
 
 ### 5.3 E5 校准（降级）
@@ -179,7 +198,10 @@ SHA256（LF）：train `eaabe109…`、dev `e7ff77f1…`、test_tpl_ho `04de746c
 - 编译器噪声注入（FP/FN 各 3 档）存活曲线。
 - 3 个 seed 加配对 bootstrap。
 
-**风险**：RLVP 明确写了 "chain 0.6B/1.7B (too weak)"。先测 1.7B 的 VarG 和 dead-update 比例，不达标就把 4B（QLoRA）作为主战场。
+**风险（修订）**：首版引用 RLVP 的 "chain 0.6B/1.7B (too weak)" 来说明 1.7B 上的罚可能无效，这是**断章取义**。
+- 该句是图注，说的是稠密 progress potential 的收益只在可达阈值之后才出现（Q37 Q38）；
+- RLVP 的惩罚通道恰恰"generalizes from 1.7B to 8B models"（Q39）。
+- 因此 1.7B 作为主战场没有文献层面的反对理由。仍需先测组内方差 VarG 与 dead-update 比例。
 
 ### 5.6 统计纪律
 
@@ -224,3 +246,26 @@ SHA256（LF）：train `eaabe109…`、dev `e7ff77f1…`、test_tpl_ho `04de746c
 - 说 tool_ho 证明了结构泛化（它只证明了未见名称和属性）。
 - 在 E2 跑出结果之前声称 ② 有下游收益。
 - 声称校准或拒判已经学会。
+- 声称"首个隐式约束 / 隐式合规工具基准"（LogiSafetyBench 已这样自称）。
+- 只报 safe_success 而不报 faithful_success 与保守规划器参考档。
+
+---
+
+## 9. 修订记录（2026-11-22，依据 `reports/literature_audit_v4.md`）
+
+| 位置 | 修订 | 依据 |
+| --- | --- | --- |
+| 文首"依据" | 首版文献部分是子代理二手摘要；本版逐篇核对 | audit §0 |
+| §2.2 ① | CGAP 去掉"零样本"措辞（原文无此词），注明 Λt 无类型、授权/隐私留给应用；新增 Sapien | audit F2，Q14 Q22–Q25 |
+| §2.2 ② | 删除 RLVP"outcome-gating"（无原文支撑）；Constrained GRPO 的"非对称"标为我方推论；新增 SiLR | audit F4 F5 |
+| §2.2 ③ / §3 | LogiSafetyBench 已读全文，禁止使用"首个"；可守的差异是参数级约束 | audit F6，Q100–Q104 |
+| §2.3 | "只核实到摘要"改为已入库全文；PeakBench/PlanBench-XL 降为低相关 | audit F6 F7 |
+| §3 | 修正蓝本"两次点名 open problem"的说法 | audit F3，Q114 Q36 |
+| §4.1 / §5.2 | PII 别名经策略卡泄漏；隐式中需要算术的只占 21.6%；order 位置伪影 | audit F8，§5.1 |
+| §4.2 | safe_success 可被保守规划器拿到 0.61–0.67，主指标改为 faithful_success | audit F9，§5.3 |
+| §4.3 | tool_ho 只是名称级 held-out | audit §5.1 |
+| §5.5 | 撤销 RLVP"too weak"的误引 | audit F1，Q37–Q39 |
+
+待修代码（队列结束后由我执行）：audit §6 T1、T4、T5、T6、T8、T13、T15。
+
+E2 设计补充义务（来自 `design_v4_independent_recheck.md`，已复核）：同一 query 下所有轨迹相同的漏检罚，会被 GRPO 组内中心化抵消。漏检罚必须依赖轨迹本身（只在计划实际违反时触发）。E1-exec 只消费 type+params，scope 的价值需要另行证明。
