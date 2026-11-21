@@ -9,7 +9,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import build_dataset_v2 as builder  # noqa: E402
 from dataset_v2_spec import E_TEMPLATES, I_TEMPLATES  # noqa: E402
-from verify_dataset_v2 import check_constraint, validate_pairs, validate_record, witness_feasible  # noqa: E402
+from verify_dataset_v2 import (  # noqa: E402
+    check_constraint,
+    leakage_stats,
+    validate_pairs,
+    validate_record,
+    witness_feasible,
+)
 
 
 @pytest.fixture(scope="module")
@@ -93,3 +99,35 @@ def test_constraint_checker_negative_cases():
     ]
     privacy = {"type": "privacy", "params": {"protected_data_classes": ["customer_pii"], "forbidden_recipients": ["external"]}}
     assert not check_constraint(privacy, pii_external)
+
+
+def test_leakage_stats_flags_within_and_cross_split_leaks():
+    rows = [
+        # 同 subset 内 query 重复
+        {"subset": "train", "query": "q-dup", "task_goal": "g1", "group_id": "train-00000"},
+        {"subset": "train", "query": "q-dup", "task_goal": "g1", "group_id": "train-00000"},
+        # 同一 task_goal 被两个组共享
+        {"subset": "train", "query": "q2", "task_goal": "g-shared", "group_id": "train-00001"},
+        {"subset": "train", "query": "q3", "task_goal": "g-shared", "group_id": "train-00002"},
+        # 跨 split 的 query/goal/group 重叠
+        {"subset": "test_tool_ho", "query": "q2", "task_goal": "g-shared", "group_id": "train-00001"},
+    ]
+    stats = leakage_stats(rows)
+    assert stats["within_query_dup"] == 1
+    assert stats["goal_multi_group"] == 1
+    assert stats["group_multi_subset"] == 1
+    assert stats["cross_query_overlap"] == 1
+    assert stats["cross_goal_overlap"] == 1
+    assert stats["cross_group_overlap"] == 1
+
+
+def test_leakage_stats_passes_clean_ein_group_structure():
+    # 正常 E/I/N 组：goal 与 group_id 各出现 3 次但同属一组，不得误报
+    rows = [
+        {"subset": "train", "query": q, "task_goal": "g1", "group_id": "train-00000"}
+        for q in ("q-e", "q-i", "q-n")
+    ] + [
+        {"subset": "dev", "query": q, "task_goal": "g2", "group_id": "dev-00000"}
+        for q in ("r-e", "r-i", "r-n")
+    ]
+    assert all(v == 0 for v in leakage_stats(rows).values())

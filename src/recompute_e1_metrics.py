@@ -19,7 +19,7 @@ def sha256(path: Path) -> str:
 
 def recompute(data_dir: Path, prediction_dir: Path, model: str, seed: int) -> dict[str, Any]:
     result: dict[str, Any] = {
-        "metrics_version": "e1_score_v3",
+        "metrics_version": "e1_score_v4",
         "model": model,
         "seed": seed,
         "source": "saved raw predictions scored by src/run_e1.py",
@@ -48,7 +48,7 @@ def recompute(data_dir: Path, prediction_dir: Path, model: str, seed: int) -> di
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Re-score saved E1 predictions with e1_score_v3.")
+    parser = argparse.ArgumentParser(description="Re-score saved E1 predictions with e1_score_v4.")
     parser.add_argument("--data-dir", type=Path, default=Path("data/processed_v2"))
     parser.add_argument("--prediction-dir", type=Path, required=True)
     parser.add_argument("--model", required=True)

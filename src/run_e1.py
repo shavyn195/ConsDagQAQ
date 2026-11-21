@@ -115,6 +115,62 @@ def extract_json(text: str) -> dict[str, Any] | None:
     return None
 
 
+VALID_QUERY_STATES = ("explicit", "implicit", "none")
+
+
+def _stable_json(value: Any) -> str:
+    # 任意非 str 值的稳定序列化，保证键可哈希、可比较
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def prediction_is_well_formed(value: Any) -> bool:
+    """结构契约：顶层 dict；query_state 显式三态；constraints 为 list；
+    每条约束为 dict 且含 type(str)/state(三态)/severity(str)/params(dict)/scope(str 或 list[str])。"""
+    if not isinstance(value, dict):
+        return False
+    if value.get("query_state") not in VALID_QUERY_STATES:
+        return False
+    constraints = value.get("constraints")
+    if not isinstance(constraints, list):
+        return False
+    for c in constraints:
+        if not isinstance(c, dict):
+            return False
+        if not isinstance(c.get("type"), str):
+            return False
+        if c.get("state") not in VALID_QUERY_STATES:
+            return False
+        if not isinstance(c.get("severity"), str):
+            return False
+        if not isinstance(c.get("params"), dict):
+            return False
+        scope = c.get("scope")
+        if isinstance(scope, list):
+            if not all(isinstance(s, str) for s in scope):
+                return False
+        elif not isinstance(scope, str):
+            return False
+    return True
+
+
+def strict_parse(text: str) -> dict[str, Any] | None:
+    """严格解析：结构不完整的输出视为无效，不得参与任何得分（fail-closed）。"""
+    text = text.strip()
+    candidates = []
+    match = re.search(r"\{.*\}", text, flags=re.DOTALL)
+    if match:
+        candidates.append(match.group(0))
+    candidates.append(text)
+    for candidate in candidates:
+        try:
+            value = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        if prediction_is_well_formed(value):
+            return value
+    return None
+
+
 def normalise_prediction(value: dict[str, Any] | None) -> dict[str, Any]:
     if value is None:
         return {"query_state": "none", "abstain": True, "constraints": []}
@@ -139,15 +195,21 @@ def require_finite_loss(loss: Any, *, torch: Any, epoch: int, example_index: int
 
 def constraint_key(item: dict[str, Any]) -> tuple[Any, ...]:
     # Scope is a set of bound roles; model output order must not affect matching.
+    # 兜底：非 str 元素稳定序列化，保证任何输入都不抛 TypeError: unhashable type
+    def element_key(e: Any) -> Any:
+        return e if isinstance(e, str) else _stable_json(e)
+
     scope = item.get("scope", [])
     if isinstance(scope, list):
-        scope_key = tuple(sorted(scope))
-    else:
+        scope_key = tuple(sorted(element_key(e) for e in scope))
+    elif isinstance(scope, str):
         scope_key = (scope,)
+    else:
+        scope_key = (_stable_json(scope),)
     return (
-        item.get("type"), item.get("state"), item.get("severity"),
+        element_key(item.get("type")), element_key(item.get("state")), element_key(item.get("severity")),
         scope_key,
-        json.dumps(item.get("params") or {}, sort_keys=True, separators=(",", ":")),
+        _stable_json(item.get("params") or {}),
     )
 
 
@@ -168,22 +230,30 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
     evidence_exact = evidence_total = 0
     difficulty_unattributed_fp = 0
     parse_ok = 0
+    malformed_predictions = 0
     for row, pred, raw_text in zip(rows, predictions, raw):
         gold = row["gold"]
-        valid_json = extract_json(raw_text) is not None
-        state_correct += int(valid_json and pred.get("query_state") == gold["query_state"])
+        # e1_score_v4：得分以严格解析的 raw 为唯一依据；结构不完整即无效（fail-closed），
+        # 不给 state/empty_set 分，金标约束全部计 FN，且不产生 FP。
+        strict = strict_parse(raw_text)
+        valid_json = strict is not None
+        if valid_json:
+            parse_ok += 1
+        else:
+            malformed_predictions += 1
+        state_value = strict.get("query_state") if valid_json else None
+        state_correct += int(valid_json and state_value == gold["query_state"])
         state_correct_by_variant[row["variant"]] = state_correct_by_variant.get(row["variant"], 0) + int(
-            valid_json and pred.get("query_state") == gold["query_state"]
+            valid_json and state_value == gold["query_state"]
         )
         count_by_variant[row["variant"]] = count_by_variant.get(row["variant"], 0) + 1
-        parse_ok += int(valid_json)
         v = per_variant.setdefault(
             row["variant"],
             {"n": 0, "tp": 0, "fp": 0, "fn": 0,
              "empty_gold": 0, "empty_pred": 0, "empty_correct": 0},
         )
         v["n"] += 1
-        got = [c for c in pred.get("constraints", []) if isinstance(c, dict)]
+        got = [c for c in strict.get("constraints", []) if isinstance(c, dict)] if valid_json else []
         want = [c for c in gold.get("constraints", []) if isinstance(c, dict)]
         got_keys = [constraint_key(c) for c in got]
         want_keys = [constraint_key(c) for c in want]
@@ -263,7 +333,7 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
         return {"precision": p, "recall": r, "f1": f1}
 
     return {
-        "metrics_version": "e1_score_v3",
+        "metrics_version": "e1_score_v4",
         "records": len(rows),
         "state_accuracy": state_correct / n,
         "state_accuracy_by_variant": {
@@ -293,6 +363,7 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
         "evidence_exact_rate": evidence_exact / evidence_total if evidence_total else None,
         "evidence_records": evidence_total,
         "json_parse_rate": parse_ok / n,
+        "malformed_prediction_count": malformed_predictions,
     }
 
 

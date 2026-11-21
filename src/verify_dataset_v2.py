@@ -160,6 +160,50 @@ def ngram_overlap(a: str, b: str, n: int = 3) -> float:
     return len(ga & gb) / max(len(ga | gb), 1)
 
 
+# ---------------------------------------------------------------- S8 泄漏硬门槛（C-LEAK-1）
+def leakage_stats(all_rows: list[dict[str, Any]]) -> dict[str, int]:
+    """query/task_goal/group_id 的 split 内重复与跨 split 重叠硬统计。
+
+    task_goal 与 group_id 在同一 E/I/N 组内各出现 3 次属正常结构，
+    因此按“值 -> 组集合 / 值 -> subset 集合”判定真实重复，而非朴素计数。
+    全部字段为 0 才允许 PASS。
+    """
+    by_subset: dict[str, list[dict[str, Any]]] = {}
+    for r in all_rows:
+        by_subset.setdefault(r["subset"], []).append(r)
+
+    within_query_dup = 0
+    goal_to_groups: dict[str, set[str]] = {}
+    group_to_subsets: dict[str, set[str]] = {}
+    for rows in by_subset.values():
+        seen_queries: set[str] = set()
+        for r in rows:
+            if r["query"] in seen_queries:
+                within_query_dup += 1
+            seen_queries.add(r["query"])
+            goal_to_groups.setdefault(r["task_goal"], set()).add(r["group_id"])
+            group_to_subsets.setdefault(r["group_id"], set()).add(r["subset"])
+
+    cross_overlap = {"query": 0, "task_goal": 0, "group_id": 0}
+    subsets = sorted(by_subset)
+    for i in range(len(subsets)):
+        for j in range(i + 1, len(subsets)):
+            rows_a, rows_b = by_subset[subsets[i]], by_subset[subsets[j]]
+            for field in cross_overlap:
+                cross_overlap[field] += len(
+                    {r[field] for r in rows_a} & {r[field] for r in rows_b}
+                )
+
+    return {
+        "within_query_dup": within_query_dup,
+        "goal_multi_group": sum(1 for g in goal_to_groups.values() if len(g) > 1),
+        "group_multi_subset": sum(1 for s in group_to_subsets.values() if len(s) > 1),
+        "cross_query_overlap": cross_overlap["query"],
+        "cross_goal_overlap": cross_overlap["task_goal"],
+        "cross_group_overlap": cross_overlap["group_id"],
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "processed_v2")
@@ -206,6 +250,11 @@ def main() -> None:
     e_train = [s for r in others if r["variant"] == "explicit" for s in [c["evidence_span"] for c in r["gold"]["constraints"]]]
     e_test = [s for r in tpl_ho if r["variant"] == "explicit" for s in [c["evidence_span"] for c in r["gold"]["constraints"]]]
     ngram = ngram_overlap(" ".join(e_train[:500]), " ".join(e_test[:500]))
+    # S8：泄漏硬门槛（split 内重复 + 跨 split 重叠；C-LEAK-1 复发即 FAIL）
+    leak = leakage_stats(all_rows)
+    leak_fail = any(leak.values())
+    if leak_fail:
+        errors.append(f"[S8] 泄漏硬门槛未通过: {json.dumps(leak, ensure_ascii=False)}")
 
     verdict = {
         "records": len(all_rows),
@@ -217,7 +266,13 @@ def main() -> None:
         "s7_template_leak": sorted(leak_templates),
         "s7_template_leak_count": len(leak_templates),
         "s7_evidence_3gram_jaccard_train_vs_test": round(ngram, 4),
-        "verdict": "PASS" if not (witness_fail or schema_fail or perr or leak_pairs or leak_templates) else "FAIL",
+        "s8_within_query_dup": leak["within_query_dup"],
+        "s8_goal_multi_group": leak["goal_multi_group"],
+        "s8_group_multi_subset": leak["group_multi_subset"],
+        "s8_cross_query_overlap": leak["cross_query_overlap"],
+        "s8_cross_goal_overlap": leak["cross_goal_overlap"],
+        "s8_cross_group_overlap": leak["cross_group_overlap"],
+        "verdict": "PASS" if not (witness_fail or schema_fail or perr or leak_pairs or leak_templates or leak_fail) else "FAIL",
         "sample_errors": errors[:20],
     }
     out = args.data_dir / "verification_report.json"
