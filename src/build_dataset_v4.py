@@ -344,7 +344,7 @@ def main() -> None:
         path = out_dir / f"{subset}.jsonl"
         path.write_text(
             "".join(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n" for r in all_rows if r["subset"] == subset),
-            encoding="utf-8",
+            encoding="utf-8", newline="\n",  # 固定 LF：哈希跨平台一致（Windows 默认写 CRLF）
         )
         files[subset] = path
 
