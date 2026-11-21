@@ -1,0 +1,9 @@
+# dataset_v4 构造配置（可执行任务世界 + 咬合约束 + E/I/N 最小三元组）
+# 相对 v3：约束对默认计划必违反且逐条必要；N 版用近似干扰句；I 版需推断；held-out 工具名不进训练输入。
+seed: 42
+groups:
+  train: 4000        # 训练组（train 模板池 + train 工具世界）
+  dev: 300           # in-domain 验证组（goal 与 train 全局不重）
+  test_tpl_ho: 350   # 模板 held-out：goal/背景/E/I/N 模板与 PII 字段别名全部来自 test 池
+  test_tool_ho: 350  # 工具 held-out：held-out 工具世界（训练输入中从未出现的角色名）+ train 模板池
+output_dir: data/processed_v4

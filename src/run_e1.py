@@ -1,9 +1,11 @@
-"""E1 实验：约束编译器 trained vs zero-shot（T/Z 臂，本地 4060）。
+"""E1 实验：约束编译器 trained vs zero-shot（T/Z 臂）。
 
-数据：data/processed_v2（可信数据空间背景，E/I/N 三版，双 group-held-out）。
-流程：token 统计 -> zero-shot 评测 -> LoRA 训练 -> 训练后评测。
-指标：micro P/R/F1 + 三态分桶 + per-type + I 版难度分桶(d1/d2/d3) + evidence span + parse rate，
-     按 subset（dev in-domain / test_tpl_ho / test_tool_ho）分列（E4 泛化主张）。
+数据：data/processed_v4（可执行任务世界，E/I/N 最小三元组，双 group-held-out）；v2/v3 旧数据走旧 prompt。
+流程：zero-shot 评测 -> LoRA 训练 -> 训练后评测。
+指标：e1_score_v5 = 严格键 micro P/R/F1 + 核心键（type+params）P/R/F1 + 三态分桶 + per-type
+     + I 版难度分桶 + 记录级全对率 + N 版误报率 + evidence span + parse rate；
+     v4 额外给执行级 e1_exec_v1（编译输出 -> 规划器 -> 独立检查器的约束安全成功率）。
+     按 subset（dev in-domain / test_tpl_ho / test_tool_ho）分列。
 """
 
 from __future__ import annotations
@@ -65,7 +67,40 @@ def task_space_context(row: dict[str, Any]) -> str:
     return json.dumps(compact_nodes, ensure_ascii=False, separators=(",", ":"))
 
 
+SCHEMA_HINT_V4 = (
+    '{"query_state":"explicit|implicit|none","constraints":[{"type":"...","state":"explicit|implicit",'
+    '"severity":"high|medium","scope":["role:..."],"params":{...},"evidence_span":"<copied query sentence>"}]}'
+)
+
+
+def catalog_lines(row: dict[str, Any]) -> str:
+    return "\n".join(
+        f"- {t['role']}: {t['name']}; {'paid' if t['paid'] else 'free'}; {t['recipient']}" for t in row["catalog"]
+    )
+
+
+def chat_messages_v4(row: dict[str, Any]) -> list[dict[str, str]]:
+    from dataset_v4_spec import POLICY_CARD
+
+    prompt = (
+        "You are a typed constraint compiler for tool-planning tasks in a trusted data space. "
+        "Extract every constraint the user's query places on the plan as typed objects; return an empty "
+        "list when nothing restricts the plan. Never invent a constraint the query does not support.\n"
+        + POLICY_CARD + "\n"
+        "Tool catalog (role: name; paid|free; local|external):\n" + catalog_lines(row) + "\n"
+        "Output JSON only, matching: " + SCHEMA_HINT_V4 + "\n"
+        "User query: " + row["query"] + "\n"
+        "JSON:"
+    )
+    return [
+        {"role": "system", "content": "Output JSON only."},
+        {"role": "user", "content": prompt},
+    ]
+
+
 def chat_messages(row: dict[str, Any]) -> list[dict[str, str]]:
+    if "catalog" in row:
+        return chat_messages_v4(row)
     prompt = (
         "You are a typed constraint compiler for tool-planning tasks in a trusted data space. "
         "Extract the user's constraints into typed objects; output an empty list when the query "
@@ -209,8 +244,37 @@ def constraint_key(item: dict[str, Any]) -> tuple[Any, ...]:
     return (
         element_key(item.get("type")), element_key(item.get("state")), element_key(item.get("severity")),
         scope_key,
-        _stable_json(item.get("params") or {}),
+        _stable_json(_canonical(item.get("params") or {})),
     )
+
+
+def _canonical(value: Any) -> Any:
+    # 整值浮点与整数等价（350.0 == 350），其余原样
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, dict):
+        return {k: _canonical(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_canonical(v) for v in value]
+    return value
+
+
+def core_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    """核心键：只看决定执行行为的 type+params（与 state/severity/scope 的表述约定无关）。"""
+    ctype = item.get("type")
+    return (ctype if isinstance(ctype, str) else _stable_json(ctype), _stable_json(_canonical(item.get("params") or {})))
+
+
+def _multiset_matches(got: list[tuple[Any, ...]], want: list[tuple[Any, ...]]) -> int:
+    pool: dict[tuple[Any, ...], int] = {}
+    for key in got:
+        pool[key] = pool.get(key, 0) + 1
+    matched = 0
+    for key in want:
+        if pool.get(key, 0):
+            pool[key] -= 1
+            matched += 1
+    return matched
 
 
 def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: list[str]) -> dict[str, Any]:
@@ -231,6 +295,9 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
     difficulty_unattributed_fp = 0
     parse_ok = 0
     malformed_predictions = 0
+    core_tp = core_fp = core_fn = 0
+    exact_records = 0
+    exact_by_variant: dict[str, int] = {}
     for row, pred, raw_text in zip(rows, predictions, raw):
         gold = row["gold"]
         # e1_score_v4：得分以严格解析的 raw 为唯一依据；结构不完整即无效（fail-closed），
@@ -250,7 +317,7 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
         v = per_variant.setdefault(
             row["variant"],
             {"n": 0, "tp": 0, "fp": 0, "fn": 0,
-             "empty_gold": 0, "empty_pred": 0, "empty_correct": 0},
+             "empty_gold": 0, "empty_pred": 0, "empty_correct": 0, "false_alarm": 0},
         )
         v["n"] += 1
         got = [c for c in strict.get("constraints", []) if isinstance(c, dict)] if valid_json else []
@@ -280,9 +347,17 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
         v["empty_gold"] += int(not want)
         v["empty_pred"] += int(not got)
         v["empty_correct"] += int(valid_json and not want and not got)
+        v["false_alarm"] += int(valid_json and not want and bool(got))
         true_positive += matched
         false_positive += row_fp
         false_negative += row_fn
+        core_matched = _multiset_matches([core_key(c) for c in got], [core_key(c) for c in want])
+        core_tp += core_matched
+        core_fp += len(got) - core_matched
+        core_fn += len(want) - core_matched
+        exact = int(valid_json and state_value == gold["query_state"] and row_fp == 0 and row_fn == 0)
+        exact_records += exact
+        exact_by_variant[row["variant"]] = exact_by_variant.get(row["variant"], 0) + exact
 
         for gi, g in enumerate(want):
             t = per_type.setdefault(g["type"], {"n": 0, "tp": 0, "fp": 0, "fn": 0})
@@ -333,13 +408,18 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
         return {"precision": p, "recall": r, "f1": f1}
 
     return {
-        "metrics_version": "e1_score_v4",
+        "metrics_version": "e1_score_v5",
         "records": len(rows),
         "state_accuracy": state_correct / n,
         "state_accuracy_by_variant": {
             k: state_correct_by_variant[k] / max(count_by_variant[k], 1) for k in count_by_variant
         },
         "constraint_micro": prf(true_positive, false_positive, false_negative),
+        "constraint_core_micro": prf(core_tp, core_fp, core_fn),
+        "record_exact_match": exact_records / n,
+        "record_exact_match_by_variant": {
+            k: exact_by_variant[k] / max(count_by_variant[k], 1) for k in count_by_variant
+        },
         "per_variant": {
             k: {
                 **prf(v["tp"], v["fp"], v["fn"]),
@@ -347,6 +427,8 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
                 "empty_set_accuracy": v["empty_correct"] / max(v["n"], 1),
                 "gold_empty_records": v["empty_gold"],
                 "prediction_empty_records": v["empty_pred"],
+                # 误报率：金标为空却输出了约束（结构无效的输出不计为误报，单独计入 malformed）
+                "false_alarm_rate": v["false_alarm"] / v["empty_gold"] if v["empty_gold"] else None,
             }
             for k, v in per_variant.items()
         },
@@ -426,6 +508,10 @@ def evaluate_all(model: Any, tokenizer: Any, data: dict[str, list[dict[str, Any]
         t0 = time.time()
         predictions, raw = generate_batched(model, tokenizer, rows, args.max_new_tokens, args.eval_batch_size)
         results[subset] = score(rows, predictions, raw)
+        if rows and "task" in rows[0]:
+            from eval_exec import evaluate as evaluate_exec
+
+            results[subset]["exec"] = evaluate_exec(rows, raw)[0]
         results[subset]["eval_seconds"] = round(time.time() - t0, 1)
         pred_dir = out_dir / f"{tag}_predictions"
         pred_dir.mkdir(parents=True, exist_ok=True)
@@ -462,12 +548,16 @@ def train_lora(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: arg
     device = next(model.parameters()).device
 
     examples = []
+    dropped = 0
     for row in rows:
         prefix = render_chat(tokenizer, chat_messages(row), add_generation_prompt=True)["input_ids"][0].tolist()
         completion = tokenizer(target_json(row) + tokenizer.eos_token, add_special_tokens=False)["input_ids"]
         if len(prefix) + len(completion) > args.max_seq_len:
+            dropped += 1
             continue
         examples.append((prefix + completion, [-100] * len(prefix) + completion))
+    if dropped:
+        print(json.dumps({"warning": "examples dropped by max_seq_len", "dropped": dropped}))
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate)
     trainable_parameters = [p for p in model.parameters() if p.requires_grad]
     rng = random.Random(args.seed)
@@ -522,14 +612,14 @@ def train_lora(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: arg
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default=str(ROOT / "models" / "Qwen3-0.6B"))
-    parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "processed_v2")
+    parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "processed_v4")
     parser.add_argument("--out-dir", type=Path, default=None)
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--learning-rate", type=float, default=2e-4)
     parser.add_argument("--lora-rank", type=int, default=16)
     parser.add_argument("--lora-alpha", type=int, default=32)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=4)
-    parser.add_argument("--max-seq-len", type=int, default=1024)
+    parser.add_argument("--max-seq-len", type=int, default=1280)
     parser.add_argument("--max-new-tokens", type=int, default=384)
     parser.add_argument("--eval-batch-size", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
@@ -559,8 +649,15 @@ def main() -> None:
         torch.cuda.manual_seed_all(args.seed)
     model, tokenizer = load_model(args.model, args.precision)
 
-    results: dict[str, Any] = {"model_path": args.model, "seed": args.seed,
-                               "config": {k: v for k, v in vars(args).items() if not k.startswith("_")}}
+    import hashlib
+
+    results: dict[str, Any] = {
+        "model_path": args.model, "seed": args.seed,
+        "config": {k: v for k, v in vars(args).items() if not k.startswith("_")},
+        "data_sha256": {s: hashlib.sha256((args.data_dir / f"{s}.jsonl").read_bytes()).hexdigest()
+                        for s in ["train"] + SUBSETS},
+        "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    }
 
     if not args.skip_zeroshot:
         results["zeroshot"] = evaluate_all(model, tokenizer, data, args, "zeroshot", args.out_dir)

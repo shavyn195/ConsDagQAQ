@@ -19,7 +19,7 @@ def sha256(path: Path) -> str:
 
 def recompute(data_dir: Path, prediction_dir: Path, model: str, seed: int) -> dict[str, Any]:
     result: dict[str, Any] = {
-        "metrics_version": "e1_score_v4",
+        "metrics_version": "e1_score_v5",
         "model": model,
         "seed": seed,
         "source": "saved raw predictions scored by src/run_e1.py",
@@ -42,13 +42,17 @@ def recompute(data_dir: Path, prediction_dir: Path, model: str, seed: int) -> di
         predictions = [by_id[row["sample_id"]]["prediction"] for row in rows]
         raw = [by_id[row["sample_id"]].get("raw", "") for row in rows]
         result["subsets"][subset] = score(rows, predictions, raw)
+        if rows and "task" in rows[0]:
+            from eval_exec import evaluate as evaluate_exec
+
+            result["subsets"][subset]["exec"] = evaluate_exec(rows, raw)[0]
         result["subsets"][subset]["data_sha256"] = sha256(data_path)
         result["subsets"][subset]["prediction_sha256"] = sha256(prediction_path)
     return result
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Re-score saved E1 predictions with e1_score_v4.")
+    parser = argparse.ArgumentParser(description="Re-score saved E1 predictions with e1_score_v5 (+ e1_exec_v1 on v4 data).")
     parser.add_argument("--data-dir", type=Path, default=Path("data/processed_v2"))
     parser.add_argument("--prediction-dir", type=Path, required=True)
     parser.add_argument("--model", required=True)

@@ -1,0 +1,48 @@
+{
+  "dataset": "consdag_trusted_constraint_dataset_v4",
+  "synthetic_only": true,
+  "seed": 42,
+  "groups": {
+    "train": 4000,
+    "dev": 300,
+    "test_tpl_ho": 350,
+    "test_tool_ho": 350
+  },
+  "records": {
+    "train": 12000,
+    "dev": 900,
+    "test_tpl_ho": 1050,
+    "test_tool_ho": 1050
+  },
+  "constraint_type_distribution": {
+    "privacy": 1764,
+    "deadline": 1352,
+    "tool_auth": 1563,
+    "order": 2058,
+    "budget": 1089
+  },
+  "constraints_per_group": {
+    "1": 2665,
+    "2": 1844,
+    "3": 491
+  },
+  "implicit_difficulty_distribution": {
+    "d3": 2366,
+    "d2": 3073,
+    "d1": 2387
+  },
+  "distractor_slot_rate": 0.4066,
+  "generation_failures": 0,
+  "sha256": {
+    "train": "2c98d7bd53ca563546a3d3d6eec1bda087a143c5564a4a1bcaa257180d0e4628",
+    "dev": "e3beafcfaa15b6da09323e409418470c0cb94aa8dfd30ba9dc012301a488bf95",
+    "test_tpl_ho": "10232b55a0d28cd51ffe61f6c3f1478c84a669c365c6c0ccbe2cc450f3a2ed6f",
+    "test_tool_ho": "4c813152949eaa385a9d17233ef7988b13f086078e2e86aa8f321e448c6dc1a2"
+  },
+  "limitations": [
+    "Synthetic, hand-templated corpus; not naturalistic user language.",
+    "Held-out tool world is structurally isomorphic to the training world (unseen names and attributes only).",
+    "No ambiguous/abstention-required examples; confidence is not a training target.",
+    "Oracle (strong-model + human) recoverability audit of implicit cues pending."
+  ]
+}
