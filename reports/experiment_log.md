@@ -2,6 +2,42 @@
 
 逐日记录关键决策、产物指纹与实验状态，供论文写作时回溯证据链。
 
+### 2026-11-21 22:15 CST v3 判定不合格 -> dataset v4 + E1-exec，服务器三模型队列重启
+- **审计结论**（全量复算，详见 `reports/design_v4_ccfb.md` §1）：
+  - v3 的 N 版 query 等于 goal，5000/5000；E/I 版全部是"goal + 额外句"，10000/10000，存在句子数量捷径。
+  - 17,574/17,574 条约束已被唯一默认计划满足，约束完全不起约束作用。
+  - severity 是 type 的常函数；I 线索有 1930/8787 含指令或顺序词。
+  - 0.6B v3 在 dev/tool_ho 上 strict F1 = 1.0000，属于背模板。
+  - v3 全部 E1 数字降级为 legacy 诊断，不进任何表。
+- **处置**：
+  - 停止服务器 v3 队列：1.7B-v3 在 step 5600/9000、loss 约 1e-5 时停止，结果作废。
+  - v3 队列日志已追加停止记录。
+- **v4**（commit `5f8fcd6` 和 `f63c727`）：
+  - 可执行任务世界，每阶段 1–3 个备选工具，另有审批、脱敏、校验插入步骤。
+  - 约束 100% 咬合，且逐条必要（全量复核）。
+  - E/I/N 最小三元组，N 版用同主题近似干扰句。
+  - I 版无指令词；d2/d3 需要算术或字段映射，且不含金标数值（含尾数捷径）。
+  - held-out 工具名不进训练输入。
+  - 策略卡随 prompt 给出，删掉恒定的 confidence/description。
+- **v4 规模与验证**：
+  - 15,000 条：train 12,000 / dev 900 / tpl_ho 1,050 / tool_ho 1,050。
+  - V1–V9 全部 PASS。
+  - SHA256（LF）：train `eaabe109…`、dev `e7ff77f1…`、tpl_ho `04de746c…`、tool_ho `23e8b9b6…`。
+  - 服务器从 GitHub 拉同一提交后重新生成，哈希逐一相同。
+  - 首次比对不一致，原因是本地 Windows 写 CRLF；已改为显式写 LF。
+- **评测**：
+  - e1_score_v5：新增核心键 F1、记录全对、N 误报率。
+  - e1_exec_v1：编译输出交给最小改动规划器，再由独立检查器判 safe_success。刻度：none 档在 E/I 上为 0、在 N 上为 1，gold 档为 1。另有 group bootstrap CI、配对 McNemar。
+  - 本地 53 个测试全部通过。
+- **训练配置变更**：max_seq_len 1024 改为 1280。v4 prompt 最长约 1060 token，原设置会静默丢样本；现在打印丢弃数，smoke 中 12000/12000 保留。其余超参不变：bf16、seed 42、LoRA r16/α32/0.05、lr 2e-4、3 epoch、grad-accum 4、max_new_tokens 384。
+- **服务器**：
+  - 目录 `/root/ConsDagQAQ`，经 `source /etc/network_turbo` 浅克隆加稀疏检出 GitHub 仓库；models 软链到旧目录。
+  - 队列 `scripts/run_e1_queue_v4.sh` 于 22:10 启动：每个模型先跑 2 步 smoke，再跑完整流程；状态记在 `outputs/e1_v4_queue_manifest.jsonl`。
+  - 0.6B smoke 通过，首步 loss 0.683；正在做 zero-shot 评测，eval batch 为 48/32/16。
+- **未完成**：
+  - 强模型 PE 臂、I 版 oracle 可恢复性、人工盲审、改写 OOD、外部 OOD（ToolPrivacyBench）、E2/GRPO。
+  - 新检索到的 LogiSafetyBench 2601.08196、ToolPrivacyBench 2606.28061 等只核实到摘要层，全文待入库。
+
 ### 2026-11-21 17:05 CST C-LEAK-1 修复：v2 跨 split query 泄漏定位与 v3 重造
 - **泄漏发现**：v2 数据 dev 301/900、test_tool_ho 353/1050 的 query 与 train 完全相同（gold 同步相同）；train 内部另有 3,429 条重复 query。根因：N 变体 query=task_goal 原文，而 goal 模板池仅 10×10×6=600 组合，train 4,000 组随机采样将池子抽穿，dev/tool_ho 的 goal 100% 在 train 出现过。tpl_ho 因使用 held-out goal 模板池保持零重叠（该子集的 v2 指标不受污染）。
 - **责任**：既有验证清单（witness/角色泄漏/模板 id/E-I 配对/组切分）全部通过但未包含"跨 split 文本级重复"检查项，属检查清单设计失误。
