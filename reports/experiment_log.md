@@ -153,3 +153,13 @@
 - Text-quality scan rerun: flagged rows remain train 728/12,000, dev 52/900, template-HO 55/1,050, tool-combination-HO 35/1,050. These rows are a validity review queue, not an automatic rejection of the structural dataset checks.
 - Remote RTX 4080 SUPER queue is alive under `outputs/gpu_e1_scope_context_20261121_fast/`. Qwen3-0.6B BF16 scope-context diagnostic reached optimizer step 400/9000 with finite losses (latest observed loss 0.0087308), about 10.3 GiB GPU memory, and no failure. The queue manifest remains `status=running`; 1.7B and 4B will start only after the preceding model has a complete adapter, predictions, and metrics.
 - Interpretation remains restricted: this prompt exposes graph metadata used by the synthetic scope generator, so the run measures input sufficiency on the synthetic contract. It is not evidence of planner-agnostic deployment, real implicit pragmatics, calibration/abstention, or CCF-B validation.
+
+## 2026-11-21 12:39 服务器三模型 bf16 接力启动（受控 scaling 线）
+
+- 队列脚本: /root/consdag/run_e1_queue.sh（bash for 循环串行, PID 34452）
+- 顺序: Qwen3-0.6B -> Qwen3-1.7B -> Qwen3-4B, 全部 bf16 seed 42, 同一代码(MD5 8265ed7b 与本地/git 一致), 同一服务器(RTX 4080S 32GB)
+- 输出目录: outputs/e1/{model}-bf16/, 各自 metrics.json + adapter + predictions
+- 与旧结果关系: 旧 0.6B(本机fp16)/4B(服务器fp16,非受控)保留为历史; 本轮构成首个同代码同环境同精度的受控 scaling 对照
+- 已知偏差(记录, 不阻塞): 数据规模 5k 任务 vs 蓝本 7-10k; 文本拼接语病率 5-6%(the the/entry entry, 金标一致性不受影响); P 臂(qwen-max PE)与 S6 oracle 阻塞于有效 API key
+- git: 7e8259a 已推送 GitHub(dc47c08..7e8259a)
+- 预计: 0.6B 约 2h -> 1.7B 约 4h -> 4B 约 4h, 全部完成约 10h 后(今晚 22:30 前后)
