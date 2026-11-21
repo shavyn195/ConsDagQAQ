@@ -2,7 +2,16 @@
 
 逐日记录关键决策、产物指纹与实验状态，供论文写作时回溯证据链。
 
-### 2026-11-21 01:15 CST 远端 scope-context 诊断复验启动
+### 2026-11-21 17:05 CST C-LEAK-1 修复：v2 跨 split query 泄漏定位与 v3 重造
+- **泄漏发现**：v2 数据 dev 301/900、test_tool_ho 353/1050 的 query 与 train 完全相同（gold 同步相同）；train 内部另有 3,429 条重复 query。根因：N 变体 query=task_goal 原文，而 goal 模板池仅 10×10×6=600 组合，train 4,000 组随机采样将池子抽穿，dev/tool_ho 的 goal 100% 在 train 出现过。tpl_ho 因使用 held-out goal 模板池保持零重叠（该子集的 v2 指标不受污染）。
+- **责任**：既有验证清单（witness/角色泄漏/模板 id/E-I 配对/组切分）全部通过但未包含"跨 split 文本级重复"检查项，属检查清单设计失误。
+- **v2 结果处置**：所有 v2 上的 E1 数字（0.6B-bf16 dev F1 1.0000 / tpl_ho 0.9288 / tool_ho 0.9918 等）降级为受污染预实验；唯一可信读数为 tpl_ho（模板+goal 双 held-out）。dev/tool_ho 的高分含背题成分，不得进入论文主表。
+- **v3 修复**（commit `24493d8`）：goal 模板 10→20/池、DATASETS 10→30、TEAMS 6→12（组合空间 600→7,200）；生成器加全局 `used_goals` 硬约束（跨 split 共享，goal 唯一 ⇒ N 版 query 唯一 ⇒ E/I query 以 goal 为前缀全局唯一）；deadline hours 采样 1-5→1-8。输出 `data/processed_v3`（seed 42，15,000 条，五类 3.0k-3.8k 均衡，0 生成失败）。
+- **v3 审计全绿**：query 跨 split 重复 dev/tpl_ho/tool_ho 均 0；task_goal 出现在 train 均 0；train 内部重复 0；group 跨 split 0；verify PASS（witness 0 失败）；17/17 回归测试通过。残余记录：E 约束句后缀在 train 模板池出现率 ~39%（模板族内复用，goal 前缀唯一使背整句 query 不可能；泛化主读数为 tpl_ho）；金标参数组合与 train 某条全同率 ~40%（数值参数空间所致，query 唯一无作弊面）。均列为 limitations，不阻塞。
+- **v3 队列**：服务器 v2 队列（1.7B-bf16 训练至 ~42%）与半成品已终止；`run_e1_queue_v3.sh` 以 `--data-dir data/processed_v3 --precision bf16 --seed 42` 串行重跑 Qwen3-0.6B→1.7B→4B，输出隔离至 `outputs/e1/${M}-v3`。数据 md5 与本地一致（dev `ec716769...`），代码含 used_goals 修复。17:04 启动，0.6B 已加载 311 权重、GPU 96%。
+- **定位口径**：论文框架表述为 domain-agnostic 约束编译器；可信数据空间（61 角色、五类约束）为实验案例域（与 CARL/ATLAS/NOMOS 同构：机制通用、单域实例化）。
+
+### 2026-11-21 01:15 CST 远端 scope-context 诊断复验启动（v2 数据，已被 C-LEAK-1 修复取代）
 - 依据 `comprehensive_audit_2026-11-21.md`，继续 E1 的受限诊断实验；E2/GRPO 仍未启动，原因是独立任务成功 checker、信息权限定义和 exploit tests 尚未闭合。
 - 远端硬件：NVIDIA RTX 4080 SUPER 32GB；代码目录 `/root/consdag`；数据目录 `data/processed_v2`。四个数据文件哈希与本地冻结版一致：train `4358c60d...391091`、dev `143619f3...4423df`、test_tpl_ho `44083a84...cf003`、test_tool_ho `363b3f0b...62241`。
 - 运行目录：远端 `outputs/gpu_e1_scope_context_20261121/Qwen3-0.6B-seed42-bf16/`；独立于旧 `outputs/e1/Qwen3-0.6B`。代码为当前 `src/run_e1.py` 的 scope-context prompt 版本，远端 runner SHA256 `a284a53a...0e1b7`。
