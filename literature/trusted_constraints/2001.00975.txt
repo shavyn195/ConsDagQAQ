@@ -1,0 +1,1129 @@
+                                                                                                                                                                                                      1
+
+
+
+
+                                                             Privacy in Data Service Composition
+                                                                    Mahmoud Barhamgi, Charith Perera, Chia-Mu Yu, Djamal Benslimane,
+                                                                                 David Camacho and Christine Bonnet
+
+                                                Abstract—In modern information systems different information features, about the same individual, are often collected and managed
+                                                by autonomous data collection services that may have different privacy policies. Answering many end-users’ legitimate queries requires
+                                                the integration of data from multiple such services. However, data integration is often hindered by the lack of a trusted entity, often
+                                                called a mediator, with which the services can share their data and delegate the enforcement of their privacy policies. In this paper, we
+                                                propose a flexible privacy-preserving data integration approach for answering data integration queries without the need for a trusted
+                                                mediator. In our approach, services are allowed to enforce their privacy policies locally. The mediator is considered to be untrusted,
+                                                and only has access to encrypted information to allow it to link data subjects across the different services. Services, by virtue of a new
+                                                privacy requirement, dubbed k-Protection, limiting privacy leaks, cannot infer information about the data held by each other. End-users,
+arXiv:2001.00975v1 [cs.DB] 3 Jan 2020
+
+
+
+
+                                                in turn, have access to privacy-sanitized data only. We evaluated our approach using an example and a real dataset from the
+                                                healthcare application domain. The results are promising from both the privacy preservation and the performance perspectives.
+
+                                                Index Terms—Web privacy, Web services, Service composition, Privacy-preserving Web data integration.
+
+                                                                                                                         F
+
+
+                                        1      I NTRODUCTION                                                                 1.1   Motivating Example
+                                                                                                                             Data integration has important applications in the health-
+                                        D       ATA integration is the problem of bridging together a
+                                               collection of data sources so that they can be queried
+                                        as if they were parts of a single database. Despite intensive
+                                                                                                                             care domain such as building the patient medical record
+                                                                                                                             and detecting the side effects of medications. Assume for
+                                        research works devoted to that problem over the last few                             example a data integration system with an access to the
+                                        decades [1], [2], developing a data integration system re-                           data services1 in Figure 1-a, which in turn have access to the
+                                        mains a challenging task. Data privacy, where the privacy                            sample tables in Figure 1-c. Assume we need to investigate
+                                        of data subjects in one data source should be protected vis-                         the psychological side-effects of a specific ingredient of HIV
+                                        a-vis other sources and the integration system as a whole,                           medicines on female patients. Our sample data services
+                                        is among the key challenges involved in building a data                              can be composed as in Figure 1-b to achieve our objec-
+                                        integration system [3], [4].                                                         tive. Specifically, DS1 is invoked with the desired city
+                                                                                                                             to retrieve the identifiers (e.g. the social security numbers
+                                            Most of existing multi-source data integration solutions
+                                                                                                                             ssn) of HIV patients. Then, DS2 , which is provided by psy-
+                                        are built as data warehouses where data is periodically
+                                                                                                                             chiatric hospitals, is invoked with obtained ssn numbers
+                                        collected from individual data sources and stored within
+                                                                                                                             to retrieve the psychiatric disorders for which the patients
+                                        a central data warehouse. Privacy is often approached by
+                                                                                                                             have received some treatments for, if any. Then, for each
+                                        signing privacy agreements between data sources and the
+                                                                                                                             HIV patient that has developed a psychiatric disorder, DS3
+                                        warehouse to specify who can access the data and for
+                                                                                                                             and DS4 are invoked in parallel to retrieve their age, sex
+                                        what purposes. However, such privacy agreements do not
+                                                                                                                             and HIV medications, respectively. Consequently, DS5 is
+                                        provide guarantees to individual data sources that their
+                                                                                                                             invoked to retrieve the quantity of the ingredient studied in
+                                        data would not be misused by the warehouse or any other
+                                                                                                                             each retrieved HIV medications. Then, the outputs of DS3
+                                        stakeholder involved in the data integration system
+                                                                                                                             and DS5 are joined on ssn.
+                                            In this paper, we explore an alternative multi-source data
+                                        integration approach that gives data providers the control                               The execution of the data integration plan (or also the
+                                        on their data while answering data integration queries and                           service composition plan2 ) in Figure 1-b involves a chal-
+                                        reduces the ability of the integration system to misuse                              lenging dilemma. That is, if individual services were to
+                                        data. We illustrate the research challenges addressed in this                        apply locally their privacy policies, and privacy-sanitize
+                                        paper through a real-world example from the healthcare                               their output data then the plan cannot be executed. Note
+                                        application domain.                                                                  that in such case the social security number ssn, which is
+                                                                                                                             used by the integration plan to link the different information
+                                                                                                                             features of the same patient, will not be disclosed by any of
+                                        •     M. Barhamgi, D. Benslimane and C. Bonnet are with the Computer
+                                              Science Department of Claude Bernard University, Lyon, France.
+                                                                                                                             the services, as it is a personally identifiable information. On
+                                              E-mail: firstName.lastName@univ-lyon1.fr                                       the other hand, if services share their output data with the
+                                        •     C. Perera is with the Computer Science Department of Cardiff University.
+                                              E-mail: charith.perera@ieee.org                                                  1. It is a common practice in the healthcare domain to provide a
+                                        •     C. Yu is with the Computer Science Department of the National Chung            service-oriented access to heterogeneous data sources [5]. This class of
+                                              Hsing University in Taiwan. E-mail: chiamuyu@nchu.edu.tw                       services is known as data sharing services [3] or simply data services [6].
+                                        •     D. Camacho is with the Department of Computer Systems Engineering of
+                                                                                                                               2. We use the terms ”service composition plan” and ”data integration
+                                              Universidad Politecnica de Madrid. E-mail: david.camacho@upm.es
+                                                                                                                             plan” interchangeably throughout the paper.
+                                             c 2019 Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or
+                                            future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective
+                                               works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works
+                                                                                                                                                                                                      2
+
+
+                                 DS1($city, ?ssn)                                                                                    DS2($ssn, ?description)
+            Semantics           Implemented Parameterized Query             Provider                      Semantics                    Implemented Parameterized Query                    Provider
+   Return the SSNs of HIV            SELECT T1.ssn                           HIV                  Return description of the                 SELECT T2.description                         Hospitals
+                                     FROM T1                                                      psychiatric disorders of a                FROM T2
+   patients at a given city          WHERE T1.city = $city                  Centers
+                                                                                                  given patient, if any.                    WHERE T2.ssn = $ssn
+
+
+
+
+                                                                                                                                 DS4($ssn, $type, ?medicine)
+                                                                                                          Semantics                  Implemented Parameterized Query                      Provider
+                               DS3($ssn, ?age, ?sex)
+                                                                                                  Return the medications of a              SELECT T4.medicine                            Pharmacies
+            Semantics           Implemented Parameterized Query             Provider              given type that are taken by             FROM T4
+                                    SELECT T3.age, T3.sex                                         a given patient                          WHERE T4.ssn=$ssn, T4.type=$type
+   Return the age and sex of                                                Health
+                                    FROM T3
+   a given patient                  WHERE T3.ssn = $ssn
+                                                                            ministry
+
+
+
+                                                                                                     Begin                                   DS3    ssn, age, sex                            End
+                                                                                                           city            ssn   * ssn                                            Join
+                                                                                                                    DS1          DS2 ssn                               ed,   qu
+                                                                                                                                                                ssn, m
+                      DS5($medication, $ingredient, ?quantity)                                                                               DS4 ssn, med DS5
+            Semantics          Implemented Parameterized Query              Provider
+                              SELECT T5.quantity                                                                                     * DS2 is exploited to retain only the HIV patients that
+  Return the quantity of a
+                              FROM T5                                     Pharmaceutical                                               have been treated for some mental illness.
+  given ingredient in a given WHERE T5.medication = $medication                                         Query Plan
+                                                                              Labs                                                     The input of a service can be kept by the integration
+  medication.                        T5.ingredient = $ingredient
+                                                                                                                                       plan and joined with its corresponding outputs.
+
+                                    (a)                                                                                                         (b)
+
+ Table T1 (HIV Centers)        Table T2 (Hospitals)           Table T3 (Health ministry)                     Table T4 (Pharmacies)                                     Table T5 (Labs)
+
+     city          ssn             ssn     description         ssn              age        sex               ssn          medicine       type             medicine ingredient quantity
+    London         p15             p3          ...                 p0          [0-10]      m                 p5            dox          cardiac            alpha1     ABC [0-30] mg
+    London         p201            p11         ...                 p8          [0-10]      m                 p15           alpha1       HIV                alpha2    ABC      5 mg
+    London         p512            p15         ...                 p15         [0-20]      null              p17           dox          cardiac            alpha3    ABC     [10-100]mg
+                                   p16         ...                 p20         [0-20]      f                 p227          drab         cardiac
+                                   p21         ...                 p23         [0-20]      f                 p201          alpha 2      HIV
+                                   p32         ...                 p188        [0-20]      m                 p242          drab         cardiac
+                                   p201        ...                 p199        [15-20]     null              p411          dox          cardiac
+                                   p199        ...                 p201        [10-15]     null              p512          alpha 3      HIV
+       (c)                         p300        ...                 p204        [10-15]     m                 p711          dox          cardiac
+                                   p510        ...                 p209        [10-15]     m
+                                   p512        ...                 p412        [15-20]     f
+                                   p571        ...                 p413        [0-30]      f
+                                   p575        ...                 p512        [10-15]     f
+
+
+Fig. 1. (a) The data services of the running example; (b) A data integration plan; (c) Sample of the data accessed by the services.
+
+
+integration system without any protection, then they may                                     to ship a copy of its underlying data sources to a centralized
+infer information about the data held by each other. For                                     data integration system, which can store received copies
+example, the provider of DS2 may infer that his patients                                     and answer queries locally. However, such solution has
+p15 , p201 and p512 (refer to table T2 in Figure 1-c) are                                    several drawbacks that make it impractical for real-world
+also AIDS patients if were provided with an access to the                                    applications. For example, in application domains where
+integration plan3 . He needs just to observe the inputs with                                 the data is dynamic, i.e. updated frequently on the data
+which DS2 is queried. Providers of DS3 and DS4 may also                                      provider side, the results computed using the copies in the
+infer that those same patients have psychiatric disorders                                    centralized system may not include the latest updates on
+and AIDS. Moreover, the integration system (i.e. the entity                                  the providers’ sides, which is crucial in critical domains
+responsible of coordinating the execution of the integration                                 such as the healthcare, where an incomplete or an erro-
+plan), as well as the end-user (i.e. the stakeholder studying                                neous query answer might have dramatic consequences
+the side-effects of AIDS medications) will learn the diseases,                               on the patient’s life. Moreover, such a centralized system
+medications and ages of all patients transmitted by the                                      may quickly become a target of choice for attackers due to
+services.                                                                                    the data concentration effect involved in retrieving copies
+    A naive solution to avoid information leakage among                                      from multiple data sources. Furthermore, current privacy
+involved services would be by getting each of the services                                   regulations may prevent data providers from shipping the
+                                                                                             data they collect to a third-party which makes the solution
+                                                                                             undoable in practice.
+  3. This is a reasonable assumption since data providers may require
+to be informed how their data is exploited, by which entities and for                            In this paper, we propose a practical solution to allow
+what purposes. Often, this is defined in agreed upon privacy polices.                        the execution of multi-source data integration plans with-
+                                                                                                                                            3
+
+out leaking information about data subjects4 to involved                  impractical [12]. Several new solutions with an improved
+stakeholders. That is, data services can not infer information            efficiency have emerged over the last few years [13], [14].
+about the data held by each other. Our solution can be used               However, the efficiency improvements come at an expensive
+with trusted and semi-trusted (i.e. semi-honest) mediators.               cost, most of the new solutions such [13] require expensive
+In the case of semi-trusted mediators, our solution enables               (parallel) computation architectures that can be afforded by
+involved data services to locally enforce their security and              big corporations only. In addition, a recent evaluation study
+privacy policies (that relate to end-users), as the mediator              of the new solutions’ efficiency [15] suggests that they can
+cannot be trusted to enforce such policies. The solution still            be applied to non-critical applications only, where end-users
+allows the mediator to join data subjects across the different            can accept delayed answers.
+services without leaking data from one service to another
+                                                                          Trusted mediators based data integration: Solutions in this
+or to the mediator. In the case of trusted mediators, services
+                                                                          category, such as [16], [17], rely on a centralized entity
+can delegate the enforcement of their security and privacy
+                                                                          that can be trusted by all data providers to compute data
+policies to the mediator. The solution should just prevent
+                                                                          integration queries. For example, Yau et al. [16] present a
+data leakage among services.
+                                                                          privacy-preserving data repository that can collect, from
+                                                                          each data provider, only the data necessary to compute
+1.2   Existing Solutions                                                  the answer of a query. The data collected is hashed in the
+Existing solutions for privacy-preserving data integration                repository in such a way to prevent its reuse for computing
+can be classified into three areas: privacy-preserving data               other queries. However, while such solutions could be used
+publishing, secure multi-party query computation and trusted              when the integrated data is dynamic, they leak privacy
+mediators based data integration. We discuss below their limi-            sensitive information to data providers about the data held
+tations based on our running example.                                     by each other.
+
+Privacy-preserving data publishing: Privacy models, such                  1.3       Proposed Approach and Contributions
+as k -Anonymity [7] and its variations l-Diversity [8] and t-
+Closeness [9] compute an anonymized view of a private table               In this paper, we propose a practical multi-source data
+that can be shared with data consumers without the risk of                integration approach that would preserve the privacy of
+disclosing the identity of specific data subjects (e.g. patients)         data subjects against the different stakeholders involved in
+in that view. Some recent works [10], [11] have attempted to              answering a data integration query including data services,
+apply the k -Anonymity concept (and its variations) in dis-               mediator and end-users. Our approach has the particularity
+tributed settings where the anonymized view is computed                   of reducing data leakage among services to a practical
+using multiple private tables managed by autonomous data                  amount that would prevent services from inferring sensitive
+providers.                                                                information about data subjects. The mediator has access
+    However, while k -Anonymity and its variations pro-                   only to encrypted information to join data subjects across
+vide good privacy guarantees when the private table is                    involved services. The proposed approach can be used for
+owned by a single data provider, its implementations in                   both trusted and semi-trusted mediators. Our solution can
+distributed settings compromise the privacy of data subjects              be exploited in numerous applications where independent
+by leaking their private information to data providers while              data sources should preserve the confidentiality of their
+the latter compute the anonymized view. For example, all                  data including healthcare [5], eGovernment [1], industrial
+of the works [10], [11] assume that data providers, while                 collaboration scenarios [18], emergency management [19],
+computing the anonymized view, can know the list of data                  [20], data management in smart environments [21], [22],
+subjects they have in common5 , but none of them should                   personal data markets [23], multi sources data analytics [24],
+know the specific attributes’ values that are held by each                [25], etc.
+other, beyond what is included in the computed view. In                   The contributions of this paper are summarized as follows:
+our example, this means that the provider of DS2 can learn
+                                                                                •    We define the main privacy requirements for the
+that the patients p15 , p201 and p512 are also managed by
+                                                                                     service-oriented class of data integration. These re-
+the provider of DS1 which is an HIV center, thus inferring
+                                                                                     quirements consider the different actors involved in
+that these patients have AIDS, thus violating their privacy.
+                                                                                     a composition of services answering a query, includ-
+Furthermore, such solutions are not convenient for data
+                                                                                     ing the constituent services (i.e., data providers), the
+integration scenarios where data at the data providers’ side
+                                                                                     mediator (i.e., the composition system) and the end-
+is dynamic.
+                                                                                     users (i.e., data consumers).
+Secure Multi-party Computation SMC: SMC protocols al-                           •    We introduce a new privacy requirement, dubbed
+low two or more parties to evaluate a function over their                            k -Protection, to ensure that there are no data leaks
+private data, while revealing only the answer and nothing                            among services (i.e., data providers) during the
+else about each party’s data. Initial solutions in this research                     query computation. In a nutshell, when the output
+area involved substantial computation costs that made them                           of a service DSi is used by a composition as input
+                                                                                     to another service DSj , the k -Protection requirement
+  4. The term data subject refers to the person whose data is collected              protects the output of DSi by preventing DSj from
+and managed by data services (e.g. patients).
+                                                                                     distinguishing the exact input value from k possible
+  5. Data providers in these works exchange the identifiers of data
+subjects in clear while they cooperatively compute the anonymized                    input values, where k is set by DSi . This would allow
+view.                                                                                DSi to reduce the inference capability of DSj (and
+                                                                                                                                                            4
+
+           the other services in the composition) about its data                                                    End-user
+           below a practical threshold set by DSi itself.
+      •    We propose an approach to evaluate multi-source                                                  Query              Privacy-sanitized result
+           queries over autonomous Web data services while                            Service
+           respecting the k -protection requirement. We validate                      Registry
+           our approach in the healthcare application domain                                                                 Removal of
+                                                                                                            Query
+           by conducting a set of experiments using a real medi-                                           Rewriting
+                                                                                                                               linkage
+                                                                                      WSDL-S
+                                                                                     WSDL-S
+                                                                                     Service                                 information
+           cal dataset of 1,150,000 records. The results show that                       Files
+                                                                                                                                                Mediator
+                                                                                       Files
+                                                                                  advertisement
+                                                                                                    Query
+           our solution provides a practical privacy protection                                     Plan
+           with acceptable performance overhead.                                                       Privacy-Preserving
+                                                                                                        Plan Evaluation
+   The remainder of the paper is organized as follows. In
+Section 2, we define our privacy requirements with respect
+to services, the mediator, and the end-user. In Section 3,                                                                                    Data Services
+we present our approach for query evaluation. In Section                                                                                     (Data Providers)
+4, we evaluate the performance of our approach using a                                      Data Service      Data Service             Data Service
+real medical dataset and discuss its applicability to real life                                 DS1               DS2                      DSn
+application domains. In Section 5, we compare our approach
+with related research works and conclude in Section 6.                   Fig. 2. Privacy-Preserving Service Composition
+
+
+2     P RIVACY R EQUIREMENTS IN S ERVICE C OMPO -                        and there is a directed edge eij from DSi to DSj if there is
+SITION                                                                   a precedence constraint between DSi and DSj . We say that a
+In this section, we identify and discuss the data privacy                service DSi must preceed DSj if one of its outputs is an input
+requirements with respect to the different actors involved               for DSj .
+in a composition of services, including services, end-users                  The composition execution plan of our example is shown
+and the mediator (or the composition system).                            in Figure 1-b. Please note that some nodes are simply
+                                                                         preceded by end-users’ input, e.g. DS1 . The query results
+2.1       Service Composition                                            can be simply computed by joining the outputs of services
+                                                                         that are leaves in the plan (e.g. DS3 and DS5 ) [28].
+In this paper, we assume that data sources are exposed to
+the data sharing environment through Web APIs, i.e. Web
+services, to provide a standardized interface to data6 .                 2.2   Data Privacy Requirements
+    End-users’ queries are resolved by service composition               We focus on data privacy in this paper, i.e. the privacy of
+as follows (Figure 2). Given a query and a set of available              data subjects whose data is processed in a composition plan
+data services, the integration system compares the received              (e.g. patients in the running example), as opposed to the
+query with the descriptions of available services to select              privacy of end-users who receive the final result which was
+the relevant ones. Then the integration system rewrites the              adequately addressed in the literature.
+query in terms of calls to selected services. The rewriting,                 We say that the execution of a composition plan H is
+also called a composition, is then executed in such a way                privacy-preserving if it satisfies the following requirements
+that preserves the data privacy relative to the different actors         with respect to the different actors involved including par-
+involved.                                                                ticipating services, end-users and the mediator:
+    In this paper we will focus on the privacy issues raised
+by the execution of a composition. Readers interested in ser-            2.2.1 Requirements with respect to services
+vice selection and query reformulation in terms of services              The execution of a composition should not leak information
+are referred to our previous work [26], [27] or to similar               to its constituent services about the data held by each other.
+works [28].
+                                                                             Let <(tx ) represents the knowledge that a service DS
+    In the following we formalize the notion of a com-
+                                                                         holds a given tuple tx . Let tx concerns a data subject x (e.g.
+position execution plan and define the requirements that
+                                                                         a patient, a product, etc.). Let also <ij (tx ) represents the
+should be satisfied in a privacy-preserving execution of
+                                                                         knowledge leaked form DSi to DSj that DSi holds tx .
+a composition plan with respect to the different actors
+                                                                             When a composition is executed without any privacy
+involved, including the mediator, end-users and involved
+                                                                         protection, the confidence of DSj ’s provider in <ij (tx ) is
+data sharing services.
+                                                                         P rj (<ij (tx )) = 1. For example, when DS3 in the running
+Definition 1 (Composition Execution Plan): We adopt the                  example is invoked with the value ssn = p15 , its provider
+definition given in [28]. A composition execution plan is a              will learn that both of DS1 and DS2 hold a tuple for the
+directed acyclic graph H in which there is a node corresponding          patient p15 , i.e. P r3 (<13 (tp15 )) = P r3 (<23 (tp15 )) = 1 (thus
+to each one of the data services involved in answering the query,        inferring p15 has HIV and mental disorders).
+                                                                             A service DSi can control the leakage of its data by
+   6. The class of Web services that access and query data sources       keeping P rj (<ij (tx )) below an accepted threshold (fixed by
+is known as Data Services or Data Sharing Services [3], [6], [16], and
+is motivated by the flexibility, and the interoperability that service   DSi ). We define below a mechanism to control data leakage
+oriented architectures could bring to data integration.                  among services.
+                                                                                                                                                            5
+
+                                         V=[p11, p16]                                         2.2.2 Requirements with respect to end-users
+                                                   p15
+                                                                            Filtering
+                                                                                              End-users are the entities that issue a query and receive
+ Invocation             Value                p11              Invocation
+   of DS1
+              p15
+                     Generalization                             of DS2
+                                                                           extraneous
+                                                                             tuples
+                                                                                        p15   the final result of executing the composition answering
+              p201
+                                            p16                                               the query. Depending on the application considered, end-
+              p512
+                                  An interval with at least
+                                   k values stored in DS2                                     users could be trusted or untrusted by data subjects. For
+                                                                                              examples, care givers (e.g. primary care doctors, nurses, etc.)
+Fig. 3. Applying the k-protection mechanism on the edge e12 (k=3)                             could be trusted to access (all or part of) the medical infor-
+                                                                                              mation of their patients for treatment purposes. Researchers
+                                                                                              who study the health conditions of a population, could be
+Definition 2 (k -Protection): Given a composition H and a                                     only trusted to access to anonymized data that cannot be
+vector K = {k1 , k2 , ..., kn }, where ki is a positive integer                               linked to any specific patient.
+determining the protection threshold (i.e. 1/ki ) the service DSi                                 End-users should be only allowed to access the infor-
+must provide for its output tuples against the other services in H,                           mation they are entitled to. This can be ensured either by
+then for each edge eij in H, P rj (<ij (tx )) must be ≤ min(1/kl ),                           applying privacy-aware access control policies of individ-
+where 1/kl is the protection threshold of DSl , which is, in turn,                            ual services in case of trusted end-users as in [30], or by
+a (direct or indirect) parent of DSj in H. Note that DSj has at                               anonymizing the results returned by the composition to
+least one parent in H (i.e. DSi , kl ≥ ki ).                                                  prevent the re-identification of data subjects.
+    The k-protection mechanism is inspired by the concepts
+                                                                                              2.2.3 Requirements with respect to the mediator
+of k-anonymity [7] and Private Information Retrieval PIR
+[29]. Intuitively, this mechanism ensures that when a service                                 The mediator, i.e. the entity that executes the composition
+DSj is invoked (with an input data value from DSi ), it must                                  plan, is another important actor in a composition of services.
+not be able to precisely determine its input value between                                    It may not be necessarily managed by the final data recipi-
+kl other possible input values (where kl ≥ ki ). In other                                     ent. It is responsible for carrying out the intermediary data
+words, instead of invoking DSj with a precise input value                                     operations in the composition plan (e.g. joining the outputs
+v , DSj should be invoked with a generalized value of v                                       of different services, tuples selection, etc.).
+that matches with a range of values V (v ∈ V ) containing                                         Mediators could be trusted if managed by a trusted
+at least kl other possible values. This way, the certainty (i.e.                              entity and are untrusted otherwise. An untrusted mediator
+the confidence) of DSj that v is held by DSi is less than                                     should not have access to any Personally Identifiable Infor-
+1/kl . One possible way to implement this mechanism is to                                     mation PII. For example, the mediator should not be able to
+compute V such that it contains kl values for which DSj has                                   identify any of the patients p15 , p201 and p512 whose private
+an output. Please note that the k-protection is similar to PIR                                data is circulating throughout the composition plan.
+in that when a service is queried (i.e. invoked) it does not                                      This implies that the data produced by a service should
+know exactly the specific query it is executing on its own                                    be protected by the service itself before being released to
+dataset.                                                                                      the mediator (and used for the invocation of other services).
+                                                                                              This can be ensured either by encrypting the released data
+Example: We continue on our running example. Given the                                        (in case of trusted end-users) or by anonymizing it (in case
+data accessed by our sample services in Figure 1c, examples                                   of untrusted end-users).
+of the privacy breaches if these services were invoked with-
+out applying the k-protection mechanism include: DS2 will                                          Different applications may require different combina-
+know that its patients p15 , p201 and p512 have AIDS; DS3                                     tions of requirements, i.e. not all requirements should be
+will know that these same patients, in addition to having                                     respected at the same time. For example, in applications
+AIDS, suffer from severe psychiatric disorders, etc. Now,                                     such as the healthcare, most often only the requirements re-
+assume that k1 = 3, the k-protection mechanism ensures                                        lated to services and end-users are relevant. In that domain,
+that DS2 must not be able to distinguish each of its input                                    data integration is usually carried out by a trusted authority
+values (e.g. p15 ) from at least 3 other values for which it                                  (e.g., a government agency) to, for example, discover new
+has matching tuples in its table T2. Figure 3 shows how                                       medical knowledge. In that case, it is important to protect
+the k-protection is enforced on the edge e12 . The value p15                                  data privacy against individual data providers (i.e. services)
+is generalized into a range of values V which contains at                                     and end-users (e.g. researchers), whereas the mediator itself
+least three values (e.g. p11 , p15 and p16 ) for which DS2 has                                (i.e., the authority) is trusted. In application domains such
+matching tuples. After the invocation of DS2 , the extrane-                                   as cybersecurity and terrorist fighting, often the require-
+ous tuples are filtered out.                                                                  ment related to services is the most relevant. For example,
+                                                                                              consider a scenario where the objective is to proactively
+     Preserving data privacy against the different data                                       identify potential airplane terror attacks before they happen
+providers involved in a query has not been addressed ade-                                     by identifying risky passengers (e.g., passengers with a
+quately in the literature. For example, works on distributed                                  criminal history and suspicious behaviors) on passenger
+privacy-preserving data publishing such as [10], [11] have                                    lists of airline companies. Data providers in such case could
+focused on preserving the data privacy against final end-                                     be airline companies, police and intelligence services, banks,
+users while allowing involved data providers to know the                                      etc. The final end-user is a police inspector and the mediator
+list of data subjects they have in common. The k -Protection                                  is a governmental agency. In such case, the end-user and the
+mechanism complements those works by making them im-                                          mediator can be trusted, whereas data providers should not
+mune to information leakage among data providers.                                             know they have a certain person in common, without a deep
+                                                                                                                                        6
+
+investigation from the inspector (e.g., an airline company                                        Se(DS3, ]-∞,+∞[)
+should not know that one of its passengers has a criminal                                         Se=13, mid =c512
+
+history before the case is fully investigated by the inspector).                                  Se(DS3, ]-∞,c512])
+                                                                                                  Se=13, mid =c256
+
+                                                                                                  Se(DS3, ]-∞,c256])
+3 A P RIVACY -P RESERVING Q UERY E VALUATION                                                      Se=10, mid =c128
+A PPROACH                                                                                         Se(DS3, ]-∞,c128])
+In this section, we start by presenting our different as-                                          Se=5, mid =c64
+                                                                           Mediator                                         DS3
+sumptions and some key concepts. Then, we present an                                              Se(DS3, ]-∞,c64])
+approach to evaluate multi-source queries while respecting                                         Se=5, mid =c32
+
+the requirements discussed above.                                                                 Se(DS3, ]-∞,c32])
+                                                                                                   Se=5, mid =c16
+
+3.1   Context and Assumptions                                                                     Se(DS3, ]-∞,c16])
+                                                                                                   Se=5, mid =c8
+In this work, we made the following assumptions. We
+                                                                                                  Se(DS3, [c8,c16])
+consider a distributed environment with heterogeneous dis-                                         Se=2, mid =c4
+tribution of data. This means that different services manage
+different features of information about the same set of data        Fig. 4. The communication rounds between the mediator and DS3 to
+subjects. In contrast, in a homogeneous data distribution,          compute the generalized value.
+different services manage the same features of information
+about different data subjects. The second case is easier to
+deal with since there is no real integration to be done.            any individually identifiable information. This satisfies the
+Therefore we only look at the first case.                           privacy requirements relative to end-users.
+    We consider a honest but curious environment, where the             To satisfy the privacy requirements relative to services,
+stakeholders involved in the execution of a data integration        the mediator applies our k -Protection mechanism by gener-
+plan will follow the given protocol. However, they may try          alizing the encrypted identifiers’ values before using them
+to analyze exchanged data during the protocol execution.            to invoke the services. If a data service DSi was to be
+This setting is also known as semi-honest environment in the        invoked with a value x (originating from a parent service
+literature [31].                                                    DSj ) and it is required the certainty of DSi that x is held by
+    We assume that services can provide statistical infor-          DSj to be less than 1/k , then x is generalized through our
+mation about their accessed datasets such as the service            protocol (presented in the following) to match with, at least,
+selectivity [28]. The selectivity of a data service DS relative     k tuples in DSi . The value generalization is carried out by
+to a range of input values R, denoted as Se(DS, R), is              the mediator in collaboration with the service to be invoked.
+the number of output values when DS is queried with                     Privacy requirements relative to end-users and the me-
+R. Let us consider the sample data in T 3 (Figure 1-c),             diator are conventional requirements and have been exten-
+the selectivity of DS3 relative to some ranges is as fol-           sively studied in the literature. For example, the services can
+lows: Se(DS3 , [p0 , p1000 ]) = 13, where the range [p0 , p1000 ]   use any of the anonymization algorithms that implement
+includes the whole table T 3; Se(DS3 , [p0 , p10 ]) = 2,            the k -Anonymity and its variations [7], [8], [9] to locally
+Se(DS3 , [p5 , p20 ]) = 3.                                          anonymize their data. Privacy requirements with regard
+                                                                    to services are, to the best of our knowledge, new, i.e.,
+                                                                    information leakage among data providers have not been
+3.2   An Overview of the Proposed Approach
+                                                                    property addressed in the literature. Therefore, in the fol-
+In our approach we assume that services, the mediator and           lowing sections we focus on ensuring the k -Protection by
+end-users are independent entities. Our approach ensures            presenting a practical protocol for generalizing encrypted
+the privacy requirements relative to those entities as follows.     identifier values.
+    In our approach, data services involved in the inte-                The anonymization applied by the individual data ser-
+gration plan can apply locally their security and privacy           vices (and its utility) is out of the scope of this paper.
+policies on non-identifier attributes. On the other hand,           However, it is worth to mention that the anonymization
+they are all required to encrypt the identifiers used by the        can be realized by the services either in isolation by directly
+mediator to join data by an Order Preserving Encryption             applying one of the algorithms [7], [8], [9], or cooperatively
+Scheme OPES [32]. An OPES encrypts numeric data values              by extending one of the algorithms [10], [11] with our k -
+while preserving the order relation between them. With              Protection mechanism presented in the next section.
+OPES, we can apply equality and order comparison queries
+on encrypted data without decrypting the operands. Doing
+                                                                    3.3   Generalization of Encrypted Identifier Values
+so, the mediator gets only access to encrypted values of
+identifier attributes and to values that are already protected      The objective of the generalization protocol can be formu-
+by services for non-identifier attributes (e.g., by applying        lated as follows: given an encrypted identifier value x (x ∈ X )
+the desired anonymization techniques). This satisfies the           with which a service DSi should be invoked, allow the mediator
+privacy requirements relative to the mediator. Once the             to compute a generalized value7 x0 of x such that x0 matches
+integration plan has been executed, the mediator removes
+                                                                      7. We assume that data services provide different operations (i.e.,
+encrypted identifier attributes from result. This way, the          functions) allowing to query the underlying datasets by precise or
+final recipient will only have the anonymized data without          generalized values (e.g., intervals).
+                                                                                                                                              7
+
+with, at least, k possible values held by DSi where k is maximum                               R = ]-∞,+∞[,
+protection factor required by the parents of DSi in H. Note that                               Se =13,
+the mediator cannot decrypt x to generalize it alone. Rather,                                  mid = c199
+it needs to collaborate with the services to be invoked to
+carry out the generalization.
+                                                                                t.x ≥ c199         t.x ≤ c199
+   We first describe two naive approaches to generalize
+the identifier values and analyze their limitations. Then,                                                         R = ]-∞, c199],
+we build on our analysis to define a hybrid approach that                                                          Se = 7,
+addresses the identified limitations.                                                                              mid = c20
+
+3.3.1 Domain-based identifier generalization                                                          t.x ≥ c20      t.x ≤ c20
+A naive approach to compute x0 is to exploit the domain
+of the attribute x (i.e., X ). The idea here is to use X as a
+starting value of x0 then to gradually increase its precision                                                                R = ]-∞, c20],
+by removing parts of X until it is not possible to remove                                                                    Se =4,
+any part without violating the k -Protection requirement.
+    For this purpose, the mediator determines for each data              Fig. 5. Generalizing the value t.x = c15 before invoking DS3 .
+service DSi the protection factor k that must be respected: k
+= MAX(DSj .kj ), where DSj represents the parents of DSi
+in H. Then, for each input tuple t, the mediator determines                      However, the service DS3 would still know that the
+the minimum range of values R [a, b] that should be used                         mediator is interested in the range [c8 , c16 ], as it has
+to invoke DSi instead of t.x. To this end, the mediator                          tested its selectivity. One would think that |R| could
+queries the selectivity of DSi with respect to a wide range of                   be returned instead of the selectivity to avoid such
+identifier values R (we use the range ]-∞, +∞[ to denote the                     a problem (by making sure that |R| ≥ 2k before
+range covering all the tuples managed by DSi ) along with                        splitting it), however the problem may persist as it
+a value mid occurring in the middle of the domain X . Then                       could happen that some values in the new range
+if the returned selectivity is greater than k , the mediator                     are not assigned to any individual, e.g., even though
+compares t.x to mid to determine the half of R covering                          |[c8 , c16 ]| > k , the values in that range, except for c15 ,
+t.x. The last step is repeated with the obtained new interval                    may not be assigned to patients (i.e., they are still
+until there is no interval with a selectivity greater than k .                   virgin ssn values), then DS3 will infer that x is c15 .
+Then, DSi is invoked with the obtained interval. After the                   In addition, the protocol is not optimal. For instance,
+invocation, the mediator retains only the outputs related to             many of the rounds in Figure 4 (which involve important
+t.x, i.e., the false-positives are removed by the mediator, as           communication cost) did not reduce the selectivity, i.e., the
+it knows the original encrypted input value t.x.                         first two ranges have the same selectivity, and the same
+Example: Assume that the service DS3 is to be invoked                    applies to the fourth, the fifth, the sixth and the seventh
+with the value c15 (i.e., the encrypted value of p15 ) and               range.
+k = 2. Figure 4 shows the messages exchanged between
+DS3 and the mediator. For simplicity, the example assumes                3.3.2 Dataset-based identifier generalization
+that |X|=1024. First, the mediator queries the selectivity of            A second naive approach to generalize x is to use the
+DS3 relative to a wide range of values (denoted by ]-∞,                  ordered dataset accessed by the service to be invoked,
+                                                                                           o
++∞[). DS3 replies that it has 13 values and the value c512               denoted by SDS         i
+                                                                                                  . In this approach, the mediator queries the
+is in the middle of X . The mediator compares c15 with                   selectivity of DSi with respect to a wide range of identifier
+c512 and determine the new range ]-∞, c512 ]. This step is               values R (we used the range ]-∞, +∞[ to denote the range
+                                                                                       o
+repeated until the computed range cannot be divided while                covering SDS       i
+                                                                                              ) along with a value mid occurring in the
+                                                                                         o
+respecting the value of k .                                              middle of SDS        i
+                                                                                                . Then, if the returned selectivity is greater
+                                                                         than 2k , the mediator compares t.x to mid to determine
+Privacy Analysis: From a privacy perspective the protocol                the half of R covering t.x. The last step is repeated with
+has the following limitations:                                           the obtained new interval until there is no interval with a
+   •   First, the mediator learns precise information about              selectivity greater than k . Then, DSi is invoked. After the
+       X , i.e., it receives the encrypted values of fixed data          invocation, the mediator retains only the outputs related to
+       points in X (i.e., 12 X , 14 X , 18 X ...etc.). If the mediator   t.x, i.e., the false-positives are removed by the mediator, as
+       knows the domain X , then it can map the encrypted                it knows the original encrypted input value.
+       values to their original values (since it knows their             Example: We continue with our running example to show
+       positions in X ), or at least establish lower and upper           how we ensure the k-protection requirement on the edge
+       bounds about each encrypted value.                                e23 . Assume that DS1 and DS2 require a protection factor k
+   •   Second, it may leak additional knowledge to services              = 3. The invocation of DS2 returns the tuples corresponding
+       by violating the k -Protection requirement. For ex-               to c15 , c201 and c512 where these values are the encrypted
+       ample, if the selectivity of the range [c8 , c16 ] in the         values of p15 , p201 and p512 . Instead of invoking DS3
+       previous example were 1 (instead of 2), then the                  directly with the tuple c15 , the mediator generalizes c15
+       mediator would return back to the range ]-∞, c16 ].               as follows (refer to Figure 5). The mediator requests the
+                                                                                                                                       8
+
+selectivity of DS3 with a range covering all its possibly                We now present our data generalization scheme which
+managed values (i.e., R = ]-∞, +∞[); DS3 acknowledges                satisfies the criteria discussed above by combining the two
+it has 13 distinct values and that the value (mid = c199 )           previously discussed data generalization approaches while
+occurs in the middle of these ordered values. The mediator           avoiding their limitations. Our scheme proceeds along the
+compares c15 to c199 , and determines the new interval R=            following steps.
+]-∞, c199 ]. It then requests the selectivity of the new R along
+                                                                        1)   The first step is carried out offline when data ser-
+with the new mid; the new values of Se and mid are 7 and
+                                                                             vices join the data integration system. Every DSi
+c20 . It determines again the new interval by comparing c15
+                                                                             partitions the domain X to m buckets. Services
+to c20 . The new interval is R= ]-∞, c20 ] and its selectivity
+                                                                             are free to choose the partitioning criteria and the
+is 4. The algorithm stops here as if the new interval was
+                                                                             number m. For example, a service may choose to
+divided then Se will be less than k.
+                                                                             divide X into m buckets with 50 stored values
+Privacy Analysis: This protocol does not suffer from the                     in each bucket, while another one may choose to
+limitations discussed above. Specifically, it does not release               divide X into m buckets with equal absolute length.
+the encrypted values of data points with known positions                2)   The mediator executes the dataset based protocol de-
+in X . It does not also test the selectivities of ranges that                scribed above and narrows down the computed
+may contain less than k values, as the protocol verifies that                range R as long as its selectivity is Se ≥ α∗k , where
+the selectivity of a range is ≥ 2k before splitting it in two                α is an integer value > 1 selected by the mediator.
+equal ranges. xThe major limitation of this approach is that                 As we will see later in our discussion, α guarantees
+the boundaries of the computed range x0 depend on the                        that there is at least α candidate ranges satisfying
+                                                    o
+dataset currently held by DSi (i.e., depend on SDS     i
+                                                         ), and              the k -protection requirement in the R computed
+                                               o
+may change if new tuples were inserted in SDSi , or if some                  so far. We will explain the effect of α later in our
+existing tuples were deleted, as we show in the following                    discussion.
+example.                                                                3)   The service determines the bucket (or the set of
+                             o
+Example: Let us assume that SDS  = {a, b, c, f }, k = 2, x = c               buckets) that covers R and divides them into ranges
+                               i
+                   0
+and the computed x is [c, f ]. If the new tuples d and e were                that respect the k -Protection requirement. Data ele-
+                 o
+inserted, i.e., SDS    = {a, b, c, d, e, f }, then x0 would become           ments in each bucket are organized into candidate
+                     i
+  0
+x = [a, c], and the provider of DSi would be able to infer                   ranges as follows: (i) they are ordered based on their
+that x is c, as [a, c] ∩ [c, f ] = {c}.                                      time-stamps, i.e., data elements with the same time-
+                                                                             stamp have the same order (which is the case for
+3.3.3 Hybrid protocol for identifier generalization                          the initial set of data elements when DSi has joined
+Based on the limitations discussed above, a good data                        the system). (ii) An initial set of candidate ranges
+generalization scheme should satisfy the following criteria.                 are formed using the data elements with the highest
+First, it should guarantee that the generalized value (i.e., the             order. (iii) Subsequent data points are inserted one
+computed range x0 ) should always remain the same every                      after another in the computed ranges and when
+time the composition plan is executed. In other words, the                   the selectivity of a candidate range becomes 2k it
+generalization scheme should be deterministic. Moreover, if                  gets split into two candidate ranges (that could also
+the dataset SDSo
+                    held by a service DSi is changed (because                evolve independently).
+                  i
+of data insertions or deletions), then the newly computed               4)   The computed ranges that intersect with the initial
+range should be a subset or superset of previously com-                      range R (that is computed in the first step) are sent
+puted ranges for the same value x and with, at least, k                      to the mediator, which can now select the candidate
+intersecting values. Second, it should not leak additional                   range covering x and use it to invoke DSi .
+information to the mediator that could help the latter to            Illustrative Example: Assume that the ordered dataset ac-
+map the encrypted values to their real ones.                         cessed by a data service DSi is shown in Figure 6 (part-
+    Before describing our proposed scheme for the general-           a). For simplicity, the figure shows the content of only one
+ization of encrypted data that avoids the discussed limita-          bucket (i.e., Bi ). Each tuple in that dataset is time-stamped
+tions, we first discuss two requirements that data services          (e.g., the tuple a has the time-stamp t3 ). Assume also that
+should satisfy to participate in the scheme. First, services         x = q , k = 2, and α = 5. Assume also that after running the
+must timestamp their accessed data. This requirement can             dataset based protocol (in the second step) the computed range
+be simply implemented by timestamping new data inser-                that satisfies the condition Se(R) ≥ α ∗ k is R =[f , v ].
+tions. That is, when joining the data integration system,                In the third step, the mediator asks DSi to compute the
+if the dataset accessed by a service is not time-stamped,            candidate ranges that cover R. To this end, DSi finds the
+the service can timestamp it with the current time, then             buckets that cover R and computes their candidate ranges.
+timestamp new data insertions when they occur. Second,               As can be noticed from the dataset in Fig. 6 (part-a), R ⊂ Bi .
+                                                          o
+the dataset accessed by a data service DSi , denoted as SDS i
+                                                              ,          Figure 6 (part-b and part-c) shows how the ranges are
+should keep track of the values of identifier attributes. That       computed. First, the service sorts the tuples inside Bi based
+is, when a tuple inside the dataset must be deleted, the             on their timestamps (part-b). Then, it starts to consider the
+dataset should keep the value of the identifier attribute and        tuples in Bi one by one and divide Bi into ranges with at
+its timestamp. These two requirements are realistic and can          least k values. The tuples b, l, q and y are considered first
+be easily implemented, as have been discussed in previous            (they have the same time-stamp t0 ), which results into two
+works in data integration such as [33].                              initial ranges, i.e., R1 [loi , l] and R2 [l+, hii ], where  ≈ 0.
+                                                                                                                                                                                                                                   9
+
+   ssn       ...   timestamp                           ssn    ...   timestamp
+    ...      ...       ...                              ...   ...       ...                                                                              Bi[loi, hii]
+
+
+
+
+                               Bi-1
+    ...      ...       ...                              ...   ...       ...
+
+
+
+
+                                                                                Bi-1
+    ...      ...       ...                              ...   ...       ...
+    a        ...        t3                              b     ...
+    b        ...        t0                               l    ...
+    c                                                   q               t0                                                                    R1[loi, l]             R2[l+ε, hii]                                       After t0
+             ...        t3                                    ...
+    d        ...        t1                              y     ...
+    e        ...        t1                              d     ...
+                                                                       t1
+     f       ...        t2                              e     ...
+    g        ...        t3                               f    ...                                                                  R11[loi, d] R12[d+ε, l]                  R2                                          After t1
+                               Bucket Bi :[loi, hii]
+
+
+
+
+                                                                                Bucket Bi :[loi, hii]
+     i       ...       t4                               s     ...      t2
+     l       ...       t0                               u     ...
+    m        ...        t3                              a     ...
+    n        ...        t3                              c     ...                                                                  R11,           R12,
+    o                                                   g
+                                                                                                                                                                   R21[l+ε, s],     R22[s+ε, hii]                       After t2
+             ...       t4                                     ...
+    p        ...       t4                               m     ...      t3
+    q        ...       t0                               n     ...
+    s        ...       t2                                t    ...
+     t       ...       t3                               v     ...                                       R111[loi, b], R112[b+ε, d] R121[d+ε, f], R122[f+ε, l] R211[l+ε, n], R212[n+ε, s] R221[s+ε, u], R222[u+ε, hii] After t3
+    u        ...       t2                                i    ...
+    v        ...       t3                               o     ...      t4
+    y        ...       t0                               p     ...
+    ...      ...       ...                              ...   ...      ...                              R111,        R112         R121     R122          R211       R2121[n+ε, p], R2122[p+ε, s] R221   R222            After t4
+                               Bi+1
+
+
+
+
+                                                                                Bi+1
+    ...      ...       ...                              ...   ...      ...
+          Part-a                                              Part-b                                                                                      Part-c
+
+
+Fig. 6. (a) a dataset partitioned into buckets; (b) data elements ordered by their time-stamps; (c) the computation of candidate ranges inside buckets.
+
+
+Then, the tuples d and e are considered (as they have the                                                                         [c, d] and [d, e] (because of data changes) with equivalent
+                                                                                                                                                      1
+same time-stamp t1 ). The selectivity of R1 becomes 4 (i.e.,                                                                      probabilities p = αk   = 12 . When the same query is replayed,
+2k ), and therefore it is split into two sub ranges R11 [loi , d]                                                                 the probability of one of these two ranges happening if the
+                                                                                                                                                                                  1      1
+and R12 [d+, l]. Similarly, when all the remaining tuples are                                                                    other range has already happened is p2 = (αk)     2 = 4.
+
+considered, we have as a result 9 ranges (shown in Fig 6                                                                              When α = 2, then the range R that is computed in the
+(part-c).                                                                                                                         second step could take four different values [a, d], [b, e],
+                                                                                                                                                                                           1
+     The range R =[f , v ] computed in the second step inter-                                                                     [c, f ] and [d, g ] with equivalent probabilities p = αk     = 41 .
+sects with seven ranges, i.e., R121 , R122 , R211 , R2121 , R2122 ,                                                               When the same query is replayed, the probability of [d, g ]
+R221 and R222 . Since the range R121 intersects partially                                                                         happening when [a, d] has already happened (these two
+                                                                                                                                                                     1      1
+with R, it is merged with R122 . The same applies to R222 ,                                                                       ranges intersect in d ) is p2 = (αk) 2 = 16 . Similarly, when α
+therefore it is merged with R221 . The obtained five candidate                                                                    = 5, the probability of such privacy breach becomes (αk)      1
+                                                                                                                                                                                                   2
+ranges are then sent back to the mediator, which will be                                                                              1                                                    2.5
+                                                                                                                                  = 100 , and when α = 10 this probability becomes 1000 . In
+able to select the final range with which the service will be
+                                                                                                                                  conclusion, practical values of α (e.g., α ≥ 5) cut down the
+invoked, i.e., R2122 [p+, s] (q ∈ R2122 ).
+                                                                                                                                  probability of privacy breaches to an acceptedpthreshold.
+     Our proposed protocol is implemented by two algo-                                                                                                                                                              1
+                                                                                                                                                                                                                    p
+rithms, one is implemented by the mediator for computing                                                                          The value of α can be computed as follows α =                                 k       , where
+the initial range R≥ α∗k and carrying out the service invo-                                                                       p is the threshold of accepted probability.
+cation (Algorithm 1) and one is implemented by the services
+for computing the candidate ranges (Algorithm 2), both are
+self-described.                                                                                                                   4       E VALUATION
+     Note that the ranges computed inside each bucket are                                                                         In this section, we present an evaluation study of our
+deterministic, i.e., the protocol results always in the same                                                                      proposed approach, report on its performance and privacy
+ranges whenever the composition plan is executed, as they                                                                         preserving strength, and discuss some of the key applica-
+are computed using the data insertion order in the dataset                                                                        tions where it can be used.
+(which is deterministic). The addition of new data elements
+to the dataset does not violate the k -Protection requirement,                                                                    4.1     Evaluation Setup
+as it only results in splitting a range into a set of ranges that
+intersect with it by at least k elements. For example, when                                                                       To evaluate our approach, we used a real dataset that
+x = q , if the plan was executed at an instant t where t0 ≤                                                                       was provided to us by the European project PAIRSE [17].
+t ≤ t1 then the service will be invoked with range R2 , and                                                                       The dataset was created by merging data from seven real
+when it is executed at another instant t0 where t2 ≤ t0 ≤                                                                         databases of three French hospitals (specialized in psychi-
+t3 , then the computed range will be R21 ⊂ R2 . Since R2                                                                          atry and cardiology). The dataset contained one big table
+and R21 intersect in R21 which has at least k values, i.e. the                                                                    with roughly 1,150,000 records (for approximately 850,000
+k -Protection requirement still holds.                                                                                            patients). The table has the schema R(ssn, disease, dob, sex,
+                                                                                                                                  city , physician observations). The ssn values in the pro-
+3.3.4 The effect of α on privacy guarantee                                                                                        vided table were replaced by synthetic numeric values by
+We intuitively explain the effect of α through an example.                                                                        the original healthcare facilities. The same patient may have
+Consider the following dataset {a, b, c, d, e, f , g} and                                                                         different rows in the table corresponding to the different
+assume that x = d and k is 2.                                                                                                     diseases for which he or she has been treated.
+   When α = 1, then the range R that is computed in the                                                                               We     constructed     three      tables   out    of   R:
+second step (of our protocol) could take two different values                                                                     R1 (ssn, disease, city), R2 (ssn, disease) and R3 (ssn,
+                                                                                                                                          10
+
+
+ Algorithm 1: k-Protection aware Service Invocation                     Algorithm 2: Computing Candidate Ranges
+ Inputs: - The data service to be invoked Si($x, ?y),                   Inputs: - I: An initial range computed by the mediator,
+          - The set of input tuples IN                                           - k: The protection factor required by the mediator,
+ Outputs: - The set of output tuples OUT                                Outputs: - M: a set of candidate ranges,
+ Variables & Functions:                                                 Variables & Functions:
+         - The protection degree k,                                              - A: an empty bucket,
+         - A range of values R [a, b]                                           - Se(R) : returns the selectivity of R
+         - Se(Si, R) : returns the selectivity Se of Si relative to R
+         - Split(Si, R): returns a value mid such that mid is in the    Begin
+                         middle of the ordered values set V for          1.     for each bucket Bi[lo, hi] such that Bi ∩ R ≠ Φ
+                         which Si has outputs                            2.         - Order Bi based on time-stamps
+         - CandidateRa(R): returns a set of candidate ranges             3.         - Initialize M: M ← [lo, hi]
+                               inside R
+                                                                         4.                      A.lo = Bi.lo; A.hi = Bi.hi
+ Begin                                                                   5.         - For each t ϵ Bi (after ordering it)
+   1.    k = max (Sj.kj), where Sj is parent of Si                       6.             - Insert t in A
+   2.    for each tuple t1 in IN                                         7.             - For each R ϵ M
+   3.        R ← ]˗∞, +∞[                                                8.                 - If Se(R) ≥ 2k (after the insertion)
+   4.        Se ← Se(Si, R)                                              9.                    - Split R into R1 and R2
+   5.        v ← Split(Si, R)                                            10.                   - Add R1 and R2 to M
+   6.        while (Se ≥ 2αk)                                            11.                   - Remove R from M
+   7.                if t1.x ≥ mid                                       12.       - For each R ϵ M
+   8.                       a ← mid                                      13.            - Discard R if R ∩ I = Φ
+   9.                else                                                14.       - Merge the first and the last ranges R0 and Rn with
+   10.                      b ← mid                                      15.                  their neighbours (i.e. R0 with R1 and Rn
+   11.               Se ← Se(Si, R)                                      16.                                          with Rn-1)
+   12.               mid ← Split(Si, R)                                  17.       - Return M
+   13.   Candidate Ranges M = CandidateRa(R)
+   14.   Select R (R ϵ M) such that t1.x ϵ R
+   15.   invoke (Si ($R, ?y))
+   16.       for each obtained tuple t2
+   17.         if t2.x ≠ t1.x                                           service composition engine and the composition execution engine.
+   18.                discard t2                                        The first module rewrites end-users queries into composi-
+   19.         else                                                     tions of services. The second module executes the compo-
+   20.              add t2 to OUT                                       sitions. We modified, as the figure shows, the composition
+                                                                        execution engine to accommodate Algorithm 1. All services
+                                                                        are deployed on GlasFish 3.0 servers and datasets are stored
+                                                                        in MySQL servers. Algorithm 2 is implemented in Java on
+dob, sex). R1 contained only heart patients (with a total               the server side and is accessed as a simple operation of
+number of 510,000 patients). R2 contained the patients                  each developed data service (i.e., each service provides an
+that have been treated for a mental illness (with a total               operation for querying its underlying dataset and a set of
+number of 403,000 patients). For each of the tables R1 , R2             operations for participating in the proposed protocol, e.g.,
+and R3 , we constructed eight datasets of various sizes by              operations for computing the candidate ranges, computing
+randomly selecting patients of the tables. The constructed              the selectivity of a range, etc.).
+datasets have the sizes: 50K, 100K, 150K, 200K, 250K,                       We conducted our experiments on machines with
+300K, 350K, 400K. For each dataset, we developed a data                 3.2GHz Intel Processor running Windows 7 with 8 GB RAM.
+service to access the dataset. These 24 services have the
+following three signatures: DS1 (?ssn, ?disease, $city),                4.2    Performance Evaluation
+DS2 ($ssn, ?disease), DS3 ($ssn, ?dob, ?sex), and were                  Assuming n is the number of services in a composition, l is
+deployed on independent servers (with independent                       the average number a service is invoked in a composition
+resources).                                                             and m is the average size of the datasets accessed by the
+    In our experiments we used the following composition:               services, the complexity of evaluating a query plan is of the
+DS1 ◦DS2 ◦DS3 ; DS1 is invoked with a given city name,                                                 m
+                                                                        order          O(n ∗ l∗ log2 ( αk ) ∗ |Bucket|).
+then for each obtained patient DS2 is invoked to verify if                  We conducted a set of experiments to evaluate the
+the patient has been treated for some mental illness, then              performance of our privacy-preserving query evaluation
+DS3 is invoked with only those who have been treated for                approach using real databases. Specifically, we evaluated the
+a mental illness to retrieve their age and sex.                         effects of (i) the protection factor β = α∗k and (ii) the size of
+    We implemented Algorithm 1 in Java and integrated                   accessed datasets on the composition execution time.
+it into the data integration system in [17]. Figure 7 shows                 We measured the composition execution time of our
+the modified system, which consists of two main modules:                eight compositions; all compositions are identical, except
+                                                                                                                                                                                                                                                                                                                                               11
+
+
+                                                          (1) Query
+                                                                                            Query                   Composition                                                                                                                                                                          Sa          App
+                                                                                                                                                                                                           Encrypted Value                                             Service                                                      DB
+                                                                                           Rewriting               plan generator
+                                         Client                                                                                                                                                             Generalization                                           Invocation
+                                                                                                                                                                                                                                                                                                         Sb          App            DB
+                                                                                                                                                                                                           Filtering False
+                                                                                                                                                                           Composition
+                                                        (2) Composition                                    Service                                                                                            positives                                                                                  Sc           App
+                                                                                                                                                                              Plan                                                                                                                                                  DB
+                                                                                            WSDL-S
+                                                                                            WSDL-S         Registry
+                                                                                             WSDL-S
+                                                                                             Files
+                                                                                              Files
+                                                                                                                                                                                                                  Service Invocation
+                                                                                               Files
+                                                                                           Service Composition Engine                                                                        Composition Execution Engine
+
+                                                        (3) Execution order                                                                                                                                                                                                                              Sn          App             DB
+
+                                                        (4) Privacy sanitized result                                                       Service-oriented Data Integration System                                                                                                             Data Services         Data Sources
+
+
+Fig. 7. The Evaluation Architecture
+                                        100                                                                                                                      100                                                                                                 100
+
+
+
+
+                                                                                                                         Composition Execution Time in Minutes
+Composition Execution Time in Minutes
+
+
+
+
+                                                                                                                                                                                                                             Composition Execution Time in Minutes
+                                        80                                                                                                                       80                                                                                                  80
+
+
+                                         60                                                                                                                       60                                                                                                  60
+
+
+                                         40                                                                                                                       40                                                                                                  40
+
+
+                                         20                                                                                                                       20                                                                                                  20
+
+
+                                          0                                                                                                                        0                                                                                                   0
+                                           50     100      150         200         250     300     350           400                                                   2    4              6               8        10                                                  50   100       150        200          250   300      350         400
+                                                             Dataset Size (in Thousands)                                                                                    Size of Buckets (in Thousands)                                                                              Dataset Size (in Thousands)
+
+                                                    Invocation with precise input values         α = 10, k = 5                                                                                                                                                                Invocation with precise values          α = 5, k = 5
+                                                                                                                                                                           α = 5, k = 5, Dataset Size = 400,000                                                               Optimization 1                          Optimization 2
+                                                   α = 5, k = 5                                  α = 20, k = 5                                                                                                                                                                Optimization 3                          Optimizations 1, 2 & 3
+
+
+
+
+Fig. 8. (a) The performance of the proposed approach as the size of datasets and the value of α∗k increase; (b) The effect of the bucket size on
+performance; (c) The performance before and after applying the optimizations.
+
+
+that all services in each composition are accessing datasets                                                                                                                                 tional overhead. This means that services can choose large
+of one of the aforementioned sizes. We set the bucket size                                                                                                                                   values for k (thus providing better privacy protection to
+to 10,000 records (i.e., |Bucket| = 10,000) for all services. We                                                                                                                             their outputs) and the mediator can choose large values for
+chose three high values for the protection factor β : β1 = 25                                                                                                                                α (thus a very small probability of a privacy breach) without
+(α = 5, k = 5), β2 = 50 (α = 10, k = 5) and β3 = 100 (α = 20,                                                                                                                                degrading the overall performance.
+k = 5). The probabilities of a privacy breach for these values                                                                                                                                   Figure 8 (b) shows the effect of changing the bucket size
+are: prob1 = (β11 )2 = 0.0016, prob2 = (β12 )2 = 0.0004, prob3 =                                                                                                                             on the overall query evaluation time. Obviously, reducing
+  1                                                                                                                                                                                          the bucket size will reduce also the time required to compute
+(β3 )2 = 0.0001.
+                                                                                                                                                                                             the candidate ranges, and thus improve the overall perfor-
+    The composition execution time was computed as fol-
+                                                                                                                                                                                             mance. Please note that services are not required to use a
+lows. R1 contained patients from 47 cities (with an average
+                                                                                                                                                                                             large bucket size. It can be defined based on the accepted
+of 10,850 patients per city). Therefore, each composition was
+                                                                                                                                                                                             probability of a privacy breach. For example, if the bucket
+executed 100 times with each one of these 47 cities as input.
+                                                                                                                                                                                             size was 2000, the probability of a privacy breach would be
+Then, we computed the average execution time for each                                                                                                                                                         1
+                                                                                                                                                                                             of the order (2000)2 = 0.00000025, which is a practical value.
+composition (i.e., for each one of the considered dataset
+                                                                                                                                                                                             Additionally, the cost incurred in computing the candidate
+sizes). Figure 8 (a) shows the obtained result together with
+                                                                                                                                                                                             ranges inside a bucket can be offset altogether by computing
+the time required to execute the compositions without en-
+                                                                                                                                                                                             these ranges offline, as we show in the next subsection.
+forcing the k -protection requirement.
+   The obtained result shows that, for all the considered                                                                                                                                    4.3 Discussion
+dataset sizes, the overhead involved in enforcing the k -                                                                                                                                    As mentioned earlier, the value of k is selected by each
+protection requirement does not exceed two orders of mag-                                                                                                                                    individual service to limit the inference capability of other
+nitude of the time required to execute the composition                                                                                                                                       services in the composition/query about the data held by
+without a protection. We view this as reasonable compared                                                                                                                                    the service. The parameter α is an integer value (α ≥ 1)
+to the cost incurred by private information retrieval and                                                                                                                                    selected by the mediator to reduce the probability of a
+secure multi-party computation protocols which exceeds                                                                                                                                       privacy breach (due to replay attacks) to a specific threshold.
+by hundred times the cost of the original query without a                                                                                                                                    The higher the factor α ∗ k , the better the privacy protection.
+protection. The reader is referred to [15] for discussion about                                                                                                                              However, as the results show, the composition execution
+the practicality of these approaches in real life applications.                                                                                                                              time increases also by increasing that factor.
+   The result shows also that increasing the values of the                                                                                                                                       The values of k and α can be tuned to strike a balance
+protection factor β = α∗k only introduces a minimal addi-                                                                                                                                    between privacy protection and performance for the con-
+                                                                                                                                            12
+
+sidered application domain. For example, the experiments                      accept to release her identifier) if x1 happens to be one of the
+show that if α = 10 and k =5 (α ∗ k = 50), the probability                    k possible values that match with the computed generalized
+                                                          1
+of inferring that a service holds a specific tuple is (α∗k) 2 =               value x02 (as the service would be able to eliminate one
+  1                                                                           value of the k possible values matching with x02 ). However,
+2500 = 0.0004 (i.e., the same query needs to be replayed at
+least 2500 times for that privacy breach to happen), and the                  this will not happen in the first place, as the output tuples
+composition execution time remains less than two times the                    corresponding to x1 will be retrieved when the service is
+time needed without any protection. In practice, the values                   invoked with x02 , and thus there is no need to invoke it
+of k and α are selected such that the factor (α ∗ k)2 is always               again. That is, lifting the k-protection requirement for those
+higher than the number of times the same query can be                         patients who agreed to release their identifiers has no impact
+executed by the same end-user (the system can limit the                       on the privacy protection provided for those who did not
+number a same query can be executed by the same end-user                      accept, as long as the services are invoked with input values
+within a specific time window).                                               of patients who did not agree to release their data before the
+                                                                              ones who did.
+4.4   Performance Optimization                                                Optimization 3: Off-line computation of k-protection
+The performance of our approach can be improved further                       ranges. Services incur an important computation cost when
+by considering the following optimizations:                                   they divide their buckets (that are relevant to an invocation)
+                                                                              into ranges respecting the k-protection requirement (i.e.,
+Optimization 1: Reuse of pre-computed selectivities and                       Step 3 of the proposed hybrid protocol). However, this step
+ranges. At the composition execution time, the same service                   can be carried out offline in an incremental fashion, as they
+is likely to be invoked multiple times for different input                    insert new tuples.
+values. The ranges and the selectivities that were computed                       We conducted a set of experiments to evaluate the per-
+in previous invocations (within the same composition ex-                      formance improvement that could result from the optimiza-
+ecution occurrence) can be reused, even partially, instead                    tions presented above. Figure 8 (c), shows the obtained
+of re-computing them each time the same service is in-                        results when (i) none, (ii) only one and (iii) all of the
+voked. Table 1 shows, for example, the numbers of patients                    optimizations is/are applied. The result shows that apply-
+returned by DS1 when invoked with the cities “Lyon 2”,                        ing those optimizations substantially improves the perfor-
+“Lyon 5” and “Lyon 8”, as well as the average number of                       mance. In fact, the query execution becomes less than two
+the computed selectivities when DS2 is invoked. Without                       orders of magnitude of the query execution time when no
+this optimization, the number of computed selectivities                       protection is applied (regardless of the considered dataset
+would be log2 (dataset size) = 18.6. The table shows also the                 size).
+numbers of reused candidate ranges.
+                                                                              4.5   Privacy Analysis
+                               TABLE 1
+                         Experimental Results                                 Our protocol is immune against replay attacks. That is, even
+                                                                              if the same composition was executed several times with
+  City    # Patients (by DS1 )   # Computed selectivities   # Reused ranges   the same inputs, data service providers cannot increase their
+ Lyon 2          13,738                   7.3                     257
+ Lyon 5          11,923                   8.2                     306
+                                                                              confidence sufficiently to infer with certainty the identity of
+ Lyon 8           9,736                   8.7                     119         a data subject with which they are queried. For example, as
+                                                                              explained when we analyzed the effect of α on the privacy
+Optimization 2: Use of user preferences. In real-life scenar-                 guarantee, if α was set to 20, and k was set to 5, then the
+                                                                                                                                        1
+ios, many data subjects (e.g., patients, citizens, etc.) may                  probability of a privacy breach happening is prob = (αk)    2 =
+                                                                                 1
+accept to release some of their private data to some recipi-                  10000 ; and when α = 200 and k = 5, that probability becomes
+ents for some legitimate data uses (e.g., conducting medical                  1000000. That is, the same composition needs to be executed
+research, law enforcement, etc.) without any protection. For                  million times in order to have two candidate ranges (R=α∗k )
+example, the dataset R was provided to us along with                          whose intersection is the identifier of a targeted data subject.
+a patient preferences table specifying some of the entities                        Some would argue that the order preserving encryption
+each patient accepts to disclose his data; nearly 19% of the                  scheme (OPES) of Agrawal et al. [32] is insecure and can be
+patients accepted to share their medical data (including the                  broken by the mediator. However, for us, that scheme is only
+ssn) with medical institutions for improving the healthcare                   a means, not an end. We can use any of the recent OPESs
+system. In our second optimization, we exploit the prefer-                    reviewed in [34] or even a partial implementation of the
+ences of data subjects to lift the privacy protection when                    Homomorphic encryption [35]. Our protocol requires only
+a data subject consents to data disclosure. For instance, in                  to allow the mediator to carry out equality and comparison
+our running query the k -protection requirement could be                      operations (i.e., =, <, >) which could be realized with any
+lifted when DS2 and DS3 are invoked with input values                         of the aforementioned schemes.
+originating from those patients who accepted to disclose                           One limitation of the approach is that when the domain
+their data to medical institutions (such as those providing                   X of the identifiers is small, if the mediator knows all of
+DS2 and DS3 ).                                                                the values in X , then it can, after a certain number of
+     Please note that, one would think that invoking a service                queries (i.e., compositions), build a mapping table between
+with a precise input value x1 (of an individual who accepted                  the encrypted values and the real ones. However, this can
+to release her identifier) could invalidate the k -protection for             be overcome by encrypting the identifiers with a different
+another input value x2 (of another individual who did not                     key every time a query is executed. Moreover, the proposed
+                                                                                                                                          13
+
+generalization protocol itself can be applied on both real        with datasets that satisfy the k-anonymity property. While
+and encrypted values. In some application domains, the            that work was geared towards data consumers, our focus
+mediator would be trusted, and service providers may not          is on data providers and the integration system itself (i.e.
+need to encrypt the identifiers when they are released to         the mashup server). We assumed in our work that data
+the mediator, whereas the mediator would still need to            providers can freely apply their privacy policies (e.g. data
+generalize the identifiers (with our protocol) when it queries    anonymization techniques) on their sides. However, our
+individual services.                                              solution can be extended with that of [11] to make the
+                                                                  anonymization on the integration system side. Jurczyk and
+                                                                  Xiong [37] proposed an algorithm to securely integrate
+5   R ELATED W ORK                                                horizontally partitioned data from multiple data sources.
+Our solution for privacy preservation relates closely to          However, that work does not address the vertically parti-
+research works in the areas of mediator based data integra-       tioned data which is closer to our work.
+tion, privacy-preserving data publishing and secure multi-party
+computation. In this section, we review some of the most
+                                                                  6     C ONCLUSION AND FUTURE WORK
+prominent works in those areas and compare them to our
+approach.                                                         In this paper, we proposed a privacy-preserving approach
+     Several research works addressed the privacy issue in        to evaluate data integration queries over autonomous data
+the context of data service composition. For example, Yau et      services. Our approach allows services involved in a query
+al. in [16] proposed a repository to answer end-user queries      to apply their privacy policies locally. The data integration
+by integrating data across autonomous data sharing ser-           system (i.e. the mediator) is given encrypted information
+vices. The privacy in that work is addressed by (i) allowing      only to allow it to link data subjects across the different
+the repository to collect only the data necessary to compute      services which, in turn, cannot learn information about the
+the result of a query (instead of retrieving the whole datasets   data held by each other. We evaluated our approach in
+behind the services), and by (ii) hashing the identifiers (used   the healthcare application domain, and the results showed
+to link data subjects) between the services of each couple of     that our solution can be applied to cost effectively integrate
+interconnected services in the composition graph. Unfortu-        voluminous datasets. We intend to extend our approach to
+nately, this solution does not resolve the privacy breaches       improve the performance further. An interesting direction to
+addressed in our work. In fact, the repository still has access   explore is the possibility of invoking services with chunks
+to intermediate and integrated data, as the hashing is carried    of input data tuples [28]. The data value generalization al-
+out by the repository itself. In addition, services can learn     gorithm should then be extended then to generalize chunks
+information about the data held by each other, as they            instead of single data items.
+are invoked with precise data values. Benslimane et al. in
+[17] proposed a privacy-preserving access control model to        R EFERENCES
+preserve the data privacy against data consumers. Queries
+                                                                  [1]  D. Abadi, R. Agrawal, A. Ailamaki, M. J. Carey, S. Chaudhuri,
+are rewritten, by a mediator, to include applicable privacy            J. Dean, A. Doan, J. Gehrke, L. M. Haas, A. Y. Halevy, H. V.
+constraints before they are resolved by service composition.           Jagadish, D. Kossmann, S. Madden, S. Mehrotra, T. Milo, V. Markl,
+Ammar and Bertino in [36] proposed to take into account                C. Olston, B. C. Ooi, C. Ré, D. Suciu, M. Stonebraker, T. Walter, and
+                                                                       J. Widom, “The beckman report on database research,” Commun.
+the context of data consumers when the privacy policies                ACM, vol. 59, no. 2, pp. 92–99, 2016.
+are applied on their queries before they are resolved by          [2] R. Ranjan, O. F. Rana, S. Nepal, M. Yousif, P. James, Z. Wen, S. L.
+service composition. Unfortunately, these solutions, while             Barr, P. Watson, P. P. Jayaraman, D. Georgakopoulos, M. Villari,
+providing good privacy protection against data consumers,              M. Fazio, S. K. Garg, R. Buyya, L. Wang, A. Y. Zomaya, and
+                                                                       S. Dustdar, “The next grand challenges: Integrating the internet
+do not provide any privacy protection against un-trusted               of things and data science,” IEEE Cloud Computing, vol. 5, no. 3,
+mediators and data services.                                           pp. 12–26, 2018.
+     Our data generalization protocol for service invocation      [3] S. Dustdar, R. Pichler, and H. L. Truong, “Quality-aware service-
+                                                                       oriented data integration: requirements, state of the art and open
+with imprecise values (e.g. ranges) is reminiscent of the
+                                                                       challenges,” SIGMOD Record, vol. 41, no. 1, pp. 11–19, 2012.
+works on the Private Information Retrieval (PIR) problem          [4] M. Barhamgi, A. K. Bandara, Y. Yu, K. Belhajjame, and B. Nu-
+[14], [29]. The objective of these works is to execute private         seibeh, “Protecting privacy in the cloud: Current practices, future
+queries on a remote server without letting the server to learn         directions,” IEEE Computer, vol. 49, no. 2, pp. 68–72, 2016.
+                                                                  [5] A. Dogac, “Interoperability in ehealth systems,” PVLDB, vol. 5,
+anything about executed queries or their results. While cur-           no. 12, pp. 2026–2027, 2012.
+rent PIR protocols could provide strong privacy guarantees        [6] M. J. Carey, N. Onose, and M. Petropoulos, “Data services,”
+against untrusted services, they involve prohibitive compu-            Commun. ACM, vol. 55, no. 6, pp. 86–97, 2012.
+                                                                  [7] L. Sweeney, “k-anonymity: A model for protecting privacy,” In-
+tation costs (mostly due to their cryptographic nature) that
+                                                                       ternational Journal of Uncertainty, Fuzziness and Knowledge-Based
+make them impractical [29] for real applications. In contrast,         Systems, vol. 10, no. 05, pp. 557–570, 2002.
+our model for service invocation takes a practical stance on      [8] A. Machanavajjhala, D. Kifer, and J. Gehrke, “L-diversity: Privacy
+the performance/information leakage trade-off; i.e. services           beyond k-anonymity,” TKDD, vol. 1, no. 1, 2007.
+                                                                  [9] N. Li, T. Li, and S. Venkatasubramanian, “t-closeness: Privacy
+are allowed to learn a controlled amount of knowledge in               beyond k-anonymity and l-diversity,” in ICDE, 2007, pp. 106–115.
+return for an important performance improvement.                  [10] N. Mohammed, X. Jiang, R. Chen, B. C. M. Fung, and L. Ohno-
+     Several research works have addressed the problem of              Machado, “Privacy-preserving heterogeneous health data shar-
+distributed data integration [11], [37]. Fung and Mohammed             ing,” JAMIA, vol. 20, no. 3, pp. 462–469, 2013.
+                                                                  [11] B. C. M. Fung, T. Trojer, and L. Xiong, “Service-oriented architec-
+[11] proposed a data mashup system that can anonymize                  ture for high-dimensional private data mashup,” IEEE Transactions
+data from several data sources to provide data consumers               on Services Computing, vol. 5, no. 3, pp. 73–86, 2012.
+                                                                                                                                              14
+
+[12] M. Prabhakan and A. Sahai, Eds., Secure Multi-Party Computation,        [37] P. Jurczyk and L. Xiong, “Distributed anonymization: Achieving
+     ser. Cryptology and Security Series, vol. 10. IOS Press, 2013.               privacy for data subjects,” in DBsec, 2009, pp. 11–22.
+[13] K. Nayak, X. S. Wang, S. Ioannidis, U. Weinsberg, N. Taft, and
+     E. Shi, “Graphsc: Parallel secure computation made easy,” in 2015
+     IEEE Symposium on Security and Privacy, SP 2015, 2015, pp. 377–394.
+[14] S. Wang, D. Agrawal, and A. El Abbadi, “Towards practical private
+     processing of database queries over public data,” Distributed and
+     Parallel Databases, vol. 32, no. 1, pp. 65–89, 2014.
+[15] L. Kamm, “Privacy-preserving statistical analysis using secure
+     multi-party computation,” Ph.D. dissertation, 2015.
+[16] S. S. Yau and Y. Yin, “A privacy preserving repository for data in-
+     tegration across data sharing services,” IEEE T. Services Computing,
+     vol. 1, no. 3, pp. 130–140, 2008.
+[17] D. Benslimane, M. Barhamgi, F. Cuppens, F. Morvan, B. De-
+     fude, E. Nageba, F. Paulus, S. Morucci, M. Mrissa, N. Cuppens-
+     Boulahia, C. Ghedira, R. Mokadem, S. Oulmakhzoune, and J. Fayn,
+     “PAIRSE: a privacy-preserving service-oriented data integration
+     system,” SIGMOD Record, vol. 42, no. 3, pp. 42–47, 2013.
+[18] D. Georgakopoulos, P. P. Jayaraman, M. Fazia, M. Villari, and
+     R. Ranjan, “Internet of things and edge cloud computing roadmap
+     for manufacturing,” IEEE Cloud Computing, vol. 3, no. 4, pp. 66–73,
+     2016.
+[19] M. Dong, H. Li, K. Ota, L. T. Yang, and H. Zhu, “Multicloud-
+     based evacuation services for emergency management,” IEEE
+     Cloud Computing, vol. 1, no. 4, pp. 50–59, 2014.
+[20] M. Liu, X. Zhang, C. Yang, S. Pang, D. Puthal, and K. Ren,
+     “Privacy-preserving detection of statically mutually exclusive
+     roles constraints violation in interoperable role-based access con-
+     trol,” in 2017 IEEE Trustcom/BigDataSE/ICESS, Sydney, Australia,
+     August 1-4, 2017, 2017, pp. 502–509.
+[21] C. D’Orazio, K. R. Choo, and L. T. Yang, “Data exfiltration from
+     internet of things devices: ios devices as case studies,” IEEE
+     Internet of Things Journal, vol. 4, no. 2, pp. 524–535, 2017.
+[22] M. Barhamgi, C. Perera, C. Ghedira, and D. Benslimane, “User-
+     centric privacy engineering for the internet of things,” IEEE Cloud
+     Computing, vol. 5, no. 5, pp. 47–57, 2018.
+[23] C. Perera, M. Barhamgi, S. De, T. Baarslag, M. Vecchio, and K. R.
+     Choo, “Designing the sensing as a service ecosystem for the
+     internet of things,” IEEE Internet of Things Magazine, vol. 1, no. 2,
+     pp. 18–23, December 2018.
+[24] A. Khoshkbarforoushha, A. Khosravian, and R. Ranjan, “Elasticity
+     management of streaming data analytics flows on clouds,” Journal
+     of Computer and System Sciences, vol. 89, pp. 24–40, 2017.
+[25] C. Zhu, H. Wang, X. Liu, L. Shu, L. T. Yang, and V. C. M. Leung,
+     “A novel sensory data processing framework to integrate sensor
+     networks with mobile cloud,” IEEE Systems Journal, vol. 10, no. 3,
+     pp. 1125–1136, 2016.
+[26] M. Barhamgi, D. Benslimane, and B. Medjahed, “A query rewrit-
+     ing approach for web service composition,” IEEE Transactions on
+     Services Computing, vol. 3, no. 3, pp. 206–222, 2010.
+[27] M. Barhamgi, D. Benslimane, Y. Amghar, N. Cuppens-Boulahia,
+     and F. Cuppens, “Privcomp: a privacy-aware data service com-
+     position system,” in Joint 2013 EDBT/ICDT Conferences, EDBT ’13
+     Proceedings, Genoa, Italy, March 18-22, 2013, 2013, pp. 757–760.
+[28] U. Srivastava, K. Munagala, J. Widom, and R. Motwani, “Query
+     optimization over web services,” in VLDB, 2006, pp. 355–366.
+[29] R. Sion and B. Carbunar, “On the practicality of private informa-
+     tion retrieval,” in NDSS, 2007.
+[30] M. Barhamgi, D. Benslimane, S. Oulmakhzoune, N. Cuppens-
+     Boulahia, and F. C. and, “Secure and privacy-preserving execution
+     model for data services,” in CAiSE, 2013, pp. 35–50.
+[31] F. Emekçi, D. Agrawal, and A. E. Abbadi, “Privacy preserving
+     query processing using third parties,” in ICDE, 2006, p. 27.
+[32] R. Agrawal, J. Kiernan, R. Srikant, and Y. Xu, “Order-preserving
+     encryption for numeric data,” in SIGMOD, 2004, pp. 63–74.
+[33] H. Elmeleegy, M. Ouzzani, A. K. Elmagarmid, and A. M.
+     Abusalah, “Preserving privacy and fairness in peer-to-peer data
+     integration,” in ACM SIGMOD 2010, 2010, pp. 759–770.
+[34] A. Boldyreva, N. Chenette, and A. O’Neill, “Order-preserving
+     encryption revisited: Improved security analysis and alternative
+     solutions,” IACR Cryptology ePrint Archive, vol. 2012, p. 625, 2012.
+[35] C. Gentry, A. Sahai, and B. Waters, “Homomorphic encryption
+     from learning with errors: Conceptually-simpler, asymptotically-
+     faster, attribute-based,” in CRYPTO, 2013, pp. 75–92.
+[36] N. Ammar and E. Bertino, “Dynamic privacy policy management
+     in services-based interactions,” in DEXA 2014, 2014, pp. 248–262.
+

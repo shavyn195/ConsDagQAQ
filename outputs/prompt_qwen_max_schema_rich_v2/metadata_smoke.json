@@ -1,0 +1,22 @@
+{
+  "experiment": "E1_P_qwen_max_schema_rich",
+  "model": "qwen-max",
+  "prompt_style": "schema_rich",
+  "prompt_contract": "For each constraint, fill params using exactly these type-specific keys: budget={max_total_cost_cny:number}; deadline={max_duration_hours:number}; privacy={forbidden_recipients:string[],protected_data_classes:string[]}; tool_auth={approval_role:string,required_role:string}; order={before_role:string,after_role:string}, where before_role is the earlier role and after_role is the later role. Use values supported by the query, preserving numeric values and units. Use severity high for budget, deadline, and privacy; medium for tool_auth and order. scope must contain matching role:<name> values from Available role vocabulary: budget includes cost-incurring roles; deadline includes the terminal task role; privacy includes roles sending protected data to a forbidden recipient; tool_auth includes required_role; order includes both before_role and after_role. evidence_span must be a verbatim query span. state=explicit when directly stated, implicit when only conveyed by context, and none only when the query contains no constraint.",
+  "temperature": 0,
+  "max_tokens": 384,
+  "smoke": true,
+  "records": {
+    "dev": 3,
+    "test_tpl_ho": 3,
+    "test_tool_ho": 3
+  },
+  "data_sha256": {
+    "dev": "143619f3c26f64ce1cd6de641effdf182b4385588845d724006d6bdf094423df",
+    "test_tpl_ho": "44083a84831e0eafea933aa3250d48fc9c1da5d49a706037b19694d1f73cf003",
+    "test_tool_ho": "363b3f0b584f168bc41486910f94d4a23e55aebc93625d1a0e5c064217362241"
+  },
+  "timestamp_utc": "2026-11-20T15:08:51.964212+00:00",
+  "scorer": "run_e1.score / e1_score_v3",
+  "credential_env": "DASHSCOPE_API_KEY"
+}

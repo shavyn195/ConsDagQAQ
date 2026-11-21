@@ -1,0 +1,279 @@
+{
+  "metadata": {
+    "experiment": "E1_P_qwen_max_original_prompt",
+    "model": "qwen-max",
+    "prompt_style": "e1_original",
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    "prompt": "run_e1.chat_messages / original E1 schema prompt",
+    "temperature": 0,
+    "max_tokens": 384,
+    "smoke": true,
+    "records": {
+      "dev": 3,
+      "test_tpl_ho": 3,
+      "test_tool_ho": 3
+    },
+    "timestamp_utc": "2026-11-20T14:02:19.132455+00:00",
+    "python": "3.12.7",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scorer": "run_e1.score / e1_score_v3",
+    "credential_env": "DASHSCOPE_API_KEY"
+  },
+  "scores": {
+    "dev": {
+      "metrics_version": "e1_score_v3",
+      "records": 3,
+      "state_accuracy": 0.6666666666666666,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 0.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 1,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 1,
+          "prediction_empty_records": 1
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 2
+        }
+      },
+      "per_difficulty_unattributed_fp": 0,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 1.0,
+      "elapsed_seconds": 10.7,
+      "request_errors": 0
+    },
+    "test_tpl_ho": {
+      "metrics_version": "e1_score_v3",
+      "records": 3,
+      "state_accuracy": 0.0,
+      "state_accuracy_by_variant": {
+        "explicit": 0.0,
+        "implicit": 0.0,
+        "none": 0.0
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 1
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 1,
+          "prediction_empty_records": 0
+        }
+      },
+      "per_type": {
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        },
+        "tool_auth": {
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 2
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 1
+        }
+      },
+      "per_difficulty_unattributed_fp": 0,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.6666666666666666,
+      "elapsed_seconds": 17.8,
+      "request_errors": 0
+    },
+    "test_tool_ho": {
+      "metrics_version": "e1_score_v3",
+      "records": 3,
+      "state_accuracy": 0.3333333333333333,
+      "state_accuracy_by_variant": {
+        "explicit": 0.0,
+        "implicit": 0.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 1
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 1,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 1,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 1,
+          "prediction_empty_records": 1
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 2
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 2
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 1
+        }
+      },
+      "per_difficulty_unattributed_fp": 0,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.6666666666666666,
+      "elapsed_seconds": 15.5,
+      "request_errors": 0
+    }
+  }
+}

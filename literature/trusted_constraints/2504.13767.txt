@@ -1,0 +1,339 @@
+                                                                    Access control for Data Spaces
+                                                                           Nikos Fotiou,∗ Vasilios A. Siris,∗† George C. Polyzos∗†‡
+                                                                                         ∗ ExcID P.C., 11362 Athens, Greece
+                                                                  † Department of Informatics, School of Information Sciences and Technology,
+
+                                                                       Athens University of Economics and Business, 10434 Athens, Greece
+                                                    ‡ School of Data Science, The Chinese University of Hong Kong, Shenzhen, 518172 Guangdong, China
+
+
+                                            Abstract—Data spaces represent an emerging paradigm that          example, a data space may include objects of type smart lamp,
+                                         facilitates secure and trusted data exchange through foundational    with identities such as lamp1 and lamp2, and attributes such
+arXiv:2504.13767v1 [cs.CR] 18 Apr 2025
+
+
+
+
+                                         elements of data interoperability, sovereignty, and trust. Within    as consumption, status, and color.
+                                         a data space, data items, potentially owned by different entities,
+                                         can be interconnected. Concurrently, data consumers can execute         A context broker implements the ETSI standard Next Gen-
+                                         advanced data lookup operations and subscribe to data-driven         eration Service Interfaces Linked Data (NGSI-LD) API [7],
+                                         events. Achieving fine-grained access control without compromis-     which allows HTTP-based operations to digital objects stored
+                                         ing functionality presents a significant challenge. In this paper,   in the broker, as well as subscriptions to events related to these
+                                         we design and implement an access control mechanism that             objects. This API simultaneously allows fine-grained data
+                                         ensures continuous evaluation of access control policies, is data
+                                         semantics aware, and supports subscriptions to data events. We       access, e.g., a consumer may request only specific attributes of
+                                         present a construction where access control policies are stored in   an object, as well as coarse-grained access, e.g., a consumer
+                                         a centralized location, which we extend to allow data owners to      may request attributes of all objects of a specific type.
+                                         maintain their own Policy Administration Points. This extension
+                                         builds upon W3C Verifiable Credentials.                              A. Access control
+                                            Index Terms—Interoperability, Verifiable Credentials, sub-          A context broker should be protected by an access control
+                                         scriptions, semantics, decentralization, sovereignty, NGSI-LD
+                                                                                                              mechanism that allows access to stored data only by authorized
+                                                                                                              data consumers. An access control solution should achieve:
+                                                               I. I NTRODUCTION
+                                                                                                                 • Attack surface reduction: An access control solution
+                                            Data spaces are emerging as a new form of digital platform             should strive to minimize potential security threats. The
+                                         aiming at eliminating silos and enabling data-driven inno-                amount of security-sensitive information managed by data
+                                         vations and shape the digital transformation [1]. A growing               consumers should be minimal. Similarly, access verifica-
+                                         number of reports by commercial entities and governmental                 tion should be simple and not prone to errors.
+                                         bodies highlight the business potential and the possible societal       • Usage control: Access rights of a consumer should be
+                                         impact that can be achieved by embracing data spaces (see for             re-evaluated, even after a consumer has been initially au-
+                                         example [2]). A data space is composed of building blocks                 thorized by a data intermediary. For example, a consumer
+                                         that enable semantic interoperability of data, uniform data               that has successfully subscribed to receive notifications
+                                         access methods, as well as increased data sovereignty and                 about an object should stop receiving new notifications if
+                                         trust. Nevertheless, data usage policies and access control still         its corresponding access rights are revoked.
+                                         remain a challenge for data spaces [3], [4]. Data owners do not         • Enhanced privacy: An access control solution should
+                                         want to lose control and sovereignty over their data; data users          prevent tracking of data consumers not only by third
+                                         want to safeguard against low-quality or malicious data [5].              parties, but also by participants of the data space (e.g.,
+                                            We use a data space for exchanging data generated by IoT               by data intermediaries and owners).
+                                         devices as a motivating use case. This data space consists of           • Availability: An access control solution should not de-
+                                         IoT device owners who wish to share data generated by their               pend on (Internet) connectivity, instead it should function
+                                         devices, acting as data suppliers, data consumers who seek to             correctly even if some of its components are unreachable.
+                                         access the provided data through a client application, and data
+                                         intermediaries that offer a data context broker that implements      B. Contributions
+                                         the corresponding data management and access APIs.                      In this paper, we present the design and evaluation of an
+                                            A context broker maintains digital objects, which in our          access control solution tailored to data spaces, making the
+                                         use case are digital twins of the corresponding IoT devices.         following key contributions: (i) we introduce access control
+                                         Each such object is uniquely identifiable and serialized using       policies that are aware of data semantics (e.g., a consumer
+                                         JSON for Linked Data (JSON-LD) [6]. An object has a type             can be authorized to access all objects of a certain type);
+                                         and attributes. Accordingly, a type can be associated with           (ii) we enable continuous monitoring and re-evaluation of
+                                         many objects and an object may have multiple attributes. For         consumer access rights, supporting long-term operations such
+as event subscriptions; (iii) we facilitate distributed deploy-     appropriate access rights it is forwarded to the (context) broker,
+ments, allowing each data owner to maintain their own Policy        otherwise it is rejected.
+Administration Point, thereby enhancing owner sovereignty.                d) Policy Decision Point (PDP): A component that de-
+   In the remainder of this paper, we detail our design in          cides whether or not a request originates from an authorized
+Section II, present its implementation and evaluation in Section    consumer.
+III, and our conclusions and future work in Section IV.                   e) Policy Information Point (PIP): A component that
+                                                                    provides supplementary information used by a PDP to make an
+                             II. D ESIGN                            access control decision. Specifically, this component provides
+A. Underlay Data Space                                              details about the attributes and type of an object.
+   In the considered data space, data owners create new objects        From a high-level perspective, authorization using our so-
+and assign policies specifying the operations a data consumer       lution is implemented as follows (see also Fig. 1). The IdP
+can perform on an object. Objects and types are uniquely            is configured with consumer identifiers, e.g., through a client
+identified using a URL denoted by U RLobject and U RLtype ,         registration process. Similarly, an owner configures the PAP
+respectively. Similarly, object attributes are identified by a      with the appropriate access control policies. A consumer
+U RLattr , which has the form U RLobject /attributename.            initially, through its client application, identifies itself to the
+Consumers are also identified by an identifier denoted by           IdP and receives an identity token (step 1), i.e., a token signed
+ConsumerId . Consumers can request access to all objects of         by the IdP that includes a proof of the consumer’s identifier.
+a certain type, or to specific objects. Additionally, consumers     Then it makes an NGSI-LD API call, including the received
+can provide filters specifying which attributes they wish to        token in an HTTP header (step 2). The request is intercepted by
+access. Consumers can perform read, write, and subscription         the PEP, which forwards it to the PDP that makes the access
+operations over stored objects using the ETSI NGSI-LD API           control decision (step 3). The PDP collects the consumer’s
+and the corresponding endpoint of the context broker.               access rights from the PAP and, if necessary, information
+         Client                                                     related to the requested object from the PIP (step 4). Using
+       application                                                  the retrieved information, the PDP makes an access control
+                                                  Intermediary      decision that it forwards to the PEP (step 5). Finally, if the
+                                                                    consumer is authorized, the PEP forwards the request to the
+                     1            Idp                               context broker (step 6) and relays its response back to the
+                                                                    consumer (step 7).
+                                                    Broker
+                     2                                              C. Policies and enforcement
+                                 PEP          6
+                                                                       Our system implements capabilities-based access control,
+                     7
+                                 3       5                          where an access control policy specifies the operations (i.e.,
+                                                                    Read, Write, Subscribe) that a consumer can perform on
+                                 PDP          4         PIP         specific object types, and/or on specific objects, and/or on
+                                                                    specific object attributes. For example, a consumer can be
+                                     4
+                                                                    allowed to Read all objects of type “smart lamp”, and
+                                 PAP                                Write the attribute “energy consumption” of the objects with
+                                                                    identifiers “smart lamp1” and “smart lamp2”. More for-
+          Owner
+                                                                    mally, we define an access control policy p as the tuple
+        Fig. 1. High level overview of the authorization process.
+                                                                    [Consumerid , operation, U RL], where operation can be
+B. Components and interactions                                      Read, Write, or Subscribe, and U RL can be a U RLtype or
+                                                                    U RLobject or U RLattr . We define an access control decision
+   Our access control solution is composed of the following
+                                                                    as the following function:
+components:
+      a) Identity Provider (IdP): A registry of consumer identi-     Decide(Consumerid , operation, U RL) → {true, f alse}
+fiers. This registry is maintained by a party trusted by owners,
+intermediaries, and consumers; this can be a Trusted Third          In order to enable access control decisions we define the
+Party or any of these three entities.                               U RLA ⊇ U RLB operation which outputs true if one of the
+      b) Policy Administration Point (PAP): A registry where        following conditions hold:
+owners can store access control policies that define the access        • U RLA = U RLB
+rights of each consumer.                                               • U RLA is a U RLtype and U RLB a U RLobject of an
+      c) Policy Enforcement Point (PEP): A transparent HTTP              object of type U RLA
+proxy that intercepts API calls from consumers to the context          • U RLA is a U RLtype and U RLB a U RLattr of an
+broker. If a request originates from a consumer with the                 attribute of an object of type U RLA
+  •  U RLA is a U RLobject and U RLB a U RLattr of an                a machine readable format (e.g., as a JSON object in our
+     attribute of object U RLA                                       system). Then, a VC holder (usually, the VC subject itself) can
+   The access control decision is implemented using Algo-            prove to a verifier that it owns one or more VCs with certain
+rithm 1. Its semantics denote that if a consumer is authorized       characteristics. This is achieved by binding VCs to a subject
+to perform an operation on a type, it can perform the same           identifier (e.g., a public key) that can be used for generating a
+operation on all objects of this type and their attributes.          Verifiable Presentation (VP) of the VC(s). A VP is an object
+Similarly, if a consumer is authorized to perform an operation       (a JSON object in our system) that includes one or more VCs
+on an object, it is authorized to perform the same operation         and it is signed in a way that can be verified using the subject
+on all its attributes.                                               identifier (specified in the included VC(s)). VP verification
+                                                                     does not require communication with the issuer.
+Algorithm 1 Access control decision algorithm                            Owner                                           Intermediary
+
+  Let P the set of all policies                                           PAP          Data Consumer             Idp   PEP              PDP
+  procedure D ECIDE(Consumerid , operation, U RL)
+     for all p ∈ P do                                                                            Auth Request
+         if p[Consumerid ] = Consumerid AND
+                                                                                         Consumer Id
+             p[operation] = operation AND
+             p[U RL] ⊇ U RL then
+             return true                                                          VC
+         end if
+     end for
+     return f alse                                                                                       Request
+
+  end procedure                                                                                          Nonce
+
+
+                                                                                                 Create VP
+   In many cases, for the PDP to make an access control
+decision the type of the requested object must be known:                                                POST VP
+this type inference functionality is provided by the P IP . For
+                                                                                                                             Decide
+example, assume that consumer C has received authorization
+for the Read operation on object type T (e.g., authorization                                                                                  Validate VP
+
+to Read all objects of type “smart lamp”). C makes a Read
+request for attribute A of object O1 (e.g., a request to Read                                                                Decision
+
+the “status” of “smart lamp 1”). For the PDP to make an
+access control decision it needs to infer the type of O1 . This is
+achieved using the PIP, which communicates with the context                      Fig. 2. Authorization using Verifiable Credentials.
+broker and obtains the type of O1 using the corresponding
+NGSI-LD API call. Then, the PDP uses this information to                In our data space solution, a VC can be used as a means for
+make a decision, i.e., if O1 is of type T the request is accepted.   communicating consumer capabilities (see also Fig. 2). In this
+   Finally, our solution provides Automatic un-subscription.         case, a VC is issued by a PAP to a consumer and is serialized
+Specifically, the PDP maintains a list of active subscriptions       as a JSON object that includes the consumer access rights
+and automatically un-subscribes (invoking an API call) con-          and a public key provided by the consumer; this JSON object
+sumers that are no longer authorized to receive notifications        is digitally signed by the PAP. VC issuance is implemented
+(e.g., the access rights have expired or were revoked).              using OpenID for Verifiable Credential Issuance [9]. Using
+                                                                     this protocol a consumer authenticates to the PAP (acting as
+D. Distributed PAPs                                                  the VC issuer) using the IdP and OpenID connect. Then, the
+   We now present an extension allowing PAPs to be managed           PAP issues the corresponding credential.
+by the corresponding owners and provides increased security             Data consumer authorization is implemented using OpenID
+and improved sovereignty for data owners. We leverage W3C            for Verifiable Presentation [10] and involves the following
+Verifiable Credentials (VCs) to enable intermediary’s access         steps: First, a consumer sends an unauthorized request and
+control components to learn the capabilities of a consumer.          receives a nonce. Then, the consumer creates and submits a
+   A VC is a W3C recommendation that allows an issuer                Verifiable Presentation (VP). The VP includes a valid VC, the
+to assert some claims about an entity, referred to as the            received nonce, and the HTTP URL of the intermediary, and is
+VC subject. A VC includes information about the issuer, the          signed using the private key of the consumer identifier. Then,
+subject, the asserted claims, as well as possible constraints        the PDP endpoint performs the following validations:
+(e.g., expiration date) [8]. This information is encoded in             • It verifies that the VC has been issued by a trusted PAP.
+   • It verifies the correctness and the validity of the VC by       by XACML. A policy defines the operations that a consumer
+     validating its digital signature, its issuance and expiration   can perform over a set of object types, and/or a set of object
+     time, and by querying for its revocation status (see the        identifiers, and/or a set of object attributes. The corresponding
+     following section.)                                             PDP and PIP have been implemented as custom applications.
+   • It validates the VP proof using the consumer’s public key       Finally, for the PEP we rely on Ory Oathkeeper.4
+     included in the VC, and verifies that it includes a valid       A. Security evaluation
+     nonce and intermediary URL.
+                                                                        We now evaluate the security properties of our solution
+E. Usage control                                                     focusing on the distributed version by revisiting the security
+                                                                     requirements defined in Section 1. Our solution makes the
+   Consumer capabilities are serialized using VCs that include
+                                                                     following security assumptions. The communication of all
+an expiration time. Capabilities can be cached by the PEP
+                                                                     entities in our system takes place over secure communication
+up until their expiration time for two reasons: (i) to avoid
+                                                                     channels; similarly, all cryptographic operations are secure.
+consumer re-authorization, and (ii) to enable access control
+                                                                     Furthermore, it is assumed that IdPs and PAPs are trusted, as
+on subscriptions. However, while they are cached, capabilities
+                                                                     well as legitimate intermediaries operate as expected. Finally,
+may be revoked, thus a PDP needs to be able to verify their
+                                                                     it is assumed that all secrets are properly secured.
+validity periodically, which is challenging when PAPs are dis-
+                                                                        1) Attack surface reduction: The W3C VC data model
+tributed. For this reason our solution supports VC revocation.
+                                                                     is a W3C recommendation, for which there are not many
+Specifically, we rely on a recent W3C draft [11] that defines an
+                                                                     implementations available. In our VC-based approach, a data
+efficient revocation mechanism. To support revocation a PAP
+                                                                     consumer needs to protect a secret used for authenticating to
+maintains a revocation list that covers all non-expired VCs
+                                                                     the IdP, as well as the private key used for signing VPs. Since
+that it has issued. This list is a simple bit string and each VC
+                                                                     a VC is received from a data consumer (and not from the PAP
+is associated with a position in the list. Consequently, each
+                                                                     directly), a PDP needs to verify its integrity by validating its
+VC includes a property named credentialStatus that specifies
+                                                                     signature, which has been generated by the PAP.
+the position of that VC in the revocation list, as well as a
+                                                                        Our threat model considers malicious entities trying to gain
+URL that can be used for retrieving the revocation list. A
+                                                                     unauthorized access to a data space. These entities operate
+VC is simply revoked by setting the corresponding bit in the
+                                                                     as (malicious) intermediaries and their goal is to gain access
+revocation list to 1. Since the list includes only non-expired
+                                                                     to a data space provided by another (legitimate) intermediary.
+VCs, its size is tolerable for most use cases. Similarly, since
+                                                                     More formally, let Auth(C, I, o) → true if consumer C is
+this list is expected to include many 0s and few 1s it can
+                                                                     authorized to access an object o in a data space provided by
+be efficiently compressed. A revocation list is included in a
+                                                                     intermediary I. Additionally, let Ileg , Imal , C1 , and o1 be a
+VC, issued by the PAP, which is periodically downloaded
+                                                                     legitimate intermediary, a malicious intermediary, a consumer,
+by the PDP. Nevertheless, since a revocation list covers all
+                                                                     and an object respectively. Supposedly,
+non-expired VCs issued by the PAP, the frequency at which
+a PDP downloads this list does not depend on the number                  Auth(C, Ileg , o) → true         Auth(C, Imal , o) → true
+of stored capabilities. On the other hand, this approach does        The goal of Imal is to achieve Auth(Imal , Ileg , o) → true.
+not allow capability updates, neither fine-grained capabilities-     Due to the second assumption, Imal has access to a VP
+management: once a VC is revoked, all consumer capabilities          generated by C. In order to achieve its goals it should be able
+stored by the PDP are removed.                                       to use them in a request towards Ileg . However, a VP includes
+                                                                     the URL of Imal and since Imal cannot modify them, they
+                         III. I MPLEMENTATION
+                                                                     will be rejected by Ileg .
+   We implemented a prototype of our data space for sharing             2) Usage Control: Usage control is implemented using
+smart building IoT device data. Data are stored in the back-         revocation lists. In this case some overhead is introduced.
+ends of two companies (acting as the data suppliers). They                 a) Initial authorization overhead: VC issuance and au-
+are serialized using JSON-LD and stored in a context broker          thorization using a VP are asynchronous processes, therefore
+implemented using FIWARE Orion [12].                                 the PDP must verify the revocation status of a VC immediately
+   As an IdP we used keycloack.1 A PAP has also been                 after a VP has been received. This introduces additional delay
+implemented following the iSHARE trust framework2 . Using            the first time a consumer tries to interact with the data space.
+this framework, owners can specify access control policies                 b) Authorization modification overhead: In case the ca-
+that define the access rights of each data consumer using            pabilities of a consumer are modified, old consumer capabili-
+the iSHARE policy definition language,3 which is inspired            ties should be revoked in order for the PDP to request a new
+                                                                     VC from the consumer. Alternatively, a consumer can pro-
+  1 https://www.keycloak.org/
+                                                                     actively “refresh” its VCs; this is left as future work.
+  2 https://ishare.eu/
+  3 https://dev.ishare.eu/delegation/policy-sets.html                  4 https://www.ory.sh/oathkeeper/
+               800                                                                        owners to manage Policy Administration Points, enhancing
+               700
+                                                                                          security and increasing data owner sovereignty.
+                                                                                             Our solution leverages iSHARE’s authorization model to
+               600
+                                                                                          implement capabilities-based access control. Future work will
+               500                                                                        explore other access control paradigms, such as relation-based
+  Size in Kb
+
+
+
+
+               400
+                                                                                          access control, and will integrate additional frameworks like
+                                                                                          the Open Policy Agent. We aim to extend our PEPs to apply
+               300
+                                                                                          access control policies to outgoing data, such as filtering
+               200                                                                        based on user capabilities. Furthermore, our solution currently
+               100
+                                                                                          uses public keys to bind tokens and verifiable credentials to
+                                                                                          consumers; future research will investigate alternative identifi-
+                0
+                     1   2   3   4   5   6   7   8   9 10 11 12 13 14 15 16 17 18 19 20   cation methods, such as Decentralized Identifiers [13]. Finally,
+                                             Percentage of revoked VCs                    we plan to enhance our solution to provide trustless PEPs by
+Fig. 3. Size of a VC revocation list with 1M VCs, as a function of the                    encrypting data with keys bound to access control policies,
+percentage of the revoked VCs.                                                            such as Attribute-Based Access Control (ABAC).
+      c) Communication overhead: The communication over-                                                           ACKNOWLEDGMENT
+head imposed to a PDP due to the usage control mechanisms
+                                                                                            This work has been funded in part by EU’s Horizon 2020
+of our solution depends on the number of PAPs that have
+                                                                                          Programme, through the subgrant “A real-time AI-enabled
+issued the VCs included in the stored VPs. Particularly, if
+                                                                                          worker safety preservation system” (MILESTONE) of project
+a PDP has stored the capabilities of |C| consumers whose
+                                                                                          Trialsnet, under grant agreement No. 10109587.
+authorizations are provided by |P | PAPs, the PDP has to send
+|P | requests. Additionally, the size of the PAP response (i.e.,                                                       R EFERENCES
+the revocation list) depends on the number of VCs the PAP                                  [1] D. Beverungen, T. Hess, A. Köster, and C. Lehrer, “From private
+has issued (in general) and the percentage of the revoked VCs.                                 digital platforms to public data spaces: implications for the digital
+Fig. 3 illustrates the size of a VC revocation list, provided                                  transformation,” Electronic Markets, vol. 32, no. 2, pp. 493–501, 2022.
+                                                                                           [2] S. Scerri, T. Tuikka, I. L. de Vallejo, and E. Curry, “Common euro-
+by a single PAP, that includes 106 VCs, as a function of the                                   pean data spaces: Challenges and opportunities,” Data Spaces: Design,
+percentage of the revoked VCs. The figure shows that, because                                  Deployment and Future Directions, pp. 337–357, 2022.
+the list is compressed, a smaller number of revoked VCs yields                             [3] J. Gelhaar and B. Otto, “Challenges in the emergence of data ecosys-
+                                                                                               tems,” in Proc. PACIS, 2020.
+a smaller list size.                                                                       [4] K. Schmidt, G. Munilla Garrido, A. Mühle, and C. Meinel, “Mitigating
+   3) Privacy: A consumer has to communicate only once                                         sovereign data exchange challenges: A mapping to apply privacy- and
+with the PAP in order to obtain a VC; in all subsequent                                        authenticity-enhancing technologies,” in Trust, Privacy and Security in
+                                                                                               Digital Business, 2022.
+requests the PAP is not involved. Even during VC revocation                                [5] M. de Reuver, H. Ofe, W. Agahari, A. E. Abbas, and A. Zuiderwijk,
+status verification, a PAP cannot distinguish which specific                                   “The openness of data platforms: A research agenda,” in Proc. 1st Intl.
+VC a revocation status check concerns, since the revocation                                    Workshop on Data Economy, 2022.
+                                                                                           [6] M. Sporny et al., “JSON-LD 1.1, A JSON-based Serialization for Linked
+list includes information about all non-expired VCs.                                           Data,” W3C Recommendation, 2020.
+   4) Availability: Our VC-based approach does not require                                 [7] Context Information Management (CIM) ETSI ISG, “NGSI-LD API,”
+any communication with the PAP during consumer authoriza-                                      ETSI, Group Specification CIM-009v161, 2022.
+                                                                                           [8] M. Sporny et al., “Verifiable credentials data model v1.1,” W3C
+tion. Although the PDP needs access to the revocation list,                                    Recommendation, 2022. [Online]. Available: https://www.w3.org/TR/
+this does not have to be provided directly by the PAP. Since                                   verifiable-claims-data-model/
+the revocation list is included in a VC signed by the PAP, it                              [9] T. Lodderstedt, K. Yasuda, and T. Looker, “OpenID for Verifiable
+                                                                                               Credential Issuance,” OpenID Connect WG, Internet draft, 2023, https:
+can be provided by other entities or even the consumer. In that                                //openid.net/specs/openid-4-verifiable-credential-issuance-1 0.
+case, the PDP should verify that the list is “adequately fresh”                           [10] O. Terbu, T. Lodderstedt, K. Yasuda, and T. Looker, “OpenID for Verifi-
+and that it has been signed by the appropriate PAP.                                            able Presentations - draft 18,” OpenID Connect WG, Internet draft, 2023,
+                                                                                               https://openid.net/specs/openid-4-verifiable-presentations-1 0.html.
+                                                                                          [11] M. Sporny et al., “Verifiable credentials status list v2021,” W3C Draft
+                         IV. C ONCLUSIONS AND F UTURE W ORK                                    Community Group Report, 2023, https://www.w3.org/TR/vc-status-list/.
+                                                                                          [12] U. Ahle and J. J. Hierro, “FIWARE for data spaces,” Designing Data
+   In this paper, we presented an access control solution tai-                                 Spaces, 2022.
+lored for Data Spaces. Our approach is Data Space API-aware                               [13] W3C Credentials Community Group. (2020) A Primer for Decentralized
+and considers data semantics, enabling fine-grained policies.                                  Identifiers. [Online]. Available: https://w3c-ccg.github.io/did-primer/
+Furthermore, our Policy Enforcement Points are implemented
+as transparent HTTP proxies, making the protected resources
+oblivious to the access control mechanisms in place. This
+design ensures our solution can protect any Data Space system.
+We also presented a distributed approach that allows data
+

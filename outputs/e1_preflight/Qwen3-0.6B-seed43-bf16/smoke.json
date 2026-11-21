@@ -1,0 +1,25 @@
+{
+  "model_path": "models/Qwen3-0.6B",
+  "seed": 43,
+  "precision": "bf16",
+  "optimizer_steps": 8,
+  "requested_smoke_steps": 8,
+  "config": {
+    "model": "models/Qwen3-0.6B",
+    "data_dir": "data\\processed_v2",
+    "out_dir": "outputs\\e1_preflight\\Qwen3-0.6B-seed43-bf16",
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "gradient_accumulation_steps": 4,
+    "max_seq_len": 1024,
+    "max_new_tokens": 384,
+    "eval_batch_size": 16,
+    "seed": 43,
+    "precision": "bf16",
+    "smoke_train_steps": 8,
+    "skip_zeroshot": true,
+    "skip_train": false
+  }
+}

@@ -1,0 +1,814 @@
+                                                   Context-Aware Trustworthy IoT Energy
+                                                           Services Provisioning
+
+                                                           Amani Abusafia1[0000−0001−9159−6214] , Athman
+                                                           1[0000−0003−1254−8092]
+                                               Bouguettaya                   , Abdallah Lakhdari1[0000−0001−8005−1534] ,
+                                                             and Sami Yangui2[0000−0001−9756−642X]
+                                                         1
+arXiv:2401.01029v1 [eess.SY] 27 Sep 2023
+
+
+
+
+                                                           The University of Sydney, Sydney NSW 2000, Australia
+                                                   2
+                                                     LAAS-CNRS, Université de Toulouse, INSA, 31400 Toulouse, France
+                                               {amani.abusafia, athman.bouguettaya, abdallah.lakhdari}@sydney.edu.au
+                                                                              yangui@laas.fr
+
+
+                                                   Abstract. We propose an IoT energy service provisioning framework to
+                                                   ensure consumers’ Quality of Experience (QoE). A novel context-aware
+                                                   trust assessment model is proposed to evaluate the trustworthiness of
+                                                   providers. Our model adapts to the dynamic nature of energy service
+                                                   providers to maintain QoE by selecting trustworthy providers. The pro-
+                                                   posed model evaluates providers’ trustworthiness in various contexts,
+                                                   considering their behavior and energy provisioning history. Additionally,
+                                                   a trust-adaptive composition technique is presented for optimal energy
+                                                   allocation. Experimental results demonstrate the effectiveness and effi-
+                                                   ciency of the proposed approaches.
+                                                   Keywords: Energy-as-a-Service (EaaS), Internet of Things (IoT), Qual-
+                                                   ity of Experience (QoE), Trust Assessment, wireless power transfer
+
+
+
+                                           1     Introduction
+                                           Energy-as-a-Service (EaaS) refers to the wireless delivery of energy from an energy
+                                           provider (e.g., a smart shoe) to a nearby energy consumer (e.g., a smartphone)[1]. En-
+                                           ergy service may enable an eco-friendly self-sustained environment by exchanging spare
+                                           or harvested energy [2][3]. For instance, an energy provider may offer their harvested
+                                           energy to a nearby IoT device. Energy may be harvested from natural resources, e.g.,
+                                           physical movement [3]. For example, wearing a PowerWalk harvester may produce en-
+                                           ergy from an hourly walk at a comfortable speed to charge up to four smartphones [4].
+                                           Moreover, energy services offer a convenient and ubiquitous power access for IoT users
+                                           without using cords or power banks [5]. Energy services may be deployed through the
+                                           newly developed “Over-the-Air” wireless charging technologies [6][7]. Several compa-
+                                           nies are developing charging technologies that enable IoT devices to charge wirelessly
+                                           over a distance, such as Xiaomi, Energous, and Cota [4][8]. For instance, Energous
+                                           developed a device that can charge up to 3 watts of power within a 5-meter distance.
+                                           Although current technology may not provide efficient energy delivery [9], technological
+                                           advances are expected to enable devices to exchange larger amounts of energy [6].
+                                               We propose a dynamic energy service ecosystem that consists of energy providers
+                                           and consumers in microcells (see Fig. 1(A)). A microcell is any confined space where
+                                           people may gather, e.g., cafes and restaurants. In this environment, IoT devices may
+                                           share energy with nearby devices. The energy Service Oriented Architecture; SOA-
+                                           based business model has three main actors: energy provider 3 , energy consumer, and
+                                           3
+                                               We used interchangeably the terms energy provider and provider to refer to the
+                                               energy provider
+2        A. Abusafia et al.
+
+
+
+
+     Fig. 1: (A) Microcells in a smart city (B) IoT energy services environment in a microcell
+
+super-provider [6]. According to this business model, providers advertise their services,
+consumers submit their requests, and the super-provider (i.e., the microcell’s owner)
+manages the exchange of energy services between providers and consumers in the micro-
+cell. This paper focuses on energy services sharing from the super-provider perspective.
+     Recent research suggests that super-providers may use energy services to enhance
+consumers’ Quality of Experience (QoE) [10][4]. Studies show that businesses provid-
+ing wireless energy services, like “air-charge”, positively affect customer experiences4 .
+In energy services, Quality of Experience (QoE) refer to the aggregated satisfaction of
+consumers with energy services over time [10][4]. Consumers’ satisfaction is measured
+by the fulfillment of their energy needs [10][4]. This paper focuses on energy services
+provisioning as a key ingredient to provide customers with the best QoE.
+     A key challenge in QoE-based energy service provisioning is to assess providers’
+commitment to sharing energy [6][8]. For example, a provider may terminate the energy
+transfer by leaving the transfer range. They may also stop the transfer due to exces-
+sive device usage. Such service disruptions may reduce the expected amount of shared
+energy, thereby impacting the consumer’s QoE. In such cases, real-time service replace-
+ment may not be guaranteed [11]. Thus, a super-provider needs to assess providers’
+trustworthiness before allocating services to consumers. Hence, a trust assessment
+framework is necessary to evaluate the uncertainty in a provider’s commitment.
+     Trust refers to the belief that providers will adhere to agreements and maintain the
+quality of service as advertised [8][6]. Existing trust frameworks are hardly applicable to
+crowdsourced IoT energy services environments [2][6]. This is mainly due to the highly
+dynamic and fluctuating energy provisioning and usage behavior of IoT users [12]. Con-
+sequently, energy fluctuations directly result from the uncertainty around crowdsourced
+IoT energy providers meeting their energy commitments. As indicated, IoT users’ com-
+mitment may fluctuate due to the mobility and usage patterns of IoT users [6][12]. For
+instance, an IoT user may consume their advertised service due to unexpected heavy
+device usage [11]. Given IoT users’ energy fluctuation and dynamic behavior, using ex-
+isting trust frameworks may often lead to low trust scores for most providers. If most
+providers have low trust scores, the super-provider may not find enough trustworthy
+services to allocate. For example, existing trust frameworks would typically give a low
+trust score to a provider who consistently offers only 50 mAh, regardless of the adver-
+tised services. However, if the super-provider only needs 50mAh, assessing the provider
+based on this specific requirement would result in a higher trust score, making them a
+suitable candidate for allocation. Therefore, the same IoT energy provider’s trust will
+vary according to the super-providers’ requirements. Therefore, a new trust assessment
+framework is needed [6][8]. In this respect, we propose a context-aware trust assessment
+framework tailored specifically to energy services.
+     We propose a context-aware trust assessment framework to accurately assess and
+effectively allocate trustworthy providers. The framework assesses providers’ trustwor-
+thiness based on the super-provider context-aware constraints. The providers’ trust
+4
+    air-charge.com
+                Context-Aware Trustworthy IoT Energy Services Provisioning               3
+
+
+
+
+                         Fig. 2: IoT energy services business model
+
+
+scores are then used to select and compose the best set of energy services to fulfill
+the super-provider requirements. Our framework enables utilizing providers that may
+appear untrustworthy but can make valuable contributions while maintaining commit-
+ment. In addition, we propose a heuristic-based approach that ensures a higher QoE.
+Our approach composes additional services, based on the trust scores of providers, as
+a backup in the case of service cancellation. The main contributions of this paper are:
+– A novel trust-aware framework to compose energy services and ensure QoE.
+– A context-aware trust assessment model to evaluate energy providers.
+– A context model for defining super-provider constraints in evaluating provider trust.
+– A heuristic-based approach to compose trustworthy energy services.
+Motivating Scenario :We describe a scenario in a confined place (i.e., microcell)
+where people congregate, e.g., cafes and restaurants (see Fig. 1 (A)). Each microcell
+may have several IoT devices acting as energy providers or consumers (see Fig. 1 (B)).
+The super-provider aims to leverage the crowdsourced energy services to enhance the
+consumers’ experience. We assume that all energy services and requests are sent to
+the edge (e.g., a microcell router, Fig. 1(B)) and managed by the super-provider (Fig.
+2). We assume that the super-provider has prior knowledge of the energy demand dis-
+tribution in the microcell over a given time window. Additionally, the super-provider
+adopts a QoE-based approach, such as [4][10], to select optimal providers to fulfill the
+microcell’s energy demand. We assume that the super-provider offers incentives to en-
+courage energy sharing in the form of credits [10][13]. The credits would be used to
+receive more energy when the providers act as consumers in the future [4]. However,
+rewards do not guarantee providers’ commitment [13]. The uncertainty in providers’
+behavior may adversely affect consumers’ QoE if a service fails and no other nearby
+services are available [11]. Thus, a trust framework is required to evaluate providers’
+commitment. While there are several trust frameworks for IoT services, they are not
+applicable to energy services as they do not accommodate the nature of energy ser-
+vices. An inaccurate trust assessment may lead to misjudgment of a service. This could
+lead to either not using it due to a low score or using an untrustworthy service that
+disappoints consumers. Given energy scarcity, it is paramount to assess trust in order
+to efficiently utilize all available services correctly. Furthermore, super-providers typi-
+cally may vary in their service expectations and requirements. These expectations may
+result in different trustworthiness scores for the same provider. Hence, it is challenging
+to find the right trust assessment that meets super-provider expectations.
+    Fig. 3 shows a provider’s advertised service and history. Let us assume we limit the
+trust metrics to the provider’s commitment to fulfill an energy request. Using a tradi-
+tional trust framework where a provider is assessed based on all its available history, the
+provider trust score will be 67% without estimating the provided amount. This score is
+computed based on the ratio of the total provided energy to the total requested energy.
+However, using a more context-aware trust framework, where a super-provider defines
+their minimum requirements as a threshold, may result in a different score. For exam-
+ple, if a super-provider has a 60 mAh threshold, they will look at the provider’s history
+and how often they fulfill 60 mAh requests. Based on this, they rated the provider’s
+4       A. Abusafia et al.
+
+
+
+
+         Fig. 3: Example of how different trust assessments yield different trust scores.
+
+service to 60 mAh with a 93% trust score. In another example, if the threshold is set
+to evaluate the rate of providing 70mAh services in microcell B, the trust framework
+will consider the provider’s history within microcell B to understand their performance
+in that area. As a result, the super-provider will rate the provider’s services as 70mAh
+with a 100% trust score.
+    Allocating the limited available energy amid the uncertainty of providers’ commit-
+ment presents a critical challenge for the efficient and QoE-aware provisioning of IoT
+energy services [6]. We propose a context-aware trust-assessment framework for energy
+services. Our framework assesses provider trust based on the expectations and require-
+ments of super-providers, which may lead to varying trust scores for the same service.
+The framework composes the most trustworthy energy services, ensuring consumer
+QoE and leveraging super-providers’ expectations to assess and adhere to their stan-
+dards. Moreover, our composition approach accounts for the natural untrustworthiness
+in the energy crowdsourcing environment by selecting additional services as a backup.
+The selection of these services relies on the trustworthiness of the available services.
+
+2     System Model
+We focus on assessing the trust of energy services in microcells during a single time
+slot t. We use the below definitions to formalize the problem.
+2.1    Energy Service Model
+Definition 1. Energy Service (S). We adopt the definition of EaaS introduced in
+[1]. An energy service S is defined as a tuple of < sid , pid , F, Q >, where:
+ – sid is a unique service identifier,
+ – pid is a unique provider identifier,
+ – F is the function of delivering wireless energy,
+ – Q is a tuple of < q1 , q2 , ..., qn >, where each qi denotes the Quality of Service (QoS),
+  e.g., energy amount and geographical location.
+Definition 2. Energy Quality of Service (QoS). QoS attributes enable users to
+differentiate between energy services [8]. We extend the definition of QoS attributes
+from [1]. QoS is presented as a tuple of < a, l, d, b > [1], where:
+ – a is the amount of energy offered by the provider,
+ – l is the geographical location of the provider,
+ – d is a tuple of < st, et > that represents the service’s start and end time,
+ – tr is the provider’s trust score to offer their service,
+Definition 3. Energy Service Provider (P). P is an IoT device with spare energy
+to be shared as a service. P is defined as a tuple of < pid , H >, where:
+ – pid is a unique provider identifier,
+ – H is the set of historical records of the provider’s previous provisioning. We assume
+  that all providers have a history, and dealing with newcomers is not the focus of this
+  paper. We also assume that the edge will retrieve the history of providers from the
+  cloud (see Fig. 1(B)). H is a tuple of < h1 , h2 , ..., hm >, where each hi represent the
+  record of previous energy transfer as < s, de, m, t > where:
+                Context-Aware Trustworthy IoT Energy Services Provisioning                   5
+
+   • s is the advertised energy service,
+   • de is the amount of delivered energy,
+   • m is the microcell where the energy sharing occurred,
+   • t is the time interval < st, et > of the energy sharing.
+2.2    Super-Provider Preferences
+Definition 4. Energy Demand Distribution (ED). The super-provider uses the
+traffic history of the microcell to define the Energy Demand distribution (ED).
+We adopt the definition of ED from [4]. ED is the predicted consumers’ energy demand
+distribution in the service time window W . Therefore, the demand for a single time
+slot is defined as a tuple < d, t > where d is the aggregation of the predicted energy
+requests at time interval t. The prediction of energy requests may be obtained using
+prediction techniques applied to the historical records H for all IoT users who visited
+the microcell at time interval t [14][15]. Energy requests may be aggregated according
+to their spatio-temporal features [11]. Given a set of predicted energy requests, the
+super-provider aggregates the energy requests using the composition approach pro-
+posed by [1]. The approach considers the time interval of each request to define a
+composite energy request that includes all available requests. The super-provider sums
+the requested energy by all the available requests at that time interval using:
+                                                m
+                                                X
+                                   Ed.d(t) =          f (Hj , t)                           (1)
+                                                j=0
+    Where d is the aggregated energy demand at time slot t, Hj is the provider’s j
+history of energy requests at time t, m is the number of consumers who have visited
+the microcell at t in the past and f is the prediction function.
+Definition 5. Quality of Experience (QoE). QoE measures the aggregated satis-
+faction of energy consumers in a microcell at time slot t.
+The consumers’ satisfaction is determined by the allocated services to the energy de-
+mand ED. We adopt the definition of QoE from [10], which measures QoE across time
+slots and adjusts it to assess a single time slot. Therefore, QoE is computed as:
+                                          n
+                                          X
+                                  QoE =         Si .a/Ed.d(t)                              (2)
+                                          i=1
+    Where n is the number of selected services, a is energy service i’s amount, Ed.d(t)
+is the aggregated energy demand at time slot t computed using Eq. 1, m is the number
+of aggregated requests, and re is energy request size.
+2.3    Problem Definition
+Given a super-provider in a microcell m who wants to fulfill their consumer’s ex-
+pected energy demand Ed.d(t) at a time slot t. The super-provider has a set of n
+candidate providers P = {p1 , p2 , ..., pn } who expressed their interest in offering their
+service S = {s1 , s2 , ..., sn } at that time and location. Each provider has a history
+H =< h1 , h2 , ..., hm > of sharing energy.The super-provider aims to ensure QoE by
+maximizing the fulfillment of energy demand. This will be achieved by allocating the
+most trustworthy providers. We reformulate the service provision problem as a time-
+constrained optimization  Pproblem     as follows:
+                              n
+  – Maximize QoE as               S .a ∗ PT rusti /Ed.d(t)
+                              i=1 i
+Subject to:
+  – Ed.d(t) > 0,
+  – Si .d ⊂ t for each Si ∈ S.
+Where QoE is computed based on the allocated energy multiplied by the corresponding
+provider trust score, PT rusti is provider i trust score, Sj .d is the time interval < st, et >
+a provider of Si may offer their energy, t is the duration of a time interval, and Ed.d
+is the aggregated energy demand at time slot t.
+We use the following assumptions to formulate the problem:
+ 6        A. Abusafia et al.
+
+ – Providers’ energy size is fixed during composition.
+ – Providers and consumers are static during energy sharing.
+ – The super-provider context model is given as input, and determining the constraints
+  is out of the scope of this paper.
+ – There is no energy loss in sharing. As the technology matures, we anticipate that the
+  devices will share more energy, and the sharing energy loss will become minimal [4].
+ – The super-provider uses credits as incentives for energy sharing, which providers can
+  later redeem for more energy when they become consumers [10].
+ – All providers have a history of energy provisioning and are willing to share them.
+ – The energy demand distribution ED is deterministic.
+ – A secure framework has been implemented to preserve the integrity and the privacy
+  of the IoT devices [16].
+
+ 3    Trust Assessment Model
+ We define the provider trust level assessment to determine the trustworthiness score
+ (PT rust ) of an energy service. The trust level assessment considers the behavior of
+ providers and their history in delivering energy. We compute the trustworthiness of a
+ provider using the following attributes:
+– Success Rate: This attribute measures the reliability of a provider based on their
+ past performance. We argue that providers with a high success rate are likely to be
+ more reliable in the future, making this an important attribute in trust evaluation. The
+ success rate (SRP ) of a provider is the ratio of completed energy services to the total
+ number of initiated services by that provider. Here, completed services refer to full en-
+ ergy delivery as advertised, while initiated services count all, regardless of completion.
+ We compute SRP of provider P as follows:
+                                    |{S ∈ EP | S is completed}|
+                            SRP =                                                          (3)
+                                                  |EP |
+ where EP is all services initiated by provider P and |.| is the cardinality of the set.
+– Delivery Size: This attribute gauges the consistency of a provider in terms of the
+ quantity of energy they deliver. The Delivery Size rate (DS P ) may be calculated as
+ the ratio of successful energy deliveries’ total size to all attempted deliveries’ total size
+ by a provider. DS P is computed using:
+                                                 Pn
+                                                      hi .de
+                                          DS P = Pi=1
+                                                   n                                   (4)
+                                                    Si .a
+                                                        i=1
+ where n represents the number of previous services delivered by the provider, hi .de
+ represents the actual delivered energy retrieved from the history record hi , and Si .a
+ represents the advertised amount of the i-th energy service.
+– Timeliness Score: This attribute measures a provider’s adherence to the service
+ schedule. Disconnections in the transfer process may sometimes occur due to the
+ provider’s indoor movement, leading to energy transfer delays [12]. These delays, in-
+ creasing consumer wait times, can negatively impact their QoE. Hence, the Timeliness
+ score T LP is crucial in the trust model. T LP is calculated using the following formula:
+                      (                                  Pn
+                       1                               if  i=1
+                                                               (hi .t.et − Si .et) <= 0
+               T LP       Pn           1
+                                                       otherwise                          (5)
+                                 (hi .t.et−Si .et)/n
+                           i=1
+
+ where n is the provider’s number of previously delivered energy services, hi .t.et repre-
+ sents the actual end time of delivering a service i retrieved from the provider’s history
+ record hi , and Si .et represents the advertised end time of the i-th energy service.
+– Impact Score: A provider’s service cancellation may affect consumers’ QoE. As a
+ single service may be fulfilling multiple requests [11], the impact of canceling service
+ on the consumers may be used to evaluate the providers’ trustworthiness. We compute
+ the service failure’s impact FS based on the number of affected consumers. We compute
+                 Context-Aware Trustworthy IoT Energy Services Provisioning               7
+
+ the failure impact FS of a canceled energy service as follows:
+                                  |{C ∈ c | C is receiving f rom S
+                            FS =                                                        (6)
+                                                   |C|
+ where C is the set of all consumers in the microcell within the duration of the service
+ [Sst − Set ] and |.| is the cardinality of a set.
+ We define the provider impact as the cumulative effect of all their services on consumers.
+ Typically, a trustworthy provider will have minimal impact on consumers when a failure
+ occurs. In other words, the provider’s impact is calculated as the complementary value
+ to the failure impact. Therefore, We compute the provider impact score IP as follows:
+                                              n
+                                                                  !
+                                              X
+                                     IP =            (1 − FSi )       /n                (7)
+                                               i=1
+ Where n represents the number of previous energy services delivered by the provider.
+– Mobility Pattern: A provider’s mobility pattern may influence their energy service
+ provision. For example, if a provider’s mobility pattern shows their staying time at
+ a microcell is 5 minutes, and they advertised a service that requires 30 minutes, this
+ might indicate the probability of not committing to the request. Therefore, we consider
+ the staying duration pattern as an attribute in the trust assessment. We use the history
+ of the provider’s previous services to compute their duration patterns [17]. The number
+ of previous services should be greater than a predefined threshold α to be considered.
+ We compute the staying duration pattern SDP as:!
+                                       k
+                                       X
+                         SDP =               (Si .et − Si .st)    /k | k > α            (8)
+                                       i=1
+ where Si .st is the provider’s previous service i start time, Si .et is the provider’s pre-
+ vious service i end time, and k is the number of previous services. We compute the
+ provider Duration trust factor DP using the staying duration pattern SDP as follows:
+                             
+                                 1                if (S.et − S.st) <= SDP
+                      DP =          SDC                                                 (9)
+                                 (S.et−S.st)
+                                                  otherwise
+ where S.st is the provider’s current service start time, S.et is the provider’s current
+ service end time.
+ Providers Trustworthiness
+ The provider trust score (PT rust ) combines all the aforementioned trust attributes to
+ offer a holistic assessment of a provider’s trustworthiness. While each attribute reflects
+ different aspects of a provider’s service delivery, their significance varies depending
+ on the super-provider-specific requirements. For example, a super-provider may ignore
+ the timeliness score if they have customers who stay for a long time. Hence, we added
+ a component in the trust-assessment constraints for the super-provider to determine
+ attribute weights. PT rust is calculated using
+                                             Xthe following formula:
+                                   PT rust =     wJ × L P                              (10)
+                                                     J∈l
+ where L = {SR, T L, DS, I, D} and w representsP    the weights of each trust attribute
+ based on its importance, with the constraint that    wi = 1 to normalize the impact of
+ each factor on the overall trustworthiness score. Multiple methods exist for calculating
+ the weight of each attribute, depending on the preference of the super-provider [18].
+ 4    Energy Service Composition Framework
+ We introduce our energy service composition framework for allocating trustworthy en-
+ ergy services to provide consumers with the best QoE (see Fig. 4). The framework
+ ensures QoE by allocating trustworthy services based on the super-provider context.
+ The framework is divided into two phases: (1) context-aware trust assessment and (2)
+ trust-based energy service composition. The general steps of the framework are present
+ in Algorthim 1. In what follows, we discuss each phase in detail:
+8       A. Abusafia et al.
+
+
+
+
+                  Fig. 4: Trust-based energy service composition framework
+
+
+Algorithm 1 Trust-Based Energy Services Composition
+Input: Energy P roviders(P ), Energy Demand(ED), Context M odel(CM )
+Output: EScomp , QoE
+    Phase 1: Context-Aware Trust Assessment
+ 1: for p in P do
+ 2:   if [p.st, p.et] ⊆ Ed.t then
+ 3:      p.h = History F iltering(p.H, CM )
+ 4:      PT rust = T rust Assessment(p.h, CM )
+ 5:      newE = p.s.a ∗ PT rust
+ 6:      SelectedP.add(p, PT rust , newE)
+    Phase 2: Composition of Energy Services
+ 7: EScomp = Energy Allocation(SelectedP, ED)
+ 8: QoE = QoE Assessment(EScomp , ED)
+ 9: return EScomp , QoE
+
+4.1   Context-Aware Trust Assessment
+In this phase, the proposed framework evaluates the historical performance of each
+provider to assess their trustworthiness. This framework uses our proposed trust model
+to evaluate a provider’s trust. It further incorporates a context model, which represents
+the constraints set by the super-provider regarding the attributes and data used for
+the trust assessment. The context model consists of two main components: (1) history
+constraints and (2) trust assessment constraints. This model is then used in the trust
+assessment phase (see Fig. 4). In the following subsections, we will present the context
+model and discuss each step of the framework in detail.
+Context Model As mentioned, the context model establishes the constraints set
+by the super-provider concerning the attributes and data used in evaluating providers’
+trustworthiness. The context model consists of two sets of constraints. The first set
+pertains to the provider’s history, addressing aspects such as considering their entire
+history or focusing solely on their behavior within a specific microcell. The second set
+defines the super-provider’s constraints on trust assessment attributes, which may in-
+clude using all trust model attributes or only a subset, adjusting the weights of trust
+model attributes, or evaluating particular attributes. While we provide a comprehen-
+sive model to represent the possible constraints of super-providers, we assume that the
+selection of which constraints to apply and the values of the variables in these con-
+straints will be provided as input to our framework. These values will be determined
+based on the business context and requirements of the super-provider. In what follows,
+we discuss each constraint.
+– History Constraints: As previously mentioned, trust assessment can employ the
+  provider’s entire history or part of it, depending on the super-provider history con-
+  straints (see Fig. 5). For instance, a super-provider may assess providers’ trust based
+  on their history within a specific microcell. Another example would be evaluating
+  the provider’s energy-sharing history for larger requests, such as those exceeding
+                Context-Aware Trustworthy IoT Energy Services Provisioning                      9
+
+
+
+
+                         Fig. 5: Context-aware trust assessment model
+
+ 100 units. Therefore, we formulate the history constraints as a constraint satisfac-
+ tion problem (CSP) [19]. Consequently, the super-provider history constraints are
+ represented as a triple < X, D, C >, where X is a set of variables, D is a set of
+ corresponding domains of values, and C is the super-provider’s constraint set. The
+ formulation of the super-provider history constraints is as follows:
+ X : yi : A variable that equals 1 if provider i meets the constraints, and 0 otherwise.
+ D : The domain of yi is binary, i.e.,0, 1.
+ C : Location constraint (cL ): ∀S ∈ P.H : cL = 1 ⇒ S.l = L, where L is a specific microcell.
+     Time constraint (cT ): ∀S ∈ P.H : cT = 1 ⇒ S.d = D, where D is a specific time interval.
+     Energy constraint (cE ): ∀S ∈ P.H : cS = 1 ⇒ S.a >= A, where A is a specific energy service size.
+                                                                                            (11)
+  The goal is to find an assignment for the variable yi that satisfies all the constraints,
+  effectively identifying the providers’ history that meets the super-provider’s specific
+  constraints. Our CSP formulation is designed to be highly flexible and adaptable
+  to various super-provider preferences. By allowing the super-provider to select any
+  combination of constraints, we provide a tailored trust assessment that meets their
+  specific requirements.
+– Trust Assessment Constraints: The super-provider’s trust constraints are related
+  to the trust assessment attributes and the overall trust score. These constraints are
+  formulated as a tuple of < W, α, ae > where:
+   • w represents the weight assigned
+                               P        to each trust attribute based on its importance,
+     with the constraint that     wi = 1 to normalize the impact of each factor on the
+     overall trustworthiness score,
+   • α is a threshold for the provider trust score. α is determined based on the super-
+     provider preference. The super-provider might adopt a greedy approach, aiming to
+     maximize energy without considering the providers’ trustworthiness. Conversely,
+     they could be risk-averse, prioritizing trust over the amount of provided energy.
+     Alternatively, the super-provider may take a neutral stance, striking a balance
+     between trustworthiness and the energy provided,
+   • ae is the adjusted expectations of a super-provider. Super-providers may have dif-
+     ferent expectations for assessing provider trustworthiness based on their microcell
+     needs. For instance, a provider with a low trust score may be considered trust-
+     worthy by a super-provider if they need 50 units, and the provider has historically
+     delivered that amount. Super-providers can determine their expectations according
+     to their requirements, with various parameters such as delivery time and failure
+     impact. In this work, we focus on adjusting expectations concerning energy. Conse-
+     quently, we propose three methods for determining the super-provider expectations
+     in terms of energy (see Fig. 5). This allows the super-provider to choose what best
+     fits their needs:
+        ∗ Advertised amount: In this setting, a super-provider will assess providers based
+         on the amount of delivered energy against what they advertised using Eq. 4,
+        ∗ Capped amount: In this setting, a super-provider will assess providers based on
+         the amount of delivered energy against what the super-provider needs (expected
+         Amount). For instance, assessing them on delivering 30 units regardless of their
+10        A. Abusafia et al.
+
+          service advertisement. The needed amount will be fixed for all providers and
+          may depend on the energy demand of the microcell, the available providers,
+          and their trust score. For instance, if a super-provider needs 100 mAh and has
+          five providers, and their trust score is low, then a possible solution is to assess
+          them by looking into their history and the rate of them delivering 20 units,
+        ∗ Customized amount: In this setting, the super-provider assesses providers us-
+          ing an energy size extracted from their pattern of delivered energy from their
+          history. The reason for adjusting the energy is that sometimes IoT users may
+          overestimate what they can deliver [11]. The customized amount may be com-
+          puted using statistical values such as mean, mode, and median, and it will be
+          unique to each provider based on their profile.
+      If the super-provider wants to assess the providers on delivering a fixed amount
+      or a profile-based amount as expectedAmount regardless of their service advertise-
+      ment. In such a scenario, the denominator in Eq. 4 will be expectedAmount, and
+      the DS P score will be one if what is provided is larger than expectedAmount.
+Recall that the context model is used in the context-aware trust assessment phase of
+the framework (see Fig. 4). This phase consists of two steps: history filtering and trust
+assessment. In the following subsections, we will discuss each step of the phase in detail.
+
+History Filtering: As previously mentioned, the first step of the trust assessment
+involves filtering the providers’ history. We employ the history constraints of the context
+model as a filter to refine the providers’ history. The selection of which constraints to
+apply and the values of the variables will be determined based on the business context
+and requirements of the super-provider. Recall that the selection of which constraints
+to apply and the values of the variables in these constraints will be provided as input to
+our framework and are not the focus of our work. If a provider lacks sufficient history
+after applying the constraints, we can gather their history from microcells with similar
+contexts to our microcell. However, this approach is beyond the scope of this paper.
+In cases where there is insufficient history (i.e., the number of historical records is less
+than a predefined threshold), we use the provider’s original history for assessment.
+
+Trust Assessment: The next step uses the proposed trust model to assess the
+trust of the providers after refining their history in the previous step. The input for
+this step is the trust constraints from the context model. Note that the super-provider
+determines any combination of history and energy constraints (see Fig. 5). For example,
+a super-provider may require to use the full history and a fixed amount assessment. The
+output is each provider’s trust score Ptrust, calculated using Eq. 10, and the weights of
+the equation are defined in the context model W . Ptrust is then employed to identify
+the most trustworthy providers exceeding the super-provider’s trust score threshold α.
+
+4.2     Trust-Based Energy Services Composition
+This phase aims to compose the most trustworthy energy services to ensure QoE.
+Given a set of providers and their trust score, we may utilize any priority-based spatio-
+temporal composition [1][4][13] or other resource allocation algorithms for service pro-
+visioning such as Max-Min, knapsack, and genetic algorithms. However, due to the
+scarcity of energy, a super-provider may end up having a pool of providers with lower
+trust scores. Intuitively, a super-provider may allocate extra providers as a backup.
+Hence, we propose a trust-priority heuristic approach that selects additional services
+to ensure sufficient energy services. Our approach reduces providers’ services based
+on their trust scores and identifies complementary services as backups if the original
+providers do not fulfill their commitments. In other words, our approach will down-
+size the providers’ energy service size based on their trust score (See Algorithm 1,
+Lines 5-6). There are other possible ways to over-provision by increasing the amount
+of energy demand based on the available providers and their trust score. We leave it
+               Context-Aware Trustworthy IoT Energy Services Provisioning            11
+
+for future work to estimate the optimal increase in energy demand using other tech-
+niques. Moreover, Moreover, our proposed approach operates on a ’best effort’ basis.
+That is, if the demand is larger than the supply, it will compose the best available set
+of providers. Lastly, the super-provider assesses the QoE of the resulting composition
+using the model discussed in Sec. 2.3. The assessment of QoE gives an indicator of
+consumers’ satisfaction in the microcell.
+
+5     Evaluation
+We investigate the effectiveness and efficiency of the proposed composition approaches
+based on a comprehensive set of experiments. This section presents a description of
+the dataset used in the experiments, followed by a description of the experiment setup
+and a discussion of the findings.
+
+5.1    Dataset Description
+We used a real dataset generated from an app developed in [20][21]. The app mon-
+itors the wireless energy-sharing process that occurs by using coils connected to two
+smartphones. The consumer determines the granularity of the monitoring time. The
+app allows users to request energy from nearby smartphones by size, e.g.,1000 mAh, or
+by time, e.g., to charge for 5 minutes. The dataset consists of energy transfer records
+between a provider (smartphone) and a consumer (smartphone). The records include
+attributes such as provider ID, consumer ID, transaction date, time, energy service
+amount, request amount, and transfer duration. We used the energy dataset to gener-
+ate QoS parameters for the energy services and requests. For example, the amount of
+wireless charging transfer in mAh defines the amount of requested/advertised/provided
+energy. Additionally, the energy dataset records of the wireless charging transfer dura-
+tion were used to define the end time of each request/service.
+    We augmented the energy sharing dataset to mimic the behavior of the crowd
+within microcells by leveraging a dataset published by IBM for a coffee shop chain
+with three branches in New York City5 . The dataset consists of transaction records of
+customer purchases in each coffee shop over one month. On average, each coffee shop
+has 560 transactional records per day and 16,500 transaction records in total. We used
+the IBM dataset to simulate the spatio-temporal features of energy services and re-
+quests. Our experiment employs the consumer ID, transaction date, time, location, and
+coffee shop ID from each record in the dataset to define the spatio-temporal features
+of energy services and requests, e.g., the start and location of an energy service or a
+request. We randomly generate service cancellations to create untrustworthy providers.
+Table 1 presents the experiment parameters and statistics.
+5.2    Evaluation of the Composition Framework
+We compare the proposed heuristic-based composition approached with a baseline
+traditional resource allocation algorithms, namely, first come first served allocation
+(Greedy), and a priority-based allocation algorithm (Priority-based ) [22]. In Greedy,
+services are processed based on their start time regardless of their trust score. In
+Priority-based, services are processed based on the trust score We also compared our
+approach with the knapsack-inspired service composition method (knapsack-based ) pro-
+posed by [1]. The approach selects services that maximize the minimum trust value of
+the participating providers. We also attempted to implement a brute force approach;
+nonetheless, its substantial computational and memory requirements made effective ex-
+ecution impossible. We conducted an ablation analysis to assess the impact of different
+factors, including QoE with different: history constraints, energy delivery assessment
+constraints, and allocation strategies in different environments. We also examined the
+cost of incentives and compared the execution time for each method. As mentioned
+in Sec. 3, multiple methods exist for calculating the weight of the trust assessment
+5
+    https://ibm.co/2O7IvxJ
+12       A. Abusafia et al.
+
+
+     Table 1: Experiments Variables
+Variables                       Values
+Total energy service records
+for all coffee shops            49894
+Energy providers                2248
+Duration of all energy services 10 - 30 minutes
+Energy services amount          150 - 300 mAh
+Energy demand amount            500 - 2500 mAh
+Time window                     2 hours
+
+                                                   Fig. 6: The average of QoE using different history
+
+
+
+
+Fig. 7: The average of QoE using different trust
+assessments                                          Fig. 8: The average of QoE in trustworthy en-
+                                                     vironment
+
+attributes, depending on the preference of the super-provider [18]. We assigned all w
+in Eq. 10 to 0.2 for equal impact on the trust score. We ran the approaches in different
+settings by fixing the energy demand and gradually changing the number of services
+over the time interval T . We repeated the experiment 1000 times at each point and
+considered the average value for each approach.
+
+Quality of Experience Evaluation The first experiment evaluates the impact
+of the context model’s history constraints on QoE. As mentioned earlier, QoE reflects
+consumer satisfaction over time, and a high QoE for a composition indicates a greater
+degree of consumer satisfaction. Fig. 6 displays the average QoE using the knapsack-
+based approach with different constraints, i.e., full history, time-constraints representing
+the history filtered based on the energy demand’s time interval, and spatio-temporal
+constraints assessing trust using the history at the time interval and the given microcell
+location. We set the energy demand in this experiment to 1000 mAh. Fig. 6 shows that
+using providers’ full history yielded the lowest QoE compared to the context-aware fil-
+tered history. This is because assessing trust based on the full history results in many
+low-trust providers not being used. However, the context-aware trust assessment fo-
+cuses on their behavior in the microcell. This leads to better assessment and thereby
+provides more services to allocate, which ensures a higher QoE.
+    The second experiment examines the impact of the context model’s trust assess-
+ment constraints on QoE. Fig. 7 displays the average QoE using the knapsack-based
+approach with different expected energy assessments: ”advertised” assesses providers
+based on the service amount advertised in their history record, ”capped” assesses them
+based on a fixed amount determined by the super-provider (e.g., 50 units), and ”cus-
+tomized” is a profile-based assessment. In the customized assessment, we evaluated
+providers based on the median of their historical records. Fig. 7 shows a slight QoE
+improvement when assessing providers based on the median; further experiments are
+needed to understand the consistency in providers’ patterns and the sufficient number
+of records for profiling a user. We plan to explore the provider’s patterns in the future.
+                 Context-Aware Trustworthy IoT Energy Services Provisioning                   13
+
+
+
+
+Fig. 9: The average of QoE in neutral environ-   Fig. 10: The average of QoE in untrustworthy
+ment                                             environment
+
+
+
+
+         Fig. 11: The average of cost              Fig. 12: The average of computation cost
+
+     The third experiment evaluates the effectiveness of our proposed heuristic-based
+composition. We compare our approach with the aforementioned approaches in three
+environment settings: a trustworthy environment where most of the provider’s trust
+score is high, i.e., above 80% (see Fig. 8); a neutral environment where providers’
+trustworthiness follows a random distribution (see Fig. 9); and an untrustworthy envi-
+ronment where most of the provider’s trust score is low, i.e., below 20% (see Fig. 10).
+Overall, our proposed approach performs better than the rest of the approaches due to
+its over-provisioning strategy. However, the over-provisioning comes with a higher cost
+of rewards (See Fig. 11). We compute the cost as the price per energy unit multiplied
+by the amount of provided energy [13]. Another observation is that QoE increases for
+all approaches except greedy in all settings. This is intuitive, as with the increase in
+services, there is more energy to fulfill the energy demand and thereby increase QoE.
+Computation Efficiency Evaluation In the fourth experiment, we assessed the
+computational cost of all approaches. The execution time for all approaches increases
+with the increase in services’ availability (see Fig. 12). This is due to the increase in
+processing time to assign these services.
+6    Related Work
+The background of our work comes from energy services and trust assessment in IoT
+services. We present the related work to our research in each domain.
+Crowdsourcing Energy Services: Energy exchange services have emerged as al-
+ternative solutions for charging IoT devices [8][2]. Several studies have addressed chal-
+lenges related to meeting the demands of energy consumers [1][11][12]. A time-based
+composition algorithm was introduced to compose energy services to satisfy consumers’
+energy needs [1]. The algorithm suggests using partial services and a fractional knapsack
+to maximize the provided energy. The intermittent nature of energy services has been
+addressed using a fluid approach [12]. Other research has addressed challenges from the
+provider’s perspective [13][6]. A context-aware incentive model was suggested to address
+14      A. Abusafia et al.
+
+the resistance to offering energy services [13]. Another study proposed a model to esti-
+mate the energy loss in sharing energy services [23]. Recent studies have addressed these
+challenges from a super-provider’s perspective [24][4] [10]. A QoE model was suggested
+as a key indicator for allocating services to requests [4] [10]. Neither QoE-based compo-
+sition approach considers providers’ uncertain availability. To the best of our knowledge,
+challenges related to the uncertainty of providers’ provisioning remain unaddressed.
+Trust assessment in IoT services: Trust assessment in crowdsourced IoT service
+environments is fairly new. Most of the proposed trust approaches rely on either pre-
+vious experiences [25] or social relations [26] to assess trust. The work in [25] proposed
+a framework that assesses service providers based on their reputations by a central au-
+thority. A framework was proposed in [26] to eliminate the privacy risks associated with
+public Wi-Fi hotspots. The proposed framework lacks generality as it can only be used
+for Wi-Fi hotspot services. Another study proposed a QoE-based trustable framework
+for managing services in mobile edge computing (MEC) [27]. However, its focus on
+MEC system layers and lack of clear trust definition or experimental validation limits
+its applicability in our context. Another study proposes a trusted resource allocation
+mechanism for fog computing where a fog-to-fog offloading scheme balances the load on
+the fog layer [28]. However, the approaches mentioned above may not be ideal for IoT
+crowdsourcing environments. Trust assessment in such environments presents unique
+challenges due to characteristics like the diversity and anonymity of IoT users and de-
+vices and the lack of a central managing authority [18]. These characteristics make it
+more difficult to acquire an accurate measure of trust. A recent study proposed to assess
+trust in crowdsourcing IoT environments from multiple perspectives, such as device,
+owner, and service [18]. Other solutions proposed to assess trust from a usage-based
+perspective [29]. A trust assessment method is proposed to evaluate services based on
+their usage. For example, a user streaming a video may have lower trust requirements
+than another user engaged in online banking activities [29]. These frameworks are not
+applicable in IoT energy environments due to the energy scarcity, fluctuating behavior
+of IoT users, and influence of super-provider expectations on trust scores [12]. To the
+best of our knowledge, no solution assesses the trustworthiness of providers’ provision-
+ing while considering the super-providers’ expectations and requirements.
+
+
+7    Conclusion
+The allocation of energy services has been proposed as a tool to assure consumers’
+Quality of Experience (QoE). However, the existing frameworks assume that providers
+will always deliver the advertised service. In contrast, the dynamic nature of the energy
+services environment may result in uncertainty in providers’ commitment. Therefore, a
+trust assessment is required to evaluate the trustworthiness of providers. Existing trust
+assessments are not applicable due to the energy scarcity and the dynamic behavior of
+IoT users. Consequently, this paper proposes a novel context-aware trust assessment
+model. The proposed model assesses providers’ trustworthiness in various contexts,
+considering their behavior and energy provisioning history. Moreover, a trust-adaptive
+composition technique is proposed for optimal energy allocation, ensuring efficient en-
+ergy service provisioning. We conducted a set of experiments to assess the performance
+of the proposed framework. Experiments showed that filtering history based on the mi-
+crocell context and adjusting expectations based on the super-provider’s needs resulted
+in better trust assessment and improved QoE. The future direction is to consider the
+probability of change in the energy demand.
+
+Acknowledgment
+This research was partly made possible by LE220100078 and DP220101823 grants
+from the Australian Research Council. The statements made herein are solely the
+responsibility of the authors.
+               Context-Aware Trustworthy IoT Energy Services Provisioning            15
+
+References
+ 1. Abdallah Lakhdari et al. Composing energy services in a crowdsourced iot envi-
+    ronment. IEEE Transactions on Services Computing, 2020.
+ 2. Aashish Dhungana et al. Peer-to-peer energy sharing in mobile networks: Appli-
+    cations, challenges, and open problems. Ad Hoc Networks, 97:102029, 2020.
+ 3. Jiajie Li et al. Activity-based profiling for energy harvesting estimation. In IPSN,
+    pages 326–327, 2023.
+ 4. Amani Abusafia et al. Maximizing consumer satisfaction of iot energy services. In
+    ICSOC. Springer, 2022.
+ 5. Wen Fang et al. Fair scheduling in resonant beam charging for iot devices. IEEE
+    IoT, 6(1):641–653, 2018.
+ 6. Amani Abusafia et al. Service-based wireless energy crowdsourcing. In ICSOC.
+    Springer, 2022.
+ 7. Jessica Dolcourt. Over-the-air wireless charging will come to smartphones, 2019.
+ 8. Abdallah Lakhdari et al. Crowdsharing wireless energy services. In CIC, pages
+    18–24. IEEE, 2020.
+ 9. Hao Feng et al. Advances in high-power wireless charging systems: Overview and
+    design considerations. TTE, 6(3):886–919, 2020.
+10. Amani Abusafia et al. Quality of experience optimization in iot energy services.
+    In ICWS. IEEE, 2022.
+11. Abdallah Lakhdari et al. Elastic composition of crowdsourced iot energy services.
+    EAI Mobiquitous, 2020.
+12. Abdallah Lakhdari and Athman Bouguettaya. Fluid composition of intermittent
+    iot energy services. In SCC, pages 329–336. IEEE, 2020.
+13. Amani Abusafia et al. Incentive-based selection and composition of iot energy
+    services. In IEEE SCC, pages 304–311. IEEE, 2020.
+14. Pavel Mach and Zdenek Becvar. Mobile edge computing: A survey on architecture
+    and computation offloading. comm. surveys & tut., 19(3):1628–1656, 2017.
+15. Soheila Abrishami and Piyush Kumar. Using real-world store data for foot traffic
+    forecasting. In Big Data, pages 1885–1890. IEEE, 2018.
+16. Jiayu Zhang et al. Who is charging my phone? identifying wireless chargers via
+    fingerprinting. IEEE Internet of Things Journal, 8(4):2992–2999, 2020.
+17. Marta C Gonzalez, Cesar A Hidalgo, and Albert-Laszlo Barabasi. Understanding
+    individual human mobility patterns. nature, 453(7196):779–782, 2008.
+18. Mohammed Bahutair et al. Multi-perspective trust management framework for
+    crowdsourced iot services. TSC, 15(4):2396–2409, 2021.
+19. Vipin Kumar. Algorithms for constraint-satisfaction problems: A survey. AI mag-
+    azine, 13(1):32–32, 1992.
+20. Pengwei Yang et al. Monitoring efficiency of iot wireless charging. In IEEE Percom,
+    2023.
+21. Pengwei Yang et al. Towards peer-to-peer sharing of wireless energy services. In
+    ICSOC. Springer, 2022.
+22. Robert Kruse et al. Data structures and program design in C. Pearson, 2007.
+23. Pengwei Yang and et al. Energy loss prediction in iot energy services. In ICWS.
+    IEEE, 2023.
+24. Amani Abusafia et al. Flow-based energy services composition. IEEE TSC, 2023.
+25. Burak Kantarci and Hussein T Mouftah. Mobility-aware trustworthy crowdsourc-
+    ing in cloud-centric internet of things. In ISCC, pages 1–6. IEEE, 2014.
+26. Zhen Cao et al. Social Wi-Fi: Hotspot sharing with online friends. In PIMRC,
+    volume 2015-Decem, pages 2132–2137. IEEE, aug 2015.
+27. Hamid andothers Tahaei. A qoe based trustable sdn framework for iot devices in
+    mobile edge computing. In CSA-CUTE, pages 1147–1152. Springer, 2018.
+28. Vibha Jain and Bijendra Kumar. A trusted resource allocation scheme in fog
+    environment to satisfy high network demand. AJSE, pages 1–18, 2022.
+29. Mohammed Nasser Ba-hutair et al. Multi-use trust in crowdsourced iot services.
+    IEEE Transactions on Services Computing, 2022.
+

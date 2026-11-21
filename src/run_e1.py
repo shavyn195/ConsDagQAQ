@@ -40,6 +40,31 @@ SCHEMA_HINT = (
 )
 
 
+def task_space_context(row: dict[str, Any]) -> str:
+    """Expose the compiler's task-space interface needed for scope binding.
+
+    Scope is defined over abstract roles, but role names alone do not reveal
+    which roles are billable, external, terminal, or data-bearing. The graph
+    metadata is part of the task-space input and is intentionally kept
+    separate from the gold constraint object.
+    """
+    graph = row.get("graph") or {}
+    nodes = graph.get("nodes") if isinstance(graph, dict) else []
+    compact_nodes = []
+    for node in nodes if isinstance(nodes, list) else []:
+        if not isinstance(node, dict):
+            continue
+        compact_nodes.append({
+            "role": f"role:{node.get('role', '')}",
+            "cost_cny": node.get("cost_cny"),
+            "duration_min": node.get("duration_min"),
+            "recipient": node.get("recipient"),
+            "data_classes": node.get("data_classes", []),
+            "terminal": bool(node.get("terminal_output", False)),
+        })
+    return json.dumps(compact_nodes, ensure_ascii=False, separators=(",", ":"))
+
+
 def chat_messages(row: dict[str, Any]) -> list[dict[str, str]]:
     prompt = (
         "You are a typed constraint compiler for tool-planning tasks in a trusted data space. "
@@ -47,6 +72,8 @@ def chat_messages(row: dict[str, Any]) -> list[dict[str, str]]:
         "carries no constraint. Never invent a constraint that the query does not support.\n"
         "Output JSON only, matching this schema:\n" + SCHEMA_HINT + "\n"
         "Available role vocabulary: " + json.dumps(row["available_roles"], ensure_ascii=False) + "\n"
+        "Task-space node metadata for scope binding (do not invent nodes): "
+        + task_space_context(row) + "\n"
         "User query: " + row["query"] + "\n"
         "JSON:"
     )
@@ -102,15 +129,35 @@ def normalise_prediction(value: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def require_finite_loss(loss: Any, *, torch: Any, epoch: int, example_index: int, optimizer_step: int) -> None:
+    if not torch.isfinite(loss.detach()).all():
+        raise FloatingPointError(
+            f"non-finite loss before backward at epoch={epoch}, example={example_index}, "
+            f"optimizer_step={optimizer_step}: {loss.detach().item()}"
+        )
+
+
 def constraint_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    # Scope is a set of bound roles; model output order must not affect matching.
+    scope = item.get("scope", [])
+    if isinstance(scope, list):
+        scope_key = tuple(sorted(scope))
+    else:
+        scope_key = (scope,)
     return (
         item.get("type"), item.get("state"), item.get("severity"),
-        tuple(item.get("scope", [])),
+        scope_key,
         json.dumps(item.get("params") or {}, sort_keys=True, separators=(",", ":")),
     )
 
 
 def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: list[str]) -> dict[str, Any]:
+    if not (len(rows) == len(predictions) == len(raw)):
+        raise ValueError(
+            "score inputs must have equal lengths: "
+            f"rows={len(rows)}, predictions={len(predictions)}, raw={len(raw)}"
+        )
+
     state_correct = 0
     state_correct_by_variant: dict[str, int] = {}
     count_by_variant: dict[str, int] = {}
@@ -119,67 +166,131 @@ def score(rows: list[dict[str, Any]], predictions: list[dict[str, Any]], raw: li
     per_type: dict[str, dict[str, int]] = {}
     per_difficulty: dict[str, dict[str, int]] = {}
     evidence_exact = evidence_total = 0
+    difficulty_unattributed_fp = 0
     parse_ok = 0
     for row, pred, raw_text in zip(rows, predictions, raw):
         gold = row["gold"]
-        state_correct += int(pred.get("query_state") == gold["query_state"])
+        valid_json = extract_json(raw_text) is not None
+        state_correct += int(valid_json and pred.get("query_state") == gold["query_state"])
         state_correct_by_variant[row["variant"]] = state_correct_by_variant.get(row["variant"], 0) + int(
-            pred.get("query_state") == gold["query_state"]
+            valid_json and pred.get("query_state") == gold["query_state"]
         )
         count_by_variant[row["variant"]] = count_by_variant.get(row["variant"], 0) + 1
-        parse_ok += int(extract_json(raw_text) is not None)
-        v = per_variant.setdefault(row["variant"], {"n": 0, "tp": 0, "fp": 0, "fn": 0})
+        parse_ok += int(valid_json)
+        v = per_variant.setdefault(
+            row["variant"],
+            {"n": 0, "tp": 0, "fp": 0, "fn": 0,
+             "empty_gold": 0, "empty_pred": 0, "empty_correct": 0},
+        )
         v["n"] += 1
-        got_keys = [constraint_key(c) for c in pred.get("constraints", [])]
-        want_keys = [constraint_key(c) for c in gold.get("constraints", [])]
-        matched = sum(min(got_keys.count(k), want_keys.count(k)) for k in set(got_keys) | set(want_keys))
+        got = [c for c in pred.get("constraints", []) if isinstance(c, dict)]
+        want = [c for c in gold.get("constraints", []) if isinstance(c, dict)]
+        got_keys = [constraint_key(c) for c in got]
+        want_keys = [constraint_key(c) for c in want]
+        pred_indices_by_key: dict[tuple[Any, ...], list[int]] = {}
+        for pi, key in enumerate(got_keys):
+            pred_indices_by_key.setdefault(key, []).append(pi)
+        matched_pairs: list[tuple[int, int]] = []
+        unmatched_gold: list[int] = []
+        for gi, key in enumerate(want_keys):
+            matches = pred_indices_by_key.get(key, [])
+            if matches:
+                matched_pairs.append((gi, matches.pop(0)))
+            else:
+                unmatched_gold.append(gi)
+        matched_gold = {gi for gi, _ in matched_pairs}
+        matched_pred = {pi for _, pi in matched_pairs}
+        unmatched_pred = [pi for pi in range(len(got)) if pi not in matched_pred]
+        matched = len(matched_pairs)
+        row_fp = len(unmatched_pred)
+        row_fn = len(unmatched_gold)
         v["tp"] += matched
-        v["fp"] += len(got_keys) - matched
-        v["fn"] += len(want_keys) - matched
+        v["fp"] += row_fp
+        v["fn"] += row_fn
+        v["empty_gold"] += int(not want)
+        v["empty_pred"] += int(not got)
+        v["empty_correct"] += int(valid_json and not want and not got)
         true_positive += matched
-        false_positive += len(got_keys) - matched
-        false_negative += len(want_keys) - matched
-        for gk, g in zip(want_keys, gold.get("constraints", [])):
+        false_positive += row_fp
+        false_negative += row_fn
+
+        for gi, g in enumerate(want):
             t = per_type.setdefault(g["type"], {"n": 0, "tp": 0, "fp": 0, "fn": 0})
             t["n"] += 1
-            t["tp"] += int(gk in got_keys)
-            t["fn"] += int(gk not in got_keys)
-        for pk, p in zip(got_keys, pred.get("constraints", [])):
-            if pk not in want_keys:
-                t = per_type.setdefault(p.get("type", "?"), {"n": 0, "tp": 0, "fp": 0, "fn": 0})
-                t["fp"] += 1
+            t["tp"] += int(gi in matched_gold)
+            t["fn"] += int(gi not in matched_gold)
+        for pi in unmatched_pred:
+            p = got[pi]
+            t = per_type.setdefault(p.get("type", "?"), {"n": 0, "tp": 0, "fp": 0, "fn": 0})
+            t["fp"] += 1
+
         if row["variant"] == "implicit" and row["hint_meta"]:
-            for m, g in zip(row["hint_meta"], gold.get("constraints", [])):
-                d = per_difficulty.setdefault(f"d{m['difficulty']}", {"n": 0, "tp": 0, "fp": 0, "fn": 0})
+            meta = row["hint_meta"]
+            if len(meta) != len(want):
+                raise ValueError(
+                    f"hint_meta/gold constraint length mismatch for {row.get('sample_id')}: "
+                    f"hint_meta={len(meta)}, gold_constraints={len(want)}"
+                )
+            for gi, (g, m) in enumerate(zip(want, meta)):
+                d = per_difficulty.setdefault(
+                    f"d{m['difficulty']}", {"n": 0, "tp": 0, "fp": 0, "fn": 0}
+                )
                 d["n"] += 1
-                gk = constraint_key(g)
-                d["tp"] += int(gk in got_keys)
-                d["fn"] += int(gk not in got_keys)
-        if gold.get("constraints") and pred.get("constraints"):
-            evidence_exact += int(
-                pred["constraints"][0].get("evidence_span") == gold["constraints"][0].get("evidence_span")
-            )
+                d["tp"] += int(gi in matched_gold)
+                d["fn"] += int(gi not in matched_gold)
+
+            # Attribute a near-miss FP to a same-type gold cue; truly extra types stay visible separately.
+            available_gold = set(unmatched_gold)
+            for pi in unmatched_pred:
+                candidates = [gi for gi in sorted(available_gold) if want[gi].get("type") == got[pi].get("type")]
+                if candidates:
+                    gi = candidates[0]
+                    available_gold.remove(gi)
+                    d = per_difficulty[f"d{meta[gi]['difficulty']}"]
+                    d["fp"] += 1
+                else:
+                    difficulty_unattributed_fp += 1
+
+        for gi, pi in matched_pairs:
             evidence_total += 1
+            evidence_exact += int(got[pi].get("evidence_span") == want[gi].get("evidence_span"))
     n = max(len(rows), 1)
 
     def prf(tp: int, fp: int, fn: int) -> dict[str, Any]:
-        p = tp / max(tp + fp, 1)
-        r = tp / max(tp + fn, 1)
-        return {"precision": p, "recall": r, "f1": 2 * p * r / max(p + r, 1e-12)}
+        p = tp / (tp + fp) if tp + fp else None
+        r = tp / (tp + fn) if tp + fn else None
+        f1 = 2 * tp / (2 * tp + fp + fn) if 2 * tp + fp + fn else None
+        return {"precision": p, "recall": r, "f1": f1}
 
-    precision = true_positive / max(true_positive + false_positive, 1)
-    recall = true_positive / max(true_positive + false_negative, 1)
     return {
+        "metrics_version": "e1_score_v3",
         "records": len(rows),
         "state_accuracy": state_correct / n,
         "state_accuracy_by_variant": {
             k: state_correct_by_variant[k] / max(count_by_variant[k], 1) for k in count_by_variant
         },
         "constraint_micro": prf(true_positive, false_positive, false_negative),
-        "per_variant": {k: {**prf(v["tp"], v["fp"], v["fn"]), "records": v["n"]} for k, v in per_variant.items()},
+        "per_variant": {
+            k: {
+                **prf(v["tp"], v["fp"], v["fn"]),
+                "records": v["n"],
+                "empty_set_accuracy": v["empty_correct"] / max(v["n"], 1),
+                "gold_empty_records": v["empty_gold"],
+                "prediction_empty_records": v["empty_pred"],
+            }
+            for k, v in per_variant.items()
+        },
         "per_type": {k: {**prf(v["tp"], v["fp"], v["fn"]), "gold_records": v["n"]} for k, v in per_type.items()},
-        "per_difficulty_implicit": {k: {**prf(v["tp"], v["fp"], v["fn"]), "records": v["n"]} for k, v in per_difficulty.items()},
-        "evidence_exact_rate": evidence_exact / max(evidence_total, 1),
+        "per_difficulty_implicit": {
+            k: {
+                "tp": v["tp"], "fp": v["fp"], "fn": v["fn"],
+                **prf(v["tp"], v["fp"], v["fn"]),
+                "gold_constraints": v["n"],
+            }
+            for k, v in per_difficulty.items()
+        },
+        "per_difficulty_unattributed_fp": difficulty_unattributed_fp,
+        "evidence_exact_rate": evidence_exact / evidence_total if evidence_total else None,
         "evidence_records": evidence_total,
         "json_parse_rate": parse_ok / n,
     }
@@ -222,15 +333,16 @@ def generate_batched(model: Any, tokenizer: Any, rows: list[dict[str, Any]], max
     return predictions, raw_outputs
 
 
-def load_model(model_path: str) -> tuple[Any, Any]:
+def load_model(model_path: str, precision: str) -> tuple[Any, Any]:
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
+    torch_dtype = torch.bfloat16 if precision == "bf16" else torch.float16
     model = AutoModelForCausalLM.from_pretrained(
-        model_path, torch_dtype=torch.float16, device_map="cuda", trust_remote_code=True,
+        model_path, torch_dtype=torch_dtype, device_map="cuda", trust_remote_code=True,
     )
     model.eval()
     return model, tokenizer
@@ -286,25 +398,36 @@ def train_lora(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: arg
             continue
         examples.append((prefix + completion, [-100] * len(prefix) + completion))
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate)
+    trainable_parameters = [p for p in model.parameters() if p.requires_grad]
     rng = random.Random(args.seed)
     steps_per_epoch = len(examples) // args.gradient_accumulation_steps
     total_steps = steps_per_epoch * args.epochs
+    target_steps = total_steps if args.smoke_train_steps is None else min(total_steps, args.smoke_train_steps)
     done = 0
-    print(json.dumps({"train_examples": len(examples), "planned_optimizer_steps": total_steps}))
-    for _epoch in range(args.epochs):
+    print(json.dumps({"train_examples": len(examples), "planned_optimizer_steps": total_steps,
+                      "target_optimizer_steps": target_steps}))
+    for epoch in range(args.epochs):
         rng.shuffle(examples)
         accumulation = 0
-        for ids_list, labels_list in examples:
-            if done >= total_steps:
+        for example_index, (ids_list, labels_list) in enumerate(examples):
+            if done >= target_steps:
                 break
             ids = torch.tensor([ids_list], dtype=torch.long, device=device)
             labels = torch.tensor([labels_list], dtype=torch.long, device=device)
             out = model(input_ids=ids, attention_mask=torch.ones_like(ids), labels=labels)
+            require_finite_loss(
+                out.loss, torch=torch, epoch=epoch + 1,
+                example_index=example_index, optimizer_step=done + 1,
+            )
             (out.loss / args.gradient_accumulation_steps).backward()
             accumulation += 1
             if accumulation == args.gradient_accumulation_steps:
-                torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                torch.nn.utils.clip_grad_norm_(trainable_parameters, 1.0, error_if_nonfinite=True)
                 optimizer.step()
+                if any(not torch.isfinite(parameter.detach()).all() for parameter in trainable_parameters):
+                    raise FloatingPointError(
+                        f"non-finite trainable parameter after optimizer_step={done + 1}"
+                    )
                 optimizer.zero_grad(set_to_none=True)
                 accumulation = 0
                 done += 1
@@ -312,8 +435,12 @@ def train_lora(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: arg
                     print(json.dumps({"optimizer_step": done, "loss": float(out.loss.detach().cpu()),
                                       "elapsed_s": round(time.time() - args._t0, 1)}))
         if accumulation:
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            torch.nn.utils.clip_grad_norm_(trainable_parameters, 1.0, error_if_nonfinite=True)
             optimizer.step()
+            if any(not torch.isfinite(parameter.detach()).all() for parameter in trainable_parameters):
+                raise FloatingPointError(
+                    f"non-finite trainable parameter after optimizer_step={done + 1}"
+                )
             optimizer.zero_grad(set_to_none=True)
             done += 1
     model.eval()
@@ -335,9 +462,14 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=384)
     parser.add_argument("--eval-batch-size", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--precision", choices=("fp16", "bf16"), default="bf16")
+    parser.add_argument("--smoke-train-steps", type=int, default=None,
+                        help="Run only this many optimizer steps and skip saving/evaluation; for launch checks.")
     parser.add_argument("--skip-zeroshot", action="store_true")
     parser.add_argument("--skip-train", action="store_true")
     args = parser.parse_args()
+    if args.smoke_train_steps is not None and args.smoke_train_steps < 1:
+        parser.error("--smoke-train-steps must be at least 1")
 
     model_name = Path(args.model).name
     args.out_dir = args.out_dir or ROOT / "outputs" / "e1" / model_name
@@ -354,7 +486,7 @@ def main() -> None:
     torch.manual_seed(args.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.seed)
-    model, tokenizer = load_model(args.model)
+    model, tokenizer = load_model(args.model, args.precision)
 
     results: dict[str, Any] = {"model_path": args.model, "seed": args.seed,
                                "config": {k: v for k, v in vars(args).items() if not k.startswith("_")}}
@@ -362,7 +494,36 @@ def main() -> None:
     if not args.skip_zeroshot:
         results["zeroshot"] = evaluate_all(model, tokenizer, data, args, "zeroshot", args.out_dir)
     if not args.skip_train:
-        model = train_lora(model, tokenizer, train_rows, args)
+        try:
+            model = train_lora(model, tokenizer, train_rows, args)
+        except Exception as exc:
+            failure = {
+                "model_path": args.model,
+                "seed": args.seed,
+                "precision": args.precision,
+                "failure_type": type(exc).__name__,
+                "failure": str(exc),
+                "failed_at_seconds": round(time.time() - args._t0, 1),
+                "adapter_saved": False,
+            }
+            (args.out_dir / "training_failure.json").write_text(
+                json.dumps(failure, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+            )
+            raise
+        if args.smoke_train_steps is not None:
+            smoke = {
+                "model_path": args.model,
+                "seed": args.seed,
+                "precision": args.precision,
+                "optimizer_steps": args.smoke_train_steps,
+                "requested_smoke_steps": args.smoke_train_steps,
+                "config": {k: v for k, v in vars(args).items() if not k.startswith("_")},
+            }
+            (args.out_dir / "smoke.json").write_text(
+                json.dumps(smoke, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8"
+            )
+            print(json.dumps({"smoke_complete": True, "saved": str(args.out_dir / "smoke.json")}))
+            return
         adapter_dir = args.out_dir / "adapter"
         model.save_pretrained(adapter_dir)
         results["trained"] = evaluate_all(model, tokenizer, data, args, "trained", args.out_dir)

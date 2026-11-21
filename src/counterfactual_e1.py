@@ -27,7 +27,13 @@ def freeze(value: Any) -> str:
 
 
 def key(item: dict[str, Any]) -> tuple[str, ...]:
-    return tuple(freeze(item.get(field)) for field in ("type", "state", "severity", "scope", "params"))
+    scope = item.get("scope")
+    if isinstance(scope, list):
+        scope = sorted(scope)
+    return tuple(
+        freeze(value)
+        for value in (item.get("type"), item.get("state"), item.get("severity"), scope, item.get("params"))
+    )
 
 
 def prf(tp: int, fp: int, fn: int) -> dict[str, float | int]:

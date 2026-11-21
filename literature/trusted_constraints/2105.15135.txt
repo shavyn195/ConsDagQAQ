@@ -1,0 +1,1359 @@
+                                                                                                                                                                                       1
+
+
+
+
+                                                      Reputation Bootstrapping for Composite
+                                                              Services using CP-nets
+                                                                              Sajib Mistry and Athman Bouguettaya, Fellow, IEEE
+
+                                              Abstract—We propose a novel framework to bootstrap the reputation of on-demand service compositions. On-demand compositions
+                                              are usually context-aware and have little or no direct consumer feedback. The reputation bootstrapping of single or atomic services do
+                                              not consider the topology of the composition and relationships among reputation-related factors. We apply Conditional Preference
+                                              Networks (CP-nets) of reputation-related factors for each of component services in a composition. The reputation of a composite
+                                              service is bootstrapped by the composition of CP-nets. We consider the history of invocation among component services to determine
+                                              reputation-interdependence in a composition. The composition rules are constructed using the composition topology and four types of
+arXiv:2105.15135v1 [cs.AI] 27 May 2021
+
+
+
+
+                                              reputation-influence among component services. A heuristic-based Q-learning approach is proposed to select the optimal set of
+                                              reputation-related CP-nets. Experimental results prove the efficiency of the proposed approach.
+
+                                              Index Terms—Reputation Bootstrapping, Composite Services, CP-nets, Reputation propagation heuristics, Combinatorial selection.
+                                                                                                                    F
+
+                                         1    I NTRODUCTION
+
+
+                                         R    EPUTATION is an important Quality of Service (QoS)
+                                              in a service-oriented environment [1], [2], [3]. Valid
+                                         consumers’ direct feedback or ratings are often used as a
+                                                                                                                        aware and adapt to the changes in user requirements [6], [11].
+                                                                                                                        If a single service does not have the functionality to meet a
+                                                                                                                        consumer’s requirements, related services are composed on
+                                         reputation indicator [4], [5] to select the reputable services.                the fly [7]. It is challenging to access the reputation of on-
+                                         However, direct consumer feedback is not usually avail-                        demand composite services as they usually have little or no
+                                         able for new on-demand compositions [6]. An on-demand                          direct consumer feedback.
+                                         composition request usually results in a new topology by                           Our objective is to build a reputation bootstrap framework
+                                         adding newly published component services or removing                          for a new on-demand composite service. We assume that the
+                                         some of the existing services [7]. It may be unfair to interpret               concrete implementations of atomic services are already se-
+                                         a lower or higher reputation for an on-demand composition                      lected in a given on-demand composition topology. This
+                                         as the duration of the composition is not long enough for                      assumption clarifies that we focus only on the reputation
+                                         accumulating proper feedback from users.                                       bootstrapping of on-demand compositions. The selection of
+                                             Reputation bootstrapping is an efficient process that per-                 the most reputable composition is outside the focus of the paper.
+                                         forms an indirect assessment of reputation when users’ feed-                   Note that the topology remains static, i.e., the topology
+                                         back is not available [2], [8]. Various reputation-related factors             does not change at the time of the reputation bootstrapping.
+                                         such as the reputation of the service provider, community                      The static topology could be used in real-world to assess
+                                         or interrelated services are used for the indirect assessment.                 the reputation of a new composition plan at the design
+                                         The reputation of the service provider is used to predict                      level before its actual implementation [5], [7]. For example,
+                                         the future performance of a new service [8], [9]. Another                      a medical patient may require a highly reputable “medi-
+                                         approach [10] assumes that the reputation of a new service                     cal service” which is composed of “doctor service” and a
+                                         may follow the reputation trend of functionally similar                        “pathology service”. Let us assume that an agent proposes
+                                         services. In this paper, a service is considered similar to                    a composition plan using “Sydney doctor” and “Doglus
+                                         another service if their functional properties closely match.                  Pathology” services which are concrete implementations of
+                                             The on-demand service composition is a natural phe-                        “doctor service” and a “pathology service” respectively. An
+                                         nomenon in popular service markets, e.g., Web, Cloud,                          effective approach is required to determine the reputation of
+                                         Micro-services, and Business Process Management [11]. The                      the composition plan on the fly which will help the patient
+                                         service environments are characterized by changing condi-                      to make an informed decision.
+                                         tions in the explosive growth of new services, users’ long-                        Let us assume, a new software company plans to de-
+                                         term QoS requirements, and QoS fluctuations in existing                        velop an open-source Hospital Management System (HMS)
+                                         services [1]. Usually atomic services collaboratively create                   as a Github repository. A Hospital Management System
+                                         on-demand value-added services following a composition                         (HMS) is enterprise software that manages and runs all the
+                                         topology. On-demand compositions are usually context-                          activities which are involved in running a healthcare facility.
+                                                                                                                        Fig. 1 represents the composition topology of an on-demand
+                                                                                                                        HMS. If two services are related in a composition, we use di-
+                                         •   S. Mistry is with School of Electrical Engineering, Computing and
+                                             Mathematical Sciences, Curtin University, and A. Bouguettaya is with       rectional edges, i.e., arrows to represent such relationships.
+                                             the School of Computer Science, University of Sydney, Australia.           The arrow from a service X to another service Y represents
+                                             E-mail: sajib.mistry@curtin.edu.au, athman.bouguettaya@sydney.edu.au       that X is a submodule of Y , i.e., X should be executed first
+                                                                                                                        to complete the execution of Y . In Fig. 1, the drug service
+                                                                                                                               2
+      Imaging       Drug         Surveillance      Device
+      Service      Service         system         Interface       service usually has multiple reputation-related factors (e.g.,
+                                                                  its provider, the community, and similar services) [8]. We use
+                                                                  Conditional Preference Networks (CP-nets) [14] to model
+                                                                  the relative importance among reputation-related factors.
+      Medical      Laboratory      Medical      Distributed       Usually, there exists no prior knowledge about the relative
+      Record        Service        Billing      Database
+                                                                  importance of reputation-related factors in bootstrapping
+                                                                  reputation of a service. Hence, we generate several candi-
+Fig. 1: A composition topology for the Hospital Management        date CP-nets to represent the reputation of a component
+System (HMS)                                                      service. As a result, the reputation bootstrapping problem is
+                                                                  transformed into the composition of CP-nets. There are two
+(DS) requires electronic medical records (EMR), results from      important steps in such compositions: 1) deriving composition
+a laboratory (LS) and a surveillance system (SS) to prescribe     rules, and 2) selection of candidate CP-nets. We determine the
+medications. The surveillance system (SS) is dependent on         composition rules using the history of service invocations
+the device interface (DI) and data sharing platform service       and the direction of reputation interdependence. For exam-
+(DP). Similarly, the medical billing service (MB) can generate    ple, if a highly reputable service invokes a new service, the
+invoices once the drug service (DS) and surveillance service      reputation of the new service may benefit and be treated at
+(SS) finish their tasks for a specific patient. The software      a high-level reputation. If a new service invokes a highly
+company identifies two possible implementations of HMS            reputable service in a composition, it may not have a higher
+by composing the newly published open-source software             influence on the reputation of the new service.
+available in Github, i.e., HM S A = {GNU Health, Open-                We explore four different CP-nets composition ap-
+eobs, OpenEP, VTK, OpenELIS, OpenMBS, FHIRBase, Ope-              proaches: a) brute-force approach, b) random approach, c)
+nAPS} and HM S B = {FreeMD, echOpen, OpenHim, ITK,                domain-best approach, and d) reduced topology approach.
+Bika, Billing Pro, Mirth Connect, Murgen}. The software           The naive or brute-force composition approach generates
+company wants to know which on-demand composition is              all possible combinations of candidate CP-nets and then
+more reputable, i.e., A or B ?                                    applies linear composition rules, i.e., the mean reputation
+    The reputation bootstrapping of composite services dif-       of all candidate services. This naive approach does not con-
+fers from the reputation bootstrapping of single or atomic        sider the composition topology and the reputation interdepen-
+services. To the best of our knowledge, existing research         dence among the component services. The random approach
+is mostly focused on reputation bootstrapping of atomic           selects CP-nets randomly from a set of candidate CP-net.
+services [4], [10], [12]. In contrast, the reputation of a        The domain-best approach selects the CP-nets using domain
+composite service depends on the aggregated reputation            knowledge, i.e., semantic annotations, semantic keywords
+of its component services [13]. Linear aggregation models         similarity, and the specification matching. We apply the
+are proposed for bootstrapping composite services without         reputation influence factor (RIF) of a component service
+considering the dynamic performance of component ser-             as the heuristic to reduce the number of component ser-
+vices in different contexts [2], [8], [13]. However, aggregat-    vices in a composition in the reduced topology approach.
+ing reputation-related factors of component services is not       The reduced topology approach transforms the selection
+straight-forward due to the service topology and reputation in-   of optimal CP-nets as a sequential decision process. The
+terdependence among component services. The reputation in-        proposed reduced topology approach applies reinforcement
+terdependence refers to the phenomenon that the reputation        learning (Q-learning) using the reputation-interdependence
+of a component service in a composition is dependent on its       as the optimal policies are not available supervised learning.
+directional interactions with other component services. For       As machine-learning approaches are proved to be efficient
+example, GNU Health and Open-eobs in the composition              in solving a sequential decision process [15], we focus on
+HM S A may be individually more reputable than FreeMD             the model-free learning attempts to learn the optimal policy
+and echOpen in the composition HM S B . In such case, the         through trial-error (e.g., Q-learning [16]).
+composition HM S A is more reputable than the composition             The key contributions of the paper are as follows:
+HM S B using the linear aggregation rules. However, we              1) A CP-nets based model to represent relative importance
+may find a different result when we consider the reputation            among reputation-related factors.
+interdependence between reputation-related factors. There           2) Determining reputation interdependence among the
+may exist an inverse reputation interdependence between                component services using the history of invocations.
+open and custom standards. The community of GNU health              3) A heuristic-based reduced topology approach for repu-
+usually works with custom standards and has expertise                  tation bootstrapping using Q learning.
+in desktop-based solutions. The community of Open-eobs
+usually work with open standards and has expertise in             2   R ELATED W ORK
+cloud-based solutions. Due to the community mismatch              The reputation bootstrapping of an atomic service is some-
+and inverse reputation interdependence, the composition           what related to the generic cold-start problem present in
+HM S A may become less reputable than the composition             recommendation systems [17]. In recommendation systems,
+HM S B . To the best of our knowledge, the reputation in-         the cold start problem refers to making recommendations
+terdependence and service topology are not considered to          for a new user or a new item that has no rating data. When
+bootstrap composite reputation in the existing literature.        the rating data is sparse, two users or items are unlikely
+    The reputation interdependence varies in different layers     to have common ratings. It is difficult to make recommen-
+of the reputation-related factors. For example, a component       dations using Collaborative Filtering (CF) in the cold start
+                                                                                                                                3
+
+situation. Different approaches are proposed to solve the         reputation interdependence in the topology to design the
+cold start problem, e.g., asking for explicit ratings, creating   reputation representation model. It is possible to represent
+users’ demographics and attribute-based techniques [18].          reputation interdependence among component services by
+     Similar to the recommendation systems, the cold start        aggregating BNs, PCP-nets, or GAI-networks with the cor-
+situation may be observed to determine the reputation of          relations among reputation related factors. However, the
+a new service. As there is no history of the service’s per-       learned correlations may not be applicable to a new com-
+formance, it requires reputation bootstrapping approaches.        position as it may have a completely new set of component
+To the best of our knowledge, existing work on reputation         services. The reputation interdependence is highly dynamic
+bootstrapping focuses on atomic services. The approaches are      in new composition typologies. It is also challenging to
+divided into three categories:                                    learn correlations among reputation related factors for a
+• Characteristic-based approaches: This category focuses on       new composition without historical data. Hence, BN, PCP-
+   reputation-related factors [8] and uses inheritance and re-    nets, or GAI-networks approaches are only effective for
+   ferral mechanisms to bootstrap reputation of a new service     bootstrapping new composite services if a history pool of
+   [9]. A trust framework is proposed in [19] that consid-        similar composition topology is used.
+   ers community context factors for establishing trust in            Reputation-related factors of each component services
+   the peer-to-peer electronic communities. The core idea in      are determined using the layered-based approach of boot-
+   characteristic-based approaches is to find the reputation-     strapping reputation for a single service [2], [8]. As required
+   related factors and mining association rules between the       information, i.e., reputation-related factors are already gen-
+   final reputation and their factors. However, these ap-         erated, the cold-start situation does not apply to bootstrap
+   proaches do not explain how the reputation related factors     the composite reputation. We focus on the existing ap-
+   are related to the composite reputation.                       proaches for QoS-aware service compositions as reputation is
+• Guarantee-based approaches: Service providers advertise a       a QoS or non-functional property of services. Linear Aggre-
+   form of service level agreements (SLA) that are used to        gation (LA) rules are usually applied on the QoS attributes
+   bootstrap the reputation [20]. A time-series prediction        (e.g., response time, cost, throughput) to form the global
+   algorithm is proposed to determine the SLA of a new            objective functions in the QoS-aware compositions [25].
+   service in [9]. A learning-based bootstrapping approach        Such linear aggregations could not be applied to bootstrap
+   are proposed in [21] using Neural Network and Linear Re-       the composite reputation for two main reasons: 1) initial
+   gression respectively. Different frameworks are proposed       reputations of the component services are not available
+   to determine the reputation of cloud services where the        (they require bootstrapping approaches) and 2) composite
+   SLAs are dynamic and change in the long-term period            reputation is non-linearly correlated with the composition
+   [21]. Setting up a service level agreement may not be          topology and reputation-related factors [8]. Regression anal-
+   possible for new service providers due to the lack of          ysis is usually applied to predict future performance us-
+   history or records on service performance. The SLA for a       ing historical data. A Linear Regression (LR) approach is
+   composite service may not be computed based on the ag-         proposed to predict the popularity of a Github repository
+   gregated SLAs of the corresponding component services.         [26]. Such approaches may not be applicable for on-demand
+   As different providers have different policies for their       compositions as they do not consider the correlations among
+   SLAs, it may not be possible to synchronize the policies in    the composite reputation, composition topology and the
+   the runtime.                                                   influence of reputation-related factors.
+• Trial-based approaches: A service provider has trial peri-
+   ods to build its reputation according to the trail-base        3   R EPUTATION B OOTSTRAPPING F RAMEWORK
+   approaches [2]. A machine-learning approach is proposed        Our target is to design a reputation bootstrap framework
+   in [22] to model the trust patterns of the service perfor-     using the composition topology and the reputation inter-
+   mance. The model predicts the services’ future perfor-         dependence among the reputation-related factors. The key
+   mance as the bootstrapped reputation. The single trust         reputation-related factors [8] are identified as follows:
+   population statistics are associated with every new entity     • Provider: A reputable provider has a higher probability to
+   in some bootstrapping approaches [23]. However, these            offer the expected service [8]. In the context of Github, a
+   approaches are not feasible in composition scenarios as          contributor to a repository may be regarded as a provider.
+   typically on-demand composite services do not have trial       • Community: A service belonging to a reputable community
+   periods.                                                         has a higher probability of providing good services [19].
+     As the qualitative reputation is transformed into a quan-      In Github, a community is the organizer of a repository.
+titative value to enable comparisons and rankings in a com-       • Interrelated Services: Services are often consumed in a
+position, graphical models with quantitative probabilities,         bundle. In the context of medical services, a pathology
+e.g., Bayesian Network (BN), probabilistic CP-nets (PCP-            service may be recommended by the doctor. Hence, the
+nets) or GAI-networks [24] may be used for modeling                 reputation of the pathology service may be propagated to
+reputation using the reputation related factors. Such models        the reputation of the doctor. In the context of Github, two
+require historical data or observations to learn the right          projects A and B may be used by the same community of
+graphical representation and the corresponding probabil-            users (They are called watchers in the context of Github).
+ities to represent the reputation of a single component             The project watchers usually rate similar projects. If there
+service. However, there exists no prior knowledge about             are two interrelated projects A and B , their interrelation
+the relative importance of reputation-related factors in boot-      can be computed using the Mutual Information score (MI-
+strapping reputation of a service. We also consider the             Score) using the number of their share watchers (X and Y
+        A New Composition                                                      Determining           Devising                            4
+                                 Determining the      Generating                                                     Finding the
+         A      B      D                                                       Reputation           reputation
+                                    reputation-     Candidate CP-                                                      optimal
+                                                                              Interdepence         composition
+                                  related factors   nets for A, B, C,                                               composition of
+                                                                             among A, B, C,      rules using CP-
+                C               for A, B, C and D        and D                                                        CP-nets
+                                                                                  and D                nets
+
+                            Fig. 2: The framework to bootstrap the reputation of a composite service
+  refer to the Number of watchers in A and B respectively,              that is associated with the conditional preference table to
+  Z refers to the number of shared watchers in A and B )                hold the relative ordering of qualitative preferences in a
+  and I refers to number of invocations among A and B ) in              composition. To the best of our knowledge, existing ap-
+  Equation 1. If they are highly interrelated, the reputation           proaches do not describe how CP-nets could be used to
+  of A may be used to bootstrap the reputation of B or                  represent the reputation of a service. As we do not consider
+  vice versa. Note that the efficiency of a metric depends on           a history pool of composition topology and their composite
+  the domain of the service and available information. For              reputation values for the supervised-learning, we design
+  example, Hybrid Similarity (HSim) is used to link similar             the bootstrapping framework using the flexible graphical
+  web pages or scientific papers based on keywords [27].                model, i.e., CP-nets. In future, we will explore model-based
+                                            Z ×I                        approaches to determine the composite reputation when a
+               Interrelation(A, B) = log2                  (1)          history of composition topologies is available.
+                                           X ×Y
+• Service meta-information: The reputation of the service can
+                                                                            Different CP-nets could be constructed varying the rel-
+  be associated with the meta-information. In the context of            ative importance due to no prior knowledge about the
+  Github, a repository can contain meta-information such as             relative importance of reputation-related factors. Each com-
+  documentations, Wikis, Issue tracking and Pull requests.              ponent service may have multiple of candidate CP-nets. The
+  The quality of such meta-information may be used to                   challenge is the selection of the optimal set of CP-nets for
+  assess the reputation of a newly published repository.                each component service. As the solution space is relatively
+    The reputation-related factors may have different de-               large, our objective is to find heuristics to reduce the search
+grees of importance in representing a service’s reputation.             space in run-time with higher accuracy. Fig. 2 depicts the
+For example, the reputation of a provider may be more im-               high-level architecture of the framework. We identify the
+portant than the other reputation-related factors. In medical           following key steps:
+services, the educational backgrounds and experience of a               • Step 1 - Input: the framework will take a composition of
+doctor may be more important than the hospital location to                component services as input. We consider the following
+assess the doctor’s reputation. In some cases, the commu-                 types of composition topologies: a) sequential, b) parallel,
+nity may be the most important reputation-related factor.                 c) loop, and d) hybrid - combinations of sequential, parallel
+In business services, the reputation of the organization is               and loop [29], [30]. For example, a parallel composition of
+usually more important than their employees’ educational                  four component services, A, B , C , and D are considered
+backgrounds. We assume that there exists no historical dataset            as the input in Fig. 2.
+containing quantitative values of reputation-related factors. As        • Step 2 - Determining Reputation-related factors for component
+an on-demand composition consists newly published com-                    services: we assume that the reputation-related factors are
+ponent services, it is unlikely that a historical dataset could           mined by existing approaches or identified by an expert for an
+be formed for the new services in a short-period of time. We              abstract service. For example, the provider and the commu-
+identify the following challenges:                                        nity may be the identified reputation related factors for
+• Qualitative representation of reputation of a new service: Due          the component service A. The interrelated services and
+  to lack of direct feedback of user ratings, bootstrapped                the meta-information of service popularity may be the identi-
+  reputation is usually represented using reputation-related              fied reputation related factors for the component services
+  factors. As reputation is qualitative, it is natural to apply           B and C respectively. We incorporate data-driven ap-
+  qualitative graphical models to capture the relative impor-             proaches [8] or domain experts to identify the reputation-
+  tance of reputation-related factors to represent reputation.            related factors and only focus on applying CP-nets to
+  To the best of our knowledge, existing bootstrapping                    bootstrap the composite reputation (i.e., steps 3 to 5) in
+  approaches do not explore the application of graphical                  this paper. Note that domain expert is not a mandatory
+  models to represent reputation.                                         requirement to solve step 2.
+• Reputation Composition Rules using the Reputation Inter-              • Step 3 - Generating candidate CP-nets that represent rep-
+  dependence: The Linear Aggregation (LA) [25] may not                    utation: One critical issue using CP-nets to represent
+  applicable in a composition as it considers each com-                   reputation is that it does not quantify the intensity of
+  ponent services independently. However, the component                   the reputation-related factors. One solution is to apply
+  services are dependent and there exists reputation inter-               weights on the edges of CP-nets [31] or probabilities in
+  dependence among their factors. The key challenge is to                 PCP-nets [24]. As we do not consider historical data on rela-
+  quantitatively determine reputation interdependence and                 tive importance, determining the weights or probabilities with
+  to apply weighted influence factor to devise reputation                 historical data is out of this research scope. We generate candi-
+  composition rules using graphical models.                               date CP-nets with random preferences among reputation
+    In contrast to the data-driven approach, flexible graphi-             related factors. For example, {CPa1 , CPa2 , ...., CPaN } is
+cal models are proposed to represent the qualitative pref-                the set of candidate CP-nets for A. Similar candidate
+erences of the users in a composition environment [28].                   services are also specified for B , C , and D.
+CP-nets [14] are represented using the dependency graph                 • Step 4 - Determining Reputation Interdependence among the
+                                                                       Attribute      Symbol   Semantic   Reputation                            5
+                                                                                                                               CP1
+                                                                                                          Value
+  component services: We compute the reputation depen-                                P1       High       0.71 to 1.0
+                                                                                                                         P   𝑃1 ≻ 𝑃2
+  dence using the history of invocation of services. For               Provider (P)  P2        Moderate   0.46 to 0.70
+  example, if B is mostly invoked by A in different com-                             P3        Low        0.01 to 0.45
+                                                                                     C1        High       0.71 to 1.0        𝑃1: 𝐶1 ≻ 𝐶2
+  positions over a period of time, it may be deduced that A             Community                                        C
+                                                                                     C2        Moderate   0.31 to 0.70       𝑃2: 𝐶1 ≻ 𝐶2
+                                                                            (C)
+  is highly dependent on B .                                                         C3        Low        0.01 to 0.30
+• Step 5 - Devising CP-nets composition rule to compute the                          I1        High       0.81 to 1.0
+                                                                       Inter-related                                         𝐶1: 𝐼1 ≻ 𝐼2 ≻ 𝐼3
+                                                                                     I2        Moderate   0.31 to .80    I
+  reputation: We focus on computing the composite rep-                  Services (I)                                         𝐶2: 𝐼1 ≻ 𝐼2 ≻ 𝐼3
+                                                                                     I3        Low        0.01 to 0.30
+  utation of a composition of CP-nets using the repu-
+                                                                                                 (a)                            (b)
+  tation interdependence. For example, the composition,
+  {CPa1 , CPb2 , CPc3 , CPd4 } will produce a composite rep-        Fig. 3: (a) Three semantic segmentation of reputation values
+  utation for the input composition in Figure 2.                    for reputation-related factors, and (b) A candidate CP-net to
+• Step 6 - Transforming composite reputation bootstrapping prob-    represent the reputation of a component service
+  lem into a CP-nets composition problem: we select the optimal
+  candidate CP-nets and computing the final reputation                 to Community (C ), the semantic interpretations of C is
+  value. In Figure 2, our target is to learning the selection          dependent on the semantic interpretations of P . The CPT
+  of the optimal set {CPai , CPbj , ...., CPck } that optimizes        (P 1 : C1  C2) in Fig. 3(b) implies that if the reputation
+  the objective function, i.e., reducing the error between             of the provider (P ) is “high”, the “high” reputation in
+  computed composite reputation using composition rules                the community is highly influential than the “moderate”
+  and the actual composite reputation (ground truth).                  reputation of a community.
+The detailed implementation of steps 3 to 6 are structured              A CP-nets which is acyclic in nature can generate the
+in the paper as follows. We define CP-nets to represent             total ordered () ranking of the preferences or configura-
+reputation (step 3) in Section 4. The step 4 in Fig. 2, i.e.,       tions [14]. Hence, we generate the relative order of the set
+determining the reputation interdependence among compo-             of reputation-related factor configurations in RCP using
+nent services is discussed in section 5.1. Section 5.2 describes    induced graph approach in [32]. Let us assume CRFi is the
+the step 5, i.e., devising the reputation composition rules         ith reputation configuration. < P 1, C1, I1 > is such config-
+using CP-nets and the reputation interdependence. Section           uration in Fig. 3(b). According to [14], CRFi  CRFj means
+5.3 describes how the composition rules (step 5) are applied        that a configuration CRFi is equally or more important than
+as the objective function in the step 6 to find the optimal         CRFj to bootstrap reputations. We use CRFi  CRFj
+composition of reputation-related CP-nets.                          when the reputation influence of CRFi is higher than
+                                                                    CRFj . Relative influence between two configurations could
+4   R EPUTATION M ODELING USING CP- NETS                            be indifferent, i.e., CRFi ∼ CRFj .
+Although provider, community, interrelated services and ser-            In Fig. 3(b), we present a CP-nets to represent the rep-
+vice meta-information are most common reputation-related            utation of a service. In CP 1, “provider” of a service is the
+factors, we generalize that there may be a set (RF ) of N           most important reputation-related factor, followed by “com-
+reputation-related factors (Fl ) for SIA . We represent it as       munity” and “interrelated services”. In CP 1, the “high”
+RF (SIA ) = {Fl | ∀ l  [1, N ]}. First, our target is to           reputation of a provider has a higher importance than the
+bootstrap the reputation of a concrete or component service.        “moderate” reputable provider, i.e., P 1  P 2. Note that, the
+  C
+SIJ  is the J th component service of the abstract service, SIA .   “low” reputable provider (P 3) is not considered in CP 1.
+We bootstrap the reputation from RF .                               It means that if the reputation of a provider is very low,
+    We define CP-nets for representing reputation (RCP ) as         the reputation of the corresponding service is automatically
+4-tuple < RF, ST, G, CP T >:                                        considered as low. Once the reputation of the provider is
+• RF represents a set of reputation-related factors. Typical        determined, the next thing is to explore the importance of
+  factors are Provider (P ), Community (C ), Interrelated           the community using the provider’s reputation. In the CPTs
+  Services (I ), and Meta-information (M ).                         of CP 1, (P 1 : C1  C2) means that the higher reputation
+• ST represents the semantic interpretations over ranges of         of the community may bootstrap higher reputation of the
+  a reputation factor Fi . In Fig. 3(a), 0.8-1.0 reputation is      service than the “moderate” reputable community if the
+  interpreted as a “high” reputation. In this paper, we do not      corresponding provider’s reputation is also higher. Finally,
+  focus on finding an optimal semantic segmentation, rather we      the reputation of the interrelated services is considered
+  focus on how a predetermined semantic interpretation could be     based on the reputation of the provider and the community.
+  efficiently leveraged in bootstrapping reputation.                In the CPTs of CP 1, (C1 : I1  I2  I3) means that a
+• G is a directed graph where each node is a reputation-            higher reputation of the interrelated services may bootstrap
+  related factor in RF . The arc from a node (N1 ) to another       higher reputation of the service than the moderate and
+  node N2 ) represents that the reputation influence of N1 is       lower reputable interrelated services if the corresponding
+  greater than N2 . If the Provider (P ) is more important          provider’s and communities reputation are also higher.
+  than the Community (C ) in bootstrapping reputation,              Following the relationships in CP 1, we can state that the
+  there will be an arc from P to C (see Fig. 3(b)).                 higher reputation of the service is represented by the con-
+• The nodes in G are associated with conditional preference         figuration by the configuration (P 1, C1, I1) and the lower
+  tables CP T (Fi ) for each Fi ∈ RF . Each conditional pref-       reputation of the service is represented by the configuration
+  erence table CP T (Fi ) depicts the conditional reputation        by the configuration (P 2, C2, I2). It may not be possible
+  influence of the values in Fi where the parent nodes are          to have prior knowledge about the relative importance of
+  given. For example, if there is an arc from Provider (P )         reputation-related factors. It means that the reputation of the
+                                                                                                                                                  6
+   P1,C1,     P1,C1,         P1,C1,     P1,C2,                                                              S2
+     I1         I2             I3         I1                                                  0.11                       0.21
+
+
+               P2,C1,        P2,C1,     P1,C2,                                                        0.87       0.88
+    P2,C1,
+                 I2            I1         I2
+                                                                                         S1                                     S4
+      I3
+                                                                                                     0.31    0.25
+                                                                                          0.9
+   P2,C2,      P2,C2,         P2,C2,                                                                                    0.93
+     I1          I2             I3
+                                                                                                        S3
+                 (a)                                         (b)
+                                                                            Fig. 5: Reputation interdependence
+                                                                                                    (b)        in a topology
+                                                   (a)
+Fig. 4: (a) A total ordered induced ranking of CP1, (b) A                distributed to different groups in the range [0,1]. The
+partial ordered induced ranking                                          score values are distributes in 5 groups: 1st: (0, .021 × N ),
+                                                                         2nd: (.021 × N, .156 × N ), 3rd: (.156 × N, .836 × N ), 4th:
+service can be represented in different candidate CP-nets.               (.836 × N, .97 × N ), 5th: (.97 × N, N ). If the mean value of
+For example, a CP-net could be formed where “community”                  the reputation is µ and standard deviation σ , the mapped
+of a service is the most important reputation-related factor,            reputation range (RR) for the ith score is calculated in
+followed by “provider” and “interrelated services”.                      Equation 3. Here, l is the group number of the ith score,
+    The configurations or reputation influences in RCP are               n is the total number of scores in group I , and o is the
+partially ordered based on their importance. We apply the                ranking of the ith score in group I .
+induced preference graph [14] to represent these orders. The
+                                                                                                            1             1
+graph is an acyclic directed graph where each node is the                        RR(i) = [(o − 1) ×           × I × σ, o × × I × σ]              (3)
+complete configuration or the reputation influence which                                                    n             n
+is given in each the CPTs. The graph is constructed from             5     C OMPOSITE R EPUTATION B OOTSTRAPPING
+a RCP by the pairwise comparisons of the configura-                  5.1    Reputation Interdependence in a Composition
+tions [32]. Fig. 4(a) depicts the induced preference graph
+of CP 1. As the CP T (CP 1) states P 2 : C1  C2, and                We consider the history of interactions of component ser-
+C2 : I1  I2  I3, There is an edge from (P 2, C2, I3)               vices in a composition. Note that, it is not the correlations
+to (P 2, C2, I2) and the next edge starts from (P 2, C2, I2)         among reputation-related factors. Let us assume, two com-
+                                                                                         C        C
+to (P 2, C2, I1) considering the ceteris paribus preference          ponent services Sij   and Smn     has been invoked N and M
+                                                                                                           C        C
+statements. Each node in the induced preference graph is             times in the interval Tt . Both Sij      and Smn    are invoked
+associated with a score. A higher score is mapped with a             together P times in the same interval. If N ∼ P , it states
+                                                                                                      C                  C
+higher reputation value for the service. The root node is            that most of the time when Sij      are invoked, Smn    are most
+given the score value 1. Starting from the root node, the            probably invoked. However, the vice-versa is not true if
+                                                                                                                          C
+graph is traversed in a Breadth-First Search (BFS) manner.           M << P . We can state that the reputation of Sij       is highly
+                                                                                       C          C
+Fig. 4(a) depicts a total ordering of induced graph. The score       dependent on Smn , but Smn is not highly dependent on
+                                                                       C
+of (P 2, C2, I3) is 1 and the score of (P 1, C1, I1) is 11 in Fig.   Sij . The reputation dependence (D) of a component service,
+                                                                       C        C
+4(b). Fig. 4(b) depicts a partial ordering of induced graph.         Smn on Sij   in an interval t0 is calculated as follows:
+                                                                                                                           C
+Two mapping methods are used to transform the qualitative                                        Number of invocations of Smn
+                                                                               C ,S C (t0 ) =
+                                                                             DSmn                                              C
+                                                                                                                                                 (4)
+preferences into a quantitative reputation value:                                   ij                                   C
+                                                                                                Combined invocations of Smn , Sij
+• Mapping with Uniform distribution: We assume that the N
+                                                                         It may not be possible to find the history of invoca-
+   score values are uniformly distributed in the range [0,1].
+                                                                     tions statistics In the real-world. As we consider Github
+   The reputation value is proportional to its score value.
+                                                                     as the composition environment, we treat the “watchers”
+   The mapped reputation range (RR) for the ith score is
+                                                                     as evidence of invocations. Hence, if a significant number
+   calculated as follows:
+                                            1     1                  of watchers of a repository also watch another repository,
+                       RR(i) = [(i − 1) ×     ,i × ]           (2)   the reputations are intertwined. The reputation dependence
+                                            N     N
+                                                                     between the two services is also temporal. The pairwise
+• Mapping with Normal distribution: The importance of the
+                                                                     historical dependence time-series of all component services
+  factors can be delineated at multiple levels or groups as          are represented in the following matrix (M D):
+  described in [32]. The relative importance (weight) de-
+  creases when the level increases which reflects the extent                         
+                                                                                       D11 (t)           D12 (t)         ···      D1n (t)
+                                                                                                                                             
+  to which an attribute is more important than another. For                          D21 (t)            D22 (t)         ···      D2n (t) 
+  example, an attribute F1 can have a very high impor-                                   ..                ..           ..          ..      
+                                                                           M D(t) =       .                 .              .         .
+                                                                                                                                             
+  tance value to another attribute F2 at level 1 or group                                                                                   
+                                                                                      D(n−1)1 (t)       D(n−1)2 (t)      ···     D(n−1)n (t)
+                                                                                                                                            
+  1, F2 can have a moderate importance value to another
+                                                                                       Dn1 (t)           Dn2 (t)         ···      Dnn (t)
+  attribute F3 at level 2 or group 2, and F3 can have low
+  importance value to the attribute F2 at level 3 or group 3.            M D could not be directly used to bootstrap the rep-
+  It means that higher and lower reputation group should             utation. If the composition is performed at the interval
+  have a lower number of mapped score values than the                Tt+1 , we need to predict the relationship dependence of
+  moderate reputation values. Such distribution is closely           the component services. As the historical dependence is
+  matched with normal distribution. As the weights are               represented as time series (D(t)), we use one-step time-
+  not explicitly specified, the N score values are normally          series prediction technique [33] to calculate M D(Tt+1 ). Fig.
+                                                                                                                                  7
+
+5 depicts a reputation dependency in a topology. Here, the       Equation 3. This approach is performed for all the com-
+arc with the weighted value 0.87 from S1 to S2 means that        ponent services. The composition topology provides the
+the reputation of S1 is highly dependent on the reputation       reputation influence factors of all component services. Once,
+of S2. However, the arc with the weighted value 0.11             all their reputation is calculated, the composite reputation is
+from S2 to S1 means that the reputation of S2 is loosely         calculated using the Equation 6.
+dependent on the reputation of S2.                               5.3.2 Domain-best Approach
+5.2   Reputation Composition Rules                               The domain or community reputation is the aggregated
+                                                                 reputation of similar component services [2]. There exist
+The reputation dependence matrix M D(Tt+1 ) generates
+                                                                 several approaches to find similar services using the seman-
+important knowledge about how the reputation of indi-
+                                                                 tic annotations, semantic keywords similarity, and the spec-
+vidual component services influence the reputation of the
+                                                                 ification matching [34]. Finding the optimal similar services in
+composition. We identify four types of influence:
+                                                                 a domain is out of the focus of this work. We apply the semantic
+• Highly Influential: In a topology, this type of service has
+                                                                 keywords similarity approach [34] to find similar services.
+  higher influence weights on most of the incoming edges
+                                                                 Note that other approaches can be also applied to find the
+  but has lower influence weights on most of the outgoing
+                                                                 community. The following procedure selects the best CP-
+  edges. In Fig. 5, S4 is a high influential service.
+                                                                 nets for the given component service:
+• Moderately Influential: This type of service has a higher
+                                                                 1) We do not consider the similar component services that
+  influence weight on some of the incoming edges and has
+                                                                     are not directly rated by the users. N similar component
+  higher influence weights on some of the outgoing edges.
+                                                                     services are found in the domain which is directly rated.
+  In Fig. 5, S2 and S3 are moderate influential services.
+                                                                 2) Select a CP-nets and calculate the reputations of the
+• Lowly Influential: In a topology, this type of service has
+                                                                     component services using the Equation 3. Calculate the
+  higher influence weights on most of the outgoing edges
+                                                                     average difference between the calculated reputation and
+  but has lower influence weights on most of the incoming
+                                                                     the ground reputation.
+  edges. In Fig. 5, S1 is a low influential service.
+                                                                 3) Repeat the previous step for all candidate CP-nets for
+• Neutral: In a topology, this type of service has similar
+                                                                     the given component service. Finally, return the CP-
+  influence weights on most of the incoming edges and
+                                                                     nets which generates the lowest difference between the
+  outgoing edges. The reputation of this service should have
+                                                                     calculated reputation and the ground reputation as the
+  a higher influence in a composition.
+                                                                     best CP-nets for the component service.
+    Based on our observations, we calculate the reputation
+                                                                      We select the best CP-nets for all the component services
+influence factor of a component service (X ) in Equation
+                                                                 in a composition. Then, the Equation 6 is applied to calculate
+5. The Average outgoing weight, AOW indicates the total
+                                                                 the composite reputation.
+weighted dependency of other component services to the
+                                                                 5.3.3 Brute Force Approach
+X in the composition topology. The maximum incoming
+weight, IW indicates the maximum weighted dependency             The brute force approach creates all the combinations of
+of X to other component services in the composition topol-       candidate CP-nets. We calculate the probability of Ri to
+ogy. The reputation influence factor, RIF indicates the ratio    be the optimal bootstrapped reputation. First we segment
+between AOW and IW in the range [0,1].                           the reputation range into δ segments. The range of the ith
+               xi1 + xi2 + .... + xin                            segment (i ≤ δ ) is [(i − 1) × 1δ , i × 1δ ]. F req(i) denotes
+     AOW =                                                 (5)   the frequency of reputation values on the ith segment. We
+                         n
+     IW = max(x1i , x2i , ....., xni )                           calculate the F req(i) as follows:
+                                                     AOW           1) Set F req(i) = 0
+     If AOW < IW, influence factor, RIF (X) =                      2) For each Ri in 0, if Ri in [(i − 1) × 1δ , i × 1δ ], increment
+                                                      IW
+                                                      IW               F req(i) by one.
+     If AOW ≥ IW, influence factor, RIF (X) =                         The probability of the optimal reputation is mapped
+                                                     AOW
+                                                                                           F req(i)
+                                                                 into the segment i is M N . We can select the segment i
+    Let us assume that the CP-nets, CPij is already se-                   F req(i)                            F req(j)
+                                                           C
+lected to represent the reputation of component service, Sij .   only if M N is relatively larger than M N for all other
+             C
+RR(CPij , Sij ) is the mean reputation value using equation      segments j . If it is not, we increase the value of δ and start
+3. Hence, the reputation of the composite service (CR) is cal-   the procedure again.
+culated using the aggregated reputation of each component        5.3.4 Reduced Topology Approach
+service with their weighted influence factor as follows:         It is not computationally efficient to create M N combina-
+                   P         C                 C                 tions of CP-nets if both M and N are a relatively large
+                       RIF (Sij ) × RR(CPij , Sij )
+            CR =         P              C
+                                                           (6)   value. The workaround is reducing the number of compo-
+                            RR(CPij , Sij )
+                                                                 nent services M to a significantly lower value of m. We
+                                                                 apply the reputation influence factor (RIF ) of a component
+5.3 CP-nets Composition Approaches                               service as the heuristic to reduce the number of component
+5.3.1 Random Approach                                            services M . A low RIF value means that the service is more
+We select a CP-nets randomly from the set of candidate           reputation-dependent on other services rather than other
+CP-nets for a component service. The reputation related-         services that are reputation-dependent on it. Hence, such
+factors are predetermined for the component service. The         component services could be removed from the set of com-
+reputation of the component service is determined by the         ponent services as they should have a lower Influence on the
+                         Linear composition
+                             topology          S1          S2                 S3                                                  S1
+                                                                                                        (CP1, .7)                                         (CP1, .4)   8
+                                                                                                                      (CP2, .3)          (CP2, .6)
+                            Candidate
+                                              CP1,CP2     CP3,CP4           CP5,CP6                              S2                                  S3
+                             CP-Nets
+                                                           (a)                                                                         (CP5, .1)
+                                                                                                     (CP3, .2)           (CP4, .8)                        (CP6, .9)
+
+                                                    CP1               CP3          CP5
+                                              S1          S2                 S3          Goal                            (CP5, .5)
+                                                                                                                 S3                                  S2
+                                                                                                                            (CP4, .4)
+                                                                 R1               R2            R3
+                                                                                                                                                      (CP3, .6)
+                                                                                                                                   Goal
+                                                            Bootstrapped reputation                         (CP6, .5)
+
+                                                          (b)                                                                          (c)
+
+
+Fig. 6: (a) A linear composition topology with candidate CP-nets, (b) A linear decision process, (c) A MDP with transition
+probabilities in the selection process
+
+overall reputation of a composition. T IF is the threshold                               the composite reputation. We will compare the performance
+                                                  C
+value to be included in the topology. If RIF (Sij   ) < T IF ,                           of MAB and MDP in future work. We will explore the
+                                        A                                                efficiency of MAB and POMDP over MDP in future work.
+the corresponding abstract service Si are removed from
+the topology. Once the topology gets reduced, we have the                                A simple linear topology is depicted with three abstract
+following options:                                                                       services {S1, S2, S3} in Fig. 6(a). Each service has candi-
+1) Applying the brute force approach with the reduced                                    date CP-nets: {S1 : (CP 1, CP 2), S2 : (CP 3, CP 4), S3 :
+    topology (described in Section 5.3.3).                                               (CP 5, CP 6)}. Fig. 6(b) depicts how the selection of CP-nets
+2) Applying a ML approach with the reduced topology.                                     could be transformed as a decision process. The selection
+     We transform the reputation composition problem, i.e.,                              of CP 1 for S1 leads to the selection of CP 3 for S2 and so
+the selection of CP-nets, as a sequential decision process. We                           on. The final selection is performed in S3 with CP 5 when
+start with any component service in the topology and select                              decisions for all the nodes are made. Each selection of CP-
+a candidate CP-net to represent its reputation. The selection                            nets computes a “fractional reputation” (e.g., R1, R2, R3)
+of the candidate CP-nets for the next component service                                  which can be treated as the current reward and the final
+depends on the previous selections of CP-nets as there may                               bootstrapped reputation is calculated using Equation 6 (Fig.
+exist reputation interdependence.                                                        6(b)) with the aggregated current rewards.
+     A composition topology is entitled as “new” when it does                                We model the MPD for the CP-nets composition
+not match with history. For example, a topology with three                               for bootstrapping reputation as a 5-tuple Com R =<
+component services is new if each topology in history has
+                                                                                                                                                         A
+                                                                                         S, As , s0 , P (., .), R(., .) >. Here, S = {S1A , S2A , ...., Sm } is
+less than or greater than three component services. Even                                 a finite set of abstract services in the reduced topology. We
+different topologies with a similar number of component                                  treat the corresponding component services in a topology
+services can have different reputation-related factors. It is                            as states in the MDP. ASsA is the finite set of actions, i.e.,
+quite challenging to apply a model-based approach to boot-                               the candidate CP-nets which are available for the compo-
+strap the reputation of new composite services if they are                               nent services of SsA . s0 is the starting state where the first
+not exactly fit to the model. For example, let us assume that                            selection of a CP-nets is performed for the corresponding
+a BN is modeled to predict the reputation of a composition                               component service. The selection of next CP-nets for repu-
+topology with N number of component services and M                                       tation bootstrapping depends on these previous selections.
+number of reputation-related factors. The BN may not be                                  PCPa (SsA , S´sA ) is the probability to reach the optimal result
+applicable to predict the reputation of a new composition                                by choosing a particular CP-nets CPa in the transition
+topology with a different X number of component services                                 from SsA to S´sA .Ra (SsA , I´s ) is the immediate bootstrapped
+and Y number of reputation-related factors. As the com-                                  reputation that the CP-nets CPa for SsA produces after tran-
+position environment is dynamic, model-free reinforcement                                sitioning to the next state I´s . We can calculate the composite
+learning, e.g., Q-learning is usually more applicable than                               reputation using Equation 6.
+the model-based learning algorithms [35]. The Q-learning                                     The transition to the next abstract service does not
+treats each new composition topology as a new environment                                necessary to the order of the topology. The start state can
+and learns the optimal selection of CP-nets through multiple                             be chosen randomly. We visualize a transition graph in an
+interactions with the environment.                                                       MDP for the linear topology in Fig. 6(c). Let us assume
+     A sequential decision process could be modeled in                                   that the starting state is S1. The transition could happen
+different approaches such as Multi-Armed Bandit (MAB),                                   either to state S2 or state S3 after selecting a CP-nets
+Markov Decision Process (MDP), or Partially Observable                                   for S1. The transition is performed to S2 after selecting
+Markov Decision Process (POMDP) [36]. We model the                                       CP 1. As the selection for S1 is already finalized, any
+optimal selection of CP-nets as a Markov Decision Process                                future transition could not be performed to S1. The only
+(MDP). We define the selection of a CP-net as an action.                                 transition possible from S2 is to S3. The action in S2 is
+Each action generates a current reward, i.e., the fractional                             CP 3. Finally, the action in S3 is CP 5. We define these
+reputation. The goal of the MDP is to find the best sequence                             actions as policies. Hence, one of the policies in Fig. 6(c) is
+of actions that maximizes the total reward, i.e. the optimal                             < CP 1, CP 3, CP 5 >. However, this policy has a transition
+bootstrapped reputation value [36]. Note that, MAB or                                    probability, i.e. < (CP 1 : 0.7, CP 3 : 0.2, CP 5 : 0.5) >.
+POMDP could also be used in our context as they are special                              According to [36], the optimal policy generates the largest
+cases of MDP. For example, MAB is a special case of MDP                                  combined transition probabilities among all the policies.
+that has only one state [36]. However, we select MDP as                                      We implement the MDP as the Q-learning process [16].
+the general sequential decision process for bootstrapping                                Note that other deep learning approaches could be im-
+                                                                                                                                              9
+
+plemented in the reduced topology approach [37], [38].              Algorithm 1: The Q-learning process for the CP-
+However, we do not focus on providing a comparative study of        nets composition in bootstrapping reputation
+machine learning approaches in this paper, but rather we use              1: Initialize Q[S A , CPA ] to 0
+a sound existing approach to solve our concerned problem. We              2: α ← A user defined learning rate in [0,1]
+evaluate the effectiveness of Q-learning in bootstrapping                 3: γ ← A user defined discounted factor in [0,1]
+                                                                          4: for each episode do
+reputation using CP-nets. In future work, we will compare                 5:    S A ← the starting state s0
+the performance of the proposed approach with other deep                  6:    number of visited abstract in a topology o ← 1
+                                                                          7:    while o 6= total number of abstract services do
+reinforcement learning approaches.                                        8:       Choose a CP-nets CPa for S A using -greedy policy
+    The Q-learning algorithm is a simple reinforcement                    9:       Calculate current reputation r[S A , CPA ]
+learning algorithm that learns the value of the state-action             10:       observe the possible next abstract services S´A
+sequences through experiences or an iterative process.                   11:       Q[S A , CPA ] = (1 − α)Q[S A , CPA ] + α(r[S A , CPA ]
+                                                                         12:       Q[S A , CPA ] = Q[S A , CPA ] + γmaxCP          ´A ´
+Those values are stored in a matrix called Q[S A , CPA ]. Ini-                                                             ´ A Q[S , CPA ])
+                                                                         13:       o←o+1
+tially, the matrix is filled with 0 values. Through an iterative         14:    end while
+process, the matrix gets filled up with different state-action           15: end for
+values. A higher value in Q[S A , CPA ] represents that the
+probability to get rewarded by choosing the CP-nets, CPA
+for the abstract service, S A is very high. Here, the reward       sets. First, we evaluate the efficiency of the random approach,
+is the closeness of the fractional composite reputation to         domain-best approach, brute force approach, and reduced topology
+the optimal reputation. If OCR is the optimal composite            approach using reputation interdependence in different en-
+reputation and CCR is the current composite reputation             vironmental settings. Next, we compare the accuracy, run-
+after selecting a CP-nets, i.e., the action a for an abstract      time efficiency, scalability of the proposed approach to six
+service, i.e, the state s, the reward (r) for choosing CPA for     state-of-the art methods: a) layer-based Random Forest (LRF)
+S A can be expressed as follows:                                   [8], b) Inheritance Mechanism (IM) [9], c) Linear Aggregation
+                                        1
+                 r[S A , CPA ] =                             (7)   (LA) [25] (i.e., composition rules without reputation inter-
+                                   |OCR − CCR|
+                                                                   dependence), d) Linear Regression (LR) [26], e) LSTM-based
+    The value in Q[S A , CPA ] describes the importance to         matrix factorization (PLMF) [40], and f) DNN approach [41].
+take the current selection to find the optimal composi-                The layer-based approach applies a data-driven ap-
+tion. Q[S A , CPA ] indicates that we have to consider the         proach, i.e., random forest to determine the importance
+current fractional reputation as well as the future aggre-         of reputation-related factors for a new single or atomic
+gated reputation that can be generated from other abstract         service [8]. The inheritance mechanism applies weighted
+services and the selection of corresponding CP-nets. The           aggregation on the past reputations of the existing services
+Equation 8 describes the update process. First, it calculates      of a provider to bootstrap the reputation of the new sin-
+the current reward or reputation value using Equation 7            gle service [9]. The LA approach [25] does not consider
+and then checks all the possible other abstract services in        the interdependence among component services. The QoS
+the topology and their corresponding actions. The abstract         of the composition is derived using the average or the
+service that has the maximum future reward is chosen for           weighted average of QoS of each component services in the
+the next state. The current state is updated based on the next     LA approach. Such linear aggregation technique is widely
+state’s expected reward or bootstrapped reputation value.          used in web service reputation bootstrapping approaches
+In Equation 7, α is the learning rate and γ is the discounted      [4], [12], [13]. The LR approach [8], [26] is a supervised
+factor. The learning rate α decides the speed of convergence.      machine learning approach where the target reputation
+γ decides weights of the current reward against the future         value is predicated using independent reputation-related
+reward in the update process. Usually, γ is 0.5, so both           factors. As the independent and dependent variables or
+rewards are given equal importance in the update process.          reputation-related factors are labelled and their historical
+The process is terminated when no updates on Q values is           data could be represented in a feature matrix, deep learning
+possible (convergence values) (Algorithm 1).                       based approaches are intuitively fit to predict the composite
+                                                                   reputation. We consider the PLMF approach which is a
+    Q[S A , CPA ] = (1 − α)Q[S A , CPA ] + α(r[S A , CPA ]   (8)
+                                                                   LSTM-based matrix factorization approach that captures the
+                           + γmax ´ Q[S´A , CP
+                                      CPA
+                                                 ´ A ])            dynamic latent representations of QoS parameters in histor-
+                      A                                            ical data [40]. We also consider the Deep Neural Network
+    The learned Q[S , CPA ] is used to produce the optimal         (DNN) which is a class of machine learning algorithms
+composition using Equation 9 [39]. The optimal composition         that uses multiple layers to progressively extract higher
+is found in -greedy fashion. The -greedy approach traces         level features from the training dataset [41]. The reputation
+the best CP-nets following the links with the highest Q-           bootstrapping accuracy of these different approaches are
+values at each abstract service or state.                          compared against the ground truth, i.e., reputation values of
+       π ∗ (s) =argmaxCPA Q[S A , CPA ]                      (9)   Github repositories. All the experiments are conducted on
+                                                                   computers with Intel Core i7 CPU (8 Cores, 2.30 GHz, 64GB
+                where ∀ CPA ∈ set of candidate CP-nets
+                                                                   RAM, and RTX 2080 GPU) and programmed in Python.
+6    E XPERIMENTAL R ESULTS                                        6.1     Experimental Setup
+We conduct a set of experiments to evaluate the proposed           Github is a widely used data set for a range of applications
+reputation bootstrapping approach using real-world data            [42]. Because of the modeling and behavior similarities
+                                                                                                                                   10
+
+to our research focus, we selected Github dataset as the                     Table 1: Simulation environment settings
+appropriate platform to evaluate our proposed approach.             Variables                         Parameters
+We consider public repositories in Github as composite              Reputation of a provider          Average stars of the contribu-
+services. The insight of a repository specifies both the                                              tors
+                                                                    Reputation of a community         Average stars of the owner
+dependent and dependencies or submodules which are                  Reputation of Interrelated Ser-   Apply Equation 1
+publicly available. For example, the insight of the reposi-         vices
+tory ‘mopidy/mopidy’1 depicts that the repository has 237           Number of candidate CP-nets       6, 12, 18
+watchers, 261 dependent repositories, 13 dependencies, 106          (CC )
+                                                                    CP-nets mapping distribution      Uniform, Normal
+contributors, its community or owner has 22 other reposi-           (CP D)
+tories with average 1000 ratings or stars and 120 followers.        Maximum Number of Compo-          30
+The Github also provides insights about the commits, code           nent Services (N )
+frequency, and forks of the public repositories.                    Highest depth of dependency       20
+                                                                    tree (DT )
+    We use Github Developer REST API [43] to retrieve the           Service Invocation (SI )          Number of common watchers
+public repositories. A repository may contain submodules                                              between repositories
+[43]. Submodules allow an owner to keep a Git repository            Threshold of Influence Factor     0.1,0.3,0.5
+                                                                    (T IF )
+as a subdirectory of another Git repository. This lets the
+                                                                    Reinforcement learning rate (α)   0.2,0.5,.08
+owner to clone another repository into their projects and           Discounted Reward rate (γ )       0.5
+to keep their commits separate. Hence, submodules, i.e.,
+repositories from other projects are considered as the com-        median and closer to a practical large value.
+ponent services and the parent repository is considered as
+                                                                       The values in CPTs are semantically mapped into 5
+the composite service. We collected 300 repositories in the
+                                                                   segments, i.e., Very High, High, Moderate, Low, and Very Low.
+Set A, where each repository has 4 or more submodules using        For a provider, the highest number of stars of a contributor
+a Github web crawler, ‘Scrapy’2 . Each composition topology
+                                                                   is the upper bound and the lowest number of stars of a
+in Github is treated as a new composition in the proposed Q-
+                                                                   contributor is the lower bound. Similarly, for a provider, the
+learning approach. The number of reputation-related factors
+                                                                   highest number of stars of an owner is the upper bound and
+varies from 4 to 13 in the compositions of the Github dataset.
+                                                                   the lowest number of stars of an owner is the lower bound.
+The Github dataset also provides the history of invocations
+                                                                   We use standard values for the Q-learning approach, i.e.,
+(pull requests) among component services. As the proposed
+                                                                   α = 0.5 and γ = 0.5. Note that finding the optimal learning
+approach uses a generic model to leverage the reputation-
+                                                                   and discounted reward rate is out of the focus of this paper.
+related factors, the diversity of reputation-related factors in
+the Github dataset is a perfect match to test the scalability of   6.1.1   Implementing LA approach
+the proposed approach. Experiments in different domains            The LA approach is a generic approach, hence we need to
+would provide a more robust evaluation of the proposed             modify it to focus on a specific QoS, i.e., reputation. First,
+approach. However, finding the right data set proved to            we represent the topology independence as follows:
+be quite challenging as to the best of our knowledge, we           • The number of incoming and outgoing edges from a com-
+could not find any public datasets other than Github that            ponent service is the same. It represents that a component
+have reputation-related factors, component services’ ratings,        service influences all other services in a similar manner
+composition topologies and invocation history.                       and gets influenced by all other services equivalently.
+    The proposed framework has a set of environment pa-            • The weights of the edges have the same small value. It is
+rameters that need to be set before its application. Such            represented as θ and θ > 0. θ represents that the influence
+environment variables are the number of candidate CP-                value is small and as all are influencing similarly, they
+nets, CP-nets mapping distribution, Composition topology,            nullify each other’s influence. Hence, the topology is
+service invocations and the threshold value of Influence             independent of reputation influence.
+Factor to reduce the topology. The efficiency of the proposed         We calculate the reputation influence factor of an inde-
+framework depends on the values of the environment vari-           pendent component service using Equation 10:
+ables. Table 1 describes the environmental variables used in                     n×θ
+the experiments. The candidate CP-nets (CC ) are generated             AOW =            = θ, IW = max(θ, θ, ....., θ) = θ    (10)
+                                                                                   n
+with randomly picked 4 reputation-related factors. Maxi-                                         IW       θ
+mum 4! = 24 candidate CP-nets could be generated for each              If AOW = IW, RIF =              = =1
+component service. The parameter, CC : (6, 12, 18) covers
+                                                                                               AOW        θ
+the effective range, i.e., closer to the minimum, median               We apply the Random Forest (RF) to determine the
+and closer to the maximum value. The lowest value in the           relative importance of reputation related factors for each
+Threshold of Influence Factor (TIF), i.e., T IF = 0 implies        component service [12]. The corresponding CP-nets, CPij
+                                                                                                 C
+that component services are not reduced from the topology.         of the component service, Sij   is constructed following the
+A higher value, i.e., T IF = 0.5 implies that 50% of compo-        ranking of influence, i.e., the direction of the conditional
+nent services are reduced from the topology which is a large       graph is from the influential node to the least influential
+                                                                                     C
+reduction in practice. The parameter, T IF : (0.1, 0.3, 0.5)       node. RR(CPij , Sij ) is the mean reputation value using
+covers the effective range, i.e., closer to the minimum,           equation 3. Hence, the reputation of the composite service
+                                                                   without the reputation interdependence (CR) is calculated
+  1. https://github.com/mopidy/mopidy                              using the aggregated reputation of each component service
+  2. https://github.com/scrapy/scrapy                              without their weighted influence factor (as RIF = 1). The
+                                                                                                                                                                                                                                                       11
+
+
+
+
+                                                                                                                                                                                                  0.6
+                                                                                                              1.2
+                1.2
+                            Random Approach                                                                                Random Approach
+                                                                                                                                                                                                           Reduced topology approach
+                            Domain-best Approach                                                                           Domain-best Approach
+                            Brute force Approach                                                                           Brute force Approach
+                            Reduced topology approach                                                                      Reduced topology approach
+
+
+
+
+                                                                                                                                                                                                  0.5
+                                                                                                              1.0
+                1.0
+                                              .95                     .95                                            .96                                                                                                                     .46
+                      .93                                                                                                                              .93
+
+                            .84
+                                                                                                                              .81
+
+
+
+
+                                                                                                                                                                                                  0.4
+                                                                                                              0.8
+                0.8
+
+
+
+
+                                                                                              Average NRMSE
+Average NRMSE
+
+
+
+
+                                                    .73
+
+
+
+
+                                                                                                                                                                                  Average NRMSE
+                                                                                                                                                              .65                                                                 .31
+                                                                            .63
+
+
+
+
+                                                                                                                                                                                                  0.3
+                                                                                                              0.6
+                0.6
+
+
+
+
+                                        .52                                                                                                                                                               .25
+
+                                  .43                           .43
+
+
+
+
+                                                                                                                                                                                                  0.2
+                                                                                                              0.4
+                0.4
+
+
+
+
+                                                                                                                                            .36
+                                                          .33                           .34
+                                                                                  .28                                                .27                                    .29
+
+
+
+
+                                                                                                                                                                                                  0.1
+                                                                                                                                                                     .19
+
+
+
+
+                                                                                                              0.2
+                0.2
+
+
+
+
+                                                                                                                                                                                                  0.0
+                                                                                                              0.0
+                0.0
+
+
+
+
+                                                                                                                            CPD = Uniform                    CPD = Normal                               TIF = 0.1              TIF = 0.3   TIF = 0.5
+                            CC = 6                  CC = 12                 CC = 18
+
+                                                      (a)
+                                                (a)                                                                                          (b)                                                                            (c)
+Fig. 7: Effects of (a) Candidate CP-nets (CC), (b) CP-nets mapping distribution (CPD), and (c) Threshold of Influence Factor (TIF)
+composition rules without the reputation interdependence                                                                            6.2     Accuracy and Runtime Efficiency
+are derived from Equation 6 as follows:                                                                                             We use the number of stars (GS ) of a repository as the
+                                                           C
+                                                RR(CPij , Sij )                                                                     ground truth. The proposed approach represents reputation
+                                          CR = P              C
+                                                                                                                    (11)            in the [0,1]. We transform the reputation ri into number of
+                                                 RR(CPij , Sij  )
+                                                                                                                                    stars using the number of stars in its submodules as follows:
+6.1.2                 Implementing LR approach                                                                                        α = max(highest number of stars of a contributor,                                                         (12)
+In our dataset, the reputation ground truth of compositions                                                                                    number of stars of a owner)
+is the target value and the reputation-related factors of each                                                                        Predicted number of stars, P S = ri × α
+component services are independent variables. We use scikit
+                                                                                                                                        The proposed framework will be efficient if P S becomes
+learn python library3 to import the linear regression model.
+                                                                                                                                    close to GS for a repository. As we have m = 300 repos-
+We fit the model on the training data (70% of total rows in
+                                                                                                                                    itories as composite services, we generate 300 stars as the
+the dataset) and predict the values for the testing data (30%
+                                                                                                                                    predicted stars from the submodules or component services.
+of total rows in the dataset). We use R2 score4 to measure
+                                                                                                                                    The efficiency of the proposed approach is calculated using
+the accuracy of our model.
+                                                                                                                                    the Normalized Root Mean Square Error (NRMSE) in Equa-
+6.1.3                 Implementing PLMF approach                                                                                    tion 13. A lesser value of NRMSE imposes a better efficiency
+                                                                                                                                    of the proposed approach.
+We collect 300 composite services which includes total                                                                                                          sP
+                                                                                                                                                                   m        P Si 2
+7555710 repositories and 10 reputation indicators for each                                                                                                         i=1 (1 − GSi )
+repository. The matrix [7555710 X 10] acts as the input data                                                                                       N RM SE =                                 (13)
+                                                                                                                                                                         m
+set for the PLMF [40]. The training set has different data
+                                                                             We compare the efficiency of the random approach,
+density from 5% to 20% with a step size 5%. We apply
+                                                                         domain-best approach, brute force approach and reduced topology
+double Layer LSTM (gated recurrent neural network) with
+                                                                         approach using reputation interdependence (Equation 6). We
+108 hidden neurons in the first layer, 54 hidden neurons
+                                                                         consider all the combinations of environment variables. For
+in the second layer, and dropouts=0.2 between the hidden
+                                                                         example (CC : 6, CP D : U nif orm, T IF : 0.1) is a configu-
+layers and the output layer. The prediction accuracy of the
+                                                                         ration. First, we discuss the effect of the number of candidate
+four different matrix densities, i.e., 5%, 10%, 15%, and 20%
+                                                                         CP-nets (CC ) in the proposed approaches. According to
+are averaged as the output of the PLMF approach.
+                                                                         Fig. 7(a), the NRMSE reduces for all approaches except
+6.1.4 Implementing DNN approach                                          the random approach when more candidate CP-nets are
+                                                                         considered. The decreasing rate is almost similar to the other
+We implement the standard DNN [41] for prediction which three approaches. The possible reason for this behavior is
+consist of three layers. The input layer is constructed by that a larger number of candidate CP-nets holds a wider
+the types of reputation indicators: a) provider (PI), b) com- spectrum of relative importance. Hence, the probability of
+munity (CI), c) Similar Service (SSI), and d) Insight (II). selecting the optimal CP-nets is higher in the composition.
+The output layer consists of the reputation or start values One key issue of using a large candidate number is that it
+(ground truth). The DNN is implemented in Python with may increase the runtime computation.
+packages Scikit-learn and Tensorflow. Initially, the default                 Next, we discuss the effect of CP-nets mapping distri-
+parameters of these implementations are chosen in the ex- bution (CP D) in the proposed approaches. According to
+periments. Later, these values are tuned using a grid search Fig. 7(b), the NRMSE reduces for all approaches except the
+with the training dataset. We apply K-fold cross validation random approach when the Normal distribution is used.
+[21] where (k = 5), so there are 5 iterations of model training The possible explanation is that relative importance in CP-
+and testing. Each iteration contains different sets of 80% data nets is not uniform in nature. Next, we analyse the effect
+for training, and 20% data for testing.                                  of the Threshold of the Influence Factor (TIF) in Fig. 7(c).
+  3. https://scikit-learn.org/sklearn.linear model.LinearRegression.html Note that the TIF is only applicable to the proposed reduced
+  4. https://scikit-learn.org/sklearn.metrics.r2 score.html              topology approach as it is used as a heuristic to reduce
+                1.0
+
+
+
+
+                                                                                                                100
+                                                                                                                                                                                                                                       12
+
+
+
+
+                                                                                                                                                                                   800
+                      Brute force Approach                                                                                          Brute force Approach                                 Brute force Approach
+                                                                                                                      91%
+                      Reduced topology approach                                                                                     Reduced topology approach                            Reduced topology approach
+                      Layer-based Random Forest Approach                                                                            Layer-based Random Forest Approach                   Layer-based Random Forest Approach
+                      Inheritance Mechanism                                                                                         Inheritance Mechanism                                Inheritance Mechanism
+                0.8
+
+
+
+
+                                                                                                                80
+                      PLMF                                         .75                                                      76%     PLMF                                                 PLMF
+
+
+
+
+                                                                                                                                                                                   600
+                                           .72                                                                                      DNN                                                  DNN
+                      DNN
+
+
+
+
+                                                                               NRSE less than or equal to 0.3
+                                    .66                                                                                             LA                  67%                              LA
+                      LA                                                                                                            LR
+                                                                         .63                                                                                                             LR
+                      LR
+                                                                                                                                                    59%
+Average NRMSE
+
+                0.6
+
+
+
+
+                                                                                                                60
+                                                  .52
+
+
+
+
+                                                                                                                                                                            Time
+                                                                                                                                                                      49%
+
+
+
+
+                                                                                                                                                                                   400
+                                                                                                                                  48%
+                                                                                                                                                                45%
+                                                             .41
+                0.4
+
+
+
+
+                                                                                                                40
+                                                                                                                                           33%
+                            .29
+
+
+
+
+                                                                                                                                                                                   200
+                0.2
+
+
+
+
+                                                                                                                20
+                      .16
+                0.0
+
+
+
+
+                                                                                                                0
+
+
+
+
+                                                                                                                                                                                   0
+                                     Optimal Configuration                                                                              Optimal Configuration                               N = 10              N = 20        N = 30
+
+
+                                        (a)                                                                                                (b)                                                              (c)
+
+                                  Fig. 8: (a) Average bootstrapping error, (b) Acceptance ratio, and (c) Runtime complexity
+the topology. As a result, Fig. 7(c) only shows the effect of                                                                                    approach applies reinforcement learning to compose the CP-
+the reduced topology approach with different TIF values.                                                                                         nets and has an extra process of transforming reputation
+According to Fig. 7(c), a lower T IF value produces lower                                                                                        values from the composite CP-nets, and vice-versa.
+average NRMSE than higher T IF value. It means that the                                                                                          6.3 Scalability
+reduced topology approach performs similarly to the brute
+                                                                                                                                                 Fig. 9(a) compares the scalability of the proposed reputation
+force approach when T IF is significantly low. However, the
+                                                                                                                                                 interdependence and the heuristic on reduced topology on
+runtime of a lower T IF may not be better than the brute
+                                                                                                                                                 the result accuracy with the competing approaches. We con-
+force approach. Hence, a moderate T IF value is appro-
+                                                                                                                                                 sider topologies with different depth of dependency trees
+priate for the topology reduction approach. Next, we run
+                                                                                                                                                 (3 to 20). A larger depth in the dependency tree specifies a
+the proposed approach in 18 different simulation settings
+                                                                                                                                                 longer linear chain of interdependent component services.
+(generated from the different combinations of CC , CP D,
+                                                                                                                                                 We find that the proposed approach, DNN, PLMF, and
+and T iF ). Finally, we find an optimal configuration, i.e.,
+                                                                                                                                                 LRF approaches are scalable where the average standard
+(CC : 12, CP D : N ormal, T IF : 0.3) where the proposed
+                                                                                                                                                 deviation in mean accuracy is 0.45 for in the wide range
+brute force approach and reduced topology approach pro-
+                                                                                                                                                 of dependencies [3, 20]. of produce an almost similar result
+duce the lowest average NRMSE. This optimal configuration
+                                                                                                                                                 with a smaller number of dependencies (i.e., 3 to 10). We
+is used to compare the proposed approach against the six
+                                                                                                                                                 also found that the proposed approach is highly scalable
+competing approaches.
+                                                                                                                                                 as there is only 1.7% increase in error rates from a short
+                                                                                                                                                 dependency to a long dependency tree. The proposed ap-
+     According to Fig. 8(a), the brute-force approach produces
+                                                                                                                                                 proach maintains at least 15% higher accuracy than DNN,
+the lowest NRMSE 0.16 and the reduced topology approach
+                                                                                                                                                 PLMF, and LRF in different dependencies. Besides, the
+produces the second best average NRMSE 0.29. Its accuracy
+                                                                                                                                                 proposed approach produces significantly higher accuracy
+is significantly higher (around 43%) than the LRF, IM, LA
+                                                                                                                                                 (56% more) than the LA, LR, and IM approaches for a larger
+and LR. Note that LRF, IM, LA and LR produce the similar
+                                                                                                                                                 depth of dependency trees. For a larger depth, the LA, LR,
+result. The key reason is that these approaches are primarily
+                                                                                                                                                 and IM approaches tend to give the same weight to every
+designed for atomic services, and do not cluster reputation-
+                                                                                                                                                 component services and does not consider the cascading
+related factors based on the topology in a composition.
+                                                                                                                                                 effect. Fig. 9(b) compares the efficiency of the proposed
+Although DNN and PMF cluster the topologies in their
+                                                                                                                                                 approach with the competing approaches in respect of the
+feature factorization process, they do not consider the se-
+                                                                                                                                                 size of the topology, i.e., the number of component services.
+mantic interpretation of reputation influence and the repu-
+                                                                                                                                                 We use different sizes (from 10 to 30 component service)
+tation propagation direction. As a result, compositions with
+                                                                                                                                                 of compositions. We find that the all approaches perform
+similar topology, but unrelated reputation-related factors
+                                                                                                                                                 close to smaller compositions (N = 10). However, only
+may be clustered which may cause over-fitting or under-
+                                                                                                                                                 the proposed approach produces higher accurate results
+fitting learning issues. We find that the proposed approach
+                                                                                                                                                 consistently across different sizes of composition topologies.
+is around 14% and 21% higher accurate than the DNN,
+                                                                                                                                                 The LA, LR, and IM approaches are not suitable for larger
+and PLMF respectively. According to Fig. 8(b), the brute
+                                                                                                                                                 compositions (N > 15) as they do not consider the per-
+force approach and the reduced topology approach have the
+                                                                                                                                                 formance correlations among component services. The pro-
+highest probability of 0.91 and 0.76 respectively to produce
+                                                                                                                                                 posed approach produces at least 33% higher accuracy than
+the average NRMSE 0.3. Hence, the confidence of accuracy
+                                                                                                                                                 DNN, PLMF, and LRF for larger compositions (N ≥ 20). we
+in the proposed reduced topology approach is significantly
+                                                                                                                                                 conclude that proposed reduced topology approach which considers
+higher than other approaches. According to Fig. 8(c), the
+                                                                                                                                                 the reputation interdependence and composition topology is the
+brute-force approach has the exponential runtime. Here,
+                                                                                                                                                 most suitable approach for reputation bootstrapping in both small
+N is the number of abstract services in the composition
+                                                                                                                                                 and large compositions.
+topology. This approach should not be used in larger com-
+positions. The LRF, IM, LR, LA, PLMF, and DNN approach                                                                                           6.4 The effect of the learning rate
+have relatively higher run-time efficiency (around 8%) than                                                                                      Finally, we analyze the effect of the learning rate in the
+the proposed approach. The key reason is that proposed                                                                                           proposed reduced topology approach. We use 3 different
+                                                                                                                                    1.0
+                                                                                                                                                                                                                         13
+
+
+
+
+                                        1.2
+                                                      Reduced topology approach                                                                  Reduced topology approach
+                                                      Layer-based Random Forest Approach                                                         Layer-based Random Forest Approach
+                                                      Inheritance Mechanism
+                                                      PLMF                                                                                       Inheritance Mechanism
+
+
+
+
+                                        1.0
+                                                      DNN                                                                                        PLMF
+
+
+
+
+                                                                                                                                    0.8
+                                                      LA
+                                                      LR
+                                                                                                                                                 DNN
+                                                                                                                                                 LA
+
+
+
+
+                                        0.8
+                                                                                                                                                 LR
+
+
+
+
+                                                                                                                    Average NRMSE
+                        Average NRMSE
+
+
+
+
+                                                                                                                                    0.6
+                                        0.6
+
+
+
+
+                                                                                                                                    0.4
+                                        0.4
+                                        0.2
+
+
+
+
+                                                                                                                                    0.2
+                                        0.0
+
+
+
+
+                                                                                                                                    0.0
+                                                  3              5                   10                  15    20
+
+                                                                       Depth of dependency tree                                                 N = 10             N = 15        N = 20           N = 25   N = 30
+
+                                                                              (a)                                                                                            (b) (c)
+    Fig. 9: Average performance of different approaches in (a) different depths of dependency tree, (b) different topology sizes
+                                  1.0
+
+
+
+
+                                                                                                                                    10
+                                                       The reduced topology with Q-learning (α = 0.2)                                                    The reduced topology with brute-force selection
+                                                       The reduced topology with Q-learning (α = 0.5)                                                    The reduced topology with Q-learning (α = 0.2)
+                                                       The reduced topology with Q-learning (α = 0.8)                                                    The reduced topology with Q-learning (α = 0.5)
+                                                                                                                                                         The reduced topology with Q-learning (α = 0.8)
+                                  0.8
+
+
+
+
+                                                                                                                                    8
+        Average NRMSE
+
+                                  0.6
+
+
+
+
+                                                                                                                                    6
+                                                                                                                    Time (hours)
+                                  0.4
+
+
+
+
+                                                                                                                                    4
+                                  0.2
+
+
+
+
+                                                                                                                                    2
+                                  0.0
+
+
+
+
+                                                                                                                                    0
+
+                                              4              8                  12                  16        20                            4                  8                  12                  16            20
+
+                                                                 Number of Abstract Services (N)                                                                   Number of Abstract Services (N)
+
+
+
+                                                                            (a)                                                                                               (b)
+    Fig. 10: The proposed reduced topology approach with different learning rates in (a) Accuracy and (b) Runtime efficiency
+learning rates: a) low (α = 0.2), b) moderate (α = 0.5),                                                                      ment learning (Q-learning) to select the optimal candidate
+and c) high (α = 0.8) to learn Q-matrices in Algorithm 1.                                                                     CP-nets using the reputation-interdependence among the
+Figure 10 (a) depicts the accuracy of the proposed approach                                                                   component services. Experimental results show that the
+in different learning rates. It shows that better accuracy is                                                                 reputation-interdependence and the composition topology
+achieved when the learning rate is relatively lower. The                                                                      are key elements in the reputation bootstrapping of a com-
+accuracy decreases when the learning rate increases. We                                                                       position. Experimental results also show that the proposed
+find around 35% decrease in accuracy when higher learning                                                                     reduced topology approach is runtime efficient and pro-
+rates are used than the moderate learning rates for large                                                                     duces significantly better results than the DNN, PLMF,
+compositions (number of abstract services is more than 15).                                                                   LA, LR, LRF, and IM approaches. It requires no extra
+The key reason is that the Q-learning gives more weights on                                                                   process (e.g., publishing SLA or a trial period) compared
+future transitions and overestimates the outcome in higher                                                                    to guarantee-based and trail-based approaches. One key
+learning rates. We find the highest accuracy when the learn-                                                                  limitation of the proposed CP-net based approach is that
+ing rate is the lowest. Figure 10 (b) depicts the runtime effi-                                                               it is applicable for a static composition topology. In the
+ciency of the proposed approach in different learning rates.                                                                  dynamic environment, the composition topology gets up-
+The brute-force approach has exponential runtime efficiency                                                                   dated as well as the reputation-related factors. In future, we
+as it considers all the possible combinations of candidate                                                                    will explore different adaptive techniques in the dynamic
+CP-nets. We find that a lower learning rate almost behaves                                                                    composition environment.
+as a brute-force approach. The key reason is that the Q-
+                                                                                                                              ACKNOWLEDGEMENT
+learning gives more weights on current states and explores
+most of the adjacent states to estimate the outcome in lower                                                                  This research was partly made possible by DP160103595 and
+learning rates. Due to the higher number of explorations,                                                                     LE180100158 grants from the Australian Research Council.
+lower learning rates in the proposed approach provides                                                                        The statements made herein are solely the responsibility of
+poor runtime efficiency. The runtime efficiency significantly                                                                 the authors.
+increases when the learning rate increases. As there is a                                                                     R EFERENCES
+tradeoff between the runtime efficiency and the accuracy
+                                                                                                                              [1]         T. Erl, Service-Oriented Architecture: A Field Guide to Integrating XML
+for the selection of learning rates, we find that the moderate                                                                            and Web Services. New York, USA: Prentice Hall, 2004.
+learning rate provides the most satisfactory outcome.                                                                         [2]         Z. Malik and A. Bouguettaya, “Reputation bootstrapping for trust
+                                                                                                                                          establishment among web services,” IEEE Internet Computing,
+7    C ONCLUSION                                                                                                                          vol. 13, no. 1, pp. 40–47, 2009.
+                                                                                                                              [3]         M. Bahutair, A. Bouguettaya, and A. G. Neiat, “Just-in-time mem-
+We use CP-nets to represent the reputation of a service.                                                                                  oryless trust for crowdsourced iot services,” in Proceedings of the
+The proposed reduced topology approach applies reinforce-                                                                                 ICWS. IEEE, 2020, pp. 1–8.
+                                                                                                                                                       14
+
+[4]  H. Jiao, J. Liu, J. Li, and C. Liu, “A framework for reputation          [29] P. Wang, Z. Ding, C. Jiang, M. Zhou, and Y. Zheng, “Automatic
+     bootstrapping based on reputation utility and game theories,” in               web service composition based on uncertainty execution effects,”
+     Proceedings of TrustCom. Changsha: IEEE, 2011, pp. 344–351.                    IEEE Trans. on Services Computing, vol. 9, no. 4, pp. 551–565, 2016.
+[5] Y. Wu, C. Yan, Z. Ding, G. Liu, P. Wang, C. Jiang, and M. Zhou,           [30] Y. Wu, C. Yan, Z. Ding, G. Liu, P. Wang, C. Jiang, and M. Zhou,
+     “A novel method for calculating service reputation,” IEEE Trans.               “A multilevel index model to expedite web service discovery and
+     on Automation Science and Eng., vol. 10, no. 3, pp. 634–642, 2013.             composition in large-scale service repositories,” IEEE Transactions
+[6] X. Liu and A. Bouguettaya, “Managing top-down changes in                        on Services Computing, vol. 9, no. 3, pp. 330–342, 2016.
+     service-oriented enterprises,” in Proceedings of the ICWS. IEEE,         [31] H. Wang, J. Zhang, W. Sun, H. Song, G. Guo, and X. Zhou, “Wcp-
+     2007, pp. 1072–1079.                                                           nets: a weighted extension to cp-nets for web service selection,” in
+[7] X. Liu, A. Bouguettaya, J. Wu, and L. Zhou, “Ev-lcs: A system for               Proceedings of ICSOC, 2012, pp. 298–312.
+     the evolution of long-term composed services,” IEEE Transactions         [32] H. Wang, S. Shao, X. Zhou, C. Wan, and A. Bouguettaya, “Pref-
+     on Services Computing, vol. 6, no. 1, pp. 102–115, 2013.                       erence recommendation for personalized search,” Knowledge-Based
+[8] L. Qu, A. Bouguettaya, and A. G. Neiat, “Confidence-aware                       Systems, vol. 100, no. 3, pp. 124 – 136, 2016.
+     reputation bootstrapping in composite service environments,” in          [33] G. P. Zhang, “Time series forecasting using a hybrid arima and
+     Service-Oriented Computing, 2017, pp. 158–174.                                 neural network model,” Neurocomputing, vol. 50, pp. 159–175,
+[9] H. T. Nguyen, J. Yang, and W. Zhao, “Bootstrapping trust and                    2003.
+     reputation for web services,” in Proceedings of CEC. Hangzhou:           [34] D. A. D’Mello and V. Ananthanarayana, “Dynamic selection mech-
+     IEEE, 2012, pp. 41–48.                                                         anism for quality of service aware web services,” vol. 4, no. 1.
+[10] F. Skopik, D. Schall, and S. Dustdar, “Start trusting strangers?               Taylor & Francis, 2010, pp. 23–60.
+     bootstrapping and prediction of trust,” in Proceedings of WISE.          [35] R. S. Sutton, A. G. Barto, F. Bach et al., Reinforcement learning: An
+     Heidelberg: Springer-Verlag Berlin, 2009, pp. 275–289.                         introduction. USA: MIT press, 1998.
+[11] Q. Wu, F. Ishikawa, Q. Zhu, and D. Shin, “Qos-aware multigran-           [36] W. Chen, Y. Wang, and Y. Yuan, “Combinatorial multi-armed
+     ularity service composition: Modeling and optimization,” IEEE                  bandit: General framework and applications,” in Proceedings of
+     Transactions on Systems, Man, and Cybernetics: Systems, vol. 46,               JMLR, 2013, pp. 151–159.
+     no. 11, pp. 1565–1577, 2016.                                             [37] D. P. Bertsekas, “Feature-based aggregation and deep reinforce-
+[12] C. Burnett, T. J. Norman, and K. Sycara, “Bootstrapping trust                  ment learning: A survey and some new implementations,”
+     evaluations through stereotypes,” in Proceedings of AAMAS, 2010,               IEEE/CAA Journal of Automatica Sinica, vol. 6, no. 1, pp. 1–31, 2018.
+     pp. 241–248.                                                             [38] M. Ghahramani, Y. Qiao, M. C. Zhou, A. O’Hagan, and J. Sweeney,
+[13] Z. Malik and A. Bouguettaya, “Rateweb: Reputation assessment                   “Ai-based modeling and data-driven evaluation for smart manu-
+     for trust establishment among web services,” VLDB Journal,                     facturing processes,” IEEE/CAA Journal of Automatica Sinica, vol. 7,
+     vol. 18, no. 4, pp. 885–911, 2009.                                             no. 4, pp. 1026–1037, 2020.
+[14] C. Boutilier, R. I. Brafman, C. Domshlak, H. H. Hoos, and D. Poole,      [39] S. Mistry, A. Bouguettaya, and H. Dong, Long-Term Qualitative IaaS
+     “Cp-nets: A tool for representing and reasoning with conditional               Composition. Springer, 2018, pp. 77–110.
+     ceteris paribus preference statements,” Journal of Artificial Intelli-   [40] R. Xiong, J. Wang, Z. Li, B. Li, and P. C. K. Hung, “Personalized
+     gence Research, vol. 21, pp. 135–191, 2004.                                    lstm based matrix factorization for online qos prediction,” in
+[15] L. M. Gambardella and M. Dorigo, “Ant-q: A reinforcement                       Proceedings of the ICWS, 2018, pp. 34–41.
+     learning approach to the traveling salesman problem,” in Machine         [41] D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre, G. Van
+     Learning Proceedings, 1995, pp. 252 – 260.                                     Den Driessche, J. Schrittwieser, I. Antonoglou, V. Panneershelvam,
+                                                                                    M. Lanctot et al., “Mastering the game of go with deep neural
+[16] C. J. Watkins and P. Dayan, “Q-learning,” Machine learning, vol. 8,
+                                                                                    networks and tree search,” nature, vol. 529, no. 7587, p. 484, 2016.
+     no. 3-4, pp. 279–292, 1992.
+                                                                              [42] M. Beller, G. Gousios, and A. Zaidman, “Travistorrent: Synthe-
+[17] F. Ricci, L. Rokach, and B. Shapira, Recommender Systems: Introduc-
+                                                                                    sizing travis ci and github for full-stack research on continuous
+     tion and Challenges. Boston, MA: Springer US, 2015, pp. 1–34.
+                                                                                    integration,” in Proceedings of the ICMSR, 2017, pp. 447–450.
+[18] S. Kalloori and F. Ricci, “Improving cold start recommendation
+                                                                              [43] G. Developer, “Github graphql api,” 2017. [Online]. Available:
+     by mapping feature-based preferences to item comparisons,” in
+                                                                                    https://developer.github.com/v4/
+     Proceedings of UMAP, 2017, pp. 289–293.                                                            Sajib Mistry is lecturer at School of Elect Eng,
+[19] L. Xiong and L. Liu, “Peertrust: supporting reputation-based trust                                 Computer and Math Sci in Curtin University,
+     for peer-to-peer electronic communities,” IEEE Trans. on Knowledge                                 Australia. He was previously a postdoc fellow
+     and Data Engineering, vol. 16, no. 7, pp. 843–857, 2004.                                           at School of Computer Science in University of
+[20] T. D. Huynh, N. R. Jennings, and N. R. Shadbolt, “Certified                                        Sydney. He received his PhD from the RMIT Uni-
+     reputation: how an agent can trust a stranger,” in Proceedings of                                  versity, Australia in 2017. His research interests
+     AAMAS, 2006, pp. 1217–1224.                                                                        include Edge/Cloud Computing, Big Data and
+[21] Q. Wu, Q. Zhu, and P. Li, “A neural network based reputa-                                          IoT. He has published articles in international
+     tion bootstrapping approach for service selection,” Enterprise (IS),                               journals and conferences, such as IEEE TSC,
+     vol. 9, no. 7, pp. 768–784, 2015.                                                                  TKDE, ACM CACM, ACM TOI, ACM TWEB, IC-
+[22] H. Yahyaoui and S. Zhioua, “Bootstrapping trust of web services                                    SOC, WISE, ICWS and SCC. He received the
+     through behavior observation,” in Proceedings of the ICWE.               best paper award in ICSOC 2016.
+[23] K. Huang, Y. Liu, S. Nepal, Y. Fan, S. Chen, and W. Tan, “A novel                                  Athman Bouguettaya is Professor in the School
+     equitable trustworthy mechanism for service recommendation in                                      of Computer Science at the University of Syd-
+     the evolving service ecosystem,” in Proceedings of the ICSOC, 2014,                                ney, Australia. He received his PhD in Computer
+     pp. 510–517.                                                                                       Science from the University of Colorado at Boul-
+[24] C. Cornelio, J. Goldsmith, N. Mattei, F. Rossi, and K. B. Venable,                                 der (USA) in 1992. He was previously Science
+     “Updates and uncertainty in cp-nets,” in Proceedings of the AJCAI,                                 Leader in Service Computing at CSIRO ICT
+     2013, pp. 301–312.                                                                                 Centre, Canberra. Australia. Before that, he was
+[25] A. Ramı́rez, J. A. Parejo, J. R. Romero, S. Segura, and A. Ruiz-                                   a tenured faculty member and Program director
+     Cortés, “Evolutionary composition of qos-aware web services:                                      in the Computer Science department at Virginia
+     a many-objective perspective,” Expert Systems with Applications,                                   Polytechnic Institute and State University (com-
+     vol. 72, pp. 357–370, 2017.                                                                        monly known as Virginia Tech) (USA). He is or
+[26] H. Borges, A. Hora, and M. T. Valente, “Predicting the popularity        has been on the editorial boards of several journals including, the IEEE
+     of github repositories,” in Proceedings of PROMISE, 2016, pp. 9:1–       Transactions on Services Computing, ACM Transactions on Internet
+     9:10.                                                                    Technology, the International Journal on Next Generation Computing
+[27] Q. Zhao, C. Wang, P. Wang, M. Zhou, and C. Jiang, “A novel               and VLDB Journal. He has published more than 250 books, book chap-
+     method on information recommendation via hybrid similarity,”             ters, and articles in journals and conferences in the area of databases
+     IEEE Trans. on Systems, Man, and Cybernetics: Systems, vol. 48, no. 3,   and service computing (e.g., the IEEE TKDE, the ACM TWEB, WWW
+     pp. 448–459, 2018.                                                       Journal, VLDB Journal, SIGMOD, ICDE, VLDB, and EDBT). He was
+[28] S. Mistry, A. Bouguettaya, H. Dong, and A. Erradi, “Qualitative          the recipient of several federally competitive grants in Australia (e.g.,
+     economic model for long-term iaas composition,” in Proceedings of        ARC) and the US (e.g., NSF, NIH). He is a Fellow of the IEEE and a
+     ICSOC, 2016, pp. 317–332.                                                Distinguished Scientist of the ACM.
+

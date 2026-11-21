@@ -73,6 +73,16 @@ def parse_json_block(text: str) -> Any:
         return None
 
 
+def recovered_constraints(parsed: Any) -> list[dict[str, Any]] | None:
+    """Return a valid recovery list, or None so parse failures cannot look empty."""
+    if not isinstance(parsed, dict) or not isinstance(parsed.get("constraints"), list):
+        return None
+    constraints = parsed["constraints"]
+    if not all(isinstance(item, dict) for item in constraints):
+        return None
+    return constraints
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="https://dashscope.aliyuncs.com/compatible-mode/v1")
@@ -101,15 +111,26 @@ def main() -> None:
     implicit_sample = rng.sample(implicit_rows, min(args.n_implicit, len(implicit_rows)))
     none_sample = rng.sample(none_rows, min(args.n_none, len(none_rows)))
 
-    stats = {"implicit": {"n": 0, "gold_recovered": 0, "gold_total": 0, "new_constraints": 0},
-             "none": {"n": 0, "nonempty_recovery": 0}}
+    stats = {
+        "implicit": {
+            "n": 0, "gold_recovered": 0, "gold_total": 0, "new_constraints": 0,
+            "recovery_parse_failures": 0, "judge_parse_failures": 0,
+        },
+        "none": {"n": 0, "nonempty_recovery": 0, "recovery_parse_failures": 0},
+    }
     details: list[dict[str, Any]] = []
 
     # I 版：oracle 恢复 -> 判官匹配
     for row in implicit_sample:
         raw = call_api(client, args.model, RECOVER_PROMPT.format(query=row["query"]))
-        parsed = parse_json_block(raw)
-        recovered = (parsed or {}).get("constraints", [])
+        recovered = recovered_constraints(parse_json_block(raw))
+        if recovered is None:
+            stats["implicit"]["recovery_parse_failures"] += 1
+            stats["implicit"]["n"] += 1
+            stats["implicit"]["gold_total"] += len(row["gold"]["constraints"])
+            details.append({"sample_id": row["sample_id"], "parse_failed": True})
+            print(json.dumps({"sample_id": row["sample_id"], "parse_failed": True}))
+            continue
         gold = row["gold"]["constraints"]
         matched_flags = [False] * len(gold)
         new_count = 0
@@ -118,8 +139,12 @@ def main() -> None:
                 recovered=json.dumps(rec, ensure_ascii=False),
                 gold=json.dumps(gold, ensure_ascii=False, default=str),
             ))
-            verdict = parse_json_block(judge_raw) or {}
-            idx = verdict.get("match_gold_index", -1)
+            verdict = parse_json_block(judge_raw)
+            if not isinstance(verdict, dict) or not isinstance(verdict.get("match_gold_index"), int):
+                stats["implicit"]["judge_parse_failures"] += 1
+                new_count += 1
+                continue
+            idx = verdict["match_gold_index"]
             if isinstance(idx, int) and 0 <= idx < len(gold):
                 matched_flags[idx] = True
             else:
@@ -136,11 +161,14 @@ def main() -> None:
     # N 版：恢复须为空
     for row in none_sample:
         raw = call_api(client, args.model, RECOVER_PROMPT.format(query=row["query"]))
-        parsed = parse_json_block(raw)
-        recovered = (parsed or {}).get("constraints", [])
+        recovered = recovered_constraints(parse_json_block(raw))
         stats["none"]["n"] += 1
-        stats["none"]["nonempty_recovery"] += int(bool(recovered))
-        details.append({"sample_id": row["sample_id"], "recovered": recovered})
+        if recovered is None:
+            stats["none"]["recovery_parse_failures"] += 1
+            details.append({"sample_id": row["sample_id"], "parse_failed": True})
+        else:
+            stats["none"]["nonempty_recovery"] += int(bool(recovered))
+            details.append({"sample_id": row["sample_id"], "recovered": recovered})
 
     recover_rate = stats["implicit"]["gold_recovered"] / max(stats["implicit"]["gold_total"], 1)
     new_rate = stats["implicit"]["new_constraints"] / max(stats["implicit"]["gold_total"], 1)
@@ -152,7 +180,12 @@ def main() -> None:
         "implicit_new_constraint_rate": round(new_rate, 4),
         "none_nonempty_recovery_rate": round(none_nonempty_rate, 4),
         # 准入判据（手册）：恢复率高、新增率低、N 版空恢复率高 -> 全量发布
-        "verdict": "PASS" if (recover_rate >= 0.9 and new_rate <= 0.05 and none_nonempty_rate <= 0.1) else "FAIL",
+        "verdict": "PASS" if (
+            recover_rate >= 0.9 and new_rate <= 0.05 and none_nonempty_rate <= 0.1
+            and stats["implicit"]["recovery_parse_failures"] == 0
+            and stats["implicit"]["judge_parse_failures"] == 0
+            and stats["none"]["recovery_parse_failures"] == 0
+        ) else "FAIL",
         "details": details,
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)

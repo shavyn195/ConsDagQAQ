@@ -1,0 +1,328 @@
+{
+  "metadata": {
+    "experiment": "local_cpu_prompt_pilot_v2",
+    "model": "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\models\\Qwen3-0.6B",
+    "model_config_sha256": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd",
+    "device": "cpu",
+    "torch": "2.12.0+cu126",
+    "transformers": "4.57.6",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "groups_per_subset": 5,
+    "rows_per_subset": {
+      "dev": 15,
+      "test_tpl_ho": 15,
+      "test_tool_ho": 15
+    },
+    "records": 45,
+    "max_new_tokens": 384,
+    "cpu_threads": 2,
+    "temperature": 0,
+    "api_status": "DashScope qwen-max unavailable: HTTP 401 Incorrect API key; no strong-model result",
+    "limitation": "Fallback local 0.6B CPU pilot; not a Qwen-Max or strong-model baseline and not a full E1 run.",
+    "sample_ids": [
+      "dev-00000-E",
+      "dev-00000-I",
+      "dev-00000-N",
+      "dev-00075-E",
+      "dev-00075-I",
+      "dev-00075-N",
+      "dev-00150-E",
+      "dev-00150-I",
+      "dev-00150-N",
+      "dev-00224-E",
+      "dev-00224-I",
+      "dev-00224-N",
+      "dev-00299-E",
+      "dev-00299-I",
+      "dev-00299-N",
+      "test_tpl_ho-00000-E",
+      "test_tpl_ho-00000-I",
+      "test_tpl_ho-00000-N",
+      "test_tpl_ho-00087-E",
+      "test_tpl_ho-00087-I",
+      "test_tpl_ho-00087-N",
+      "test_tpl_ho-00174-E",
+      "test_tpl_ho-00174-I",
+      "test_tpl_ho-00174-N",
+      "test_tpl_ho-00262-E",
+      "test_tpl_ho-00262-I",
+      "test_tpl_ho-00262-N",
+      "test_tpl_ho-00349-E",
+      "test_tpl_ho-00349-I",
+      "test_tpl_ho-00349-N",
+      "test_tool_ho-00000-E",
+      "test_tool_ho-00000-I",
+      "test_tool_ho-00000-N",
+      "test_tool_ho-00087-E",
+      "test_tool_ho-00087-I",
+      "test_tool_ho-00087-N",
+      "test_tool_ho-00174-E",
+      "test_tool_ho-00174-I",
+      "test_tool_ho-00174-N",
+      "test_tool_ho-00262-E",
+      "test_tool_ho-00262-I",
+      "test_tool_ho-00262-N",
+      "test_tool_ho-00349-E",
+      "test_tool_ho-00349-I",
+      "test_tool_ho-00349-N"
+    ]
+  },
+  "scores": {
+    "baseline": {
+      "metrics_version": "e1_score_v3",
+      "records": 45,
+      "state_accuracy": 0.35555555555555557,
+      "state_accuracy_by_variant": {
+        "explicit": 0.6666666666666666,
+        "implicit": 0.0,
+        "none": 0.4
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 5
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 15,
+          "prediction_empty_records": 5
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 8
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 14
+        },
+        "budget|deadline": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 10
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 10
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 12
+        },
+        "budget|deadline|privacy|tool_auth|order": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 12,
+          "precision": null,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 12
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 9
+        },
+        "d3": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 6
+        }
+      },
+      "per_difficulty_unattributed_fp": 10,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.7777777777777778,
+      "seconds": 1413.6
+    },
+    "improved": {
+      "metrics_version": "e1_score_v3",
+      "records": 45,
+      "state_accuracy": 0.28888888888888886,
+      "state_accuracy_by_variant": {
+        "explicit": 0.8666666666666667,
+        "implicit": 0.0,
+        "none": 0.0
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 2
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 3
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 15,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 15,
+          "prediction_empty_records": 2
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 8
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 14
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 10
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 12
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 10
+        },
+        "export_audit_trail": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 5,
+          "fn": 12,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 12
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 6,
+          "fn": 9,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 9
+        },
+        "d3": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 6,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 6
+        }
+      },
+      "per_difficulty_unattributed_fp": 18,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.8444444444444444,
+      "seconds": 2080.9
+    }
+  }
+}

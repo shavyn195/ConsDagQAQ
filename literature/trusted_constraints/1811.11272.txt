@@ -1,0 +1,729 @@
+                                     Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.
+                                     Digital Object Identifier 10.1109/ACCESS.2017.DOI
+
+
+
+
+                                     Bi-objective Optimization for Energy
+                                     Aware Internet of Things Service
+                                     Composition
+                                     OSAMA ALSARYRAH1 , IBRAHIM MASHAL2 , AND TEIN-YAW CHUNG.1 ,(Member, IEEE)
+                                     1
+                                         Department of Computer Science and Engineering, Yuan Ze University, Chung-Li 32003,Taiwan
+arXiv:1811.11272v1 [cs.NI] 15 Oct 2018
+
+
+
+
+                                     2
+                                         Computer Science Department, Aqaba University of Technology, Aqaba 77110, Jordan
+                                     Corresponding author: Tein-Yaw Chung (csdchung@saturn.yzu.edu.tw).
+                                     This work was supported by the Ministry of Science and Technology of Republic of China, Taiwan, under contract number MOST
+                                     106-2221-E-155-014.
+
+
+
+
+                                           ABSTRACT In recent years, service-oriented based Internet of Things (IoT) has received massive attention
+                                           from research and industry. Integrating and composing smart objects functionalities or their services is
+                                           required to create and promote more complex IoT applications with advanced features. When many smart
+                                           objects are deployed, how do we select the most appropriate set of smart objects to compose a service by
+                                           considering both energy and Quality of Service (QoS) is an essential and challenging task. In this work,
+                                           we reduced the problem of finding an optimal balance between QoS level and the consumed energy of
+                                           the IoT service composition to a Bi-objective Shortest Path Optimization (BSPO) problem and used an
+                                           exact algorithm named pulse to solve the problem. The BSPO has two objectives, minimizing the QoS
+                                           including execution time, network latency, and service price and minimize the energy consumption of the
+                                           composite service. Experimental evaluations show that the proposed approach has short execution time in
+                                           various complex service profiles. Meanwhile, it can obtain good performance in energy consumption and
+                                           thus network lifetime while maintaining a reasonable QoS level.
+
+
+                                           INDEX TERMS IoT services, energy efficiency, service composition.
+
+
+                                         I. INTRODUCTION                                                                             services is required to create and promote more complex IoT
+                                         NTERNET of things (IoT) is a new technology paradigm                                        applications with advanced features [4]. Composing those
+                                     I   that allow smart objects to be connected together to
+                                     collaborate, cooperate, and communicate with each other to
+                                                                                                                                     services is done by aggregating atomic services to provide
+                                                                                                                                     new functions that none of the services could provide indi-
+                                     provide and support smart applications [1], [2]. Currently,                                     vidually [7]. This integration must consider the quality of
+                                     there are more than 8 billion connected smart objects, and the                                  service (QoS) and energy efficiency of the composed objects.
+                                     number will continue to increase dramatically year after year                                   Take a large-scale complex IoT environment as an example.
+                                     [3]. Smart objects are heterogeneous in their functionalities,                                  When a smart object has low energy, it should be replaced
+                                     communication capabilities, and resources. In general, smart                                    with another smart object, if any, that has more energy
+                                     objects are resource constrained with very limited compu-                                       and can provide the same functions and a good QoS level.
+                                     tation and storage capacities when it is a battery-powered                                      However, this is a challenging task since IoT QoS values
+                                     device, e.g., wireless sensors and mobile phones.                                               are dynamic and can substantially vary during the lifetime
+                                        With the advent and rapid development of service-defined                                     of the application when network states change. Moreover,
+                                     everything, smart objects are represented as services corre-                                    smart objects can join, leave, fail, or new services with better
+                                     sponding to their co-hosted functions [4]–[6]. In other words,                                  quality can appear at any time. Therefore, finding a good
+                                     each IoT smart object provides its function through standard                                    balance between the energy consumption of all objects and
+                                     services that can be directly accessed. To this end, Service-                                   its QoS to prolong the network lifetime is not a simple task.
+                                     Oriented Computing (SOC) [6] are seen as the key enabler                                           In the past, several studies have discussed service discov-
+                                     for IoT.                                                                                        ery and composition and many techniques have been devel-
+                                        Integrating and composing smart objects functions or their                                   oped for Web services and Representational State Transfer
+
+                                     VOLUME 4, 2016                                                                                                                                                1
+                                                  Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+(REST) [8]. However, those techniques only considered and                The Web of Things (WoT) [13] has been proposed to seam-
+discussed the functional and non-functional properties of             lessly integrate heterogeneous objects. Through existing Web
+services. As mentioned above, due to the nature of IoT and            technologies such as Web services and RESTful interfaces,
+the smart objects, IoT services composition must consider             WoT enable objects to communicate and interact. Sun et al.
+not only QoS, but also power consumption and residual                 [14] proposed a microservice IoT framework to provide a
+energy level [9].                                                     generic IoT architecture based on a module or multicom-
+   There are a few studies on IoT service composition that            ponent application instead of the monolithic applications.
+address energy consumption [10]. However, none of them                The framework abstracts smart objects and IoT application
+considered energy consumption as a separated objective;               modules as services.
+they considered both QoS and energy consumption as a                     Cheng et al. [15] proposed a platform for event-driven
+single objective. Unlike previous studies, we deal with energy        service-oriented IoT coordination, where SOA is adopted
+consumption of IoT services separately from other QoS at-             to solve interoperability issues among large numbers of
+tributes. In this way, both QoS level and energy consumption          heterogeneous services and physical entities in IoT. An-
+are treated equally with the same priority.                           other service-oriented IoT architecture is presented in [16],
+   This study aims to model and develop a Bi-objective Short-         where the authors proposed a user-centric IoT-based Service-
+est Path Optimization (BSPO) for IoT service composition              Oriented architecture to integrates services that utilize IoT
+and to find an optimal balance between QoS level and the              resources in an urban computing environment. In [16], user
+consumed energy of the IoT service composition. The BSPO              goals are represented as an explicit task definition that is
+energy-aware IoT service composition has two objectives:              coordination of activities. Activities consist of configurations
+minimize the QoS including execution time, network latency,           of abstract services that can be instantiated by orchestrating
+and service price and minimize the energy consumption of              available service instances, including services that can be
+the composite service. BSPO derives the optimal solution              actuated through the IoT devices or composed of more than
+by finding a Pareto-optimal solution for QoS and energy-              one smart object.
+aware IoT service composition based on users or operators                Many studies also focused on wireless sensor networks
+preferences.                                                          (WSNs) to provide composite services by integrating its
+   The main contribution of this paper can be summarized as           functions. Zhou et al. [4] proposed a three tiers service-
+follows:                                                              oriented framework. The function of each sensor is abstracted
+   1) Investigate IoT service composition by considering              as a service within a service class. Service classes are chained
+       the energy consumption along with QoS of selected              to fulfill the functional requirements and energy-efficiency.
+       services.                                                      Another work adopted service-oriented WSN presented in
+   2) Formulate a novel optimization problem to maximize              [17].
+       the QoS level and to minimize the energy consumption
+       of composite service.                                          B. SERVICE COMPOSITION AND QOS-AWARE
+   3) Propose a BSPO model and use the pulse algorithm to             SERVICES COMPOSITION
+       solve the formulated problem.                                  Service composition techniques are designed for relatively
+   4) Simulate and evaluate the proposed service composi-             complex services when the required functions cannot be
+       tion scheme, and compare its performance with other            satisfied by any single service. It combines more than one
+       greedy algorithms.                                             service to fulfill the request. Traditional service composition
+   The rest of the paper is organized as follows. Section II          techniques compose services in a specific order to meet the
+reviews the related work. Section III presents the service            required goals [9]. In the literature, many techniques have
+composition model. Section IV describes problem formula-              been proposed for service composition based on its function
+tion. Section V depicts the optimization problem. Section VI          such as semantic-based matchmaking, Logic, Graph-Theory,
+explains the pulse algorithm. Section VII shows results and           Petri net, and AI-Planning based [18].
+performance evaluation. Finally, Section VIII concludes the              QoS-aware services composition is known to be an NP-
+paper.                                                                hard problem. However, this problem has already been ad-
+                                                                      dressed by several methods. Ngoko et al. [19] proposed a
+II. RELATED WORK                                                      mixed-integer linear programming (MILP) method to solve
+A. SERVICE-ORIENTED IOT                                               QoS service composition. Furthermore, they considered en-
+IoT adopts service-oriented architecture (SOA) paradigm               ergy consumption as a QoS attribute. Yu et al. [20] for-
+because it can provide cooperation between heterogeneous              mulated the problem as a Multi-dimensional Multi-choice
+smart objects and is very flexibile for system integration.           Knapsack Problem (MMKP). LlinÃas         ˛ and Nagi [21] pro-
+Accordingly, smart objects can be connected and composed              posed a graph-based model to solve the problem as a Multi-
+via service composition approaches. Recently, many research           Constraint Shortest Path problem (MCSP). Wu and Zhu [22]
+works have abstracted IoT devices as a service to provide             used a directed acyclic graph (DAG) to model services com-
+an efficient and unified way of accessing and operating IoT           position as a path search problem. Several studies proposed
+services [1], [11], [12].                                             Pareto optimality techniques for solving the QoS-based ser-
+2                                                                                                                                    VOLUME 4, 2016
+Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+vices selection problem [23], [24]. For example, Chen et                            consumed and maximize the QoS of a service. We solved the
+al. [23] proposed a services composition algorithm using a                          optimization problem using bi-objective shortest path algo-
+partial selection approach. Based on dominance relation, this                       rithm with four online pruning techniques to reduce the com-
+approach allows us to reduce the search space by pruning un-                        plexity of the algorithm. In addition, to ensure a good balance
+promising candidate services in QoS. However, they adopted                          among the candidate services in energy consumption, the
+service selection by local optimization, which only selects                         services consuming less energy are selected for each service
+the best candidate service locally for each abstract service                        composition. Our model aims to provide high availability
+without considering the relation between tasks in the work-                         of services by minimizing the energy consumption, i.e., by
+flow. Unlike the work cited above, we considered the QoS                            maximizing the devices battery lifetime.
+for the entire workflow as an end to end service composition                           To the best of our knowledge, there exists no previous
+and used an exact method to solve the bi-objective optimal                          study that considers an end to end service composition
+problem including QoS and energy consumption.                                       scheme with both QoS and the energy efficiency as the
+                                                                                    primary metrics for IoT resources.
+C. SERVICE COMPOSITION IN IOT CONTEXT
+Many studies in QoS-aware service composition and selec-                             III. IOT SERVICE COMPOSITION MODEL
+tion problem are available in the literature. Bellido et al.                        IoT applications consist of a set of decomposed services.
+[7] analyzed stateless compositions of RESTful services and                         In our model, we define two types of services: an abstract
+its control-flow patterns. The researchers also presented a                         service (AS) represents function of a service provided by
+comparative evaluation of different QoS attributes. Dar et al.                      one or more IoT devices or software modules, while a can-
+[25] addressed the problem of integrating IoT smart objects                         didate service (cs) represents a real Web service that may be
+by adopting the concepts of centralized service composi-                            invoked. All cs are distributed across available resources.
+tion (orchestration) and decentralized service composition                             The candidate services are characterized by two types of
+(choreography).                                                                     properties: functional and non-functional properties. Func-
+   Simple Additive Weighting (SAW) technique has been                               tional properties indicate the actions and the functions pro-
+used to rank candidate IoT service in QoS. Kouicem et al.                           vided by a cs, while non-functional properties are defined
+[26] and Yachir et al. [27] calculated a single utility value by                    by the QoS attributes and the energy profile of the service
+aggregating the QoS values, where the service composition                           running at a battery-powered object. Here, we considered
+problem is transformed to a single objective optimization                           three QoS attributes, namely, execution time, cost, and en-
+problem that finds the services with the best utility value.                        ergy consumption profile.
+Jin et al. [24] proposed a three phases service composition                            From a user’s perspective, when a user’s service request
+algorithm. The first phase pre-sorts services according to                          arrives at a service composition broker, the service compo-
+user’s preferences. The second phase applies dominance-                             sition process is invoked. The process combines a series of
+based filtering to eliminate sub-optimal solutions and the                          atomic service components appropriately to form a compos-
+final phase sorts the rest of services to select the best service.                  ite service (path) that provides an optimal balance between
+Four QoS attributes are associated with each IoT. The can-                          QoS and consumed energy.
+didate services are evaluated concerning user’s requirements                           Fig.1 shows a model for composing IoT services. Sup-
+by aggregating each QoS rating (utility) function. However,                         pose an IoT service consists of n tasks, {Ti , 1 ≤ i ≤ n},
+studies above do not consider energy consumption.                                   which are needed by a given IoT service requested by an
+   In the literature, only a few studies considered both energy                     end user. For each task Ti a corresponding abstract ser-
+and QoS. For example, Khanouche et al. [10] proposed                                vice, AS i , is used to represent its functional requirement.
+an IoT energy-centered and QoS-aware services selection                             For each AS i , 1 ≤ i ≤ n, , there exists li candidate
+services and composition. The proposed selection approach                           services, {CS i,j , 1 ≤ j ≤ li , that can meet the functional
+preselects the services offering the QoS level required for                         requirements of AS i and thus can be selected for realizing
+user’s satisfaction using a lexicographic optimization strategy                     this service component. Note that a service component may
+and QoS constraints relaxation technique. The concept of                            be either an IoT service or a software component. To meet
+relative dominance of services is also proposed. However, the                       the requirements of a specific service request, the service
+preselecting phase aggressively prunes services that donâĂŹt                      composition path is constructed as a path from a service en-
+meet the local QoS requirements or affect the quality of                            trance portal (CS 0 ) to a service exit portal CSe by traversing
+end to end QoS level when considering execution time and                            only one candidate service of each service component. For
+network latency.                                                                    example, CS 0 →CS 1,3 →CS 2,5 →· · ·→CS m,j →CS e is a
+   Unlike the aforementioned studies, our work deals with                           composite service path that may provide useful service to a
+the energy efficiency of services separately from other QoS                         user. Therefore, the main focus for IoT services composition
+attributes and takes into account both QoS level and en-                            is to select an optimal service sequence from a pool of
+ergy consumption of IoT services. The proposed selection                            available smart objects and software components while satis-
+approach transformed the problem into a bi-objective opti-                          fying various QoS requirements, in addition to the amount of
+mization problem that aims to minimize the amount of energy                         consumed energy.
+VOLUME 4, 2016                                                                                                                                    3
+                                                           Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+
+                                                        FIGURE 1. Service composition model
+
+
+
+
+IV. PROBLEM FORMULATION                                                        consumption variable so that the composer can select the
+Let T ={T1 , T2 , Tj , . . . ..,Tn } denote the set of tasks that              most energy efficient one.
+cover the composite IoT service, where n is the total number                     We defined the energy profile (EP) of csij by two vari-
+of decomposed tasks and Tj is the jth (j = 1, 2, 3, n) sub task                ables, the residual energy level RE(csij ) of the device host-
+of T. Let AS i ={csi1 , csi2 , csij , csimi } be the candidate ser-            ing csij and the consumed energy CE(csij ) which represents
+vices available for task Tj , where mi represents the number                   the consumed energy when running csij . RE(csij ) is esti-
+of candidate services and csij is the jth candidate service.                   mated as follows.
+Thus, the directed graph model shown in Fig.1 represents all
+possible compositions for an IoT service.                                                     RE(csij ) = CDE(csij )− Eth (csij )                         (1)
+   A distributed IoT service formed by interconnecting n
+different service components can be modeled as a di-                              where CDE(csij ) represent current energy level of the
+rected graph G= (N, A) , where N ={v1 , . . . ,vi , . . . ,vn }                battery-powered device hosting csij and E th (csij ) the en-
+denotes a set of service components with n nodes                               ergy threshold value under which the device cannot support
+and A={eij |vi , vj ∈ N } is the set of edges (links). Each                    csij anymore.
+node vi is associated with a weight ci representing its                           Since our model is based on service-oriented computing,
+functional capability of abstract service AS i , 1 ≤ i ≤                       the consumed energy of running csij , CE(csij ), is calculated
+n. Each edge eij ∈A are associated with two nonnegative                        as in Eq. (2). Here, we assumed that the energy consumption
+weights QoSU ij and EP ij , where QoSU ij and EP ij de-                        of csij is constant since the service runs on the same plat-
+note the utility value of QoS attributes and the consumed                      form, uses the same resources, and receives and sends the
+energy respectively when traversing eij . Henceforth, without                  same amount of data.:
+loss of generality, QoSU ij refers to QoS attributes such as
+execution time, network latency and cost. The objective of                                      CE(csij ) =ECR (csij ) ∗T (csij )                         (2)
+service composition is to select one candidate service from
+each set AS j and generate an optimal IoT Composition                          where ECR (csij ) represents the energy consumption rate,
+Service Path (CSP) x={x1 , x2 , . . . ..,xi , . . . . . . ,xn } from the       and T (csij ) represent the execution time of csij . The energy
+set of available compositions under multi-objective require-                   profile of csij is calculated as shown in Eq. (3) by taking the
+ments, where xi denotes the candidate service selected for                     ratio between the energy consumed by invoking csij and its
+sub task Ti .                                                                  residual energy.
+
+A. ENERGY PROFILE MODEL (EP)                                                                   EP (csij ) = CE(csij )/ RE(csij )                          (3)
+Since energy consumption is a significant factor for devices
+hosting the candidate service, it is considered necessary that                   Thus, the smaller is EP (csij ) the better is the csij as an
+each candidate service provides the composer its energy                        candidate for Ti .
+4                                                                                                                                             VOLUME 4, 2016
+Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+   Finally, the EP of a service composition x can be calcu-                            Therefore, as given in Eq. (7), the service cost for compo-
+lated as shown in Eq. (4), the energy consumed by composi-                          sition path x is:
+tion path xi is:                                                                                                       n
+                                                                                                                       X
+                                                                                                                             C xi
+                                                                                                                                    
+                                                                                                             C (x) =                             (7)
+                               n
+                                                                                                                       i=1
+                               X
+                                     EP xi xi ∈ S        h
+                                                           
+                 EP (x) =                                                 (4)
+                               i=1                                                  3) Utility Function
+   where S h represents the set of battery-powered devices.                         Using utility function is a helpful mechanism for evaluating
+In our model, we consider the differences in the underline                          the aggregated quality of a given composite service. In this
+infrastructure of the running services. In general, IoT soft-                       research, we calculate the utility value of a service com-
+ware services are not executed on battery powered devices                           position by aggregating normalized QoS attributes values.
+in contrast to sensing and actuating services. To differentiate                     All QoS values are mapped to a single real value between
+between these two types of required services we refer to the                        0 and 1 by comparing the QoS value with the minimum
+set of battery-powered devices by S h .                                             and maximum available QoS value. This enables uniform
+                                                                                    evaluation of the QoS value.
+                                                                                       We adopted a Multiple Attribute Decision-Making ap-
+B. QOS CRITERIA
+                                                                                    proach, namely, the Simple Additive Weighting (SAW) tech-
+In our study, we consider a set of quantitative non-functional
+                                                                                    nique [28] for the mapping process. For a composite service
+properties of IoT services which can be used to describe the
+                                                                                    path x the aggregated QoS values are compared with the
+quality criteria of a web service. For the sake of simplicity,
+                                                                                    minimum and maximum possible aggregated values. The
+in this paper, we consider only negative attributes as our
+                                                                                    minimum (or maximum) possible aggregated values can be
+non-functional properties. These values of negative attributes
+                                                                                    easily estimated by aggregating the minimum (or maximum)
+need to be minimized. We included two attributes: Service
+                                                                                    value of each service class.
+Execution Time (T), which is collected from records of
+                                                                                       The utility function of QoS is computed as in Eq. (8).
+previous execution monitoring, and Service Cost (C), which
+is directly collected from service providers.
+                                                                                                      QoSU (x) =wt ∗T́ (x) +wc ∗ Ć (x)          (8)
+1) Service Execution Time (T):                                                         where wt and wc represent the weighting factors of execu-
+Service execution time represents the average time expected                         tion time and cost respectively. The sum of weights are equal
+for executing a candidate service. The service provider up-                         to one, i.e., wt + wc = 1. T́ (x) is the normalized service
+dates it continuously because the load of the device hosting                        execution time for x that is calculated using Eq. (6). Ć (x) is
+the service changed dynamically. Clients expect their jobs to                       the normalized service cost for x that is calculated using Eq.
+be completed in a minimal time when they submit requests                            (7).
+to the service composer. Let L(csij ) be the latency of                                With the above QoS utility and power profile formulas, we
+transmitting data from csij and ET (csij ) be the execution                         can formulate the optimization problem of the service com-
+time of service request for csij . Thus, the service execution                      position as a BSPO problem. We described the bi-objective
+time T(csij ) can be computed as in Eq. (5).                                        shortest path optimization problem in the next section.
+
+                  T (csij ) = L(csij )+ET (csij ).                        (5)        V. BI-OBJECTIVE OPTIMIZATION PROBLEM
+                                                                                    Multi-objective service composition selects one candidate
+Therefore, the service execution time for composition path x                        service from each set AS j and generates an optimal IoT
+can be given as follows.                                                            CSP from the set of available compositions under multi-
+                                                                                    objective and constraints. In this study, we formulated the
+                                      n
+                                      X                                             energy aware IoT service composition as BSPO for finding
+                          T (x) =           T (xi )                       (6)
+                                                                                    an optimal IoT CSP from the start node css ∈N to the end
+                                      i=1
+                                                                                    node cse ∈N that minimizes two different (often conflicting)
+2) Service Cost (C):                                                                objective functions. The bi-objective shortest path problem
+When a user submits his/her request to a service composer,                          can be formally defined as in Eq. (9):
+the composer manages and finds the fastest composition path
+for him/her. Meanwhile, the user is also expected to pay the                                          minCSP (x) = (QoSU (x),EP (x))
+fairest price for running his/her tasks. Therefore, the Service                                           s.t.,                                  (9)
+Cost is considered a valuable QoS property. In this model,
+                                                                                                                        x∈X
+we set C(csij ) as the cost of executing csij . The cost is
+usually fixed but may be changed according to the service                              where x represents a candidate service path from the
+provider’s business policy. The execution cost is registered                        service entrance portal from css to the service exit portal cse .
+by the service provider.                                                            QoSU (x) represents the aggregated value of the QoS values
+VOLUME 4, 2016                                                                                                                                     5
+                                                     Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+                                                                          Algorithm 1: Pulse algorithm
+along all edges of a path x. EP (x) represents the aggregated             Input: G directed graph; v s : start node; v e end node
+value of the EP over all edges in x. X is the set of all paths            Output: X E : true efficient set
+from css to cse . The objective of Eq. (9) is to minimize the             1: p←{ }
+                                                                          2: QoSU (p)←0
+QoS utility value and the energy profile of CSP (x). Since                3: EP (p)←0
+the existence of a path that simultaneously minimizes both                4: initialization (G)
+objectives in Eq. (9) cannot be guaranteed, we seek for a                 5: pulse( v s , QoSU (p) , EP (p) , p)
+                                                                          6: return X E
+set of paths with an acceptable tradeoff between the two
+objectives.
+QnIoT service composition is a NP-complete problem with                  using a look-ahead mechanism that prunes aggressively vast
+   j=1 Mj possible CSP for task T, where n represents the                regions of the solution space. For the initialization procedure,
+number of tasks and Mi represents the number of candidate
+                                                                         the algorithm starts running a mono-objective shortest path
+services for task Ti . To solve the above problem, in this paper,
+                                                                         algorithm to get the upper bound for each objective. The
+we use the pulse algorithm detailed in the next section.
+                                                                         pulse algorithm is shown in Algorithm 1.
+VI. THE PULSE ALGORITHM: OVERVIEW
+                                                                            The pulse algorithm follows a depth-first search truncated
+We used the pulse algorithm [29] to solve the bi-objective               by several pruning strategies to control the pulse propagation
+optimization problem. The pulse algorithm optimizes a bi-                and prunes pulses without cutting off any efficient solu-
+objective function CSP(x) that is composed of a quality of               tion. The algorithm defines four pruning strategies namely,
+service function QoSU and energy profile function EP. A                  pruning by cycles, nadir point, efficient set, and label.
+path x optimizes CSP or is Pareto-optimal if there is no                 The pulse recursive function is shown in Algorithm 2 .
+other path x0 that has lower QoSU and lower EP than x. The               It takes four input parameters, current node v i , the cumu-
+goal of the pulse algorithm is then to find a series of such             lative QoS utility value QoSU (p), the cumulative energy
+Pareto-optimal paths that together form an efficient set X E             profile EP (p), and the partial path p. The pruning strategies
+by recursively examining the entire search space of the graph.           applied to the pulse are shown in Lines 1–4; if the pulse is not
+   The efficiency of the algorithm is achieved by aggressively           pruned, line 5 stores the current QoSU (p) and EP (p) and
+pruning partial paths. When a pulse reaches to a newly added             line 6 adds the node vi to the partial path. In lines 7–
+node, it will check if adding the node to the existing partial           11, the pulse propagates over all nodes vj ∈ Γ + (vi ),
+path satisfies one of the adopted pruning conditions or not.             where Γ + (vi ) is the set of outgoing neighbors of vi , and adds
+The partial path will be eliminated if it meets one of the               current QoS utility to the cumulative one and current EP to
+following conditions:                                                    the cumulative EP .
+   1) It includes cycles.                                                   Whenever the pulse function is invoked at end node v e ,
+   2) It exceeds either one or both upper bounds obtained at             a partial path P becomes a complete solution x and we
+       the initialization phase, represented by a nadir point,           update the online efficient set dX E . Note that the information
+       before reaching the end node.                                     about XE has a global scope and is not an attribute of the
+   3) It is dominated by any other path in the current efficient         traveling pulse within the recursion. Algorithm 3 presents
+       set before reaching the end node.                                 the pulse function when it is invoked on end node v e . Since
+   4) It is dominated by any objective value stored in the               a new solution has been found, the algorithm verifies if the
+       label of the newly added node. A node is labeled by               new solution is efficient and updates the online efficient set
+       accumulated objective values when it is traversed by a            accordingly.
+       feasible path. Thus, if the partial path is dominated by
+       the existing label of the newly added node, it will not           A. PRUNING TECHNIQUES
+       be part of a Pareto optimal path.                                 1) Pruning by Cycles:
+   Suppose that we have a given network with start                       Because all weights on the arcs are nonnegative, any efficient
+node vs and end node v e .The pulse algorithm sends a pulse              solution cannot contain cycles. To avoid cycles in a path,
+from vs to v e . This pulse travels through the entire network           every time we invoke the pulse function at v i , the algorithm
+while storing the partial path p (an ordered sequence of vis-            checks whether a node has been visited or not. If v i has
+ited nodes) and its cumulative objective functions, QoSU (p)             already lain on the partial path, it is pruned from P.
+and EP (p). Every pulse that reaches the end node v e is
+a feasible solution that might be efficient. Once a pulse                2) Pruning by Nadir point:
+reaches the end node, it recursively backtracks to continue              Based on the idea of the nadir point which seen as the anti-
+its propagation through the rest of the nodes in the search              ideal point in the objective space, the algorithm aims to
+for more efficient paths from vs to v e . If the pulse is let            prune as early as possible any pulse exceeding either smallest
+free, this recursive algorithm identifies all possible paths, and        values (best path) of both objectives solutions. To do so,
+guarantees that an efficient set is always found.                        we calculate the minimum QoSU(x) (regardless of EP) and
+   However, the pulse algorithm does not continue exploring              the minimum energy profile EP(x) (regardless of QoS) from
+any partial path that will not produce an efficient solution by          entrance node to the end node.
+6                                                                                                                                       VOLUME 4, 2016
+Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+Algorithm 2: Pulse function:
+pulse ( v s , QoSU (p) , EP (p) , p)
+Input: v i , current node; QoSU (p) ,
+cumalative QoS utility; EP (p) ,
+cumulative power; p, current path.
+Output: void
+1: if isAsyclic( v i , p) then
+2: if checkNadirPoint( v i , QoSU (p) , EP (p)) then
+3:     ifcheckEfficientSet( v i , QoSU (p) , EP (p)) then
+4:       ifcheckLabels( v i , QoSU (p) , EP (p)) then
+5:         store (QoSU (p) , EP (p))
+6:          p← p̀∪{ v i }
+7:         for v j ∈Γ + (vi ) do
+8:             qos (p̀) ←QoSU (p) +QoSU (csij )
+9:             EP (p̀) ←EP (p) +EP (csij )
+10:            pulse( v j , QoSU (p̀) , EP (p̀) , p̀)
+11:        end for
+12:      end if
+13: end if                                                                          FIGURE 2. Nadir point and lower and upper bounds
+14: end if
+15: end if
+16: return void
+                                                                                    namely, QoSU (vi ) for QoS utility and EP (vi ) for en-
+Algorithm       3:  Pulse       function  for   the    end        node     :
+                                                                                    ergy profile, we can determine whether a partial path
+  pulse ( v e , QoSU (p) , EP (p) , p)                                              will become an efficient solution or not. Given a partial
+Input: v e , current node; QoSU (p) ,                                                                                             X E such that
+                                                                                    path p to node vi , if there is a solution x∈ d
+cumalative QoS utility; EP (p) ,
+cumulative power;; p, current path.
+                                                                                    QoSU (p) + QoSU (vi )≥QoSU (x) and
+Output: void                                                                         EP (p) + EP (vi )≥EP (x), we can safely prune partial
+1: if CheckEfficientSet( v e , QoSU (p) , EP (p)) then                              path p, because even if it spends both the minimum cost
+2: p← p∪{ v e }
+3: X←mapPathToSolution(p)
+                                                                                    and the minimum time to reach the end node, it will still be
+4:     UpdateEfficentSet(X)                                                         dominated by path x.
+5:end if
+6:return void
+                                                                                    4) Pruning by label:
+                                                                                    For each node vi a fixed number of labels saves a tu-
+                                                                                    ple of QoSU and EP values. The labels at node vi are
+   Assume that we have an optimal solutions x∗QoSU and
+                                                                                    denoted by L (vi ) = {(QoSU il , EP il )| l= 1, . . . , Q} where
+x∗EP   where x∗QoSU and x∗EP represent Energy profile and
+                                                                                    QoSU il and EP il are the cumulative QoS utility and energy
+QoS utility objectives of the mono-objective shortest path
+                                                                                    profile for a partial path to vi respectively and Q denotes the
+problem respectively. The images for the     optimal solu-                         number of labels at v i . For an incoming pulse, the algorithm
+tions in the objective space are Z x∗QoSU = (EP , QoSU )
+                                                                                    checks if the incoming partial path p is dominated or not; that
+and Z (x∗EP ) = (EP , QoSU ). The nadir point, denoted by
+                                                                                    is, if any label dominates CSP (p), the pulse is discarded by
+Z N = (EP , QoSU ) , which represent a vector composed of
+                                                                                    label pruning.
+the worst objective values in the objective space. In other
+words, it represents an upper bound for each objective in the
+                                                                                     VII. PERFORMANCE STUDY
+objective space.
+                                                                                    In this section, we presented the setup of our simulation.
+   After applying the mono objective shortest path problem
+                                                                                    Then we analyzed the performance of the exact bi-objective
+for each objective, a set of an alternative optimal solution
+                                                                                    algorithm for IoT service composition that optimizes QoS
+for each objective can be found. EP and QoSU represent
+                                                                                    utility, i.e. network latency, response time and service cost,
+the smallest values among all alternative solutions for both
+                                                                                    and consumed energy.
+objectives x∗QoSU and x∗EP , respectively. As shown in Fig.2
+                                                                                       To show how IoT services composition can be instantiated
+Z x∗QoSU , Z (x∗EP ), and Z N shows the minimizer victors                           and invoked while keeping an optimal balance between QoS
+in the objective space and Z* represents the ideal point.                           level and the consumed energy of the composed service, we
+   Based on this, for any solution x with QoSU (x) > QoSU                           conducted an extensive simulation under various scenarios to
+orEP (x) >EP , its image z(x) is dominated and x is not                             evaluate the performance of the proposed IoT service com-
+                                   the dark region in fig 2. Is
+efficient. Where any point falls in                                                 position. In these scenario we assumed that we have a smart
+eather dominated by Z x∗QoSU or Z (x∗EP ).based on this                             environment consist of thousands of heterogeneous objects
+any pulse exceeding either EP and QoSU will be pruned.                              such as mobile devices, wireless sensors, and smart home
+                                                                                    and smart building devices such as smart power outlets, shat-
+3) Pruning by Efficient set:                                                        ters, elevators, access controls, air conditioning, surveillance
+                                  X E at a given in-
+Consider the online efficient set d                                                 cameras, etc. We also assumed that these devices are hetero-
+termediate stage of the algorithm. Using the lower                                  geneous in communication protocols. For example, wireless
+bound found in the initiation phase of the algorithm                                sensors can be based on ZigBee, 6lowpan or Bluetooth [2].
+VOLUME 4, 2016                                                                                                                                    7
+                                                  Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+To provide interoperability between these heterogeneous ob-
+jects the functions of these objects and software components
+are abstracted as services to become accessible through SOP,
+COAP or REST protocols [2]. Finally, we assumed that all
+candidate services are registered in IoT orchestration system
+and categorized based on its services classes.
+
+A. SIMULATION ENVIRONMENT AND METHODOLOGY
+We implemented our simulation using java under 64-bit
+Windows seven operating system, running on Intel Core i5-
+2500, 3.3 GHz, and 8 GB RAM. Each scenario generated
+a different number of services classes AS and candidate
+services cs. Each candidate service has two QoS attributes:           FIGURE 3. Selection time versus number of candidate services (10, 15, 20
+                                                                      tasks
+execution time including network latency, and service cost.
+   Due to the absence of datasets in QoS and energy profile
+values of IoT services, we chose to evaluate the proposed             our algorithm: QoSC, only the QoS is taken into account
+algorithm by using synthetically generated data. For instance,        in the selection process, and EPC, only the power profile
+each service is produced with a random QoS value according            is taken into account in the selection process. The results
+to the values reported in the literature [10]. Based on the           presented here are derived based on the average of 100
+model presented in [29], we specified the energy profile              simulations.
+of IoT services. The values of each quality parameter are
+generated according to a normal distribution. The importance
+                                                                      B. SIMULATION RESULTS
+or weight of each QoS attribute in the utility function is
+                                                                      To evaluate the performance of the proposed model and
+set to be fixed 1/2. The service execution time and network
+                                                                      algorithm we considered the following metrics: (1) Selection
+latency are generated assuming a uniform distribution over
+                                                                      time which represents the computational time of the selection
+the interval [20, 1200] and [20, 800]. The cost of services
+                                                                      algorithm; (2) Energy consumption of the composite service
+is generated according to a uniform distribution over the
+                                                                      which is equal to the total energy consumed by its com-
+interval [10, 20].
+   In order to overcome the problem of QoS values fluctu-             ponents; (3) Composition lifetime which is the number of
+ation during service runtime in dynamic IoT environments,             compositions that can be executed before the first candidate
+QoS values are randomly changed after every service itera-            service failure. A service is considered failed when its au-
+tion by multiplying every QoS value with a random number              tonomy is no longer sufficient to be invoked; (4) Optimality
+in the interval [0.9, 1.1].                                           which is the ratio between the QoS value of the composite
+   In order to study the energy consumption in battery oper-          service obtained by BOSC and the optimal QoS value of the
+ated objects, we referred to the energy model presented in            composite service, obtained by that of QoSC and EPC.
+[29]. We assumed that every device has an initial amount of
+charge and maximum battery charge, Cinitial and cmax,                 1) Selection Time versus Number of Services
+where the values of Cinitial is chosen randomly in the                To validate the scalability of BOSC, we tested the execution
+interval [0.7 Cmax,1.0 Cmax] and the maximum battery                  time of the selection algorithm under various numbers of
+charge Cmax of an object is set as 1500 mA·h. Furthermore,            tasks involved in the composition process and various num-
+any object has energy lower than CT hreshold becomes                  bers of available candidate services for each task.
+unable to provide its services and will not be considered in             In the first experiment, we set the number of tasks involved
+the composition process. In this study, we set CT hreshold            in the composition to be 10, 15 and 20 tasks. We also set
+to be 30% of cmax. After every run of the selected candi-             the number of candidate services for each task to be between
+date service, a specific amount of power is consumed and              100 and 1000. Fig. 3 compares the average execution time (in
+this amount is subtracted from current battery level of the           millisecond or ms) of the composition algorithm with various
+device hosting the service. The amount of consumed power              numbers of tasks and candidate services for each task. As
+is chosen randomly in the interval [100 mA.s, 10000 mA.s]             shown in Fig 3, the average execution time increases as the
+after every service invocation.                                       number of tasks of the composite service increases. As shown
+   In our study, a service composer is used to find an optimal        in the figure, the average execution time is short and suitable
+balance between QoS and consumed energy and prolong the               for a large scale IoT environment. For example, the selection
+network life time. In the following sections we will refer            time does not exceed 10 ms when running 10 tasks each
+to the proposed algorithm by BOSC (Bi-Objective Service               with 1000 candidate services. When increasing the number
+Composition). In order to show the added value of the                 of tasks to 20 each with 1000 candidate services, the average
+proposed selection approach in a large-scale IoT services             execution time increases slightly to reach less than 70 ms.
+environment, we compared our results with two variants of             However, this increase is still reasonable and acceptable.
+8                                                                                                                                    VOLUME 4, 2016
+Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+
+FIGURE 4. Energy consumption versus number of candidate services.
+
+
+                                                                                    FIGURE 5. Energy consumption versus number of tasks)
+2) Energy Consumption Versus Number of Services
+In the second simulation, we compared the performance of
+the three algorithms in consumed energy (in mA.s). In the
+simulation, we considered a composition path consisting of
+10 tasks where each task has 100 to 1000 candidate services.
+As shown in Fig. 4, the amount of consumed energy in BOSC
+and EPC gets close to each other. Note that in EPC the
+candidate services with the lowest energy profile are always
+selected.
+   From Fig. 4, we can see that when candidate services
+are between 100 and 1000, the amount of consumed energy
+by BOSC is about 35% more than that by EPC in aver-
+age. Certainly, EPC provides the best composite service in
+energy consumption. An interesting observation is that the                          FIGURE 6. Composition lifetime versus number of candidate services.
+amount of consumed power decreases when the number of
+the available services increases. This can be explained by the
+fact that when increasing the number of candidate services                          considered a composition path consisting of 10 tasks and
+the probability of selecting more services with less power                          each task has 100 to 1000 candidate service. As shown in
+consumption increases, and hence, the energy consumed                               Fig. 6, the composition life time with BOSC is slightly less
+decreases. Another advantage of BOSC is that it saves more                          than that by EPC when only the lowest energy profile is
+power than that by QoSC. BOSC consumed energy 70% less                              selected. On the other hand, EPC guarantees the lowest en-
+than that by QoSC.                                                                  ergy consumption while reducing the QoSU of the composite
+   In the third experiment, we intended to show the consumed                        path. Indeed, BOSC can achieve a good balance between
+energy under various numbers of tasks between 10 and 50                             the amount of consumed energy and QoSU of the composed
+tasks when the number of candidate services for each task are                       path. Thus, BOSC ensures a long composition life time,
+set to be 100. Fig. 5 shows that the energy consumption of the                      which provides a high availability of candidate services.
+composite path increases when the number of service classes
+increases. In fact, increasing the size of composite path will                      4) Optimality of the Solution
+increase the number of selected services which causes more                          Studying the performance of BOSC in optimality of the
+power consumption.                                                                  obtained QoSU is the purpose of this experiment. In the
+                                                                                    simulation we considered a composed path consisting of
+3) Composition Lifetime Versus Number of Concrete                                   10 tasks and each task has 100 to 1000 candidate services.
+Services                                                                            As shown in Fig. 7, the optimality of the proposed method
+Studying the performance of the proposed algorithm in ser-                          guaranteed a QoS level about 80% close to that acquired by
+vice composition life time is the aim of the fourth experiment.                     QoSC. It is worthy of noting that BOSC does not apply any
+We evaluated and compared the composition lifetime by                               constraint on QoS attributes in the simulation. The results of
+BOSC with that by EPC and QoSC. In the simulation, we                               BOSC can be further improved if we apply some constraints
+VOLUME 4, 2016                                                                                                                                            9
+                                                               Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+                                                                                    [3] I. Gartner. (2017, February 12). Gartner Says 8.4 Billion Connected
+                                                                                        "Things" Will Be in Use in 2017, Up 31 Percent From 2016. Available:
+                                                                                        https://www.gartner.com/newsroom/id/3598917
+                                                                                    [4] Z. Zhou, D. Zhao, L. Liu, and P. C. K. Hung, "Energy-aware composition
+                                                                                        for wireless sensor networks as a service," Future Generation Computer
+                                                                                        Systems, vol. 80, pp. 299-310, 2018/03/01/ 2018.
+                                                                                    [5] X. Xu, Q. Z. Sheng, L. J. Zhang, Y. Fan, and S. Dustdar, "From Big Data
+                                                                                        to Big Service," Computer, vol. 48, no. 7, pp. 80-83, 2015.
+                                                                                    [6] Z. Wen, R. Yang, P. Garraghan, T. Lin, J. Xu, and M. Rovatsos, "Fog
+                                                                                        Orchestration for Internet of Things Services," IEEE Internet Computing,
+                                                                                        vol. 21, no. 2, pp. 16-24, 2017.
+                                                                                    [7] J. Bellido, R. Alarc, #243, and C. Pautasso, "Control-Flow Patterns for
+                                                                                        Decentralized RESTful Service Composition," ACM Trans. Web, vol. 8,
+                                                                                        no. 1, pp. 1-30, 2013.
+                                                                                    [8] M. Garriga, C. Mateos, A. Flores, A. Cechich, and A. Zunino, "RESTful
+                                                                                        service composition at a glance: A survey," Journal of Network and
+FIGURE 7. Optimality QoS versus number of candidate services.
+                                                                                        Computer Applications, vol. 60, pp. 32-53, 2016/01/01/ 2016.
+                                                                                    [9] T. Baker, M. Asim, H. Tawfik, B. Aldawsari, and R. Buyya, "An energy-
+                                                                                        aware service composition algorithm for multiple cloud-based IoT appli-
+                                                                                        cations," Journal of Network and Computer Applications, vol. 89, pp. 96-
+on QoS attributes, such as execution time and cost thresholds.                          108, 2017/07/01/ 2017.
+This is because it helps to reduce the solution choices with                       [10] M. E. Khanouche, Y. Amirat, A. Chibani, M. Kerkar, and A. Yachir,
+lower QoSU and hence better QoS can be achieved. As we                                  "Energy-Centered and QoS-Aware Services Selection for Internet of
+                                                                                        Things," IEEE Transactions on Automation Science and Engineering, vol.
+can observe from Fig. 7, the QoS optimality level of EPC                                13, no. 3, pp. 1256-1269, 2016.
+dramatically decreases, while BOSC can provide a solution                          [11] V. Issarny, G. Bouloukakis, N. Georgantas, and B. Billet, "Revisiting
+close to optimal solutions.                                                             Service-Oriented Architecture for the IoT: A Middleware Perspective,"
+                                                                                        Cham, 2016, pp. 3-17: Springer International Publishing.
+                                                                                   [12] R. Morabito, I. Farris, A. Iera, and T. Taleb, "Evaluating Performance of
+VIII. CONCLUSION                                                                        Containerized IoT Services for Clustered Devices at the Network Edge,"
+                                                                                        IEEE Internet of Things Journal, vol. 4, no. 4, pp. 1019-1030, 2017.
+Service-oriented IoT has received considerable attention over                      [13] D. Guinard, V. Trifa, S. Karnouskos, P. Spiess, and D. Savio, "Interacting
+the past few years. A crucial factor for the success of IoT and                         with the SOA-Based Internet of Things: Discovery, Query, Selection,
+its applications is to create more complex IoT applications                             and On-Demand Provisioning of Web Services," IEEE Transactions on
+                                                                                        Services Computing, vol. 3, no. 3, pp. 223-235, 2010.
+with advanced features by composing smart objects functions                        [14] L. Sun, Y. Li, and R. A. Memon, "An open IoT framework based on
+and services.                                                                           microservices architecture," China Communications, vol. 14, no. 2, pp.
+   In this paper, a bi-objective shortest path optimization                             154-162, 2017.
+                                                                                   [15] B. Cheng, D. Zhu, S. Zhao, and J. Chen, "Situation-Aware IoT Service
+model is presented to model IoT service composition where                               Coordination Using the Event-Driven SOA Paradigm," IEEE Transactions
+energy consumption and QoS are considered. The pulse                                    on Network and Service Management, vol. 13, no. 2, pp. 349-361, 2016.
+algorithm with four embedded pruning techniques, namely,                           [16] I.-Y. Ko, H.-G. Ko, A. J. Molina, and J.-H. Kwon, "SoIoT: Toward A User-
+                                                                                        Centric IoT-Based Service Framework," ACM Trans. Internet Technol.,
+pruning by cycle, nadir point, efficient set and label, is                              vol. 16, no. 2, pp. 1-21, 2016.
+developed to solve efficiently the presented problem. Results                      [17] S. Y. Shah, B. K. Szymanski, P. Zerfos, and C. Gibson, "Towards Rele-
+show that our proposed IoT service composition scheme                                   vancy Aware Service Oriented Systems in WSNs," IEEE Transactions on
+                                                                                        Services Computing, vol. 9, no. 2, pp. 304-316, 2016.
+overcomes and surpasses other schemes that only consider                           [18] Q. Z. Sheng, X. Qiao, A. V. Vasilakos, C. Szabo, S. Bourne, and X. Xu,
+QoS or power consumption individually. Experiments also                                 "Web services composition: A decade’s overview," Information Sciences,
+show that the proposed scheme works reasonably fast in                                  vol. 280, pp. 218-238, 2014/10/01/ 2014.
+                                                                                   [19] Y. Ngoko, A. Goldman, and D. Milojicic, "Service selection in web service
+selecting suitable smart objects; the average execution time                            compositions optimizing energy consumption and service response time,"
+needs less than 70 ms, which makes the proposed model                                   Journal of Internet Services and Applications, journal article vol. 4, no. 1,
+scalable for large-scale IoT environments. The amount of                                p. 19, November 26 2013.
+                                                                                   [20] T. Yu, Y. Zhang, and K.-J. Lin, "Efficient algorithms for Web services
+consumed energy by BOSC is about 35% more than that                                     selection with end-to-end QoS constraints," ACM Trans. Web, vol. 1, no.
+consumed by EPC on average. The composition lifetime with                               1, p. 6, 2007.
+BOSC is 90% more than that by the QoS only scheme. Also,                           [21] G. A. G. Llinás and R. Nagi, "Network and QoS-Based Selection of
+                                                                                        Complementary Services," IEEE Transactions on Services Computing,
+the acquired optimality level of the BOSC guaranteed a QoS                              vol. 8, no. 1, pp. 79-91, 2015.
+level about 80% close to that obtained by QoSC. Therefore,                         [22] Q. Wu and Q. Zhu, "Transactional and QoS-aware dynamic service com-
+the proposed solution provides an optimal balance between                               position based on ant colony optimization," Future Generation Computer
+                                                                                        Systems, vol. 29, no. 5, pp. 1112-1119, 2013/07/01/ 2013.
+QoS level and consumed energy in IoT service composition.                          [23] Y. Chen, J. Huang, C. Lin, and J. Hu, "A Partial Selection Methodology
+                                                                                        for Efficient QoS-Aware Service Composition," IEEE Transactions on
+                                                                                        Services Computing, vol. 8, no. 3, pp. 384-397, 2015.
+REFERENCES                                                                         [24] X. Jin, S. Chun, J. Jung, and K. H. Lee, "IoT Service Selection Based on
+ [1] I. Mashal, O. Alsaryrah, T.-Y. Chung, C.-Z. Yang, W.-H. Kuo, and D. P.             Physical Service Model and Absolute Dominance Relationship," in 2014
+     Agrawal, "Choices for interaction with things on Internet and underlying           IEEE 7th International Conference on Service-Oriented Computing and
+     issues," Ad Hoc Networks, vol. 28, pp. 68-90, 2015/05/01/ 2015.                    Applications, 2014, pp. 65-72.
+ [2] A. Al-Fuqaha, M. Guizani, M. Mohammadi, M. Aledhari, and M. Ayyash,           [25] K. Dar, A. Taherkordi, H. Baraki, F. Eliassen, and K. Geihs, "A resource
+     "Internet of Things: A Survey on Enabling Technologies, Protocols, and             oriented integration architecture for the Internet of Things: A business
+     Applications," IEEE Communications Surveys & Tutorials, vol. 17, no. 4,            process perspective," Pervasive and Mobile Computing, vol. 20, pp. 145-
+     pp. 2347-2376, 2015.                                                               159, 2015/07/01/ 2015.
+
+10                                                                                                                                                   VOLUME 4, 2016
+Alsaryrah et al.: Bi-objective Optimization for Energy Aware Internet of Things Service Composition
+
+
+
+[26] A. Kouicem, A. Chibani, A. Tari, Y. Amirat, and Z. Tari, "Dynamic
+     services selection approach for the composition of complex services in
+     the web of objects," in 2014 IEEE World Forum on Internet of Things
+     (WF-IoT), 2014, pp. 298-303.
+[27] A. Yachir, Y. Amirat, A. Chibani, and N. Badache, "Event-Aware Frame-
+     work for Dynamic Services Discovery and Selection in the Context of
+     Ambient Intelligence and Internet of Things," IEEE Transactions on
+     Automation Science and Engineering, vol. 13, no. 1, pp. 85-102, 2016.
+[28] G.-H. Tzeng and J.-J. Huang, Multiple attribute decision making: methods
+     and applications. CRC press, 2011.
+[29] D. Duque, L. Lozano, and A. L. Medaglia, "An exact method for the
+     biobjective shortest path problem for large-scale road networks," European
+     Journal of Operational Research, vol. 242, no. 3, pp. 788-797, 2015/05/01/
+     2015.
+
+
+
+
+                          OSAMA ALSARYRAH is a Ph.D. candidate in
+                          the Department of Computer Science and Engi-
+                          neering, Yuan Ze University, Taiwan. In 2007 he
+                          received his M.S. in computer science from the
+                          University of Jordan, Jordan. His research inter-
+                          ests include future communications systems, In-
+                          ternet of Things and Smart Applications, Web ser-
+                          vices, Sensor networks and Distributed computing
+
+
+
+
+                          IBRAHIM MASHAL is a faculty member in the
+                          Computer Science department at Aqaba Univer-
+                          sity of Technology. He earned his PhD. degree
+                          in the field of Computer Science, specializing
+                          in Internet of Things, from Yuan Ze University,
+                          Taiwan (R.O.C.) in 2016. He received his M.S.
+                          in Computer Science from the University of Jor-
+                          dan, Jordan. His research interests include Future
+                          communications systems, Internet of Things and
+                          Smart Applications, Wireless mobile network, and
+Sensor networks.
+
+
+
+
+                         TEIN-YAW CHUNG (M’87) received the M.S.
+                         and Ph.D degrees in Electrical and Computer En-
+                         gineering from North Carolina State University,
+                         Raleigh, NC, USA, in 1986 and 1990, respectively.
+                         From Feb.1990 to Feb 1992, he was with Network
+                         Service Division, IBM, RTP, NC, USA. Since
+                         May 1992, he has been with Yuan Ze University,
+                         Chung-Li, Taiwan and is a full Professor now. His
+                         current research interests include overlay network,
+                         Multimedia Communication and mobile network-
+ing. He is a member of IEEE.
+
+
+
+
+VOLUME 4, 2016                                                                                        11
+

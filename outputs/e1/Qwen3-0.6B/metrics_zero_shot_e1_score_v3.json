@@ -1,0 +1,509 @@
+{
+  "metrics_version": "e1_score_v3",
+  "model": "Qwen3-0.6B",
+  "seed": 42,
+  "source": "saved raw predictions scored by src/run_e1.py",
+  "subsets": {
+    "dev": {
+      "metrics_version": "e1_score_v3",
+      "records": 900,
+      "state_accuracy": 0.3333333333333333,
+      "state_accuracy_by_variant": {
+        "explicit": 0.68,
+        "implicit": 0.0,
+        "none": 0.32
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 44
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 60
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 300,
+          "empty_set_accuracy": 0.05,
+          "gold_empty_records": 300,
+          "prediction_empty_records": 81
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 230
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 226
+        },
+        "budget|deadline": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 212
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 214
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 188
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth|order": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "deliver_report_to_team": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "deadline|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "privacy|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "tool_auth|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "validate_workflow": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|tool_auth": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 40,
+          "fn": 235,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 235
+        },
+        "d3": {
+          "tp": 0,
+          "fp": 20,
+          "fn": 138,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 138
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 25,
+          "fn": 162,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 162
+        }
+      },
+      "per_difficulty_unattributed_fp": 297,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.8177777777777778,
+      "data_sha256": "143619f3c26f64ce1cd6de641effdf182b4385588845d724006d6bdf094423df",
+      "prediction_sha256": "7efafb8b182c8b7f4f409dde83b5b024c4f0fa75746514e1a789c0f459960474"
+    },
+    "test_tpl_ho": {
+      "metrics_version": "e1_score_v3",
+      "records": 1050,
+      "state_accuracy": 0.3333333333333333,
+      "state_accuracy_by_variant": {
+        "explicit": 0.6028571428571429,
+        "implicit": 0.0,
+        "none": 0.39714285714285713
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 50
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 58
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.16285714285714287,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 153
+        }
+      },
+      "per_type": {
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 246
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 288
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 272
+        },
+        "budget|deadline|privacy": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth|order": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 250
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 194
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 0,
+          "fp": 37,
+          "fn": 161,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 161
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 37,
+          "fn": 257,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 257
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 36,
+          "fn": 207,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 207
+        }
+      },
+      "per_difficulty_unattributed_fp": 324,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.8142857142857143,
+      "data_sha256": "44083a84831e0eafea933aa3250d48fc9c1da5d49a706037b19694d1f73cf003",
+      "prediction_sha256": "6846b9f7db4d50e70808df781e50a91cd1f00519f21e82c0226d60dc4f23707a"
+    },
+    "test_tool_ho": {
+      "metrics_version": "e1_score_v3",
+      "records": 1050,
+      "state_accuracy": 0.31238095238095237,
+      "state_accuracy_by_variant": {
+        "explicit": 0.66,
+        "implicit": 0.0,
+        "none": 0.27714285714285714
+      },
+      "constraint_micro": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 48
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 66
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.03428571428571429,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 116
+        }
+      },
+      "per_type": {
+        "deadline": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 294
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 358
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 272
+        },
+        "budget|deadline|privacy": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 294
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth|order": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline|privacy|tool_auth": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "budget|deadline": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "deadline|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "privacy|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "tool_auth|none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "query_provenance_chain": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d2": {
+          "tp": 0,
+          "fp": 49,
+          "fn": 275,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 275
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 38,
+          "fn": 183,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 183
+        },
+        "d3": {
+          "tp": 0,
+          "fp": 29,
+          "fn": 151,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 151
+        }
+      },
+      "per_difficulty_unattributed_fp": 311,
+      "evidence_exact_rate": null,
+      "evidence_records": 0,
+      "json_parse_rate": 0.7933333333333333,
+      "data_sha256": "363b3f0b584f168bc41486910f94d4a23e55aebc93625d1a0e5c064217362241",
+      "prediction_sha256": "907bca9771ba44ea0b4dc3242849a6032f0c43683f262e57489957e0d83e5930"
+    }
+  }
+}

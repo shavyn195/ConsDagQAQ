@@ -1,0 +1,813 @@
+                                        IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                 1
+
+
+
+
+                                                   Trust–SIoT: Towards Trustworthy Object
+                                                 Classification in the Social Internet of Things
+                                         Subhash Sagar, Adnan Mahmood, Kai Wang, Quan Z. Sheng, Jitander Kumar Pabani, and Wei Emma Zhang
+
+
+
+
+                                           Abstract—The recent emergence of the promising paradigm of
+                                        the Social Internet of Things (SIoT) is a result of an intelligent
+                                        amalgamation of the social networking concepts with the Internet
+                                        of Things (IoT) objects (also referred to as “things”) in an attempt
+                                        to unravel the challenges of network discovery, navigability, and
+arXiv:2205.03226v1 [cs.SI] 4 May 2022
+
+
+
+
+                                        service composition. This is realized by facilitating the IoT objects
+                                        to socialize with one another, i.e., similar to the social interactions
+                                        amongst the human beings. A fundamental issue that mandates
+                                        careful attention is to thus establish, and over time, maintain
+                                        trustworthy relationships amongst these IoT objects. Therefore, a
+                                        trust framework for SIoT must include object-object interactions,
+                                        the aspects of social relationships, credible recommendations, etc.,
+                                        however, the existing literature has only focused on some aspects
+                                        of trust by primarily relying on the conventional approaches
+                                        that govern linear relationships between input and output. In
+                                        this paper, an artificial neural network-based trust framework,
+                                        Trust–SIoT, has been envisaged for identifying the complex non-
+                                        linear relationships between input and output in a bid to classify
+                                        the trustworthy objects. Moreover, Trust–SIoT has been designed
+                                        for capturing a number of key trust metrics as input, i.e., direct
+                                        trust by integrating both current and past interactions, reliability
+                                        and benevolence of an object, credible recommendations, and the
+                                        degree of relationship by employing knowledge graph embedding.
+                                        Finally, we have performed extensive experiments to evaluate the                         Fig. 1: Depicting the SIoT relationships
+                                        performance of Trust–SIoT vis-á-vis state-of-the-art heuristics on
+                                        two real-world datasets. The results demonstrate that Trust–SIoT              when IoT devices consume and use services from one another.
+                                        achieves a higher F1 and lower MAE and MSE scores.                            Over the last decade, several research have have investigated
+                                          Index Terms—Trust Management, Social Internet of Things,                    the concept of incorporating social interactions components
+                                        Knowledge Graph Embedding, Social Relationships, Reliability,                 with IoT devices to enhance information discovery in the
+                                        Benevolence.                                                                  same way that humans do using the principle of small-world
+                                                                                                                      phenomenon, which refers to the short chain of links (i.e.,
+                                                                 I. I NTRODUCTION                                     relationships) among individuals in societies [6] [7].
+                                                                                                                         The mapping of the social structure of human and physical
+                                        R      ECENT advancements in computing technologies have
+                                               witnessed a massive number of smart objects (e.g., smart
+                                        meters, smart watches, and smart refrigerators) connected to
+                                                                                                                      (i.e., IoT) devices (see Figure 1) has led to an emerging
+                                                                                                                      paradigm of Social Internet of Things (SIoT) and has opened
+                                        the Internet to form the Internet of Things (IoT) [1]–[3].                    the ways for next generation of IoT [8]. Furthermore, the
+                                        Furthermore, these smart objects are equipped with sensing,                   mapping encompasses three distinct relationships (i.e., user-
+                                        processing, and communication capabilities, allowing them                     object relationships, object-object relationships, and user-user
+                                        to provide a variety of applications and services, which are                  relationships). In SIoT, objects have the potential to so-
+                                        expanding in a variety of areas, including personal, industrial,              cialize by establishing social relationships with one another
+                                        and commercial domains [4] [5]. With the expansion of IoT                     autonomously based on the rules defined by their individual
+                                        applications ranging from smart homes, smart factories. smart                 owners [9]. The evolution of SIoT can be foreseen as trillions
+                                        cities. to e-Health, the number of IoT objects (i.e., devices) are            of objects acting as autonomous agents (i.e., requesting and
+                                        rapidly increasing, limiting network discovery and navigability               providing services) with a number of benefits, including but
+                                                                                                                      not limited to the assurance of effective object and information
+                                           Subhash Sagar, Adnan Mahmood, Kai Wang, and Quan Z. Sheng                  discovery in a trust-oriented manner, network scalability simi-
+                                        are with the School of Computing, Macquarie University, Sydney,               lar to human beings, building trustworthiness by incorporating
+                                        NSW 2109, Australia, e-mail: {subhash.sagar, adnan.mahmood, kai.wang,
+                                        michael.sheng}@mq.edu.au.                                                     the interaction behaviour among friends (or objects), and to
+                                           Jitander Kumar is with the School of Telecommunication Engineering,        utilize and extends existing social network models for SIoT
+                                        University of Malaga, Malaga, 29016, Spain, e-mail: jitander.pabani@uma.es.   networks.
+                                           Wei Emma Zhang is with the School of Computer Science,
+                                        The University of Adelaide, Adelaide, SA 5005, Australia, e-mail:                Through the use of social relationships with IoT objects,
+                                        wei.e.zhang@adelaide.edu.au.                                                  SIoT has opened the way for the next generation of IoT.
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                          2
+
+
+
+Maintaining trustworthy relationships, as well as security,          IV delineates the proposed trust quantification framework
+privacy, and trust-related concerns, may however, limit the          for SIoT, and Section V reports the experimental setup and
+significance of SIoT paradigm. In the SIoT scenario, for             experimental results from the performance evaluation of the
+example, a service requester (or trustor) has the responsibility     proposed model. Finally, Section VI gives the concluding
+of observing the trustworthiness of the service providers (or        remarks and future research directions.
+trustee) who provide the requested service; however, the
+                                                                                II. BACKGROUND AND R ELATED W ORK
+possibility of a misbehaving object providing false services
+or false recommendations about a trustee to gain an advan-           A. Social Internet of Things (SIoT)
+tage for a set of services can disrupt the availability and             The SIoT is the convergence of two domains: IoT and
+integrity of the SIoT services. Although some researches have        social networks. As a result, the paradigm of SIoT is formed
+presented cryptographic and non-cryptographic solutions to           wherein object establish the social links to create the social
+solve such concerns [10] [11], security issues like trust as         network of objects. In SIoT, an object is not only capable of
+well as reputation are difficult to handle with such solutions.      measuring the surrounding ambience but can also establish
+As a result, an effective SIoT trustworthiness management            the social relationships with other objects in the network on
+system is required to cope with misbehaving SIoT objects by          its own. These relationships enable an object to exchange the
+limiting their services and by selecting only the credible and       information with other objects (i.e., friends) in a trustworthy
+trustworthy objects before relying on the services provided by       manner, and thus, provide the confidence of information
+them.                                                                sources as objects’ tends to trust the friends having common
+   The motive for establishing trustworthiness management            characteristics, similar to humans (i.e., homophily theory [12]).
+for SIoT is evident based on the observations made. Several          In the SIoT, an object can establish a variety of relationships,
+studies have been proposed to address the challenges of trust-       including but not limited to ownership object relationships
+worthiness management. However, most of these studies do             (OOR), which are formed between objects belonging to the
+not consider a thorough study of SIoT fundamentals, such as 1)       same owner (e.g., a mobile phone and a laptop), parental
+the selection of SIoT-based trust metrics, 2) only considering       object relationships (POR), which are formed between objects
+the static characteristics of SIoT relationships (e.g., ownership,   manufactured by the same manufacturer and built at the
+location), and 3) using the traditional approach (i.e., linear       same time (i.e., same batch), co-location and co-work object
+relationship) to map the input and output for trustworthiness        relationships (CLOR and CWOR), where CLOR represents
+management.                                                          the relationship established between the objects providing the
+   In this article, we have proposed a trustworthy object clas-      services at the similar locations, whereas CWOR is established
+sification framework, known as Trust–SIoT by employing the           between the object providing the composite services, and
+concept of social trust theory to address the above-mentioned        social object relationships (SOR), which is established when
+weaknesses. The main contributions of the proposed paper are         two objects come into contact with each other because of their
+as follows:                                                          owners (e.g., mobile devices of two friends), and is dependent
+                                                                     on the frequency of meeting between the owners’s meeting.
+  • A trustworthy object classification framework (Trust–
+    SIoT) is envisaged by employing the social characteristics       B. Trust in SIoT
+    of objects in terms of direct trust metrics, reliability and        Trust is generally regarded as an integral constituent in
+    benevolence, credible recommendations, and the degree            any human social relationship. It is measured in terms of
+    of relationships.                                                the degree of confidence pertinent to an individual’s or any
+  • We construct the SIoT knowledge graph to record five
+                                                                     entity’s likelihood to behave in an anticipated manner. The
+    dynamic social relationships of SIoT objects in order to         notion of trust varies across disciplines, i.e., trust has been
+    measure the degree of relationships. The learned graph           studied by researchers in the domains of human sciences, i.e.,
+    embedding vectors are then used to estimate the object’s         sociology and psychology [13] [14], and in economics and
+    social similarity using a knowledge graph embedding              computer science [15] [16]. Each of these disciplines regard
+    (KGE) model.                                                     trust in a different perspective, and as such, their narrative
+  • Using complex non-linear correlations to map the input
+                                                                     could not be directly applied to SIoT. In SIoT, trust is referred
+    (i.e., trust measures) and output, we have proposed an           to as the assessment of trustee’s actions (or the assessment
+    artificial neural network-based heuristic for trustworthy        of data it provides) in view of trustor’s expectations within
+    object classification.                                           a particular timespan. Furthermore, the assessment can be a
+  • Finally, the performance of the proposed framework is
+                                                                     probability, a value or a label, and be termed as trust esteem. In
+    evaluated by a number of evaluation metrics, i.e., F1-           recent years, a plethora of trustworthiness management models
+    score, MAE, and MSE on two real-world datasets against           are proposed, some of the latest literature is discussed in the
+    the existing state-of-the-art.                                   subsection below.
+   The remainder of the paper is organized as follows: Sec-
+tion II presents the discussion on SIoT, generalized trust           C. Trustworthiness Models
+background and the existing trust management models for                There exists a limited relevant work on trust management
+SIoT and online social networks. In Section III, we have             that employ prediction-based techniques (e.g., machine learn-
+defined the problem and introduced the used notations. Section       ing, deep learning), particularly, classifying the misbehaving
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                3
+
+
+
+objects who attack the reliable objects in the SIoT network
+[17] [18] [19] [20]. Most recently, Marche et al. [17] pro-
+posed a decentralized trust management model to detect the
+malicious objects that undertake various types of trust-related
+attacks. The suggested model, in general, employs machine
+learning heuristic to train the trust model on three trust
+scores: goodness, usefulness and perseverance. The suggested
+model’s performance is compared to existing work using
+various trust-related attacks, and it is discovered that the
+proposed model performs well when using a combination of
+mix attacks, but decreases when using individual attacks. A             Fig. 2: SIoT network as a directed graph G = (V, E, W)
+matrix factorization-based approach is delineated by Aalibagi
+in [18] wherein the SIoT network is portrayed as the bipar-
+tite graph of trustors and trustees providing and requesting          in order to quantify the social strength between the objects.
+different services. The model has exploited the Hellinger             As of now, only a few studies have explored the concept of
+distance in order to propose a similarity and centrality-based        KGE in SIoT for similarity computation [29] [30]. Chen et
+social trust model. Finally, the matrix factorization approach        al. in [30] [29] constructed the time-aware SIoT knowledge
+is designed to extract the latent features of SIoT objects to         graph to estimate the social similarity of heterogeneous SIoT
+classify the trustworthy objects, and to address the challenges       relationships by embedding the SIoT relationships in low-
+of data sparsity and cold start problem. Sagar et al. [20]            dimensional vector. Then, these low-dimensional vectors are
+presented a social trust computational model by employing             used to determine the social similarity of the objects in order
+various types of similarities in terms of community-of-interest,      to provide the service/object recommendations.
+friendship, and co-work similarity, and cooperativeness via              In general, SIoT can benefit from the state-of-the-art trust
+social cooperation between SIoT objects. The trust model is           evaluation methodologies and the trust properties utilized in
+then trained using a machine learning method (i.e., random            online social networks, and in this paper, we have employed
+forest) to classify the objects as trustworthy or untrustworthy.      a number of such properties (i.e., reliability and benevolence)
+   Trust is also an important factor in social theory (i.e., social   that have been explored in social networks. Furthermore, it is
+network) [21]. A number of trust model for online social              also imperative to explore the emerging techniques to effec-
+networks that may be extended for SIoT are presented in               tively utilize SIoT paradigm’s social aspects. Thus, we have
+the literature, and they provide the extensive insight into the       exploited the low computation knowledge graph embedding
+complex nature of social trust in terms of various trust prop-        (KGE) model to measure the social similarity of SIoT objects
+erties, e.g., context-dependency, dynamic nature, uncertainty,        in terms of degree of relationships in the proposed framework.
+transitivity, etc. The current literature employ a variety of
+approaches (neural network, walk-based, matrix factorization,
+                                                                                            III. P ROBLEM S ETUP
+etc.) to evaluate the trustworthiness of a node in online social
+network. Lin et al. [22] designed a trust model based on                 In this paper, we consider the trust quantification of a social
+node’s popularity and engagement as a trust features. Then,           object in a SIoT network which is modeled in the form of a di-
+a graph convolutions neural network-based trust model is              rected graph as G = (V, E, W) (Figure 2), wherein si , sj ∈ V
+proposed to train the trust model in order to classify the            represents the social objects, the edge esi ,sj ∈ E manifests the
+trustworthy objects. The performance evaluation has shown the         direct relationships, and wsi ,sj ∈ W represents the evaluation
+promising result when compared to the current existing state-         function in terms of trust relationship of social object (trustor-
+of-the-art. Furthermore, a variety of walk-based approaches are       trustee) pair (si , sj ). Let W t = {T (si , sj ), wsi ,sj |esi ,sj ∈ E}
+delineated to assess the trust of a node by considering the trust     denotes the set of unobserved trust between any trustor-trustee
+propagation along the path from the trustor to the trustee [23]       pair to be quantified at any given time t. In order to quantify
+[24] to evaluate the trust score of a trustee. Furthermore, these     the trustworthiness of a social object, object−object observa-
+techniques utilize a range of trust propagation (i.e., breadth        tions in terms of successf ul and unsuccessf ul interactions
+first search and multi-path algorithms) method to traverse            and social information of social objects via fundamental SIoT
+through social network graph. Finally, the trust estimation           relationships are employed as our primary data source. The
+is computed as the aggregation of trust propagation from              nomenclature is provided in Tabel I for reference.
+multiple paths.                                                          Let S = {s1 , s2 , ..., sn } represents the set of social objects.
+   Furthermore, it is imperative to study the current emerging        Given a set of object − object interactions and their social
+techniques, (e.g., knowledge graph embedding (KGE)) that              profiles in terms of a variety of relationships between them,
+are currently the mainstream approach for knowledge graph             the target problem of this research paper is to formulate the
+representation in term of entity and relationships [25], [26]         trust quantification by employing a number of trust metrics,
+[27] [28]. As SIoT network consists of social relationships           i.e., Direct Trust Metric (DT M), Reliability R, Benevolence
+between the SIoT objects, and these relationships are important       B, Recommendations as a Trust Metric (RT M), and Context-
+part of trust evaluation process, thus, KGE can be utilized           based Degree of Relationships (C − DoR) in the form of a
+to represent these social relationships as the learning vector        quintuple < DT M, R, B, RT M, C − DoR >.
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                             4
+
+
+
+
+                            Fig. 3: Illustration of Trust–SIoT framework (⊗ represents concatenation)
+
+
+                 TABLE I: Summary of notations                        variety of qualities and characteristics. In general, the pairwise
+      Notation                       Description                      trust between social objects is quantified as:
+          P                 Positive (Successful) Interactions
+                                                                             T(si , sj ) = {T (si , sj ), ∀ si , sj ∈ V, T ∈ [0, 1]}   (1)
+          N               Negative (Unsuccessful) Interactions
+          B                            Benevolence
+          R                             Reliability
+                                                                         T (si , sj ) ← DT M ⊕ R ⊕ B ⊕ RT M ⊕ C − DoR                  (2)
+         CR                             Credibility
+                                                                      Here ⊕ is the aggregation operator.
+          K                    Number of credible objects
+          Φ                            Trust Factor
+          λ                        Rate of Trust Factor                     IV. T RUST Q UANTIFICATION M ODEL FOR SI OT
+          f                       KGE scoring function
+          L                        Cross Entropy Loss                    This study proposes the Trust–SIoT framework for the
+      C − DoR            Context-aware Degree of Relationships        quantification of trust vis-á-vis any two social objects. The
+        DT M                Direct trust of trustor-trustee pair
+                                                                      proposed framework consists of five trust metrics, direct trust
+        RT M                  Recommendations for trustee
+                                                                      metric, reliability and benevolence, recommendations as a
+          T                         Final Trust Score
+                                                                      trust metric, and the degree of relationships. The high-level
+                                                                      overview of the proposed framework is depicted in Figure 3.
+                                                                         For the trust quantification, at first, the proposed framework
+   Direct Trust Metric is measured when two object establish          computes the direct trust metric by employing positive and
+a direct relationship with each other via direct interaction          negative interactions. The reliability and benevolence are then
+between them, and as a result, a direct link esi ,sj is established   measured to observe how the trustee is known amongst the
+in a graph with a weight DT Mt (si , sj ) refers to the direct of     neighbours in the network. Subsequently, the reliability and
+trust of si towards sj at any time interval t. Recommendations        benevolence are integrated to measure the credibility of neigh-
+as a Trust Metric is measured when two social object can              bours for recommendations, and the neighbours with a cred-
+only establish the relationship with each other by the word           ibility score above the threshold being considered to provide
+of mouth via objects’ neighbours (i.e., friends) or via global        the recommendations for the trustee. The social resemblance of
+reputation. Reliability is the fairness of object in providing        both the trustor and trustee in terms of their social relationships
+recommendation to other objects and in contrast, benevolence          is measured by employing knowledge graph embedding to
+represents on how other objects believe the object provid-            learn the embedding vector in order to quantify the degree
+ing recommendations. Context-based Degree of Relationships            of relationships (i.e., the social similarity of the trustor-trustee
+(C − DoR) refers to the context-based social strength between         pair). Finally, an artificial neural network-based (ANN-based)
+two social objects interacting with each other. It represents the     model is trained for decision-making to identify the trustee’s
+confidence of information sources as objects tend to have more        level of trustworthiness (trustworthy, neutral, or untrustworthy)
+confidence on the objects similar to themselves in respect to a       of the trustee. The following are the details of the trust metrics:
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                        5
+
+
+
+
+                                                                                                Fig. 5: Direct trust computation
+
+
+    Fig. 4: Decay in trust of a SIoT Object vis-á-vis time                     decrease of trust factor. Similarly, when the value to (t − to )
+                                                                                is closed to zero, it means the model is only considering the
+                                                                                latest reputation in terms of interactions of a social object and
+A. Direct Trust Metric                                                          thus, the trust factor factor is higher. In general, higher trust
+   Direct trust metric (DT M) represents a direct trust score for               factor signifies that the model is considering only the recent
+a trustor-trustee pair. The proposed model adopts the Bayesian                  interactions, and this factor can be tuned by setting up different
+inference model [31] with beta probability density function to                  to and λ. In general, the direct trust is the integration of current
+quantify the direct trust of a social object (Eq. 3). The direct                and past interactions (see Figure 5).
+trust of a social object sx (trustor) towards another object sy
+(trustee) is defined as:                                                        B. Reliability and Benevolence
+                                     Psti ,sj + 1                                  In this section, we discuss two measure, reliability and
+             DT Mt (si , sj ) = t                                         (3)   benevolence by using the concept introduced in [32]. Later,
+                               Psi ,sj + Nsti ,sj + 2
+                                                                                these measures will be used to compute the credibility of an
+or, it can be simplified as:                                                    object.
+                      
+                              Pst ,s
+                                                                                   Reliability refers to the fairness of the object in providing
+           t
+                      
+                         P t
+                                 i j
+                                     t        ∀ Psti ,sj , Nsti ,sj > 0         a fair recommendation to the other objects in the network,
+   DT M (si , sj ) =      si ,sj +Nsi ,sj                                 (4)
+                      0.5                                                      an object providing a dishonest recommendation to a benign
+                                              otherwise
+                                                                                object must be considered less reliable. Benevolence, on the
+wherein, Psti ,sj denotes the number of the positive (successful)               other hand, represents the measure of an object on how other
+interaction carried out between trustor(si )-trustee(sj ) pair.                 objects in the network trust or believe the object providing
+Similarly, Nsti ,sj denotes the count of negative (unsuccessful)                the recommendations. A benevolent object is believed to the
+interactions from the beginning to the current t.                               trustworthy and intended to get a high rating from reliable ob-
+   Past experience (interactions) from the beginning may not                    jects. In general, both the reliability and the benevolence score
+accurately reflect the behaviour of an object owing to the                      depend on each other and can be computed recursively. The
+fact that an object’s behaviour may change over time. There-                    reliability and benevolence of an object S can be quantified
+fore, it is indispensable to model past experience by taking                    as:
+into account the feasible time interval that can provide the                                       1           X
+appropriate reputation of an object. The proposed model                           B t (S) =                            Rt−1 (i) × DT Mt (i, S)
+                                                                                             |InDeg(S)|
+                                                                                                          i∈InDeg(S)
+considers a trust factor Φ that can be tweaked to include
+                                                                                                                                            (7)
+the recent reputation of an object and can be employed in                         t             1                   X
+                                                                                                                                     t          t
+conjunction with interactions (i.e., P and N ). Eq. (5) and                     R (S) = 1−                                   |DT M (S, i)−B (i)|
+                                                                                           2|OutDeg(S)|
+Eq. (6) demonstrate the quantification of positive and negative                                                i∈OutDeg(S)
+                                                                                                                                               (8)
+interactions at any time t with trust factor Φ.
+                                                                                Here, InDeg(S) and OutDeg(S) denote the inward and
+          Psi ,sj = Φ × Pst−t  o
+                           i ,sj
+                                 + Psti ,sj                                     outward edge of an object S, ∀ edges ∈ E.
+                                                                          (5)      It can be seen from Eq. (7), measuring the benevolence of
+                  = 1 − (t − to )λ × Ps(t−t       o)
+                                                     + Psti ,sj
+                                  
+                                            i ,sj
+                                                                                an object requires the reliability of the objects facilitating the
+         Nsi ,sj = Φ × Nst−t  o
+                          i ,sj
+                                + Nsti ,sj                                      rating as well as the direct trust between objects connected
+                                                                          (6)   via incoming edges. The final score is the average of all
+                 = 1 − (t − to )λ × Ns(t−t       o)
+                                                    + Nsti ,sj
+                                 
+                                           i ,sj
+                                                                                the incoming edges. Similarly, the reliability score (Eq. (8))
+Here, (t − to ) denotes the time interval that is considered to                 is computed using the difference between the benevolence
+include the past interactions and λ is the rate of trust factor.                score of the objects and their respective direct trust score,
+It can be observed from Figure 4 that change in the rate                        and averaging all such differences to get the final reliability
+of trust factor has the influence on the gradual increase or                    score. Furthermore, the reliability and benevolence are utilized
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                              6
+
+
+
+Algorithm 1 R, B, and CR of a SIoT Object S (∀ S ∈ V)
+ 1: Input:   SIoT Network as a Directed Graph G =                                                          S     R(S)   B(S)   Cr(S)
+    (V, E, DT M), N (S): Neighbours of an object S,
+                                                                                                           A     0.96   0.82    0.79
+    InDeg(S) and OutDeg(S) as in-degree and out-degree
+                                                                                                           B     0.97   0.26    0.25
+    of an object S respectively.
+ 2: Output: Reliability (R), Benevolence (B) and                                                           C     0.88   0.72    0.63
+
+    Credibility (CR)                                                                                       D     0.96   0.37    0.35
+
+ 3: Let R0 (S) = 0.5 and B 0 (S) = 0.5                                                                     E     0.96   0.76    0.73
+
+ 4: t = 1                                                             Fig. 6: Sample SIoT Network TABLE II: Credibility of S
+ 5: k ∈ {N (S), ∀ N (S) ∈ V}
+ 6: while |Rt (k) − Rt−1 (k)|>  || |B t (k) − B t−1 (k)|>  do
+ 7:   for sik ∈ InDeg(k),   P ∀sik ∈ V do                             local recommendations) having a direct relationship with the
+ 8:       B(sik )t = |s1ik | sik R(k)t−1 ∗ DT Mt (sik , k)            trustee or via the global reputation of a trustee. Nevertheless,
+ 9:   end for                                                         to mitigate the malicious behaviour of objects providing dis-
+10:   for sok ∈ OutDeg(k),    P∀sok ∈ V do                            honest recommendations (i.e., good and bad mouthing attack),
+11:       R(k)t = 1− 2|s1ok | sok DT Mt (k, sok )−B(sok )t−1          we have proposed reliability (R) and benevolence (B) based
+12:   end for                                                         credibility score (CR) computation method (??) to select the
+13: end while                                                         top credible objects before relying on the recommendations
+        t
+14: CR (k) = R(k)t ∗ B(k)t                                            provided by them.
+                 t
+15: return CR (k)                                                        An object (i.e., trustor) si compute the credibility of all the
+                                                                      k ∈ {k, ∀k ∈ V} recommenders providing the recommenda-
+                                                                      tion trust for another object (i.e., trustee) sj . The credibility
+to compute the credibility score of an object, and is defined         (CRt (S)) of an object S at any time t is computed as the
+as the subjective assessment of the perceived quality of an           product of reliability and benevolence of that object (Eq. (9))
+object being trusted and accepted [33]. Finally, the credibility         As a whole, the top K = {K, ∀ K ∈ V} credible objects
+of an object is quantified as the product of reliability and          having credibility above the pre-defined threshold (T h) (Eq.
+benevolence (Eq. (9)) , i.e., a credible object must be both          (10)) are selected to provide the recommendation for a trustee.
+reliable and benevolent.                                                                   (
+                                                                                             K          if CRt (K) ≥ T h
+                  CRt (S) = Rt (S) × B t (S)                   (9)                   K=                                             (10)
+                                                                                             K ∈ {} otherwise
+   Algorithm 1 shows the steps involved for the computation of           Finally, the recommendation trust (RT Mt (si , sj )) can be
+the credibility. The initial score of reliability and benevolence     computed as sum of the product of the direct trust of credible
+is set to 0.5 (line 3). Line 7 to line 9 computes the benevolence     objects for the trustee (DT Mt (K, sj )) and the direct trust of
+of an object using the reliability score from the previous            trustor for the credible objects (DT Mt (si , K)), and the final
+iterations. Likewise, line 10 to line 13 computes the reliability     score is the average of all recommendations from K.
+score of an object using the current benevolence score. The
+                                                                                                  |K|
+computation keeps going on until the convergence (i.e., the                     t             1 X
+difference between both the score in two consecutive iterations          RT M (si , sj ) =           DT Mt (si , i) × DT Mt (i, sj )
+                                                                                             |K| i=1
+is less than the error ) (line 6), and finally, the credibility is                                                               (11)
+computed as the product of reliability and benevolence at line           Furthermore, if the local recommendation is not present for
+14. For the demonstration of the credibility algorithm, consider      a trustee at a specific time t, then the global recommendation
+a sample SIoT network (Figure 5) that has five objects. The           (the overall reputation of a trustee in the SIoT network (G))
+set of objects {A, C, E} are the credible objects and objects         is considered to compute the recommendation (G − RT M).
+{B, C} are not the credible objects. As can be seen from              The global recommendation is computed in Eq. (12).
+the reliability, benevolence, and credibility score in Table II,
+                                                                                                          |U |
+it is observed that credible objects need to be both reliable                             t            1 X
+and benevolent. Though object B and object D have a high                            RT M (si , sj ) =         DT Mt (i, sj )           (12)
+                                                                                                      |U| i=1
+reliability score, the benevolence score for both these objects
+is very low which leads to a low credibility score.                   Here U = {U, ∀ U ∈ V} denotes the number of objects having
+                                                                      at least one transaction with the trustee in the entire network.
+C. Recommendation as a Trust Metric
+   Recommendation as a trust metric (RT M) is indispensable           D. Knowledge Graph Embedding-based Degree of Relation-
+when the direct information is insufficient to evaluate the trust-       ships
+worthiness of an object. Therefore, a reliable recommendation           Context-aware Degree of Relationship (C − DoR) is one
+trust is essential to provide the requisite trust recommendations     of fundamental components of SIoT as objects maintain a
+at any time t. In distributed SIoT network, the recommenda-           number of relationships to interact with each other just as
+tions of an object is provided by the trustor’s neighbours (i.e.,     human beings do [34]. These relationships are important in
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                              7
+
+
+
+                                                                      based KGE model. Unlike previous low-dimensional KGE
+                                                                      models requiring complicated calculations in hyperbolic space,
+                                                                      this model can process different kinds of relations and obtain
+                                                                      high prediction accuracy in low-dimensional Euclidean vector
+                                                                      space. The core part of the KGE model is the scoring function,
+                                                                      which calculates the triple score based on the embedding
+                                                                      vectors of the triple items. A higher score means this triple
+                                                                      is more likely to be true. Given a KG triple (eh , r, et ), The
+                                                                      scoring function of RotL is defined as:
+                                                                         f (eh , r, et ) = −ϕ(kRot(r)eh ⊕α et k) + beh + bet          (13)
+                 Fig. 7: SIoT knowledge graph                                             x
+                                                                      where ϕ(x) = xe is a nonlinear activation function, Rot(·)
+                                                                      is a Givens Rotation operation, the addition operation ⊕α is
+                                                                      defined as x⊕α y = α(x+y)/(1+xy), α is a relation-specific
+modeling the trustworthiness of an object in SIoT network as
+                                                                      trainable parameter and be (e ∈ E) are trainable entity biases.
+object tends to trust the objects having similar behaviour and
+                                                                         In order to train the embedding parameters in the RotL
+characteristics [9]. For C-DoR quantification, the proposed
+                                                                      model, we exploit the negative sampling loss which is the
+model has considered following relationships from the public
+                                                                      commonly-used training strategy in the KGE field. Given a
+SIoT dataset [35]:
+                                                                      triple t = (eh , r, et ) ∈ T , a random sampling strategy is first
+ 1) CLOR: If two or more objects provide the services at              used to replace one entity in the triple and generate a set of
+    the similar location, then these objects form this type of        negative samples Tt0 :
+    location-based relationships.
+ 2) POR: this type of relationships is correlated with similar                     Tt0 = {(eh , r, e0t ) | e0t ∈ E ∧ e0t 6= et }∪     (14)
+    objects having same manufacturer and are built within                                 {(e0h , r, et ) | e0h ∈ E ∧ e0h 6= eh }
+    same period of time.                                              After that, the negative sampling loss forces the score of the
+ 3) OOR: OOR represents the relationships between the                 correct triple higher than those of its negative samples, so as
+    objects of the same owners (i.e., devices of same owner).         to learn effective vector representations for the KG. Given the
+ 4) SOR: When two or more objects come into contact with              training triple set Ttr = {t}, in which each triple t has a set
+    each other, they form a social relationship similar to that       of negative triples Tt0 , the loss function based on the binary
+    of humans. This type of relationships are based on num-           classification cross entropy loss is as follows:
+    ber of meetings, meeting duration, and interval between
+                                                                                        1         X
+    two consecutive meetings. In the mentioned dataset, this              LKGE = −                            (log(σ(f (eh , r, et ))) (15)
+    relationship is created between private mobile devices.                            nTtr
+                                                                                            t=(eh ,r,et )∈Ttr
+ 3) SOR2 : This relationship is the variant of SOR and it is                                X
+                                                                                     +                log(1 − σ(f (e0h , e0r , e0t )))),
+    created to connect public and private mobile devices.
+                                                                                       (e0h ,e0r ,e0t )∈Tt0
+   Given the above five types of relationships, we propose a
+knowledge graph embedding (KGE) method for estimating                 where σ(·) denotes the Sigmoid function. Following the orig-
+social object similarity in terms of C-DoR. The KGE model is          inal settings of the RotL model, we utilize minimize the loss
+currently one of mainstream techniques for knowledge graph            by exploiting the Adam optimizer [38].
+representation learning, which aims to represent each entity            After training the RotL model using the SIoT KG triples,
+e ∈ E (or relation r ∈ R) as a d-dimensional continuous               we can obtain the low-dimensional embedding vector Ov (S)
+vector, denoted as e (or r). The entity embedding vectors             of each object (S) in the SIoT network. Finally, we estimate
+outputted by the KGE model record the structure features of           the social similarity as the C − DoR vis-á-vis objects (Eq.
+SIoT objects in the multi-relational graph and can be utilized        (16)).
+                                                                                                        Ov (si ).Ov (sj )
+to compute the object similarity.                                                C − DoR(si , sj ) =                           (16)
+                                                                                                     ||Ov (si )|| ||Ov (si )||
+   Specifically, given the SIoT objects and their relational data
+according to the five relationships, we define the SIoT knowl-        E. Final Trust Score
+edge graph as a multi-relational graph Gk = (V, R) (Figure.
+7) that can be represented as a set of triples T = {(eh , r, et )},     This section introduces the heuristic to aggregate all the
+where head entity and tail entity eh , et ∈ V are the object          quantified trust metrics to classify the level the trustworthiness
+nodes and r ∈ R is one of the five relations between objects.         of an object. Traditionally, the existing works utilize the
+nT , nV , nR represent the number of triples, entities and            weighted average mean of the trust metrics (Eq. (17)) to obtain
+relations in the graph Gk respectively.                               the level of trustworthiness. However, selecting the appropriate
+                                                                      weights for each metric is still a challenge as there could be
+   Considering the scalability of the proposed model in SIoT,
+                                                                      an infinite number of possibilities to select the optimal weight.
+we pay special attention to the training complexity and pa-
+rameter amount of knowledge graph embeddings. To this end,            T (si , sj ) = w1 ∗ DT M ⊕ w4 ∗ R ⊕ w5 ∗ B ⊕ w2 ∗ RT M⊕
+we review the recent low-dimensional KGE models [27], [36],                        w3 ∗ C − DoR
+[37] and select the RotL model [27], a lightweight Euclidean-                                                                         (17)
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                8
+
+
+
+                                                                      Algorithm 3 Trust Evaluation
+                                                                       1: Input: Psi ,sj , Nsi ,sj , R, B
+                                                                       2: Output: DT M, RT M and C − DoR TF inal
+                                                                            Direct Trust Computation (DT M)
+                                                                       3: Compute Positive Interactions: Psi ,sj = [1 − (t − t0 )λ ] ∗
+                                                                          Pit−t
+                                                                             s ,sj
+                                                                                  o
+                                                                                     + Psti ,sj
+                                                                       4: Compute Negative Interactions: Nsi ,sj = [1 − (t − t0 )λ ] ∗
+                                                                          Nst−t
+                                                                              i ,sj
+                                                                                   o
+                                                                                     + Nsti ,sj
+                                                                                   t                Psi ,sj +1
+                                                                       5: DT M (si , sj ) = P
+                                                                                                 si ,sj +Nsi ,sj +2
+             Fig. 8: ANN-based trust training model                         Reliability (R), Benevolence (B), Credibility (CR)
+                                                                       6: Compute R and B using Algorithm 1
+Algorithm 2 Training ANN-based Trust Model                                  Recommendations Computation (RT M)
+ 1: Input: Trust Metrics (T M) {DT M, RT M, C −                        7: Compute the Credibility of Trustors’ Neighbours:
+    DoR, R, B}, Data Size (N ), Cost Function Threshold (c)            8: CR(N (si )) = R(N (si )) × B(N (si )) from Algorithm 1
+                                                                       9: Select top K credible neighbours for providing RT M
+ 2: Output: T: Trained Trust Model                                             / {} then
+                                                                      10: if K ∈
+                                                                                                         |K|
+ 3: for TM ∈ T M do
+                                                                              RT Mt (si , sj ) = |K|
+                                                                                                  1
+                                                                                                                DT Mt (si , i)×DT Mt (i, sj )
+                                                                                                         P
+                                                                      11:
+ 4:   Compute the contribution of each TM.                                                               i=1
+ 5: end for                                                                   // Local Recommendations
+ 6: Let cost = ∞                                                      12: else
+                                                                                                         |U |
+ 7: while cost > c do                                                 13:     RT Mt (si , sj ) = |U1 |
+                                                                                                         P
+                                                                                                                DT Mt (i, sj )
+ 8:   Compute the ANN weights for each T M ∈ T M for                                                     i=1
+      N data samples using Adam’s optimizer.                                // Global Recommendations
+ 9:   Update the cost value (i.e., cost) based on newly learned       14: end if
+      weights                                                             Degree of Relationships (C − DoR)
+10: end while                                                         15: Input: Relationships vis-á-vis objects
+11: return Trained Model T                                            16: Output: Embedded vectors representing objects’ relation-
+                                                                          ships (Ov )
+                                                                      17: Similarity Computation as C − DoR
+                                                                                                 Ov (si ).Ov (sj )
+where w1 -w5 represent the weight for each metric and the             18: C − DoR(si , sj ) = ||O (s )|| ||O (s )||
+                                                                                                 v   i       v    i
+
+sum w1 + w2 + w3 + w4 + w5 = 1 to get the trust score                     Final Trust Classification (T)
+in the range {0, 1}. ⊕ denotes the concatenation operation.           19: T =
+Furthermore, the final trust is computed as:                              w1 ∗DT M+w2 ∗R+w3 ∗B+w4 ∗RT M+w5 ∗C −DoR
+                                                                          where w1 + w2 + w3 + w4 + w5 = 1
+     T(si , sj ) = {T (si , sj ), ∀ si , sj ∈ V, T ∈ [0, 1]}   (18)   20: Trust decision making via object classification (i.e., Trust-
+                                                                          worthy, Neutral and Untrustworthy) using Neural Network
+   To cope with the issue of selecting a weight, we have
+introduced an ANN-based heuristic to synthesize the proposed
+trust metrics by learning the weights for each metric. The high-
+level overview of how the trust metrics are employed to train            Conclusively, all the steps of trustworthiness management
+the ANN model is depicted in Figure 8. There are a total              of the proposed framework are realized in Algorithm 3. The
+of five trust metrics are employed to feed in the input layer,        algorithm of trustworthiness computation follows a number
+these 5-metrics act as 5 neurons. The neuron in the output            of steps, including the direct trust computation, reliability
+layer represents the level of trustworthiness for each object         and benevolence, recommendation from credible objects, and
+in the SIoT network G. In the proposed framework, we have             the degree of relationships. Finally, the quantified metrics are
+classified the objects into three levels: trustworthy, neutral, and   employed in the ANN-based heuristic to train the trust model
+untrustworthy.                                                        and to classify the trustworthy objects.
+   Algorithm 2 summarizes the steps of training the ANN-
+based trust model. The training model takes trust metrics                        V. E XPERIMENTAL S ETUP AND R ESULTS
+(T M), data size (N ), and cost threshold (c) as the input and
+returns the trained model (T). Lines from 3 to 5 compute                 This section presents the extensive experimental evaluation
+the contribution of each trust metric. The learning weights           of our proposed framework (Trust–SIoT). We have imple-
+are computed using Adam’s optimizer with the default cost             mented the algorithms using Python 3.6 on a MAC environ-
+threshold and subsequently, the difference between predicted          ment with an 8-core CPU and 16GB RAM. To further validate,
+trust and ground truth is used as the new cost value in each          we have compared the Trust–SIoT framework with a well-
+iteration from lines from 7 to 10. Finally, when the condition        known trust model named Guardian [22] from existing state-
+cost > c satisfies, the loop terminates and returns the trained       of-the-art. Guardian combines two trust features to classify the
+model T.                                                              trustworthy objects: popularity, refers to the trustworthiness of
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                 9
+
+
+
+an object observed by other objects, and engagement, refers to        the 5 subsets for validation and the remaining for training
+the trustworthiness of others observed by objects’ perceptive.        and this step is repeated five times to pick the best average
+                                                                      performance values. Furthermore, the testing set is used to
+                                                                      evaluate the performance of the model on test data. We have
+A. Experimental Settings
+                                                                      implemented our framework by using grid search and 5-
+   Datasets Description: We conduct our experiments on                fold cross-validation, and with default hyperparameters (i.e., a
+two real-world datasets: Advogato1 and Bitcoin-Alpha2                 single hidden layer, rectified linear unit function (relu) as the
+(BTC-Alpha). Advogato is an online social network of                  activation function, penalty (regularization term) of 0.0001,
+open source developers and it allows users to certify                 and ‘adam’ solver) to train our neural network.
+each other with different levels of trustworthiness. In                  Evaluation Metrics: We employ three standard evaluation
+particular, the different categories of trustworthiness are           metrics (i.e., F1-score (F 1), Mean Absolute Error (M AE),
+{Observer, Apprentices, Journeyer, M aster} with each                 and Mean Squared Error (M SE)) to evaluate the prediction
+having a numerical value of {0.1, 0.5, 0.7, 1.0}. The BTC-            accuracy of our model in comparison with the existing state-
+Alpha dataset adopts the concept of Web-of-trust to provide           of-the-art. In particular, we have used micro-averaged F1 score
+safety and security by allowing users to rate each other they         due to label imbalance in both the datasets. Note that higher
+trust or distrust to maintain the record of the user’s reputation.    value of F 1 and lower values of M AE and M SE indicate
+The site focuses on having an open market wherein users               better performance.
+can make transactions with each other by using bitcoins, and
+                                                                         • Mean Absolute Error:
+respectively rate each other. The rating (or trust) in this dataset
+varies in the range of {0, 1}. The statistical description of these                                 1 X
+                                                                                       M AE =                |Tsi ,sj − T̂si ,sj | (19)
+datasets is presented in Table III.                                                               Ntest s ,s
+                                                                                                         i   j
+
+
+         TABLE III: Statistical Description of Datasets                 •   Mean Squared Error:
+                                                                                                  1     X
+     Datasets       # of Objects        # of Edges   Avg. Degree                     M SE =                      |Tsi ,sj − T̂si ,sj |2   (20)
+                                                                                                Ntest s ,s
+     Advogato            6, 541            51, 127      19.2                                            i    j
+
+    BTC-Alpha            3, 775            22, 650      12.79           •   F1-Score:
+                                                                                                      P recision × Recall
+   Data Preparation: As the selected datasets do not contain                            F1 = 2 ×                                          (21)
+                                                                                                      P recision + Recall
+the SIoT relationships information among the objects which
+is the fundamental component for any SIoT network, we                 where Tsi ,sj is the original trust score given by an object si to
+have extracted the SIoT relationships information from social-        another sj and T̂si ,sj is the predicted trust score of si towards
+dataset3 . The social-dataset contains the information of the         sj . Ntest is the number of interactions in test data.
+real IoT objects deployed in Santandar city of Spain, and
+there are a total of 16, 216 IoT objects. Furthermore, this           B. Results and Discussion
+dataset includes the five different types of SIoT relationships          Firstly, we have analyzed the effectiveness of Trust–SIoT
+(i.e., CLOR, POR, OOR, SOR, and SOR2 ) between the IoT                on both the datasets. Table IV and Table V portray the
+objects that connect them to form a SIoT network, and                 effectiveness of the both the approaches on Advogato and
+information about the service requested by these objects.             BTC-Alpha respectively. It is evident from Table IV that Trust–
+We have selected the relationships information of a sub-              SIoT outperforms the Guardian in terms of F1-score with with
+network of this dataset to integrate it with the Advogato and         an improvement of 3.6%. Furthermore, Trust–SIoT achieves
+BTC-Alpha by selecting the objects to enhance the proba-              the higher prediction accuracy in terms of MAE and MSE
+bility of objects interacting with each other. The merging            score of 0.174 and 0.240 in comparison to MAE and MSE
+takes place in three steps: 1) conversion of SIoT dataset             score of 0.214 and 0.3008 for Guardian. In general, Trust–
+into SIoT graph, 2) selecting the sub-network of data to              SIoT achieves higher F1-Score and 18.7% and 20.2% decrease
+match the number of nodes for each of Advogato and BTC-               in the MAE and MSE score in comparison to Guardian.
+Alpha datasets, and 3) merging the sub-network of SIoT
+                                                                         Similarly, we have evaluated the performance of our ap-
+data with both Advogato and BTC-Alpha dataset. Finally, we
+                                                                      proach on another dataset (i.e., BTC-Alpha) to verify that our
+have mapped the labels of merged datasets into three classes
+                                                                      approach does not rely on datasets. As can be seen from Table
+{T rustworthy, N eutral, U ntrustworthy}.
+                                                                      V, Trust–SIoT performance slightly better than Guardian by
+   For all the datasets, we have randomly chosen 80% (i.e.,           increasing the F1-score 0.5% with a decrease in 1.9% of MAE
+training set) of the data for training, and the remaining 20%         score and almost similar MSE score. In general, Trust–SIoT
+of the data is used for testing (i.e., testing set). We further       is highly effective on both the datasets, and it successfully
+split the training set into 5 subsets for 5-fold cross-validation.    clarify that the trust metrics along with the SIoT relationships
+Each time the training and validation phase chooses one of            similarity obtained from KGE model are able to classify the
+  1 http://www.trustlet.org/datasets/advogato/                        trustworthy SIoT objects more efficiently.
+  2 https://btc-alpha.com/en/                                            Furthermore, the robustness of the proposed approach is
+  3 https://www.social-iot.org/                                       evaluated by varying the proportion of training set into 80%,
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                            10
+
+
+
+         TABLE IV: Prediction accuracy - Advogato
+                M odel         F 1 − Score    M AE     M SE
+
+              Trust–SIoT          0.859       0.174    0.240
+              Guardian            0.829       0.214    0.3008
+
+          Improvement             3.6%        18.7%    20.2%
+
+
+        TABLE V: Prediction accuracy - BTC Alpha
+                M odel         F 1 − Score    M AE     M SE                       (a) Advogato                     (b) BTC-Alpha
+
+              Trust–SIoT          0.785       0.211    0.220            Fig. 9: Robustness of Trust–SIoT and Guardian for Advogato
+              Guardian            0.781       0.215    0.219
+                                                                        and BTC-Alpha
+
+          Improvement             0.5%        1.9%     -0.4%
+                                                                        Figure 10a, 10b, and 10c in terms of F1-score, MAE and MSE
+                                                                        respectively. It is evident from the results that the F1-score of
+60%, and 40% respectively. The reported results for Advogato            Trust–SIoT remains stable with the increase in the pairwise
+is shown in Table VI and in Figure 9a. It can be seen that the          interactions and always remains higher than the Guardian.
+Trust–SIoT has a negligible performance decrease of 1.1%,               Moreover, the MAE and MSE scores of Trust–SIoT remain
+3.3%, 4% in terms of F1-Score, MAE, and MSE respectively                low over the varying interactions in comparison to Guardian.
+when the training set size is reduced to 40%. For Guardian, the            Similarly, Figure 11a, 11b, and 11c present the F1-score,
+performance evaluation decreases by 1.3%, 6.7%, 6.2% with               MAE and MSE with varying interactions for BTC-Alpha
+regards to F1-score, MAE, and MSE respectively. Likewise,               dataset. As shown in Figure 11a the F1-score decreases with
+there is slight decrease in the performance of both Trust–SIoT          the increase in number of interaction, however, it is slightly
+and Guardian for BTC-Alpha as shown in Table VII and in                 better than Guardian. Furthermore, the MAE and MSE scores
+Figure 9b, and there is a similar performance of both the               of both the approaches increase with growth in number of
+approaches in terms of all the evaluation metrics.                      interactions. Nevertheless, these scores remain low for Trust–
+   In essence, the results suggest that the Trust–SIoT frame-           SIoT in comparison to Guardian with the increase in number
+work effectively learns the trust relationships between the             of interactions. In general, it is noteworthy that Trust–SIoT
+objects even with the low percentage of the training set, and is        performs better on both the datasets and is scalable to gener-
+able to perform better in comparison with the other approach.           alize for large scale SIoT networks.
+                                                                           Finally, we have also analyzed the change in the reliabil-
+TABLE VI: Robustness with varying training set - Advogato               ity, benevolence, and credibility of trustworthy, neutral, and
+     M odel        T raining set      F 1 − Score     M AE      M SE    untrustworthy objects for both Advogato and BTC-Alpha. As
+                                                                        depicted in Figure 12a that for an object to be trustworthy, it
+                         80%              0.860       0.174     0.240
+                                                                        needs to be credible and hence object must be reliable and
+   Trust–SIoT            60%              0.857       0.175     0.248   benevolent as the credibility is the integration of both the
+                         40%              0.850       0.180     0.250   metrics. Furthermore, it can be observed that the credibility of
+                         80%              0.838       0.209     0.290   untrustworthy objects is lower than that of neutral and trust-
+    Guardian             60%              0.830       0.212     0.290   worthy objects. Likewise, Figure 12b manifests the reliability,
+                         40%              0.827       0.223     0.302   benevolence and credibility objects for BTC-Alpha datasets.
+                                                                        Similar to the results observed in Advogato, all three metrics
+                                                                        have a high score for trustworthy objects, and these scores are
+TABLE VII: Robustness with varying training set - BTC Alpha             lower for neutral and untrustworthy objects.
+                                                                           Thus, it is evident that both the reliability and benevolence
+     M odel        T raining set      F 1 − Score     M AE      M SE    trust metrics are essential to comment on the credibility of
+                         80%              0.785       0.211     0.220   objects in the SIoT network, and the proposed metrics are not
+   Trust–SIoT            60%              0.775       0.220     0.220   dataset dependant and can be generalized for other large scale
+                         40%              0.770       0.221     0.23
+                                                                        SIoT and also for online social networks.
+                         80%              0.781       0.215     0.219
+    Guardian             60%              0.770       0.224     0.226              VI. C ONCLUSION AND F UTURE W ORK
+                         40%              0.768       0.230     0.229      In this paper, we have envisaged an artificial neural network-
+                                                                        based trust framework, Trust–SIoT, wherein the convergence
+   We have also evaluated the performance of the proposed               of dynamic social trust metrics, i.e., direct trust by integrating
+framework with the varying number of pairwise interactions              both current and past interactions, reliability and benevolence,
+to observe the scalability of the Trust–SIoT. The scalability           credible recommendations, and the degree of relationships, has
+of both the approaches for Advogato dataset can be seen in              enhanced the trustworthiness evaluation of the SIoT objects.
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                       11
+
+
+
+
+                     (a)                                          (b)                                                  (c)
+                         Fig. 10: F1-score, MAE, and MSE with varying pairwise interactions - Advogato
+
+
+
+
+                     (a)                                          (b)                                                  (c)
+                     Fig. 11: F1-score, MAE, and MSE with varying pairwise interactions - BTC-Alpha
+
+
+                                                                        supported by Australian Research Council Future Fellowship
+                                                                        under Grant FT140101247 and Discovery Project under Grant
+                                                                        DP200102298.
+
+
+                                                                                                     R EFERENCES
+
+                                                                        [1] S. Pattar, R. Buyya, K. R. Venugopal, S. S. Iyengar, and L. M.
+                                                                            Patnaik, “Searching for the IoT Resources: Fundamentals, Requirements,
+          (a) Advogato                    (b) BTC-Alpha                     Comprehensive Review, and Future Directions,” IEEE Communications
+                                                                            Surveys Tutorials, vol. 20, no. 3, pp. 2101–2132, 2018.
+Fig. 12: Dependency analysis of R, B, and CR for Advogato               [2] A. Bouguettaya, Q. Z. Sheng, B. Benatallah, A. G. Neiat, S. Mistry,
+and BTC-Alpha                                                               A. Ghose, S. Nepal, and L. Yao, “An Internet of Things Service
+                                                                            Roadmap,” Communications of the ACM, vol. 64, no. 9, pp. 86–95,
+                                                                            2021.
+                                                                        [3] W. E. Zhang, Q. Z. Sheng, A. Mahmood, D. H. Tran, M. Zaib,
+The recommendations are ascertained from the credible neigh-                S. A. Hamad, A. Aljubairy, A. A. F. Alhazmi, S. Sagar, and C. Ma,
+bouring objects and the SIoT knowledge graph is constructed                 “The 10 Research Topics in the Internet of Things,” in Proceedings of
+                                                                            the 6th IEEE International Conference on Collaboration and Internet
+so as to learn the embedding vectors for quantifying the                    Computing (CIC 2020), Atlanta, GA, USA, December 1-3, 2020, pp.
+degree of relationships. The experimental analysis suggests                 34–43.
+that Trust–SIoT outperforms the state-of-the-art heuristics,            [4] I. Zhou, I. Makhdoom, N. Shariati, M. A. Raza, R. Keshavarz, J. Lipman,
+particularly, in terms of the F1, MAE, and MSE measurement.                 M. Abolhasan, and A. Jamalipour, “Internet of Things 2.0: Concepts,
+                                                                            Applications, and Future Directions,” IEEE Access, vol. 9, pp. 70 961–
+In the near future, we intend to investigate this framework                 71 012, 2021.
+vis-á-vis the trust-related attacks in a bid to strengthen its         [5] S. Sagar, A. Mahmood, Q. Z. Sheng, J. K. Pabani, and W. E. Zhang,
+resilience in dynamic SIoT environments.                                    “Understanding the Trustworthiness Management in the Social Internet
+                                                                            of Things: A Survey,” arXiv, 2022.
+                                                                        [6] M. Nitti, L. Atzori, and I. Pletikosa, “Network Navigability in the Social
+                   ACKNOWLEDGEMENT                                          Internet of Things,” in IEEE World Forum on Internet of Things, WF-
+                                                                            IoT, 2014, pp. 405–410.
+   The corresponding author, Subhash Sagar, sincerely ac-
+                                                                        [7] J. Kleinberg, “Small-World Phenomena and the Dynamics of Infor-
+knowledges the generous support of the Higher Educa-                        mation,” in Proceedings of the International Conference on Neural
+tion Commission of Pakistan and Macquarie University,                       Information Processing Systems: Natural and Synthetic, ser. NIPS’01,
+Australia for funding the research-at-hand via its “Mac-                    2001, p. 431–438.
+                                                                        [8] L. Atzori, A. Iera, and G. Morabito, “SIoT: Giving a Social Structure
+quarie University Research Excellence Award (Allocation                     to the Internet of Things,” IEEE Communications Letters, vol. 15, pp.
+No. 2019050)”. Quan Z. Sheng’s work has been partially                      1193–1195, 2011.
+IEEE TRANSACTIONS ON NETWORK AND SERVICE MANAGEMENT, VOL. , NO. , APRIL 2022                                                                            12
+
+
+
+ [9] L. Atzori, A. Iera, G. Morabito, and M. Nitti, “The Social Internet of         Social Networks,” in Proceedings of the IEEE Conference on Computer
+     Things (SIoT) – When Social Networks Meet the Internet of Things:              Communications (INFOCOM), 2017, pp. 1–9.
+     Concept, Architecture, and Network Characterization,” Computer Net-       [24] G. Liu, Q. Yang, H. Wang, X. Lin, and M. P. Wittie, “Assessment
+     works, vol. 56, no. 16, pp. 3594 – 3608, Nov 2012.                             of Multi-hop Interpersonal Trust in Social Networks by Three-Valued
+[10] S. A. Hamad, Q. Z. Sheng, W. E. Zhang, and S. Nepal, “Realizing                Subjective Logic,” in Proceedings of the IEEE Conference on Computer
+     an Internet of Secure Things: A Survey on Issues and Enabling Tech-            Communications (INFOCOM), 2014, pp. 1698–1706.
+     nologies,” IEEE Communications Surveys Tutorials, vol. 22, no. 2, pp.     [25] Q. Song, Y. Wu, P. Lin, X. Dong, and H. Sun, “Mining Summaries for
+     1372–1391, 2020.                                                               Knowledge Graph Search,” IEEE Transactions on Knowledge and Data
+[11] L. Nie, Y. Wu, X. Wang, L. Guo, G. Wang, X. Gao, and S. Li, “Intrusion         Engineering, vol. 30, no. 10, pp. 1887–1900, 2018.
+     Detection for Secure Social Internet of Things Based on Collaborative     [26] Q. Wang, Z. Mao, B. Wang, and L. Guo, “Knowledge Graph Embedding:
+     Edge Computing: A Generative Adversarial Network-Based Approach,”              A Survey of Approaches and Applications,” IEEE Transactions on
+     IEEE Transactions on Computational Social Systems, pp. 1–12, 2021.             Knowledge and Data Engineering, vol. 29, pp. 2724–2743, 2017.
+[12] H. Liu, E.-P. Lim, H. W. Lauw, M.-T. Le, A. Sun, J. Srivastava, and       [27] K. Wang, Y. Liu, D. Lin, and M. Sheng, “Hyperbolic Geometry is Not
+     Y. A. Kim, “Predicting Trusts among Users of Online Communities:               Necessary: Lightweight Euclidean-Based Models for Low-Dimensional
+     An Epinions Case Study,” in Proceedings of the ACM conference on               Knowledge Graph Embeddings,” in Proceedings of the Empirical Meth-
+     Electronic commerce, ser. EC ’08, 2008, p. 310–319.                            ods in Natural Language Processing (EMNLP), 2021, pp. 464–474.
+[13] J. Jalava, “From Norms to Trust: The Luhmannian Connections between       [28] A. Bordes, N. Usunier, A. Garcı́a-Durán, J. Weston, and O. Yakhnenko,
+     Trust and System,” European Journal of Social Theory, vol. 6, no. 2,           “Translating Embeddings for Modeling Multi-relational Data,” in Pro-
+     pp. 173–190, 2003.                                                             ceedings of Advances in Neural Information Processing Systems (NIPS),
+[14] F. Krueger and A. Meyer-Lindenberg, “Toward a Model of Interpersonal           2013, pp. 2787–2795.
+     Trust Drawn from Neuroscience, Psychology, and Economics,” Trends         [29] Y. Chen, Y. Tao, Z. Zheng, and D. Chen, “Graph-based service rec-
+     in Neurosciences, vol. 42, no. 2, pp. 92–101, 2019.                            ommendation in Social Internet of Things,” International Journal of
+[15] R. Backhouse and S. Medema, “On the Definition of Economics,”                  Distributed Sensor Networks, vol. 17, no. 4, pp. 1–13, 2021.
+     Journal of Economic Perspectives, vol. 23, pp. 221–33, 01 2009.           [30] Y. Chen, M. Zhou, Z. Zheng, and D. Chen, “Time-Aware Smart Object
+[16] J. Riegelsberger, M. A. Sasse, and J. D. McCarthy, “Shiny Happy People         Recommendation in Social Internet of Things,” IEEE Internet of Things
+     Building Trust? Photos on E-Commerce Websites and Consumer Trust,”             Journal, vol. 7, no. 3, pp. 2014–2027, 2020.
+     in Proceedings of the ACM SIGCHI Conference on Human Factors in           [31] R. Ismail and A. Jøsang, “The Beta Reputation System,” in 15th Bled
+     Computing Systems, 2003, p. 121–128.                                           Electronics Commerce Conference, vol. 5, 2002, pp. 2502–2511.
+[17] C. Marche and M. Nitti, “Trust-Related Attacks and Their Detection:       [32] S. Kumar, F. Spezzano, V. S. Subrahmanian, and C. Faloutsos, “Edge
+     A Trust Management Model for the Social IoT,” IEEE Transactions on             Weight Prediction in Weighted Signed Networks,” in Proceedings of
+     Network and Service Management, vol. 18, no. 3, pp. 3297–3308, 2021.           the IEEE International Conference on Data Mining (ICDM), 2016, pp.
+[18] S. Aalibagi, H. Mahyar, A. Movaghar, and H. E. Stanley, “A Matrix              221–230.
+     Factorization Model for Hellinger-based Trust Management in Social        [33] J. A. Wells, D. S. LaFon, and M. Gratian, “Assessing the Credibility of
+     Internet of Things,” IEEE Transactions on Dependable and Secure                Cyber Adversaries,” International Journal of Cybersecurity Intelligence
+     Computing, pp. 1–1, 2021.                                                      and Cybercrime, vol. 4, no. 1, pp. 3–24, 2021.
+[19] S. Sagar, A. Mahmood, Q. Z. Sheng, and W. E. Zhang, “Trust Compu-         [34] R. M.S., S. Pattar, R. Buyya, V. K.R., S. Iyengar, and L. Patnaik, “So-
+     tational Heuristic for Social Internet of Things: A Machine Learning-          cial Internet of Things (SIoT): Foundations, Thrust Areas, Systematic
+     based Approach,” in Procedding of the IEEE International Conference            Review and Future Directions,” Computer Communications, vol. 139,
+     on Communications (ICC), 2020, pp. 1–6.                                        pp. 32 – 57, 2019.
+[20] S. Sagar, A. Mahmood, M. Zaib, Q. Z. Sheng, and W. E. Zhang,              [35] C. Marche, L. Atzori, V. Pilloni, and M. Nitti, “How to Exploit the
+     “Towards a Machine Learning-driven Trust Evaluation Model for Social           Social Internet of Things: Query Generation Model and Device Profiles’
+     Internet of Things: A Time-aware Approach,” in EAI International               Dataset,” Computer Networks, vol. 174, p. 107248, 2020.
+     Conference on Mobile and Ubiquitous Systems: Computing, Networking        [36] I. Chami, A. Wolf, D.-C. Juan, F. Sala, S. Ravi, and C. Ré, “Low-
+     and Services (MobiQuitous), 2020, p. 283–290.                                  Dimensional Hyperbolic Knowledge Graph Embeddings,” in Proceed-
+[21] S. M. Ghafari, A. Beheshti, A. Joshi, C. Paris, A. Mahmood, S. Yakhchi,        ings of the Annual Meeting of the Association for Computational
+     and M. A. Orgun, “A Survey on Trust Prediction in Online Social                Linguistics (ACL), 2020, pp. 6901–6914.
+     Networks,” IEEE Access, vol. 8, pp. 144 292–144 309, 2020.                [37] K. Wang, Y. Liu, Q. Ma, and Q. Z. Sheng, “MulDE: Multi-teacher
+[22] W. Lin, Z. Gao, and B. Li, “Guardian: Evaluating Trust in Online Social        Knowledge Distillation for Low-dimensional Knowledge Graph Embed-
+     Networks with Graph Convolutional Networks,” in Proceedings of the             dings,” in Proceedings of The Web Conference, 2021, pp. 1716–1726.
+     IEEE Conference on Computer Communications (INFOCOM), 2020, pp.           [38] D. P. Kingma and J. L. Ba, “Adam: A Method for Stochastic Op-
+     914–923.                                                                       timization,” in Proceedings of International Conference on Learning
+[23] G. Liu, Q. Chen, Q. Yang, B. Zhu, H. Wang, and W. Wang, “Opin-                 Representations (ICLR), 2015, pp. 1–15.
+     ionWalk: An Efficient Solution to Massive Trust Assessment in Online
+
