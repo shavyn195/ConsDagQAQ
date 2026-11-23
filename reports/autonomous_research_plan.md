@@ -53,3 +53,5 @@
 00:36：补齐后处理的对照公平性：同一个冻结公开名称绑定器已应用到缓存的 DeepSeek 十样本、qwen-max 零样本/十样本，服务器 CPU 任务 PID141839。12份缓存已逐文件核验传输哈希；没有重新调用API或额外GPU推理。输出 `/root/ConsDagDiagnostics20261123/outputs/v5_public_binding_pe_20261124.json`，日志同名`.log`；部署记录 `outputs/v5_analysis/public_binding_pe_deployment_20261124.json`。新增缓存布局一致性单测，本地与服务器4/4通过。隔离环境最初缺少完整dev数据的测试夹具路径已改为随包携带的冻结诊断小面板，原失败没有触发实验。下一次先回收此结果，确认强模型同接口收益，避免只给训练臂加修复后宣称优胜。00:32快照4B43 GPU54%、32,208MiB，tool_ho严格F1=0.6788，struct评测仍在跑；不要从严格F1推断faithful。
 
 00:40：强模型同接口CPU对照已完成并回收到 `outputs/v5_analysis/public_binding_pe_20261124.json`，12,150份预测完整。DeepSeek四切分faithful不变；qwen-max零样本dev恢复1题、tpl恢复2题，另两切分不变；qwen-max十样本不变；各臂N误报、过改、解析失败不变。主结论未改变，不唤醒用户。继续等4B43完整评测后按注册方案分析；已有GPU面板仍排队。GPU100%、32,208MiB。GitHub间歇性超时，`306787a`曾两次推送失败，待最终提交后重试；以实际push结果为准。
+
+本次最终同步结果：`cd34c14`及其前序`306787a`均已本地提交；push再次因GitHub443连接失败，尚未远端确认。服务器实验代码已独立通过SFTP部署，CPU结果已完整回收，网络失败不影响正在运行的队列。下轮先重试Git同步；不要把这两次提交描述为已推送。
