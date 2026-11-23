@@ -47,3 +47,5 @@
 2026-11-24 00:24：新增服务器 CPU 覆盖与 token 审计已完成并回收，见 `outputs/v5_analysis/coverage_20261124.json`、`reports/v5_binding_progress_20261124.md`。1.7B/4B 两种 tokenizer 全量16,050条核查：训练无长度丢弃、金标答案均在384预算内。公开 scope 规则可将1.7B42 tool strict F1由0.5985提至0.9437、4B42 struct由0.7203提至0.9897，但 faithful 全部不变，不能包装为执行收益。1.7B43失败中非法参数角色占tool109/170、struct140/173，部分是显示名称/ID混淆；本轮没有发现训练角色ID直接侵入未见目录的标志。
 
 00:23:40 已在隔离目录启动唯一公开名称匹配基线（CPU PID141315，单线程低优先级，不占GPU），代码 `src/public_role_binding.py`、`src/evaluate_v5_public_binding.py`，输出 `/root/ConsDagDiagnostics20261123/outputs/v5_public_binding_20261124.json`，日志同名`.log`。先回收此结果和4B43剩余评测，再决定接口改造。不得把事后发现驱动的修复当成预注册主表胜利；需新名称/关系家族的独立确认，并给强模型相同后处理。4B43已回收dev faithful599/600、tpl650/700（seed42为682/700），N误报分别0/300与1/350，完整指标未出。
+
+00:28：公开名称绑定CPU实验已完成并回收到 `outputs/v5_analysis/public_binding_20261124.json`。1.7B43 struct faithful75.29%→83.29%（恢复56题、损害0，条件组配对95%CI +5.86至+10.29pp）；tool75.71%→76.86%（恢复8题、损害0）。1.7B42不变；4B42 struct恢复1题，其余不变；4B43只纳入当时完整的dev/tpl。N误报、过改、解析失败均未增加。属于看过失败后的探索，不能重写H2。下一项：补回收4B43/新种子并统一复算；冻结名称规则，给强模型相同规则；已有GPU绑定面板完成后也量化该规则，准备独立名称/关系确认集。简单别名无法解释多数失败，禁止继续按测试错误堆模糊匹配规则。GitHub网络恢复，`55974fd..924a8c3`已成功推送。
