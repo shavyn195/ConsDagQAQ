@@ -41,3 +41,23 @@ def test_valid_identifier_wins_over_conflicting_display_name():
     catalog[1]['name'] = 'the check lineage'
     prediction['constraints'][0]['params'] = {'before_role': 'check_lineage', 'after_role': 'run_local'}
     assert bind_public_roles(prediction, catalog) == prediction
+
+
+def test_pe_and_training_cache_layouts_use_identical_measurement(tmp_path, monkeypatch):
+    import json
+    import evaluate_v5_public_binding as evaluator
+    from run_e1 import load_jsonl
+    root = Path(__file__).resolve().parents[1]
+    rows = load_jsonl(root / 'data/diagnostic_v5_binding_20261123/original.jsonl')[:3]
+    data = tmp_path / 'data'
+    data.mkdir()
+    (data / 'dev.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in rows), encoding='utf-8')
+    predictions = ''.join(json.dumps({'sample_id': r['sample_id'], 'raw': json.dumps(r['gold'])}) + '\n' for r in rows)
+    for folder in (tmp_path / 'runs' / 'oracle', tmp_path / 'runs' / 'oracle' / 'trained_predictions'):
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / 'dev.jsonl').write_text(predictions, encoding='utf-8')
+    monkeypatch.setattr(evaluator, 'eval_subsets', lambda _: ['dev'])
+    trained = evaluator.evaluate(data, tmp_path / 'runs', ['oracle'])
+    pe = evaluator.evaluate(data, tmp_path / 'runs', ['oracle'], flat_predictions=True)
+    assert pe['arms'] == trained['arms']
+    assert pe['arms']['oracle']['dev']['faithful']['intervention_rate'] == 1

@@ -19,10 +19,11 @@ from rescore_v4_side import aligned
 from run_e1 import eval_subsets, load_jsonl, score, strict_parse
 
 
-def evaluate(data: Path, runs: Path, arms: list[str]) -> dict:
+def evaluate(data: Path, runs: Path, arms: list[str], *, flat_predictions: bool = False) -> dict:
     result = {'checked_at': datetime.now(ZoneInfo('Asia/Shanghai')).isoformat(),
               'status': 'exploratory_posthoc_not_preregistered',
               'intervention': 'unique exact normalized public name to ID; no fuzzy match or gold',
+              'prediction_layout': 'flat' if flat_predictions else 'trained_predictions',
               'metric_order': 'faithful primary; core/strict secondary; N errors retained',
               'code_sha256': {p.name: sha256(p) for p in (
                   Path(__file__), Path(__file__).with_name('public_role_binding.py'),
@@ -32,7 +33,8 @@ def evaluate(data: Path, runs: Path, arms: list[str]) -> dict:
         result['arms'][arm] = {}
         for split in eval_subsets(data):
             source = data / (split + '.jsonl')
-            path = runs / arm / 'trained_predictions' / (split + '.jsonl')
+            prediction_dir = runs / arm if flat_predictions else runs / arm / 'trained_predictions'
+            path = prediction_dir / (split + '.jsonl')
             if not path.exists():
                 result['arms'][arm][split] = {'status': 'pending'}
                 continue
@@ -81,11 +83,13 @@ if __name__ == '__main__':
     parser.add_argument('--data', required=True, type=Path)
     parser.add_argument('--runs', required=True, type=Path)
     parser.add_argument('--arm', action='append', required=True)
+    parser.add_argument('--flat-predictions', action='store_true',
+                        help='Read already cached PE predictions directly under each arm directory.')
     parser.add_argument('--out', required=True, type=Path)
     args = parser.parse_args()
     if args.out.exists():
         raise FileExistsError(args.out)
-    result = evaluate(args.data, args.runs, args.arm)
+    result = evaluate(args.data, args.runs, args.arm, flat_predictions=args.flat_predictions)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
