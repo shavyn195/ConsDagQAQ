@@ -43,3 +43,7 @@
 同次服务器只读记录：4B seed43 已8900/9000步，loss=3.02e-6，GPU89%，显存32208MiB；这不是最终评测结果。既有每小时任务 `consdag-2` 已更新并保持ACTIVE，旧 `consdag` 保持PAUSED，避免重复推进。
 
 下一项：完成4B seed43结果的完整性核验和回收，更新多种子结论；推进独立追问pilot的近邻核验与语义/执行契约；绑定结果到齐后依据干预差异选择一项有机制依据的改进，不抢先宣布新方向成立。
+
+2026-11-24 00:24：新增服务器 CPU 覆盖与 token 审计已完成并回收，见 `outputs/v5_analysis/coverage_20261124.json`、`reports/v5_binding_progress_20261124.md`。1.7B/4B 两种 tokenizer 全量16,050条核查：训练无长度丢弃、金标答案均在384预算内。公开 scope 规则可将1.7B42 tool strict F1由0.5985提至0.9437、4B42 struct由0.7203提至0.9897，但 faithful 全部不变，不能包装为执行收益。1.7B43失败中非法参数角色占tool109/170、struct140/173，部分是显示名称/ID混淆；本轮没有发现训练角色ID直接侵入未见目录的标志。
+
+00:23:40 已在隔离目录启动唯一公开名称匹配基线（CPU PID141315，单线程低优先级，不占GPU），代码 `src/public_role_binding.py`、`src/evaluate_v5_public_binding.py`，输出 `/root/ConsDagDiagnostics20261123/outputs/v5_public_binding_20261124.json`，日志同名`.log`。先回收此结果和4B43剩余评测，再决定接口改造。不得把事后发现驱动的修复当成预注册主表胜利；需新名称/关系家族的独立确认，并给强模型相同后处理。4B43已回收dev faithful599/600、tpl650/700（seed42为682/700），N误报分别0/300与1/350，完整指标未出。
