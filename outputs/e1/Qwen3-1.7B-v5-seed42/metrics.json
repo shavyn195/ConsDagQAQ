@@ -1,0 +1,1761 @@
+{
+  "model_path": "models/Qwen3-1.7B",
+  "seed": 42,
+  "config": {
+    "model": "models/Qwen3-1.7B",
+    "data_dir": "data/processed_v5",
+    "out_dir": "outputs/e1/Qwen3-1.7B-v5-seed42",
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "gradient_accumulation_steps": 4,
+    "max_seq_len": 1280,
+    "max_new_tokens": 384,
+    "eval_batch_size": 32,
+    "seed": 42,
+    "precision": "bf16",
+    "smoke_train_steps": null,
+    "skip_zeroshot": false,
+    "skip_train": false
+  },
+  "data_sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "code_sha256": "14979c5ddc74ae6ca83f0ad44191360b4731e7fce359f8083c3aee54011dd473",
+  "zeroshot": {
+    "dev": {
+      "metrics_version": "e1_score_v5",
+      "records": 900,
+      "state_accuracy": 0.3233333333333333,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9633333333333334,
+        "implicit": 0.0,
+        "none": 0.006666666666666667
+      },
+      "constraint_micro": {
+        "precision": 0.049403747870528106,
+        "recall": 0.059670781893004114,
+        "f1": 0.05405405405405406
+      },
+      "constraint_core_micro": {
+        "precision": 0.17120954003407154,
+        "recall": 0.20679012345679013,
+        "f1": 0.18732525629077354
+      },
+      "record_exact_match": 0.016666666666666666,
+      "record_exact_match_by_variant": {
+        "explicit": 0.043333333333333335,
+        "implicit": 0.0,
+        "none": 0.006666666666666667
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.08923076923076922,
+          "recall": 0.11934156378600823,
+          "f1": 0.10211267605633803,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 38,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 210,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 300,
+          "empty_set_accuracy": 0.5666666666666667,
+          "gold_empty_records": 300,
+          "prediction_empty_records": 175,
+          "false_alarm_rate": 0.4166666666666667
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 190
+        },
+        "deadline": {
+          "precision": 0.1532258064516129,
+          "recall": 0.37012987012987014,
+          "f1": 0.21673003802281368,
+          "gold_records": 154
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 266
+        },
+        "privacy": {
+          "precision": 0.005,
+          "recall": 0.004545454545454545,
+          "f1": 0.004761904761904762,
+          "gold_records": 220
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 142
+        },
+        "deliver_report_to_team": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 0,
+          "fp": 25,
+          "fn": 149,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 149
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 30,
+          "fn": 135,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 135
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 33,
+          "fn": 202,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 202
+        }
+      },
+      "per_difficulty_unattributed_fp": 108,
+      "evidence_exact_rate": 0.3793103448275862,
+      "evidence_records": 58,
+      "json_parse_rate": 0.9677777777777777,
+      "malformed_prediction_count": 29,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 900,
+        "safe_success": 0.4256,
+        "safe_success_ci95": [
+          0.4033,
+          0.45
+        ],
+        "safe_success_constrained": 0.1867,
+        "safe_success_constrained_ci95": [
+          0.1567,
+          0.22
+        ],
+        "faithful_success": 0.3444,
+        "faithful_success_constrained": 0.1717,
+        "faithful_success_constrained_ci95": [
+          0.1433,
+          0.2017
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 300,
+            "safe_success": 0.3267,
+            "safe_success_ci95": [
+              0.2767,
+              0.38
+            ],
+            "faithful_success": 0.3033,
+            "faithful_success_ci95": [
+              0.2533,
+              0.3533
+            ],
+            "completion": 0.8333,
+            "planned": 0.8333,
+            "malformed": 0.0367,
+            "violation_rate_by_type": {
+              "budget": 0.0423,
+              "deadline": 0.1688,
+              "order": 0.6165,
+              "privacy": 0.2909,
+              "tool_auth": 0.5895
+            },
+            "over_change_rate_when_safe": 0.0714
+          },
+          "implicit": {
+            "records": 300,
+            "safe_success": 0.0467,
+            "safe_success_ci95": [
+              0.0233,
+              0.07
+            ],
+            "faithful_success": 0.04,
+            "faithful_success_ci95": [
+              0.02,
+              0.0633
+            ],
+            "completion": 0.94,
+            "planned": 0.94,
+            "malformed": 0.0433,
+            "violation_rate_by_type": {
+              "budget": 0.7606,
+              "deadline": 0.9091,
+              "order": 0.9023,
+              "privacy": 0.8091,
+              "tool_auth": 0.8737
+            },
+            "over_change_rate_when_safe": 0.1429
+          },
+          "none": {
+            "records": 300,
+            "safe_success": 0.9033,
+            "safe_success_ci95": [
+              0.87,
+              0.9367
+            ],
+            "faithful_success": 0.69,
+            "faithful_success_ci95": [
+              0.6433,
+              0.7433
+            ],
+            "completion": 0.9033,
+            "planned": 0.9033,
+            "malformed": 0.0167,
+            "unnecessary_deviation_rate": 0.2133
+          }
+        }
+      },
+      "eval_seconds": 328.9
+    },
+    "test_tpl_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.3180952380952381,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9428571428571428,
+        "implicit": 0.0,
+        "none": 0.011428571428571429
+      },
+      "constraint_micro": {
+        "precision": 0.078,
+        "recall": 0.07065217391304347,
+        "f1": 0.0741444866920152
+      },
+      "constraint_core_micro": {
+        "precision": 0.239,
+        "recall": 0.2164855072463768,
+        "f1": 0.22718631178707224
+      },
+      "record_exact_match": 0.018095238095238095,
+      "record_exact_match_by_variant": {
+        "explicit": 0.04285714285714286,
+        "implicit": 0.0,
+        "none": 0.011428571428571429
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.11782477341389729,
+          "recall": 0.14130434782608695,
+          "f1": 0.128500823723229,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 67,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 275,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.8028571428571428,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 286,
+          "false_alarm_rate": 0.18285714285714286
+        }
+      },
+      "per_type": {
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 164
+        },
+        "deadline": {
+          "precision": 0.24,
+          "recall": 0.3979591836734694,
+          "f1": 0.29942418426103645,
+          "gold_records": 196
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 222
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 246
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 276
+        }
+      },
+      "per_difficulty_implicit": {
+        "d1": {
+          "tp": 0,
+          "fp": 40,
+          "fn": 168,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 168
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 24,
+          "fn": 224,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 224
+        },
+        "d3": {
+          "tp": 0,
+          "fp": 20,
+          "fn": 160,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 160
+        }
+      },
+      "per_difficulty_unattributed_fp": 101,
+      "evidence_exact_rate": 0.6282051282051282,
+      "evidence_records": 78,
+      "json_parse_rate": 0.9685714285714285,
+      "malformed_prediction_count": 33,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.4581,
+        "safe_success_ci95": [
+          0.4381,
+          0.4781
+        ],
+        "safe_success_constrained": 0.2071,
+        "safe_success_constrained_ci95": [
+          0.18,
+          0.2343
+        ],
+        "faithful_success": 0.419,
+        "faithful_success_constrained": 0.1914,
+        "faithful_success_constrained_ci95": [
+          0.1643,
+          0.22
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.3743,
+            "safe_success_ci95": [
+              0.3229,
+              0.4257
+            ],
+            "faithful_success": 0.3429,
+            "faithful_success_ci95": [
+              0.2943,
+              0.3914
+            ],
+            "completion": 0.8743,
+            "planned": 0.8743,
+            "malformed": 0.0571,
+            "violation_rate_by_type": {
+              "budget": 0.1585,
+              "deadline": 0.1735,
+              "order": 0.587,
+              "privacy": 0.3821,
+              "tool_auth": 0.6847
+            },
+            "over_change_rate_when_safe": 0.084
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.04,
+            "safe_success_ci95": [
+              0.02,
+              0.06
+            ],
+            "faithful_success": 0.04,
+            "faithful_success_ci95": [
+              0.02,
+              0.06
+            ],
+            "completion": 0.9314,
+            "planned": 0.9314,
+            "malformed": 0.0229,
+            "violation_rate_by_type": {
+              "budget": 0.8049,
+              "deadline": 0.8367,
+              "order": 0.913,
+              "privacy": 0.8293,
+              "tool_auth": 0.9189
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 0.96,
+            "safe_success_ci95": [
+              0.9371,
+              0.98
+            ],
+            "faithful_success": 0.8743,
+            "faithful_success_ci95": [
+              0.84,
+              0.9086
+            ],
+            "completion": 0.96,
+            "planned": 0.96,
+            "malformed": 0.0143,
+            "unnecessary_deviation_rate": 0.0857
+          }
+        }
+      },
+      "eval_seconds": 341.4
+    },
+    "test_tool_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.32476190476190475,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9685714285714285,
+        "implicit": 0.0,
+        "none": 0.005714285714285714
+      },
+      "constraint_micro": {
+        "precision": 0.08285385500575373,
+        "recall": 0.06533575317604355,
+        "f1": 0.0730593607305936
+      },
+      "constraint_core_micro": {
+        "precision": 0.22209436133486765,
+        "recall": 0.1751361161524501,
+        "f1": 0.19583967529173008
+      },
+      "record_exact_match": 0.012380952380952381,
+      "record_exact_match_by_variant": {
+        "explicit": 0.03142857142857143,
+        "implicit": 0.0,
+        "none": 0.005714285714285714
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.12080536912751678,
+          "recall": 0.1306715063520871,
+          "f1": 0.12554489973844812,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 104,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 297,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.8171428571428572,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 290,
+          "false_alarm_rate": 0.17142857142857143
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 214
+        },
+        "deadline": {
+          "precision": 0.254416961130742,
+          "recall": 0.35294117647058826,
+          "f1": 0.29568788501026694,
+          "gold_records": 204
+        },
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 290
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 250
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 144
+        },
+        "compile_qos_report": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 0,
+          "fp": 17,
+          "fn": 164,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 164
+        },
+        "d1": {
+          "tp": 0,
+          "fp": 26,
+          "fn": 164,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 164
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 13,
+          "fn": 223,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 223
+        }
+      },
+      "per_difficulty_unattributed_fp": 69,
+      "evidence_exact_rate": 0.4166666666666667,
+      "evidence_records": 72,
+      "json_parse_rate": 0.98,
+      "malformed_prediction_count": 21,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.4114,
+        "safe_success_ci95": [
+          0.3924,
+          0.4286
+        ],
+        "safe_success_constrained": 0.1471,
+        "safe_success_constrained_ci95": [
+          0.1243,
+          0.1714
+        ],
+        "faithful_success": 0.3829,
+        "faithful_success_constrained": 0.1343,
+        "faithful_success_constrained_ci95": [
+          0.11,
+          0.1571
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.28,
+            "safe_success_ci95": [
+              0.2343,
+              0.3257
+            ],
+            "faithful_success": 0.2543,
+            "faithful_success_ci95": [
+              0.2086,
+              0.3
+            ],
+            "completion": 0.8629,
+            "planned": 0.8629,
+            "malformed": 0.0314,
+            "violation_rate_by_type": {
+              "budget": 0.2083,
+              "deadline": 0.2353,
+              "order": 0.5862,
+              "privacy": 0.512,
+              "tool_auth": 0.6449
+            },
+            "over_change_rate_when_safe": 0.0918
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.0143,
+            "safe_success_ci95": [
+              0.0029,
+              0.0286
+            ],
+            "faithful_success": 0.0143,
+            "faithful_success_ci95": [
+              0.0029,
+              0.0286
+            ],
+            "completion": 0.9486,
+            "planned": 0.9486,
+            "malformed": 0.0171,
+            "violation_rate_by_type": {
+              "budget": 0.9028,
+              "deadline": 0.9216,
+              "order": 0.9448,
+              "privacy": 0.864,
+              "tool_auth": 0.8879
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 0.94,
+            "safe_success_ci95": [
+              0.9143,
+              0.9629
+            ],
+            "faithful_success": 0.88,
+            "faithful_success_ci95": [
+              0.8457,
+              0.9114
+            ],
+            "completion": 0.94,
+            "planned": 0.94,
+            "malformed": 0.0114,
+            "unnecessary_deviation_rate": 0.06
+          }
+        }
+      },
+      "eval_seconds": 370.2
+    },
+    "test_struct_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.29904761904761906,
+      "state_accuracy_by_variant": {
+        "explicit": 0.8971428571428571,
+        "implicit": 0.0,
+        "none": 0.0
+      },
+      "constraint_micro": {
+        "precision": 0.04505888376856119,
+        "recall": 0.0757314974182444,
+        "f1": 0.0565008025682183
+      },
+      "constraint_core_micro": {
+        "precision": 0.14285714285714285,
+        "recall": 0.24010327022375216,
+        "f1": 0.17913322632423756
+      },
+      "record_exact_match": 0.009523809523809525,
+      "record_exact_match_by_variant": {
+        "explicit": 0.02857142857142857,
+        "implicit": 0.0,
+        "none": 0.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.10661764705882353,
+          "recall": 0.14974182444061962,
+          "f1": 0.12455261274158912,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 46,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.0018450184501845018,
+          "recall": 0.0017211703958691911,
+          "f1": 0.0017809439002671415,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 137,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.3142857142857143,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 146,
+          "false_alarm_rate": 0.5828571428571429
+        }
+      },
+      "per_type": {
+        "order": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 282
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 186
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 196
+        },
+        "deadline": {
+          "precision": 0.1588447653429603,
+          "recall": 0.41904761904761906,
+          "f1": 0.23036649214659685,
+          "gold_records": 210
+        },
+        "tool_auth": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 288
+        },
+        "brief_steering_board": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        },
+        "verify_lineage_hash": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 0,
+          "fp": 64,
+          "fn": 163,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 163
+        },
+        "d2": {
+          "tp": 0,
+          "fp": 102,
+          "fn": 240,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_constraints": 240
+        },
+        "d1": {
+          "tp": 1,
+          "fp": 88,
+          "fn": 177,
+          "precision": 0.011235955056179775,
+          "recall": 0.0056179775280898875,
+          "f1": 0.00749063670411985,
+          "gold_constraints": 178
+        }
+      },
+      "per_difficulty_unattributed_fp": 287,
+      "evidence_exact_rate": 0.8409090909090909,
+      "evidence_records": 88,
+      "json_parse_rate": 0.9047619047619048,
+      "malformed_prediction_count": 100,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.48,
+        "safe_success_ci95": [
+          0.4533,
+          0.5048
+        ],
+        "safe_success_constrained": 0.2786,
+        "safe_success_constrained_ci95": [
+          0.2486,
+          0.3114
+        ],
+        "faithful_success": 0.3533,
+        "faithful_success_constrained": 0.2586,
+        "faithful_success_constrained_ci95": [
+          0.2286,
+          0.2914
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.4171,
+            "safe_success_ci95": [
+              0.3629,
+              0.4686
+            ],
+            "faithful_success": 0.3886,
+            "faithful_success_ci95": [
+              0.3371,
+              0.44
+            ],
+            "completion": 0.9029,
+            "planned": 0.9029,
+            "malformed": 0.1029,
+            "violation_rate_by_type": {
+              "budget": 0.1183,
+              "deadline": 0.1048,
+              "order": 0.4823,
+              "privacy": 0.5408,
+              "tool_auth": 0.5972
+            },
+            "over_change_rate_when_safe": 0.0685
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.14,
+            "safe_success_ci95": [
+              0.1057,
+              0.1771
+            ],
+            "faithful_success": 0.1286,
+            "faithful_success_ci95": [
+              0.0971,
+              0.1657
+            ],
+            "completion": 0.9,
+            "planned": 0.9,
+            "malformed": 0.08,
+            "violation_rate_by_type": {
+              "budget": 0.6237,
+              "deadline": 0.6,
+              "order": 0.8369,
+              "privacy": 0.4184,
+              "tool_auth": 0.7569
+            },
+            "over_change_rate_when_safe": 0.0816
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 0.8829,
+            "safe_success_ci95": [
+              0.8514,
+              0.9143
+            ],
+            "faithful_success": 0.5429,
+            "faithful_success_ci95": [
+              0.4857,
+              0.5943
+            ],
+            "completion": 0.8829,
+            "planned": 0.8829,
+            "malformed": 0.1029,
+            "unnecessary_deviation_rate": 0.34
+          }
+        }
+      },
+      "eval_seconds": 439.1
+    }
+  },
+  "trained": {
+    "dev": {
+      "metrics_version": "e1_score_v5",
+      "records": 900,
+      "state_accuracy": 0.9988888888888889,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9966666666666667,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.98659793814433,
+        "recall": 0.9845679012345679,
+        "f1": 0.9855818743563337
+      },
+      "constraint_core_micro": {
+        "precision": 0.98659793814433,
+        "recall": 0.9845679012345679,
+        "f1": 0.9855818743563337
+      },
+      "record_exact_match": 0.9822222222222222,
+      "record_exact_match_by_variant": {
+        "explicit": 0.9933333333333333,
+        "implicit": 0.9533333333333334,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.9979423868312757,
+          "recall": 0.9979423868312757,
+          "f1": 0.9979423868312757,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 1,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.9752066115702479,
+          "recall": 0.9711934156378601,
+          "f1": 0.9731958762886598,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 300,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 300,
+          "prediction_empty_records": 300,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.9947643979057592,
+          "recall": 1.0,
+          "f1": 0.9973753280839895,
+          "gold_records": 190
+        },
+        "privacy": {
+          "precision": 1.0,
+          "recall": 0.9863636363636363,
+          "f1": 0.9931350114416476,
+          "gold_records": 220
+        },
+        "order": {
+          "precision": 0.9962406015037594,
+          "recall": 0.9962406015037594,
+          "f1": 0.9962406015037594,
+          "gold_records": 266
+        },
+        "budget": {
+          "precision": 0.9225352112676056,
+          "recall": 0.9225352112676056,
+          "f1": 0.9225352112676056,
+          "gold_records": 142
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 154
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 146,
+          "fp": 1,
+          "fn": 3,
+          "precision": 0.9931972789115646,
+          "recall": 0.9798657718120806,
+          "f1": 0.9864864864864865,
+          "gold_constraints": 149
+        },
+        "d1": {
+          "tp": 134,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1.0,
+          "recall": 0.9925925925925926,
+          "f1": 0.9962825278810409,
+          "gold_constraints": 135
+        },
+        "d2": {
+          "tp": 192,
+          "fp": 10,
+          "fn": 10,
+          "precision": 0.9504950495049505,
+          "recall": 0.9504950495049505,
+          "f1": 0.9504950495049505,
+          "gold_constraints": 202
+        }
+      },
+      "per_difficulty_unattributed_fp": 1,
+      "evidence_exact_rate": 0.9989550679205852,
+      "evidence_records": 957,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 900,
+        "safe_success": 0.9922,
+        "safe_success_ci95": [
+          0.9856,
+          0.9978
+        ],
+        "safe_success_constrained": 0.9883,
+        "safe_success_constrained_ci95": [
+          0.9783,
+          0.9967
+        ],
+        "faithful_success": 0.99,
+        "faithful_success_constrained": 0.985,
+        "faithful_success_constrained_ci95": [
+          0.975,
+          0.9933
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 300,
+            "safe_success": 0.9967,
+            "safe_success_ci95": [
+              0.99,
+              1.0
+            ],
+            "faithful_success": 0.9967,
+            "faithful_success_ci95": [
+              0.99,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0075,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 300,
+            "safe_success": 0.98,
+            "safe_success_ci95": [
+              0.9633,
+              0.9933
+            ],
+            "faithful_success": 0.9733,
+            "faithful_success_ci95": [
+              0.9567,
+              0.99
+            ],
+            "completion": 0.9967,
+            "planned": 0.9967,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0282,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0273,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0068
+          },
+          "none": {
+            "records": 300,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 325.2
+    },
+    "test_tpl_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.9638095238095238,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9914285714285714,
+        "implicit": 0.9714285714285714,
+        "none": 0.9285714285714286
+      },
+      "constraint_micro": {
+        "precision": 0.9085470085470085,
+        "recall": 0.9628623188405797,
+        "f1": 0.9349164467897977
+      },
+      "constraint_core_micro": {
+        "precision": 0.9230769230769231,
+        "recall": 0.9782608695652174,
+        "f1": 0.9498680738786279
+      },
+      "record_exact_match": 0.8980952380952381,
+      "record_exact_match_by_variant": {
+        "explicit": 0.9114285714285715,
+        "implicit": 0.8542857142857143,
+        "none": 0.9285714285714286
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.9477351916376306,
+          "recall": 0.9855072463768116,
+          "f1": 0.9662522202486679,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 1,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.9089316987740805,
+          "recall": 0.9402173913043478,
+          "f1": 0.9243098842386465,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.9285714285714286,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 325,
+          "false_alarm_rate": 0.07142857142857142
+        }
+      },
+      "per_type": {
+        "budget": {
+          "precision": 0.8209876543209876,
+          "recall": 0.8109756097560976,
+          "f1": 0.8159509202453987,
+          "gold_records": 164
+        },
+        "tool_auth": {
+          "precision": 0.9864253393665159,
+          "recall": 0.9819819819819819,
+          "f1": 0.9841986455981941,
+          "gold_records": 222
+        },
+        "privacy": {
+          "precision": 0.991869918699187,
+          "recall": 0.991869918699187,
+          "f1": 0.991869918699187,
+          "gold_records": 246
+        },
+        "order": {
+          "precision": 0.965034965034965,
+          "recall": 1.0,
+          "f1": 0.9822064056939501,
+          "gold_records": 276
+        },
+        "deadline": {
+          "precision": 0.7529411764705882,
+          "recall": 0.9795918367346939,
+          "f1": 0.8514412416851441,
+          "gold_records": 196
+        }
+      },
+      "per_difficulty_implicit": {
+        "d1": {
+          "tp": 166,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.9880952380952381,
+          "recall": 0.9880952380952381,
+          "f1": 0.9880952380952381,
+          "gold_constraints": 168
+        },
+        "d2": {
+          "tp": 211,
+          "fp": 11,
+          "fn": 13,
+          "precision": 0.9504504504504504,
+          "recall": 0.9419642857142857,
+          "f1": 0.9461883408071748,
+          "gold_constraints": 224
+        },
+        "d3": {
+          "tp": 142,
+          "fp": 18,
+          "fn": 18,
+          "precision": 0.8875,
+          "recall": 0.8875,
+          "f1": 0.8875,
+          "gold_constraints": 160
+        }
+      },
+      "per_difficulty_unattributed_fp": 21,
+      "evidence_exact_rate": 0.9924741298212606,
+      "evidence_records": 1063,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.9819,
+        "safe_success_ci95": [
+          0.9743,
+          0.9895
+        ],
+        "safe_success_constrained": 0.9729,
+        "safe_success_constrained_ci95": [
+          0.9614,
+          0.9843
+        ],
+        "faithful_success": 0.9676,
+        "faithful_success_constrained": 0.9671,
+        "faithful_success_constrained_ci95": [
+          0.9543,
+          0.98
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.9829,
+            "safe_success_ci95": [
+              0.9686,
+              0.9943
+            ],
+            "faithful_success": 0.98,
+            "faithful_success_ci95": [
+              0.9657,
+              0.9943
+            ],
+            "completion": 0.9971,
+            "planned": 0.9971,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0204,
+              "order": 0.0,
+              "privacy": 0.0081,
+              "tool_auth": 0.018
+            },
+            "over_change_rate_when_safe": 0.0029
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.9629,
+            "safe_success_ci95": [
+              0.9429,
+              0.98
+            ],
+            "faithful_success": 0.9543,
+            "faithful_success_ci95": [
+              0.9314,
+              0.9743
+            ],
+            "completion": 0.9886,
+            "planned": 0.9886,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.1098,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0089
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 0.9686,
+            "faithful_success_ci95": [
+              0.9486,
+              0.9857
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0314
+          }
+        }
+      },
+      "eval_seconds": 364.9
+    },
+    "test_tool_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.5990909090909091,
+        "recall": 0.5980036297640653,
+        "f1": 0.5985467756584922
+      },
+      "constraint_core_micro": {
+        "precision": 0.9445454545454546,
+        "recall": 0.9428312159709619,
+        "f1": 0.9436875567665758
+      },
+      "record_exact_match": 0.6266666666666667,
+      "record_exact_match_by_variant": {
+        "explicit": 0.43714285714285717,
+        "implicit": 0.44285714285714284,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.5963636363636363,
+          "recall": 0.5952813067150635,
+          "f1": 0.5958219800181653,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.6018181818181818,
+          "recall": 0.6007259528130672,
+          "f1": 0.6012715712988193,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.8292682926829268,
+          "recall": 0.794392523364486,
+          "f1": 0.8114558472553699,
+          "gold_records": 214
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 204
+        },
+        "order": {
+          "precision": 0.9595959595959596,
+          "recall": 0.9827586206896551,
+          "f1": 0.9710391822827938,
+          "gold_records": 290
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 144
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 250
+        },
+        "verify_log_signature": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "gold_records": 0
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 99,
+          "fp": 64,
+          "fn": 65,
+          "precision": 0.6073619631901841,
+          "recall": 0.6036585365853658,
+          "f1": 0.6055045871559633,
+          "gold_constraints": 164
+        },
+        "d1": {
+          "tp": 106,
+          "fp": 58,
+          "fn": 58,
+          "precision": 0.6463414634146342,
+          "recall": 0.6463414634146342,
+          "f1": 0.6463414634146342,
+          "gold_constraints": 164
+        },
+        "d2": {
+          "tp": 126,
+          "fp": 95,
+          "fn": 97,
+          "precision": 0.5701357466063348,
+          "recall": 0.5650224215246636,
+          "f1": 0.5675675675675675,
+          "gold_constraints": 223
+        }
+      },
+      "per_difficulty_unattributed_fp": 2,
+      "evidence_exact_rate": 0.9984825493171472,
+      "evidence_records": 659,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.9457,
+        "safe_success_ci95": [
+          0.9305,
+          0.961
+        ],
+        "safe_success_constrained": 0.9186,
+        "safe_success_constrained_ci95": [
+          0.8957,
+          0.9414
+        ],
+        "faithful_success": 0.9448,
+        "faithful_success_constrained": 0.9171,
+        "faithful_success_constrained_ci95": [
+          0.8943,
+          0.94
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.9343,
+            "safe_success_ci95": [
+              0.9086,
+              0.96
+            ],
+            "faithful_success": 0.9343,
+            "faithful_success_ci95": [
+              0.9086,
+              0.96
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0207,
+              "privacy": 0.0,
+              "tool_auth": 0.1869
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.9029,
+            "safe_success_ci95": [
+              0.8714,
+              0.9343
+            ],
+            "faithful_success": 0.9,
+            "faithful_success_ci95": [
+              0.8686,
+              0.9314
+            ],
+            "completion": 0.9943,
+            "planned": 0.9943,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.1111,
+              "deadline": 0.0,
+              "order": 0.0138,
+              "privacy": 0.008,
+              "tool_auth": 0.1963
+            },
+            "over_change_rate_when_safe": 0.0032
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 380.3
+    },
+    "test_struct_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.6313522825150732,
+        "recall": 0.6308089500860585,
+        "f1": 0.6310804993542832
+      },
+      "constraint_core_micro": {
+        "precision": 0.9414298018949182,
+        "recall": 0.9406196213425129,
+        "f1": 0.9410245372363323
+      },
+      "record_exact_match": 0.64,
+      "record_exact_match_by_variant": {
+        "explicit": 0.4514285714285714,
+        "implicit": 0.4685714285714286,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.6224137931034482,
+          "recall": 0.621342512908778,
+          "f1": 0.6218776916451335,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.6402753872633391,
+          "recall": 0.6402753872633391,
+          "f1": 0.6402753872633391,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "order": {
+          "precision": 0.8885350318471338,
+          "recall": 0.9893617021276596,
+          "f1": 0.9362416107382551,
+          "gold_records": 282
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 186
+        },
+        "tool_auth": {
+          "precision": 0.9607843137254902,
+          "recall": 0.8506944444444444,
+          "f1": 0.9023941068139963,
+          "gold_records": 288
+        },
+        "deadline": {
+          "precision": 0.9952380952380953,
+          "recall": 0.9952380952380953,
+          "f1": 0.9952380952380953,
+          "gold_records": 210
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 196
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 109,
+          "fp": 48,
+          "fn": 54,
+          "precision": 0.6942675159235668,
+          "recall": 0.6687116564417178,
+          "f1": 0.68125,
+          "gold_constraints": 163
+        },
+        "d2": {
+          "tp": 151,
+          "fp": 87,
+          "fn": 89,
+          "precision": 0.634453781512605,
+          "recall": 0.6291666666666667,
+          "f1": 0.6317991631799164,
+          "gold_constraints": 240
+        },
+        "d1": {
+          "tp": 112,
+          "fp": 64,
+          "fn": 66,
+          "precision": 0.6363636363636364,
+          "recall": 0.6292134831460674,
+          "f1": 0.632768361581921,
+          "gold_constraints": 178
+        }
+      },
+      "per_difficulty_unattributed_fp": 10,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 733,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.9752,
+        "safe_success_ci95": [
+          0.9648,
+          0.9838
+        ],
+        "safe_success_constrained": 0.9629,
+        "safe_success_constrained_ci95": [
+          0.9471,
+          0.9757
+        ],
+        "faithful_success": 0.9724,
+        "faithful_success_constrained": 0.9586,
+        "faithful_success_constrained_ci95": [
+          0.9429,
+          0.9729
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.9714,
+            "safe_success_ci95": [
+              0.9514,
+              0.9886
+            ],
+            "faithful_success": 0.9714,
+            "faithful_success_ci95": [
+              0.9514,
+              0.9886
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0,
+              "tool_auth": 0.0694
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.9543,
+            "safe_success_ci95": [
+              0.9286,
+              0.9743
+            ],
+            "faithful_success": 0.9457,
+            "faithful_success_ci95": [
+              0.92,
+              0.9686
+            ],
+            "completion": 0.9943,
+            "planned": 0.9943,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0645,
+              "deadline": 0.0095,
+              "order": 0.0213,
+              "privacy": 0.0,
+              "tool_auth": 0.0278
+            },
+            "over_change_rate_when_safe": 0.009
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 390.7
+    }
+  },
+  "train_seconds": 11608.0
+}
