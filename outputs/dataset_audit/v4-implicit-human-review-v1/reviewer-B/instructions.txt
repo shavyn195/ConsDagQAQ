@@ -1,0 +1,11 @@
+Independently read the request, public tool catalog and shared policy card. Do not consult a model, source dataset, or the other reviewer. Mark one of determinate, no_constraint, ambiguous. Enter every supported type and its parameter values as JSON, plus verbatim text evidence. For ambiguous mark what cannot be determined; do not guess a parameter or treat ambiguous as no_constraint. Budget is total CNY; deadline is hours; privacy needs data classes and forbidden recipients; authorization needs approval role and required role; order needs before and after role. Keep initial answers unchanged during later adjudication.
+
+Public policy card:
+Constraint types and params:
+- budget: {"max_total_cost_cny": int}; severity high; scope = every paid role in the catalog.
+- deadline: {"max_duration_hours": int}; severity high; scope = ["role:*"] (whole trace).
+- privacy: {"protected_data_classes": [class], "forbidden_recipients": ["external"]}; severity high; scope = every external role in the catalog. Classes: customer_pii (e.g. customer phone numbers, home addresses, national ID numbers), employee_pii (e.g. salary records, staff ID card numbers, employee home addresses), patient_records (e.g. diagnosis codes, medical record numbers, insurance IDs).
+- tool_auth: {"approval_role": role, "required_role": role}; severity medium; scope = [required_role].
+- order: {"before_role": role, "after_role": role}; severity medium; scope = [before_role, after_role].
+state: explicit = the user states the constraint as a directive; implicit = no directive, but the constraint follows from facts in the query (values may need arithmetic or mapping); query_state = none when nothing in the query restricts the plan (waived, negated or someone else's rules do not count).
+Roles are written with the prefix role: in scope and without it in params.

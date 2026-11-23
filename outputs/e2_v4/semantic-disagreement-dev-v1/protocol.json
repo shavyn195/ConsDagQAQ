@@ -1,0 +1,21 @@
+{
+  "data": [
+    "e7ff77f13ff14b536516e3e03bca7dc6ce0f602f6eed0f967d80a9b462b406f7",
+    "005f464e143736ef339d18ace9fc0ef163c89f4fe59cab601a582f03e7aaf6fb",
+    "2c591aa2228022320234f2643519dcc15ea74ccf3f25f28d514a62c6893090e1"
+  ],
+  "script": "12afbd058cf3bfbdb25b8569f1dc6358485fa55e86441a21ea8e7eaa0b0a858a",
+  "model": "/root/ConsDagQAQ/models/Qwen3-1.7B",
+  "population": "all 900 v4 dev rows; fallback first compiler if records invalid, same, or no separating plan found",
+  "sources": [
+    "trained 0.6B",
+    "cached qwen-max zero-shot"
+  ],
+  "primary": "faithful execution, identical candidates and blind 1.7B verifier",
+  "arms": [
+    "direct",
+    "random",
+    "separating"
+  ],
+  "limitations": "extra prompt tokens for traces, random-trace control; same dev already used by E1, paired rows nest in groups"
+}

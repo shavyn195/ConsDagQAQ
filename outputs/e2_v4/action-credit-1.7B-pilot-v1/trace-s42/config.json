@@ -1,0 +1,30 @@
+{
+  "arm": "trace",
+  "seed": 42,
+  "groups": 128,
+  "group_size": 4,
+  "lr": 1e-05,
+  "temperature": 0.8,
+  "max_new_tokens": 160,
+  "top_k": 0,
+  "top_p": 1,
+  "beta": 0,
+  "updates_per_group": 1,
+  "std_floor": 0.25,
+  "clip_norm": 1.0,
+  "precision": "bf16",
+  "optimizer": "AdamW no decay; skip zero-credit groups",
+  "panel": "d23e64ea8add97f733283fa96b9d54f2a0ca0659633462708080e2b7849ef8b6",
+  "compiler_cache": "2578881603eae2069690f44b2635c7474d2aa30b924d3f671e96ff6675357e8f",
+  "warm": "31d0ab9adc7ce12c7efb9eac020f8edaa63c6a65ddc7537cf52fc7788012d9bd",
+  "code": {
+    "train_e2_credit.py": "e247796adaac6617d7c9f1dc9c1699519165033952145eb623ba8ac78c4d34f7",
+    "e2_credit.py": "fc153bc8cc2721c45ff4cfb64024846569d12ef394e9e4ac087721c7f9cede6c",
+    "eval_e2_credit.py": "e6e6a293cc2ab6a2e16bd961c7aa120be987703343c090e8cf3436745d2761ce",
+    "probe_e2_planner_v1.py": "acfcd10b33895244d6733d27165417df0922d31e0b59120f415e0edf782816f1",
+    "probe_e2_format.py": "074157fad2a3c2480b88ba14f241e1545855107e83deb603e75b7c85b595f3b4",
+    "trust_env.py": "46cf7c27a4da610ae83ff811bd798deba6cbd57930d2d359e13edbb037f2146b",
+    "audit_warmup_rollouts.py": "bec17fdfdf04e5483d6efe5f84138e0271ea6f7985eb775f3f8b2bb7500b8032"
+  },
+  "eval": "dev greedy, strict completion + gold constraints; N also report default-plan match"
+}

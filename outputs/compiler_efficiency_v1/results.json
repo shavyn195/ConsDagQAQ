@@ -1,0 +1,182 @@
+{
+  "arms": {
+    "1.7B": {
+      "n": 30,
+      "correct": 17,
+      "input_mean": 724.6666666666666,
+      "output_mean": 100.8,
+      "input_sum": 21740,
+      "output_sum": 3024,
+      "cached_sum": 0,
+      "cache_reported_n": 0,
+      "median_s": 2.930829354096204,
+      "p95_s": 14.431771092582492,
+      "total_s": 119.7677387567237,
+      "mean_prompt_chars": 3122.9,
+      "seconds_per_correct": 7.045161103336689,
+      "by_condition": {
+        "active": {
+          "correct": 7,
+          "n": 10,
+          "median_s": 2.9593253200873733
+        },
+        "history": {
+          "correct": 5,
+          "n": 10,
+          "median_s": 1.4834939776919782
+        },
+        "mixed": {
+          "correct": 5,
+          "n": 10,
+          "median_s": 3.7769073182716966
+        }
+      },
+      "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+      "torch": "2.12.1+cu130",
+      "transformers": "5.23.0",
+      "peft": "0.22.0",
+      "load_seconds": 3.3430107701569796,
+      "peak_allocated_bytes": 3607655424,
+      "peak_reserved_bytes": 4448059392,
+      "adapter_sha256": "60ad47a29393441057523fa916452c39bfb109cc5a08034d4b9d7ccc57079799",
+      "warmup_seconds": 4.041245047934353,
+      "ip_socket_probe": "EPERM for AF_INET and AF_INET6, checked before model loading"
+    },
+    "4B": {
+      "n": 30,
+      "correct": 20,
+      "input_mean": 724.6666666666666,
+      "output_mean": 65.03333333333333,
+      "input_sum": 21740,
+      "output_sum": 1951,
+      "cached_sum": 0,
+      "cache_reported_n": 0,
+      "median_s": 3.4518473092466593,
+      "p95_s": 5.749187226081263,
+      "total_s": 95.27099248114973,
+      "mean_prompt_chars": 3122.9,
+      "seconds_per_correct": 4.763549624057487,
+      "by_condition": {
+        "active": {
+          "correct": 8,
+          "n": 10,
+          "median_s": 3.649329375475645
+        },
+        "history": {
+          "correct": 6,
+          "n": 10,
+          "median_s": 0.5294098826125264
+        },
+        "mixed": {
+          "correct": 6,
+          "n": 10,
+          "median_s": 3.724727109540254
+        }
+      },
+      "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+      "torch": "2.12.1+cu130",
+      "transformers": "5.23.0",
+      "peft": "0.22.0",
+      "load_seconds": 13.257816190831363,
+      "peak_allocated_bytes": 8294414336,
+      "peak_reserved_bytes": 8382316544,
+      "adapter_sha256": "e995c618a4868149c6cb04f97e2e8cd6df82dbd7c1187e24ec3f19599f5144df",
+      "warmup_seconds": 5.648684029467404,
+      "ip_socket_probe": "EPERM for AF_INET and AF_INET6, checked before model loading"
+    },
+    "api0": {
+      "n": 30,
+      "correct": 17,
+      "input_mean": 744.7,
+      "output_mean": 47.06666666666667,
+      "input_sum": 22341,
+      "output_sum": 1412,
+      "cached_sum": 13312,
+      "cache_reported_n": 30,
+      "median_s": 1.6509749572724104,
+      "p95_s": 2.7100183397531508,
+      "total_s": 60.33007060922682,
+      "mean_prompt_chars": 3122.9,
+      "seconds_per_correct": 3.5488276828956953,
+      "by_condition": {
+        "active": {
+          "correct": 4,
+          "n": 10,
+          "median_s": 2.021065931301564
+        },
+        "history": {
+          "correct": 10,
+          "n": 10,
+          "median_s": 1.6331696421839297
+        },
+        "mixed": {
+          "correct": 3,
+          "n": 10,
+          "median_s": 1.546750336419791
+        }
+      }
+    },
+    "api10": {
+      "n": 30,
+      "correct": 29,
+      "input_mean": 8731.7,
+      "output_mean": 65.2,
+      "input_sum": 261951,
+      "output_sum": 1956,
+      "cached_sum": 255488,
+      "cache_reported_n": 30,
+      "median_s": 2.646456724498421,
+      "p95_s": 3.741808576975016,
+      "total_s": 81.57566186971962,
+      "mean_prompt_chars": 36381.9,
+      "seconds_per_correct": 2.812953857576539,
+      "by_condition": {
+        "active": {
+          "correct": 10,
+          "n": 10,
+          "median_s": 2.8742957366630435
+        },
+        "history": {
+          "correct": 10,
+          "n": 10,
+          "median_s": 1.9665132546797395
+        },
+        "mixed": {
+          "correct": 9,
+          "n": 10,
+          "median_s": 2.9230859451927245
+        }
+      }
+    }
+  },
+  "vs_1_7B": {
+    "4B": {
+      "smaller_faster_n": 21,
+      "paired_median_saved_seconds": 0.39428233727812767,
+      "descriptive_group_bootstrap_95": [
+        -0.16497588995844126,
+        0.8081449307501316
+      ]
+    },
+    "api0": {
+      "smaller_faster_n": 8,
+      "paired_median_saved_seconds": -0.7478150157257915,
+      "descriptive_group_bootstrap_95": [
+        -2.1783075723797083,
+        -0.08184235356748104
+      ]
+    },
+    "api10": {
+      "smaller_faster_n": 13,
+      "paired_median_saved_seconds": -0.21606983384117484,
+      "descriptive_group_bootstrap_95": [
+        -1.0912214210256934,
+        0.19519346673041582
+      ]
+    }
+  },
+  "fixed512x64_medians": {
+    "4B": 3.116973436437547,
+    "1.7B": 2.395050786435604
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "seed": 77341,
+  "cap_groups": 6,
+  "screening": {
+    "test_tpl_ho/tool_auth": {
+      "pool_after_excluding_used": 74,
+      "screened": 8,
+      "accepted": 6
+    },
+    "test_tpl_ho/order": {
+      "pool_after_excluding_used": 96,
+      "screened": 17,
+      "accepted": 6
+    },
+    "test_tpl_ho/budget": {
+      "pool_after_excluding_used": 50,
+      "screened": 9,
+      "accepted": 6
+    },
+    "test_tpl_ho/deadline": {
+      "pool_after_excluding_used": 59,
+      "screened": 6,
+      "accepted": 6
+    },
+    "test_tool_ho/tool_auth": {
+      "pool_after_excluding_used": 74,
+      "screened": 10,
+      "accepted": 6
+    },
+    "test_tool_ho/order": {
+      "pool_after_excluding_used": 96,
+      "screened": 26,
+      "accepted": 6
+    },
+    "test_tool_ho/budget": {
+      "pool_after_excluding_used": 46,
+      "screened": 9,
+      "accepted": 6
+    },
+    "test_tool_ho/deadline": {
+      "pool_after_excluding_used": 59,
+      "screened": 6,
+      "accepted": 6
+    }
+  },
+  "panel_sha256": "4bf7627ed1f33926baeca8d8388d4bba0fcac7493e49ce85ae0c434c36868e4e",
+  "source_sha256": {
+    "test_tpl_ho": "04de746c5b7868432c7b8efb0fc0fbb600c9ce3669e983dad92a63e52a8e2c0c",
+    "test_tool_ho": "23e8b9b638d3a46d5ebd8f5bdc105251a5c435fa78775a66c8176aaad9aaa2be"
+  },
+  "models": [
+    "0.6B",
+    "1.7B"
+  ],
+  "batch": 32,
+  "max_new_tokens": 384,
+  "precision": "bf16",
+  "sampling": "greedy",
+  "arms": [
+    "original",
+    "edited",
+    "neutral_old",
+    "neutral_new"
+  ],
+  "groups": 48,
+  "primary": "both active outputs: full multiset of strict keys and verbatim evidence, correct top-level state, no abstain",
+  "secondary": "paired target parameters/scope/evidence, other gold constraints, neutral controls, distinguishing plan decision",
+  "hypothesis": "After an active edit the target follows the edited gold and other constraints persist. Neutral label edits preserve the original objects."
+}

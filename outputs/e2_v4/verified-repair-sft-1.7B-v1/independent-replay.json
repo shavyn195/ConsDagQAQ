@@ -1,0 +1,81 @@
+{
+  "training": {
+    "groups": 256,
+    "normalized": 7,
+    "marked": 192,
+    "edits": 378
+  },
+  "orders": {
+    "verified-repair-sft-1.7B-v1": {
+      "uniform": {
+        "test_tpl_ho": {
+          "covered": 20,
+          "safe": 20,
+          "functional_safe": 13,
+          "completed": 40,
+          "none_default": 0,
+          "env_covered": 20,
+          "env_selected": 20
+        },
+        "test_tool_ho": {
+          "covered": 16,
+          "safe": 15,
+          "functional_safe": 11,
+          "completed": 38,
+          "none_default": 2,
+          "env_covered": 16,
+          "env_selected": 15
+        }
+      },
+      "repair": {
+        "test_tpl_ho": {
+          "covered": 24,
+          "safe": 24,
+          "functional_safe": 15,
+          "completed": 40,
+          "none_default": 0,
+          "env_covered": 24,
+          "env_selected": 24
+        },
+        "test_tool_ho": {
+          "covered": 13,
+          "safe": 12,
+          "functional_safe": 12,
+          "completed": 37,
+          "none_default": 1,
+          "env_covered": 13,
+          "env_selected": 12
+        }
+      },
+      "warm": {
+        "test_tpl_ho": {
+          "covered": 12,
+          "safe": 11,
+          "functional_safe": 9,
+          "completed": 40,
+          "none_default": 1,
+          "env_covered": 12,
+          "env_selected": 11
+        },
+        "test_tool_ho": {
+          "covered": 11,
+          "safe": 10,
+          "functional_safe": 10,
+          "completed": 37,
+          "none_default": 1,
+          "env_covered": 11,
+          "env_selected": 10
+        }
+      }
+    }
+  },
+  "replay_script": "fed30450c484f3e854521712f9109aba6770a9323e0f15b54c0e7e47085262fe",
+  "coverage_delta_pp": {
+    "point": 1.25,
+    "percentile95": [
+      -6.25,
+      8.75
+    ],
+    "interpretation": "paired by task group, conditional on the fixed training orders and generation seed"
+  }
+}

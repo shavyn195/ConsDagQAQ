@@ -17,13 +17,14 @@ import json
 import re
 import sys
 from collections import defaultdict
+from itertools import combinations
 from pathlib import Path
 from typing import Any
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-from dataset_v4_spec import HELDOUT_ROLES, directive_hits, tool_name  # noqa: E402
+from dataset_v4_spec import HELDOUT_ROLES, PII_CLASSES, directive_hits, tool_name  # noqa: E402
 from trust_env import check, plan  # noqa: E402
 
 SUBSETS = ["train", "dev", "test_tpl_ho", "test_tool_ho"]
@@ -31,8 +32,14 @@ REPEAT = re.compile(r"\b(\w+) \1\b", re.IGNORECASE)
 
 
 def load(data_dir: Path) -> list[dict[str, Any]]:
-    return [json.loads(line) for s in SUBSETS
-            for line in (data_dir / f"{s}.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = []
+    for subset in SUBSETS:
+        part = [json.loads(line) for line in (data_dir / f"{subset}.jsonl").read_text(
+            encoding="utf-8").splitlines() if line.strip()]
+        if not part or any(r.get("subset") != subset for r in part):
+            raise ValueError(f"Empty or mislabeled split file: {subset}")
+        rows.extend(part)
+    return rows
 
 
 def model_input(row: dict[str, Any]) -> str:
@@ -47,7 +54,11 @@ def core(c: dict[str, Any]) -> str:
 def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> dict[str, Any]:
     errors: dict[str, list[str]] = defaultdict(list)
     groups: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
+    seen_ids = set()
     for r in rows:
+        if r["sample_id"] in seen_ids or r["variant"] in groups[r["group_id"]]:
+            errors["V5_duplicate"].append(r["sample_id"])
+        seen_ids.add(r["sample_id"])
         groups[r["group_id"]][r["variant"]] = r
 
     for gi, (gid, g) in enumerate(sorted(groups.items())):
@@ -82,9 +93,13 @@ def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> d
                     break
         # V6
         for r in (e, i):
-            for c, meta in zip(r["gold"]["constraints"], r["hint_meta"] or [{}] * len(r["gold"]["constraints"])):
+            hints = r["hint_meta"]
+            if len(hints) != len(r["gold"]["constraints"]):
+                errors["V6_hint_count"].append(r["sample_id"])
+            for index, c in enumerate(r["gold"]["constraints"]):
+                meta = hints[index] if index < len(hints) else {}
                 span = c["evidence_span"]
-                if span not in r["query"]:
+                if not span.strip() or span not in r["query"]:
                     errors["V6_span"].append(r["sample_id"])
                 if r["variant"] == "explicit" and not explicit_mentions(c, span):
                     errors["V6_explicit_value"].append(r["sample_id"])
@@ -110,12 +125,12 @@ def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> d
         by_subset[r["subset"]].append(r)
     leak = {}
     for key in ("query", "task_goal", "group_id"):
-        train_vals = {r[key] for r in by_subset["train"]}
-        for s in SUBSETS[1:]:
-            overlap = len({r[key] for r in by_subset[s]} & train_vals)
-            leak[f"{s}_{key}_overlap_with_train"] = overlap
+        values = {s: {r[key] for r in by_subset[s]} for s in SUBSETS}
+        for first, s in combinations(SUBSETS, 2):
+            overlap = len(values[s] & values[first])
+            leak[f"{s}_{key}_overlap_with_{first}"] = overlap
             if overlap:
-                errors["V7_cross_split"].append(f"{s}:{key}:{overlap}")
+                errors["V7_cross_split"].append(f"{first}:{s}:{key}:{overlap}")
     heldout_tokens = HELDOUT_ROLES + [tool_name(r) for r in HELDOUT_ROLES]
     for r in rows:
         if r["subset"] != "test_tool_ho":
@@ -152,7 +167,10 @@ def explicit_mentions(c: dict[str, Any], span: str) -> bool:
     if c["type"] in ("budget", "deadline"):
         return numeric_value(c) in span
     if c["type"] == "privacy":
-        return True  # 数据类可读名由模板直填，见 V5 core 一致性
+        classes = p.get("protected_data_classes")
+        named = {key for key, info in PII_CLASSES.items()
+                 if re.search(r"(?<!\w)" + re.escape(info["name"]) + r"(?!\w)", low)}
+        return isinstance(classes, list) and bool(classes) and set(classes) == named
     keys = ("approval_role", "required_role") if c["type"] == "tool_auth" else ("before_role", "after_role")
     return all(tool_name(p[k]).lower() in low for k in keys)
 
@@ -160,11 +178,14 @@ def explicit_mentions(c: dict[str, Any], span: str) -> bool:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", type=Path, default=HERE.parent / "data" / "processed_v4")
+    parser.add_argument("--out", type=Path, help="Write a separate audit result for a frozen dataset")
     parser.add_argument("--necessity-sample", type=int, default=None,
                         help="只对约 N 个组复核必要性（默认全量）")
     args = parser.parse_args()
     report = verify(load(args.data_dir), args.necessity_sample)
-    (args.data_dir / "verification_report.json").write_text(
+    output = args.out or args.data_dir / "verification_report.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     if report["verdict"] != "PASS":

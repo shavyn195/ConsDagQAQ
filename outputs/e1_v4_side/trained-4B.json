@@ -1,0 +1,617 @@
+{
+  "dev": {
+    "data_sha256": "e7ff77f13ff14b536516e3e03bca7dc6ce0f602f6eed0f967d80a9b462b406f7",
+    "pred_sha256": "6028746e4cb04b1a107608a90a0024a6d55746034800efa1b3fcc221b25fc687",
+    "v5": {
+      "metrics_version": "e1_score_v5",
+      "records": 900,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "constraint_core_micro": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "record_exact_match": 1.0,
+      "record_exact_match_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 300,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 300,
+          "prediction_empty_records": 300,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 190
+        },
+        "privacy": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 220
+        },
+        "order": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 266
+        },
+        "budget": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 142
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 154
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 149,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 149
+        },
+        "d1": {
+          "tp": 135,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 135
+        },
+        "d2": {
+          "tp": 202,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 202
+        }
+      },
+      "per_difficulty_unattributed_fp": 0,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 972,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0
+    },
+    "side_v1": {
+      "all": {
+        "n": 900,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 1.0
+      },
+      "constrained": {
+        "n": 600,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 1.0
+      },
+      "explicit": {
+        "n": 300,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 1.0
+      },
+      "implicit": {
+        "n": 300,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 1.0
+      },
+      "none": {
+        "n": 300,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": null
+      }
+    }
+  },
+  "test_tpl_ho": {
+    "data_sha256": "04de746c5b7868432c7b8efb0fc0fbb600c9ce3669e983dad92a63e52a8e2c0c",
+    "pred_sha256": "9eee1a26c462f8d3fecceb17ee7126796be4a49672ef30105c01c455f9f1a334",
+    "v5": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.9219047619047619,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9885714285714285,
+        "implicit": 0.9714285714285714,
+        "none": 0.8057142857142857
+      },
+      "constraint_micro": {
+        "precision": 0.8917785234899329,
+        "recall": 0.9628623188405797,
+        "f1": 0.9259581881533101
+      },
+      "constraint_core_micro": {
+        "precision": 0.9077181208053692,
+        "recall": 0.980072463768116,
+        "f1": 0.9425087108013938
+      },
+      "record_exact_match": 0.8752380952380953,
+      "record_exact_match_by_variant": {
+        "explicit": 0.9314285714285714,
+        "implicit": 0.8885714285714286,
+        "none": 0.8057142857142857
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.9525483304042179,
+          "recall": 0.9818840579710145,
+          "f1": 0.9669937555753791,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.9438405797101449,
+          "recall": 0.9438405797101449,
+          "f1": 0.9438405797101449,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 4,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": 0.0,
+          "recall": null,
+          "f1": 0.0,
+          "records": 350,
+          "empty_set_accuracy": 0.8057142857142857,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 282,
+          "false_alarm_rate": 0.19428571428571428
+        }
+      },
+      "per_type": {
+        "budget": {
+          "precision": 0.975609756097561,
+          "recall": 0.975609756097561,
+          "f1": 0.975609756097561,
+          "gold_records": 164
+        },
+        "tool_auth": {
+          "precision": 0.7785714285714286,
+          "recall": 0.9819819819819819,
+          "f1": 0.8685258964143426,
+          "gold_records": 222
+        },
+        "privacy": {
+          "precision": 0.9871244635193133,
+          "recall": 0.9349593495934959,
+          "f1": 0.9603340292275574,
+          "gold_records": 246
+        },
+        "order": {
+          "precision": 0.9492753623188406,
+          "recall": 0.9492753623188406,
+          "f1": 0.9492753623188406,
+          "gold_records": 276
+        },
+        "deadline": {
+          "precision": 0.8075313807531381,
+          "recall": 0.9846938775510204,
+          "f1": 0.8873563218390804,
+          "gold_records": 196
+        }
+      },
+      "per_difficulty_implicit": {
+        "d1": {
+          "tp": 151,
+          "fp": 6,
+          "fn": 17,
+          "precision": 0.9617834394904459,
+          "recall": 0.8988095238095238,
+          "f1": 0.9292307692307692,
+          "gold_constraints": 168
+        },
+        "d2": {
+          "tp": 212,
+          "fp": 8,
+          "fn": 12,
+          "precision": 0.9636363636363636,
+          "recall": 0.9464285714285714,
+          "f1": 0.954954954954955,
+          "gold_constraints": 224
+        },
+        "d3": {
+          "tp": 158,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.9875,
+          "recall": 0.9875,
+          "f1": 0.9875,
+          "gold_constraints": 160
+        }
+      },
+      "per_difficulty_unattributed_fp": 15,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 1063,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0
+    },
+    "side_v1": {
+      "all": {
+        "n": 1050,
+        "safe_success": 0.9723809523809523,
+        "faithful_success": 0.9152380952380952,
+        "valid_safe": 0.9723809523809523,
+        "exact_with_evidence": 0.8752380952380953,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.8971,
+          0.9333
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.007619047619047636,
+        "bound_span_recall": 0.9628623188405797
+      },
+      "constrained": {
+        "n": 700,
+        "safe_success": 0.96,
+        "faithful_success": 0.9585714285714285,
+        "valid_safe": 0.96,
+        "exact_with_evidence": 0.91,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.9429,
+          0.9729
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.010000000000000009,
+        "bound_span_recall": 0.9628623188405797
+      },
+      "explicit": {
+        "n": 350,
+        "safe_success": 0.9771428571428571,
+        "faithful_success": 0.9771428571428571,
+        "valid_safe": 0.9771428571428571,
+        "exact_with_evidence": 0.9314285714285714,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.96,
+          0.9914
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.011428571428571455,
+        "bound_span_recall": 0.9818840579710145
+      },
+      "implicit": {
+        "n": 350,
+        "safe_success": 0.9428571428571428,
+        "faithful_success": 0.94,
+        "valid_safe": 0.9428571428571428,
+        "exact_with_evidence": 0.8885714285714286,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.9171,
+          0.9629
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.008571428571428563,
+        "bound_span_recall": 0.9438405797101449
+      },
+      "none": {
+        "n": 350,
+        "safe_success": 0.9971428571428571,
+        "faithful_success": 0.8285714285714286,
+        "valid_safe": 0.9971428571428571,
+        "exact_with_evidence": 0.8057142857142857,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.7886,
+          0.8657
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0028571428571428914,
+        "bound_span_recall": null
+      }
+    }
+  },
+  "test_tool_ho": {
+    "data_sha256": "23e8b9b638d3a46d5ebd8f5bdc105251a5c435fa78775a66c8176aaad9aaa2be",
+    "pred_sha256": "5b2a6cc10863a8c32f12bb51fc42ba45669f5be834a35c9046aabddd991a033f",
+    "v5": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.8548094373865699,
+        "recall": 0.8548094373865699,
+        "f1": 0.8548094373865699
+      },
+      "constraint_core_micro": {
+        "precision": 0.9537205081669692,
+        "recall": 0.9537205081669692,
+        "f1": 0.9537205081669692
+      },
+      "record_exact_match": 0.8590476190476191,
+      "record_exact_match_by_variant": {
+        "explicit": 0.7685714285714286,
+        "implicit": 0.8085714285714286,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.8402903811252269,
+          "recall": 0.8402903811252269,
+          "f1": 0.8402903811252269,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.8693284936479129,
+          "recall": 0.8693284936479129,
+          "f1": 0.8693284936479129,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.8106060606060606,
+          "recall": 1.0,
+          "f1": 0.895397489539749,
+          "gold_records": 214
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 204
+        },
+        "order": {
+          "precision": 0.9958333333333333,
+          "recall": 0.8241379310344827,
+          "f1": 0.9018867924528302,
+          "gold_records": 290
+        },
+        "budget": {
+          "precision": 0.4375,
+          "recall": 0.4375,
+          "f1": 0.4375,
+          "gold_records": 144
+        },
+        "privacy": {
+          "precision": 0.888,
+          "recall": 0.888,
+          "f1": 0.888,
+          "gold_records": 250
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 151,
+          "fp": 10,
+          "fn": 13,
+          "precision": 0.937888198757764,
+          "recall": 0.9207317073170732,
+          "f1": 0.9292307692307692,
+          "gold_constraints": 164
+        },
+        "d1": {
+          "tp": 138,
+          "fp": 14,
+          "fn": 26,
+          "precision": 0.9078947368421053,
+          "recall": 0.8414634146341463,
+          "f1": 0.8734177215189873,
+          "gold_constraints": 164
+        },
+        "d2": {
+          "tp": 190,
+          "fp": 27,
+          "fn": 33,
+          "precision": 0.8755760368663594,
+          "recall": 0.852017937219731,
+          "f1": 0.8636363636363636,
+          "gold_constraints": 223
+        }
+      },
+      "per_difficulty_unattributed_fp": 21,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 942,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0
+    },
+    "side_v1": {
+      "all": {
+        "n": 1050,
+        "safe_success": 0.9990476190476191,
+        "faithful_success": 0.9990476190476191,
+        "valid_safe": 0.9990476190476191,
+        "exact_with_evidence": 0.8590476190476191,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.9971,
+          1.0
+        ],
+        "unusable_record_rate": 0.0009523809523809524,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 0.8548094373865699
+      },
+      "constrained": {
+        "n": 700,
+        "safe_success": 0.9985714285714286,
+        "faithful_success": 0.9985714285714286,
+        "valid_safe": 0.9985714285714286,
+        "exact_with_evidence": 0.7885714285714286,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.9957,
+          1.0
+        ],
+        "unusable_record_rate": 0.0014285714285714286,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 0.8548094373865699
+      },
+      "explicit": {
+        "n": 350,
+        "safe_success": 0.9971428571428571,
+        "faithful_success": 0.9971428571428571,
+        "valid_safe": 0.9971428571428571,
+        "exact_with_evidence": 0.7685714285714286,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          0.9914,
+          1.0
+        ],
+        "unusable_record_rate": 0.002857142857142857,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 0.8402903811252269
+      },
+      "implicit": {
+        "n": 350,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 0.8085714285714286,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": 0.8693284936479129
+      },
+      "none": {
+        "n": 350,
+        "safe_success": 1.0,
+        "faithful_success": 1.0,
+        "valid_safe": 1.0,
+        "exact_with_evidence": 1.0,
+        "malformed": 0.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "unusable_record_rate": 0.0,
+        "no_plan_rate": 0.0,
+        "bound_span_recall": null
+      }
+    }
+  }
+}

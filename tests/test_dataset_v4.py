@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from build_dataset_v4 import gen_group  # noqa: E402
 from dataset_v4_spec import E_TEMPLATES, directive_hits, I_TEMPLATES, NEAR_MISS  # noqa: E402
 from trust_env import check, default_plan, execute, plan  # noqa: E402
-from verify_dataset_v4 import verify  # noqa: E402
+from verify_dataset_v4 import explicit_mentions, verify  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -47,6 +47,22 @@ def test_generated_rows_pass_verifier(rows):
     assert report["verdict"] == "PASS", report["sample_errors"]
 
 
+def test_explicit_privacy_must_name_the_protected_class():
+    c = {"type": "privacy", "params": {"protected_data_classes": ["customer_pii"]}}
+    assert explicit_mentions(c, "Keep customer-identifying records local.")
+    assert not explicit_mentions(c, "Keep employee-identifying records local.")
+    assert not explicit_mentions(c, "Keep all fields local.")
+
+
+def test_cardinality_errors_cannot_mask_missing_evidence(rows):
+    bad = copy.deepcopy(rows)
+    r = next(r for r in bad if r["variant"] == "implicit")
+    r["hint_meta"].clear()
+    r["gold"]["constraints"][-1]["evidence_span"] = ""
+    report = verify(bad + [r])
+    assert {"V5_duplicate", "V6_hint_count", "V6_span"} <= report["failures"].keys()
+
+
 def test_verifier_catches_tampered_witness(rows):
     bad = copy.deepcopy(rows)
     for r in bad:
@@ -69,6 +85,16 @@ def test_verifier_catches_heldout_tool_in_train(rows):
     r = next(r for r in bad if r["subset"] == "train")
     r["query"] += " Then run the federated training."
     assert verify(bad)["failures"].get("V7_heldout_tool_seen")
+
+
+def test_overlap_between_two_heldout_splits_is_rejected(rows):
+    bad = copy.deepcopy(rows)
+    dev = next(r for r in bad if r["subset"] == "dev")
+    other = next(r for r in bad if r["subset"] == "test_tool_ho")
+    other["query"] = dev["query"]
+    report = verify(bad)
+    assert report["leakage"]["test_tool_ho_query_overlap_with_dev"] == 1
+    assert report["failures"]["V7_cross_split"] >= 1
 
 
 def test_none_variant_is_not_shorter_than_explicit(rows):
