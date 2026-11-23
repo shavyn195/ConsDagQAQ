@@ -29,7 +29,7 @@ from dataset_v5_spec import (  # noqa: E402
     E_TEMPLATES, HELDOUT_ROLES, I_TEMPLATES, NEAR_MISS, PII_CLASSES, POLICY_CARD, STRUCT_ROLES,
     first_mention, near_miss_gate, possible_signatures, tool_name,
 )
-from trust_env import canonical_insert, check, plan  # noqa: E402
+from trust_env import canonical_insert, check, plan, plan_change_count  # noqa: E402
 
 SUBSETS = ["train", "dev", "test_tpl_ho", "test_tool_ho", "test_struct_ho"]
 SUBTYPES = ("waiver", "revoked", "other_party", "permission")
@@ -133,7 +133,7 @@ def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> d
         cons = conservative_plan(task)
         result = check(task, cons, gold)
         gold_plan, gold_info = plan(task, gold)
-        faithful = result["safe_success"] and cons == gold_plan
+        faithful = result["safe_success"] and plan_change_count(task, cons) == gold_info["changes"]
         stats = conservative[r["subset"]]
         stats[0] += 1
         stats[1] += int(result["safe_success"])

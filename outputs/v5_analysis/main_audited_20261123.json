@@ -1,0 +1,887 @@
+{
+  "arms": {
+    "Qwen3-1.7B-LoRA": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1\\Qwen3-1.7B-v5-seed42\\trained_predictions",
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1\\Qwen3-1.7B-v5-seed43\\trained_predictions"
+    ],
+    "Qwen3-1.7B-zero": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1\\Qwen3-1.7B-v5-seed42\\zeroshot_predictions"
+    ],
+    "Qwen3-4B-LoRA": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1\\Qwen3-4B-v5-seed42\\trained_predictions"
+    ],
+    "Qwen3-4B-zero": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1\\Qwen3-4B-v5-seed42\\zeroshot_predictions"
+    ],
+    "deepseek-v4-pro-0813-few": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1_v5_side\\deepseek-v4-pro-0813-few"
+    ],
+    "qwen-max-zero": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1_v5_side\\qwen-max-zero"
+    ],
+    "qwen-max-few": [
+      "D:\\Proj\\AAAKXSJKJ\\all\\consdag_constraint_compiler_exp\\outputs\\e1_v5_side\\qwen-max-few"
+    ]
+  },
+  "table": {
+    "conservative_reference": {
+      "dev": {
+        "faithful": 0.0,
+        "safe": 0.6733333333333333
+      },
+      "test_tpl_ho": {
+        "faithful": 0.0,
+        "safe": 0.6342857142857142
+      },
+      "test_tool_ho": {
+        "faithful": 0.0,
+        "safe": 0.6142857142857143
+      },
+      "test_struct_ho": {
+        "faithful": 0.0,
+        "safe": 0.5542857142857143
+      }
+    },
+    "Qwen3-1.7B-LoRA": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.985,
+          0.98
+        ],
+        "faithful_mean": 0.9825,
+        "faithful_sd": 0.0035,
+        "exact_with_evidence_mean": 0.9642,
+        "none_false_alarm": 0.005,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0033,
+          "permission": 0.0,
+          "revoked": 0.0075,
+          "waiver": 0.0154
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.9671,
+          0.9557
+        ],
+        "faithful_mean": 0.9614,
+        "faithful_sd": 0.0081,
+        "exact_with_evidence_mean": 0.8793,
+        "none_false_alarm": 0.08,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0754,
+          "permission": 0.0346,
+          "revoked": 0.1152,
+          "waiver": 0.0597
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.9171,
+          0.7571
+        ],
+        "faithful_mean": 0.8371,
+        "faithful_sd": 0.1131,
+        "exact_with_evidence_mean": 0.4236,
+        "none_false_alarm": 0.0029,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.006,
+          "revoked": 0.0026,
+          "waiver": 0.0057
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.9586,
+          0.7529
+        ],
+        "faithful_mean": 0.8557,
+        "faithful_sd": 0.1455,
+        "exact_with_evidence_mean": 0.36,
+        "none_false_alarm": 0.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0,
+          "waiver": 0.0
+        }
+      }
+    },
+    "Qwen3-1.7B-zero": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.1717
+        ],
+        "faithful_mean": 0.1717,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0033,
+        "none_false_alarm": 0.9933,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.9934,
+          "permission": 1.0,
+          "revoked": 1.0,
+          "waiver": 0.9938
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.1914
+        ],
+        "faithful_mean": 0.1914,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.01,
+        "none_false_alarm": 0.9886,
+        "none_false_alarm_by_subtype": {
+          "other_party": 1.0,
+          "permission": 1.0,
+          "revoked": 0.9775,
+          "waiver": 0.9937
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.1343
+        ],
+        "faithful_mean": 0.1343,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0043,
+        "none_false_alarm": 0.9943,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.9868,
+          "permission": 1.0,
+          "revoked": 1.0,
+          "waiver": 1.0
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.2586
+        ],
+        "faithful_mean": 0.2586,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.01,
+        "none_false_alarm": 1.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 1.0,
+          "permission": 1.0,
+          "revoked": 1.0,
+          "waiver": 1.0
+        }
+      }
+    },
+    "Qwen3-4B-LoRA": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          1.0
+        ],
+        "faithful_mean": 1.0,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 1.0,
+        "none_false_alarm": 0.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0,
+          "waiver": 0.0
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.9743
+        ],
+        "faithful_mean": 0.9743,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.9614,
+        "none_false_alarm": 0.0657,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0335,
+          "permission": 0.0372,
+          "revoked": 0.1517,
+          "waiver": 0.0314
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.91
+        ],
+        "faithful_mean": 0.91,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.9029,
+        "none_false_alarm": 0.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0,
+          "waiver": 0.0
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.9971
+        ],
+        "faithful_mean": 0.9971,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.5571,
+        "none_false_alarm": 0.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0,
+          "waiver": 0.0
+        }
+      }
+    },
+    "Qwen3-4B-zero": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.515
+        ],
+        "faithful_mean": 0.515,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0167,
+        "none_false_alarm": 0.9933,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.9868,
+          "permission": 0.9935,
+          "revoked": 1.0,
+          "waiver": 0.9877
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.53
+        ],
+        "faithful_mean": 0.53,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0157,
+        "none_false_alarm": 0.9629,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.9832,
+          "permission": 0.9894,
+          "revoked": 0.9663,
+          "waiver": 0.9497
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.5671
+        ],
+        "faithful_mean": 0.5671,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0271,
+        "none_false_alarm": 0.98,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.9737,
+          "permission": 0.994,
+          "revoked": 0.9794,
+          "waiver": 0.9943
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.5757
+        ],
+        "faithful_mean": 0.5757,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.0157,
+        "none_false_alarm": 0.9943,
+        "none_false_alarm_by_subtype": {
+          "other_party": 1.0,
+          "permission": 1.0,
+          "revoked": 0.9836,
+          "waiver": 0.9949
+        }
+      }
+    },
+    "deepseek-v4-pro-0813-few": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.9933
+        ],
+        "faithful_mean": 0.9933,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.8567,
+        "none_false_alarm": 0.0033,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0075,
+          "waiver": 0.0
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.9929
+        ],
+        "faithful_mean": 0.9929,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.8286,
+        "none_false_alarm": 0.0,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0,
+          "permission": 0.0,
+          "revoked": 0.0,
+          "waiver": 0.0
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.9971
+        ],
+        "faithful_mean": 0.9971,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.8871,
+        "none_false_alarm": 0.0086,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.0132,
+          "permission": 0.0181,
+          "revoked": 0.0103,
+          "waiver": 0.0057
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.9986
+        ],
+        "faithful_mean": 0.9986,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.7771,
+        "none_false_alarm": 0.02,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.017,
+          "permission": 0.0482,
+          "revoked": 0.0164,
+          "waiver": 0.0051
+        }
+      }
+    },
+    "qwen-max-zero": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.8383
+        ],
+        "faithful_mean": 0.8383,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.3367,
+        "none_false_alarm": 0.5767,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.3709,
+          "permission": 0.8571,
+          "revoked": 0.4887,
+          "waiver": 0.6605
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.86
+        ],
+        "faithful_mean": 0.86,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.3371,
+        "none_false_alarm": 0.5371,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.4525,
+          "permission": 0.8298,
+          "revoked": 0.4607,
+          "waiver": 0.5283
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.8186
+        ],
+        "faithful_mean": 0.8186,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.2814,
+        "none_false_alarm": 0.4743,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.2697,
+          "permission": 0.7651,
+          "revoked": 0.3814,
+          "waiver": 0.5739
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.7929
+        ],
+        "faithful_mean": 0.7929,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.2529,
+        "none_false_alarm": 0.6057,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.4489,
+          "permission": 0.8976,
+          "revoked": 0.4754,
+          "waiver": 0.7157
+        }
+      }
+    },
+    "qwen-max-few": {
+      "dev": {
+        "faithful_constrained_per_seed": [
+          0.8833
+        ],
+        "faithful_mean": 0.8833,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.5583,
+        "none_false_alarm": 0.2867,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.1722,
+          "permission": 0.3766,
+          "revoked": 0.2556,
+          "waiver": 0.3519
+        }
+      },
+      "test_tpl_ho": {
+        "faithful_constrained_per_seed": [
+          0.8414
+        ],
+        "faithful_mean": 0.8414,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.4857,
+        "none_false_alarm": 0.34,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.2514,
+          "permission": 0.4521,
+          "revoked": 0.3258,
+          "waiver": 0.3774
+        }
+      },
+      "test_tool_ho": {
+        "faithful_constrained_per_seed": [
+          0.8786
+        ],
+        "faithful_mean": 0.8786,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.56,
+        "none_false_alarm": 0.3971,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.2303,
+          "permission": 0.5181,
+          "revoked": 0.3866,
+          "waiver": 0.5682
+        }
+      },
+      "test_struct_ho": {
+        "faithful_constrained_per_seed": [
+          0.8657
+        ],
+        "faithful_mean": 0.8657,
+        "faithful_sd": null,
+        "exact_with_evidence_mean": 0.3986,
+        "none_false_alarm": 0.46,
+        "none_false_alarm_by_subtype": {
+          "other_party": 0.2955,
+          "permission": 0.6807,
+          "revoked": 0.5082,
+          "waiver": 0.5635
+        }
+      }
+    }
+  },
+  "decisions": {
+    "H1_training_gain_0.6B": {
+      "dev": null,
+      "test_tpl_ho": null,
+      "test_tool_ho": null,
+      "test_struct_ho": null
+    },
+    "H1_training_gain_0.6B_status": {
+      "observed_seeds": [],
+      "status": "pending_required_seeds"
+    },
+    "H2_noninferiority_vs_deepseek_0.6B": {
+      "dev": null,
+      "test_tpl_ho": null,
+      "test_tool_ho": null,
+      "test_struct_ho": null
+    },
+    "H1_training_gain_1.7B": {
+      "dev": {
+        "diff": 0.8108,
+        "ci95": [
+          0.7783,
+          0.8417
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_tpl_ho": {
+        "diff": 0.77,
+        "ci95": [
+          0.7393,
+          0.8
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_tool_ho": {
+        "diff": 0.7029,
+        "ci95": [
+          0.6707,
+          0.735
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_struct_ho": {
+        "diff": 0.5971,
+        "ci95": [
+          0.5643,
+          0.6307
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      }
+    },
+    "H1_training_gain_1.7B_status": {
+      "observed_seeds": [
+        42,
+        43
+      ],
+      "status": "pending_required_seeds"
+    },
+    "H2_noninferiority_vs_deepseek_1.7B": {
+      "dev": {
+        "diff": -0.0108,
+        "ci95": [
+          -0.0217,
+          0.0
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42,
+          43
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": true,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_tpl_ho": {
+        "diff": -0.0314,
+        "ci95": [
+          -0.0443,
+          -0.0186
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42,
+          43
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": false,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_tool_ho": {
+        "diff": -0.16,
+        "ci95": [
+          -0.185,
+          -0.1357
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42,
+          43
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": false,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_struct_ho": {
+        "diff": -0.1429,
+        "ci95": [
+          -0.1636,
+          -0.1229
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42,
+          43
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": false,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      }
+    },
+    "H1_training_gain_4B": {
+      "dev": {
+        "diff": 0.485,
+        "ci95": [
+          0.4417,
+          0.5283
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_tpl_ho": {
+        "diff": 0.4443,
+        "ci95": [
+          0.4071,
+          0.4814
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_tool_ho": {
+        "diff": 0.3429,
+        "ci95": [
+          0.2986,
+          0.3871
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      },
+      "test_struct_ho": {
+        "diff": 0.4214,
+        "ci95": [
+          0.3843,
+          0.4586
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds"
+      }
+    },
+    "H1_training_gain_4B_status": {
+      "observed_seeds": [
+        42
+      ],
+      "status": "pending_required_seeds"
+    },
+    "H2_noninferiority_vs_deepseek_4B": {
+      "dev": {
+        "diff": 0.0067,
+        "ci95": [
+          0.0,
+          0.015
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": true,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_tpl_ho": {
+        "diff": -0.0186,
+        "ci95": [
+          -0.0343,
+          -0.0043
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": false,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_tool_ho": {
+        "diff": -0.0871,
+        "ci95": [
+          -0.1157,
+          -0.06
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": false,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      },
+      "test_struct_ho": {
+        "diff": -0.0014,
+        "ci95": [
+          -0.0057,
+          0.0029
+        ],
+        "uncertainty": "paired task-group bootstrap conditional on observed training seeds",
+        "observed_seeds": [
+          42
+        ],
+        "required_seeds": [
+          42,
+          43,
+          44
+        ],
+        "conditional_interval_meets_margin": true,
+        "noninferior": null,
+        "status": "pending_required_seeds"
+      }
+    },
+    "H3_struct_drop": {
+      "Qwen3-1.7B-LoRA": {
+        "drop": -0.0186,
+        "ci95": [
+          -0.0507,
+          0.0136
+        ],
+        "verdict": "transfers"
+      },
+      "Qwen3-1.7B-zero": {
+        "drop": -0.1243,
+        "ci95": [
+          -0.1614,
+          -0.0857
+        ],
+        "verdict": "transfers"
+      },
+      "Qwen3-4B-LoRA": {
+        "drop": -0.0871,
+        "ci95": [
+          -0.1143,
+          -0.06
+        ],
+        "verdict": "transfers"
+      },
+      "Qwen3-4B-zero": {
+        "drop": -0.0086,
+        "ci95": [
+          -0.0629,
+          0.0429
+        ],
+        "verdict": "transfers"
+      },
+      "deepseek-v4-pro-0813-few": {
+        "drop": -0.0015,
+        "ci95": [
+          -0.0071,
+          0.0029
+        ],
+        "verdict": "transfers"
+      },
+      "qwen-max-zero": {
+        "drop": 0.0257,
+        "ci95": [
+          -0.0171,
+          0.0714
+        ],
+        "verdict": "inconclusive"
+      },
+      "qwen-max-few": {
+        "drop": 0.0129,
+        "ci95": [
+          -0.0229,
+          0.0486
+        ],
+        "verdict": "transfers"
+      }
+    },
+    "H4_near_miss_validity": {
+      "dev": {
+        "other_party": {
+          "alarm": 0.0,
+          "valid": true
+        },
+        "permission": {
+          "alarm": 0.0,
+          "valid": true
+        },
+        "revoked": {
+          "alarm": 0.0075,
+          "valid": true
+        },
+        "waiver": {
+          "alarm": 0.0,
+          "valid": true
+        }
+      },
+      "test_tpl_ho": {
+        "other_party": {
+          "alarm": 0.0,
+          "valid": true
+        },
+        "permission": {
+          "alarm": 0.0,
+          "valid": true
+        },
+        "revoked": {
+          "alarm": 0.0,
+          "valid": true
+        },
+        "waiver": {
+          "alarm": 0.0,
+          "valid": true
+        }
+      },
+      "test_tool_ho": {
+        "other_party": {
+          "alarm": 0.0132,
+          "valid": true
+        },
+        "permission": {
+          "alarm": 0.0181,
+          "valid": true
+        },
+        "revoked": {
+          "alarm": 0.0103,
+          "valid": true
+        },
+        "waiver": {
+          "alarm": 0.0057,
+          "valid": true
+        }
+      },
+      "test_struct_ho": {
+        "other_party": {
+          "alarm": 0.017,
+          "valid": true
+        },
+        "permission": {
+          "alarm": 0.0482,
+          "valid": true
+        },
+        "revoked": {
+          "alarm": 0.0164,
+          "valid": true
+        },
+        "waiver": {
+          "alarm": 0.0051,
+          "valid": true
+        }
+      }
+    }
+  },
+  "analysis_version": "v5-audit-20261123",
+  "notes": [
+    "Task-group intervals are conditional on observed seeds, not seed-population intervals.",
+    "H3 compares confounded world slices; its preregistered label is not causal proof of structural transfer.",
+    "H4 is model agreement with synthetic labels, not independent human validity."
+  ],
+  "subtypes": [
+    "other_party",
+    "permission",
+    "revoked",
+    "waiver"
+  ]
+}

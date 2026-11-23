@@ -194,6 +194,33 @@ def default_plan(task: dict[str, Any]) -> list[str]:
     return [s["default"] for s in task["stages"]] + list(task["finish"])
 
 
+def plan_change_count(task: dict[str, Any], candidate: list[str]) -> int:
+    """Count edits in the planner's domain: stage swaps, finish inversions, optional insertions.
+
+    Reject plans outside that domain rather than treating duplicates or missing
+    stages as cheap edits. Optional positioning is not a separate edit in v5.
+    """
+    if len(candidate) != len(set(candidate)):
+        raise ValueError("Duplicate tools are outside the v5 edit domain")
+    selected = []
+    for stage in task["stages"]:
+        present = [r for r in candidate if r in stage["alternatives"]]
+        if len(present) != 1:
+            raise ValueError("Exactly one tool per stage is required")
+        selected.append(present[0])
+    finish = [r for r in candidate if r in task["finish"]]
+    if set(finish) != set(task["finish"]):
+        raise ValueError("All finish tools are required")
+    extras = [r for r in candidate if r not in selected and r not in finish]
+    if any(r not in task["optional"] for r in extras):
+        raise ValueError("Unknown optional tool in plan")
+    if not execute(task, candidate)["completed"]:
+        raise ValueError("Incomplete plan is outside the v5 edit domain")
+    positions = [task["finish"].index(r) for r in finish]
+    inversions = sum(a > b for i, a in enumerate(positions) for b in positions[i + 1:])
+    return sum(r != s["default"] for r, s in zip(selected, task["stages"])) + inversions + len(extras)
+
+
 def canonical_insert(task: dict[str, Any], base: list[str], extras: list[str]) -> list[str]:
     """按规范位置插入可选步骤（生成器采样目标计划用）；目标不在计划中则跳过。"""
     out = list(base)

@@ -3,7 +3,7 @@
 臂：训练臂 Qwen3-{0.6B,1.7B,4B} × seed {42,43,44}；零样本（seed 42）；PE 臂（outputs/e1_v5_side/<model>-<style>）。
 主指标：受约束记录的 faithful_success（安全且改动数等于金标最小计划）。辅助：N 误报（按子类型）、
 含证据整条全对、safe_success、保守规划器参考档。
-统计：训练臂报逐种子值、均值与样本标准差；两臂差值用层次 bootstrap —— 按任务组重采样（同组 E/I 一起），
+统计：训练臂报逐种子值、均值与样本标准差；两臂差值用条件任务组 bootstrap —— 按任务组重采样（同组 E/I 一起），
 每次重采样内先对训练臂的各种子取平均，再相减；10,000 次，固定种子 20261124。
 """
 
@@ -40,7 +40,8 @@ def arm_dirs(root: Path) -> dict[str, list[Path]]:
     arms: dict[str, list[Path]] = {}
     for size in SIZES:
         runs = [root / f"outputs/e1/Qwen3-{size}-v5-seed{s}/trained_predictions" for s in SEEDS]
-        runs = [r for r in runs if r.is_dir()]
+        runs = [r for r in runs if (r.parent / "metrics.json").is_file()
+                and all((r / f"{s}.jsonl").is_file() for s in eval_subsets(root / "data/processed_v5"))]
         if runs:
             arms[f"Qwen3-{size}-LoRA"] = runs
         zs = root / f"outputs/e1/Qwen3-{size}-v5-seed42/zeroshot_predictions"
@@ -64,7 +65,7 @@ def per_record(rows: list[dict], folder: Path) -> dict[str, dict]:
 
 
 def hier_diff(groups: list[str], a_runs: list[dict], b_runs: list[dict], key: str, ids_by_group: dict) -> dict:
-    """层次 bootstrap：重采样任务组；组内取 E/I 受约束记录；训练臂对种子取平均后相减。"""
+    """重采样任务组，固定已观测种子；该区间不覆盖训练种子的总体随机性。"""
     def tally(runs):  # 每次运行、每个组的 (命中数, 记录数)，避免在重采样循环里逐条累加
         return [{g: (sum(run[i][key] for i in ids_by_group[g]), len(ids_by_group[g])) for g in groups} for run in runs]
 
@@ -82,7 +83,20 @@ def hier_diff(groups: list[str], a_runs: list[dict], b_runs: list[dict], key: st
     point = value(a_runs, groups) - value(b_runs, groups)
     stats = sorted(value(a_runs, s) - value(b_runs, s)
                    for s in ([groups[rng.randrange(len(groups))] for _ in groups] for _ in range(BOOT)))
-    return {"diff": round(point, 4), "ci95": [round(stats[int(0.025 * BOOT)], 4), round(stats[int(0.975 * BOOT) - 1], 4)]}
+    return {"diff": round(point, 4), "ci95": [round(stats[int(0.025 * BOOT)], 4), round(stats[int(0.975 * BOOT) - 1], 4)],
+            "uncertainty": "paired task-group bootstrap conditional on observed training seeds"}
+
+
+def noninferiority_decision(difference: dict | None, observed_seeds: list[int]) -> dict | None:
+    """Keep provisional diagnostics, but never confirm the three-seed H2 early."""
+    if difference is None:
+        return None
+    complete = sorted(observed_seeds) == list(SEEDS)
+    meets = difference["ci95"][0] > -NONINFERIORITY_MARGIN
+    return {**difference, "observed_seeds": sorted(observed_seeds), "required_seeds": list(SEEDS),
+            "conditional_interval_meets_margin": meets,
+            "noninferior": meets if complete else None,
+            "status": "complete_conditional_on_registered_seeds" if complete else "pending_required_seeds"}
 
 
 def main() -> None:
@@ -91,7 +105,11 @@ def main() -> None:
     p.add_argument("--out", type=Path, default=ROOT / "outputs/v5_analysis/main.json")
     args = p.parse_args()
     arms = arm_dirs(ROOT)
-    report: dict = {"arms": {k: [str(v) for v in vs] for k, vs in arms.items()}, "table": {}, "decisions": {}}
+    report: dict = {"arms": {k: [str(v) for v in vs] for k, vs in arms.items()}, "table": {}, "decisions": {},
+                   "analysis_version": "v5-audit-20261123",
+                   "notes": ["Task-group intervals are conditional on observed seeds, not seed-population intervals.",
+                             "H3 compares confounded world slices; its preregistered label is not causal proof of structural transfer.",
+                             "H4 is model agreement with synthetic labels, not independent human validity."]}
     records: dict = defaultdict(dict)
     groups_by_subset, ids_by_subset = {}, {}
     for subset in eval_subsets(args.data):
@@ -141,9 +159,13 @@ def main() -> None:
     for size in SIZES:
         lora, zero = f"Qwen3-{size}-LoRA", f"Qwen3-{size}-zero"
         dec[f"H1_training_gain_{size}"] = {s: diff(lora, zero, s) for s in subsets}
+        observed_seeds = [int(run.parent.name.rsplit("seed", 1)[1]) for run in arms.get(lora, [])]
+        dec[f"H1_training_gain_{size}_status"] = {
+            "observed_seeds": observed_seeds,
+            "status": "complete" if sorted(observed_seeds) == list(SEEDS) else "pending_required_seeds"}
         dec[f"H2_noninferiority_vs_deepseek_{size}"] = {
-            s: (lambda d: d and {**d, "noninferior": d["ci95"][0] > -NONINFERIORITY_MARGIN})(
-                diff(lora, "deepseek-v4-pro-0813-few", s)) for s in subsets}
+            s: noninferiority_decision(diff(lora, "deepseek-v4-pro-0813-few", s), observed_seeds)
+            for s in subsets}
     # H3 结构迁移：同一臂 tool_ho 与 struct 的 faithful 均值之差（两个独立测试集，按组各自重采样）
     for arm in records:
         if "test_struct_ho" not in records[arm]:

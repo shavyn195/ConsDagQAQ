@@ -24,7 +24,7 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-from trust_env import canonical_insert, check, default_plan, plan  # noqa: E402
+from trust_env import canonical_insert, check, default_plan, plan, plan_change_count  # noqa: E402
 
 SUBSETS = ["dev", "test_tpl_ho", "test_tool_ho"]
 OPTIONAL_SUBSETS = ["test_struct_ho"]
@@ -130,15 +130,17 @@ def conservative_outcome(row: dict[str, Any]) -> dict[str, Any]:
     task, gold = row["task"], row["gold"]["constraints"]
     cons = conservative_plan(task)
     result = check(task, cons, gold)
-    gold_plan, _ = plan(task, gold)
+    _, gold_info = plan(task, gold)
+    changes = plan_change_count(task, cons)
+    extra = changes - gold_info["changes"] if result["safe_success"] else None
     deviates = cons != default_plan(task)
     return {
         "sample_id": row["sample_id"], "group_id": row["group_id"], "variant": row["variant"],
         "malformed": False, "planned": True, "completed": result["completed"],
         "safe_success": result["safe_success"],
         "violated_types": sorted({gold[i]["type"] for i in result["violations"]}),
-        "deviates_from_default": deviates, "extra_changes": None, "unusable_constraints": 0,
-        "faithful_success": bool(result["safe_success"] and (cons == gold_plan if gold else not deviates)),
+        "deviates_from_default": deviates, "extra_changes": extra, "unusable_constraints": 0,
+        "faithful_success": bool(result["safe_success"] and (extra == 0 if gold else not deviates)),
     }
 
 

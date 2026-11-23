@@ -1,0 +1,286 @@
+{
+  "purpose": "paired descriptive comparison; not a population-level training-seed confidence interval",
+  "data_sha256_from_run_metadata": {},
+  "subsets": {
+    "dev": {
+      "subset": "dev",
+      "records": 900,
+      "constrained_records": 600,
+      "constrained_groups": 300,
+      "paired_seed42_seed43": {
+        "seed42_faithful": 0.985,
+        "seed43_faithful": 0.98,
+        "difference_seed42_minus_seed43": 0.005,
+        "paired_group_bootstrap_95ci_conditional_on_these_runs": [
+          -0.0083,
+          0.02
+        ],
+        "groups_seed42_better": 9,
+        "groups_seed43_better": 7,
+        "groups_tied": 284,
+        "records_seed42_only_success": 10,
+        "records_seed43_only_success": 7,
+        "records_tied": 583
+      },
+      "by_variant_faithful": {
+        "explicit": {
+          "seed42": 0.9967,
+          "seed43": 0.9933
+        },
+        "implicit": {
+          "seed42": 0.9733,
+          "seed43": 0.9667
+        }
+      },
+      "by_gold_constraint_type_record_faithful_descriptive": {
+        "budget": {
+          "seed42": 0.9648,
+          "seed43": 0.9507,
+          "constraint_instances": 142
+        },
+        "deadline": {
+          "seed42": 0.987,
+          "seed43": 0.987,
+          "constraint_instances": 154
+        },
+        "order": {
+          "seed42": 0.985,
+          "seed43": 0.9699,
+          "constraint_instances": 266
+        },
+        "privacy": {
+          "seed42": 0.9864,
+          "seed43": 0.9773,
+          "constraint_instances": 220
+        },
+        "tool_auth": {
+          "seed42": 0.9895,
+          "seed43": 0.9737,
+          "constraint_instances": 190
+        }
+      },
+      "field_diagnostics_seed42": {
+        "state_accuracy": 0.9988888888888889,
+        "strict_f1": 0.9855818743563337,
+        "core_f1": 0.9855818743563337,
+        "record_exact_without_evidence": 0.9822222222222222
+      },
+      "field_diagnostics_seed43": {
+        "state_accuracy": 0.9966666666666667,
+        "strict_f1": 0.9723076923076923,
+        "core_f1": 0.9835897435897436,
+        "record_exact_without_evidence": 0.9666666666666667
+      }
+    },
+    "test_tpl_ho": {
+      "subset": "test_tpl_ho",
+      "records": 1050,
+      "constrained_records": 700,
+      "constrained_groups": 350,
+      "paired_seed42_seed43": {
+        "seed42_faithful": 0.9671,
+        "seed43_faithful": 0.9557,
+        "difference_seed42_minus_seed43": 0.0114,
+        "paired_group_bootstrap_95ci_conditional_on_these_runs": [
+          -0.01,
+          0.0329
+        ],
+        "groups_seed42_better": 26,
+        "groups_seed43_better": 21,
+        "groups_tied": 303,
+        "records_seed42_only_success": 30,
+        "records_seed43_only_success": 22,
+        "records_tied": 648
+      },
+      "by_variant_faithful": {
+        "explicit": {
+          "seed42": 0.98,
+          "seed43": 0.9629
+        },
+        "implicit": {
+          "seed42": 0.9543,
+          "seed43": 0.9486
+        }
+      },
+      "by_gold_constraint_type_record_faithful_descriptive": {
+        "budget": {
+          "seed42": 0.9085,
+          "seed43": 0.9268,
+          "constraint_instances": 164
+        },
+        "deadline": {
+          "seed42": 0.9592,
+          "seed43": 0.9745,
+          "constraint_instances": 196
+        },
+        "order": {
+          "seed42": 0.9674,
+          "seed43": 0.9167,
+          "constraint_instances": 276
+        },
+        "privacy": {
+          "seed42": 0.9919,
+          "seed43": 0.9634,
+          "constraint_instances": 246
+        },
+        "tool_auth": {
+          "seed42": 0.982,
+          "seed43": 0.955,
+          "constraint_instances": 222
+        }
+      },
+      "field_diagnostics_seed42": {
+        "state_accuracy": 0.9638095238095238,
+        "strict_f1": 0.9349164467897977,
+        "core_f1": 0.9498680738786279,
+        "record_exact_without_evidence": 0.8980952380952381
+      },
+      "field_diagnostics_seed43": {
+        "state_accuracy": 0.9533333333333334,
+        "strict_f1": 0.9203849518810149,
+        "core_f1": 0.9466316710411199,
+        "record_exact_without_evidence": 0.8904761904761904
+      }
+    },
+    "test_tool_ho": {
+      "subset": "test_tool_ho",
+      "records": 1050,
+      "constrained_records": 700,
+      "constrained_groups": 350,
+      "paired_seed42_seed43": {
+        "seed42_faithful": 0.9171,
+        "seed43_faithful": 0.7571,
+        "difference_seed42_minus_seed43": 0.16,
+        "paired_group_bootstrap_95ci_conditional_on_these_runs": [
+          0.1171,
+          0.2029
+        ],
+        "groups_seed42_better": 91,
+        "groups_seed43_better": 25,
+        "groups_tied": 234,
+        "records_seed42_only_success": 141,
+        "records_seed43_only_success": 29,
+        "records_tied": 530
+      },
+      "by_variant_faithful": {
+        "explicit": {
+          "seed42": 0.9343,
+          "seed43": 0.7486
+        },
+        "implicit": {
+          "seed42": 0.9,
+          "seed43": 0.7657
+        }
+      },
+      "by_gold_constraint_type_record_faithful_descriptive": {
+        "budget": {
+          "seed42": 0.9097,
+          "seed43": 0.7917,
+          "constraint_instances": 144
+        },
+        "deadline": {
+          "seed42": 0.9363,
+          "seed43": 0.8431,
+          "constraint_instances": 204
+        },
+        "order": {
+          "seed42": 0.9241,
+          "seed43": 0.5621,
+          "constraint_instances": 290
+        },
+        "privacy": {
+          "seed42": 0.94,
+          "seed43": 0.78,
+          "constraint_instances": 250
+        },
+        "tool_auth": {
+          "seed42": 0.8037,
+          "seed43": 0.6542,
+          "constraint_instances": 214
+        }
+      },
+      "field_diagnostics_seed42": {
+        "state_accuracy": 1.0,
+        "strict_f1": 0.5985467756584922,
+        "core_f1": 0.9436875567665758,
+        "record_exact_without_evidence": 0.6266666666666667
+      },
+      "field_diagnostics_seed43": {
+        "state_accuracy": 0.9857142857142858,
+        "strict_f1": 0.5353901996370236,
+        "core_f1": 0.8112522686025408,
+        "record_exact_without_evidence": 0.6028571428571429
+      }
+    },
+    "test_struct_ho": {
+      "subset": "test_struct_ho",
+      "records": 1050,
+      "constrained_records": 700,
+      "constrained_groups": 350,
+      "paired_seed42_seed43": {
+        "seed42_faithful": 0.9586,
+        "seed43_faithful": 0.7529,
+        "difference_seed42_minus_seed43": 0.2057,
+        "paired_group_bootstrap_95ci_conditional_on_these_runs": [
+          0.1686,
+          0.2443
+        ],
+        "groups_seed42_better": 123,
+        "groups_seed43_better": 14,
+        "groups_tied": 213,
+        "records_seed42_only_success": 162,
+        "records_seed43_only_success": 18,
+        "records_tied": 520
+      },
+      "by_variant_faithful": {
+        "explicit": {
+          "seed42": 0.9714,
+          "seed43": 0.7314
+        },
+        "implicit": {
+          "seed42": 0.9457,
+          "seed43": 0.7743
+        }
+      },
+      "by_gold_constraint_type_record_faithful_descriptive": {
+        "budget": {
+          "seed42": 0.914,
+          "seed43": 0.7581,
+          "constraint_instances": 186
+        },
+        "deadline": {
+          "seed42": 0.9571,
+          "seed43": 0.7286,
+          "constraint_instances": 210
+        },
+        "order": {
+          "seed42": 0.9397,
+          "seed43": 0.5745,
+          "constraint_instances": 282
+        },
+        "privacy": {
+          "seed42": 0.9592,
+          "seed43": 0.8061,
+          "constraint_instances": 196
+        },
+        "tool_auth": {
+          "seed42": 0.934,
+          "seed43": 0.6736,
+          "constraint_instances": 288
+        }
+      },
+      "field_diagnostics_seed42": {
+        "state_accuracy": 1.0,
+        "strict_f1": 0.6310804993542832,
+        "core_f1": 0.9410245372363323,
+        "record_exact_without_evidence": 0.64
+      },
+      "field_diagnostics_seed43": {
+        "state_accuracy": 0.9933333333333333,
+        "strict_f1": 0.42350907519446845,
+        "core_f1": 0.7450302506482281,
+        "record_exact_without_evidence": 0.5066666666666667
+      }
+    }
+  }
+}
