@@ -38,4 +38,8 @@
 
 2026-11-23：建立本工作单；沿用既有每小时研究推进任务，更新为 v5 和本次自主改进授权。定时推进覆盖研究设计、实现、分析与实验，不只跟踪某一个 GPU 作业。仅显著结果、失败或确需人处理的事项通知；常规健康进度安静记录。
 
-下一项：为已排队绑定面板补齐自动配对分析与故障检查，使预测齐全后可直接生成条件差值、置信区间及失败实例；同时准备独立追问 pilot 的语义与执行契约。
+2026-11-23 23:53：自动配对分析已实现、提交并部署到诊断工作区：`src/analyze_v5_binding.py`，自动等待脚本 `scripts/analyze_v5_binding_after_run.sh`。本地新增及相关测试7/7通过，服务器新增测试3/3通过；oracle只用于测试接线，未作为模型结果。分析按source任务组配对，保存解析失败、原faithful及valid_faithful、core/strict、N误报/过改和条件区间；输入/协议哈希或样本缺失将失败，不静默删题。等待进程PID140215，日志 `/root/ConsDagDiagnostics20261123/outputs/v5_binding_analysis_queue.log`，产物为同目录 `outputs/v5_binding_analysis.json`。待全部绑定预测完成后自动CPU复算，不抢GPU。部署记录：`outputs/v5_analysis/binding_analysis_deployment.json`。
+
+同次服务器只读记录：4B seed43 已8900/9000步，loss=3.02e-6，GPU89%，显存32208MiB；这不是最终评测结果。既有每小时任务 `consdag-2` 已更新并保持ACTIVE，旧 `consdag` 保持PAUSED，避免重复推进。
+
+下一项：完成4B seed43结果的完整性核验和回收，更新多种子结论；推进独立追问pilot的近邻核验与语义/执行契约；绑定结果到齐后依据干预差异选择一项有机制依据的改进，不抢先宣布新方向成立。
