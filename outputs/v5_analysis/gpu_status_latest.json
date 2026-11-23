@@ -1,0 +1,371 @@
+{
+  "checked_at": "2026-11-23T23:31:57.746554+08:00",
+  "gpu": {
+    "exit_code": 0,
+    "stdout": "NVIDIA GeForce RTX 4080 SUPER, 81, 32208, 32760",
+    "stderr": ""
+  },
+  "gpu_processes": {
+    "exit_code": 0,
+    "stdout": "135102, 32198",
+    "stderr": ""
+  },
+  "processes": [
+    {
+      "pid": 117741,
+      "args": [
+        "bash",
+        "scripts/run_e1_queue_v5.sh"
+      ],
+      "cwd": "/root/ConsDagV5"
+    },
+    {
+      "pid": 135102,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/run_e1.py",
+        "--model",
+        "models/Qwen3-4B",
+        "--data-dir",
+        "data/processed_v5",
+        "--precision",
+        "bf16",
+        "--seed",
+        "43",
+        "--skip-zeroshot",
+        "--out-dir",
+        "outputs/e1/Qwen3-4B-v5-seed43",
+        "--eval-batch-size",
+        "16",
+        "--max-seq-len",
+        "1280",
+        "--max-new-tokens",
+        "384",
+        "--epochs",
+        "3",
+        "--learning-rate",
+        "2e-4",
+        "--lora-rank",
+        "16",
+        "--lora-alpha",
+        "32",
+        "--gradient-accumulation-steps",
+        "4"
+      ],
+      "cwd": "/root/ConsDagV5"
+    },
+    {
+      "pid": 137446,
+      "args": [
+        "bash",
+        "scripts/run_v5_binding_after_queue.sh"
+      ],
+      "cwd": "/root/ConsDagDiagnostics20261123"
+    }
+  ],
+  "runs": [
+    {
+      "name": "Qwen3-1.7B-v5-seed42",
+      "metrics_exists": true,
+      "adapter_exists": true,
+      "failure_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 759055,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 900997,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 883341,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 922002,
+          "lines": 1050
+        }
+      ],
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "zeroshot",
+        "trained",
+        "train_seconds"
+      ]
+    },
+    {
+      "name": "Qwen3-1.7B-v5-seed43",
+      "metrics_exists": true,
+      "adapter_exists": true,
+      "failure_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 764934,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 920429,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 875125,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 911833,
+          "lines": 1050
+        }
+      ],
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "trained",
+        "train_seconds"
+      ]
+    },
+    {
+      "name": "Qwen3-4B-v5-seed42",
+      "metrics_exists": true,
+      "adapter_exists": true,
+      "failure_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 760782,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 893741,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 882888,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 944526,
+          "lines": 1050
+        }
+      ],
+      "last_training_points": [
+        {
+          "optimizer_step": 8600,
+          "loss": 1.0728833643725011e-07,
+          "elapsed_s": 13851.3
+        },
+        {
+          "optimizer_step": 8700,
+          "loss": 7.064876967888267e-07,
+          "elapsed_s": 13971.5
+        },
+        {
+          "optimizer_step": 8800,
+          "loss": 1.3831316891810275e-06,
+          "elapsed_s": 14095.0
+        },
+        {
+          "optimizer_step": 8900,
+          "loss": 5.217555667513807e-07,
+          "elapsed_s": 14214.1
+        },
+        {
+          "optimizer_step": 9000,
+          "loss": 7.152556236178498e-08,
+          "elapsed_s": 14335.4
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 1.0, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9651474530831099, \"state_acc\": 0.9695238095238096}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.9324263038548752, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.7203098106712564, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1/Qwen3-4B-v5-seed42/metrics.json\"}"
+      ],
+      "log_mtime": "2026-11-23T18:11:04.554952+08:00",
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "zeroshot",
+        "trained",
+        "train_seconds"
+      ]
+    },
+    {
+      "name": "Qwen3-4B-v5-seed43",
+      "metrics_exists": false,
+      "adapter_exists": false,
+      "failure_files": [],
+      "trained_prediction_files": [],
+      "last_training_points": [
+        {
+          "optimizer_step": 7400,
+          "loss": 3.68106848327443e-05,
+          "elapsed_s": 8852.6
+        },
+        {
+          "optimizer_step": 7500,
+          "loss": 4.4092299503972754e-05,
+          "elapsed_s": 8975.7
+        },
+        {
+          "optimizer_step": 7600,
+          "loss": 2.8729270979965804e-06,
+          "elapsed_s": 9098.9
+        },
+        {
+          "optimizer_step": 7700,
+          "loss": 1.4306423508969601e-05,
+          "elapsed_s": 9223.8
+        },
+        {
+          "optimizer_step": 7800,
+          "loss": 1.52587381307967e-06,
+          "elapsed_s": 9344.1
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"optimizer_step\": 7400, \"loss\": 3.68106848327443e-05, \"elapsed_s\": 8852.6}",
+        "{\"optimizer_step\": 7500, \"loss\": 4.4092299503972754e-05, \"elapsed_s\": 8975.7}",
+        "{\"optimizer_step\": 7600, \"loss\": 2.8729270979965804e-06, \"elapsed_s\": 9098.9}",
+        "{\"optimizer_step\": 7700, \"loss\": 1.4306423508969601e-05, \"elapsed_s\": 9223.8}",
+        "{\"optimizer_step\": 7800, \"loss\": 1.52587381307967e-06, \"elapsed_s\": 9344.1}"
+      ],
+      "log_mtime": "2026-11-23T23:31:30.168451+08:00"
+    }
+  ],
+  "queue_tail": [
+    {
+      "event": "queue_start",
+      "time": "2026-11-23T10:02:22+08:00",
+      "commit": "0487907c7dd2e9191416a6787b46ebf0b61d5ee4"
+    },
+    {
+      "event": "gpu_free",
+      "time": "2026-11-23T10:02:22+08:00"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-23T10:03:03+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 42
+    },
+    {
+      "event": "done",
+      "time": "2026-11-23T13:16:33+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 42
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-23T13:16:48+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 42,
+      "kind": "trained"
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-23T13:17:06+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 42,
+      "kind": "zero"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-23T13:17:52+08:00",
+      "model": "Qwen3-4B",
+      "seed": 42
+    },
+    {
+      "event": "done",
+      "time": "2026-11-23T18:11:06+08:00",
+      "model": "Qwen3-4B",
+      "seed": 42
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-23T18:11:26+08:00",
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "kind": "trained"
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-23T18:11:45+08:00",
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "kind": "zero"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-23T18:12:29+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 43
+    },
+    {
+      "event": "done",
+      "time": "2026-11-23T20:54:31+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 43
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-23T20:54:51+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 43,
+      "kind": "trained"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-23T20:55:45+08:00",
+      "model": "Qwen3-4B",
+      "seed": 43
+    }
+  ],
+  "diagnostics": {
+    "files": [
+      "testdeps_install.log",
+      "v5_binding_queue.log",
+      "queue_pid.json"
+    ],
+    "log_tails": {
+      "testdeps_install.log": [
+        "Collecting pluggy<2,>=1.6 (from pytest)",
+        "  Downloading http://mirrors.aliyun.com/pypi/packages/40/9e/2b38731e0fc536806f16490e1a12d7f0dc2a1235aa8cc07bcc75416a7daa/pluggy-1.7.0-py3-none-any.whl (27 kB)",
+        "Collecting pygments>=2.15 (from pytest)",
+        "  Downloading http://mirrors.aliyun.com/pypi/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl (1.3 MB)",
+        "     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 1.5 MB/s eta 0:00:00",
+        "Installing collected packages: pygments, pluggy, packaging, iniconfig, pytest",
+        "Successfully installed iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.2.0",
+        "WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv"
+      ],
+      "v5_binding_queue.log": [
+        "{\"time\": \"2026-11-23T22:17:54.783451+08:00\", \"event\": \"waiting_for_registered_queue_and_idle_gpu\"}"
+      ]
+    }
+  }
+}
