@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from pathlib import PurePosixPath
 import shlex
+import stat
 
 import paramiko
 
@@ -109,6 +110,21 @@ def upload_file(sftp: paramiko.SFTPClient, local: Path, remote: str) -> None:
     print(f"verified {local} -> {remote} sha256={local_hash}", flush=True)
 
 
+def download_tree(sftp: paramiko.SFTPClient, remote: str, local: Path) -> None:
+    """Download a remote file or directory tree without modifying the remote."""
+    attrs = sftp.stat(remote)
+    if stat.S_ISREG(attrs.st_mode):
+        local.parent.mkdir(parents=True, exist_ok=True)
+        sftp.get(remote, str(local))
+        print(f"downloaded {remote} -> {local} ({attrs.st_size} bytes)", flush=True)
+        return
+    if not stat.S_ISDIR(attrs.st_mode):
+        raise ValueError(f"Unsupported remote file type: {remote}")
+    local.mkdir(parents=True, exist_ok=True)
+    for entry in sorted(sftp.listdir_attr(remote), key=lambda item: item.filename):
+        download_tree(sftp, f"{remote.rstrip('/')}/{entry.filename}", local / entry.filename)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="op", required=True)
@@ -120,6 +136,12 @@ def main() -> None:
     tree = sub.add_parser("put-tree")
     tree.add_argument("local", type=Path)
     tree.add_argument("remote")
+    get = sub.add_parser("get")
+    get.add_argument("remote")
+    get.add_argument("local", type=Path)
+    get_tree = sub.add_parser("get-tree")
+    get_tree.add_argument("remote")
+    get_tree.add_argument("local", type=Path)
     args = parser.parse_args()
 
     client = connect()
@@ -134,7 +156,11 @@ def main() -> None:
                 print(err, end="")
             raise SystemExit(stdout.channel.recv_exit_status())
         with client.open_sftp() as sftp:
-            if args.op == "put":
+            if args.op == "get":
+                download_tree(sftp, args.remote, args.local)
+            elif args.op == "get-tree":
+                download_tree(sftp, args.remote, args.local)
+            elif args.op == "put":
                 upload_file(sftp, args.local, args.remote)
             else:
                 root = args.local.resolve()
