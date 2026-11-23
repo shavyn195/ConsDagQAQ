@@ -1,0 +1,11 @@
+# dataset_v5 构造配置（设计见 reports/design_v5_ccfb.md §4）
+# 相对 v4：N 干扰句子类型化并过 G1/G2 门槛；order/tool_auth 模板提及顺序平衡；策略卡去掉字段别名；
+# 新增 test_struct_ho（6 阶段 / 4 路备选 / 3 步 finish / finish 锚定审批，工具名全新，措辞用 train 池）。
+seed: 42
+groups:
+  train: 4000          # train 模板池 + train 工具世界
+  dev: 300             # in-domain 验证
+  test_tpl_ho: 350     # 措辞 held-out：goal/背景/E/I/N 模板与 PII 字段别名来自 test 池
+  test_tool_ho: 350    # 工具名 held-out（结构与 train 同构，V12 如实校验）
+  test_struct_ho: 350  # 结构 held-out：结构签名与 train 不相交（V12），train 措辞池
+output_dir: data/processed_v5

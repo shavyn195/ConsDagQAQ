@@ -148,6 +148,15 @@ def _close_precedence(plan: list[str], norms: list[dict[str, Any]], optional: di
     return plan, inserted
 
 
+def _finish_orders(finish: list[str]) -> list[tuple[list[str], int]]:
+    """finish 块的全部排列及其相对默认顺序的逆序对数（改动数）。两步时即"原序 / 反转"，与 v4 一致。"""
+    out = []
+    for perm in itertools.permutations(range(len(finish))):
+        moved = sum(perm[i] > perm[j] for i in range(len(perm)) for j in range(i + 1, len(perm)))
+        out.append(([finish[k] for k in perm], moved))
+    return out
+
+
 def _anonymizer(task: dict[str, Any]) -> str | None:
     return next((r for r, targets in task["optional"].items() if targets == ["@acquire"]), None)
 
@@ -162,8 +171,7 @@ def plan(task: dict[str, Any], constraints: list[Any]) -> tuple[list[str] | None
     best: tuple[tuple[Any, ...], list[str]] | None = None
     for assignment in itertools.product(*[s["alternatives"] for s in stages]):
         swaps = sum(a != d for a, d in zip(assignment, defaults))
-        for flipped in (False, True):
-            finish = list(reversed(task["finish"])) if flipped else list(task["finish"])
+        for finish, moved in _finish_orders(task["finish"]):
             for anon in ((False, True) if anonymizer else (False,)):
                 candidate = list(assignment) + finish
                 if anon:
@@ -172,7 +180,7 @@ def plan(task: dict[str, Any], constraints: list[Any]) -> tuple[list[str] | None
                 trace = execute(task, candidate)
                 if not trace["completed"] or any(violated(n, trace) for n in norms):
                     continue
-                key = (swaps + int(flipped) + int(anon) + inserted, trace["cost"], trace["minutes"], tuple(candidate))
+                key = (swaps + moved + int(anon) + inserted, trace["cost"], trace["minutes"], tuple(candidate))
                 if best is None or key < best[0]:
                     best = (key, candidate)
     if best is None:

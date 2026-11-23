@@ -24,6 +24,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 SUBSETS = ["dev", "test_tpl_ho", "test_tool_ho"]
+OPTIONAL_SUBSETS = ["test_struct_ho"]  # v5 起新增；v4 数据目录没有该文件，行为不变
+
+
+def eval_subsets(data_dir: Path) -> list[str]:
+    return SUBSETS + [s for s in OPTIONAL_SUBSETS if (Path(data_dir) / f"{s}.jsonl").exists()]
 
 
 def load_jsonl(path: Path | str) -> list[dict[str, Any]]:
@@ -80,7 +85,10 @@ def catalog_lines(row: dict[str, Any]) -> str:
 
 
 def chat_messages_v4(row: dict[str, Any]) -> list[dict[str, str]]:
-    from dataset_v4_spec import POLICY_CARD
+    if row.get("spec_version") == "v5":
+        from dataset_v5_spec import POLICY_CARD
+    else:
+        from dataset_v4_spec import POLICY_CARD
 
     prompt = (
         "You are a typed constraint compiler for tool-planning tasks in a trusted data space. "
@@ -503,7 +511,7 @@ def load_model(model_path: str, precision: str) -> tuple[Any, Any]:
 
 def evaluate_all(model: Any, tokenizer: Any, data: dict[str, list[dict[str, Any]]], args: argparse.Namespace, tag: str, out_dir: Path) -> dict[str, Any]:
     results: dict[str, Any] = {}
-    for subset in SUBSETS:
+    for subset in data:
         rows = data[subset]
         t0 = time.time()
         predictions, raw = generate_batched(model, tokenizer, rows, args.max_new_tokens, args.eval_batch_size)
@@ -637,7 +645,7 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     args._t0 = time.time()
 
-    data = {subset: load_jsonl(args.data_dir / f"{subset}.jsonl") for subset in SUBSETS}
+    data = {subset: load_jsonl(args.data_dir / f"{subset}.jsonl") for subset in eval_subsets(args.data_dir)}
     train_rows = load_jsonl(args.data_dir / "train.jsonl")
     print(json.dumps({"model": args.model, "train": len(train_rows),
                       "eval": {k: len(v) for k, v in data.items()}}))
@@ -655,7 +663,7 @@ def main() -> None:
         "model_path": args.model, "seed": args.seed,
         "config": {k: v for k, v in vars(args).items() if not k.startswith("_")},
         "data_sha256": {s: hashlib.sha256((args.data_dir / f"{s}.jsonl").read_bytes()).hexdigest()
-                        for s in ["train"] + SUBSETS},
+                        for s in ["train"] + list(data)},
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
 

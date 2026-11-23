@@ -51,7 +51,12 @@ def core(c: dict[str, Any]) -> str:
     return json.dumps({k: c[k] for k in ("type", "severity", "scope", "params")}, sort_keys=True)
 
 
-def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> dict[str, Any]:
+def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None, *,
+           subsets: list[str] = SUBSETS, unseen: dict[str, list[str]] | None = None,
+           name: Any = None) -> dict[str, Any]:
+    """unseen：{只能出现这些角色的 split: 角色表}；name：角色可读名函数。默认即 v4 口径。"""
+    unseen = {"test_tool_ho": HELDOUT_ROLES} if unseen is None else unseen
+    name = tool_name if name is None else name
     errors: dict[str, list[str]] = defaultdict(list)
     groups: dict[str, dict[str, dict[str, Any]]] = defaultdict(dict)
     seen_ids = set()
@@ -101,7 +106,7 @@ def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> d
                 span = c["evidence_span"]
                 if not span.strip() or span not in r["query"]:
                     errors["V6_span"].append(r["sample_id"])
-                if r["variant"] == "explicit" and not explicit_mentions(c, span):
+                if r["variant"] == "explicit" and not explicit_mentions(c, span, name):
                     errors["V6_explicit_value"].append(r["sample_id"])
                 if r["variant"] == "implicit":
                     if directive_hits(span):
@@ -125,18 +130,19 @@ def verify(rows: list[dict[str, Any]], necessity_sample: int | None = None) -> d
         by_subset[r["subset"]].append(r)
     leak = {}
     for key in ("query", "task_goal", "group_id"):
-        values = {s: {r[key] for r in by_subset[s]} for s in SUBSETS}
-        for first, s in combinations(SUBSETS, 2):
+        values = {s: {r[key] for r in by_subset[s]} for s in subsets}
+        for first, s in combinations(subsets, 2):
             overlap = len(values[s] & values[first])
             leak[f"{s}_{key}_overlap_with_{first}"] = overlap
             if overlap:
                 errors["V7_cross_split"].append(f"{first}:{s}:{key}:{overlap}")
-    heldout_tokens = HELDOUT_ROLES + [tool_name(r) for r in HELDOUT_ROLES]
-    for r in rows:
-        if r["subset"] != "test_tool_ho":
-            text = model_input(r)
-            if any(t in text for t in heldout_tokens):
-                errors["V7_heldout_tool_seen"].append(r["sample_id"])
+    for own, roles in unseen.items():
+        heldout_tokens = roles + [name(r) for r in roles]
+        for r in rows:
+            if r["subset"] != own:
+                text = model_input(r)
+                if any(t in text for t in heldout_tokens):
+                    errors["V7_heldout_tool_seen"].append(r["sample_id"])
     for r in by_subset["train"] + by_subset["dev"]:
         if any(t.startswith("test:") for t in r["template_ids"]):
             errors["V7_template_pool"].append(r["sample_id"])
@@ -161,7 +167,8 @@ def numeric_value(c: dict[str, Any]) -> str | None:
     return None
 
 
-def explicit_mentions(c: dict[str, Any], span: str) -> bool:
+def explicit_mentions(c: dict[str, Any], span: str, name: Any = None) -> bool:
+    name = tool_name if name is None else name
     p = c["params"]
     low = span.lower()
     if c["type"] in ("budget", "deadline"):
@@ -172,7 +179,7 @@ def explicit_mentions(c: dict[str, Any], span: str) -> bool:
                  if re.search(r"(?<!\w)" + re.escape(info["name"]) + r"(?!\w)", low)}
         return isinstance(classes, list) and bool(classes) and set(classes) == named
     keys = ("approval_role", "required_role") if c["type"] == "tool_auth" else ("before_role", "after_role")
-    return all(tool_name(p[k]).lower() in low for k in keys)
+    return all(name(p[k]).lower() in low for k in keys)
 
 
 def main() -> None:

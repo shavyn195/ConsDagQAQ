@@ -1,0 +1,87 @@
+{
+  "dataset": "consdag_trusted_constraint_dataset_v5",
+  "synthetic_only": true,
+  "seed": 42,
+  "groups": {
+    "train": 4000,
+    "dev": 300,
+    "test_tpl_ho": 350,
+    "test_tool_ho": 350,
+    "test_struct_ho": 350
+  },
+  "records": {
+    "train": 12000,
+    "dev": 900,
+    "test_tpl_ho": 1050,
+    "test_tool_ho": 1050,
+    "test_struct_ho": 1050
+  },
+  "constraint_type_distribution": {
+    "train": {
+      "privacy": 1406,
+      "deadline": 1075,
+      "tool_auth": 1250,
+      "order": 1642,
+      "budget": 864
+    },
+    "dev": {
+      "tool_auth": 95,
+      "privacy": 110,
+      "order": 133,
+      "budget": 71,
+      "deadline": 77
+    },
+    "test_tpl_ho": {
+      "budget": 82,
+      "tool_auth": 111,
+      "privacy": 123,
+      "order": 138,
+      "deadline": 98
+    },
+    "test_tool_ho": {
+      "tool_auth": 107,
+      "deadline": 102,
+      "order": 145,
+      "budget": 72,
+      "privacy": 125
+    },
+    "test_struct_ho": {
+      "order": 141,
+      "budget": 93,
+      "tool_auth": 144,
+      "deadline": 105,
+      "privacy": 98
+    }
+  },
+  "constraints_per_group": {
+    "1": 2830,
+    "2": 1983,
+    "3": 537
+  },
+  "implicit_difficulty_distribution": {
+    "d3": 2529,
+    "d2": 3313,
+    "d1": 2565
+  },
+  "near_miss_subtype_distribution": {
+    "permission": 2714,
+    "waiver": 2643,
+    "revoked": 2662,
+    "other_party": 2562
+  },
+  "distractor_slot_rate": 0.4064,
+  "generation_failures": 0,
+  "sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "limitations": [
+    "Synthetic, hand-templated corpus; not naturalistic user language.",
+    "test_tool_ho is name-level held-out (same structure as train); test_struct_ho changes stage count, fan-out, finish-block arity and approval anchors, but keeps the five constraint types and train wording.",
+    "No ambiguous/abstention-required examples; confidence is not a training target.",
+    "Independent human recoverability audit of implicit cues and near-miss controls pending."
+  ]
+}

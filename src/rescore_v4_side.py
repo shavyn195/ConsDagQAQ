@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from eval_exec import bootstrap_ci, record_outcome
-from run_e1 import SUBSETS, constraint_key, load_jsonl, score, strict_parse
+from run_e1 import SUBSETS, constraint_key, eval_subsets, load_jsonl, score, strict_parse
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -58,7 +58,7 @@ def summarise(items):
 
 def rescore(data, pred):
     report = {}
-    for subset in SUBSETS:
+    for subset in eval_subsets(data):
         source = data / (subset + ".jsonl")
         saved = pred / source.name
         rows = load_jsonl(source)
@@ -76,8 +76,9 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--pred", required=True, type=Path)
     p.add_argument("--out", required=True, type=Path)
+    p.add_argument("--data", type=Path, default=ROOT/"data/processed_v4")
     a = p.parse_args()
-    report = rescore(ROOT/"data/processed_v4", a.pred)
+    report = rescore(a.data, a.pred)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     with a.out.open("x", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
