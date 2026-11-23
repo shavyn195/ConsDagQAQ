@@ -1,0 +1,874 @@
+{
+  "checked_at": "2026-11-24T05:38:22.784919+08:00",
+  "status": "exploratory_posthoc_not_preregistered",
+  "intervention": "unique exact normalized public name to ID; no fuzzy match or gold",
+  "prediction_layout": "trained_predictions",
+  "metric_order": "faithful primary; core/strict secondary; N errors retained",
+  "code_sha256": {
+    "evaluate_v5_public_binding.py": "7f033d699bde3ae8df478cd8cfdc3de2b327bb4f553bc578af980a93180b2bef",
+    "public_role_binding.py": "105f64a8b4f501571fca26558bdee334d1711cac04c964e36b9c6efeaf0b0ce2",
+    "public_scope_binding.py": "3847df09e39506b656156f07a6c9dc4cb79398c2a9a14b2c2f24b6a7ee932ce3"
+  },
+  "arms": {
+    "Qwen3-1.7B-v5-seed44": {
+      "dev": {
+        "status": "complete_split",
+        "data_sha256": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+        "pred_sha256": "c48d55f6d67810680c42d94f39ae5b9808fb4e8adc04298706124a17531dcd42",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          }
+        },
+        "faithful": {
+          "records": 600,
+          "groups": 300,
+          "original_rate": 0.9966666666666667,
+          "intervention_rate": 0.9966666666666667,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 600,
+          "groups": 300,
+          "original_rate": 0.9966666666666667,
+          "intervention_rate": 0.9966666666666667,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 300,
+          "groups": 300,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 300,
+          "groups": 300,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      },
+      "test_tpl_ho": {
+        "status": "complete_split",
+        "data_sha256": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+        "pred_sha256": "ed7039f072d6e1ef7639e27e7aefcb04aa28e39516d48ef7a1e41e272d12b25c",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.9416809605488851,
+              "recall": 0.9945652173913043,
+              "f1": 0.9674008810572687
+            },
+            "constraint_core_micro": {
+              "precision": 0.9425385934819898,
+              "recall": 0.9954710144927537,
+              "f1": 0.9682819383259912
+            },
+            "record_exact_match": 0.9380952380952381
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.9416809605488851,
+              "recall": 0.9945652173913043,
+              "f1": 0.9674008810572687
+            },
+            "constraint_core_micro": {
+              "precision": 0.9425385934819898,
+              "recall": 0.9954710144927537,
+              "f1": 0.9682819383259912
+            },
+            "record_exact_match": 0.9380952380952381
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.9416809605488851,
+              "recall": 0.9945652173913043,
+              "f1": 0.9674008810572687
+            },
+            "constraint_core_micro": {
+              "precision": 0.9425385934819898,
+              "recall": 0.9954710144927537,
+              "f1": 0.9682819383259912
+            },
+            "record_exact_match": 0.9380952380952381
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9785714285714285,
+          "intervention_rate": 0.9785714285714285,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9785714285714285,
+          "intervention_rate": 0.9785714285714285,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.11428571428571428,
+          "intervention_rate": 0.11428571428571428,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.11142857142857143,
+          "intervention_rate": 0.11142857142857143,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      },
+      "test_tool_ho": {
+        "status": "complete_split",
+        "data_sha256": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+        "pred_sha256": "dd85cc4c4c2f37b3b41b1e8f5d13a629d54e36930639e847e269866ebb4b066f",
+        "edited_records": 16,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.39908675799086757,
+              "recall": 0.39655172413793105,
+              "f1": 0.3978152025489304
+            },
+            "constraint_core_micro": {
+              "precision": 0.7589041095890411,
+              "recall": 0.7540834845735027,
+              "f1": 0.756486117432863
+            },
+            "record_exact_match": 0.5085714285714286
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.39908675799086757,
+              "recall": 0.39655172413793105,
+              "f1": 0.3978152025489304
+            },
+            "constraint_core_micro": {
+              "precision": 0.7735159817351598,
+              "recall": 0.7686025408348457,
+              "f1": 0.7710514337733273
+            },
+            "record_exact_match": 0.5085714285714286
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.7735159817351598,
+              "recall": 0.7686025408348457,
+              "f1": 0.7710514337733273
+            },
+            "constraint_core_micro": {
+              "precision": 0.7735159817351598,
+              "recall": 0.7686025408348457,
+              "f1": 0.7710514337733273
+            },
+            "record_exact_match": 0.7723809523809524
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.7185714285714285,
+          "intervention_rate": 0.7357142857142858,
+          "difference": 0.0171,
+          "conditional_paired_group_ci95": [
+            0.0071,
+            0.0286
+          ],
+          "records_0_to_1": 12,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.7185714285714285,
+          "intervention_rate": 0.7357142857142858,
+          "difference": 0.0171,
+          "conditional_paired_group_ci95": [
+            0.0071,
+            0.0286
+          ],
+          "records_0_to_1": 12,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          5,
+          5
+        ]
+      },
+      "test_struct_ho": {
+        "status": "complete_split",
+        "data_sha256": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3",
+        "pred_sha256": "434fca03b98e14927bd0be5f8fd5c583994486048f91f374841f633852ad3b5d",
+        "edited_records": 4,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.5128865979381443,
+              "recall": 0.5137693631669535,
+              "f1": 0.5133276010318143
+            },
+            "constraint_core_micro": {
+              "precision": 0.8539518900343642,
+              "recall": 0.8554216867469879,
+              "f1": 0.8546861564918314
+            },
+            "record_exact_match": 0.5504761904761905
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.5137457044673539,
+              "recall": 0.5146299483648882,
+              "f1": 0.5141874462596733
+            },
+            "constraint_core_micro": {
+              "precision": 0.8548109965635738,
+              "recall": 0.8562822719449226,
+              "f1": 0.8555460017196904
+            },
+            "record_exact_match": 0.5514285714285714
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.8548109965635738,
+              "recall": 0.8562822719449226,
+              "f1": 0.8555460017196904
+            },
+            "constraint_core_micro": {
+              "precision": 0.8548109965635738,
+              "recall": 0.8562822719449226,
+              "f1": 0.8555460017196904
+            },
+            "record_exact_match": 0.8476190476190476
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.7757142857142857,
+          "intervention_rate": 0.7771428571428571,
+          "difference": 0.0014,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0043
+          ],
+          "records_0_to_1": 1,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.7757142857142857,
+          "intervention_rate": 0.7771428571428571,
+          "difference": 0.0014,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0043
+          ],
+          "records_0_to_1": 1,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      }
+    },
+    "Qwen3-4B-v5-seed43": {
+      "dev": {
+        "status": "complete_split",
+        "data_sha256": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+        "pred_sha256": "422dc77edd93d5942e52f255f5460485ef72633e2cfb926c6e55b6dcb3bc405e",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "constraint_core_micro": {
+              "precision": 0.9979423868312757,
+              "recall": 0.9979423868312757,
+              "f1": 0.9979423868312757
+            },
+            "record_exact_match": 0.9977777777777778
+          }
+        },
+        "faithful": {
+          "records": 600,
+          "groups": 300,
+          "original_rate": 0.9983333333333333,
+          "intervention_rate": 0.9983333333333333,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 600,
+          "groups": 300,
+          "original_rate": 0.9983333333333333,
+          "intervention_rate": 0.9983333333333333,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 300,
+          "groups": 300,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 300,
+          "groups": 300,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      },
+      "test_tpl_ho": {
+        "status": "complete_split",
+        "data_sha256": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+        "pred_sha256": "13b1cdd208078d3a13653478ab2065c79cca8c6a792c0467dc2e5944c6fc47ba",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.958904109589041,
+              "recall": 0.9510869565217391,
+              "f1": 0.9549795361527967
+            },
+            "constraint_core_micro": {
+              "precision": 0.9662100456621004,
+              "recall": 0.9583333333333334,
+              "f1": 0.9622555707139608
+            },
+            "record_exact_match": 0.940952380952381
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.958904109589041,
+              "recall": 0.9510869565217391,
+              "f1": 0.9549795361527967
+            },
+            "constraint_core_micro": {
+              "precision": 0.9662100456621004,
+              "recall": 0.9583333333333334,
+              "f1": 0.9622555707139608
+            },
+            "record_exact_match": 0.940952380952381
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.958904109589041,
+              "recall": 0.9510869565217391,
+              "f1": 0.9549795361527967
+            },
+            "constraint_core_micro": {
+              "precision": 0.9662100456621004,
+              "recall": 0.9583333333333334,
+              "f1": 0.9622555707139608
+            },
+            "record_exact_match": 0.940952380952381
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9285714285714286,
+          "intervention_rate": 0.9285714285714286,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9285714285714286,
+          "intervention_rate": 0.9285714285714286,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.002857142857142857,
+          "intervention_rate": 0.002857142857142857,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.002857142857142857,
+          "intervention_rate": 0.002857142857142857,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      },
+      "test_tool_ho": {
+        "status": "complete_split",
+        "data_sha256": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+        "pred_sha256": "0e7456fadbaa0342422f82626742b484e0d03d4336558fe4670e3dbd93ba206f",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.6787658802177858,
+              "recall": 0.6787658802177858,
+              "f1": 0.6787658802177858
+            },
+            "constraint_core_micro": {
+              "precision": 0.97005444646098,
+              "recall": 0.97005444646098,
+              "f1": 0.97005444646098
+            },
+            "record_exact_match": 0.7028571428571428
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.6787658802177858,
+              "recall": 0.6787658802177858,
+              "f1": 0.6787658802177858
+            },
+            "constraint_core_micro": {
+              "precision": 0.97005444646098,
+              "recall": 0.97005444646098,
+              "f1": 0.97005444646098
+            },
+            "record_exact_match": 0.7028571428571428
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.97005444646098,
+              "recall": 0.97005444646098,
+              "f1": 0.97005444646098
+            },
+            "constraint_core_micro": {
+              "precision": 0.97005444646098,
+              "recall": 0.97005444646098,
+              "f1": 0.97005444646098
+            },
+            "record_exact_match": 0.9685714285714285
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9585714285714285,
+          "intervention_rate": 0.9585714285714285,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.9585714285714285,
+          "intervention_rate": 0.9585714285714285,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      },
+      "test_struct_ho": {
+        "status": "complete_split",
+        "data_sha256": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3",
+        "pred_sha256": "c4989bd8117739c51ad291cc6fa19ac523190e5a58141d045856d2e67428fd02",
+        "edited_records": 0,
+        "scores": {
+          "original": {
+            "constraint_micro": {
+              "precision": 0.5946643717728055,
+              "recall": 0.5946643717728055,
+              "f1": 0.5946643717728055
+            },
+            "constraint_core_micro": {
+              "precision": 0.9173838209982789,
+              "recall": 0.9173838209982789,
+              "f1": 0.9173838209982789
+            },
+            "record_exact_match": 0.6180952380952381
+          },
+          "public_alias": {
+            "constraint_micro": {
+              "precision": 0.5946643717728055,
+              "recall": 0.5946643717728055,
+              "f1": 0.5946643717728055
+            },
+            "constraint_core_micro": {
+              "precision": 0.9173838209982789,
+              "recall": 0.9173838209982789,
+              "f1": 0.9173838209982789
+            },
+            "record_exact_match": 0.6180952380952381
+          },
+          "public_alias_and_scope": {
+            "constraint_micro": {
+              "precision": 0.9173838209982789,
+              "recall": 0.9173838209982789,
+              "f1": 0.9173838209982789
+            },
+            "constraint_core_micro": {
+              "precision": 0.9173838209982789,
+              "recall": 0.9173838209982789,
+              "f1": 0.9173838209982789
+            },
+            "record_exact_match": 0.9114285714285715
+          }
+        },
+        "faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.97,
+          "intervention_rate": 0.97,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "valid_faithful": {
+          "records": 700,
+          "groups": 350,
+          "original_rate": 0.97,
+          "intervention_rate": 0.97,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_false_positive": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "none_deviation": {
+          "records": 350,
+          "groups": 350,
+          "original_rate": 0.0,
+          "intervention_rate": 0.0,
+          "difference": 0.0,
+          "conditional_paired_group_ci95": [
+            0.0,
+            0.0
+          ],
+          "records_0_to_1": 0,
+          "records_1_to_0": 0,
+          "direction": "intervention minus original; lower is better for error metrics"
+        },
+        "parse_failures_before_after": [
+          0,
+          0
+        ]
+      }
+    }
+  }
+}

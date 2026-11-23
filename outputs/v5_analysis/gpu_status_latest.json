@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-11-23T23:31:57.746554+08:00",
+  "checked_at": "2026-11-24T05:41:56.799868+08:00",
   "gpu": {
     "exit_code": 0,
-    "stdout": "NVIDIA GeForce RTX 4080 SUPER, 81, 32208, 32760",
+    "stdout": "NVIDIA GeForce RTX 4080 SUPER, 87, 29482, 32760",
     "stderr": ""
   },
   "gpu_processes": {
     "exit_code": 0,
-    "stdout": "135102, 32198",
+    "stdout": "147412, 29472",
     "stderr": ""
   },
   "processes": [
@@ -20,7 +20,15 @@
       "cwd": "/root/ConsDagV5"
     },
     {
-      "pid": 135102,
+      "pid": 137446,
+      "args": [
+        "bash",
+        "scripts/run_v5_binding_after_queue.sh"
+      ],
+      "cwd": "/root/ConsDagDiagnostics20261123"
+    },
+    {
+      "pid": 147412,
       "args": [
         "/root/miniconda3/bin/python",
         "-u",
@@ -32,10 +40,10 @@
         "--precision",
         "bf16",
         "--seed",
-        "43",
+        "44",
         "--skip-zeroshot",
         "--out-dir",
-        "outputs/e1/Qwen3-4B-v5-seed43",
+        "outputs/e1/Qwen3-4B-v5-seed44",
         "--eval-batch-size",
         "16",
         "--max-seq-len",
@@ -54,14 +62,6 @@
         "4"
       ],
       "cwd": "/root/ConsDagV5"
-    },
-    {
-      "pid": 137446,
-      "args": [
-        "bash",
-        "scripts/run_v5_binding_after_queue.sh"
-      ],
-      "cwd": "/root/ConsDagDiagnostics20261123"
     }
   ],
   "runs": [
@@ -92,6 +92,42 @@
           "lines": 1050
         }
       ],
+      "last_training_points": [
+        {
+          "optimizer_step": 8600,
+          "loss": 1.5735595297883265e-06,
+          "elapsed_s": 9757.0
+        },
+        {
+          "optimizer_step": 8700,
+          "loss": 3.7568424886558205e-05,
+          "elapsed_s": 9852.6
+        },
+        {
+          "optimizer_step": 8800,
+          "loss": 0.0011630849912762642,
+          "elapsed_s": 9950.4
+        },
+        {
+          "optimizer_step": 8900,
+          "loss": 1.7313410353381187e-05,
+          "elapsed_s": 10048.3
+        },
+        {
+          "optimizer_step": 9000,
+          "loss": 6.794922455810593e-07,
+          "elapsed_s": 10146.3
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 0.9855818743563337, \"state_acc\": 0.9988888888888889}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9349164467897977, \"state_acc\": 0.9638095238095238}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.5985467756584922, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.6310804993542832, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1/Qwen3-1.7B-v5-seed42/metrics.json\"}"
+      ],
+      "log_mtime": "2026-11-23T13:16:31.883041+08:00",
       "metrics_keys": [
         "model_path",
         "seed",
@@ -130,6 +166,115 @@
           "lines": 1050
         }
       ],
+      "last_training_points": [
+        {
+          "optimizer_step": 8600,
+          "loss": 1.9073476664743794e-07,
+          "elapsed_s": 7950.2
+        },
+        {
+          "optimizer_step": 8700,
+          "loss": 1.3362613344725105e-06,
+          "elapsed_s": 8039.2
+        },
+        {
+          "optimizer_step": 8800,
+          "loss": 5.48528532817727e-07,
+          "elapsed_s": 8119.2
+        },
+        {
+          "optimizer_step": 8900,
+          "loss": 1.3395867881627055e-06,
+          "elapsed_s": 8202.7
+        },
+        {
+          "optimizer_step": 9000,
+          "loss": 6.891610246384516e-05,
+          "elapsed_s": 8299.3
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 0.9723076923076923, \"state_acc\": 0.9966666666666667}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9203849518810149, \"state_acc\": 0.9533333333333334}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.5353901996370236, \"state_acc\": 0.9857142857142858}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.42350907519446845, \"state_acc\": 0.9933333333333333}",
+        "{\"saved\": \"outputs/e1/Qwen3-1.7B-v5-seed43/metrics.json\"}"
+      ],
+      "log_mtime": "2026-11-23T20:54:30.261313+08:00",
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "trained",
+        "train_seconds"
+      ]
+    },
+    {
+      "name": "Qwen3-1.7B-v5-seed44",
+      "metrics_exists": true,
+      "adapter_exists": true,
+      "failure_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 760778,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 912438,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 868160,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 925126,
+          "lines": 1050
+        }
+      ],
+      "last_training_points": [
+        {
+          "optimizer_step": 8600,
+          "loss": 2.0503950963757234e-06,
+          "elapsed_s": 7395.3
+        },
+        {
+          "optimizer_step": 8700,
+          "loss": 1.692765408733976e-06,
+          "elapsed_s": 7480.0
+        },
+        {
+          "optimizer_step": 8800,
+          "loss": 0.0016900511691346765,
+          "elapsed_s": 7563.6
+        },
+        {
+          "optimizer_step": 8900,
+          "loss": 2.777744703053031e-05,
+          "elapsed_s": 7650.1
+        },
+        {
+          "optimizer_step": 9000,
+          "loss": 1.840179174905643e-05,
+          "elapsed_s": 7733.3
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 0.9979423868312757, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9674008810572687, \"state_acc\": 0.960952380952381}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.3978152025489304, \"state_acc\": 0.9952380952380953}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.5133276010318143, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1/Qwen3-1.7B-v5-seed44/metrics.json\"}"
+      ],
+      "log_mtime": "2026-11-24T03:17:23.419839+08:00",
       "metrics_keys": [
         "model_path",
         "seed",
@@ -216,46 +361,119 @@
     },
     {
       "name": "Qwen3-4B-v5-seed43",
+      "metrics_exists": true,
+      "adapter_exists": true,
+      "failure_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 760784,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 862904,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 882392,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 930564,
+          "lines": 1050
+        }
+      ],
+      "last_training_points": [
+        {
+          "optimizer_step": 8600,
+          "loss": 7.033338533801725e-07,
+          "elapsed_s": 10275.6
+        },
+        {
+          "optimizer_step": 8700,
+          "loss": 9.416545253770892e-06,
+          "elapsed_s": 10399.7
+        },
+        {
+          "optimizer_step": 8800,
+          "loss": 1.0626853509165812e-05,
+          "elapsed_s": 10522.0
+        },
+        {
+          "optimizer_step": 8900,
+          "loss": 3.0233870802476304e-06,
+          "elapsed_s": 10644.2
+        },
+        {
+          "optimizer_step": 9000,
+          "loss": 9.894355343931238e-07,
+          "elapsed_s": 10765.7
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 0.9979423868312757, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9549795361527967, \"state_acc\": 0.9857142857142858}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.6787658802177858, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.5946643717728055, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1/Qwen3-4B-v5-seed43/metrics.json\"}"
+      ],
+      "log_mtime": "2026-11-24T00:46:19.922116+08:00",
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "trained",
+        "train_seconds"
+      ]
+    },
+    {
+      "name": "Qwen3-4B-v5-seed44",
       "metrics_exists": false,
       "adapter_exists": false,
       "failure_files": [],
       "trained_prediction_files": [],
       "last_training_points": [
         {
+          "optimizer_step": 7100,
+          "loss": 6.938912520126905e-06,
+          "elapsed_s": 8059.2
+        },
+        {
+          "optimizer_step": 7200,
+          "loss": 2.384184938364342e-07,
+          "elapsed_s": 8175.3
+        },
+        {
+          "optimizer_step": 7300,
+          "loss": 2.861021641820116e-07,
+          "elapsed_s": 8285.4
+        },
+        {
           "optimizer_step": 7400,
-          "loss": 3.68106848327443e-05,
-          "elapsed_s": 8852.6
+          "loss": 2.2649756203918514e-07,
+          "elapsed_s": 8393.8
         },
         {
           "optimizer_step": 7500,
-          "loss": 4.4092299503972754e-05,
-          "elapsed_s": 8975.7
-        },
-        {
-          "optimizer_step": 7600,
-          "loss": 2.8729270979965804e-06,
-          "elapsed_s": 9098.9
-        },
-        {
-          "optimizer_step": 7700,
-          "loss": 1.4306423508969601e-05,
-          "elapsed_s": 9223.8
-        },
-        {
-          "optimizer_step": 7800,
-          "loss": 1.52587381307967e-06,
-          "elapsed_s": 9344.1
+          "loss": 2.7418124659561727e-07,
+          "elapsed_s": 8499.6
         }
       ],
       "error_lines": [],
       "log_tail": [
-        "{\"optimizer_step\": 7400, \"loss\": 3.68106848327443e-05, \"elapsed_s\": 8852.6}",
-        "{\"optimizer_step\": 7500, \"loss\": 4.4092299503972754e-05, \"elapsed_s\": 8975.7}",
-        "{\"optimizer_step\": 7600, \"loss\": 2.8729270979965804e-06, \"elapsed_s\": 9098.9}",
-        "{\"optimizer_step\": 7700, \"loss\": 1.4306423508969601e-05, \"elapsed_s\": 9223.8}",
-        "{\"optimizer_step\": 7800, \"loss\": 1.52587381307967e-06, \"elapsed_s\": 9344.1}"
+        "{\"optimizer_step\": 7100, \"loss\": 6.938912520126905e-06, \"elapsed_s\": 8059.2}",
+        "{\"optimizer_step\": 7200, \"loss\": 2.384184938364342e-07, \"elapsed_s\": 8175.3}",
+        "{\"optimizer_step\": 7300, \"loss\": 2.861021641820116e-07, \"elapsed_s\": 8285.4}",
+        "{\"optimizer_step\": 7400, \"loss\": 2.2649756203918514e-07, \"elapsed_s\": 8393.8}",
+        "{\"optimizer_step\": 7500, \"loss\": 2.7418124659561727e-07, \"elapsed_s\": 8499.6}"
       ],
-      "log_mtime": "2026-11-23T23:31:30.168451+08:00"
+      "log_mtime": "2026-11-24T05:40:02.510107+08:00"
     }
   ],
   "queue_tail": [
@@ -344,13 +562,70 @@
       "time": "2026-11-23T20:55:45+08:00",
       "model": "Qwen3-4B",
       "seed": 43
+    },
+    {
+      "event": "done",
+      "time": "2026-11-24T00:46:21+08:00",
+      "model": "Qwen3-4B",
+      "seed": 43
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-24T00:46:39+08:00",
+      "model": "Qwen3-4B",
+      "seed": 43,
+      "kind": "trained"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-24T00:47:21+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 44
+    },
+    {
+      "event": "done",
+      "time": "2026-11-24T03:17:24+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 44
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-24T03:17:40+08:00",
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "kind": "trained"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-24T03:18:22+08:00",
+      "model": "Qwen3-4B",
+      "seed": 44
     }
   ],
   "diagnostics": {
     "files": [
       "testdeps_install.log",
       "v5_binding_queue.log",
-      "queue_pid.json"
+      "queue_pid.json",
+      "v5_binding_analysis_queue.log",
+      "binding_analysis_worker.json",
+      "v5_coverage_20261124.log",
+      "v5_coverage_20261124_worker.json",
+      "v5_coverage_20261124.json",
+      "v5_public_binding_20261124.log",
+      "v5_public_binding_20261124_worker.json",
+      "v5_public_binding_20261124.json",
+      "v5_public_binding_pe_20261124.log",
+      "v5_public_binding_pe_20261124_worker.json",
+      "v5_public_binding_pe_20261124.json",
+      "v5_main_0530_20261124.log",
+      "v5_main_0530_20261124_worker.json",
+      "v5_binding_repair_analysis_queue.log",
+      "v5_binding_repair_analysis_worker.json",
+      "v5_main_0530_20261124.json",
+      "v5_binding_newseeds_20261124.log",
+      "v5_binding_newseeds_20261124_worker.json",
+      "v5_binding_newseeds_20261124.json"
     ],
     "log_tails": {
       "testdeps_install.log": [
@@ -365,6 +640,61 @@
       ],
       "v5_binding_queue.log": [
         "{\"time\": \"2026-11-23T22:17:54.783451+08:00\", \"event\": \"waiting_for_registered_queue_and_idle_gpu\"}"
+      ],
+      "v5_binding_analysis_queue.log": [
+        "{\"time\": \"2026-11-23T23:53:15.888011+08:00\", \"event\": \"waiting_for_complete_binding_outputs\"}"
+      ],
+      "v5_coverage_20261124.log": [
+        "{\"finished_prediction_audit\": \"Qwen3-1.7B-v5-seed42\"}",
+        "{\"finished_prediction_audit\": \"Qwen3-1.7B-v5-seed43\"}",
+        "{\"finished_prediction_audit\": \"Qwen3-4B-v5-seed42\"}",
+        "{\"finished_prediction_audit\": \"Qwen3-4B-v5-seed43\"}",
+        "{\"finished_tokenizer_audit\": \"/root/ConsDagV5/models/Qwen3-1.7B\"}",
+        "{\"finished_tokenizer_audit\": \"/root/ConsDagV5/models/Qwen3-4B\"}",
+        "{\"saved\": \"/root/ConsDagDiagnostics20261123/outputs/v5_coverage_20261124.json\"}"
+      ],
+      "v5_public_binding_20261124.log": [
+        "{\"arm\": \"Qwen3-1.7B-v5-seed43\", \"split\": \"test_tool_ho\", \"edited_records\": 23, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.7571428571428571, \"intervention_rate\": 0.7685714285714286, \"difference\": 0.0114, \"conditional_paired_group_ci95\": [0.0043, 0.0214], \"records_0_to_1\": 8, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-1.7B-v5-seed43\", \"split\": \"test_struct_ho\", \"edited_records\": 64, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.7528571428571429, \"intervention_rate\": 0.8328571428571429, \"difference\": 0.08, \"conditional_paired_group_ci95\": [0.0586, 0.1029], \"records_0_to_1\": 56, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed42\", \"split\": \"dev\", \"edited_records\": 0, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 1.0, \"intervention_rate\": 1.0, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed42\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9742857142857143, \"intervention_rate\": 0.9742857142857143, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed42\", \"split\": \"test_tool_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.91, \"intervention_rate\": 0.91, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed42\", \"split\": \"test_struct_ho\", \"edited_records\": 1, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9971428571428571, \"intervention_rate\": 0.9985714285714286, \"difference\": 0.0014, \"conditional_paired_group_ci95\": [0.0, 0.0043], \"records_0_to_1\": 1, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"dev\", \"edited_records\": 0, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 0.9983333333333333, \"intervention_rate\": 0.9983333333333333, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9285714285714286, \"intervention_rate\": 0.9285714285714286, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}"
+      ],
+      "v5_public_binding_pe_20261124.log": [
+        "{\"arm\": \"qwen-max-zero\", \"split\": \"dev\", \"edited_records\": 1, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 0.8383333333333334, \"intervention_rate\": 0.84, \"difference\": 0.0017, \"conditional_paired_group_ci95\": [0.0, 0.005], \"records_0_to_1\": 1, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-zero\", \"split\": \"test_tpl_ho\", \"edited_records\": 2, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.86, \"intervention_rate\": 0.8628571428571429, \"difference\": 0.0029, \"conditional_paired_group_ci95\": [0.0, 0.0071], \"records_0_to_1\": 2, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-zero\", \"split\": \"test_tool_ho\", \"edited_records\": 1, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.8185714285714286, \"intervention_rate\": 0.8185714285714286, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-zero\", \"split\": \"test_struct_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.7928571428571428, \"intervention_rate\": 0.7928571428571428, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-few\", \"split\": \"dev\", \"edited_records\": 0, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 0.8833333333333333, \"intervention_rate\": 0.8833333333333333, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-few\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.8414285714285714, \"intervention_rate\": 0.8414285714285714, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-few\", \"split\": \"test_tool_ho\", \"edited_records\": 1, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.8785714285714286, \"intervention_rate\": 0.8785714285714286, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"qwen-max-few\", \"split\": \"test_struct_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.8657142857142858, \"intervention_rate\": 0.8657142857142858, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}"
+      ],
+      "v5_main_0530_20261124.log": [
+        "      },",
+        "      \"waiver\": {",
+        "        \"alarm\": 0.0051,",
+        "        \"valid\": true",
+        "      }",
+        "    }",
+        "  }",
+        "}"
+      ],
+      "v5_binding_repair_analysis_queue.log": [
+        "{\"time\": \"2026-11-24T05:37:30.084529+08:00\", \"event\": \"waiting_for_complete_binding_predictions\"}"
+      ],
+      "v5_binding_newseeds_20261124.log": [
+        "{\"arm\": \"Qwen3-1.7B-v5-seed44\", \"split\": \"dev\", \"edited_records\": 0, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 0.9966666666666667, \"intervention_rate\": 0.9966666666666667, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-1.7B-v5-seed44\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9785714285714285, \"intervention_rate\": 0.9785714285714285, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-1.7B-v5-seed44\", \"split\": \"test_tool_ho\", \"edited_records\": 16, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.7185714285714285, \"intervention_rate\": 0.7357142857142858, \"difference\": 0.0171, \"conditional_paired_group_ci95\": [0.0071, 0.0286], \"records_0_to_1\": 12, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-1.7B-v5-seed44\", \"split\": \"test_struct_ho\", \"edited_records\": 4, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.7757142857142857, \"intervention_rate\": 0.7771428571428571, \"difference\": 0.0014, \"conditional_paired_group_ci95\": [0.0, 0.0043], \"records_0_to_1\": 1, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"dev\", \"edited_records\": 0, \"faithful\": {\"records\": 600, \"groups\": 300, \"original_rate\": 0.9983333333333333, \"intervention_rate\": 0.9983333333333333, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9285714285714286, \"intervention_rate\": 0.9285714285714286, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_tool_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9585714285714285, \"intervention_rate\": 0.9585714285714285, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
+        "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_struct_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.97, \"intervention_rate\": 0.97, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}"
       ]
     }
   }

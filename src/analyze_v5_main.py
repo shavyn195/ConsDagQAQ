@@ -36,7 +36,7 @@ def alarm(raw: str) -> bool:
     return parsed is None or bool(parsed["constraints"]) or parsed["query_state"] != "none"
 
 
-def arm_dirs(root: Path) -> dict[str, list[Path]]:
+def arm_dirs(root: Path, *, pe_root: Path | None = None) -> dict[str, list[Path]]:
     arms: dict[str, list[Path]] = {}
     for size in SIZES:
         runs = [root / f"outputs/e1/Qwen3-{size}-v5-seed{s}/trained_predictions" for s in SEEDS]
@@ -48,7 +48,7 @@ def arm_dirs(root: Path) -> dict[str, list[Path]]:
         if zs.is_dir():
             arms[f"Qwen3-{size}-zero"] = [zs]
     for name in PE_ARMS:
-        d = root / "outputs/e1_v5_side" / name
+        d = (pe_root if pe_root is not None else root / "outputs/e1_v5_side") / name
         if (d / "full-scores.json").exists():
             arms[name] = [d]
     return arms
@@ -102,9 +102,13 @@ def noninferiority_decision(difference: dict | None, observed_seeds: list[int]) 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--data", type=Path, default=ROOT / "data/processed_v5")
+    p.add_argument("--runs-root", type=Path, default=ROOT,
+                   help="Read frozen runs in another checkout without modifying that checkout.")
+    p.add_argument("--pe-root", type=Path, default=None,
+                   help="Optional directory of cached, already scored PE arms.")
     p.add_argument("--out", type=Path, default=ROOT / "outputs/v5_analysis/main.json")
     args = p.parse_args()
-    arms = arm_dirs(ROOT)
+    arms = arm_dirs(args.runs_root, pe_root=args.pe_root)
     report: dict = {"arms": {k: [str(v) for v in vs] for k, vs in arms.items()}, "table": {}, "decisions": {},
                    "analysis_version": "v5-audit-20261123",
                    "notes": ["Task-group intervals are conditional on observed seeds, not seed-population intervals.",

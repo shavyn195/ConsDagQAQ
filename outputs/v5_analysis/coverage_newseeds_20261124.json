@@ -1,0 +1,5182 @@
+{
+  "checked_at": "2026-11-24T05:43:11.608065+08:00",
+  "source_sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "code_sha256": {
+    "audit_v5_coverage.py": "13d246ebf732ffe372bf0e27f4558261860929f55ed2b8b1a31b49525ead334c",
+    "public_scope_binding.py": "3847df09e39506b656156f07a6c9dc4cb79398c2a9a14b2c2f24b6a7ee932ce3",
+    "run_e1.py": "7c94359e35e047a501a9658216f0efa7690a2152695f5999214e193a91c44169",
+    "trust_env.py": "01dc6b70d13fd56392d9eb6a21bf5ff70a5e35708dddcf6294ef9d5d6163e78f",
+    "rescore_v4_side.py": "8aa87f44dbe055affbb23029530e99db67462a3c8be0001be5e81953aefe238f"
+  },
+  "coverage": {
+    "train": {
+      "records": 12000,
+      "groups": 4000,
+      "constraint_count_per_group": {
+        "1": 2156,
+        "2": 1451,
+        "3": 393
+      },
+      "type_group_counts": {
+        "privacy": 1406,
+        "deadline": 1075,
+        "tool_auth": 1250,
+        "order": 1642,
+        "budget": 864
+      },
+      "type_combinations": {
+        "budget": 323,
+        "budget+deadline": 66,
+        "budget+deadline+order": 18,
+        "budget+deadline+privacy": 25,
+        "budget+deadline+tool_auth": 1,
+        "budget+order": 186,
+        "budget+order+privacy": 82,
+        "budget+order+tool_auth": 8,
+        "budget+privacy": 123,
+        "budget+privacy+tool_auth": 6,
+        "budget+tool_auth": 26,
+        "deadline": 458,
+        "deadline+order": 134,
+        "deadline+order+privacy": 61,
+        "deadline+order+tool_auth": 38,
+        "deadline+privacy": 124,
+        "deadline+privacy+tool_auth": 36,
+        "deadline+tool_auth": 114,
+        "order": 500,
+        "order+privacy": 239,
+        "order+privacy+tool_auth": 118,
+        "order+tool_auth": 258,
+        "privacy": 411,
+        "privacy+tool_auth": 181,
+        "tool_auth": 464
+      },
+      "groups_with_unseen_type_combination": 0,
+      "public_roles": [
+        "aggregate_dataset_stats",
+        "anonymize_sensitive_fields",
+        "archive_project_files",
+        "browse_service_market",
+        "call_external_api",
+        "check_sandbox_status",
+        "cross_check_data_quality",
+        "deliver_report_to_team",
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "get_wallet_balance",
+        "grant_resource_permission",
+        "list_data_assets",
+        "mount_data_into_sandbox",
+        "notify_stakeholders",
+        "purchase_data_asset",
+        "record_finance_approval",
+        "refund_wallet_order",
+        "request_data_access",
+        "run_production_mode",
+        "upload_data_asset",
+        "validate_workflow",
+        "view_execution_history"
+      ],
+      "roles_unseen_in_training_catalog": [],
+      "parameter_role_group_counts": {
+        "archive_project_files": 351,
+        "call_external_api": 432,
+        "cross_check_data_quality": 498,
+        "deliver_report_to_team": 776,
+        "execute_sandbox_job": 285,
+        "grant_resource_permission": 881,
+        "notify_stakeholders": 347,
+        "purchase_data_asset": 369,
+        "record_finance_approval": 369,
+        "run_production_mode": 735,
+        "validate_workflow": 656
+      },
+      "directed_role_pairs": [
+        {
+          "type": "order",
+          "first": "archive_project_files",
+          "second": "notify_stakeholders",
+          "groups": 210,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "cross_check_data_quality",
+          "second": "deliver_report_to_team",
+          "groups": 498,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "archive_project_files",
+          "groups": 141,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "notify_stakeholders",
+          "groups": 137,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "execute_sandbox_job",
+          "groups": 285,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "run_production_mode",
+          "groups": 371,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "call_external_api",
+          "groups": 432,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "run_production_mode",
+          "groups": 449,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "record_finance_approval",
+          "second": "purchase_data_asset",
+          "groups": 369,
+          "exact_pair_seen_in_train": true
+        }
+      ],
+      "numeric_parameters": {
+        "budget:max_total_cost_cny": {
+          "min": 100,
+          "max": 2150,
+          "unique": 32
+        },
+        "deadline:max_duration_hours": {
+          "min": 3,
+          "max": 10,
+          "unique": 8
+        }
+      },
+      "counting_unit": "one explicit record per task group; E/I are not independent coverage samples"
+    },
+    "dev": {
+      "records": 900,
+      "groups": 300,
+      "constraint_count_per_group": {
+        "1": 149,
+        "2": 116,
+        "3": 35
+      },
+      "type_group_counts": {
+        "tool_auth": 95,
+        "privacy": 110,
+        "order": 133,
+        "budget": 71,
+        "deadline": 77
+      },
+      "type_combinations": {
+        "budget": 25,
+        "budget+deadline": 5,
+        "budget+deadline+order": 3,
+        "budget+deadline+privacy": 1,
+        "budget+order": 13,
+        "budget+order+privacy": 8,
+        "budget+order+tool_auth": 2,
+        "budget+privacy": 13,
+        "budget+privacy+tool_auth": 1,
+        "deadline": 34,
+        "deadline+order": 8,
+        "deadline+order+privacy": 3,
+        "deadline+order+tool_auth": 4,
+        "deadline+privacy": 11,
+        "deadline+privacy+tool_auth": 3,
+        "deadline+tool_auth": 5,
+        "order": 38,
+        "order+privacy": 23,
+        "order+privacy+tool_auth": 10,
+        "order+tool_auth": 21,
+        "privacy": 20,
+        "privacy+tool_auth": 17,
+        "tool_auth": 32
+      },
+      "groups_with_unseen_type_combination": 0,
+      "public_roles": [
+        "aggregate_dataset_stats",
+        "anonymize_sensitive_fields",
+        "archive_project_files",
+        "browse_service_market",
+        "call_external_api",
+        "check_sandbox_status",
+        "cross_check_data_quality",
+        "deliver_report_to_team",
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "get_wallet_balance",
+        "grant_resource_permission",
+        "list_data_assets",
+        "mount_data_into_sandbox",
+        "notify_stakeholders",
+        "purchase_data_asset",
+        "record_finance_approval",
+        "refund_wallet_order",
+        "request_data_access",
+        "run_production_mode",
+        "upload_data_asset",
+        "validate_workflow",
+        "view_execution_history"
+      ],
+      "roles_unseen_in_training_catalog": [],
+      "parameter_role_group_counts": {
+        "archive_project_files": 26,
+        "call_external_api": 23,
+        "cross_check_data_quality": 41,
+        "deliver_report_to_team": 58,
+        "execute_sandbox_job": 25,
+        "grant_resource_permission": 63,
+        "notify_stakeholders": 23,
+        "purchase_data_asset": 32,
+        "record_finance_approval": 32,
+        "run_production_mode": 64,
+        "validate_workflow": 59
+      },
+      "directed_role_pairs": [
+        {
+          "type": "order",
+          "first": "archive_project_files",
+          "second": "notify_stakeholders",
+          "groups": 16,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "cross_check_data_quality",
+          "second": "deliver_report_to_team",
+          "groups": 41,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "archive_project_files",
+          "groups": 10,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "notify_stakeholders",
+          "groups": 7,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "execute_sandbox_job",
+          "groups": 25,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "run_production_mode",
+          "groups": 34,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "call_external_api",
+          "groups": 23,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "run_production_mode",
+          "groups": 40,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "record_finance_approval",
+          "second": "purchase_data_asset",
+          "groups": 32,
+          "exact_pair_seen_in_train": true
+        }
+      ],
+      "numeric_parameters": {
+        "budget:max_total_cost_cny": {
+          "min": 100,
+          "max": 950,
+          "unique": 8
+        },
+        "deadline:max_duration_hours": {
+          "min": 3,
+          "max": 11,
+          "unique": 9
+        }
+      },
+      "counting_unit": "one explicit record per task group; E/I are not independent coverage samples"
+    },
+    "test_tpl_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constraint_count_per_group": {
+        "1": 177,
+        "3": 29,
+        "2": 144
+      },
+      "type_group_counts": {
+        "budget": 82,
+        "tool_auth": 111,
+        "privacy": 123,
+        "order": 138,
+        "deadline": 98
+      },
+      "type_combinations": {
+        "budget": 31,
+        "budget+deadline": 12,
+        "budget+order": 23,
+        "budget+order+privacy": 5,
+        "budget+privacy": 11,
+        "deadline": 35,
+        "deadline+order": 9,
+        "deadline+order+privacy": 3,
+        "deadline+order+tool_auth": 2,
+        "deadline+privacy": 18,
+        "deadline+privacy+tool_auth": 4,
+        "deadline+tool_auth": 15,
+        "order": 40,
+        "order+privacy": 18,
+        "order+privacy+tool_auth": 15,
+        "order+tool_auth": 23,
+        "privacy": 34,
+        "privacy+tool_auth": 15,
+        "tool_auth": 37
+      },
+      "groups_with_unseen_type_combination": 0,
+      "public_roles": [
+        "aggregate_dataset_stats",
+        "anonymize_sensitive_fields",
+        "archive_project_files",
+        "browse_service_market",
+        "call_external_api",
+        "check_sandbox_status",
+        "cross_check_data_quality",
+        "deliver_report_to_team",
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "get_wallet_balance",
+        "grant_resource_permission",
+        "list_data_assets",
+        "mount_data_into_sandbox",
+        "notify_stakeholders",
+        "purchase_data_asset",
+        "record_finance_approval",
+        "refund_wallet_order",
+        "request_data_access",
+        "run_production_mode",
+        "upload_data_asset",
+        "validate_workflow",
+        "view_execution_history"
+      ],
+      "roles_unseen_in_training_catalog": [],
+      "parameter_role_group_counts": {
+        "archive_project_files": 28,
+        "call_external_api": 43,
+        "cross_check_data_quality": 39,
+        "deliver_report_to_team": 64,
+        "execute_sandbox_job": 25,
+        "grant_resource_permission": 78,
+        "notify_stakeholders": 29,
+        "purchase_data_asset": 33,
+        "record_finance_approval": 33,
+        "run_production_mode": 58,
+        "validate_workflow": 58
+      },
+      "directed_role_pairs": [
+        {
+          "type": "order",
+          "first": "archive_project_files",
+          "second": "notify_stakeholders",
+          "groups": 16,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "cross_check_data_quality",
+          "second": "deliver_report_to_team",
+          "groups": 39,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "archive_project_files",
+          "groups": 12,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "deliver_report_to_team",
+          "second": "notify_stakeholders",
+          "groups": 13,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "execute_sandbox_job",
+          "groups": 25,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "order",
+          "first": "validate_workflow",
+          "second": "run_production_mode",
+          "groups": 33,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "call_external_api",
+          "groups": 43,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "grant_resource_permission",
+          "second": "run_production_mode",
+          "groups": 35,
+          "exact_pair_seen_in_train": true
+        },
+        {
+          "type": "tool_auth",
+          "first": "record_finance_approval",
+          "second": "purchase_data_asset",
+          "groups": 33,
+          "exact_pair_seen_in_train": true
+        }
+      ],
+      "numeric_parameters": {
+        "budget:max_total_cost_cny": {
+          "min": 100,
+          "max": 1250,
+          "unique": 15
+        },
+        "deadline:max_duration_hours": {
+          "min": 3,
+          "max": 11,
+          "unique": 8
+        }
+      },
+      "counting_unit": "one explicit record per task group; E/I are not independent coverage samples"
+    },
+    "test_tool_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constraint_count_per_group": {
+        "2": 133,
+        "1": 183,
+        "3": 34
+      },
+      "type_group_counts": {
+        "tool_auth": 107,
+        "deadline": 102,
+        "order": 145,
+        "budget": 72,
+        "privacy": 125
+      },
+      "type_combinations": {
+        "budget": 24,
+        "budget+deadline": 5,
+        "budget+deadline+order": 1,
+        "budget+deadline+privacy": 2,
+        "budget+order": 20,
+        "budget+order+privacy": 10,
+        "budget+privacy": 7,
+        "budget+tool_auth": 3,
+        "deadline": 40,
+        "deadline+order": 10,
+        "deadline+order+privacy": 3,
+        "deadline+order+tool_auth": 2,
+        "deadline+privacy": 14,
+        "deadline+privacy+tool_auth": 4,
+        "deadline+tool_auth": 21,
+        "order": 46,
+        "order+privacy": 21,
+        "order+privacy+tool_auth": 12,
+        "order+tool_auth": 20,
+        "privacy": 40,
+        "privacy+tool_auth": 12,
+        "tool_auth": 33
+      },
+      "groups_with_unseen_type_combination": 0,
+      "public_roles": [
+        "aggregate_fl_model",
+        "approve_partner_access",
+        "audit_model_quality",
+        "check_service_availability",
+        "compile_qos_report",
+        "evaluate_fl_model",
+        "export_audit_trail",
+        "launch_fl_production_round",
+        "lease_partner_dataset",
+        "mark_compliance_checkpoint",
+        "mask_client_identifiers",
+        "measure_throughput",
+        "publish_model_card",
+        "pull_client_snapshots",
+        "query_provenance_chain",
+        "rent_cloud_gpu_job",
+        "request_federated_access",
+        "run_federated_training",
+        "sign_compute_voucher",
+        "stage_secure_enclave",
+        "sync_to_partner_hub",
+        "verify_log_signature"
+      ],
+      "roles_unseen_in_training_catalog": [
+        "aggregate_fl_model",
+        "approve_partner_access",
+        "audit_model_quality",
+        "check_service_availability",
+        "compile_qos_report",
+        "evaluate_fl_model",
+        "export_audit_trail",
+        "launch_fl_production_round",
+        "lease_partner_dataset",
+        "mark_compliance_checkpoint",
+        "mask_client_identifiers",
+        "measure_throughput",
+        "publish_model_card",
+        "pull_client_snapshots",
+        "query_provenance_chain",
+        "rent_cloud_gpu_job",
+        "request_federated_access",
+        "run_federated_training",
+        "sign_compute_voucher",
+        "stage_secure_enclave",
+        "sync_to_partner_hub",
+        "verify_log_signature"
+      ],
+      "parameter_role_group_counts": {
+        "approve_partner_access": 81,
+        "audit_model_quality": 49,
+        "export_audit_trail": 74,
+        "launch_fl_production_round": 71,
+        "lease_partner_dataset": 26,
+        "mark_compliance_checkpoint": 31,
+        "publish_model_card": 26,
+        "rent_cloud_gpu_job": 38,
+        "run_federated_training": 22,
+        "sign_compute_voucher": 26,
+        "verify_log_signature": 55
+      },
+      "directed_role_pairs": [
+        {
+          "type": "order",
+          "first": "audit_model_quality",
+          "second": "export_audit_trail",
+          "groups": 49,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "export_audit_trail",
+          "second": "mark_compliance_checkpoint",
+          "groups": 15,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "export_audit_trail",
+          "second": "publish_model_card",
+          "groups": 10,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "mark_compliance_checkpoint",
+          "second": "publish_model_card",
+          "groups": 16,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "verify_log_signature",
+          "second": "launch_fl_production_round",
+          "groups": 33,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "verify_log_signature",
+          "second": "run_federated_training",
+          "groups": 22,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "approve_partner_access",
+          "second": "launch_fl_production_round",
+          "groups": 43,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "approve_partner_access",
+          "second": "rent_cloud_gpu_job",
+          "groups": 38,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "sign_compute_voucher",
+          "second": "lease_partner_dataset",
+          "groups": 26,
+          "exact_pair_seen_in_train": false
+        }
+      ],
+      "numeric_parameters": {
+        "budget:max_total_cost_cny": {
+          "min": 100,
+          "max": 1750,
+          "unique": 19
+        },
+        "deadline:max_duration_hours": {
+          "min": 3,
+          "max": 9,
+          "unique": 6
+        }
+      },
+      "counting_unit": "one explicit record per task group; E/I are not independent coverage samples"
+    },
+    "test_struct_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constraint_count_per_group": {
+        "2": 139,
+        "1": 165,
+        "3": 46
+      },
+      "type_group_counts": {
+        "order": 141,
+        "budget": 93,
+        "tool_auth": 144,
+        "deadline": 105,
+        "privacy": 98
+      },
+      "type_combinations": {
+        "budget": 26,
+        "budget+deadline": 10,
+        "budget+deadline+order": 10,
+        "budget+deadline+privacy": 1,
+        "budget+deadline+tool_auth": 1,
+        "budget+order": 20,
+        "budget+order+privacy": 3,
+        "budget+order+tool_auth": 7,
+        "budget+privacy": 7,
+        "budget+privacy+tool_auth": 3,
+        "budget+tool_auth": 5,
+        "deadline": 29,
+        "deadline+order": 15,
+        "deadline+order+privacy": 3,
+        "deadline+order+tool_auth": 5,
+        "deadline+privacy": 8,
+        "deadline+privacy+tool_auth": 3,
+        "deadline+tool_auth": 20,
+        "order": 25,
+        "order+privacy": 14,
+        "order+privacy+tool_auth": 10,
+        "order+tool_auth": 29,
+        "privacy": 35,
+        "privacy+tool_auth": 11,
+        "tool_auth": 50
+      },
+      "groups_with_unseen_type_combination": 0,
+      "public_roles": [
+        "approve_cluster_lease",
+        "batch_score_offline",
+        "brief_steering_board",
+        "bucketize_metrics",
+        "check_bucket_quota",
+        "draft_findings_memo",
+        "email_regulator_digest",
+        "file_retention_record",
+        "license_vendor_extract",
+        "load_into_clean_room",
+        "mask_identifiers_early",
+        "peer_review_memo",
+        "ping_registry_status",
+        "publish_dashboard",
+        "push_to_shared_bucket",
+        "query_open_registry",
+        "read_rack_temperature",
+        "replay_archived_feed",
+        "run_sample_audit",
+        "run_schema_linter",
+        "scrape_partner_portal",
+        "sign_release_ticket",
+        "train_on_local_rack",
+        "train_on_rented_cluster",
+        "verify_lineage_hash"
+      ],
+      "roles_unseen_in_training_catalog": [
+        "approve_cluster_lease",
+        "batch_score_offline",
+        "brief_steering_board",
+        "bucketize_metrics",
+        "check_bucket_quota",
+        "draft_findings_memo",
+        "email_regulator_digest",
+        "file_retention_record",
+        "license_vendor_extract",
+        "load_into_clean_room",
+        "mask_identifiers_early",
+        "peer_review_memo",
+        "ping_registry_status",
+        "publish_dashboard",
+        "push_to_shared_bucket",
+        "query_open_registry",
+        "read_rack_temperature",
+        "replay_archived_feed",
+        "run_sample_audit",
+        "run_schema_linter",
+        "scrape_partner_portal",
+        "sign_release_ticket",
+        "train_on_local_rack",
+        "train_on_rented_cluster",
+        "verify_lineage_hash"
+      ],
+      "parameter_role_group_counts": {
+        "approve_cluster_lease": 24,
+        "batch_score_offline": 20,
+        "brief_steering_board": 60,
+        "email_regulator_digest": 104,
+        "file_retention_record": 45,
+        "peer_review_memo": 24,
+        "publish_dashboard": 84,
+        "sign_release_ticket": 120,
+        "train_on_local_rack": 16,
+        "train_on_rented_cluster": 24,
+        "verify_lineage_hash": 36
+      },
+      "directed_role_pairs": [
+        {
+          "type": "order",
+          "first": "brief_steering_board",
+          "second": "email_regulator_digest",
+          "groups": 16,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "email_regulator_digest",
+          "second": "brief_steering_board",
+          "groups": 20,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "file_retention_record",
+          "second": "email_regulator_digest",
+          "groups": 13,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "file_retention_record",
+          "second": "publish_dashboard",
+          "groups": 17,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "peer_review_memo",
+          "second": "brief_steering_board",
+          "groups": 24,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "publish_dashboard",
+          "second": "file_retention_record",
+          "groups": 15,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "verify_lineage_hash",
+          "second": "batch_score_offline",
+          "groups": 20,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "order",
+          "first": "verify_lineage_hash",
+          "second": "train_on_local_rack",
+          "groups": 16,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "approve_cluster_lease",
+          "second": "train_on_rented_cluster",
+          "groups": 24,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "sign_release_ticket",
+          "second": "email_regulator_digest",
+          "groups": 62,
+          "exact_pair_seen_in_train": false
+        },
+        {
+          "type": "tool_auth",
+          "first": "sign_release_ticket",
+          "second": "publish_dashboard",
+          "groups": 58,
+          "exact_pair_seen_in_train": false
+        }
+      ],
+      "numeric_parameters": {
+        "budget:max_total_cost_cny": {
+          "min": 100,
+          "max": 1300,
+          "unique": 20
+        },
+        "deadline:max_duration_hours": {
+          "min": 6,
+          "max": 16,
+          "unique": 11
+        }
+      },
+      "counting_unit": "one explicit record per task group; E/I are not independent coverage samples"
+    }
+  },
+  "arms": {
+    "Qwen3-1.7B-v5-seed44": {
+      "final_metrics_present": true,
+      "splits": {
+        "dev": {
+          "status": "complete_split",
+          "prediction_sha256": "c48d55f6d67810680c42d94f39ae5b9808fb4e8adc04298706124a17531dcd42",
+          "counts": {
+            "constrained_records": 600,
+            "faithful_success": 598,
+            "valid_faithful_success": 598,
+            "none_records": 300,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "same_type_parameter_error": 2,
+            "reversed_role_pair": 1
+          },
+          "constrained_groups": 300,
+          "groups_with_flag": {
+            "same_type_parameter_error": 2,
+            "reversed_role_pair": 1
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 2,
+            "reversed_role_pair": 1,
+            "records": 2
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 300,
+              "faithful_success": 300
+            },
+            "constraints=1": {
+              "records": 298,
+              "faithful_success": 298
+            },
+            "implicit": {
+              "records": 300,
+              "faithful_success": 298
+            },
+            "constraints=2": {
+              "records": 232,
+              "faithful_success": 230
+            },
+            "constraints=3": {
+              "records": 70,
+              "faithful_success": 70
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "constraint_core_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "record_exact_match": 0.9977777777777778
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "constraint_core_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "record_exact_match": 0.9977777777777778
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "dev-00070-I",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The outbound gateway quarantines any payload that carries patient records.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the sandbox job ran first and had to be redone once the workflow validation finished.",
+                    "params": {
+                      "after_role": "execute_sandbox_job",
+                      "before_role": "validate_workflow"
+                    },
+                    "scope": [
+                      "role:execute_sandbox_job",
+                      "role:validate_workflow"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The outbound gateway quarantines any payload that carries patient records.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the sandbox job ran first and had to be redone once the workflow validation finished.",
+                    "params": {
+                      "after_role": "validate_workflow",
+                      "before_role": "execute_sandbox_job"
+                    },
+                    "scope": [
+                      "role:execute_sandbox_job",
+                      "role:validate_workflow"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "dev-00168-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The device logs includes medical record numbers; regulators treat any transfer of that kind of data outside our environment as a reportable breach.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the sandbox job ran first and had to be redone once the workflow validation finished.",
+                    "params": {
+                      "after_role": "execute_sandbox_job",
+                      "before_role": "validate_workflow"
+                    },
+                    "scope": [
+                      "role:execute_sandbox_job",
+                      "role:validate_workflow"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The device logs includes medical record numbers; regulators treat any transfer of that kind of data outside our environment as a reportable breach.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the sandbox job ran first and had to be redone once the workflow validation finished.",
+                    "params": {
+                      "after_role": "validate_workflow",
+                      "before_role": "validate_workflow"
+                    },
+                    "scope": [
+                      "role:validate_workflow",
+                      "role:execute_sandbox_job"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_tpl_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "ed7039f072d6e1ef7639e27e7aefcb04aa28e39516d48ef7a1e41e272d12b25c",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 685,
+            "valid_faithful_success": 685,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 40,
+            "none_deviation": 39,
+            "same_type_parameter_error": 3,
+            "scope_error": 2,
+            "extra_constraint_type": 21,
+            "missing_constraint_type": 2,
+            "evidence_span_error": 1,
+            "query_state_error": 1,
+            "state_error": 1
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "same_type_parameter_error": 3,
+            "scope_error": 2,
+            "extra_constraint_type": 15,
+            "missing_constraint_type": 2,
+            "evidence_span_error": 1,
+            "query_state_error": 1,
+            "state_error": 1
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 2,
+            "scope_error": 2,
+            "records": 15,
+            "extra_constraint_type": 12,
+            "missing_constraint_type": 2,
+            "query_state_error": 1,
+            "state_error": 1
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 343
+            },
+            "constraints=1": {
+              "records": 354,
+              "faithful_success": 345
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 342
+            },
+            "constraints=3": {
+              "records": 58,
+              "faithful_success": 55
+            },
+            "constraints=2": {
+              "records": 288,
+              "faithful_success": 285
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.9416809605488851,
+                "recall": 0.9945652173913043,
+                "f1": 0.9674008810572687
+              },
+              "constraint_core_micro": {
+                "precision": 0.9425385934819898,
+                "recall": 0.9954710144927537,
+                "f1": 0.9682819383259912
+              },
+              "record_exact_match": 0.9380952380952381
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.9416809605488851,
+                "recall": 0.9945652173913043,
+                "f1": 0.9674008810572687
+              },
+              "constraint_core_micro": {
+                "precision": 0.9425385934819898,
+                "recall": 0.9954710144927537,
+                "f1": 0.9682819383259912
+              },
+              "record_exact_match": 0.9380952380952381
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_tpl_ho-00001-E",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the permission grant first, then the external API call.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Employee-identifying records are off-limits for anything that leaves the environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Never run the archival ahead of the report delivery.",
+                    "params": {
+                      "after_role": "archive_project_files",
+                      "before_role": "deliver_report_to_team"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the permission grant first, then the external API call.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Employee-identifying records are off-limits for anything that leaves the environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Never run the archival ahead of the report delivery.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "upload_data_asset"
+                    },
+                    "scope": [
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00014-I",
+              "flags": [
+                "extra_constraint_type",
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Two gift balances of CNY 300 and CNY 200 are the only money attached to this request.",
+                    "params": {
+                      "max_total_cost_cny": 500
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "The scheduler rolls back anything still unfinished 4 hours from now.",
+                    "params": {
+                      "max_duration_hours": 4
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The product team prefers tables over long prose.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The scheduler rolls back anything still unfinished 4 hours from now.",
+                    "params": {
+                      "max_duration_hours": 4
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00017-E",
+              "flags": [
+                "extra_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do not push employee-identifying records to outside services.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "For this request, the requirement to finish the permission grant before the production run was lifted.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "run_production_mode"
+                    },
+                    "scope": [
+                      "role:run_production_mode"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Do not push employee-identifying records to outside services.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00017-I",
+              "flags": [
+                "extra_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Anything carrying employee-identifying records bounces at the egress proxy.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "For this request, the requirement to finish the permission grant before the production run was lifted.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "run_production_mode"
+                    },
+                    "scope": [
+                      "role:run_production_mode"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Anything carrying employee-identifying records bounces at the egress proxy.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00085-I",
+              "flags": [
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The insurance claims feed includes patient records, and our processing agreement covers on-premise handling alone.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "After the permission grant was skipped once, compliance froze the external API call for a week.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "The report delivery takes its input straight from what the quality cross-check produces.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "After the permission grant was skipped once, compliance froze the external API call for a week.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "The report delivery takes its input straight from what the quality cross-check produces.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00092-E",
+              "flags": [
+                "extra_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The quality cross-check must come before the report delivery, not the other way round.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "For this request, the requirement to finish the permission grant before the external API call was lifted.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "The quality cross-check must come before the report delivery, not the other way round.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00092-I",
+              "flags": [
+                "extra_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The report delivery takes its input straight from what the quality cross-check produces.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The requirement to finish the permission grant before the external API call was lifted.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "The report delivery takes its input straight from what the quality cross-check produces.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00119-E",
+              "flags": [
+                "extra_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Never run the stakeholder notification ahead of the archival.",
+                    "params": {
+                      "after_role": "notify_stakeholders",
+                      "before_role": "archive_project_files"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The entire task must not cost more than CNY 100 in total.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Never run the stakeholder notification ahead of the archival.",
+                    "params": {
+                      "after_role": "notify_stakeholders",
+                      "before_role": "archive_project_files"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Legal signed off on sending patient records to approved outside processors for this work.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The entire task must not cost more than CNY 100 in total.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_tool_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "dd85cc4c4c2f37b3b41b1e8f5d13a629d54e36930639e847e269866ebb4b066f",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 503,
+            "valid_faithful_success": 503,
+            "same_type_parameter_error": 170,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "scope_error": 400,
+            "parse_failure": 5,
+            "evidence_span_error": 3,
+            "missing_constraint_type": 84,
+            "extra_constraint_type": 84,
+            "parameter_role_absent_from_public_catalog": 29,
+            "different_contract_same_executable_predicates": 4
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "same_type_parameter_error": 102,
+            "scope_error": 216,
+            "parse_failure": 5,
+            "evidence_span_error": 3,
+            "missing_constraint_type": 52,
+            "extra_constraint_type": 52,
+            "parameter_role_absent_from_public_catalog": 24,
+            "different_contract_same_executable_predicates": 4
+          },
+          "flags_among_faithful_failures": {
+            "parse_failure": 5,
+            "records": 197,
+            "scope_error": 120,
+            "same_type_parameter_error": 121,
+            "evidence_span_error": 3,
+            "missing_constraint_type": 80,
+            "extra_constraint_type": 80,
+            "parameter_role_absent_from_public_catalog": 29
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 257
+            },
+            "constraints=2": {
+              "records": 266,
+              "faithful_success": 178
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 246
+            },
+            "constraints=1": {
+              "records": 366,
+              "faithful_success": 297
+            },
+            "constraints=3": {
+              "records": 68,
+              "faithful_success": 28
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.39908675799086757,
+                "recall": 0.39655172413793105,
+                "f1": 0.3978152025489304
+              },
+              "constraint_core_micro": {
+                "precision": 0.7589041095890411,
+                "recall": 0.7540834845735027,
+                "f1": 0.756486117432863
+              },
+              "record_exact_match": 0.5085714285714286
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.7589041095890411,
+                "recall": 0.7540834845735027,
+                "f1": 0.756486117432863
+              },
+              "constraint_core_micro": {
+                "precision": 0.7589041095890411,
+                "recall": 0.7540834845735027,
+                "f1": 0.756486117432863
+              },
+              "record_exact_match": 0.7619047619047619
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_tool_ho-00004-E",
+              "flags": [
+                "parse_failure"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Get the partner-access approval recorded before the production FL round runs.",
+                    "params": {
+                      "approval_role": "approve_partner_access",
+                      "required_role": "launch_fl_production_round"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": null
+            },
+            {
+              "sample_id": "test_tool_ho-00008-E",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep patient records inside the trusted environment with no outbound transfer.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the log-signature verification ahead of the federated training.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The partner-dataset lease requires the compute-voucher signature first.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep patient records inside the trusted environment with no outbound transfer.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:compile_qos_report",
+                      "role:export_audit_trail",
+                      "role:launch_fl_production_round",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the log-signature verification ahead of the federated training.",
+                    "params": {
+                      "log_signature": "verification",
+                      "training": "federated_training"
+                    },
+                    "scope": [
+                      "role:training"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The partner-dataset lease requires the compute-voucher signature first.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00008-I",
+              "flags": [
+                "evidence_span_error",
+                "extra_constraint_type",
+                "missing_constraint_type",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every row of the quality inspection records carries medical record numbers, and the data agreement names no external processors for such fields.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The log-signature verification is listed in the delivery template as the entry that unblocks the federated training, and the template is checked at review.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Last quarter a partner-dataset lease went through without the compute-voucher signature, and the auditors reversed it.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every row of the quality inspection records carries medical record numbers, and the data agreement names no external processors for such fields.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:approve_partner_access",
+                      "role:export_audit_trail"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The log-signature verification is listed in the delivery template as the entry that unblocks the federated training, and the template is checked at review.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "run_federated_training"
+                    },
+                    "scope": [
+                      "role:run_federated_training"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Last quarter a partner-dataset lease went through without the compute-voucher signature, and the auditors reversed it.",
+                    "params": {
+                      "compute_voucher_signature": "sign_compute_voucher",
+                      "lease_partner_dataset": "rent_cloud_gpu_job"
+                    },
+                    "scope": [
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00009-E",
+              "flags": [
+                "extra_constraint_type",
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the production FL round only after the log-signature verification is finished.",
+                    "params": {
+                      "after_role": "launch_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the production FL round only after the log-signature verification is finished.",
+                    "params": {
+                      "log_signature": "verify_log_signature",
+                      "before_role": "run_federated_training"
+                    },
+                    "scope": [
+                      "role:run_federated_training"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00010-E",
+              "flags": [
+                "extra_constraint_type",
+                "missing_constraint_type",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep all employee-identifying records within the local environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the log-signature verification ahead of the production FL round.",
+                    "params": {
+                      "after_role": "launch_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep all employee-identifying records within the local environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:compile_qos_report",
+                      "role:export_audit_trail",
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the log-signature verification ahead of the production FL round.",
+                    "params": {
+                      "log_signature": "signature",
+                      "verification_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00010-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The inventory snapshot still includes employee salary records, and the house data charter files such fields under the class it keeps on local tooling only.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the production FL round ran first and had to be redone once the log-signature verification finished.",
+                    "params": {
+                      "after_role": "launch_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The inventory snapshot still includes employee salary records, and the house data charter files such fields under the class it keeps on local tooling only.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:compile_qos_report",
+                      "role:export_audit_trail"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the production FL round ran first and had to be redone once the log-signature verification finished.",
+                    "params": {
+                      "log_signature": "verification",
+                      "before_role": "run_federated_training"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00011-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the partner-access approval was missing from the log, the platform bounced the rented cloud GPU job.",
+                    "params": {
+                      "approval_role": "approve_partner_access",
+                      "required_role": "rent_cloud_gpu_job"
+                    },
+                    "scope": [
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "It is 08:00 now, and the reviewers sign off for the day at 14:00.",
+                    "params": {
+                      "max_duration_hours": 6
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the partner-access approval was missing from the log, the platform bounced the rented cloud GPU job.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "launch_fl_production_round"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "It is 08:00 now, and the reviewers sign off for the day at 14:00.",
+                    "params": {
+                      "max_duration_hours": 6
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00012-E",
+              "flags": [
+                "parse_failure"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Get the partner-access approval recorded before the rented cloud GPU job runs.",
+                    "params": {
+                      "approval_role": "approve_partner_access",
+                      "required_role": "rent_cloud_gpu_job"
+                    },
+                    "scope": [
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": null
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_struct_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "434fca03b98e14927bd0be5f8fd5c583994486048f91f374841f633852ad3b5d",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 543,
+            "valid_faithful_success": 543,
+            "scope_error": 418,
+            "extra_constraint_type": 41,
+            "missing_constraint_type": 39,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "same_type_parameter_error": 124,
+            "reversed_role_pair": 41,
+            "parameter_role_absent_from_public_catalog": 45,
+            "evidence_span_error": 2
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "scope_error": 229,
+            "extra_constraint_type": 30,
+            "missing_constraint_type": 28,
+            "same_type_parameter_error": 88,
+            "reversed_role_pair": 34,
+            "parameter_role_absent_from_public_catalog": 30,
+            "evidence_span_error": 2
+          },
+          "flags_among_faithful_failures": {
+            "scope_error": 104,
+            "extra_constraint_type": 40,
+            "missing_constraint_type": 39,
+            "records": 157,
+            "same_type_parameter_error": 121,
+            "reversed_role_pair": 41,
+            "parameter_role_absent_from_public_catalog": 45,
+            "evidence_span_error": 1
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 276
+            },
+            "constraints=2": {
+              "records": 278,
+              "faithful_success": 198
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 267
+            },
+            "constraints=1": {
+              "records": 330,
+              "faithful_success": 283
+            },
+            "constraints=3": {
+              "records": 92,
+              "faithful_success": 62
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.5128865979381443,
+                "recall": 0.5137693631669535,
+                "f1": 0.5133276010318143
+              },
+              "constraint_core_micro": {
+                "precision": 0.8539518900343642,
+                "recall": 0.8554216867469879,
+                "f1": 0.8546861564918314
+              },
+              "record_exact_match": 0.5504761904761905
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.8539518900343642,
+                "recall": 0.8554216867469879,
+                "f1": 0.8546861564918314
+              },
+              "constraint_core_micro": {
+                "precision": 0.8539518900343642,
+                "recall": 0.8554216867469879,
+                "f1": 0.8546861564918314
+              },
+              "record_exact_match": 0.8466666666666667
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_struct_ho-00000-E",
+              "flags": [
+                "extra_constraint_type",
+                "missing_constraint_type",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Complete the lineage-hash verification before the local-rack training.",
+                    "params": {
+                      "after_role": "train_on_local_rack",
+                      "before_role": "verify_lineage_hash"
+                    },
+                    "scope": [
+                      "role:train_on_local_rack",
+                      "role:verify_lineage_hash"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The combined cost of all billable steps must not exceed CNY 150.",
+                    "params": {
+                      "max_total_cost_cny": 150
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket",
+                      "role:scrape_partner_portal",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Complete the lineage-hash verification before the local-rack training.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:email_regulator_digest",
+                      "role:peer_review_memo"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The combined cost of all billable steps must not exceed CNY 150.",
+                    "params": {
+                      "max_total_cost_cny": 150
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:license_vendor_extract"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00006-E",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "A completed the release-ticket signature is a precondition for the regulator digest email.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "A completed the release-ticket signature is a precondition for the regulator digest email.",
+                    "params": {
+                      "approval_role": "email_regulator_digest",
+                      "required_role": "sign_release_ticket"
+                    },
+                    "scope": [
+                      "role:sign_release_ticket",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00007-I",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The outbound gateway quarantines any payload that carries customer-identifying records.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest",
+                      "role:push_to_shared_bucket",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the regulator digest email.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The outbound gateway quarantines any payload that carries customer-identifying records.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:email_regulator_digest",
+                      "role:file_retention_record"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the regulator digest email.",
+                    "params": {
+                      "approval_role": "email_regulator_digest",
+                      "required_role": "deliver_to_external"
+                    },
+                    "scope": [
+                      "role:deliver_to_external"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00009-E",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The release-ticket signature must precede the regulator digest email.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The release-ticket signature must precede the regulator digest email.",
+                    "params": {
+                      "approval_role": "email_regulator_digest",
+                      "required_role": "sign_release_ticket"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest",
+                      "role:sign_release_ticket"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00009-I",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The release-ticket signature is what the audit gate checks before it lets the regulator digest email through.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The release-ticket signature is what the audit gate checks before it lets the regulator digest email through.",
+                    "params": {
+                      "approval_role": "email_regulator_digest",
+                      "required_role": "sign_release_ticket"
+                    },
+                    "scope": [
+                      "role:sign_release_ticket",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00012-E",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep patient records inside the trusted environment with no outbound transfer.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest",
+                      "role:publish_dashboard",
+                      "role:push_to_shared_bucket",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Run the regulator digest email first, then the steering-board briefing.",
+                    "params": {
+                      "after_role": "brief_steering_board",
+                      "before_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Keep patient records inside the trusted environment with no outbound transfer.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:email_regulator_digest",
+                      "role:publish_dashboard",
+                      "role:steering_board"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Run the regulator digest email first, then the steering-board briefing.",
+                    "params": {
+                      "after_role": "brief_steering_board",
+                      "before_role": "query_open_registry"
+                    },
+                    "scope": [
+                      "role:query_open_registry",
+                      "role:brief_steering_board"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00013-I",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the regulator digest email.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the regulator digest email.",
+                    "params": {
+                      "approval_role": "email_regulator_digest",
+                      "required_role": "sign_release_ticket"
+                    },
+                    "scope": [
+                      "role:sign_release_ticket",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00021-E",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do not send customer-identifying records to any external service.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest",
+                      "role:push_to_shared_bucket",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the steering-board briefing ahead of the regulator digest email.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The cluster-lease approval must precede the rented-cluster training.",
+                    "params": {
+                      "approval_role": "approve_cluster_lease",
+                      "required_role": "train_on_rented_cluster"
+                    },
+                    "scope": [
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do not send customer-identifying records to any external service.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:email_regulator_digest",
+                      "role:file_retention_record",
+                      "role:peer_review_memo"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Finish the steering-board briefing ahead of the regulator digest email.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest",
+                      "role:brief_steering_board"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The cluster-lease approval must precede the rented-cluster training.",
+                    "params": {
+                      "approval_role": "cluster-lease",
+                      "required_role": "train_on_rented_cluster"
+                    },
+                    "scope": [
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        }
+      }
+    },
+    "Qwen3-4B-v5-seed43": {
+      "final_metrics_present": true,
+      "splits": {
+        "dev": {
+          "status": "complete_split",
+          "prediction_sha256": "422dc77edd93d5942e52f255f5460485ef72633e2cfb926c6e55b6dcb3bc405e",
+          "counts": {
+            "constrained_records": 600,
+            "faithful_success": 599,
+            "valid_faithful_success": 599,
+            "none_records": 300,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "same_type_parameter_error": 2
+          },
+          "constrained_groups": 300,
+          "groups_with_flag": {
+            "same_type_parameter_error": 2
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 1,
+            "records": 1
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 300,
+              "faithful_success": 300
+            },
+            "constraints=1": {
+              "records": 298,
+              "faithful_success": 298
+            },
+            "implicit": {
+              "records": 300,
+              "faithful_success": 299
+            },
+            "constraints=2": {
+              "records": 232,
+              "faithful_success": 232
+            },
+            "constraints=3": {
+              "records": 70,
+              "faithful_success": 69
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "constraint_core_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "record_exact_match": 0.9977777777777778
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "constraint_core_micro": {
+                "precision": 0.9979423868312757,
+                "recall": 0.9979423868312757,
+                "f1": 0.9979423868312757
+              },
+              "record_exact_match": 0.9977777777777778
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "dev-00036-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "It is 08:00 now, and the reviewers sign off for the day at 18:00.",
+                    "params": {
+                      "max_duration_hours": 10
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "There is exactly CNY 100 left in the project wallet, and it cannot be topped up this month.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "When the quality cross-check was skipped last month, the report delivery returned empty results.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "It is 08:00 now, and the reviewers sign off for the day at 18:00.",
+                    "params": {
+                      "max_duration_hours": 100
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "There is exactly CNY 100 left in the project wallet, and it cannot be topped up this month.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "When the quality cross-check was skipped last month, the report delivery returned empty results.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_tpl_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "13b1cdd208078d3a13653478ab2065c79cca8c6a792c0467dc2e5944c6fc47ba",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 650,
+            "valid_faithful_success": 650,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 1,
+            "none_deviation": 1,
+            "same_type_parameter_error": 17,
+            "reversed_role_pair": 10,
+            "missing_constraint_type": 28,
+            "extra_constraint_type": 19,
+            "query_state_error": 14,
+            "evidence_span_error": 4,
+            "parameter_role_absent_from_public_catalog": 2,
+            "scope_error": 4,
+            "state_error": 8
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "same_type_parameter_error": 16,
+            "reversed_role_pair": 10,
+            "missing_constraint_type": 25,
+            "extra_constraint_type": 15,
+            "query_state_error": 13,
+            "evidence_span_error": 4,
+            "parameter_role_absent_from_public_catalog": 2,
+            "scope_error": 4,
+            "state_error": 8
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 15,
+            "reversed_role_pair": 10,
+            "records": 50,
+            "missing_constraint_type": 27,
+            "extra_constraint_type": 11,
+            "query_state_error": 12,
+            "parameter_role_absent_from_public_catalog": 2,
+            "scope_error": 4,
+            "state_error": 5,
+            "evidence_span_error": 1
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 319
+            },
+            "constraints=1": {
+              "records": 354,
+              "faithful_success": 335
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 331
+            },
+            "constraints=3": {
+              "records": 58,
+              "faithful_success": 49
+            },
+            "constraints=2": {
+              "records": 288,
+              "faithful_success": 266
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.958904109589041,
+                "recall": 0.9510869565217391,
+                "f1": 0.9549795361527967
+              },
+              "constraint_core_micro": {
+                "precision": 0.9662100456621004,
+                "recall": 0.9583333333333334,
+                "f1": 0.9622555707139608
+              },
+              "record_exact_match": 0.940952380952381
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.958904109589041,
+                "recall": 0.9510869565217391,
+                "f1": 0.9549795361527967
+              },
+              "constraint_core_micro": {
+                "precision": 0.9662100456621004,
+                "recall": 0.9583333333333334,
+                "f1": 0.9622555707139608
+              },
+              "record_exact_match": 0.940952380952381
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_tpl_ho-00001-E",
+              "flags": [
+                "reversed_role_pair",
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the permission grant first, then the external API call.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Employee-identifying records are off-limits for anything that leaves the environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Never run the archival ahead of the report delivery.",
+                    "params": {
+                      "after_role": "archive_project_files",
+                      "before_role": "deliver_report_to_team"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do the permission grant first, then the external API call.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Employee-identifying records are off-limits for anything that leaves the environment.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:deliver_report_to_team",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Never run the archival ahead of the report delivery.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "archive_project_files"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00003-E",
+              "flags": [
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Executing the external API call ahead of the permission grant is not permitted.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Do not begin the archival until the report delivery is complete.",
+                    "params": {
+                      "after_role": "archive_project_files",
+                      "before_role": "deliver_report_to_team"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Do not begin the archival until the report delivery is complete.",
+                    "params": {
+                      "after_role": "archive_project_files",
+                      "before_role": "deliver_report_to_team"
+                    },
+                    "scope": [
+                      "role:archive_project_files",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00004-I",
+              "flags": [
+                "extra_constraint_type",
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "After the finance approval was skipped once, compliance froze the data-asset purchase for a week.",
+                    "params": {
+                      "approval_role": "record_finance_approval",
+                      "required_role": "purchase_data_asset"
+                    },
+                    "scope": [
+                      "role:purchase_data_asset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "compliance froze the data-asset purchase for a week.",
+                    "params": {
+                      "max_duration_hours": 7
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00005-E",
+              "flags": [
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Nothing in this task should push total spend past CNY 1,250.",
+                    "params": {
+                      "max_total_cost_cny": 1250
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "The report delivery must come before the stakeholder notification, not the other way round.",
+                    "params": {
+                      "after_role": "notify_stakeholders",
+                      "before_role": "deliver_report_to_team"
+                    },
+                    "scope": [
+                      "role:deliver_report_to_team",
+                      "role:notify_stakeholders"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Nothing in this task should push total spend past CNY 1,250.",
+                    "params": {
+                      "max_total_cost_cny": 1250
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:purchase_data_asset",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00010-I",
+              "flags": [
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The previous run did the report delivery early and lost a day redoing it after the quality cross-check.",
+                    "params": {
+                      "after_role": "deliver_report_to_team",
+                      "before_role": "cross_check_data_quality"
+                    },
+                    "scope": [
+                      "role:cross_check_data_quality",
+                      "role:deliver_report_to_team"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "House practice files the permission grant as the opening item for any external API call, and the audit template checks for it.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "House practice files the permission grant as the opening item for any external API call, and the audit template checks for it.",
+                    "params": {
+                      "approval_role": "grant_resource_permission",
+                      "required_role": "call_external_api"
+                    },
+                    "scope": [
+                      "role:call_external_api"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00015-I",
+              "flags": [
+                "missing_constraint_type",
+                "query_state_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The workflow validation appears on the review checklist as the gate for the production run, and reviewers return plans that invert it.",
+                    "params": {
+                      "after_role": "run_production_mode",
+                      "before_role": "validate_workflow"
+                    },
+                    "scope": [
+                      "role:run_production_mode",
+                      "role:validate_workflow"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [],
+                "query_state": "none"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00029-E",
+              "flags": [
+                "missing_constraint_type",
+                "query_state_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Executing the data-asset purchase ahead of the finance approval is not permitted.",
+                    "params": {
+                      "approval_role": "record_finance_approval",
+                      "required_role": "purchase_data_asset"
+                    },
+                    "scope": [
+                      "role:purchase_data_asset"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [],
+                "query_state": "none"
+              }
+            },
+            {
+              "sample_id": "test_tpl_ho-00031-I",
+              "flags": [
+                "missing_constraint_type"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The quality inspection records includes customer-identifying records, and our processing agreement covers on-premise handling alone.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "The previous run did the sandbox job early and lost a day redoing it after the workflow validation.",
+                    "params": {
+                      "after_role": "execute_sandbox_job",
+                      "before_role": "validate_workflow"
+                    },
+                    "scope": [
+                      "role:execute_sandbox_job",
+                      "role:validate_workflow"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The quality inspection records includes customer-identifying records, and our processing agreement covers on-premise handling alone.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:call_external_api",
+                      "role:notify_stakeholders",
+                      "role:upload_data_asset"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_tool_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "0e7456fadbaa0342422f82626742b484e0d03d4336558fe4670e3dbd93ba206f",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 671,
+            "valid_faithful_success": 671,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "scope_error": 309,
+            "same_type_parameter_error": 31,
+            "parameter_role_absent_from_public_catalog": 13,
+            "reversed_role_pair": 2,
+            "different_contract_same_executable_predicates": 2,
+            "extra_constraint_type": 2,
+            "missing_constraint_type": 2
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "scope_error": 167,
+            "same_type_parameter_error": 25,
+            "parameter_role_absent_from_public_catalog": 13,
+            "reversed_role_pair": 2,
+            "different_contract_same_executable_predicates": 2,
+            "extra_constraint_type": 2,
+            "missing_constraint_type": 2
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 29,
+            "scope_error": 27,
+            "records": 29,
+            "parameter_role_absent_from_public_catalog": 13,
+            "reversed_role_pair": 2
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 339
+            },
+            "constraints=2": {
+              "records": 266,
+              "faithful_success": 255
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 332
+            },
+            "constraints=1": {
+              "records": 366,
+              "faithful_success": 356
+            },
+            "constraints=3": {
+              "records": 68,
+              "faithful_success": 60
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.6787658802177858,
+                "recall": 0.6787658802177858,
+                "f1": 0.6787658802177858
+              },
+              "constraint_core_micro": {
+                "precision": 0.97005444646098,
+                "recall": 0.97005444646098,
+                "f1": 0.97005444646098
+              },
+              "record_exact_match": 0.7028571428571428
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.97005444646098,
+                "recall": 0.97005444646098,
+                "f1": 0.97005444646098
+              },
+              "constraint_core_micro": {
+                "precision": 0.97005444646098,
+                "recall": 0.97005444646098,
+                "f1": 0.97005444646098
+              },
+              "record_exact_match": 0.9685714285714285
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_tool_ho-00010-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The inventory snapshot still includes employee salary records, and the house data charter files such fields under the class it keeps on local tooling only.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the production FL round ran first and had to be redone once the log-signature verification finished.",
+                    "params": {
+                      "after_role": "launch_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The inventory snapshot still includes employee salary records, and the house data charter files such fields under the class it keeps on local tooling only.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "employee_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Last cycle the production FL round ran first and had to be redone once the log-signature verification finished.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00027-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every row of the support tickets carries customer home addresses, and the data agreement names no external processors for such fields.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:publish_model_card",
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "When the log-signature verification was skipped last month, the production FL round returned empty results.",
+                    "params": {
+                      "after_role": "launch_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:launch_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The compute lease was booked for 9 hours, and 2 of those hours are already used up.",
+                    "params": {
+                      "max_duration_hours": 7
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every row of the support tickets carries customer home addresses, and the data agreement names no external processors for such fields.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "customer_pii"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:publish_model_card"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "When the log-signature verification was skipped last month, the production FL round returned empty results.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The compute lease was booked for 9 hours, and 2 of those hours are already used up.",
+                    "params": {
+                      "max_duration_hours": 7
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00040-E",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Patient records must stay on-premise throughout the task.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Do the compliance checkpoint only after the audit-trail export is finished.",
+                    "params": {
+                      "after_role": "mark_compliance_checkpoint",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:mark_compliance_checkpoint"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Patient records must stay on-premise throughout the task.",
+                    "params": {
+                      "forbidden_recipients": [
+                        "external"
+                      ],
+                      "protected_data_classes": [
+                        "patient_records"
+                      ]
+                    },
+                    "scope": [
+                      "role:approve_partner_access",
+                      "role:export_audit_trail",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "privacy"
+                  },
+                  {
+                    "evidence_span": "Do the compliance checkpoint only after the audit-trail export is finished.",
+                    "params": {
+                      "after_role": "check_compliance_checkpoint",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:check_compliance_checkpoint",
+                      "role:export_audit_trail"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00066-I",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The federated training picks up its input from the log-signature verification.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "On this account, the partner-dataset lease is rejected unless the compute-voucher signature is already on record.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The federated training picks up its input from the log-signature verification.",
+                    "params": {
+                      "after_role": "train_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:train_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "On this account, the partner-dataset lease is rejected unless the compute-voucher signature is already on record.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00077-I",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The federated training picks up its input from the log-signature verification.",
+                    "params": {
+                      "after_role": "run_federated_training",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:run_federated_training",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The federated training picks up its input from the log-signature verification.",
+                    "params": {
+                      "after_role": "train_fl_production_round",
+                      "before_role": "verify_log_signature"
+                    },
+                    "scope": [
+                      "role:train_fl_production_round",
+                      "role:verify_log_signature"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00081-E",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The rented cloud GPU job is allowed only once the partner-access approval is on record.",
+                    "params": {
+                      "approval_role": "approve_partner_access",
+                      "required_role": "rent_cloud_gpu_job"
+                    },
+                    "scope": [
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Run the audit-trail export first, then the compliance checkpoint.",
+                    "params": {
+                      "after_role": "mark_compliance_checkpoint",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:mark_compliance_checkpoint"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The rented cloud GPU job is allowed only once the partner-access approval is on record.",
+                    "params": {
+                      "approval_role": "approve_partner_access",
+                      "required_role": "rent_cloud_gpu_job"
+                    },
+                    "scope": [
+                      "role:rent_cloud_gpu_job"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  },
+                  {
+                    "evidence_span": "Run the audit-trail export first, then the compliance checkpoint.",
+                    "params": {
+                      "after_role": "check_compliance_checkpoint",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:check_compliance_checkpoint",
+                      "role:export_audit_trail"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00106-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the compute-voucher signature was missing from the log, the platform bounced the partner-dataset lease.",
+                    "params": {
+                      "approval_role": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the compute-voucher signature was missing from the log, the platform bounced the partner-dataset lease.",
+                    "params": {
+                      "signature": "sign_compute_voucher",
+                      "required_role": "lease_partner_dataset"
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_tool_ho-00107-E",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Run the audit-trail export first, then the compliance checkpoint.",
+                    "params": {
+                      "after_role": "mark_compliance_checkpoint",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:export_audit_trail",
+                      "role:mark_compliance_checkpoint"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Keep the total spend on this task at or below CNY 100.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:lease_partner_dataset",
+                      "role:rent_cloud_gpu_job",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "Allow no more than 6 hours for the full task.",
+                    "params": {
+                      "max_duration_hours": 6
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Run the audit-trail export first, then the compliance checkpoint.",
+                    "params": {
+                      "after_role": "check_service_availability",
+                      "before_role": "export_audit_trail"
+                    },
+                    "scope": [
+                      "role:check_service_availability",
+                      "role:export_audit_trail"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Keep the total spend on this task at or below CNY 100.",
+                    "params": {
+                      "max_total_cost_cny": 100
+                    },
+                    "scope": [
+                      "role:aggregate_fl_model",
+                      "role:lease_partner_dataset",
+                      "role:rent_cloud_gpu_job",
+                      "role:export_audit_trail",
+                      "role:sync_to_partner_hub"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "budget"
+                  },
+                  {
+                    "evidence_span": "Allow no more than 6 hours for the full task.",
+                    "params": {
+                      "max_duration_hours": 6
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "explicit",
+                    "type": "deadline"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        },
+        "test_struct_ho": {
+          "status": "complete_split",
+          "prediction_sha256": "c4989bd8117739c51ad291cc6fa19ac523190e5a58141d045856d2e67428fd02",
+          "counts": {
+            "constrained_records": 700,
+            "faithful_success": 679,
+            "valid_faithful_success": 679,
+            "scope_error": 353,
+            "none_records": 350,
+            "none_parse_failure": 0,
+            "none_false_positive": 0,
+            "none_deviation": 0,
+            "same_type_parameter_error": 21,
+            "different_contract_same_executable_predicates": 70,
+            "extra_constraint_type": 73,
+            "missing_constraint_type": 73,
+            "parameter_role_absent_from_public_catalog": 2,
+            "severity_error": 1,
+            "reversed_role_pair": 3
+          },
+          "constrained_groups": 350,
+          "groups_with_flag": {
+            "scope_error": 180,
+            "same_type_parameter_error": 20,
+            "missing_constraint_type": 64,
+            "extra_constraint_type": 64,
+            "different_contract_same_executable_predicates": 63,
+            "parameter_role_absent_from_public_catalog": 2,
+            "severity_error": 1,
+            "reversed_role_pair": 3
+          },
+          "flags_among_faithful_failures": {
+            "same_type_parameter_error": 19,
+            "scope_error": 14,
+            "records": 21,
+            "parameter_role_absent_from_public_catalog": 2,
+            "severity_error": 1,
+            "extra_constraint_type": 3,
+            "missing_constraint_type": 3,
+            "reversed_role_pair": 3
+          },
+          "by_variant_or_constraint_count": {
+            "explicit": {
+              "records": 350,
+              "faithful_success": 344
+            },
+            "constraints=2": {
+              "records": 278,
+              "faithful_success": 270
+            },
+            "implicit": {
+              "records": 350,
+              "faithful_success": 335
+            },
+            "constraints=1": {
+              "records": 330,
+              "faithful_success": 325
+            },
+            "constraints=3": {
+              "records": 92,
+              "faithful_success": 84
+            }
+          },
+          "public_scope_baseline": {
+            "before": {
+              "constraint_micro": {
+                "precision": 0.5946643717728055,
+                "recall": 0.5946643717728055,
+                "f1": 0.5946643717728055
+              },
+              "constraint_core_micro": {
+                "precision": 0.9173838209982789,
+                "recall": 0.9173838209982789,
+                "f1": 0.9173838209982789
+              },
+              "record_exact_match": 0.6180952380952381
+            },
+            "after": {
+              "constraint_micro": {
+                "precision": 0.9173838209982789,
+                "recall": 0.9173838209982789,
+                "f1": 0.9173838209982789
+              },
+              "constraint_core_micro": {
+                "precision": 0.9173838209982789,
+                "recall": 0.9173838209982789,
+                "f1": 0.9173838209982789
+              },
+              "record_exact_match": 0.9114285714285715
+            },
+            "faithful_changes": 0,
+            "uses_gold": false,
+            "meaning": "scope field correction only; no semantic or execution improvement"
+          },
+          "failure_examples": [
+            {
+              "sample_id": "test_struct_ho-00001-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The project wallet holds CNY 2,250, of which CNY 1,800 is already reserved for the license renewal.",
+                    "params": {
+                      "max_total_cost_cny": 450
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket",
+                      "role:scrape_partner_portal",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The project wallet holds CNY 2,250, of which CNY 1,800 is already reserved for the license renewal.",
+                    "params": {
+                      "max_total_cost_cny": 4500
+                    },
+                    "scope": [
+                      "role:approve_cluster_lease",
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00023-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The compute lease was booked for 16 hours, and 6 of those hours are already used up.",
+                    "params": {
+                      "max_duration_hours": 10
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "When the steering-board briefing was skipped last month, the regulator digest email returned empty results.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "There is exactly CNY 200 left in the project wallet, and it cannot be topped up this month.",
+                    "params": {
+                      "max_total_cost_cny": 200
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket",
+                      "role:scrape_partner_portal",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The compute lease was booked for 16 hours, and 6 of those hours are already used up.",
+                    "params": {
+                      "max_duration_hours": 100
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "When the steering-board briefing was skipped last month, the regulator digest email returned empty results.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "There is exactly CNY 200 left in the project wallet, and it cannot be topped up this month.",
+                    "params": {
+                      "max_total_cost_cny": 200
+                    },
+                    "scope": [
+                      "role:check_bucket_quota",
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00030-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The retention-record filing is listed in the delivery template as the entry that unblocks the regulator digest email, and the template is checked at review.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "file_retention_record"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest",
+                      "role:file_retention_record"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The only funding is two prepaid vouchers worth CNY 200 and CNY 150, and the card on file is frozen.",
+                    "params": {
+                      "max_total_cost_cny": 350
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket",
+                      "role:scrape_partner_portal",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The retention-record filing is listed in the delivery template as the entry that unblocks the regulator digest email, and the template is checked at review.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "check_bucket_quota"
+                    },
+                    "scope": [
+                      "role:check_bucket_quota",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The only funding is two prepaid vouchers worth CNY 200 and CNY 150, and the card on file is frozen.",
+                    "params": {
+                      "max_total_cost_cny": 350
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00044-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Last quarter a dashboard publication went through without the release-ticket signature, and the auditors reversed it.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "publish_dashboard"
+                    },
+                    "scope": [
+                      "role:publish_dashboard"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Last quarter a dashboard publication went through without the release-ticket signature, and the auditors reversed it.",
+                    "params": {
+                      "signature_role": "sign_release_ticket",
+                      "required_role": "publish_dashboard"
+                    },
+                    "scope": [
+                      "role:publish_dashboard"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00060-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "It is 09:00 now, and the reviewers sign off for the day at 19:00.",
+                    "params": {
+                      "max_duration_hours": 10
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "When the lineage-hash verification was skipped last month, the offline batch scoring returned empty results.",
+                    "params": {
+                      "after_role": "batch_score_offline",
+                      "before_role": "verify_lineage_hash"
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:verify_lineage_hash"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "It is 09:00 now, and the reviewers sign off for the day at 19:00.",
+                    "params": {
+                      "max_duration_hours": 100
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "When the lineage-hash verification was skipped last month, the offline batch scoring returned empty results.",
+                    "params": {
+                      "after_role": "batch_score_offline",
+                      "before_role": "verify_lineage_hash"
+                    },
+                    "scope": [
+                      "role:batch_score_offline",
+                      "role:verify_lineage_hash"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00091-I",
+              "flags": [
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "The team gets 14 hours of shared-lane time per request, and an earlier step of this request already consumed 4 of them.",
+                    "params": {
+                      "max_duration_hours": 10
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "The steering-board briefing is listed in the delivery template as the entry that unblocks the regulator digest email, and the template is checked at review.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The only funding is two prepaid vouchers worth CNY 50 and CNY 200, and the card on file is frozen.",
+                    "params": {
+                      "max_total_cost_cny": 250
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket",
+                      "role:scrape_partner_portal",
+                      "role:train_on_rented_cluster"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "The team gets 14 hours of shared-lane time per request, and an earlier step of this request already consumed 4 of them.",
+                    "params": {
+                      "max_duration_hours": 100
+                    },
+                    "scope": [
+                      "role:*"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "deadline"
+                  },
+                  {
+                    "evidence_span": "The steering-board briefing is listed in the delivery template as the entry that unblocks the regulator digest email, and the template is checked at review.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "The only funding is two prepaid vouchers worth CNY 50 and CNY 200, and the card on file is frozen.",
+                    "params": {
+                      "max_total_cost_cny": 250
+                    },
+                    "scope": [
+                      "role:license_vendor_extract",
+                      "role:push_to_shared_bucket"
+                    ],
+                    "severity": "high",
+                    "state": "implicit",
+                    "type": "budget"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00095-E",
+              "flags": [
+                "parameter_role_absent_from_public_catalog",
+                "same_type_parameter_error",
+                "scope_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Start the regulator digest email only when the steering-board briefing has completed.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Get the release-ticket signature recorded before the regulator digest email runs.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_digest"
+                    },
+                    "scope": [
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Start the regulator digest email only when the steering-board briefing has completed.",
+                    "params": {
+                      "after_role": "email_regulator_digest",
+                      "before_role": "brief_steering_board"
+                    },
+                    "scope": [
+                      "role:brief_steering_board",
+                      "role:email_regulator_digest"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "order"
+                  },
+                  {
+                    "evidence_span": "Get the release-ticket signature recorded before the regulator digest email runs.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "email_regulator_status"
+                    },
+                    "scope": [
+                      "role:email_regulator_status"
+                    ],
+                    "severity": "medium",
+                    "state": "explicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "explicit"
+              }
+            },
+            {
+              "sample_id": "test_struct_ho-00108-I",
+              "flags": [
+                "same_type_parameter_error"
+              ],
+              "gold": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the dashboard publication.",
+                    "params": {
+                      "approval_role": "sign_release_ticket",
+                      "required_role": "publish_dashboard"
+                    },
+                    "scope": [
+                      "role:publish_dashboard"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              },
+              "predicted": {
+                "constraints": [
+                  {
+                    "evidence_span": "Every time the release-ticket signature was missing from the log, the platform bounced the dashboard publication.",
+                    "params": {
+                      "signature_role": "sign_release_ticket",
+                      "required_role": "publish_dashboard"
+                    },
+                    "scope": [
+                      "role:publish_dashboard"
+                    ],
+                    "severity": "medium",
+                    "state": "implicit",
+                    "type": "tool_auth"
+                  }
+                ],
+                "query_state": "implicit"
+              }
+            }
+          ],
+          "interpretation": "nonexclusive descriptive flags, not causal attribution; no inferential p-values"
+        }
+      }
+    }
+  },
+  "token_budgets": []
+}
