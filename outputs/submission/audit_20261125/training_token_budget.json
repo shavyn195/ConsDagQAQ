@@ -1,0 +1,164 @@
+{
+  "revision": "20261125-training-token-replay-v1",
+  "created_utc": "2026-11-24T16:55:48.669941+00:00",
+  "recipe": {
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "gradient_accumulation_steps": 4,
+    "max_seq_len": 1280,
+    "seed": 42,
+    "precision": "bf16"
+  },
+  "arms": {
+    "compiler": {
+      "one_epoch": {
+        "prompt": {
+          "sum": 8687164,
+          "mean": 723.9303333333334,
+          "min": 650,
+          "median": 723.0,
+          "p95_nearest_rank": 770,
+          "max": 826
+        },
+        "supervised_target_including_eos": {
+          "sum": 890243,
+          "mean": 74.18691666666666,
+          "min": 10,
+          "median": 69.0,
+          "p95_nearest_rank": 182,
+          "max": 251
+        },
+        "sequence": {
+          "sum": 9577407,
+          "mean": 798.11725,
+          "min": 660,
+          "median": 783.0,
+          "p95_nearest_rank": 932,
+          "max": 1062
+        }
+      },
+      "planned_three_epoch_tokens": {
+        "prompt": 26061492,
+        "supervised_target_including_eos": 2670729,
+        "sequence": 28732221
+      },
+      "rows": 12000,
+      "dropped": 0,
+      "planned_optimizer_steps": 9000
+    },
+    "public_monolithic": {
+      "one_epoch": {
+        "prompt": {
+          "sum": 11782159,
+          "mean": 981.8465833333333,
+          "min": 870,
+          "median": 982.0,
+          "p95_nearest_rank": 1053,
+          "max": 1123
+        },
+        "supervised_target_including_eos": {
+          "sum": 352033,
+          "mean": 29.336083333333335,
+          "min": 23,
+          "median": 29.0,
+          "p95_nearest_rank": 36,
+          "max": 45
+        },
+        "sequence": {
+          "sum": 12134192,
+          "mean": 1011.1826666666667,
+          "min": 893,
+          "median": 1011.0,
+          "p95_nearest_rank": 1087,
+          "max": 1162
+        }
+      },
+      "planned_three_epoch_tokens": {
+        "prompt": 35346477,
+        "supervised_target_including_eos": 1056099,
+        "sequence": 36402576
+      },
+      "rows": 12000,
+      "dropped": 0,
+      "planned_optimizer_steps": 9000
+    },
+    "informed_monolithic_diagnostic": {
+      "one_epoch": {
+        "prompt": {
+          "sum": 10022179,
+          "mean": 835.1815833333334,
+          "min": 694,
+          "median": 835.0,
+          "p95_nearest_rank": 928,
+          "max": 1005
+        },
+        "supervised_target_including_eos": {
+          "sum": 352033,
+          "mean": 29.336083333333335,
+          "min": 23,
+          "median": 29.0,
+          "p95_nearest_rank": 36,
+          "max": 45
+        },
+        "sequence": {
+          "sum": 10374212,
+          "mean": 864.5176666666666,
+          "min": 717,
+          "median": 865.0,
+          "p95_nearest_rank": 961,
+          "max": 1044
+        }
+      },
+      "planned_three_epoch_tokens": {
+        "prompt": 30066537,
+        "supervised_target_including_eos": 1056099,
+        "sequence": 31122636
+      },
+      "rows": 12000,
+      "dropped": 0,
+      "planned_optimizer_steps": 9000
+    }
+  },
+  "compiler_divided_by_public_monolithic": {
+    "prompt": 0.7373151219568502,
+    "supervised_target_including_eos": 2.528862350972778,
+    "sequence": 0.7892908732612769
+  },
+  "verification": {
+    "all_current_compiler_prompts_equal_historical": true,
+    "all_current_compiler_targets_equal_historical": true,
+    "frozen_public_sources_match": true,
+    "train_data_match": true,
+    "historical_tokenizer_hash_available": false
+  },
+  "provenance": {
+    "script_sha256": "69a5c72ab0dec8340b1891a3407870fec296913b3718b3bcf81a4990d23d37fb",
+    "train_sha256": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "baseline_metrics_sha256": "b4e9a6c93aa77ff9f6b36f050806f0f0b30feffa3fd2c28ee63363bf2763c047",
+    "baseline_source_sha256": "14979c5ddc74ae6ca83f0ad44191360b4731e7fce359f8083c3aee54011dd473",
+    "public_protocol_sha256": "37df82ab05dca1c02f3a500557226f0efc8ada7f6bfaa450fc1d992f06739720",
+    "public_sources": {
+      "sub_e2_public_contract.py": "7e1c9173be00ceed53137a45804017e323686be045ea9fb98db659bcc7f8b349",
+      "sub_e2_monolithic.py": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+      "run_e1.py": "c0b51ff280fda630c96084552eb6da15f7821c5d788bb0724c57ee52e77ea1b0",
+      "trust_env.py": "01dc6b70d13fd56392d9eb6a21bf5ff70a5e35708dddcf6294ef9d5d6163e78f",
+      "dataset_v5_spec.py": "53111df8ae305c16fa58f620046f936980ae8113d064db86c1f6d7d0e9b6d15d"
+    },
+    "tokenizer_sha256": {
+      "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    }
+  },
+  "limits": [
+    "Tokenizer replay of the full planned recipe, not runtime GPU counters or proof the queued run completed.",
+    "Prompt tokens are loss-masked; targets include EOS. Sequence totals are not FLOPs.",
+    "Historical tokenizer hashes were not saved; this audit pins the currently deployed same-model tokenizer.",
+    "Compiler metrics.train_seconds includes initialization, zeroshot and trained evaluation; not pure training time.",
+    "Monolithic metrics.elapsed_s includes initialization, training, evaluation and analysis; not pure training time.",
+    "No latency, monetary saving, matched-compute or inference-token claim follows from these training lengths."
+  ]
+}

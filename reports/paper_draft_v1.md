@@ -6,11 +6,13 @@
 - 待补实验用 `TODO(E2)` / `TODO(E3)` / `TODO(v6)` 占位，不写预测值；
 - 不出现已死主张：小模型打平/超越强模型、human-validated semantics、GRPO/信用分配有效、跨域泛化。
 
-本稿新增的复核数字只有两个来源：
+本稿复核数字的来源包括：
 - `outputs/submission/audit_20261124/recompute.json`，由 `scripts/submission/audit_recompute_20261124.py` 生成；
 - `outputs/submission/audit_20261124/draft_numbers.json`，由 `scripts/submission/draft_numbers_20261124.py` 生成。
+- `outputs/submission/audit_20261125/v5_record_axes_three_seed.json`，三seed含证据记录与N误报复算。
+- `outputs/submission/audit_20261125/training_token_budget.json`，冻结训练配方的token重放计数。
 
-两者只读冻结资产，零 GPU。
+以上分析只读冻结资产，零GPU；不替代原始预测和训练日志。近邻复核见 `reports/literature_architecture_recheck_20261125.md`。
 
 ---
 
@@ -29,7 +31,7 @@ TODO(E2) TODO(E3)：摘要待 E2 单体对照与 E3 消融落地后定稿。现�
 v5 基准上，DeepSeek 十示例编译器接符号规划器后，受约束 faithful 在四个切分上为 99.33% / 99.29% / 99.71% / 99.86%（`outputs/v5_analysis/main.json:table.deepseek-v4-pro-0813-few.*.faithful_mean`，dev/tpl/tool/struct 顺序）。按含证据完整记录计，同一系统只有 85.67% / 82.86% / 88.71% / 77.71%（同文件 `.exact_with_evidence_mean`）。只看执行结果已无法区分强系统。
 
 **动机二：执行结果不足以检验约束记录。**
-已有工作包含约束管理、中间表示与检查机制，不能声称记录评测一片空白。本文具体研究同一请求的类型化记录与执行结果能否给出一致的质量判断。我们测得的差异（§5.3）表明，在明确字段消费规则的情况下，两者仍需分别报告。
+已有工作包含约束管理、中间表示与检查机制，不能声称记录评测一片空白。SpecHarness还在独立开发集比较七个编译器的覆盖率与记录有效性（Appendix A.1/Table8）。本文具体研究同一请求的类型化记录与执行结果能否给出一致的质量判断，重点是受训练编译器的字段、留出条件和seed差异。我们测得的差异（§5.3）表明，在明确字段消费规则的情况下，两者仍需分别报告。
 
 **动机三：隐式约束失效。**
 在 v4 的 tpl_ho+tool_ho 隐式题（共 700 条）上，两个强模型都用十示例提示，完整记录正确数分别为：
@@ -49,15 +51,15 @@ TODO(E2)：原不完整输入臂仅作诊断。公共信息完整臂作为公开
 
 ## 2 相关工作（骨架：只列近邻与定位差异）
 
-近邻清单与分组取自 `reports/submission_plan_emnlp2027.md` §2、§2.1、§8.3。具体论断（行号级引文、对方数字）待写作时逐篇回原文核验后再写入，本稿不写。
+近邻清单与分组取自 `reports/submission_plan_emnlp2027.md` §2、§2.1、§8.3。ATLAS、CGAP、SpecHarness、Coordination Tax的原文与元数据已再次核验，笔记及BibTeX见 `literature/review_20261125/`；其余行仍是待逐篇确认的定位提纲，不以未复核概括论证独创性。
 
 | 线 | 近邻 | 与本文的定位差异（一句话） |
 |---|---|---|
-| 约束编译 / 中间表示 | CGAP（2610.41040）、CIRCE（2610.41089）、ATLAS（2509.25586）、Compile-Then-Page（2607.11346）、SpecHarness（2609.29921） | ATLAS 已有显隐式约束管理后规划，CGAP 也解析请求并含证据、scope 与符号规划；不能主张首次解耦或它们只读目录。本文检验独立受训编译器、可审计记录、配对基准和组件对照这一具体组合；差异边界见联合审核报告 |
+| 约束编译 / 中间表示 | CGAP（2610.41040）、CIRCE（2610.41089）、ATLAS（2509.25586）、Compile-Then-Page（2607.11346）、SpecHarness（2609.29921） | ATLAS已有显隐式约束管理后规划，CGAP解析请求并含证据、scope与符号规划，SpecHarness已独立比较七个编译器的覆盖率与记录有效性。本文检验受训练小编译器、配对留出与字段／seed诊断的具体组合，不主张首次解耦或首次记录审计 |
 | 运行时检查 / 安全基准 | SCA（2610.25552）、LogiSafetyBench（2601.08196）、AM-Bench（2610.18090）、EffectWorld（2610.35981） | 它们测行为合规或全局不变量；本文测逐请求参数级约束，并在行为轴之外加记录轴 |
 | 隐式约束 / 约束下规划 | HOB（2603.29025）、AdaPlanBench（2606.05622）、ToolMaze（2606.05806）、HyperAgent（2608.02650） | 它们测推理选择、交互式重规划或在提示内消费约束；本文用 E/I/N 最小三元组隔离"隐式可恢复性"，并产出可审计的 typed 记录 |
 | 训练专门化 | CARL（2607.04854）、EffectWorld、AgentFlow（2510.05592） | 本文的训练对象是约束编译这一子功能，下游规划器可替换 |
-| 分解成本之争 | Coordination Tax（2610.37700）、MA-Evolve（2609.04217） | 本文 E2 控制底座、训练行、更新次数与 LoRA 配置，另核算两种架构的实际训练和推理成本；相同 epoch 不等于相同计算预算（TODO(E2)） |
+| 分解成本之争 | Coordination Tax（2610.37700）、MA-Evolve（2609.04217） | Coordination Tax已含异构角色对照，3.22倍是其特定实验结果而非本研究门槛。本文E2控制底座、训练行、更新次数与LoRA配置，另核算用量；相同epoch不等于相同计算预算（TODO(E2)） |
 | 评测器可靠性 / 失效归因 | Trace 审计（2610.30491）、Who&When Pro（2607.09996） | 它们审计评测标签或定位错误步；本文的 2×2 是"换部件能否救回"式干预归因 |
 | skill 范式 | Agentic Skills 综述（2608.29596）、Skill 参考架构（2606.20631）、SkillFusion（2610.15481）、SkillBrowser（2610.23554） | 放入 Discussion "Why not a skill?"（本稿未写） |
 
@@ -74,7 +76,7 @@ TODO(E2)：原不完整输入臂仅作诊断。公共信息完整臂作为公开
 2. **规划器** P：任务结构 + 约束集合 → 计划；
 3. **检查器** K：计划 + 金标约束 → 判定。
 
-三段之间只通过 typed 约束对象交互。金标只对 K 可见。编译器的提示由三部分组成：策略卡、工具目录（每个角色给出名称、付费/免费、本地/外发）、输出 schema（`src/run_e1.py:87-106`）。编译器从不看到任务的阶段结构，也不看到工具的成本和时长数值。成本、时长、阶段结构只由 P 与 K 使用。
+推理时C向P提供typed约束对象，P向旁路评测器K提供计划；隐藏金标只对K可见。监督训练使用金标作为target，不能将“推理无金标”混称训练也无金标。编译器的提示由三部分组成：策略卡、工具目录（每个角色给出名称、付费/免费、本地/外发）、输出schema（`src/run_e1.py:87-106`）。编译器从不看到任务的阶段结构，也不看到工具的成本和时长数值。成本、时长、阶段结构只由P与K使用。
 
 ### 3.2 typed 约束对象
 
@@ -328,6 +330,8 @@ TODO(E2)：
 - 历史判定规则保留在原文件中。CI 跨零不构成等价证据，最终报告不能采用该推断；新公共信息完整臂记录为探索性公平性修正。
 - 待补：四个切分加 overall 的配对差与 CI、训练 token 账、推理生成 token 与时延。
 - `src/sub_e2_public_contract.py` 给单体完整公开政策、显示名称、data_class 与任务结构，保留原训练循环并保存原始计划。12,000 条训练样本均在 1280 token 上限内；评测保留完整输入。对照为 seed42 条件下的比较，不能替代三 seed 架构优势检验。
+
+训练配方的token重放核算已完成（`outputs/submission/audit_20261125/training_token_budget.json`）：三轮编译器序列总量28,732,221，完整单体36,402,576；其中受监督target（含EOS）分别2,670,729和1,056,099。两者都是9000更新，但编译器的序列量为单体0.7893倍、target量为2.5289倍，不能称匹配计算或相同监督量。该重放不表示排队中的单体已经完成训练；也不估算FLOPs、延迟或货币成本。旧`train_seconds`混入zero-shot和trained评测，不用作纯训练时长；单体`elapsed_s`也含评测与分析。历史tokenizer哈希未保存，本次固定当前部署同模型tokenizer并披露限制。
 
 ### 5.5 部署测量
 
