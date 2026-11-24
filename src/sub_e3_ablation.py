@@ -1,13 +1,13 @@
 """E3 A 系字段消融：0.6B 单 seed，每臂从表示中去掉一个组件后按同预算重训编译器。
 
-A1 去 typed：target 退化为自由文本列表（"{type}: {params json}"）
+A1 对象改为字符串序列化：仍保留 type/params（"{type}: {params json}"）
 A2 去 evidence_span：记录审计字段移除（规划器从不读它，预期下游 faithful 不变）
 A3 去三态：constraints.state 与 query_state 三值 -> 二值（有/无约束）
 A4 去 scope：角色绑定字段移除（规划器从不读它，预期下游 faithful 不变）
 
 评测双轴（金标仅在评测阶段可见）：
   记录轴 = run_e1.score()（金标与预测按同一臂 schema 同步裁剪后复用官方评分器）
-          + full-contract 解析率（部署成本：被 fail-closed 评测器拒绝的比例）
+          + 当前臂契约解析率；完整基线按同一投影重新评分
   下游轴 = 符号规划器（主管线同款）回放 faithful_constrained
 假设：A1 表示变化是否影响下游需实测；A2/A4 不直接参与执行，但可能改变训练；
 A3 下游不变但隐式行 core F1 可能下滑（三态信号是否承载恢复能力由数据回答）。
@@ -138,13 +138,17 @@ def scoring_raw(text: str, arm: str) -> str:
             continue
         if not isinstance(value, dict) or not isinstance(value.get("constraints"), list):
             continue
+        if arm == "A3" and value.get("query_state") in ("explicit", "implicit"):
+            value["query_state"] = "explicit"
         for c in value["constraints"]:
             if not isinstance(c, dict):
                 continue
             if arm == "A3":
-                c.setdefault("state", "explicit")
+                c["state"] = "explicit"
             elif arm == "A4":
-                c.setdefault("scope", [])
+                c["scope"] = []
+            elif arm == "A2":
+                c.pop("evidence_span", None)
         return json.dumps(value, ensure_ascii=False)
     return text
 
@@ -324,6 +328,24 @@ def generate_ablated(model: Any, tokenizer: Any, rows: list[dict[str, Any]], arm
     return raw
 
 
+def record_metrics(rows: list[dict[str, Any]], raw: list[str], arm: str) -> dict[str, Any]:
+    """Apply exactly the same field projection to baseline and ablation."""
+    if len(rows) != len(raw):
+        raise ValueError("Record metric coverage differs")
+    if arm == "A1":
+        lists = [extract_constraints(text) for text in raw]
+        valid = [items is not None and all(coerce_item(i) is not None for i in items) for items in lists]
+        return {"record": {"representation_note": "type/params string serialization; set-size proxy is not accuracy",
+                           "gold_items": sum(len(r["gold"]["constraints"]) for r in rows),
+                           "pred_items": sum(len(items) for items in lists if items is not None)},
+                "arm_contract_parse_rate": sum(valid) / len(raw)}
+    projected_rows = [dict(r, gold=scoring_gold(r, arm)) for r in rows]
+    projected_raw = [scoring_raw(t, arm) for t in raw]
+    parsed = [strict_parse(t) for t in projected_raw]
+    return {"record": score(projected_rows, parsed, projected_raw),
+            "arm_contract_parse_rate": sum(p is not None for p in parsed) / len(parsed)}
+
+
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--arm", choices=("A1", "A2", "A3", "A4"), required=True)
@@ -350,10 +372,19 @@ def main(argv: list[str] | None = None) -> None:
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(args.seed)
     t0 = time.time()
-    model, tokenizer = load_model(args.model, args.precision)
-
     data = {s: load_jsonl(args.data_dir / f"{s}.jsonl") for s in SPLITS}
     train_rows = load_jsonl(args.data_dir / "train.jsonl")
+    baseline_raw = {}
+    baseline_hashes = {}
+    for split in SPLITS:
+        path = args.baseline_run / "trained_predictions" / f"{split}.jsonl"
+        cached = load_jsonl(path)
+        by_id = {p["sample_id"]: p for p in cached}
+        if len(by_id) != len(cached) or set(by_id) != {r["sample_id"] for r in data[split]}:
+            raise ValueError(f"Baseline missing or duplicate IDs: {path}")
+        baseline_raw[split] = [by_id[r["sample_id"]]["raw"] for r in data[split]]
+        baseline_hashes[split] = hashlib.sha256(path.read_bytes()).hexdigest()
+    model, tokenizer = load_model(args.model, args.precision)
     budget: dict[str, Any] = {}
     if not args.skip_train:
         budget = train_ablated(model, tokenizer, train_rows, args.arm, args)
@@ -364,7 +395,7 @@ def main(argv: list[str] | None = None) -> None:
         model.eval()
 
     report: dict[str, Any] = {"arm": args.arm, "dropped_fields": {
-        "A1": "typed representation", "A2": "evidence_span", "A3": "three-state", "A4": "scope"}[args.arm]}
+        "A1": "object-to-string serialization", "A2": "evidence_span", "A3": "three-state", "A4": "scope"}[args.arm]}
     for split in SPLITS:
         rows = data[split]
         raw = generate_ablated(model, tokenizer, rows, args.arm, args.max_new_tokens, args.eval_batch_size)
@@ -372,31 +403,20 @@ def main(argv: list[str] | None = None) -> None:
         (out_dir / "predictions" / f"{split}.jsonl").write_text(
             "\n".join(json.dumps({"sample_id": r["sample_id"], "raw": t}, ensure_ascii=False)
                       for r, t in zip(rows, raw)) + "\n", encoding="utf-8")
-        # 记录轴：金标与预测按同臂 schema 对齐（哨兵值使被消融字段恒等匹配），复用官方评分器
-        if args.arm == "A1":
-            predictions = []
-            for text in raw:
-                items = extract_constraints(text)
-                predictions.append({"constraints": items} if items is not None else None)
-            want = sum(len(r["gold"]["constraints"]) for r in rows)
-            got = sum(len(p["constraints"]) for p in predictions if p)
-            record = {"free_text_note": "set-size proxy only; typed F1 undefined by design",
-                      "gold_items": want, "pred_items": got}
-        else:
-            scoring_rows = [dict(r, gold=scoring_gold(r, args.arm)) for r in rows]
-            scoring_raws = [scoring_raw(t, args.arm) for t in raw]
-            record = score(scoring_rows, [strict_parse(t) for t in scoring_raws], scoring_raws)
-        full_contract = sum(strict_parse(t) is not None for t in raw) / len(raw)
+        baseline = baseline_raw[split]
         report[split] = {
-            "record": record, "full_contract_parse_rate": full_contract,
+            **record_metrics(rows, raw, args.arm),
             "downstream": downstream_faithful(rows, raw),
+            "baseline_same_projection": {**record_metrics(rows, baseline, args.arm),
+                                         "downstream": downstream_faithful(rows, baseline)},
         }
         print(json.dumps({"arm": args.arm, "split": split,
                           "faithful_constrained": report[split]["downstream"]["faithful_constrained"]}), flush=True)
 
     metrics = {
         "arm": args.arm, "model": args.model, "seed": args.seed, "precision": args.precision,
-        "protocol_revision": "20261125-arm-prompt-parity",
+        "protocol_revision": "20261125-arm-prompt-and-score-parity",
+        "baseline_prediction_sha256": baseline_hashes,
         "config": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         "data_sha256": hashlib.sha256((args.data_dir / "train.jsonl").read_bytes()).hexdigest(),
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

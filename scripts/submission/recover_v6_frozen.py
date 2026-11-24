@@ -79,7 +79,13 @@ def prepare(source, target):
              "reason": "Only unsealed submission scripts were added; every sealed byte still matches",
              "recovered_completion": recovered, "budget_seconds_used": state["gpu_seconds_used"],
              "original_failure_preserved": state.get("failure"), "release_seal_sha256": sha(source / seal_path)}
-    relay.write(source / "outputs/submission/audit_20261125/v6_recovery.json", audit)
+    audit_path = source / "outputs/submission/audit_20261125/v6_recovery.json"
+    previous = relay.read(audit_path) if audit_path.exists() else {}
+    audit["all_recovered_completion"] = sorted(set(recovered) | set(
+        previous.get("all_recovered_completion", previous.get("recovered_completion", []))))
+    with audit_path.with_suffix(".jsonl").open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(audit) + "\n")
+    relay.write(audit_path, audit)
     print(json.dumps(audit), flush=True)
 
 
@@ -88,6 +94,8 @@ def main():
     p.add_argument("--source", type=Path, default=Path("/root/ConsDagV5"))
     p.add_argument("--target", type=Path, default=Path("/root/ConsDagV6Frozen"))
     p.add_argument("--after-pid", type=int)
+    p.add_argument("--public-control-root", type=Path,
+                   help="Run the validated public-input E2 control after the current supervisor, before v6")
     a = p.parse_args()
     prepare(a.source, a.target)
     if a.after_pid is None:
@@ -103,6 +111,21 @@ def main():
         if current != initial:
             break
         time.sleep(30)
+    if a.public_control_root:
+        import run_v6_relay as relay
+        gpu = relay.gpu_state("0")
+        relay.require_device(gpu)
+        with relay.GpuLock(gpu["uuid"]) as lock:
+            relay.wait_idle(a.target, "0", 30)
+            log = a.source / "outputs/submission/e2_public_contract.log"
+            with log.open("a") as stream:
+                status = subprocess.call([sys.executable, "-u", "src/sub_e2_public_contract.py"],
+                                         cwd=a.public_control_root, stdout=stream, stderr=subprocess.STDOUT,
+                                         env=dict(os.environ, PYTHONPATH=str(a.source / "src"),
+                                                  CUDA_VISIBLE_DEVICES="0", TOKENIZERS_PARALLELISM="false"),
+                                         pass_fds=(lock.fd,))
+            print(json.dumps({"event": "public_control_finished", "exit_code": status}), flush=True)
+            # A failed new control stays failed; the independent frozen queue can proceed.
     env = dict(os.environ, GIT_DIR=str(a.source / ".git"), GIT_WORK_TREE=str(a.target))
     command = [sys.executable, "-u", "src/run_v6_relay.py", "--project-root", str(a.target),
                "--mode", "wait", "--budget-hours", "30", "--python", sys.executable]

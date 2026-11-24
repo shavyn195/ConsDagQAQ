@@ -1,0 +1,78 @@
+{
+  "time_utc": "2026-11-24T16:29:59.407637+00:00",
+  "active": {
+    "187699": {
+      "command": "bash scripts/submission/run_e2_informed_then_e3.sh ",
+      "state": "S"
+    },
+    "187717": {
+      "command": "/root/miniconda3/bin/python -u src/sub_e2_monolithic.py --prompt-mode informed --data-dir data/processed_v5 --model models/Qwen3-1.7B --pipeline-run outputs/e1/Qwen3-1.7B-v5-seed42 --seed 42 --precision bf16 --out-dir outputs/submission/e2_monolithic_informed ",
+      "state": "R"
+    },
+    "188913": {
+      "command": "/root/miniconda3/bin/python -u scripts/submission/deepseek_planner.py ",
+      "state": "S"
+    },
+    "189623": {
+      "command": "/root/miniconda3/bin/python -u /root/ConsDagV5/scripts/submission/recover_v6_frozen.py --after-pid 187699 --public-control-root /root/ConsDagSubmissionReview ",
+      "state": "S"
+    },
+    "189765": {
+      "command": "/root/miniconda3/bin/python -u scripts/submission/analyse_deepseek_planner.py --after-pid 188913 ",
+      "state": "S"
+    }
+  },
+  "e2_last_progress": {
+    "optimizer_step": 5000,
+    "loss": 3.942637704312801e-06
+  },
+  "e2_all_logged_losses_finite": true,
+  "e2_error_tokens": [],
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 67 %, 18308 MiB, 32760 MiB",
+  "api_unique_completed": 1463,
+  "api_unique_total": 5339,
+  "api_outcomes_complete": false,
+  "v6_completed": [
+    "Qwen3-1.7B-v6-seed42",
+    "Qwen3-1.7B-v6-seed43"
+  ],
+  "public_control_coverage": {
+    "train": {
+      "rows": 12000,
+      "max_total_tokens": 1162,
+      "max_target_tokens": 45,
+      "over_limit": 0
+    },
+    "dev": {
+      "rows": 900,
+      "max_total_tokens": 1144,
+      "max_target_tokens": 41,
+      "over_limit": 0
+    },
+    "test_tpl_ho": {
+      "rows": 1050,
+      "max_total_tokens": 1138,
+      "max_target_tokens": 43,
+      "over_limit": 0
+    },
+    "test_tool_ho": {
+      "rows": 1050,
+      "max_total_tokens": 1179,
+      "max_target_tokens": 44,
+      "over_limit": 0
+    },
+    "test_struct_ho": {
+      "rows": 1050,
+      "max_total_tokens": 1323,
+      "max_target_tokens": 58,
+      "over_limit": 59
+    }
+  },
+  "verified_files": {
+    "scripts/submission/recover_v6_frozen.py": "ff6b72459314524cae4e3825f100972c2348dd7d7b300fb4b49fbb9b16474721",
+    "src/sub_e3_ablation.py": "5e0c0514b04b328b2ff260f63250c907b957f4983db9aad1ed9be1ed1635ce16",
+    "scripts/submission/analyse_deepseek_planner.py": "9f8bd148dac97e34993cfbeb2c75422dd84fe0f4ab57a82c035bf30479e48211",
+    "outputs/submission/audit_20261125/v5_record_axes_three_seed.json": "a1c203a331d51377d399aeaa7ee1262e33d2115eba6fd7d08f13a7171ac83ce2",
+    "public_protocol.json": "37df82ab05dca1c02f3a500557226f0efc8ada7f6bfaa450fc1d992f06739720"
+  }
+}

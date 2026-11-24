@@ -65,6 +65,14 @@ def test_string_representation_preserves_execution_semantics():
 
 
 class SubmissionChecks(unittest.TestCase):
+    def test_identical_projection_for_baseline_and_ablation(self):
+        row = sample("implicit")
+        full = json.dumps(row["gold"])
+        for arm in ("A2", "A3", "A4"):
+            with self.subTest(arm=arm):
+                removed = ablation.ablated_target(row, arm)
+                assert ablation.record_metrics([row], [full], arm) == ablation.record_metrics([row], [removed], arm)
+
     def test_training_inference_parity(self):
         for arm in ("A1", "A2", "A3", "A4"):
             with self.subTest(arm=arm):

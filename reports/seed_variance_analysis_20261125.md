@@ -44,10 +44,12 @@ params 错误记录数 per seed 与三 seed 交集 IOU：
 
 | 模型·split | params 错误 (42/43/44) | 三 seed 交集 | IOU |
 |---|---|---:|---:|
-| 1.7B tool_ho | 54 / 173 / 184 | 20 | 0.077 |
-| 1.7B struct_ho | 38 / 182 / 129 | 8 | 0.033 |
-| 4B tool_ho | 70 / 31 / 216 | 4 | 0.018 |
-| 4B struct_ho | 3 / 26 / 52 | 1 | 0.014 |
+| 1.7B tool_ho | 54 / 165 / 173 | 20 | 0.077 |
+| 1.7B struct_ho | 38 / 169 / 124 | 8 | 0.033 |
+| 4B tool_ho | 63 / 31 / 201 | 4 | 0.018 |
+| 4B struct_ho | 3 / 25 / 52 | 1 | 0.014 |
+
+本表按 `field_stability.params.records_with_error_per_seed` 计记录，一条请求有多个 params 错误也只计一次。此前误填字段错误次数，现与交集、IOU 统一到记录单位；原 JSON 未改动。
 
 实例（`scripts/submission/diag_field_mismatch_samples.py` 抽查）：`max_total_cost_cny` 金标 100 预测 1000；`tool_auth.required_role` 金标 `rent_cloud_gpu_job` 预测 `launch_fl_production_round`。
 **含义**：直接参与规划的字段在三个 seed 间重叠较低（IOU 0.01–0.08），与执行波动相伴。尚无控制干预证明这来自训练噪声，也不能据此排除样本难度。
