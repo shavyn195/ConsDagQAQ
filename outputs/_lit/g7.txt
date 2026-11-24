@@ -1,0 +1,878 @@
+##### library/03_paired_benchmark/2505.19030_RECAST/2505.19030_RECAST_fulltext.txt  (4311 lines)
+--ABSTRACT--
+30:ABSTRACT
+31:Large language models (LLMs) are increasingly expected to tackle complex tasks, driven
+32:by their expanding applications and users’ growing proficiency in crafting sophisticated
+33:prompts. However, as the number of explicitly stated requirements increases (particularly
+34:more than 10 constraints), LLMs often struggle to accurately follow such complex instruc-
+35:tions, which limits their applicability in complex real-world scenarios. To the best of our
+36:knowledge, existing datasets do not exceed 10 constraints per instance. To address this chal-
+37:lenge, we propose RECAST, an efficient and scalable framework for synthesizing datasets
+38:where each example incorporates far more constraints than those in existing benchmarks,
+39:aiming to challenge and extend the boundaries of models’ ability to follow complex in-
+40:structions. These constraints are extracted from real-world prompt-response pairs to ensure
+41:practical relevance. Using this framework, we construct RECAST-30K, a large-scale, high-
+42:quality dataset comprising 30k instances spanning 19 constraint types. Experimental results
+43:demonstrate that models fine-tuned on RECAST-30K substantially improve in following
+44:complex instructions while maintaining their general capabilities without degradation.
+45:Moreover, RECAST enables automatic verification of constraint satisfaction via rule-based
+46:validators for quantitative constraints and LLM-based validators for qualitative ones, the
+47:verifiability provided by RECAST enables the design of reward functions for reinforcement
+48:learning, which further boosts model performance on complex and challenging tasks. Code
+49:and data are available at https://github.com/Thekey756/RECAST.
+50:1
+51:INTRODUCTION
+52:Large language models (LLMs) have demonstrated remarkable capabilities in solving various NLP tasks
+53:(Ahn et al., 2024; Chakrabarty et al., 2024; Gómez-Rodríguez & Williams, 2023; Huang & Chang, 2023;
+54:Jiang et al., 2024a; Zhao et al., 2023; Zheng et al., 2023) and are widely used in practical scenarios (Gu et al.,
+55:2024; Liu et al., 2024; Sun, 2023; Thirunavukarasu et al., 2023). However, they still struggle with complex
+56:multi-constraint scenarios that are prevalent in real-world applications, such as constitutional AI systems
+57:requiring adherence to multiple principles simultaneously (Bai et al., 2022; Findeis et al., 2025; Kundu et al.,
+58:∗These authors contributed equally.
+59:†Corresponding author.
+60:‡Corresponding author.
+61:1
+62:arXiv:2505.19030v5  [cs.AI]  3 Sep 2026
+63:
+--INTRO END--
+1762:RECAST-30K-RLVC
+1763:30.81
+1764:38.47
+1765:34.64
+1766:29.84
+1767:46.94
+1768:38.39
+1769:4.2.2
+1770:EVALUATION ON ADDITIONAL INSTRUCTION-FOLLOWING BENCHMARKS.
+1771:Table 3 reports results on two widely used instruction-following benchmarks, IFEVAL and FollowBench. RECAST-
+1772:30K-SFT already surpasses all baseline methods, and RECAST-30K-RLVC further improves performance, achieving the
+1773:best results on both Llama3.1-8B and QWEN2.5-7B. These consistent gains on out-of-domain benchmarks demonstrate
+1774:that RECAST not only improves complex constraint-following but also generalizes effectively to traditional instruction-
+1775:following tasks, rather than merely overfitting to the constraint patterns seen during training.
+1776:9
+1777:
+1778:============================================================
+1779:=== PAGE 10 ===
+1780:============================================================
+1781:
+1782:Published as a conference paper at ICLR 2026
+1783:4.2.3
+1784:GENERAL CAPABILITY EVALUATION
+1785:In addition, we evaluate RECAST on two general capability benchmarks (Table 4), where RECAST-30K-RLVC achieves
+1786:average scores of 34.64% on Llama3.1-8B and 38.39% on QWEN2.5-7B. This indicates that while RECAST substantially
+1787:improves performance on complex instruction following, it also preserves competitive performance on reasoning-oriented
+1788:benchmarks like MUSR and knowledge-focused evaluations such as GPQA.
+1789:5
+--EXP SETUP--
+1038:EXPERIMENTS
+1039:4.1
+1040:SETUPS
+1041:Evaluation Benchmarks. We constructed RECAST-Test, a hierarchical benchmark with four difficulty levels defined by
+1042:increasing constraint complexity, enabling fine-grained evaluation across tasks of varying difficulty. Crucially, RECAST-
+1043:Test contains substantially more constraints than prior benchmarks, providing a more rigorous assessment of LLMs’
+1044:complex instruction-following capabilities. Details of its construction and statistics are in Appendix B.4. To further assess
+1045:generalization, we also evaluate RECAST on four external benchmarks (Appendix D.2).
+1046:Evaluation Metrics. For evaluation metrics, we use the Hard Constraint Satisfaction Rate (HSR) as the primary metric,
+1047:quantifying the model’s ability to satisfy all specified constraints in an instruction simultaneously. The HSR is calculated
+1048:as follows:
+1049:HSR =
+1050:1
+1051:|D|
+1052:�
+1053:(x,y)∈D
+1054:�
+1055:ci∈C(x)
+1056:f(x, y, ci)
+1057:(3)
+1058:6
+1059:
+1060:============================================================
+1061:=== PAGE 7 ===
+1062:============================================================
+1063:
+1064:Published as a conference paper at ICLR 2026
+1065:Table 1: RECAST-Test results across four difficulty levels and overall average. RSR, MSR, and OSR denote
+1066:the rule-based, model-based, and overall components of the holistic success rate (HSR), respectively. The
+1067:best result in each column is highlighted in bold, while the second-highest result is indicated with underline
+1068:formatting. All reported values are percentages, with the percent sign omitted for brevity.
+1069:Models
+1070:Level 1
+1071:Level 2
+1072:Level 3
+1073:Level 4
+1074:Average
+1075:MSR
+1076:RSR
+1077:OSR
+1078:MSR
+1079:RSR
+1080:OSR
+1081:MSR
+1082:RSR
+1083:OSR
+1084:MSR
+1085:RSR
+1086:OSR
+1087:Claude-3.7-sonnet
+--RESULTS--
+1518:MAIN RESULTS
+1519:4.2.1
+1520:EVALUATION ON RECAST-TEST
+1521:Table 1 presents comprehensive results from our multi-level constraint satisfaction benchmark. Analysis of these findings
+1522:reveals three results:
+1523:Performance Degradation with Increasing Constraint Complexity. Across all models, performance consistently
+1524:declines from Level 1 to Level 4, underscoring the difficulty of satisfying multiple constraints simultaneously. Rule-based
+1525:constraints prove more challenging than model-based ones. Gemini-2.5-Pro shows the best performance with a 39.75%
+1526:average satisfaction rate. Overall, complex instruction following remains difficult for current LLMs, highlighting the need
+1527:for further advancement.
+1528:Effectiveness of RECAST-30K for Instruction Following. Models fine-tuned on RECAST-30K demonstrate substantial
+1529:improvements in constraint satisfaction capabilities. The RECAST-30K-SFT variant achieves a 31.25% average
+1530:satisfaction rate on Qwen-2.5-7B, significantly outperforming both instruction-tuned models and alternative fine-tuning
+1531:approaches. This enhancement underscores the effectiveness of our constraint-focused dataset in developing robust
+1532:instruction-following capabilities, particularly for navigating complex, multi-constraint scenarios.
+1533:Performance Enhancement Through RLVC Optimization. The application of RLVC further enhances model perfor-
+1534:mance across all difficulty levels. RECAST-30K-RLVC variants consistently outperform their SFT counterparts, achieving
+1535:a 32.33% average satisfaction rate on Qwen-2.5-7B. This improvement is particularly pronounced in higher difficulty
+1536:levels (Levels 3-4), where constraint interactions become more complex. These gains confirm that our constraint-specific
+1537:reinforcement learning approach effectively optimizes for simultaneous satisfaction of multiple requirements, addressing
+1538:a key challenge in practical complex instruction following.
+1539:These results clearly demonstrate that specialized fine-tuning approaches—particularly our RECAST-30K dataset
+1540:and RLVC optimization framework—significantly enhance LLMs’ capability to satisfy multiple complex constraints
+1541:simultaneously. This improvement addresses a critical gap in current instruction-following systems and enables more
+1542:reliable performance in constraint-rich applications.
+1543:Comparison with Divide-Verify-Refine (DVR). We further compare our models with the inference-time instruction-
+1544:following enhancement method Divide-Verify-Refine (DVR) (Zhang et al., 2025) on RECAST-Test. Since DVR in its
+1545:original form only leverages rule-based verifiers, we report the Rule-based Constraint Satisfaction Rate (RSR) for a fair
+1546:comparison. As shown in Table 2, applying DVR at inference time on top of Llama-3.1-8B-Instruct and Qwen2.5-7B-
+1547:Instruct leads to substantially lower RSR than our RECAST-30K-SFT models, which consistently achieve higher RSR
+--CONCLUSION--
+1822:CONCLUSION
+1823:We present RECAST, a scalable, low-cost framework for constructing complex instruction-following datasets through
+1824:systematic mining and verification of rule- and model-based constraints. Using this, we release RECAST-30K, enabling
+1825:smaller models (e.g., Llama3.1-8B) to outperform larger instruct-tuned models. Leveraging constraint verifiability, we
+1826:propose RLVC, a reinforcement learning method using fine-grained, constraint-specific rewards to enhance performance.
+1827:Experiments show RECAST-trained models excel on our hierarchical benchmark, generalize to IFEVAL and FollowBench,
+1828:and remain competitive on general tasks (GPQA, MUSR). RECAST advances automated data construction by offering
+1829:scalable, verifiable supervision, improving constraint diversity, complexity, and quality, and providing practical resources
+1830:for more controllable LLMs, and advancing their real-world applications.
+1831:10
+1832:
+1833:============================================================
+1834:=== PAGE 11 ===
+1835:============================================================
+1836:
+1837:Published as a conference paper at ICLR 2026
+
+##### library/03_paired_benchmark/2603.03205_MOSAIC/2603.03205_MOSAIC_fulltext.txt  (1654 lines)
+--ABSTRACT--
+12:ABSTRACT
+13:Agentic language models operate in a fundamentally different safety regime than
+14:chat models: they must plan, call tools, and execute long-horizon actions where a
+15:single misstep, such as accessing files or entering credentials, can cause irreversible
+16:harm. Existing alignment methods, largely optimized for static generation and
+17:task completion, break down in these settings due to sequential decision-making,
+18:adversarial tool feedback, and overconfident intermediate reasoning. We introduce
+19:MOSAIC, a post-training framework that aligns agents for safe multi-step tool use
+20:by making safety decisions explicit and learnable. MOSAIC structures inference as
+21:a plan, check, then act or refuse loop, with explicit safety reasoning and refusal as
+22:first-class actions. To train without trajectory-level labels, we use preference-based
+23:reinforcement learning with pairwise trajectory comparisons, which captures safety
+24:distinctions often missed by scalar rewards. We evaluate MOSAIC zero-shot across
+25:three model families, Qwen2.5-7B, Qwen3-4B-Thinking, and Phi-4, and across
+26:out-of-distribution benchmarks spanning harmful tasks, prompt injection, benign
+27:tool use, and cross-domain privacy leakage. MOSAIC reduces harmful behavior by
+28:up to 50%, increases harmful-task refusal by over 20% on injection attacks, cuts
+29:privacy leakage, and preserves or improves benign task performance, demonstrating
+30:robust generalization across models, domains, and agentic settings.
+31:1. User
+32:gives the
+33:task
+34:3. Optional 
+35:safety check
+36:(reasoning)
+37:4. Act
+38:(tool execution)
+39:5. Refuse
+40:6. Report
+41:task
+42:completion
+43:or refusal
+44:Receive
+45:environment
+--INTRO END--
+749:0.9
+750:1.0
+751:Agreement Proportion
+752:Degree 2 Trend
+753:Figure 4: Judge agreement over training.
+754:Ablation 2: Pointwise Scalar vs. Pairwise Preference Rewards.
+755:Replacing pairwise trajectory
+756:preferences with a pointwise (scalar) reward model leads to systematically weaker safety alignment.
+757:As shown in Table 5, scalar-reward training (row2) reduces harmful-task refusal on AgentHarm from
+758:0.87 to 0.79 and increases non-refusal harm from 0.52 to 0.61, indicating substantially less safe
+759:behavior even when the agent acts. Benign utility also degrades, with non-refusal score dropping from
+760:0.61 to 0.54. On Agent Security Bench, scalar rewards exhibit higher prompt-injection vulnerability,
+761:increasing DPI ASR from 0.42 to 0.51 and IPI ASR from 0.33 to 0.44, alongside weaker refusal
+762:under attack (Appendix H has detailed results).
+763:These failures arise because scalar rewards collapse sequential safety decisions into a single score and
+764:cannot reliably distinguish trajectories that reach similar end states but differ in when unsafe actions
+765:occur (e.g., early refusal versus late abort after unsafe progress). In contrast, pairwise preference
+766:rewards explicitly encode relative safety ordering between trajectories, prioritizing early refusal and
+767:avoidance of irreversible actions. This yields consistently higher refusal reliability, lower harm, and
+768:stronger robustness to both direct and indirect prompt injection.
+769:Pairwise judgment stabilizes over training. Figure 5 shows the agreement rate of the preference-
+770:based LLM judge during training. Agreement, defined as the fraction of comparisons with consistent
+771:ordering, increases steadily across all models, indicating that trajectory distributions become more
+772:consistent and that the judge converges toward a stable safety decision boundary.
+773:Key Ablation Insight: Pairwise Rewards Are Essential
+774:Pointwise rewards miss sequential safety distinctions; pairwise preferences are required for early refusal and
+775:safe behavior.
+776:5
+--EXP SETUP--
+313:EXPERIMENTAL SETUP
+314:3.1
+315:TRAINING DATA: AGENT-SAFETYBENCH
+316:We train agentic policies on the Agent-SafetyBench dataset (Zhang et al., 2024), which is designed to
+317:elicit safety-critical decision-making in tool-using agents. The benchmark contains explicitly harmful
+318:tasks, benign tasks, and tasks that admit both safe and unsafe execution strategies, enabling models to
+319:learn calibrated, context-dependent behavior rather than relying on surface cues or task labels.
+320:Task Structure and Attack Surfaces. Agent Safety Bench (Zhang et al., 2024) comprises 349
+321:interaction environments and approximately 2,000 task instances spanning 8 safety risk categories
+322:and 10 common agent failure modes. Tasks include both single- and multi-step interactions, with and
+323:without tool use, and explicitly model realistic attack surfaces via prompt injection. These include
+324:direct injections embedded in the user prompt and indirect injections introduced through adversarial
+325:tool responses or environment state (see Appendix B.2 for more details).
+326:Execution-Aware Supervision. A key feature of the dataset is that task correctness depends on
+327:how the agent executes intermediate steps—interpreting tool outputs, assessing risk, and deciding
+328:whether to act or refuse—rather than on task completion alone. This structure supports supervision
+329:over execution quality instead of outcome-only.
+330:Pairwise Safety Preferences. Training supervision is provided via an LLM-as-judge framework
+331:(Section 2.2.1). Rather than assigning absolute safety labels, we derive pairwise preferences by
+332:comparing two trajectories for the same task and selecting the safer outcome. These pairwise
+333:judgments serve as reinforcement learning signals, enabling data-efficient optimization without
+334:step-level annotations or ground-truth safety labels.
+335:5
+336:
+337:============================================================
+338:=== PAGE 6 ===
+339:============================================================
+340:
+341:Table 1: Impact of MOSAIC safety scaffolding on frontier models. Each column reports baseline
+342:→MOSAIC, with ∆colored by whether MOSAIC improves (green) or degrades (red) the metric,
+343:according to the metric direction (↑/ ↓).
+344:Model
+345:AgentHarm (Harmful)
+346:AgentHarm (Benign)
+347:ASB (DPI)
+348:ASB (IPI)
+349:ASB (–)
+350:Harm ↓
+351:Refusal ↑
+352:NR Harm ↓
+353:Refusal ↓
+354:NR Score ↑
+355:ASR ↓
+356:RR ↑
+357:ASR ↓
+358:RR ↑
+359:CR ↑
+360:GPT-4o (base →MOSAIC)
+361:0.31 →0.07 0.00 →0.92 0.31 →0.67 0.00 →0.19 0.80 →0.75 0.76 →0.21 0.00 →0.79 0.67 →0.27 0.00 →0.63 0.89 →0.93
+362:+0.24
+--RESULTS--
+451:RESULTS
+452:4.1
+453:RESULTS: FRONTIER MODELS ARE STRONG, BUT REQUIRE EXPLICIT SAFETY
+454:SCAFFOLDING.
+455:Table 1 shows that even frontier-scale proprietary models such as GPT-4o and GPT-5 do not exhibit
+456:reliable agentic safety in the absence of explicit safety scaffolding. When deployed without safety
+457:reasoning and a refusal mechanism, both models never refuse harmful requests and exhibit severe
+458:safety failures, including high harmful-task scores and susceptibility to prompt injection, for example
+459:GPT-4o achieves a harm score of 0.31 and a DPI ASR of 0.76. Introducing MOSAIC by explicitly
+460:separating safety-aware reasoning and enabling refusal as a first-class action fundamentally changes
+461:6
+462:
+463:============================================================
+464:=== PAGE 7 ===
+465:============================================================
+466:
+467:agent behavior. Harmful-task refusal increases from 0% to over 90% for both models, harmful scores
+468:drop by more than 75% for GPT-4o from 0.31 to 0.07, and robustness improves substantially for
+469:both direct and indirect prompt injection attacks. Importantly, these gains do not degrade task utility.
+470:Benign-task completion remains high, with CR = 0.93 for GPT-4o and CR = 0.99 for GPT-5. Together,
+471:these results indicate that safe agentic behavior in frontier models is not an emergent property of
+472:scale alone, but is induced through explicit safety reasoning and refusal mechanisms.
+473:Key Result: Frontier Models Need Safety Guardrails
+474:Without safety reasoning and refusal, GPT-4o and GPT-5 fail on agentic safety; MOSAIC raises harmful-task
+475:refusal above 90%, cuts harm by over 75%, and preserves benign performance.
+476:4.2
+477:RESULTS: OPEN-SOURCE MODELS
+478:We evaluate MOSAIC across three open-weight agentic models, examining safety, execution reliabil-
+479:ity, and task utility in multi-step tool use. Explicit, trainable safety decisions consistently reshape
+480:agent behavior, with model-specific effects driven by baseline biases.
+--CONCLUSION--
+809:CONCLUSION
+810:We show that agentic safety requires explicit control over when models act, verify, or abstain, espe-
+811:cially in multi-step tool use where failures are sequential and irreversible. MOSAIC demonstrates that
+812:making safety reasoning and refusal first-class, learnable decisions leads to consistent improvements
+813:across model families, task types, and domains, including out-of-distribution privacy settings. Our
+814:results suggest that agentic alignment is not primarily a function of scale, but of structured inference
+815:and training signals that reflect temporal safety decisions. More broadly, MOSAIC points toward
+816:a principled path for building reliable agents by integrating modular reasoning, preference-based
+817:learning, and explicit abstention into the agent’s core decision loop rather than treating safety as an
+818:external filter.
+819:REFERENCES
+820:Marah Abdin, Jyoti Aneja, Harkirat Behl, S´ebastien Bubeck, Ronen Eldan, Suriya Gunasekar,
+821:Michael Harrison, Russell J Hewett, Mojan Javaheripi, Piero Kauffmann, et al. Phi-4 technical
+822:report. arXiv preprint arXiv:2412.08905, 2024a.
+823:Marah Abdin, Sam Ade Jacobs, Ammar Ahmad Awan, et al. Phi-3 technical report: A highly capable
+824:language model locally on your phone. arXiv preprint arXiv:2404.14219, 2024b.
+
+##### library/03_paired_benchmark/2605.17558_Firefly/2605.17558_Firefly_fulltext.txt  (1638 lines)
+--ABSTRACT--
+14:Abstract
+15:Training tool-calling agents requires large-scale trajectory data with verifiable la-
+16:bels, yet existing approaches either synthesize environments that diverge from real
+17:API behavior or generate tasks without ground-truth outcomes for verification. We
+18:present FIREFLY, a pipeline for generating verified tool-call data from real-world
+19:MCP servers. Our key insight is to invert the standard synthesis pipeline: rather
+20:than generating tasks and hoping they are solvable, we first let a strong LLM ex-
+21:plore real APIs along graph-guided DAG structures, then synthesize tasks back-
+22:ward from observed outcomes, guaranteeing label correctness by construction. To
+23:handle the scale of real-world tool spaces (∼1,000 tools), we build a pairwise
+24:tool graph and sample sub-DAGs to focus exploration on semantically coherent
+25:workflows. To address environment drift in live APIs, we construct a retrieval-
+26:augmented simulator that caches all exploration results and replays them dur-
+27:ing training and evaluation, enabling reproducible RL without live server access.
+28:Applying this pipeline yields 5,144 verified tasks spanning 240 servers and 993
+29:tools. A 4B-parameter model trained with GRPO on FIREFLY matches Claude
+30:Sonnet 4.6 on our held-out test set and shows improvements on multiple tool-
+31:calling benchmarks including Tau2-Bench, MCPMark, and MCP-Atlas. Code
+32:is available at https://github.com/leoleoasd/firefly-neurips-2026/,
+33:and data and model are available at http://firefly.hailab.io/.
+34:1
+35:Introduction
+36:Tool-calling agents interact with external APIs to complete user intents, and they have become a
+37:central paradigm for building AI systems that can act in real environments [19, 33, 2, 25]. However,
+38:training such agents requires many tasks with correct intermediate tool calls and verifiable final
+39:outcomes. Even data-efficient reinforcement learning recipes consume thousands of such tasks,
+40:for example 2.4k training samples for a search agent [10], whereas recent agent benchmarks each
+41:offer only tens to hundreds, such as 50 to 115 tasks per domain in Tau2-Bench [2], 127 tasks in
+42:MCPMark [28], and 500 public tasks in MCP-Atlas [1]. Human annotation could close this gap,
+43:but it is expensive, domain-specific, and difficult to scale to the long tail of real APIs [33, 14, 4, 6,
+44:5]. Synthetic pipelines scale more easily, although each existing design gives up either realism or
+45:verifiability. When they rely on purely simulated environments, an LLM invents tool responses that
+46:often diverge from real API behavior [9]. When they instead generate a user task first and then ask
+47:an LLM to produce a trajectory over real tools [21, 16, 31], the trajectory may be infeasible and the
+--INTRO END--
+181:
+182:outside the cached trajectories are unlikely to be necessary for the correct solution and should not
+183:be rewarded (Sec. 7 quantifies the resulting truncation risk). As a result, FIREFLY keeps tool re-
+184:sponses grounded in real API execution while providing the reproducibility and scalability required
+185:for simulator-based online RL.
+186:Putting these ideas together, FIREFLY follows a three-stage pipeline. First, it collects and filters
+187:real MCP servers, constructs a pairwise tool-compatibility graph, and performs graph-guided ex-
+188:ploration to obtain executable tool-call DAGs. Second, it synthesizes natural-language tasks by
+189:back-chaining from observed tool outputs and validates the resulting task-trajectory pairs for verifi-
+190:ability, specificity, realism, and difficulty. Third, it builds a retrieval-augmented simulator from the
+191:cached exploration traces and uses it as the environment for simulator-based online RL training and
+192:for evaluation. Applying this pipeline yields 5,144 verified tasks and 9,749 trajectories spanning 240
+193:servers and 993 tools. Training a 4B-parameter model with GRPO [20] and dynamic filtering [34]
+194:on FIREFLY improves pass@1 on the FIREFLY held-out test set from 28.1% to 41.5%, matching
+195:Claude Sonnet 4.6 under the same evaluation protocol. The resulting model also transfers to public
+196:tool-calling benchmarks, improving all evaluated Tau2-Bench domains [33, 2], MCP-Atlas [1], and
+197:MCPMark [28] tasks.
+198:Our contributions are threefold:
+199:• We introduce FIREFLY, a large-scale verified tool-calling dataset grounded in real MCP
+200:servers, together with a retrieval-augmented simulator that enables reproducible training
+201:and evaluation without live servers3.
+202:• We propose a scalable data-generation framework that combines graph-guided exploration
+203:with back-chaining task synthesis, making it possible to construct verified trajectories
+204:across hundreds of heterogeneous real-world API servers.
+205:• We empirically show that RL training on FIREFLY substantially improves a 4B model on
+206:in-distribution verified MCP tasks and transfers to out-of-distribution tool-calling bench-
+207:marks such as Tau2-Bench [33, 2], MCP-Atlas, and MCPMark.
+208:2
+--METHOD--
+268:Method
+269:Our pipeline constructs verifiable tool-use data in three phases: server collection (Sec. 3.1), task
+270:synthesis (Sec. 3.2), and trajectory generation during evaluation and rollout (Sec. 3.3).
+271:3.1
+272:Server Collection
+273:3.1.1
+274:Scraping
+275:We collect MCP servers from the Smithery registry4 using broad listing queries, prefix enumeration,
+276:and domain-specific keyword searches. After deduplication and metadata fetching (tool definitions,
+277:input schemas, connection configurations), we obtain approximately 3,000 unique servers, of which
+278:roughly 900 expose at least one tool.
+279:3.1.2
+280:Filtering
+281:Many scraped servers are unsuitable for verified data construction. We screen each server against
+282:four criteria using an LLM evaluator: Statelessness (no session memory or cross-call state), No
+283:user authentication (no OAuth, credentials, or user-owned keys), Schema clarity (explicit JSON
+284:typing and parameter descriptions), and Non-triviality (no echo or diagnostic-only tools). A server
+285:must meet all four. We spot-check a subset for alignment. 240 servers with 993 tools remain.
+286:3.1.3
+287:Tool Graph
+288:The tool graph is the mechanism that makes multi-step tasks possible in FIREFLY. In an early
+289:pilot without the graph, the exploring LLM sampled tools at random across the full tool space, so
+290:successive calls were semantically unconnected and the output of one call was never usable as the
+291:input of the next. As a result, essentially all tasks synthesized in that pilot collapsed to single-step
+292:lookups. To obtain tool chains in which earlier outputs feed later inputs, we build a directed tool
+293:4https://smithery.ai/
+294:4
+295:
+296:============================================================
+297:=== PAGE 5 ===
+298:============================================================
+299:
+300:graph G = (T , E) over all retained tools across all servers. Each node represents a tool and each
+301:edge indicates that the source tool can be chained with the destination tool: the output of tool ti can
+302:be transformed into or used as input to tool tj. Since schema-level type matching alone is too coarse
+303:(e.g., two string fields may be semantically unrelated), we use an LLM to judge each candidate
+304:pair based on tool descriptions and schemas, assigning a confidence level (high, medium, or low)
+305:to each positive edge. The resulting graph contains approximately 83K directed edges (average
+306:88 successors per tool), of which 64K are medium-or-higher confidence. The graph includes both
+307:intra-server and cross-server edges.
+--EXP SETUP--
+479:Experiments
+480:We evaluate whether training on FIREFLY improves tool-calling ability. We fine-tune a model using
+481:reinforcement learning and evaluate on both our held-out test set and public benchmarks.
+482:7
+483:
+484:============================================================
+485:=== PAGE 8 ===
+486:============================================================
+487:
+488:Table 2: Comparison of FIREFLY with existing tool-calling datasets.
+489:Dataset
+490:Tasks
+491:Servers/APIs
+492:Multi-step
+493:Verifiable
+494:Real APIs
+495:API-Bank
+496:1,888
+497:2,138
+498:✓
+499:✓
+500:×
+501:ToolAlpaca
+502:3,938
+503:400+
+504:×
+505:×
+506:✓
+507:APIGen-MT
+508:5,000
+509:28
+510:✓
+511:✓
+512:×
+513:Tau2-Bench
+514:279
+515:68
+516:✓
+517:✓
+518:×
+519:Toucan
+520:1.5M
+521:2000+
+522:✓
+523:×
+524:✓
+525:FIREFLY
+526:5,144
+527:993
+528:✓
+--RESULTS--
+594:Results
+595:5.2.1
+596:FIREFLY Test Set
+597:Table 3 presents results on the FIREFLY test set. RL training on FIREFLY improves Qwen3-4B
+598:from 28.1% to 41.5% pass@1 (+13.4 points), matching Claude Sonnet 4.6 (42.2%) despite being
+599:8
+600:
+601:============================================================
+602:=== PAGE 9 ===
+603:============================================================
+604:
+605:Table 4: Results on public benchmarks. FIREFLY RL improves Qwen3-4B-Thinking-2507 across
+606:all evaluated benchmarks.
+607:Model
+608:Tau2-
+609:Bench
+610:Retail
+611:Tau2-
+612:Bench
+613:Airline
+614:Tau2-
+615:Bench
+616:Telecom
+617:MCP-
+618:Atlas
+619:Qwen3-4B
+620:0.491
+621:0.365
+622:0.189
+623:19.4%
+--LIMITATIONS--
+701:Limitations
+702:Model scale.
+703:Due to computational constraints, we only train and evaluate a 4B-parameter model.
+704:While the results demonstrate clear gains from FIREFLY’s verifiable supervision, larger models are
+705:likely to benefit even more: the modest gap between pass@1 and pass@16 (41.5% vs. 57.0%)
+706:suggests that the 4B model lacks the capacity to solve many harder multi-step tasks regardless of
+707:sampling budget. Scaling to larger models (e.g., 30B+ parameters) would likely raise both the
+708:pass@1 ceiling and the pass@16 coverage, as larger models can internalize more diverse solution
+709:strategies from the training trajectories.
+710:Single-turn interaction.
+711:All tasks in FIREFLY follow a single-turn format: the user issues one
+712:request and the agent completes it through multi-step tool calls. Real-world tool-use scenarios often
+713:involve multi-turn conversations where the user provides clarifications, changes requirements, or
+714:builds on previous results. Extending the pipeline to generate and validate multi-turn dialogues with
+715:interleaved user messages is an important direction for future work.
+716:Conservative simulator errors.
+717:The simulator returns a tool error for calls that differ semantically
+718:from every cached call, so an agent that finds a valid path outside the explored trajectories during
+719:RL receives an error for that path, which may narrow the policy toward explored paths. To bound
+720:this truncation risk, we classified every evaluation tool call as an exact, minor, or major deviation
+721:from the nearest cached call and related the classes to task success. In successful trajectories, about
+722:24% of calls deviate from the cached ground-truth path (13.8% with major and 10.4% with minor
+723:deviations) and still lead to full reward, so alternative paths can pass through the simulator. In failed
+724:trajectories, 66.8% of calls deviate majorly, so the errors fall mostly on semantically wrong calls,
+
+##### library/03_paired_benchmark/2606.21140_MatchingMatters/2606.21140_MatchingMatters_fulltext.txt  (2145 lines)
+--ABSTRACT--
+11:Abstract
+12:Rapid advances in large language models have improved the
+13:task-solving capabilities of command-line-interface (CLI)-
+14:based agents, whose CLIs determine how models invoke
+15:tools, maintain interaction history, and recover from failures.
+16:Consequently, effective matching between CLIs and LLMs
+17:has become essential. However, existing agent benchmarks
+18:largely emphasize success rate while overlooking practical
+19:objectives such as cost and efficiency, as well as the se-
+20:lection of LM–CLI combinations, all of which are critical
+21:in real-world deployment. We therefore introduce AGENT-
+22:METER, a quality–efficiency benchmark with a new met-
+23:ric, the AgentMeter Score (AMS), that jointly characterizes
+24:task quality, budget sensitivity, and resource-intensive zero-
+25:reward execution, enabling a more complete assessment of
+26:deployed LM–CLI pairs.
+27:Furthermore, collected task de-
+28:scriptions may inadvertently favor LM–CLI pairs that are par-
+29:ticularly compatible with their wording and structure, causing
+30:evaluation results to reflect description-specific advantages
+31:rather than general task-solving capability. We therefore pro-
+32:pose AGENTMETER-OPT, a trajectory-grounded optimiza-
+33:tion framework that constructs pair-adapted, task-preserving
+34:description variants to build a fairer evaluation set across
+35:LM–CLI pairs. Extensive experiments show that no CLI is
+36:universally optimal across language models and that task suc-
+37:cess, execution cost, and AMS identify different competitive
+38:configurations. Results on AGENTMETER-OPT further re-
+39:veal that task-preserving description changes affect LM–CLI
+40:pairs unevenly and can alter their relative ordering across
+41:valid description conditions. Together, AGENTMETER and
+42:AGENTMETER-OPT provide a practical foundation for fair
+43:and deployment-relevant evaluation of command-line agents.
+44:Introduction
+--INTRO END--
+253:
+254:============================================================
+255:=== PAGE 3 ===
+256:============================================================
+257:
+258:diagnose clarify
+259:propose
+260:Candidate
+261:Adapted
+262:Fair benchmark
+263:Pair-adapted sets
+264:Task-preserving reflective rewrite
+265:Interpret
+266:Diverge Outcome
+267:File / path
+268:Task boundary
+269:Output contract
+270:P4
+271:P1
+272:P2
+273:P3
+274:same tasks
+275:pair-adapted descriptions
+276:task preserved
+277:public-only
+278:no solver hints
+279:Figure 2: AGENTMETER-OPT uses each source pair’s Original trajectory to construct a task-preserving description. Target
+280:pairs are evaluated on the same tasks under Original, Self, Cross, and source-balanced Pooled conditions.
+--METHOD--
+337:Methodology
+338:Problem Formulation
+339:We treat the pairing of a language model and a command-
+340:line interface as an LM–CLI configuration, denoted by π.
+341:Each task i is specified by its objective, input artifacts and
+342:their roles, required outputs, execution environment, evalu-
+343:ator, and success criterion. Together, these elements define
+344:the task semantics. Given a public task, executing config-
+345:uration π on task i produces a trajectory τi(π), an evalu-
+346:ator reward Ri(π) ∈[0, 1], and a billable execution cost
+347:Ci(π) ≥0.
+348:AgentMeter Score
+349:We first collect the dataset as AgentMeter, which evaluates
+350:each LM–CLI pair under the original description of every
+351:task. Then, we propose AgentMeter Score (AMS), which
+352:measures not only how much task quality a configuration
+353:achieves, but also how efficiently it achieves that quality
+354:and how much it spends on zero-reward executions. AMS
+355:combines three complementary components: Task Qual-
+356:ity (TQ), cost-aware Area Under the Budget–Quality Curve
+357:(AUBQC), and Expensive Failure Rate (EFR).
+358:Because execution costs are meaningful only relative to
+359:task demand, AMS first estimates the observed effort of each
+360:task from a fixed reference set of LM–CLI configurations,
+361:denoted by Πref. Throughout this subsection, τi(π), Ri(π),
+362:and Ci(π) denote the trajectory, reward, and cost obtained
+363:by configuration π on task i under its collected public de-
+364:scription. Let Tok(τ) and Step(τ) denote the token usage
+365:and number of execution steps recorded in trajectory τ, re-
+366:spectively. We define the observed-effort index of task i as
+367:ei = q
+368:�
+369:median
+370:π∈Πref Tok(τi(π))
+371:�
+372:+ q
+373:�
+374:median
+375:π∈Πref Step(τi(π))
+376:�
+--EXP SETUP--
+832:Experiments
+833:Datasets
+834:The Full Benchmark contains 80 executable command-line
+835:tasks from SkillsBench, Terminal-Bench, and DA-Code (Li
+836:et al. 2026; Merrill et al. 2026; Huang et al. 2024). It pro-
+837:vides the reference task distribution used for effort and cost
+838:calibration. The 30-task Core Subset preserves coverage of
+839:the source benchmarks and observed-effort strata while sup-
+840:porting the complete 7×4 LM–CLI grid, yielding 840 pair–
+841:task runs. We assess its fidelity using the 16 configurations
+842:with complete Full-Benchmark coverage, comprising 1,280
+843:Full-Benchmark pair–task runs in total.
+844:For AGENTMETER-OPT, we use a fixed 16-task subset
+845:spanning 5 Easy, 7 Medium, and 4 Hard tasks to study how
+846:task-preserving description variants affect LM–CLI perfor-
+847:mance and ranking.
+848:Implementation Details
+849:Models and interfaces.
+850:We evaluate seven language
+851:models:
+852:Qwen3.6-Plus,
+853:DeepSeek-V4-Pro,
+854:GLM-5.1,
+855:MiniMax-M2.5, Claude Sonnet 4.6, GPT-5.3-Codex, and
+856:Gemini 3.5 Flash (Alibaba Cloud 2026; DeepSeek 2026;
+857:Z.AI 2026; MiniMax 2026; Anthropic 2026b; OpenAI
+858:2026b; Google 2026). Each model is paired with Claude
+859:Code, Codex CLI, Kimi Code CLI, and Qwen Code (An-
+860:thropic 2026a; OpenAI 2026a; Moonshot AI 2026; Qwen
+861:Team 2026a). Exact provider model IDs, snapshots, infer-
+862:ence settings, CLI releases or commits, and evaluation dates
+863:are reported in the supplementary material.
+864:Evaluation protocol. AMS is the primary metric. We ad-
+865:ditionally report pass count, tokens per successful task, and
+866:USD per successful task. We set α = 0.6. Within each Full-
+867:Benchmark effort stratum, the billable-cost budget grid is
+868:calibrated at the 20th, 40th, 60th, 80th, and 90th percentiles
+869:of positive-reward reference executions.
+870:The expensive-
+871:failure threshold is the 90th percentile of zero-reward ex-
+872:ecution cost in the same stratum. All calibration choices,
+873:including the reference configurations, effort strata, budget
+874:grids, failure thresholds, and pricing rules, are fixed in ad-
+875:vance and shared across all evaluated configurations. Un-
+876:less otherwise stated, 95% confidence intervals use 10,000
+877:task-level paired bootstrap resamples.
+878:Description construction.
+879:We use four LM–CLI pairs:
+880:Qwen3.6-Plus/Kimi Code CLI, Qwen3.6-Plus/Codex CLI,
+881:DeepSeek-V4-Pro/Kimi Code CLI, and GLM-5.1/Qwen
+--LIMITATIONS--
+1985:Limitations
+1986:The reported rankings are conditional on the selected tasks,
+1987:calibration reference, pricing configuration, and execution
+1988:harness. The Core–Full audit supports Core as an efficient
+1989:approximation within the studied benchmark pool, while the
+1990:16-task, four-pair AGENTMETER-OPT experiment is a con-
+1991:trolled diagnostic rather than an exhaustive estimate over
+1992:all models, interfaces, and domains. The tested sensitiv-
+1993:ity settings preserve the leading configuration but do not
+1994:cover every possible quality–cost objective. The preserva-
+1995:tion gate rejects explicit changes to public task semantics but
+1996:cannot formally prove natural-language equivalence. Task-
+1997:level bootstrap intervals quantify variation over tasks, and
+1998:reported USD values exclude local infrastructure costs.
+1999:References
+2000:Agrawal, L. A.; Tan, S.; Soylu, D.; Ziems, N.; Khare, R.;
+2001:Opsahl-Ong, K.; Singhvi, A.; Shandilya, H.; Ryan, M. J.;
+2002:et al. 2026. GEPA: Reflective Prompt Evolution Can Outper-
+2003:form Reinforcement Learning. In International Conference
+2004:on Learning Representations (ICLR).
+2005:
+2006:============================================================
+2007:=== PAGE 12 ===
+2008:============================================================
+--CONCLUSION--
+1202:Conclusion
+1203:We introduced AGENTMETER to evaluate complete LM–
+1204:CLI configurations using AMS, which combines graded task
+1205:quality, quality under calibrated cost budgets, and costly
+1206:zero-reward failures. Experiments show that pass rate, ex-
+1207:ecution cost, and AMS identify different leading configura-
+1208:tions, and that no CLI is consistently best across language
+1209:models. AGENTMETER-OPT further shows that measured
+1210:performance and ranking can depend on the collected task
+1211:formulation.
+1212:Source-balanced Pooled evaluation reduces
+1213:dependence on any formulation, while generic public-only
+1214:rewriting does not explain the main gains.
+1215:This contrast
+1216:suggests that effective adaptation depends on diagnosing the
+1217:concrete ambiguities exposed by each pair’s trajectory. The
+
+##### library/03_paired_benchmark/2607.03957_NormWorldsCF/2607.03957_NormWorldsCF_fulltext.txt  (1042 lines)
+--ABSTRACT--
+10:Abstract
+11:Language models can reach the right normative verdict for
+12:the wrong reason. We introduce NormWorlds-CF, a solver-
+13:verified environment for counterfactual normative reasoning
+14:in executable rule worlds. Its deterministic solver produces
+15:final answers, proof and falsification certificates, argument
+16:statuses, support sets, and paired-world change labels, en-
+17:abling supervision and evaluation without LLM judges. The
+18:benchmark contains staged SFT diagnostics and a compact
+19:paired-world task with 270 root families and 1080 canonical-
+20:to-variant pairs. The SFT diagnostics show that final-answer
+21:supervision can saturate verdict accuracy without inducing
+22:falsification competence: answer-only SFT reaches perfect
+23:answer accuracy but scores zero on joint falsification cer-
+24:tificates, while full-mix training with targeted replay reaches
+25:strong all-task accuracy (0.99). For the structured-change task,
+26:we introduce metamorphic-relation GRPO (MR-GRPO), a
+27:class-conditioned reward for GRPO that gives partial credit
+28:for relation families and solver-visible change fields. In
+29:matched Qwen3-1.7B continuation experiments, MR-GRPO
+30:improves held-out relation accuracy and relation-family cor-
+31:rectness, and reduces wrong-family error, compared to sparse
+32:and answer-only GRPO. In Qwen3-4B three-seed validation,
+33:sparse reward preserves coarse relation labels best, answer-
+34:only reward improves answer-change but weakens relation-
+35:family structure, and MR-GRPO leads on answer-, support-,
+36:and status-change fields as well as class-conditioned MR and
+37:change-presence. These results show that verified counterfac-
+38:tual structure can shape post-training beyond final answers,
+39:while exact full change-record generation, invariant subtype
+40:recognition, and out-of-distribution (OOD) transfer remain
+41:open problems.
+42:1
+43:Introduction
+--INTRO END--
+786:============================================================
+787:
+788:Proof supervision does not transfer to falsification
+789:Proof
+790:exhibits the winner; falsification rejects a plausible loser. Our
+791:ladder shows limited automatic transfer under deterministic
+792:scoring: answer-plus-proof can saturate proofs while joint
+793:falsification stays at zero. Scoring only the winning path
+794:misses certificate-review errors—citing a defeated rule, ig-
+795:noring unresolved conflict, or accepting an invalid certificate.
+796:Interventions, partial credit, and attribution
+797:Root-level
+798:MR pairs are interventions, not generic augmentations: sur-
+799:face/distractor edits should leave certificates fixed, while sup-
+800:port/priority edits should change them in solver-specified
+801:ways. Compact change records are a practical RL inter-
+802:face for naming the mechanism of change. Confusing sup-
+803:port_delta with priority_delta is wrong on subtype yet
+804:right on the invariant/change boundary; class-conditioned
+805:partial credit follows that diagnostic hierarchy, whereas
+806:sparse exactness ignores it and often starves GRPO. Refusing
+807:LLM judges keeps reward design an experimental variable,
+808:and typed failures make competence-level attribution possi-
+809:ble. NormWorlds-CF complements LegalBench-style eval-
+810:uation by asking whether verified structure can be taught
+811:under auditable oracles before asking how much transfers to
+812:open legal text.
+813:6
+--EXP SETUP--
+526:Experiments
+527:The experiments answer four questions. Does final-answer
+528:supervision suffice for solver-generated normative structure?
+529:After a shared sparse phase, how do answer-only, sparse,
+530:and MR-aware continuations diverge on Qwen3-1.7B? From
+531:a shared aligned-SFT start on Qwen3-4B, does the same
+532:reward geometry reappear when change fields are more ex-
+533:pressible? Which failures remain?
+534:All metrics use deterministic parsers and scorers—never
+535:an LLM judge. We treat relation, relation-family, wrong-
+536:family, and exact answer/support/status change as primary
+537:structural readouts. Soft scores (change-presence, class-
+538:conditioned MR) reuse solver-visible fields and can align
+539:with the MR-GRPO reward; they are secondary diagnos-
+540:tics, not substitutes for exact family checks. Formally: rela-
+541:tion is four-way exact accuracy; relation-family is invariant-
+542:vs-change correctness; wrong-family crosses that boundary;
+543:all-changes exact requires the four change fields to match,
+544:excluding the relation label; change-presence checks answer
+545:kind and nonempty slots without exact item identities; class-
+546:conditioned MR is Aclass. Predicting priority_delta for
+547:gold support_delta is wrong on subtype but right on fam-
+548:ily; predicting an invariant label for that case is a wrong-
+549:family error. Unless noted, the SFT surface ablations and
+550:the Qwen3-1.7B GRPO continuation are single runs; the
+551:Qwen3-4B GRPO study averages three independent seeds
+552:(seeds, hardware, and per-seed tables in the supplementary
+553:material). Exact 0/1 metrics use McNemar tests on the 1.7B
+554:held-out pairs; soft scores are secondary means. OOD asks
+555:whether in-distribution gains leave the training relation mix.
+556:4.1
+557:SFT Diagnostics
+558:Table 5 shows the surface-variation ablation. Mixes are in-
+559:dependent from-base runs (896 records, 280 steps); the last
+560:row keeps the full mix with targeted failure-family over-
+561:sampling. Answer-only SFT saturates Answer (original- and
+562:edited-world single-world answers) but scores zero on joint
+563:falsification. The prompts already name the falsification task
+564:and schema, and models emit partially correct fields (Answer
+565:wrong-rule 0.56; Answer+Proof counter-rule 0.42) while the
+566:joint certificate stays empty—so the result shows limited
+567:zero-shot transfer from answer/proof supervision to exact fal-
+568:sification certificates under the current interface, not only a
+569:formatting failure (field breakdown in the supplementary ma-
+570:terial). Answer+Proof saturates proofs yet still scores zero on
+571:joint falsification. Adding falsification yields the first strong
+572:all-task jump; full mix + targeted replay reaches 0.99 overall.
+573:On root-level MR cases, a strong initializer still scores only
+574:0.075 all-fields correct before a 600-step argument-certificate
+575:warmup raises this to 0.775, leaving relation-sensitive errors
+--CONCLUSION--
+871:Conclusion
+872:NormWorlds-CF makes counterfactual normative structure
+873:auditable: answers, certificates, and paired-world change la-
+874:bels are solver-generated rather than LLM-judged. SFT di-
+875:agnostics show that final-answer supervision—often a rea-
+876:sonable default in answer-sparse math—can saturate ver-
+877:dicts without inducing falsification competence. On com-
+878:pact change records, matched answer-only, sparse, and MR-
+879:aware GRPO induce a clear geometry under a 1.7B contin-
+880:uation protocol and a 4B from-SFT protocol: sparse leads
+881:on coarse relation labels, answer-only trades family struc-
+882:ture for answer-local gains, and MR-GRPO leads on an-
+883:swer/support/status fields and secondary soft scores. Ex-
+884:act full-record generation, invariant subtype recognition, and
+885:OOD transfer remain open. The broader lesson is that out-
+886:come supervision cannot identify normative structure qual-
+

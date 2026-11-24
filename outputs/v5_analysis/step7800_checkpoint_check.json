@@ -1,0 +1,204 @@
+{
+  "checked_at": "2026-11-23T23:39:45.889777+08:00",
+  "runs": {
+    "Qwen3-4B-v5-seed42": {
+      "step_7800": [
+        {
+          "optimizer_step": 7800,
+          "loss": 2.741811897521984e-07,
+          "elapsed_s": 12873.6
+        }
+      ],
+      "near_7800": [
+        {
+          "optimizer_step": 7400,
+          "loss": 2.02655698444687e-07,
+          "elapsed_s": 12391.5
+        },
+        {
+          "optimizer_step": 7500,
+          "loss": 1.0985336302837823e-06,
+          "elapsed_s": 12513.9
+        },
+        {
+          "optimizer_step": 7600,
+          "loss": 1.9073478085829265e-07,
+          "elapsed_s": 12634.2
+        },
+        {
+          "optimizer_step": 7700,
+          "loss": 1.349627495983441e-06,
+          "elapsed_s": 12753.5
+        },
+        {
+          "optimizer_step": 7800,
+          "loss": 2.741811897521984e-07,
+          "elapsed_s": 12873.6
+        },
+        {
+          "optimizer_step": 7900,
+          "loss": 1.1289362191746477e-06,
+          "elapsed_s": 12997.1
+        },
+        {
+          "optimizer_step": 8000,
+          "loss": 1.311301929263209e-07,
+          "elapsed_s": 13119.2
+        }
+      ],
+      "latest_training": [
+        {
+          "optimizer_step": 9000,
+          "loss": 7.152556236178498e-08,
+          "elapsed_s": 14335.4
+        }
+      ],
+      "trained_eval": [
+        {
+          "subset": "dev",
+          "tag": "trained",
+          "f1": 1.0,
+          "state_acc": 1.0
+        },
+        {
+          "subset": "test_tpl_ho",
+          "tag": "trained",
+          "f1": 0.9651474530831099,
+          "state_acc": 0.9695238095238096
+        },
+        {
+          "subset": "test_tool_ho",
+          "tag": "trained",
+          "f1": 0.9324263038548752,
+          "state_acc": 1.0
+        },
+        {
+          "subset": "test_struct_ho",
+          "tag": "trained",
+          "f1": 0.7203098106712564,
+          "state_acc": 1.0
+        }
+      ],
+      "files": [
+        {
+          "path": "metrics.json",
+          "bytes": 47983
+        },
+        {
+          "path": "zeroshot_predictions/dev.jsonl",
+          "bytes": 1505682
+        },
+        {
+          "path": "zeroshot_predictions/test_tpl_ho.jsonl",
+          "bytes": 1689727
+        },
+        {
+          "path": "zeroshot_predictions/test_tool_ho.jsonl",
+          "bytes": 1558783
+        },
+        {
+          "path": "zeroshot_predictions/test_struct_ho.jsonl",
+          "bytes": 1671940
+        },
+        {
+          "path": "adapter/README.md",
+          "bytes": 5184
+        },
+        {
+          "path": "adapter/adapter_model.safetensors",
+          "bytes": 47224624
+        },
+        {
+          "path": "adapter/adapter_config.json",
+          "bytes": 1146
+        },
+        {
+          "path": "trained_predictions/dev.jsonl",
+          "bytes": 760782
+        },
+        {
+          "path": "trained_predictions/test_tpl_ho.jsonl",
+          "bytes": 893741
+        },
+        {
+          "path": "trained_predictions/test_tool_ho.jsonl",
+          "bytes": 882888
+        },
+        {
+          "path": "trained_predictions/test_struct_ho.jsonl",
+          "bytes": 944526
+        }
+      ]
+    },
+    "Qwen3-4B-v5-seed43": {
+      "step_7800": [
+        {
+          "optimizer_step": 7800,
+          "loss": 1.52587381307967e-06,
+          "elapsed_s": 9344.1
+        }
+      ],
+      "near_7800": [
+        {
+          "optimizer_step": 7400,
+          "loss": 3.68106848327443e-05,
+          "elapsed_s": 8852.6
+        },
+        {
+          "optimizer_step": 7500,
+          "loss": 4.4092299503972754e-05,
+          "elapsed_s": 8975.7
+        },
+        {
+          "optimizer_step": 7600,
+          "loss": 2.8729270979965804e-06,
+          "elapsed_s": 9098.9
+        },
+        {
+          "optimizer_step": 7700,
+          "loss": 1.4306423508969601e-05,
+          "elapsed_s": 9223.8
+        },
+        {
+          "optimizer_step": 7800,
+          "loss": 1.52587381307967e-06,
+          "elapsed_s": 9344.1
+        },
+        {
+          "optimizer_step": 7900,
+          "loss": 9.179101425615954e-07,
+          "elapsed_s": 9464.4
+        },
+        {
+          "optimizer_step": 8000,
+          "loss": 1.0132773695659125e-06,
+          "elapsed_s": 9574.5
+        }
+      ],
+      "latest_training": [
+        {
+          "optimizer_step": 8200,
+          "loss": 1.3947457091489923e-06,
+          "elapsed_s": 9787.8
+        }
+      ],
+      "trained_eval": [],
+      "files": []
+    }
+  },
+  "remote_checkpoint_and_eval_calls": [
+    {
+      "line": 604,
+      "text": "print(json.dumps({\"optimizer_step\": done, \"loss\": float(out.loss.detach().cpu()),"
+    },
+    {
+      "line": 704,
+      "text": "model.save_pretrained(adapter_dir)"
+    },
+    {
+      "line": 705,
+      "text": "results[\"trained\"] = evaluate_all(model, tokenizer, data, args, \"trained\", args.out_dir)"
+    }
+  ],
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 91, 32208, 32760"
+}

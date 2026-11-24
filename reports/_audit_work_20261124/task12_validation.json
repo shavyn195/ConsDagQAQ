@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-24",
+  "full_pytest": {
+    "command": "D:/Programe_Env/Python/Python312/python.exe -m pytest -q",
+    "exit_code": 0,
+    "passed": 140,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 192.73,
+    "log": "reports/_audit_work_20261124/task12_pytest.txt"
+  },
+  "data_verification": {
+    "verdict": "PASS",
+    "records": 17100,
+    "groups": 5700,
+    "pairwise_leakage_checks": 45,
+    "nonzero_leakage": 0,
+    "sha_matches_generation": true,
+    "report": "reports/_audit_work_20261124/task12_verification_report.json"
+  },
+  "static_checks": {
+    "bash_syntax": [
+      "scripts/run_v6_queue.sh",
+      "scripts/wait_and_run_v6.sh",
+      "scripts/run_pe_v6.sh"
+    ],
+    "python_compile": [
+      "src/run_e1_v6.py",
+      "src/run_v6_relay.py",
+      "src/run_pe_v6.py",
+      "src/analyze_v6_main.py",
+      "src/eval_exec_v6.py",
+      "src/build_dataset_v6.py",
+      "src/verify_dataset_v6.py"
+    ],
+    "v6_active_fp16_hits": [],
+    "status": "PASS"
+  },
+  "token_coverage": {
+    "0.6B": "PASS: 17100 records, train max 1085, gold max 268, dropped 0",
+    "1.7B": "PASS: 17100 records, train max 1085, gold max 268, dropped 0",
+    "4B": "PENDING: tokenizer absent locally; actual tokenizer checked before server training"
+  },
+  "frozen_v5": {
+    "baseline_files": 106,
+    "current_files": 106,
+    "changed": [],
+    "missing": [],
+    "added": [],
+    "status": "PASS"
+  },
+  "release": {
+    "manifest": "configs/v6_release_sha256.json",
+    "sha256": "7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa",
+    "sealed_files": 155,
+    "local_verification": "PASS"
+  },
+  "execution_boundaries": {
+    "ssh_used": false,
+    "v6_gpu_training_launched": false,
+    "pe_api_called": false,
+    "commit_or_push": false,
+    "target_linux_gpu_integration_tested": false,
+    "human_review": "pending"
+  },
+  "reports": [
+    "reports/ccfb_readiness_audit_v5_v6_20261124.md",
+    "reports/ccfb_literature_audit_20261124.md",
+    "reports/v6_server_handoff.md"
+  ]
+}

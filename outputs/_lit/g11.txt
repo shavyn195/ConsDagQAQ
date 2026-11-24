@@ -1,0 +1,373 @@
+##### 2606.22388_PlanBenchXL/2606.22388_PlanBenchXL_fulltext.txt  (5151 lines)
+--ABSTRACT--
+16:Abstract
+17:LLM agents increasingly operate in large tool
+18:ecosystems, where real-world tasks require dis-
+19:covering relevant tools, inferring implicit sub-
+20:goals, and adapting to dynamic environments
+21:over long horizons. However, existing bench-
+22:marks rarely evaluate planning under retrieval-
+23:limited tool visibility. To address this gap, we
+24:introduce PlanBench-XL, an interactive bench-
+25:mark of 327 retail tasks over 1,665 tools that
+26:tests whether agents can iteratively retrieve us-
+27:able tools, invoke them to uncover intermedi-
+28:ate evidence for subsequent calls toward the
+29:final goal. PlanBench-XL further features an
+30:optional blocking mechanism that simulates
+31:real-world unpredictability through missing,
+32:failing, or distracting tool functions, forcing
+33:agents to detect disrupted paths and adapt at
+34:runtime. Experiments on ten leading LLMs
+35:show that massive-tool planning remains chal-
+36:lenging: while GPT-5.4 achieves 51.90% ac-
+37:curacy in block-free settings, it collapses to
+38:11.36% under the most severe blocking condi-
+39:tion. Further analysis shows that agents are es-
+40:pecially vulnerable when failures lack explicit
+41:error signals or when recovery requires longer
+42:alternative tool-use paths. These results estab-
+43:lish PlanBench-XL as a testbed for diagnosing
+44:agentic planning failures and highlight the need
+45:for robust adaptive planning in long-horizon
+46:tasks with large, imperfect tool environments.1
+47:1
+48:Introduction
+49:Large language model (LLM) agents equipped
+--INTRO END--
+293:recovery path is preserved. We further find that
+294:success requires not only broad exploration, but
+295:also precise exploitation of discovered information
+296:and reliable tool invocation. These findings suggest
+297:that current LLM agents still lack robust adaptive
+298:planning capabilities in large, partially observable,
+299:and unreliable tool environments. We summarize
+300:our main contributions as follows:
+301:• Scalable Benchmark Framework: We intro-
+302:duce PlanBench-XL, a scalable LLM-based task
+303:generator that automatically creates grounded
+304:queries with paired tools, creating diverse, com-
+305:plex tasks to evaluate agents’ planning abilities.
+306:• Dynamic Interaction Environment: We design
+307:an interactive environment that simulates real-
+308:world unpredictability with three blocking events,
+309:forcing real-time adaptation and re-planning, and
+310:can serve as an RL playground for agent training.
+311:• Comprehensive Analysis: We evaluate ten fron-
+312:tier LLMs and reveal that current agents struggle
+313:with massive-tool planning, especially under cor-
+314:rupted tool access and longer recovery paths.
+315:Looking ahead, PlanBench-XL lays the founda-
+316:tion for robust and adaptive LLM agents that ac-
+317:tively explore large tool ecosystems, detect unre-
+318:liable tool access, and re-plan under real-world
+319:uncertainty.
+320:2
+--EXP SETUP--
+555:evaluation modes: a default mode that evaluates
+556:tool use under ordinary retrieval noise, with useful
+557:tools mixed among distracting alternatives; and a
+558:block mode, which further disrupts selected use-
+559:ful paths while preserving solvability. It therefore
+560:tests whether agents can recover and re-plan when
+561:a plausible path becomes unreliable. Each task
+562:unfolds through an iterative interaction loop in
+563:which the agent observes the state, reasons about its
+564:next step, retrieves or invokes tools, and receives
+565:executable feedback from the environment. We
+566:describe the benchmark construction below and
+567:discuss its significance and generalization in Ap-
+568:pendix F.4.
+569:3.1
+570:Environment Setup
+571:Tool
+572:Library.
+573:We
+574:introduce
+575:self-defined
+576:datatypes to provide a typed representation of
+577:domain-specific information and to support the
+578:systematic construction of tools. For the retail
+579:domain, we first define a set of datatypes D.
+580:Each datatype d
+581:∈
+582:D represents a concrete
+583:type of distinct domain information, such as
+584:person_name or purchase_status. The initial
+585:datatype inventory is proposed by a generation
+586:LLM Mgen and then automatically filtered by
+587:another LLM Mfil to remove vague, redundant,
+588:unreasonable or unrealistic datatypes. We then
+589:construct candidate tools by considering all pairs of
+590:datatype sets (Din, Dout) over D, where |Din|=m
+591:and |Dout|=n denote the given numbers of input
+592:and output datatypes, respectively. For each such
+593:pair, Mgen proposes a candidate tool functionality
+594:whose input schema is given by Din and whose
+595:output schema is given by Dout.
+596:For each re-
+597:sulting tool τ, we denote its input and output
+598:datatype sets by Din(τ) and Dout(τ). For exam-
+599:ple, given Din={product_name, store_name}
+600:and
+601:Dout={inventory_status},
+602:Mgen
+603:may
+604:propose a tool functionality that checks whether
+--RESULTS--
+891:Results
+892:Takeaway 1
+893:Planning with massive toolsets remains
+894:highly challenging for most models.
+895:Table 3 shows a sharp divide between frontier mod-
+896:els and the rest. Gemini-3.1-Pro achieve the highest
+897:accuracy of 77.06%, while maintaining the high-
+898:est EGT Precision with about 20 turns. In con-
+899:trast, most other models remain below 60% accu-
+900:racy, with Qwen3-8B and Llama-3.1-8B-Instruct
+901:achieving 0%, revealing the difficulty of long-
+902:horizon, exploration-driven planning across large
+903:tool ecosystems. The gaps are also large within
+904:model families: larger Qwen and Llama variants
+905:6
+906:
+907:============================================================
+908:=== PAGE 7 ===
+909:============================================================
+910:
+911:Model Name
+912:Task Completion
+913:Exploration Behavior
+914:Execution Quality
+915:Accuracy (%) ↑
+916:EGT Prec. (%) ↑
+917:Avg. Turns
+918:Mean EDT
+919:S/C Ratio
+920:ITCR (%) ↓
+--LIMITATIONS--
+1836:Limitations
+1837:While PlanBench-XL provides a principled and
+1838:scalable framework for evaluating adaptive plan-
+1839:ning under massive, retrieval-mediated tool access,
+1840:it has several limitations. First, PlanBench-XL
+1841:is currently instantiated in the retail domain. Al-
+1842:though its queries cover diverse multi-step work-
+1843:flows, a single domain may not fully capture the
+1844:breadth of real-world tool-use scenarios. Since
+1845:PlanBench-XL is built with a scalable generation
+1846:pipeline over typed datatypes, executable tools,
+1847:and backend databases, it can be extended to ad-
+1848:ditional domains in future work.
+1849:Second, our
+1850:retrieval-time blockers simulate representative tool-
+1851:access failures, including explicit errors, coun-
+1852:terfactual outputs, and irrelevant tools.
+1853:How-
+1854:ever, real-world tool ecosystems may involve more
+1855:complex and dynamic failures.
+1856:This reflects a
+1857:realism–controllability trade-off: our design en-
+1858:ables systematic robustness analysis, while ab-
+1859:stracting away some open-ended complexity. Third,
+
+##### 2606.20023_LowerPrivileges/2606.20023_LowerPrivileges_fulltext.txt  (2136 lines)
+--ABSTRACT--
+14:Abstract
+15:As LLM agents increasingly select tools au-
+16:tonomously, their choices among tools with dif-
+17:ferent privileges become safety-relevant. How-
+18:ever, prior tool-selection studies focus on
+19:safety-agnostic metadata preferences, leaving
+20:privilege-sensitive choices underexplored. To
+21:address this gap, we study over-privileged tool
+22:selection, in which an agent selects or esca-
+23:lates to a higher-privilege tool despite a suf-
+24:ficient lower-privilege alternative. We intro-
+25:duce TOOLPRIVBENCH to evaluate whether
+26:agents choose higher-privilege tools despite suf-
+27:ficient lower-privilege alternatives, measuring
+28:both initial selection and escalation after tran-
+29:sient tool failures. Across eight domains and
+30:five recurring risk patterns, we find that over-
+31:privileged tool selection is common among
+32:mainstream LLM agents and is further ampli-
+33:fied by transient failures. We further find that
+34:general safety alignment does not reliably trans-
+35:fer to least-privilege tool choice, while prompt-
+36:level controls provide only limited mitigation
+37:under transient failures. We therefore intro-
+38:duce a privilege-aware post-training defense
+39:that teaches agents to prefer sufficient lower-
+40:privilege tools and escalate only when neces-
+41:sary. Our mitigation experiments show that
+42:this defense substantially reduces unnecessary
+43:high-privilege tool use while preserving gen-
+44:eral capabilities.
+45:1
+46:Introduction
+47:Recently, large language models (LLMs) have been
+--INTRO END--
+126:ior, we construct a simulation-based benchmark for
+127:privilege-sensitive tool selection. Each scenario
+128:provides both lower-privilege and higher-privilege
+129:tools, and all tools are independently sufficient
+130:for the user task, removing the capability con-
+131:found that lower-privilege tools might be unable
+132:to solve the task. We evaluate two forms of over-
+133:privilege: aggressive selection, where an agent
+134:directly chooses a higher-privilege tool, and prema-
+135:ture escalation, where it switches to higher priv-
+136:ilege after transient, privilege-unrelated failures
+137:from lower-privilege tools. The benchmark spans
+138:eight application domains and five recurring risk
+139:types.
+140:Our experiments show that over-privileged tool
+141:selection is prevalent: many models choose or
+142:switch to higher-privilege tools despite sufficient
+143:lower-privilege alternatives, and transient failures
+144:amplify this tendency. We further find that conven-
+145:tional safety alignment fails to generalize reliably
+146:to least-privileged tool selection. Direct interven-
+147:tions like prompt engineering help but weaken in
+148:multi-turn settings. We thus introduce a privilege-
+149:aware post-training defense that substantially re-
+150:duces unnecessary high-privilege tool use while
+151:largely preserving general performance. Code and
+152:data are provided2.
+153:2
+--METHOD--
+219:Problem Formulation
+220:We define over-privileged tool selection as pre-
+221:mature escalation to a higher-privilege tool before
+222:lower-privilege sufficient alternatives can be ruled
+223:out. Formally, for a task instance x, let T denote
+224:the available tool set, and let p(t) be the privilege
+225:level of tool t ∈T . Let S(x) ⊆T denote the set of
+226:tools sufficient for completing x under the scenario
+227:constraints. At decision step i, let Ui(x) ⊆S(x)
+228:denote the subset of sufficient tools that have not
+229:yet been ruled out. If the agent selects ai = th such
+230:that
+231:∃tℓ∈Ui(x)
+232:with
+233:p(tℓ) < p(th),
+234:(1)
+235:then the choice at step i is over-privileged. This
+236:formulation covers two behavioral manifestations
+237:studied in this work: aggressive selection, where
+238:the agent initially chooses a higher-privilege
+239:tool, and premature escalation, where the agent
+240:moves to higher privilege after transient, privilege-
+241:unrelated failures from lower-privilege tools. In our
+242:evaluation, each lower-privilege tool is constructed
+243:to be independently sufficient for the task. Accord-
+244:ingly, any untried lower-privilege tool is treated
+245:as a remaining viable alternative, making higher-
+246:privilege use before exhausting such alternatives
+247:evidence of over-privileged behavior.
+248:3.2
+249:Evaluation Protocol
+250:We design each evaluation case based on the formu-
+251:lation above. In our specific setting (Figure 2(a)),
+252:each case consists of a user task together with six
+253:available tools: three lower-privilege and three
+254:higher-privilege. All tools are constructed to be
+255:sufficient for completing the task within the given
+256:scenario, which removes the capability confound
+257:that a lower-privilege tool might be unable to solve
+258:the task, allowing us to attribute higher-privilege
+--EXP SETUP--
+249:Evaluation Protocol
+250:We design each evaluation case based on the formu-
+251:lation above. In our specific setting (Figure 2(a)),
+252:each case consists of a user task together with six
+253:available tools: three lower-privilege and three
+254:higher-privilege. All tools are constructed to be
+255:sufficient for completing the task within the given
+256:scenario, which removes the capability confound
+257:that a lower-privilege tool might be unable to solve
+258:the task, allowing us to attribute higher-privilege
+259:use to the agent’s tool-selection behavior rather
+260:than to functional limitations of lower-privilege
+261:tools.
+262:We evaluate agents over multiple turns to capture
+263:both forms of over-privileged behavior: direct high-
+264:privilege selection at the initial decision point, and
+265:escalation after lower-privilege attempts encounter
+266:execution friction(Figure 2(b)). To model such
+267:friction without making lower-privilege tools gen-
+268:uinely insufficient, we inject transient, privilege-
+269:unrelated failures into lower-privilege tool calls,
+270:such as connection errors. After receiving such
+271:feedback, the agent can retry the same lower-
+272:privilege tool, switch to another lower-privilege
+273:tool, escalate to a higher-privilege tool, or stop if
+274:the task has been completed. We cap each interac-
+275:tion at k = 5 turns. Since each case contains three
+276:lower-privilege tools, this horizon gives the agent
+277:enough room to explore multiple lower-privilege
+278:alternatives before escalating, while avoiding an
+279:open-ended retry process.
+280:Under this protocol, we report the Over-
+281:Privileged Tool Use Rate@k (OPUR@k), de-
+282:fined as the proportion of cases in which the agent
+283:uses any higher-privilege tool within k turns while
+284:lower-privilege sufficient alternatives remain avail-
+285:able. We also report the Pre-Escalation Explo-
+286:ration Depth (PED), defined as the number of dis-
+287:tinct lower-privilege tools attempted before the first
+288:higher-privilege tool use. Among over-privileged
+289:cases, PED = 0 corresponds to aggressive selec-
+290:tion, while PED ≥1 corresponds to premature
+291:escalation, lower PED indicates more aggressive
+292:escalation.
+293:3.3
+294:Benchmark Construction
+295:We carefully design a benchmark construction
+296:pipeline tailored to the over-privileged tool selec-
+297:tion problem, as illustrated in Figure 2(c). The de-
+298:sign is around two requirements: evaluation cases
+--LIMITATIONS--
+1050:Limitations
+1051:While this study provides valuable insights into
+1052:tool selection in LLM agents, several limitations
+1053:should be acknowledged. For safety and controlla-
+1054:bility, we evaluate agents in simulation rather than
+1055:granting access to real production tools or live ex-
+1056:ternal services, and we use task instances in which
+1057:a small set of substitutable tools are independently
+1058:sufficient for completion. These choices support
+1059:clear attribution of over-privileged selection, but
+1060:they do not cover the full complexity of deployed
+1061:agent environments. Future work can extend this
+1062:setting with sandboxed executable tools, larger tool
+1063:inventories, partially overlapping tools, and multi-
+1064:tool workflows, which may require longer-horizon
+1065:trajectory analyses beyond the five-turn protocol
+1066:studied here. Moreover, the mechanisms behind
+1067:over-privileged selection under uncertainty offer a
+1068:valuable direction for deeper analysis.
+1069:References
+1070:Maksym Andriushchenko, Alexandra Souly, Mateusz
+1071:Dziemian, Derek Duenas, Maxwell Lin, Justin
+1072:Wang, Dan Hendrycks, Andy Zou, Zico Kolter, Matt
+1073:Fredrikson, Eric Winsor, Jerome Wynne, Yarin Gal,
+--CONCLUSION--
+1026:Conclusion
+1027:In this paper, we identify and systematically study
+1028:a previously underexplored safety risk in LLM
+1029:agents: over-privileged tool selection, where agents
+1030:choose or escalate to higher-privilege tools even
+1031:when lower-privilege alternatives are sufficient to
+1032:complete the task. To investigate this behavior,
+1033:we introduce a benchmark, evaluating both direct
+1034:high-privilege selection and escalation following
+1035:transient failures. Our experiments reveal that over-
+1036:privileged tool selection is prevalent across a wide
+1037:range of mainstream LLMs. To mitigate this is-
+1038:sue, we propose a privilege-aware post-training ap-
+1039:proach that significantly reduces unnecessary high-
+1040:privilege tool usage. We hope this work motivates
+1041:future research on privilege-aware agent design,
+

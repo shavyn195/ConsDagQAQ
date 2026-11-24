@@ -65,3 +65,5 @@
 05:37已将独立CPU修复后分析部署并启动等待进程PID152092（`src/analyze_v5_binding_repair.py`、`scripts/analyze_v5_binding_repair_after_run.sh`、`configs/v5_binding_repair_analysis.json`）。在面板预测到来前冻结代码/协议哈希，比较原始/目录重排/不透明角色输入下的修复收益及残余输入敏感性。相关本地检查10/10、服务器新增检查2/2通过。它是dev机制诊断而非独立泛化验证，不占GPU、不改变正在跑的训练和原分析。部署记录 `outputs/v5_analysis/binding_repair_deployment_20261124.json`。
 
 05:45：服务器再次完成原有冻结CPU审计器对1.7B44、4B43的错误分解，产物 `outputs/v5_analysis/coverage_newseeds_20261124.json`，传输哈希一致。1.7B44工具失败197条但仅29条目录外参数角色（43为170/109）；结构失败157条，其中41条角色对颠倒、45条目录外角色、121条同类型参数不匹配，标志非互斥。这否定了“全部差距都是名称拼写”的解释。新增/既有相关测试合并12/12通过。下一步按冻结输入面板区分目录绑定与方向语义；如训练增强，先只用train构造单变量增强并与同预算继续SFT对照，不动v5原测试或奖励，不启动GRPO大扫参。
+
+08:30：新增固定任务组交叉seed失败审计通过。本地脚本/测试 `src/analyze_v5_cross_seed_failures.py`、`tests/test_v5_cross_seed_failures.py`，相关测试2/2通过，产物 `outputs/v5_analysis/seed_overlap_1.7B_20261124.json`。工具/结构切分分别有19/11组三seed都失败，96/111组只一seed失败；43/44的组失败Jaccard分别.416/.385，42对另外两seed约.10–.20。将其解释为共享难例加seed敏感，而非单纯普遍硬题或纯随机噪声。08:29:32服务器快照：RTX 4080 SUPER GPU36%、显存16232MiB；0.6B seed42训练5000/9000，loss有限；原队列和诊断worker PID137446仍在。没有启动新的GPU训练，避免与原队列抢卡。

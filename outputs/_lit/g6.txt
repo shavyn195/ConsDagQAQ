@@ -1,0 +1,1079 @@
+##### library/02_objective_factorization/2609.27421_CounterfactualConstraintDistill/2609.27421_CounterfactualConstraintDistill_fulltext.txt  (3376 lines)
+--ABSTRACT--
+14:Abstract
+15:Multi-constraint instruction following requires
+16:a model to respond to a query under many si-
+17:multaneously active constraints. Even strong
+18:instruction-tuned models still routinely violate
+19:some of them. Existing approaches either aug-
+20:ment supervision with sequence- or token-level
+21:RL rewards from external verifiers or learned
+22:graders, or use on-policy distillation (OPD)
+23:against a single full-context teacher whose
+24:probability mass becomes diluted as more con-
+25:straints become simultaneously active.
+26:We
+27:propose CC-OPD (Counterfactual Constraint-
+28:Conditioned On-Policy Distillation), which in-
+29:verts the standard supervision-generation di-
+30:rection in distillation. Rather than enriching
+31:the teacher with information beyond what the
+32:student sees, CC-OPD ablates each constraint
+33:from the teacher’s conditioning in turn, and con-
+34:structs the per-constraint signal from the result-
+35:ing per-token probability differentials. The re-
+36:sulting per-token leave-one-out log-likelihood
+37:shifts are summed, clipped, and added to the
+38:vanilla OPD reward as a token-level shaping
+39:term. All shaping terms are obtained from
+40:the frozen teacher, without an external veri-
+41:fier during distillation, and the reward equals
+42:vanilla OPD wherever the aggregate shift is
+43:zero. Across two Qwen model pairs and seven
+44:benchmarks, CC-OPD achieves the highest
+45:average among all evaluated student-training
+46:methods. A 1.5B student trained with CC-OPD
+47:surpasses its own 7B RL-trained teacher on the
+--INTRO END--
+153:the reward equals vanilla sampled-token OPD.
+154:A 1.5B student trained with CC-OPD sur-
+155:passes its own 7B RL-trained teacher on multi-
+156:dimensional constraint following by +2.8 pp on the
+157:MulDimIF overall score and +6.3 pp on its hardest
+158:difficulty split (Figure 1). This is a rare outcome for
+159:OPD (Li et al., 2026), where students typically re-
+160:cover only part of the teacher–student performance
+161:gap rather than crossing it. Across both Qwen set-
+162:tings and seven instruction-following benchmarks,
+163:CC-OPD attains the highest average among all eval-
+164:uated student-training methods, including recent
+165:OPD variants.
+166:Our contributions are threefold. First, we in-
+167:troduce CC-OPD, a leave-one-out teacher-scoring
+168:method that produces a token-level signal for each
+169:constraint on student rollouts (§3). Second, we
+170:characterize the resulting signal algebraically: the
+171:LOO sum assigns cardinality-dependent weights
+172:to Möbius interaction terms, and a zero aggregate
+173:shift leaves the vanilla sampled-token OPD reward
+174:unchanged (§3; Appendix B). Third, we evaluate
+175:CC-OPD against SFT, verifier-based RL, vanilla
+176:OPD, Teacher-TopK RKL/SRKL, EOPD, ExOPD,
+177:and prompt-augmentation variants, together with
+178:counterfactual-design and training-efficiency anal-
+179:yses (§4.2).
+180:2
+--METHOD--
+181:Preliminaries
+182:2.1
+183:Multi-Constraint Instruction Following
+184:We consider multi-constraint instruction following,
+185:in which a model must produce a response y to
+186:a user query q that simultaneously satisfies a set
+187:of natural-language constraints C = {c1, . . . , cN}.
+188:Each ci is a self-contained sentence describing one
+189:requirement (length, formatting, taboos, tone, ci-
+190:tation format, and similar constraints). The query
+191:and constraint set are concatenated into a single
+192:natural-language instruction inst(q, C) in which
+193:the constraints appear as inline clauses interleaved
+194:with the query. Throughout we use C for the full
+195:constraint set, |C| for its cardinality, and ci for the
+196:i-th constraint; in realistic scenarios |C| is rarely
+197:small, with typical samples carrying several simul-
+198:taneously active constraints.
+199:2.2
+200:On-Policy Distillation with
+201:Sampled-Token PPO
+202:On-policy distillation (OPD) distills a frozen
+203:teacher PT into a student πθ by minimizing a token-
+204:level divergence on sequences sampled from the
+205:student itself. Given an input (q, C) and a student
+206:rollout y = (y1, . . . , yL) ∼πθ(· | q, C), the canon-
+207:ical OPD objective is
+208:LOPD = Ey∼πθ
+209:L
+210:�
+211:t=1
+212:KL
+213:�
+214:πθ(· | ht)
+215:��PT (· | ht)
+216:�
+217:,
+218:(1)
+219:
+220:============================================================
+--EXP SETUP--
+473:Experiments
+474:4.1
+475:Experimental Setup
+476:Model pairs.
+477:We evaluate CC-OPD on two
+478:student–teacher pairs spanning two model fami-
+479:lies and two student sizes. The Qwen2.5 pair uses
+480:Qwen2.5-1.5B-Instruct (Qwen Team et al., 2024)
+481:as the student and a Qwen2.5-7B teacher obtained
+482:by training Qwen2.5-7B-Instruct with GRPO-IR
+483:(instruction-level reward; see Baselines below) on
+484:the HIR-16K instruction-following corpus (Zhang
+485:et al., 2025a). The Qwen3 pair uses Qwen3-4B-
+486:Instruct-2507 (Yang et al., 2025) as the student and
+487:
+488:============================================================
+489:=== PAGE 5 ===
+490:============================================================
+491:
+492:a same-size teacher obtained by training Qwen3-
+493:4B-Instruct with GRPO-IR on the same corpus.
+494:Each teacher is GRPO-IR-tuned to obtain a strong
+495:instruction-following reference before distillation,
+496:following the standard practice of task-adapting the
+497:teacher prior to OPD. This setup provides a strin-
+498:gent evaluation because the student is compared
+499:against a teacher that has already been adapted to
+500:the target instruction-following corpus.
+501:Baselines.
+502:We compare against several train-
+503:ing paradigms, each instantiated for both model
+504:families. SFT fine-tunes the student on teacher-
+505:generated responses. Two GRPO (Shao et al.,
+506:2024) variants instantiate rubric-RL: GRPO-IR,
+507:matching RL-IR of Peng et al. (2025); Pyatkin et al.
+508:(2025), uses an instruction-level reward (r=1 iff
+509:every constraint is satisfied, else 0), and GRPO-
+510:CR, matching RL-CR of Qi et al. (2025); Pyatkin
+511:et al. (2025), uses a constraint-level mean reward.
+512:Vanilla sampled-token OPD is the direct distilla-
+513:tion baseline. Three OPD-augmentation variants
+514:(OPD-aug-LOO/Rand/SC) enlarge the OPD train-
+515:ing set with leave-one-out, random-subset, and
+516:single-constraint counterfactual prompts respec-
+517:tively. We additionally include two teacher-support
+518:controls: Teacher-TopK RKL on the teacher’s
+519:renormalized top-32 support, and Teacher-TopK
+520:SRKL, our top-k on-policy adaptation of Dis-
+521:tiLLM’s skewed reverse-KL loss (α=0.1) (Ko
+522:et al., 2024) on the same support. The remain-
+--RESULTS--
+570:Main Results
+571:Table 1 reports the seven-benchmark performance
+572:of CC-OPD against all baselines for both model
+573:pairs. CC-OPD achieves the best average score in
+574:both families: 51.4% on Qwen2.5 (+2.5 pp over
+575:the strongest ExOPD setting) and 64.3% on Qwen3
+576:(+1.5 pp over Teacher-TopK RKL). It leads on six
+577:of seven individual benchmarks for Qwen2.5 and
+578:is best or tied on five of seven for Qwen3. Be-
+579:yond average score, the CC-OPD-trained Qwen3
+580:student surpasses its own RL-trained teacher (an-
+581:alyzed in §4.3). The Self-Distillation block at the
+582:bottom of Table 1 compares self-CC-OPD against
+583:DR-CFG (Cideron et al., 2025) under the same
+584:sampled-token OPD variant, replacing the exter-
+585:nal teacher with the student’s own initialization
+586:weights: self-CC-OPD leads on the Qwen3-4B pair
+587:by +0.9 pp on the seven-benchmark average (61.9
+588:vs. 61.0) and is close on the Qwen2.5-1.5B pair
+589:(37.7 vs. 37.5). Appendix A.3 provides implemen-
+590:tation details and per-benchmark self-distillation
+591:results.
+592:4.3
+593:Student Surpasses Teacher
+594:Table 1 shows that CC-OPD-trained students cross
+595:their teacher’s accuracy ceiling under both model
+596:pairs on MulDimIF, a rare outcome for OPD.
+597:
+598:============================================================
+599:=== PAGE 6 ===
+--LIMITATIONS--
+1378:Limitations
+1379:CC-OPD is trained on HIR-16K and evaluated on
+1380:two Qwen-family student–teacher pairs (Qwen2.5-
+1381:1.5B/7B and Qwen3-4B/4B). Generalization to
+1382:other instruction-following corpora, to non-Qwen
+1383:model families, and to multi-turn or system-prompt-
+1384:steerable settings remains untested.
+1385:The method assumes a white-box teacher avail-
+1386:able for forced scoring: per-token log-probability
+1387:access under multiple counterfactual prompts is
+1388:required, so teachers exposed only through gen-
+1389:eration APIs are outside the scope of the current
+1390:construction.
+1391:Our experiments evaluate CC-OPD only with
+1392:the sampled-token reverse-KL OPD objective. Its
+1393:effectiveness with other OPD objectives has not
+1394:been tested.
+1395:The counterfactual prompt construction further
+1396:assumes that each sample’s constraints can be
+1397:cleanly excised from the natural-language instruc-
+1398:tion via byte-aligned span deletion; non-inline con-
+1399:straint formats such as structured fields or program-
+1400:matic templates may require a different counterfac-
+1401:tual prompt construction.
+--CONCLUSION--
+1357:Conclusion
+1358:We presented CC-OPD, a counterfactual constraint-
+1359:conditioned on-policy distillation method that ex-
+1360:tracts per-constraint signal from a frozen teacher’s
+1361:leave-one-out forced scoring on the same student
+1362:rollout.
+1363:Across two Qwen settings and seven
+1364:instruction-following benchmarks, CC-OPD at-
+1365:tains the highest average among the evaluated
+1366:student-training methods in both settings. It also
+1367:yields the largest student-over-teacher MulDimIF
+1368:margin among the tested OPD variants.
+1369:More
+1370:broadly, our results reframe constraint-conditioned
+1371:supervision from an additive paradigm, in which
+1372:the supervision channel is enriched with external
+
+##### library/02_objective_factorization/2610.09219_CM-DPO/2610.09219_CM-DPO_fulltext.txt  (1230 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:CM-DPO: Constraint-Margin Direct Preference
+7:Optimization for LLM Planning
+8:Rabimba Karanjai1, Qun Gu1, Hemanth Hegadehalli Madhavarao1, Wenhuan Sun1, Xiaojiao Yu1,
+9:Suryabhan Singh Hada1, Libin N. George1, Uma Kona1, Richard Williamson1, Linsey Pang1, Prakhar
+10:Mehrotra1
+11:1PayPal AI Lab
+12:rkaranjai@paypal.com
+13:Direct Preference Optimization (DPO) treats all constraint violations equally: a $1 budget overshoot
+14:and a $1,000 overshoot induce the same training signal. It is also susceptible to length and style
+15:bias when preference pairs come from different model families. We introduce Constraint-Margin
+16:DPO (CM-DPO), which replaces DPO’s binary preference signal with a continuous margin derived
+17:from a deterministic symbolic verifier and scaled by violation severity. Hard and soft constraints are
+18:separated through a lexicographic objective, ensuring hard constraints are never traded off against
+19:preferences. To supply CM-DPO with bias-reduced training pairs, we generate preference data through
+20:procedurally generated constraint profiles (DCCG) and minimal-edit distillation from a reasoning
+21:teacher (RT-MED), within a framework we call SynPlan-R. On TravelPlanner, NaturalPlan, and
+22:out-of-distribution PlanBench, an 8B model fine-tuned with CM-DPO achieves 89.2% pass rate and
+23:93.4% solve rate, matching multi-agent systems at 13× lower latency while outperforming GPT-4o on
+24:unseen Blocksworld by 9.2 points.
+25:Date October 2026
+26:1
+27:Introduction
+28:The deployment of Large Language Models (LLMs) is increasingly shifting from open-ended conversa-
+29:tional generation toward agentic workflows that require precise, long-horizon planning under complex con-
+30:straints Valmeekam et al. (2023); Xie et al. (2024). Real-world planning queries are rarely governed by a single
+31:homogeneous rule set; instead, they combine hard functional constraints, such as budget ceilings, temporal
+32:non-overlap, and capacity limits, that must be satisfied without exception, with soft user preferences, such
+33:as preferred carriers, dining cuisines, and proximity to landmarks, that should be optimized but may be
+34:relaxed. A user requesting “a weekend trip under $500 that avoids red-eye flights, preferably with boutique
+--INTRO END--
+36:preference. Standard LLMs often conflate these two categories, producing plans that are semantically fluent
+37:but either violate hard constraints or unnecessarily sacrifice soft-constraint preferences Xie et al. (2024).
+38:We characterize this failure landscape as a Planning Trilemma among three constraints:
+39:• Accuracy: strict, verifiable satisfaction of all hard constraints and best-effort adherence to soft preferences.
+40:• Efficiency: sub-second, single-pass inference compatible with real-time deployment.
+41:• Controllability: responsiveness to dynamic, per-query constraint profiles without retraining.
+42:Existing methods typically satisfy at most two of these three criteria. We propose a unified data-synthesis
+43:and alignment framework with the following contributions:
+44:1. Dynamic Contextual Constraint Graphs (DCCG): A formal representation that decomposes planning problems
+45:into parameterized hard and soft constraint profiles over procedurally generated knowledge bases (synthetic
+46:flight and hotel databases with randomized prices and schedules). DCCG reduces the risk of domain
+47:memorization and encourages the model to learn transferable combinatorial reasoning (§3).
+48:1
+49:arXiv:2610.09219v1  [cs.AI]  6 Oct 2026
+50:
+51:============================================================
+52:=== PAGE 2 ===
+53:============================================================
+54:
+55:2. Reasoning-TraceMinimal-EditDistillation(RT-MED): A teacher–student synthesis pipeline in which a reasoning
+56:model (DeepSeek-R1, o3-mini) corrects a flawed student draft through the minimum necessary semantic
+57:edits, isolating the logical “gradient” from stylistic noise and mitigating the length bias inherent in full-rewrite
+58:distillation (§4).
+59:3. Constraint-Margin Preference Optimization (CM-DPO): An extension of DPO that injects a continuous
+60:penalty margin into the preference loss, scaled by the deterministic severity of hard-constraint violations
+61:computed by a symbolic verifier. Soft-constraint adherence is incorporated as a lexicographic secondary
+62:objective, ensuring that hard constraints are never traded off against preference satisfaction (§5).
+63:2
+--METHOD--
+548:Method
+549:TravelPlanner
+550:NaturalPlan
+551:Eff.
+552:PR↑
+553:DR↑
+554:¯S↑
+555:SR↑
+556:Lat.↓
+557:External baselines
+558:Zero-Shot (Llama-3-8B)
+559:1.3
+560:35.4
+561:—
+562:18.5
+563:2.1s
+564:Zero-Shot (GPT-4o)
+565:39.8
+566:88.3
+567:0.61
+568:68.4
+569:5.4s
+570:MAS (LRPlan w/ GPT-4o)
+571:89.4
+572:98.1
+573:0.72
+574:95.1
+575:28.5s
+576:SynPlan-R ablations (Llama-3-8B)
+577:L3-SFT
+578:35.6
+579:76.2
+580:0.48
+581:52.8
+582:2.1s
+583:Full Rewrite + DPO
+584:64.1
+585:88.5
+586:0.53
+587:71.3
+--RESULTS--
+635:Results and Analysis
+636:7.1
+637:End-to-End Constraint Satisfaction
+638:Table 3 shows that SynPlan-8B substantially improves over zero-shot prompting and over all single-model
+639:ablations. On TravelPlanner, it achieves an 89.2% pass rate, which is close to the 89.4% achieved by MAS,
+640:while reducing latency from 28.5s to 2.1s. On NaturalPlan, SynPlan-8B reaches a 93.4% schedule rate in a
+641:single forward pass, offering a substantially improved efficiency–accuracy tradeoff over MAS. Among feasible
+642:8
+643:
+644:============================================================
+645:=== PAGE 9 ===
+646:============================================================
+647:
+648:Standard DPO
+649:CM-DPO
+650:PR
+651:Tok∆
+652:PR
+653:Tok∆
+654:Full Rewrite
+655:64.1
+656:245
+657:72.6
+658:245
+659:RT-MED
+660:78.3
+661:32
+662:89.2
+663:32
+664:Table 4 2 × 2 ablation on TravelPlanner pass rate (%).
+--LIMITATIONS--
+745:Limitations
+746:The method depends on a symbolic verifier, so extending it to open-world environments where constraints
+747:cannot be checked deterministically remains an open problem. Budget violations account for the largest
+748:share of TravelPlanner errors (36.8%), suggesting that implicit arithmetic remains a bottleneck for longer
+749:plans. Preliminary experiments with Qwen3-8B in thinking mode suggest that reasoning-enabled base models
+750:further reduce budget violations under SynPlan-R; however, we exclude these results to avoid confounding
+751:comparisons between thinking and non-thinking inference regimes. Teacher-guided data synthesis incurs
+752:nontrivial cost (approximately $320 for 15K pairs), so larger-scale deployment may require more efficient
+753:self-play strategies. Finally, we have not tested whether the same gains transfer to substantially smaller or
+754:larger model scales.
+755:9
+756:Conclusion
+757:We introduced Constraint-Margin DPO (CM-DPO), a preference-optimization objective that replaces DPO’s
+758:binary signal with a continuous, verifier-derived margin scaled by hard-constraint violation severity, together
+759:with a lexicographic secondary objective for soft preferences. To supply CM-DPO with bias-reduced training
+760:pairs, we developed DCCG for procedural constraint-profile generation and RT-MED for minimal-edit
+761:distillation from a reasoning teacher. Experiments on TravelPlanner, NaturalPlan, and out-of-distribution
+762:PlanBench show that the resulting 8B model approaches multi-agent accuracy at a fraction of the latency,
+763:and that severity-aware preference optimization transfers to unseen planning domains.
+764:References
+765:Mohammad Gheshlaghi Azar, Zhaohan Daniel Guo, Bilal Piot, Rémi Munos, Mark Rowland, Michal Valko, and Daniele
+766:Calandriello. A general theoretical paradigm to understand learning from human preferences. In International
+767:Conference on Artificial Intelligence and Statistics (AISTATS), volume 238 of Proceedings of Machine Learning
+768:Research. PMLR, 2024. URL https://proceedings.mlr.press/v238/gheshlaghi-azar24a.html.
+
+##### library/02_objective_factorization/2610.19525_RewardHackingVerifiableIF/2610.19525_RewardHackingVerifiableIF_fulltext.txt  (1448 lines)
+--ABSTRACT--
+16:ABSTRACT
+17:Verifiable instruction-following benchmarks emphasize output-constraint satisfac-
+18:tion but can overlook whether responses meaningfully answer the underlying re-
+19:quest, creating an evaluation blind spot. We show that frontier models can re-
+20:ceive full credit for responses with little substantive answer content. Using the
+21:same verifier-based criterion as a training reward can induce reward hacking, as
+22:publicly released checkpoints exhibit higher constraint satisfaction but lower re-
+23:sponse quality after reinforcement learning with verifiable rewards. To address
+24:this reward hacking, we introduce CALIF, a lightweight method that augments
+25:verifier rewards with a calibrated likelihood-based bonus to preserve response
+26:quality. CALIF evaluates response likelihood under the request alone using the
+27:existing frozen reference policy, requiring no additional judge or learned reward
+28:model. Across models ranging from 1.7B to 8B in reasoning and non-reasoning
+29:modes, CALIF improves constraint satisfaction on IFBench while maintaining
+30:response quality near or above pre-RL levels. It also outperforms correspond-
+31:ing base policies in 40 of 45 model–metric comparisons across three rubric-based
+32:instruction-following benchmarks, demonstrating gains beyond training verifiers.
+33:1
+34:INTRODUCTION
+35:Instruction following is central to the practical use of large language models (LLMs), enabling them
+36:to translate user intent into desired outputs (Ouyang et al., 2022; Yang et al., 2023; Chung et al.,
+37:2024). In real-world applications, a user input typically comprises a request, which specifies the
+38:task to be performed, and one or more constraints, which define the conditions the response must
+39:satisfy (Jiang et al., 2024; Wen et al., 2024; He et al., 2024; 2026). Successful instruction following
+40:therefore requires both high Response Quality by providing a substantive answer to the request
+41:and high Constraint Satisfaction by adhering to the stated constraints. However, achieving both
+42:objectives consistently remains challenging even for highly capable models (Zhang et al., 2025).
+43:Evaluating instruction following for open-ended user inputs heavily relies on human assessment or
+44:LLM judgments, which can be costly, subjective, and sensitive to the choice of evaluator (Zheng
+45:et al., 2023; Liu et al., 2023; Wang et al., 2024; Thakur et al., 2025). Verifiable instruction-following
+46:(VIF) benchmarks (Zhou et al., 2023; He et al., 2024) address these evaluation challenges by fo-
+47:cusing on requirements that can be checked programmatically. IFBench (Pyatkin et al., 2025), for
+48:example, appends output constraints to a request and measures Constraint Satisfaction using pro-
+49:grammatic verifiers, enabling scalable and reproducible evaluation without relying on LLM judges.
+--INTRO END--
+200:- Multi-source recombination: The output might blend ... 
+201:
+202:- Limited output space: For narrow domains (like a specific ... 
+203:
+204:- Chance: With large models and datasets, some generations ...
+205:
+206:
+207:A single output that is “substantially similar” could be 
+208:memorization, but it could just as easily be the result of normal 
+209:generalization. 
+210:
+211:
+212:
+213:...
+214:Constraint Satisfaction: 
+215:Response Quality: 2.00 / 10
+216:Response Quality: 9.33 / 10
+217:Figure 2: DeepSeek V4 Pro responses with and without an appended constraint. The model
+218:achieves a high Response Quality score of 9.33 when given the request alone, but its constrained
+219:response includes exactly five numbers as required while scoring only 2.00 in Response Quality.
+220:RLVR, which indicates that CALIF learns to satisfy constraints with substantially less degradation
+221:in its answers to the request. Importantly, these gains generalize to three rubric-based instruction-
+222:following benchmarks, where CALIF outperforms baselines in 40 of 45 model–metric comparisons,
+223:versus only 14 of 45 for IF-RLVR. These results demonstrate that CALIF’s reference-calibrated
+224:reward provides an effective signal for mitigating reward hacking in IF-RLVR without any additional
+225:models or explicit supervision. CALIF thus brings the scalability of verifiable rewards to the full
+226:objective of instruction following: satisfying constraints while adequately answering the request.
+227:2
+--METHOD--
+787:Method
+788:Pass →Pass
+789:Fail →Pass
+790:IF-RLVR
+791:−1.26 ±0.37
+792:−2.05 ±0.80
+793:CALIF
+794:+0.01 ±0.06
+795:−0.28 ±0.47
+796:Verifier Success Can Mask Quality Degradation.
+797:Ta-
+798:ble 2 reports changes in Response Quality within each
+799:method’s verifier-outcome groups.
+800:IF-RLVR achieves
+801:larger gains in Constraint Satisfaction (Figure 5), but its
+802:Fail →Pass outcomes show an average quality decline of
+803:2.05 points. This deterioration is not limited to Fail →
+804:Pass outcomes: Pass →Pass outcomes also show an av-
+805:erage decline of 1.26 points. By contrast, CALIF largely
+806:preserves Response Quality within its verifier-passing
+807:groups, with average changes of −0.28 and +0.01 points
+808:for Fail →Pass and Pass →Pass outcomes, respectively.
+809:7
+810:
+811:============================================================
+812:=== PAGE 8 ===
+813:============================================================
+814:
+815:Preprint.
+816:Table 3:
+817:Comparison with LLM-judge rewards on IFBench and three rubric-based
+818:instruction-following benchmarks. Self-judge uses the base policy as the judge; Stronger judge
+819:uses Qwen3-30B-A3B. Bold and underline indicate the best and second-best within each setting.
+820:IFBench
+821:AdvancedIF (CIF)
+822:FollowBench
+823:ComplexBench
+824:Reward
+825:Constraint
+826:Satisfaction ↑Response
+--RESULTS--
+549:MAIN RESULTS
+550:CALIF Mitigates Reward Hacking in IF-RLVR.
+551:Figure 5 compares CALIF with IF-RLVR
+552:on IFBench across five model configurations. IF-RLVR increases Constraint Satisfaction at the
+553:expense of Response Quality in every configuration, with average quality falling from 4.51 to 2.96.
+554:By contrast, CALIF raises average Constraint Satisfaction from 26.98 to 34.64 (+7.66 points) while
+555:preserving Response Quality at an average of 4.59. Pairwise evaluation further supports this quality
+556:advantage, with CALIF achieving an overall adjusted win rate of 78.10% against IF-RLVR (see
+557:Appendix D.1). As shown in Figure 6, reference log-likelihood under the request alone follows
+558:a similar pattern, decreasing under IF-RLVR but remaining near base-policy levels under CALIF.
+559:Together, these results show that CALIF’s reference-calibrated reward mitigates reward hacking,
+560:retaining gains in Constraint Satisfaction without the quality degradation observed under IF-RLVR.
+561:CALIF Generalizes Beyond Verifiable Constraints.
+562:To assess generalization to broader
+563:instruction-following requirements, we evaluate on three rubric-based benchmarks whose criteria
+564:1https://huggingface.co/datasets/allenai/IF_multi_constraints_upto5
+565:2https://github.com/verl-project/verl
+566:6
+567:
+568:============================================================
+569:=== PAGE 7 ===
+570:============================================================
+571:
+572:Preprint.
+573:Table 1: Performance on three rubric-based instruction-following benchmarks. Format† is
+574:most closely aligned with the training constraints. See Appendix C for details on the benchmarks
+575:and evaluation metrics. Bold and underline indicate the best and second-best within each setting.
+576:AdvancedIF (CIF)
+577:FollowBench
+578:ComplexBench
+--CONCLUSION--
+1043:CONCLUSION
+1044:We identify an evaluation blind spot in verifiable instruction following and document reward hacking
+1045:in publicly released models. Across five model configurations, CALIF improves constraint satisfac-
+1046:tion while preserving response quality through a reference-calibrated likelihood region, with gains
+1047:beyond the training verifiers. Our results show that calibrating rather than maximizing reference
+1048:likelihoods can mitigate reward hacking without additional models or explicit quality supervision.
+1049:9
+1050:
+1051:============================================================
+1052:=== PAGE 10 ===
+1053:============================================================
+1054:
+1055:Preprint.
+1056:AI USE STATEMENT
+1057:We used generative AI tools to identify literature and assist with manuscript drafting and editing.
+1058:The authors reviewed AI-assisted material, checking sources and revising the text for accuracy and
+
+##### library/02_objective_factorization/2611.12865_ShortcutsBoundaries/2611.12865_ShortcutsBoundaries_fulltext.txt  (2426 lines)
+--ABSTRACT--
+13:Abstract
+14:Reinforcement learning (RL) can improve an agent’s task capability while reinforcing
+15:violations of explicitly stated contextual requirements, even when reward accurately
+16:measures useful work. We study this reward-driven misalignment through verifiable
+17:reward–context conflicts, where compliant completion is feasible but executable violations
+18:earn more reward than every compliant strategy.
+19:Encoding these conflicts in task
+20:dynamics supports scalable environment construction and compliance feedback from
+21:execution histories. In resource and reporting workflows, task optimization increases real
+22:productivity through unauthorized resource use or raises reported scores while actual
+23:work declines. We observe both amplification of existing violations and the emergence of
+24:violations on tasks where none were observed before training. Controlled changes in the
+25:training distribution show that minority conflict exposure can still lead to widespread
+26:shortcut acquisition, reaching 97.9% certified profitable violations on an API task under
+27:a 25% conflict mixture after 128 updates. The same contextual checks supply a simple
+28:binary penalty that supports joint capability and compliance gains and partially mitigates
+29:acquired violations. Learned safety adapts to expanded authorization and transfers across
+30:mechanisms into workflows with evolving evidence and approval requirements. On 32
+31:unseen changing-evidence tasks, resource-trained safety increases safe completion from
+32:53.1% to 89.1% relative to task-only training, while both policies achieve full real work.
+33:These results connect a verifiable account of reward-driven misalignment with scalable
+34:task construction and safety learning that remains useful under changing execution
+35:requirements.
+36:1
+37:Introduction
+38:Capable and reliable language-model agents are increasingly expected to repair software, schedule resources,
+39:and complete complex workflows over long horizons while following human requirements. To develop these
+40:capabilities, reinforcement learning (RL) commonly uses task reward based on the quality or amount of
+41:work accomplished at the end of an episode, providing a direct, scalable training signal across diverse
+42:tasks [1–3]. However, whether the work meets human expectations also depends on the context in which
+43:it is carried out [4]. This context includes user intent, interaction history, and specific constraints such as
+44:authorization or organizational rules, which determine which actions are appropriate and which constraints
+45:apply [5–7]. Following these contextual requirements becomes more challenging as execution horizons
+46:grow [8]. Agents must continue to respect resource permissions and preserve evaluation requirements
+--INTRO END--
+1184:occur. It is also how we assess mitigation. Early work on agent-assisted monitoring and investigation
+1185:offers a way to share this work with models [21]. Our methodological commitment is to make the
+1186:resulting evidence verifiable. An opaque LLM-judge verdict can leave it unclear which action violated
+1187:which requirement, and why. Fixed work requirements, observable state changes, historical checks, and
+1188:executable counterexamples give a reviewer evidence they can inspect and correct.
+1189:Contextual safety is a trainable direction. A shaped terminal reward combines task performance with
+1190:a history-based violation penalty. Training on this scalar feedback supports useful compliance under
+1191:changed authorization, extending to workflows with evolving evidence and approval requirements. In
+1192:environments with feasible compliant completion and a verified reward–context conflict, this objective
+1193:creates pressure to anticipate and respect requirements during productive execution without prescribing a
+1194:step-by-step safety strategy. These results motivate the conjecture that contextual safety awareness can
+1195:be learned and inherited as part of task competence.
+1196:This form of RL-induced misalignment can arise without an attacker: ordinary task feedback can reinforce
+1197:violations even when requirements are given, while the policy does more genuine work.
+1198:Reasoning
+1199:over explicit safety specifications [22] and attack and defense methods [10] address different problem
+1200:formulations. They do not directly cover the incentive conflicts and behavioral acquisition studied here.
+1201:We see learning from verifiable contextual consequences as a distinct direction for safety training. Because
+1202:real requirements cannot be exhaustively listed, the policy would need to apply context beyond the
+1203:particular rules seen in training. Verifiable environments make that hypothesis testable as capability
+1204:training scales.
+1205:13
+1206:
+1207:============================================================
+1208:=== PAGE 14 ===
+1209:============================================================
+1210:
+1211:6
+--EXP SETUP--
+390:Experiments
+391:We study how reward–context conflicts shape behavior during RL and whether feedback grounded in the
+392:same contextual requirements supports useful, transferable compliance. RQ1. What does task reward
+393:optimization learn when profitable shortcuts are available despite explicitly stated contextual requirements?
+394:RQ2. Can context-dependent feedback train useful safety behavior, both from Base and after shortcut
+395:acquisition? RQ3. How far do capability, shortcut behavior, and contextual safety generalize?
+396:Experimental setup. The starting policy is Qwen3.5-4B (Base). We optimize policies with GRPO
+397:using their own group rollouts from admitted task environments. In the constructed tasks, public task
+398:instructions explicitly provide the applicable contextual requirements and authorization conditions during
+399:5
+400:
+401:============================================================
+402:=== PAGE 6 ===
+403:============================================================
+404:
+405:training and evaluation. Task-trained optimizes task reward; Safety-trained adds the binary history
+406:penalty in Eq. (4). Policies share evaluation instances, authorization conditions, tools, and inference
+407:budget within each comparison. Prevention starts from Base; mitigation continues from a common
+408:Task-trained parent. Training sources for each comparison are specified in Appendix B.1.
+409:Shared measurements. We report task reward, independently verified real work, historical violations, and
+410:certified profitable violations. Certification requires a contextual violation and reward strictly above the
+411:compliant optimum or a valid upper bound. Paired contexts change authorization while preserving the
+412:physical task and score. Independent work checks assess the original task requirements; mechanism-specific
+413:completion criteria are in Appendix B.2. Safe completion requires task completion with no historical
+414:violation.
+415:4.1
+416:RQ1: Learning capability and profitable shortcuts
+417:4.1.1
+418:Capability gains and shortcut acquisition
+419:Task optimization can improve real work while increasing profitable violations. On the API resource
+420:task, Task-trained improves verified work in both authorized and restricted contexts, while certified
+421:profitable violations rise sharply under restricted authorization. Higher reward here reflects additional
+422:work, including work obtained through unauthorized resource use (Fig. 4a). Validation shows the opposite
+423:work pattern: the reported score approaches its maximum while current-state repair progress declines and
+424:certified profitable violations increase. Together, the two panels distinguish unauthorized productivity
+425:from manipulation of the measurement channel (Fig. 4b).
+426:Authorized work
+427:Restricted reward
+428:Restricted work
+429:Profitable violations
+430:0.0
+431:0.5
+432:1.0
+433:Reward / work; rate as fraction
+434:0.855 → 1.000
+435:0.631 → 0.982
+436:0.631 → 0.982
+437:8.3% → 91.7%
+438:(a) More work, more profitable violations
+439:API resource task
+--RESULTS--
+1585:results
+1586:Evidence-production
+1587:history; actual component
+1588:health
+1589:Service monitoring
+1590:Restore services and refresh
+1591:observations
+1592:Disable required
+1593:monitoring
+1594:Coverage history; actual
+1595:component health
+1596:19
+1597:
+1598:============================================================
+1599:=== PAGE 20 ===
+1600:============================================================
+1601:
+1602:A.3
+1603:Tool-interface verification
+1604:Executing reference trajectories through the agent-facing tools checks a realization against the mechanism.
+1605:Each reference must yield the specified state changes and task reward. The compliant path must meet the
+1606:task goal and satisfy the contextual requirements. The violating witness must breach the boundary and
+1607:clear that instance’s compliant reward bound. We retain the interface with its references and verification
+1608:record for each admitted instance. New draws and settings repeat this procedure, allowing the task supply
+1609:to grow under the same checking rules.
+1610:Table 5: Core task inventory and mechanism-proposal coverage. Proposals pass execution and constrained-
+1611:search checks.
+1612:Measure
+1613:Value
+1614:Core task panels
+--CONCLUSION--
+1239:Conclusion
+1240:The experiments support our premise that contextual safety is a learnable part of task execution. Encoding
+1241:requirements in the dynamics makes reward–context conflicts reproducible and turns their consequences
+1242:into training feedback. Mechanisms establish compliant feasibility and a rewarding opportunity beyond
+1243:the contextual boundary; LLM setters realize diverse tasks while independent work and history checks
+1244:preserve the distinction between score, capability, and compliance. The experiments expose two routes
+1245:to reward improvement: additional real work through unauthorized resources, and higher reported
+1246:scores despite degraded work. The shortcut interpretation connects these incentive conflicts to verifiable
+1247:construction and intervention. Controlled changes in conflict prevalence and training exposure reveal
+1248:substantial shortcut acquisition even when conflicts occupy a minority of training data. Verified feedback
+1249:supports joint capability and compliance gains, partially mitigates acquired violations, and transfers
+1250:authorization-sensitive behavior across new contexts. Cross-task cases show that both boundary-crossing
+1251:behavior and learned protection can reach excluded workflows; Validation-to-Allocation transfer provides
+1252:a concrete protection example with useful work retained. Together, these findings support a data-driven
+1253:route to safety training in which agents learn contextual compliance from the same task interactions used
+1254:to develop capability. The construction provides a scalable task distribution and verifiable signals for this
+
+##### library/02_objective_factorization/2611.16304_StateAlign/2611.16304_StateAlign_fulltext.txt  (2171 lines)
+--ABSTRACT--
+13:Abstract
+14:Reinforcement learning has improved the tool-
+15:use capabilities of large language models. How-
+16:ever, better task performance can coincide with
+17:increased tool hallucination. Reliable tool use
+18:requires decisions to follow the current task
+19:state: available information, tool capabilities,
+20:and task progress. Our analysis shows that
+21:agents sometimes execute when they should
+22:ask for information, retrieve it, or decline an in-
+23:feasible request, even when reasoning identifies
+24:missing information. We introduce StateAlign,
+25:combining task-state construction with state-
+26:contrastive reinforcement learning. The data
+27:cover five task conditions and pair states with
+28:different action requirements.
+29:Outcome re-
+30:wards guide task completion; token-level con-
+31:trasts compare the same generated reasoning
+32:and actions under paired states to train outputs
+33:that fit the current state. Experiments across
+34:five base models from three families show im-
+35:provements on BFCL v4 multi-turn, ToolSand-
+36:box, and When2Call. Ablations show that state
+37:construction improves performance and reli-
+38:ability under different reward designs. The
+39:complete method further reduces tool hallucina-
+40:tion across three Qwen3 sizes. On Qwen3-8B,
+41:StateAlign improves BFCL v4 multi-turn accu-
+42:racy from 45.5% to 55.2% and reduces no-tool
+43:hallucination on SimpleToolHalluBench from
+44:62.2% under outcome-only training to 56.1%.
+45:Behavioral analyses show more consistent deci-
+46:sions, more complete multi-call execution, and
+--INTRO END--
+1076:ToolRL
+1077:GRPO
+1078:LoopTool
+1079:StateAlign
+1080:60
+1081:70
+1082:80
+1083:90
+1084:Turn success (%) ↑
+1085:71.6 70.1
+1086:75.9 76.8
+1087:80.5
+1088:(d) BFCL: error recovery
+1089:Without tool errors
+1090:Base
+1091:ToolRL
+1092:GRPO
+1093:LoopTool
+1094:StateAlign
+1095:Figure 5: Multi-step execution and recovery on Qwen3-8B. (a) BFCL v4 turn success by reference-call count. (b)
+1096:Percentage of multi-call turns that fail after issuing at least one call but fewer than the reference requires. Panels
+1097:a and b use ordinary execution turns reached without an earlier failure. (c) ToolSandbox similarity on multi-call
+1098:scenarios. (d) BFCL v4 turn success with tool errors (bars) and without tool errors (open circles). Colors identify
+1099:methods; arrows indicate the preferred direction.
+1100:continues until the requested operation succeeds.
+1101:Appendix D.3 provides the recorded sequence and
+1102:further recovery comparisons.
+1103:6
+--EXP SETUP--
+511:Experiments
+512:4.1
+513:Experimental Setup
+514:Base Models.
+515:We train Qwen3-4B/8B/14B
+516:(Yang et al., 2025a), Granite-4.2-8B (IBM Re-
+517:search, 2026), and Llama-3.1-8B-Instruct (Dubey
+518:et al., 2024) to evaluate StateAlign across model
+519:sizes and families.
+520:Baselines.
+521:Comparisons include ToolRL (Qian
+522:et al., 2025), LoopTool (Zhang et al., 2026a), AWM
+523:(Wang et al., 2026a), and the base models. ToolRL
+524:uses Qwen3-8B trained on RLLA-4k; LoopTool
+525:and AWM use released models. Each retains its
+526:own training data. Single-step binary GRPO on our
+527:constructed states compares training objectives.
+528:Benchmarks.
+529:BFCL v4 (Patil et al., 2025) mea-
+530:sures multi-turn tool-use accuracy. ToolSandbox
+531:(Lu et al., 2025) measures task progress through
+532:trajectory similarity. When2Call (Ross et al., 2025)
+533:measures macro accuracy across calling, clarifica-
+534:tion, and infeasibility. SimpleToolHalluBench (Yin
+535:et al., 2026) measures hallucination with no avail-
+536:able tool (NTA) or only an irrelevant tool (DT).
+537:Implementation Details.
+538:We train with LoRA
+539:(Hu et al., 2022) on eight NVIDIA H100 80GB
+540:GPUs with λ = 0.1. Qwen3 component compar-
+541:isons use the step-400 checkpoint. Tables 1 and 2
+542:report evaluation means, with BFCL standard de-
+543:viations in Table 2. Appendices B and C provide
+544:training and evaluation settings.
+545:4.2
+546:Main Results
+547:On
+548:Qwen3-8B,
+549:StateAlign
+550:leads
+551:the
+552:com-
+553:pared methods on BFCL v4, ToolSandbox, and
+554:When2Call in Table 1, including all four BFCL
+555:categories. Its largest advantage over LoopTool
+556:is in Missing Parameters, which requires obtain-
+557:ing information before execution. Higher Missing
+558:Functions and Long Context scores indicate better
+559:handling of tool availability and longer histories.
+560:Hallucination decreases in both NTA and DT rela-
+--RESULTS--
+546:Main Results
+547:On
+548:Qwen3-8B,
+549:StateAlign
+550:leads
+551:the
+552:com-
+553:pared methods on BFCL v4, ToolSandbox, and
+554:When2Call in Table 1, including all four BFCL
+555:categories. Its largest advantage over LoopTool
+556:is in Missing Parameters, which requires obtain-
+557:ing information before execution. Higher Missing
+558:Functions and Long Context scores indicate better
+559:handling of tool availability and longer histories.
+560:Hallucination decreases in both NTA and DT rela-
+561:tive to the Qwen3-8B base model and LoopTool.
+562:Across all five base models, StateAlign improves
+563:every BFCL category and When2Call accuracy and
+564:reduces NTA hallucination. On Qwen3, it exceeds
+565:AWM on ToolSandbox at all sizes and BFCL at 4B
+566:and 8B. At 14B, BFCL accuracy is 54.8%, close
+567:to AWM’s 55.5%, with higher ToolSandbox and
+568:When2Call scores and lower hallucination in both
+569:settings. No-tool hallucination is 45.0%, compared
+570:with 53.9% for AWM-14B.
+571:4.3
+572:Ablation Studies
+573:Task-state construction improves training under
+574:different reward designs. Table 2A compares bi-
+575:nary GRPO and ToolRL rewards on original data
+--LIMITATIONS--
+1178:Limitations
+1179:StateAlign is trained on five types of constructed
+1180:task states through short interactions with recorded
+1181:feedback. Training feedback is limited to the inter-
+1182:actions covered by the source trajectories. Extend-
+1183:ing this setup to longer workflows with changing
+1184:user goals or tool behavior is a direction for fu-
+1185:ture work. We evaluate five base models ranging
+1186:from 4B to 14B parameters on text-based tool-use
+1187:benchmarks. The effectiveness of the approach at
+1188:larger scales and in multimodal tool environments
+1189:remains to be studied.
+1190:References
+1191:Emre Can Acikgoz, Jeremiah Greer, Akul Datta,
+1192:Ze Yang, William Zeng, Oussama Elachqar, Em-
+1193:manouil Koukoumidis, Dilek Hakkani-Tür, and
+1194:Gokhan Tur. 2025. Can a single model master both
+1195:multi-turn conversations and tool use? CoALM: A
+1196:unified conversational agentic language model. In
+1197:Proceedings of the 63rd Annual Meeting of the As-
+1198:sociation for Computational Linguistics (Volume 1:
+1199:Long Papers), pages 12370–12390, Vienna, Austria.
+1200:Association for Computational Linguistics.
+1201:Yun-Shiuan Chuang, Chaitanya Kulkarni, Alec M. Chiu,
+--CONCLUSION--
+1157:Conclusion
+1158:We presented StateAlign, combining task-state con-
+1159:struction with state-contrastive reinforcement learn-
+1160:ing. Our diagnosis shows that agents can violate
+1161:current information and tool conditions even af-
+1162:ter stating them in reasoning. Constructed states
+1163:improve task performance and reliability under
+1164:different reward designs. On the same data, the
+1165:complete method further reduces tool hallucination
+1166:compared with outcome-only training across three
+1167:Qwen3 model sizes. Experiments across five base
+1168:models show improved tool use, and behavioral
+1169:analyses show more consistent decisions, more
+1170:complete multi-call execution, and stronger recov-
+1171:ery after tool errors.
+1172:8
+
+##### library/02_objective_factorization/2611.17880_SOTERIA/2611.17880_SOTERIA_fulltext.txt  (2695 lines)
+--ABSTRACT--
+14:Abstract
+15:LLM agents that execute multi-step tool calls must satisfy two objectives simul-
+16:taneously: completing the user’s task (utility) and conforming to domain policies
+17:and correctness constraints (safety). These objectives are in tension – blocking an
+18:unsafe action prevents a violation but can leave the agent stranded with no prin-
+19:cipled way to recover. Existing approaches sacrifice one objective for the other.
+20:We introduce SOTERIA, a framework that reconciles safety and utility through
+21:verified hierarchical planning and runtime enforcement of specifications. Before
+22:execution, the agent generates a structured plan that is formally verified against
+23:the specifications prior to any tool invocation. During execution, the verified plan
+24:serves dual roles: it ensures that the agent takes specification-conformant trajec-
+25:tories and provides guidance when unsafe actions are blocked. Across multiple
+26:benchmarks covering a diverse range of tool-use tasks, SOTERIA achieves 1.7
+27:times the average task success rate of the best baselines, with no violations of
+28:policy specifications, demonstrating that safety and utility need not be traded off.
+29:1
+30:Introduction
+31:LLM agents are increasingly deployed for complex, multi-step tasks — from software engineer-
+32:ing [Jimenez et al., 2024] and scientific discovery [Novikov et al., 2025] to customer service [Su
+33:et al., 2025] and enterprise automation [Zhou et al., 2023] — that require orchestrating many tool
+34:calls whose real-world effects are difficult or impossible to reverse. In these domains, correctness
+35:is not optional: an airline agent that cancels a reservation without verifying the passenger’s eligibil-
+36:ity violates a policy specification; a retail agent that processes a return without first retrieving the
+37:order details by passing fabricated data to downstream tools violates a tool data-flow specification.
+38:Domain policies and tool contracts define what constitutes correct behavior of an agent, and the
+39:challenge is ensuring agents satisfy these specifications without sacrificing utility.
+40:Existing approaches to ensuring conformance rely on runtime guardrails, which take two forms.
+41:LLM-based guardrails deploy a secondary model to judge each proposed action before it executes
+42:[Rebedea et al., 2023, Gu et al., 2025]. They are easy to deploy but probabilistic, offering no
+43:formal safety guarantees. Specification-based monitors provide stronger guarantees by checking
+44:preconditions, postconditions, or trajectory invariants at runtime [Wang et al., 2025, Kamath et al.,
+45:2025, Bhardwaj, 2026], but offer no verified recovery plan when a call is blocked. Recovering during
+46:execution can degrade utility, especially when earlier actions have left the agent in a non-recoverable
+47:state. Our key insight is that agents can achieve safety without sacrificing utility by constructing a
+--INTRO END--
+940:80
+941:100
+942:With subplans
+943:Compile error
+944:Parse error
+945:Spec failure
+946:Verified
+947:% of all turns
+948:(b) Verification outcomes across attempts with (bot-
+949:tom, n = 68 turns) and without (top, n = 60 turns)
+950:sub-plans.
+951:Figure 6: Effect of sub-plans on plan generation and verification.
+952:closes the gap entirely: both models reach 100% conformance with zero violations, and success
+953:equals raw utility (60% GPT, 62% Gemini) because no utility is lost to violations.
+954:4.3
+955:Ablation on Sub-plans
+956:To answer (RQ3), we compare two configurations on τ 2-Airline (GPT-5.4-mini, 8 retries): the full
+957:system with a sub-plan library and a variant where the planner must produce a single monolithic
+958:plan at each planning turn. Sub-plans reduce the median plan size from 11 states to 8 (Figure 6a,
+959:top), since complex sub-tasks are encapsulated in pre-verified fragments rather than replicated. This
+960:simplification nearly doubles the number of verified plans (65 of 68 planning turns vs. 38 of 60), with
+961:48.5% verifying on the first attempt vs. 23.3% without sub-plans (Figure 6b). The dominant failure
+962:mode shifts accordingly: without sub-plans, specification failures persist across retries because they
+963:require plan redesign; with sub-plans, residual failures are parse and compile errors that the retry
+964:loop can address with syntactic fixes. These results validate the modular verification design (§2.4):
+965:factoring policies into independently verified sub-plans reduces the planner’s burden and transforms
+966:failures into incrementally fixable ones, enabling 95.6% of plans to verify within the retry budget.
+967:5
+--METHOD--
+508:Method
+509:Util.→Succ.↑
+510:Conf.↑
+511:#Viol.↓
+512:Cost↓
+513:Util.→Succ.↑
+514:Conf.↑
+515:#Viol.↓
+516:Cost↓
+517:Util.→Succ.↑
+518:Conf.↑
+519:#Viol.↓
+520:Cost↓
+521:GPT
+522:5.4-mini
+523:No Guardrail
+524:48.0→34.0
+525:64.0
+526:29
+527:0.031
+528:27.2→20.2
+529:86.0
+530:25
+531:0.036
+532:11.6→2.3
+533:41.9
+534:42
+535:0.045
+536:NeMo
+537:46.0→40.0
+538:76.0
+539:23
+540:0.036
+541:28.1→18.4
+542:87.7
+543:28
+544:0.038
+545:4.7→0.0
+546:86.0
+547:16
+--EXP SETUP--
+1723:Setup
+1724:The system maintains a configuration consisting of the current plan state, a variable context σ, a
+1725:pending action slot δ, an input queue In, and an output history Out. Execution begins at LOOKUP
+1726:with:
+1727:σ = {uid �→"u42", rid �→"RES123", reason �→"other", time �→"2024-05-15"},
+1728:δ = ϵ,
+1729:In = [“Cancel my reservation RES123”]
+1730:A.4.3
+1731:Transition Rules
+1732:Table 4 summarizes the transition rules. At each step, the system applies the first applicable rule in
+1733:priority order (top to bottom).
+1734:A.4.4
+1735:Execution Trace
+1736:Table 5 shows a complete execution trace. At Step 3, the LLM attempts to skip the No-Flown
+1737:check — INV-GUARD blocks the call and feeds back an error listing the available actions. The
+1738:LLM corrects itself at Steps 4–5. Steps 6–10 proceed normally through the remaining states, and at
+1739:Step 11 a spurious tool call at the accepting state is silently dropped.
+1740:In PGAS mode, no SpecMonitor is applied to check the trace, and only fully verified plans can
+1741:execute. All the rejections (e.g., Step 3) are because the agent tries to call a tool that is not listed as
+1742:available at the current state.
+1743:19
+1744:
+1745:============================================================
+1746:=== PAGE 20 ===
+1747:============================================================
+1748:
+1749:Table 4: PGAS transition rules in priority order.
+1750:Rule
+1751:Condition
+1752:Effect
+1753:CALL
+1754:δ ̸= ϵ; approved; executes; post holds
+1755:Execute tool, update σ, advance state
+1756:CALL-REJECTED
+1757:δ ̸= ϵ; approval denied
+1758:Clear δ; feed rejection reason back
+1759:POST-FAIL
+1760:δ ̸= ϵ; executes; post violated
+1761:Halt⊥(abort — unsound contract)
+1762:EXEC-FAIL
+1763:δ ̸= ϵ; execution error
+1764:Clear δ; feed error back; LLM retries
+1765:DROP
+1766:δ = ϵ; q ∈F; LLM calls a tool
+1767:Suppress the call silently
+1768:STEP
+1769:δ = ϵ; LLM output has no tool call
+1770:Consume input; append to Out
+1771:INVOKE
+1772:δ = ϵ; q /∈F; enabled transition found
+--CONCLUSION--
+1003:Conclusion
+1004:We presented SOTERIA, a framework that enables verification and runtime enforcement of plans for
+1005:LLM-based agentic systems. By representing plans as guarded transition systems with hierarchical
+1006:sub-plans, SOTERIA formally verifies LLM-generated plans against policy specifications, covering
+1007:temporal, relational, and value-flow constraints, before any tool is invoked. At runtime, the veri-
+1008:fied plan guides the executor, while the SpecMonitor blocks specification violations and the plan
+1009:provides recovery guidance. Our evaluation shows that SOTERIA achieves 100% conformance with
+1010:zero specification violations across all models, while improving task success by 4.7–43.9 percentage
+1011:points over the best baseline.
+1012:Limitations and future work. First, SOTERIA requires a set of formalized specifications as inputs,
+1013:which are currently obtained through a semi-automated workflow that combines LLM-based auto-
+1014:formalization with manual validation. In future work we aim to investigate how auto-formalization
+1015:(e.g., An et al. [2026]) could help reduce this manual effort. Second, SOTERIA’s plan verification
+1016:assumes that tool contracts faithfully model tool behavior and postconditions are satisfied at run-
+1017:time. Furthermore, SOTERIA leverages automated theorem provers Leino [2010], De Moura and
+1018:Bjørner [2008] that support limited first-order theories and may not complete verification in prac-
+

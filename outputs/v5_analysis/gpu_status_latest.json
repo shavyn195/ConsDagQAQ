@@ -1,13 +1,13 @@
 {
-  "checked_at": "2026-11-24T05:41:56.799868+08:00",
+  "checked_at": "2026-11-24T08:29:32.334286+08:00",
   "gpu": {
     "exit_code": 0,
-    "stdout": "NVIDIA GeForce RTX 4080 SUPER, 87, 29482, 32760",
+    "stdout": "NVIDIA GeForce RTX 4080 SUPER, 36, 16232, 32760",
     "stderr": ""
   },
   "gpu_processes": {
     "exit_code": 0,
-    "stdout": "147412, 29472",
+    "stdout": "155074, 16222",
     "stderr": ""
   },
   "processes": [
@@ -28,24 +28,23 @@
       "cwd": "/root/ConsDagDiagnostics20261123"
     },
     {
-      "pid": 147412,
+      "pid": 155074,
       "args": [
         "/root/miniconda3/bin/python",
         "-u",
         "src/run_e1.py",
         "--model",
-        "models/Qwen3-4B",
+        "models/Qwen3-0.6B",
         "--data-dir",
         "data/processed_v5",
         "--precision",
         "bf16",
         "--seed",
-        "44",
-        "--skip-zeroshot",
+        "42",
         "--out-dir",
-        "outputs/e1/Qwen3-4B-v5-seed44",
+        "outputs/e1/Qwen3-0.6B-v5-seed42",
         "--eval-batch-size",
-        "16",
+        "48",
         "--max-seq-len",
         "1280",
         "--max-new-tokens",
@@ -65,6 +64,49 @@
     }
   ],
   "runs": [
+    {
+      "name": "Qwen3-0.6B-v5-seed42",
+      "metrics_exists": false,
+      "adapter_exists": false,
+      "failure_files": [],
+      "trained_prediction_files": [],
+      "last_training_points": [
+        {
+          "optimizer_step": 4800,
+          "loss": 2.4309922082466073e-05,
+          "elapsed_s": 5266.3
+        },
+        {
+          "optimizer_step": 4900,
+          "loss": 1.0226065569440834e-05,
+          "elapsed_s": 5355.8
+        },
+        {
+          "optimizer_step": 5000,
+          "loss": 1.931186716319644e-06,
+          "elapsed_s": 5445.6
+        },
+        {
+          "optimizer_step": 5100,
+          "loss": 3.341003321111202e-05,
+          "elapsed_s": 5534.7
+        },
+        {
+          "optimizer_step": 5200,
+          "loss": 0.00016437256999779493,
+          "elapsed_s": 5620.9
+        }
+      ],
+      "error_lines": [],
+      "log_tail": [
+        "{\"optimizer_step\": 4800, \"loss\": 2.4309922082466073e-05, \"elapsed_s\": 5266.3}",
+        "{\"optimizer_step\": 4900, \"loss\": 1.0226065569440834e-05, \"elapsed_s\": 5355.8}",
+        "{\"optimizer_step\": 5000, \"loss\": 1.931186716319644e-06, \"elapsed_s\": 5445.6}",
+        "{\"optimizer_step\": 5100, \"loss\": 3.341003321111202e-05, \"elapsed_s\": 5534.7}",
+        "{\"optimizer_step\": 5200, \"loss\": 0.00016437256999779493, \"elapsed_s\": 5620.9}"
+      ],
+      "log_mtime": "2026-11-24T08:29:15.972515+08:00"
+    },
     {
       "name": "Qwen3-1.7B-v5-seed42",
       "metrics_exists": true,
@@ -434,64 +476,79 @@
     },
     {
       "name": "Qwen3-4B-v5-seed44",
-      "metrics_exists": false,
-      "adapter_exists": false,
+      "metrics_exists": true,
+      "adapter_exists": true,
       "failure_files": [],
-      "trained_prediction_files": [],
+      "trained_prediction_files": [
+        {
+          "name": "dev.jsonl",
+          "bytes": 760782,
+          "lines": 900
+        },
+        {
+          "name": "test_tpl_ho.jsonl",
+          "bytes": 871829,
+          "lines": 1050
+        },
+        {
+          "name": "test_tool_ho.jsonl",
+          "bytes": 872215,
+          "lines": 1050
+        },
+        {
+          "name": "test_struct_ho.jsonl",
+          "bytes": 912289,
+          "lines": 1050
+        }
+      ],
       "last_training_points": [
         {
-          "optimizer_step": 7100,
-          "loss": 6.938912520126905e-06,
-          "elapsed_s": 8059.2
+          "optimizer_step": 8600,
+          "loss": 0.06786007434129715,
+          "elapsed_s": 9772.7
         },
         {
-          "optimizer_step": 7200,
-          "loss": 2.384184938364342e-07,
-          "elapsed_s": 8175.3
+          "optimizer_step": 8700,
+          "loss": 7.069067123666173e-06,
+          "elapsed_s": 9891.6
         },
         {
-          "optimizer_step": 7300,
-          "loss": 2.861021641820116e-07,
-          "elapsed_s": 8285.4
+          "optimizer_step": 8800,
+          "loss": 0.00019727987819351256,
+          "elapsed_s": 10008.4
         },
         {
-          "optimizer_step": 7400,
-          "loss": 2.2649756203918514e-07,
-          "elapsed_s": 8393.8
+          "optimizer_step": 8900,
+          "loss": 0.0001851598935900256,
+          "elapsed_s": 10123.0
         },
         {
-          "optimizer_step": 7500,
-          "loss": 2.7418124659561727e-07,
-          "elapsed_s": 8499.6
+          "optimizer_step": 9000,
+          "loss": 3.567522799130529e-05,
+          "elapsed_s": 10239.3
         }
       ],
       "error_lines": [],
       "log_tail": [
-        "{\"optimizer_step\": 7100, \"loss\": 6.938912520126905e-06, \"elapsed_s\": 8059.2}",
-        "{\"optimizer_step\": 7200, \"loss\": 2.384184938364342e-07, \"elapsed_s\": 8175.3}",
-        "{\"optimizer_step\": 7300, \"loss\": 2.861021641820116e-07, \"elapsed_s\": 8285.4}",
-        "{\"optimizer_step\": 7400, \"loss\": 2.2649756203918514e-07, \"elapsed_s\": 8393.8}",
-        "{\"optimizer_step\": 7500, \"loss\": 2.7418124659561727e-07, \"elapsed_s\": 8499.6}"
+        "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 1.0, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9891304347826086, \"state_acc\": 0.9923809523809524}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.44283121597096187, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.5875268817204301, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1/Qwen3-4B-v5-seed44/metrics.json\"}"
       ],
-      "log_mtime": "2026-11-24T05:40:02.510107+08:00"
+      "log_mtime": "2026-11-24T06:54:41.794959+08:00",
+      "metrics_keys": [
+        "model_path",
+        "seed",
+        "config",
+        "data_sha256",
+        "code_sha256",
+        "trained",
+        "train_seconds"
+      ]
     }
   ],
   "queue_tail": [
-    {
-      "event": "queue_start",
-      "time": "2026-11-23T10:02:22+08:00",
-      "commit": "0487907c7dd2e9191416a6787b46ebf0b61d5ee4"
-    },
-    {
-      "event": "gpu_free",
-      "time": "2026-11-23T10:02:22+08:00"
-    },
-    {
-      "event": "train_start",
-      "time": "2026-11-23T10:03:03+08:00",
-      "model": "Qwen3-1.7B",
-      "seed": 42
-    },
     {
       "event": "done",
       "time": "2026-11-23T13:16:33+08:00",
@@ -600,6 +657,25 @@
       "time": "2026-11-24T03:18:22+08:00",
       "model": "Qwen3-4B",
       "seed": 44
+    },
+    {
+      "event": "done",
+      "time": "2026-11-24T06:54:42+08:00",
+      "model": "Qwen3-4B",
+      "seed": 44
+    },
+    {
+      "event": "rescored",
+      "time": "2026-11-24T06:54:57+08:00",
+      "model": "Qwen3-4B",
+      "seed": 44,
+      "kind": "trained"
+    },
+    {
+      "event": "train_start",
+      "time": "2026-11-24T06:55:35+08:00",
+      "model": "Qwen3-0.6B",
+      "seed": 42
     }
   ],
   "diagnostics": {
@@ -625,7 +701,9 @@
       "v5_main_0530_20261124.json",
       "v5_binding_newseeds_20261124.log",
       "v5_binding_newseeds_20261124_worker.json",
-      "v5_binding_newseeds_20261124.json"
+      "v5_binding_newseeds_20261124.json",
+      "coverage_newseeds_20261124.log",
+      "coverage_newseeds_20261124.json"
     ],
     "log_tails": {
       "testdeps_install.log": [
@@ -695,6 +773,11 @@
         "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_tpl_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9285714285714286, \"intervention_rate\": 0.9285714285714286, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
         "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_tool_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.9585714285714285, \"intervention_rate\": 0.9585714285714285, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}",
         "{\"arm\": \"Qwen3-4B-v5-seed43\", \"split\": \"test_struct_ho\", \"edited_records\": 0, \"faithful\": {\"records\": 700, \"groups\": 350, \"original_rate\": 0.97, \"intervention_rate\": 0.97, \"difference\": 0.0, \"conditional_paired_group_ci95\": [0.0, 0.0], \"records_0_to_1\": 0, \"records_1_to_0\": 0, \"direction\": \"intervention minus original; lower is better for error metrics\"}}"
+      ],
+      "coverage_newseeds_20261124.log": [
+        "{\"finished_prediction_audit\": \"Qwen3-1.7B-v5-seed44\"}",
+        "{\"finished_prediction_audit\": \"Qwen3-4B-v5-seed43\"}",
+        "{\"saved\": \"outputs/coverage_newseeds_20261124.json\"}"
       ]
     }
   }

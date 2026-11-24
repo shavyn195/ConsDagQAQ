@@ -1,0 +1,881 @@
+{
+  "model_path": "models/Qwen3-4B",
+  "seed": 44,
+  "config": {
+    "model": "models/Qwen3-4B",
+    "data_dir": "data/processed_v5",
+    "out_dir": "outputs/e1/Qwen3-4B-v5-seed44",
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "gradient_accumulation_steps": 4,
+    "max_seq_len": 1280,
+    "max_new_tokens": 384,
+    "eval_batch_size": 16,
+    "seed": 44,
+    "precision": "bf16",
+    "smoke_train_steps": null,
+    "skip_zeroshot": true,
+    "skip_train": false
+  },
+  "data_sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "code_sha256": "14979c5ddc74ae6ca83f0ad44191360b4731e7fce359f8083c3aee54011dd473",
+  "trained": {
+    "dev": {
+      "metrics_version": "e1_score_v5",
+      "records": 900,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "constraint_core_micro": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "record_exact_match": 1.0,
+      "record_exact_match_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "records": 300,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 300,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 300,
+          "prediction_empty_records": 300,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 190
+        },
+        "privacy": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 220
+        },
+        "order": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 266
+        },
+        "budget": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 142
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 154
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 149,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 149
+        },
+        "d1": {
+          "tp": 135,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 135
+        },
+        "d2": {
+          "tp": 202,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 202
+        }
+      },
+      "per_difficulty_unattributed_fp": 0,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 972,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 900,
+        "safe_success": 1.0,
+        "safe_success_ci95": [
+          1.0,
+          1.0
+        ],
+        "safe_success_constrained": 1.0,
+        "safe_success_constrained_ci95": [
+          1.0,
+          1.0
+        ],
+        "faithful_success": 1.0,
+        "faithful_success_constrained": 1.0,
+        "faithful_success_constrained_ci95": [
+          1.0,
+          1.0
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 300,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 300,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "none": {
+            "records": 300,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 609.9
+    },
+    "test_tpl_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 0.9923809523809524,
+      "state_accuracy_by_variant": {
+        "explicit": 0.9771428571428571,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.9891304347826086,
+        "recall": 0.9891304347826086,
+        "f1": 0.9891304347826086
+      },
+      "constraint_core_micro": {
+        "precision": 0.9972826086956522,
+        "recall": 0.9972826086956522,
+        "f1": 0.9972826086956522
+      },
+      "record_exact_match": 0.9876190476190476,
+      "record_exact_match_by_variant": {
+        "explicit": 0.9685714285714285,
+        "implicit": 0.9942857142857143,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.9818511796733213,
+          "recall": 0.980072463768116,
+          "f1": 0.9809610154125114,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.9963833634719711,
+          "recall": 0.9981884057971014,
+          "f1": 0.9972850678733032,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "budget": {
+          "precision": 0.9878787878787879,
+          "recall": 0.9939024390243902,
+          "f1": 0.9908814589665653,
+          "gold_records": 164
+        },
+        "tool_auth": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 222
+        },
+        "privacy": {
+          "precision": 0.9634146341463414,
+          "recall": 0.9634146341463414,
+          "f1": 0.9634146341463414,
+          "gold_records": 246
+        },
+        "order": {
+          "precision": 0.9963768115942029,
+          "recall": 0.9963768115942029,
+          "f1": 0.9963768115942029,
+          "gold_records": 276
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 0.9948979591836735,
+          "f1": 0.9974424552429667,
+          "gold_records": 196
+        }
+      },
+      "per_difficulty_implicit": {
+        "d1": {
+          "tp": 168,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 168
+        },
+        "d2": {
+          "tp": 223,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.9955357142857143,
+          "recall": 0.9955357142857143,
+          "f1": 0.9955357142857143,
+          "gold_constraints": 224
+        },
+        "d3": {
+          "tp": 160,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_constraints": 160
+        }
+      },
+      "per_difficulty_unattributed_fp": 1,
+      "evidence_exact_rate": 0.9990842490842491,
+      "evidence_records": 1092,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.9981,
+        "safe_success_ci95": [
+          0.9943,
+          1.0
+        ],
+        "safe_success_constrained": 0.9971,
+        "safe_success_constrained_ci95": [
+          0.9914,
+          1.0
+        ],
+        "faithful_success": 0.9981,
+        "faithful_success_constrained": 0.9971,
+        "faithful_success_constrained_ci95": [
+          0.9914,
+          1.0
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.9943,
+            "safe_success_ci95": [
+              0.9829,
+              1.0
+            ],
+            "faithful_success": 0.9943,
+            "faithful_success_ci95": [
+              0.9829,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0102,
+              "order": 0.0072,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0,
+              "privacy": 0.0,
+              "tool_auth": 0.0
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 694.0
+    },
+    "test_tool_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.44283121597096187,
+        "recall": 0.44283121597096187,
+        "f1": 0.44283121597096187
+      },
+      "constraint_core_micro": {
+        "precision": 0.8003629764065335,
+        "recall": 0.8003629764065335,
+        "f1": 0.8003629764065335
+      },
+      "record_exact_match": 0.5371428571428571,
+      "record_exact_match_by_variant": {
+        "explicit": 0.29428571428571426,
+        "implicit": 0.3171428571428571,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.43920145190562615,
+          "recall": 0.43920145190562615,
+          "f1": 0.43920145190562615,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.44646098003629764,
+          "recall": 0.44646098003629764,
+          "f1": 0.44646098003629764,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "tool_auth": {
+          "precision": 0.5238095238095238,
+          "recall": 0.514018691588785,
+          "f1": 0.5188679245283019,
+          "gold_records": 214
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 204
+        },
+        "order": {
+          "precision": 0.6,
+          "recall": 0.6,
+          "f1": 0.6,
+          "gold_records": 290
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 144
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 250
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 77,
+          "fp": 87,
+          "fn": 87,
+          "precision": 0.4695121951219512,
+          "recall": 0.4695121951219512,
+          "f1": 0.4695121951219512,
+          "gold_constraints": 164
+        },
+        "d1": {
+          "tp": 75,
+          "fp": 87,
+          "fn": 89,
+          "precision": 0.46296296296296297,
+          "recall": 0.4573170731707317,
+          "f1": 0.4601226993865031,
+          "gold_constraints": 164
+        },
+        "d2": {
+          "tp": 94,
+          "fp": 127,
+          "fn": 129,
+          "precision": 0.4253393665158371,
+          "recall": 0.42152466367713004,
+          "f1": 0.42342342342342343,
+          "gold_constraints": 223
+        }
+      },
+      "per_difficulty_unattributed_fp": 4,
+      "evidence_exact_rate": 0.9959016393442623,
+      "evidence_records": 488,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.8276,
+        "safe_success_ci95": [
+          0.801,
+          0.8543
+        ],
+        "safe_success_constrained": 0.7414,
+        "safe_success_constrained_ci95": [
+          0.7014,
+          0.7814
+        ],
+        "faithful_success": 0.8276,
+        "faithful_success_constrained": 0.7414,
+        "faithful_success_constrained_ci95": [
+          0.7014,
+          0.7814
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.7029,
+            "safe_success_ci95": [
+              0.6543,
+              0.7514
+            ],
+            "faithful_success": 0.7029,
+            "faithful_success_ci95": [
+              0.6543,
+              0.7514
+            ],
+            "completion": 0.9857,
+            "planned": 0.9857,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.3793,
+              "privacy": 0.0,
+              "tool_auth": 0.4393
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.78,
+            "safe_success_ci95": [
+              0.7343,
+              0.8229
+            ],
+            "faithful_success": 0.78,
+            "faithful_success_ci95": [
+              0.7343,
+              0.8229
+            ],
+            "completion": 0.9857,
+            "planned": 0.9857,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.331,
+              "privacy": 0.0,
+              "tool_auth": 0.2804
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 700.8
+    },
+    "test_struct_ho": {
+      "metrics_version": "e1_score_v5",
+      "records": 1050,
+      "state_accuracy": 1.0,
+      "state_accuracy_by_variant": {
+        "explicit": 1.0,
+        "implicit": 1.0,
+        "none": 1.0
+      },
+      "constraint_micro": {
+        "precision": 0.587274290627687,
+        "recall": 0.5877796901893287,
+        "f1": 0.5875268817204301
+      },
+      "constraint_core_micro": {
+        "precision": 0.9165950128976784,
+        "recall": 0.9173838209982789,
+        "f1": 0.916989247311828
+      },
+      "record_exact_match": 0.5914285714285714,
+      "record_exact_match_by_variant": {
+        "explicit": 0.38,
+        "implicit": 0.3942857142857143,
+        "none": 1.0
+      },
+      "per_variant": {
+        "explicit": {
+          "precision": 0.5834767641996558,
+          "recall": 0.5834767641996558,
+          "f1": 0.5834767641996558,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "implicit": {
+          "precision": 0.5910652920962199,
+          "recall": 0.5920826161790017,
+          "f1": 0.5915735167669819,
+          "records": 350,
+          "empty_set_accuracy": 0.0,
+          "gold_empty_records": 0,
+          "prediction_empty_records": 0,
+          "false_alarm_rate": null
+        },
+        "none": {
+          "precision": null,
+          "recall": null,
+          "f1": null,
+          "records": 350,
+          "empty_set_accuracy": 1.0,
+          "gold_empty_records": 350,
+          "prediction_empty_records": 350,
+          "false_alarm_rate": 0.0
+        }
+      },
+      "per_type": {
+        "order": {
+          "precision": 0.8238805970149253,
+          "recall": 0.9787234042553191,
+          "f1": 0.8946515397082658,
+          "gold_records": 282
+        },
+        "budget": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 186
+        },
+        "tool_auth": {
+          "precision": 0.8347457627118644,
+          "recall": 0.6840277777777778,
+          "f1": 0.7519083969465649,
+          "gold_records": 288
+        },
+        "deadline": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "gold_records": 210
+        },
+        "privacy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "gold_records": 196
+        }
+      },
+      "per_difficulty_implicit": {
+        "d3": {
+          "tp": 101,
+          "fp": 52,
+          "fn": 62,
+          "precision": 0.6601307189542484,
+          "recall": 0.6196319018404908,
+          "f1": 0.6392405063291139,
+          "gold_constraints": 163
+        },
+        "d2": {
+          "tp": 132,
+          "fp": 104,
+          "fn": 108,
+          "precision": 0.559322033898305,
+          "recall": 0.55,
+          "f1": 0.5546218487394958,
+          "gold_constraints": 240
+        },
+        "d1": {
+          "tp": 111,
+          "fp": 66,
+          "fn": 67,
+          "precision": 0.6271186440677966,
+          "recall": 0.6235955056179775,
+          "f1": 0.6253521126760564,
+          "gold_constraints": 178
+        }
+      },
+      "per_difficulty_unattributed_fp": 16,
+      "evidence_exact_rate": 1.0,
+      "evidence_records": 683,
+      "json_parse_rate": 1.0,
+      "malformed_prediction_count": 0,
+      "exec": {
+        "metrics_version": "e1_exec_v2",
+        "records": 1050,
+        "safe_success": 0.9581,
+        "safe_success_ci95": [
+          0.9438,
+          0.9695
+        ],
+        "safe_success_constrained": 0.9371,
+        "safe_success_constrained_ci95": [
+          0.9157,
+          0.9543
+        ],
+        "faithful_success": 0.9571,
+        "faithful_success_constrained": 0.9357,
+        "faithful_success_constrained_ci95": [
+          0.9157,
+          0.9529
+        ],
+        "per_variant": {
+          "explicit": {
+            "records": 350,
+            "safe_success": 0.9657,
+            "safe_success_ci95": [
+              0.9457,
+              0.9829
+            ],
+            "faithful_success": 0.9657,
+            "faithful_success_ci95": [
+              0.9457,
+              0.9829
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0284,
+              "privacy": 0.0,
+              "tool_auth": 0.0556
+            },
+            "over_change_rate_when_safe": 0.0
+          },
+          "implicit": {
+            "records": 350,
+            "safe_success": 0.9086,
+            "safe_success_ci95": [
+              0.8771,
+              0.9371
+            ],
+            "faithful_success": 0.9057,
+            "faithful_success_ci95": [
+              0.8743,
+              0.9343
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "violation_rate_by_type": {
+              "budget": 0.0,
+              "deadline": 0.0,
+              "order": 0.0142,
+              "privacy": 0.0,
+              "tool_auth": 0.2083
+            },
+            "over_change_rate_when_safe": 0.0031
+          },
+          "none": {
+            "records": 350,
+            "safe_success": 1.0,
+            "safe_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "faithful_success": 1.0,
+            "faithful_success_ci95": [
+              1.0,
+              1.0
+            ],
+            "completion": 1.0,
+            "planned": 1.0,
+            "malformed": 0.0,
+            "unnecessary_deviation_rate": 0.0
+          }
+        }
+      },
+      "eval_seconds": 734.3
+    }
+  },
+  "train_seconds": 12978.9
+}

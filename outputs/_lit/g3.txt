@@ -1,0 +1,638 @@
+##### library/01_constraint_compiler/2610.25552_SCA/2610.25552_SCA_fulltext.txt  (2115 lines)
+--ABSTRACT--
+14:Abstract
+15:Symbolic constraints (programmatic, determin-
+16:istic checks for tool calls) enable deterministic
+17:verification of LLM agents’ tool calls, but ex-
+18:isting approaches primarily enforce predefined
+19:safety policies rather than tool dependencies
+20:in complex tool environments. We explore
+21:whether symbolic constraints can be mined
+22:from environments and observations beyond
+23:predefined policies, and whether they can im-
+24:prove end-to-end task performance. We present
+25:Symbolic Constraint Agents (SCA), a frame-
+26:work that mines symbolic constraints from API
+27:documentation, refines them against execution
+28:traces, and checks the agent’s tool calls with
+29:an SMT solver at runtime. A violation triggers
+30:a natural-language warning or, when the valid
+31:replacement is uniquely determined, an auto-
+32:matic repair. On AppWorld, refinement raises
+33:error-detection F1 from 37.0 to 58.3 on GPT-
+34:5.5 traces and from 39.3 to 61.9 on Qwen3.5-
+35:27B traces. At runtime, repair raises GPT-5.4-
+36:mini’s task success by 5.4 points under a 40-call
+37:budget and 9.8 points when environment errors
+38:are hidden, while removing 59–87% of failed
+39:calls across models, and transfers to τ 2-bench
+40:with gains of up to 5.6 points. These findings
+41:show that automatically acquired symbolic con-
+42:straints can improve tool-calling reliability and
+43:task completion, particularly when failures are
+44:costly or difficult to diagnose.
+45:1
+46:Introduction
+47:Large language model (LLM)-based agents are
+--INTRO END--
+132:runs once per environment: an initializer agent mines
+133:candidate rules from API documentation and a refiner
+134:agent corrects them against sample agent traces. At the
+135:constraint application stage (bottom), each proposed call
+136:is checked against the constraint memory using an SMT
+137:solver. The rule shown requires LISTDIR’s api_key to
+138:originate from an earlier LOGIN; the call passing DEF is
+139:unsatisfiable and can be repaired to ABC.
+140:constraint violations with a unique correction (e.g.,
+141:passwords), SCA can instead repair the broken ar-
+142:gument using MaxSMT model checking.
+143:We make three contributions. First, we introduce
+144:an environment-grounded constraint mining frame-
+145:work that mines executable tool-call rules from API
+146:documentation and iteratively refines them against
+147:execution traces, even without requiring manually
+148:specified task-success criteria. Second, we develop
+149:solver-based interventions that translate detected
+150:violations into natural-language feedback, or au-
+151:tomatic repairs for uniquely determined argument
+152:errors. Third, we demonstrate that symbolic con-
+153:straints can improve end-to-end task completion
+154:through experiments on AppWorld (Trivedi et al.,
+155:2024) and τ 2-bench (Barrès et al., 2025), particu-
+156:larly when tool-call failures are costly or hard to
+157:diagnose, while reducing failed calls and inference
+158:costs.
+159:2
+--EXP SETUP--
+534:Experimental Setup
+535:Benchmark.
+536:We evaluate SCA on two tool-
+537:calling benchmarks with different error structures.
+538:AppWorld (Trivedi et al., 2024): we use the
+539:test-challenge set (417 instructions). The App-
+540:World environment exposes 457 APIs across nine
+541:diverse stateful applications, including email, mu-
+542:sic, notes, and contacts. Using these tools, the
+543:agent should complete users’ tasks such as ac-
+544:cepting Venmo transactions and sending emails
+545:to friends. The default environment provides an
+546:informative error message whenever the tool call
+547:fails due to incorrect parameter values, authentica-
+548:tion error, etc. (Standard) However, an agent can
+549:often recover from a rejected call by reading the er-
+550:ror message and retrying, so a prevented error may
+551:only save cost. We therefore introduce two chal-
+552:lenging variants of AppWorld that make tool errors
+553:increasingly expensive: 40-call budget, where the
+554:agent may make at most 40 tool calls instead of the
+555:Standard setting’s 300, so every call spent on an
+556:error is lost to the task; and silent errors, where the
+557:environment rejects erroneous calls with an empty
+558:response, which are harder for agents to recover
+559:from failures (Zhang et al., 2026). For the silent
+560:errors setting, the constraint generation/refinement
+561:stage also does not access the full error message.
+562:τ 2-bench (Barrès et al., 2025): we use the airline
+563:and retail domains with 20 and 40 held-out tasks,
+564:respectively. The agent serves an LLM-simulated
+565:customer through booking and order-management
+566:tools while following a written company policy,
+567:and the official evaluator checks the final database
+568:state and the required actions. Unlike AppWorld,
+569:the environment does not reject malformed tool
+570:calls, including ones that violate the policy (e.g.,
+571:cancelling a reservation that the policy does not
+572:allow to be cancelled), making it difficult for agents
+573:to detect their own errors.
+574:For tool navigation, the AppWorld environment
+575:provides a default BM25-based search tool as a sep-
+576:arate app. Initializer and Refiner agents in SCA’s
+577:constraint generation stage utilize this endpoint to
+578:search for relevant tools when generating/editing
+579:constraints. τ 2-bench domains have few tools (14
+580:in airline, 16 in retail), so the initializer and refiner
+581:receive all tool definitions along with the full policy
+582:in its context.
+583:Constraint refinement data.
+--RESULTS--
+639:Results
+640:5.1
+641:Quality of Generated Constraints
+642:Tool-call error detection.
+643:First, we evaluate
+644:whether SCA can detect faulty calls that the en-
+645:vironment will reject. The AppWorld environment
+646:returns an error message whenever a tool call is
+647:invalid for any reason, e.g., authentication errors,
+648:an empty cart when submitting an order, etc. SCA’s
+649:proposed constraints can therefore be evaluated via
+650:binary classification: the ground truth is whether
+651:a tool call returns an error, and the prediction is
+652:whether a constraint is violated at the given step.2
+653:Table 1 reports precision, recall, and F1 on tra-
+654:jectories generated by GPT-5.5 and Qwen3.5-27B,
+655:capturing both a strong proprietary model and a
+656:weaker open-weight model. The results show that
+657:using tool definitions alone (Initialize) produces
+658:noisy constraints. Refinement with a small number
+659:of traces raises precision by 28.9 points on GPT-
+660:5.5 trajectories and 25.1 points on Qwen3.5-27B
+661:trajectories in the test set, while recall increases by
+662:16.6 and 19.5 points, respectively. This shows the
+663:necessity and effectiveness of the refinement stage.
+664:Maximum recall remains lower than precision,
+665:primarily because some errors depend on environ-
+666:mental conditions that cannot be inferred from
+667:tool documentation or agent trace alone. For in-
+668:stance, in AppWorld, whether a file actually exists
+--LIMITATIONS--
+1101:Limitations
+1102:Constraints are built once with a strong proprietary
+1103:model (GPT-5.5) and refined on execution traces
+1104:of training tasks, which requires access to such
+1105:traces and incurs a one-time cost. Our constraints
+1106:check each tool call against the call history, so they
+1107:detect errors that are visible in that history: wrong
+1108:or miscopied arguments, calls in the wrong state,
+1109:missing prerequisites. They cannot detect failures
+1110:that depend on hidden environment state (e.g., a
+1111:credit limit the agent has not queried), and they
+1112:cannot detect omissions, where the agent never
+1113:makes a necessary call. This is why recall is much
+1114:lower than precision (Table 1), and why constraints
+1115:help little for agents whose failures are mostly of
+1116:these kinds, such as Qwen3.5-9B.
+1117:Improvements in task success are largest when
+1118:tool errors are costly or invisible and when the
+1119:agent makes many call-level errors. In the standard
+1120:AppWorld setting, success gains are small, and a
+1121:strong model that rarely makes these errors (Claude
+1122:Sonnet-5) benefits little. Warnings can also mis-
+1123:lead: a false alarm may cause an agent to retry a
+1124:call that was valid.
+
+##### library/01_constraint_compiler/2610.36570_CASEL/2610.36570_CASEL_fulltext.txt  (916 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:CASEL: Consequence-Aware Selective Execution for
+7:Reliable Long-Horizon Tool-Using Agents
+8:1st Yanyan Zhang
+9:Carnegie Mellon University
+10:Pittsburgh, PA 15213, USA
+11:zhangyanyanusa@gmail.com
+12:2nd Fei Shen
+13:Feinity LLC
+14:Sacramento, CA 95816, USA
+15:shenfei2031@hotmail.com
+16:3rd Ting Yan
+17:Computer Science Department
+18:Dartmouth College
+19:Hanover, NH 03755, USA
+20:ting.yan.gr@dartmouth.edu
+21:4th Hao Zhang*
+22:Independent Researcher
+23:Los Angeles, CA 90095, USA
+24:*Corresponding author: alex1995101099@gmail.com
+25:Abstract—Tool-using language agents increasingly modify
+26:external systems, yet most runtime safeguards allocate scrutiny by
+27:generic uncertainty scores or coarse mutation heuristics. We intro-
+28:duce CASEL (Consequence-Aware Selective Execution Layer), a
+29:model-agnostic runtime allocation policy that combines calibrated
+30:failure probability, state-dependent consequence, reversibility,
+31:ambiguity, and evidence freshness to choose, for each proposed tool
+32:call, among direct execution, verification, sandboxing, clarification,
+33:approval, and abstention by minimizing a per-mode cost. We
+34:formalize direct execution as selective prediction and state and
+--METHOD--
+263:Approach
+264:Problem focus
+265:Granularity
+266:Risk signal
+267:Intervention space
+268:Relation to CASEL
+269:SAGE-Agent[9]
+270:Underspecified intent
+271:Question
+272:Spec. vs. model unc.
+273:Clarify
+274:Implements clarify; triggered by gt
+275:REFLEX[22]
+276:Compute-efficient decisions
+277:Decision
+278:Model confidence
+279:Call strong LLM
+280:Orthogonal: chooses the decision maker
+281:CA2I[23]
+282:Pre-execution outcomes
+283:Action sequence
+284:Predicted return, risk
+285:Select a plan
+286:Orthogonal: admits whole plans
+287:CASEL
+288:Scrutiny before commit
+289:Step
+290:ˆptˆct, ρt, gt, dt
+291:Six modes,
+292:cost-aware
+293:—
+294:Algorithm 1 Consequence-aware selective execution
+295:Require: offline: fcal, threshold ˆτ (Eq. (5)); at step t: ht, at, ledger Ht−1
+296:1: ˆpt ←fcal(ut); estimate ˆct, ρt, gt, dt; ˆrt ←ˆptˆct
+297:2: if gt > τg return (clarify, Ht−1)
+298:3: if dt > τd and refresh exists return (verify, Ht−1)
+299:4: Mt ←FEASIBLEMODES(ρt, at); if ˆrt > ˆτ: remove direct
+300:5: m∗←arg minm∈Mt γmˆrt + λk(m) + µq(m)
+301:6: optional ledger: if m∗= direct and Ht−1 + ¯rt > BH: m∗←
+302:ESCALATE(ρt, Mt)
+
+##### library/01_constraint_compiler/2610.41089_CIRCE/2610.41089_CIRCE_fulltext.txt  (2235 lines)
+--ABSTRACT--
+15:Abstract
+16:Estimating whether a problem is too complex
+17:for a large language model (LLM) before the
+18:model attempts it can guide model routing, how
+19:to allocate test-time compute, and suggest the
+20:need for new tools to aid the agent. While
+21:existing estimators rely on the problem text,
+22:LLM-annotated task difficulty labels, or sig-
+23:nals obtained after a model attempts to solve
+24:the problem, such as its hidden states, none
+25:explicitly leverage the constraint structure in-
+26:herent in the problem: the variables to assign
+27:and how the constraints over them interact.
+28:We introduce CIRCE,1 which extracts a prob-
+29:lem’s structure by using a cheap LLM to con-
+30:struct a Constraint Intermediate Representation
+31:that deterministically compiles into the con-
+32:straint graph. Across seven reasoning bench-
+33:marks (including SAT, logic, and math) and
+34:four LLMs, even a randomly initialized GNN
+35:encoder improves predictions of LLM response
+36:correctness, reducing negative log-likelihood
+37:from 0.465 to 0.423 and increasing AUROC
+38:from 0.691 to 0.727 relative to the strongest
+39:baseline for each metric.
+40:1
+41:Introduction
+42:Large language models (LLMs) are increasingly
+43:asked to solve complex problems in which con-
+44:straints create dependencies among decisions.
+45:These problems include constraint satisfaction (e.g.,
+46:arranging wedding seating while keeping some
+47:guests together and others apart), resource man-
+48:agement and scheduling (e.g., assigning staff to
+--INTRO END--
+115:velop 41 handcrafted graph features (CIRCE-Stats)
+116:and find that richer feature sets generally improve
+117:prediction. To capture interactions beyond aggre-
+118:gate statistics, we also use a graph neural network
+119:(CIRCE-GNN). We compare frozen encoders with
+120:random initialization or self-supervised pretrain-
+121:ing on separate unlabeled problems. A lightweight,
+122:model-specific predictor maps either representation
+123:to the probability of a correct response.
+124:We evaluate CIRCE against four prediction base-
+125:lines and a constant predictor on seven reason-
+126:ing benchmarks and four LLMs. Five-fold cross-
+127:validation over 200 problems per benchmark fits
+128:each predictor on approximately 160 training prob-
+129:lems, with ten responses per problem supplying
+130:correctness labels. Relative to the strongest base-
+131:line overall for each metric, the pretrained variant
+132:reduces average negative log-likelihood of response
+133:correctness by 9.5% (0.465 to 0.421) and increases
+134:AUROC by 3.9 percentage points (0.691 to 0.730).
+135:Even a frozen, randomly initialized GNN encoder
+136:outperforms every baseline on average and nearly
+137:matches the pretrained variant. These results show
+138:that constraint structure recovered from text is a
+139:useful signal for predicting LLM failures before
+140:generation. Text-to-SQL and program synthesis
+141:are promising targets for future evaluation.
+142:2
+--METHOD--
+202:methods such as GraphMAE (Hou et al., 2022)
+203:further enable graph representation learning with-
+204:out problem-specific labels. However, rather than
+205:using these representations to solve problems or
+206:support reasoning directly, we leverage the con-
+207:straint structure to estimate the empirical difficulty
+208:of individual problems for a target LLM.
+209:3
+210:Method
+211:The way constraints connect variables can affect
+212:the reasoning required to answer a problem. We use
+213:these relationships as a signal for complexity esti-
+214:mation. Extracting them directly from the problem
+215:using an LLM is challenging. CIRCE addresses
+216:2
+217:
+218:============================================================
+219:=== PAGE 3 ===
+220:============================================================
+221:
+222:this by asking the LLM to describe the variables
+223:and constraints in an intermediate representation
+224:(CIR), from which a rule-based compiler constructs
+225:the graph.
+226:Figure 1 illustrates the workflow of CIRCE. We
+227:first extract a CIR and compile it into a constraint
+228:graph (Section 3.2). We then represent the graph
+229:using handcrafted features in CIRCE-Stats (Sec-
+230:tion 3.3) or a GNN with or without self-supervised
+231:pretraining in CIRCE-GNN (Section 3.4). Finally,
+232:a gradient-boosted predictor maps the structural
+233:representation to a correctness probability for the
+234:target model (Section 3.5).
+235:3.1
+236:Problem Formulation
+237:Given a problem x, a language model m, and an
+238:inference protocol π, we measure how complex
+239:x is for m by the probability that a response is
+240:correct,
+241:pm,π(x) = Pr(a response to x is correct | m, π),
+--EXP SETUP--
+295:Experiments in Section 5.1 show that writing more
+296:handcrafted features continued to improve the
+297:model’s predictive accuracy. Yet, manual feature
+298:engineering may omit complex but predictive inter-
+299:actions between the constraints and the variables.
+300:We therefore use a GNN to encode the graph struc-
+301:ture. We project each node’s attributes to an initial
+302:vector h(0)
+303:v
+304:and use six GIN-style layers (Xu et al.,
+305:2019). Each node vector h(ℓ)
+306:v
+307:and edge embedding
+308:e(ℓ)
+309:uv has 64 dimensions. At layer ℓ∈{1, . . . , 6},
+310:e(ℓ)
+311:uv is a trainable embedding, and m(ℓ)
+312:v sums incom-
+313:ing neighbor messages. N(v) denotes the nodes
+314:connected to v, ϵℓis a learned scalar, MLPℓa feed-
+315:forward network, and LN layer normalization. The
+316:update is
+317:m(ℓ)
+318:v
+319:=
+320:�
+321:u∈N(v)
+322:ReLU
+323:�
+324:h(ℓ−1)
+325:u
+326:+ e(ℓ)
+327:uv
+328:�
+329:,
+330:(3)
+331:h(ℓ)
+332:v
+333:= LN
+334:�
+335:h(ℓ−1)
+336:v
+337:+ MLPℓ
+338:�
+339:(1 + ϵℓ)h(ℓ−1)
+340:v
+341:+ m(ℓ)
+342:v
+343:��
+344:. (4)
+--RESULTS--
+554:Main Results
+555:Our methods, CIRCE-Stats and both variants of
+556:CIRCE-GNN, have lower NLL and higher AUROC
+557:on average across the seven benchmarks than every
+558:baseline (Table 2). To summarize overall perfor-
+559:mance, we additionally compute macro averages,
+560:giving equal weight to all 28 benchmark/model
+561:pairs.
+562:CIRCE-Stats is a strong method in its own right,
+563:achieving a macro NLL of 0.4311 and AUROC of
+564:0.7029. Compared with the respective best base-
+565:Benchmark
+566:Pretrain Evaluation Thinking
+567:SATBench (Wei et al., 2025)
+568:900
+569:200 Default
+570:FOLIO (Han et al., 2024)
+571:900
+572:200 Default
+573:NLCO (KP/QKP/MIS/MVC)
+574:(Jiang et al., 2026)
+575:400
+576:200 Default
+577:Enigmata: Hamiltonian Path
+578:(Chen et al., 2025)
+579:900
+580:200 Low
+581:Enigmata: Zebra Logic
+582:(Chen et al., 2025)
+583:900
+--LIMITATIONS--
+1076:Limitations
+1077:While CIRCE applies to a wide range of reasoning
+1078:benchmarks, its scope is limited to the problems
+1079:whose constraints are part of the input. It does
+1080:not cover the problems where inferring constraints
+1081:is part of the reasoning process. CIRCE also es-
+1082:timates only the part of problem complexity that
+1083:constraint structure reflects, while other methods
+1084:that depend on the model’s states could potentially
+1085:reveal the failure cases such as a misread question.
+1086:Combining our method with their features remains
+1087:future work.
+1088:We showed the reliability of the CIRs, but they
+1089:are generated by a single LLM, and their correct-
+1090:ness cannot be fully verified: rule-based checkers
+1091:cover three benchmarks, and the other four were
+1092:spot-checked on 20 questions each. We also used
+1093:a fixed set of problems for pretraining the GNN
+1094:encoder and evaluating the predictors. Evaluating
+1095:how the number of problems affects the encoder
+1096:and predictor performance would further establish
+1097:the scalability of our method. Exploring predictor
+1098:transfer across benchmarks and models could pro-
+1099:vide further evidence of the generalizability of our
+
+##### library/01_constraint_compiler/2611.09364_SafeOrchestrate/2611.09364_SafeOrchestrate_fulltext.txt  (964 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:SafeOrchestrate: Runtime-Checked Intent-Driven
+7:Orchestration for Cyber-Physical Systems
+8:Muhammad Ashfaq1�
+9:, Ahmed R. Sadik2 , Ewan Warburton3 , Pyry
+10:Kotilainen1 , Niko Mäkitalo1 , and Tommi Mikkonen1
+11:1 Faculty of IT, University of Jyväskylä, Jyväskylä, 40100, Finland
+12:{muhammad.m.ashfaq,pyry.kotilainen,niko.k.makitalo,tommi.j.mikkonen}@jyu.fi
+13:2 Honda Research Institute Europe, Offenbach, 63073, Germany
+14:ahmed.sadik@honda-ri.de
+15:3 Independent Researcher e.warburton.ew@gmail.com
+16:Abstract. Modern cyber-physical systems (CPS) integrate heteroge-
+17:neous sensors, actuators, controllers, and services, composed at run-
+18:time rather than at design time. Orchestrating such systems through
+19:natural language (NL) is attractive, but unconstrained large language
+20:model (LLM) tool use is risky because actions must respect device ca-
+21:pabilities, runtime state, and safety constraints. We present SafeOrches-
+22:trate, a reference architecture for runtime-checked, intent-driven CPS
+23:orchestration. Given an NL intent, it derives atomic goals, generates a
+24:runtime-checkable specification for each, grounds the specifications to
+25:device affordances, and verifies candidate actions against runtime state
+26:and safety constraints before execution. In a Web of Things (WoT) in-
+27:stantiation, the architecture produces Linear Temporal Logic-style spec-
+28:ifications from the NL intent, grounds them to Thing Description (TD)
+29:affordances exposed through the Model Context Protocol (MCP), and
+30:checks candidate actions against satisfiability modulo theories (SMT)-
+31:backed guardrails. We evaluate this instantiation on simulated smart
+32:home, greenhouse, and industrial automation tasks against a direct LLM-
+33:to-MCP baseline. SafeOrchestrate maintains 100% required-action accu-
+34:racy on every task and 100% MCP Execution Similarity (MCP-ES) on all
+--INTRO END--
+101:=== PAGE 3 ===
+102:============================================================
+103:
+104:backed guardrails, orchestrating heterogeneous devices through a uniform,
+105:runtime-checked execution interface.
+106:We investigate the following research question (RQ): How does grounding NL-
+107:derived specifications to MCP-exposed WoT affordances, and verifying candidate
+108:actions against runtime state before execution, affect the correctness of LLM-
+109:driven CPS orchestration, relative to direct LLM-to-MCP tool use? We make
+110:the following contributions:
+111:1. We propose SafeOrchestrate, a reference architecture for LLM-driven CPS
+112:orchestration that integrates specification generation, role-aware grounding,
+113:and SMT-backed runtime guardrails over MCP-exposed affordances.
+114:2. We introduce MCP Execution Similarity (MCP-ES), an alignment metric be-
+115:tween expected and actual MCP tool-call trajectories that penalizes missing,
+116:extra, substituted, and mis-ordered calls.
+117:3. We evaluate the WoT/MCP instantiation of SafeOrchestrate across smart
+118:home, greenhouse, and industrial automation tasks, where it matches a direct
+119:LLM-to-MCP baseline on simple tasks and substantially outperforms it on
+120:event-triggered, ordered, and multi-device tasks.
+121:The remainder of this paper is organized as follows. Section 2 reviews
+122:WoT mashups, LLM-assisted workflow generation, and verified tool execution.
+123:Section 3 presents the SafeOrchestrate architecture. Section 4 describes the
+124:WoT/MCP implementation. Section 5 reports the evaluation, and Section 6
+125:concludes with limitations and future work. The implementation of SafeOrches-
+126:trate and all evaluation artifacts are publicly available in the accompanying
+127:repository4.
+128:2
+--EXP SETUP--
+320:Evaluation
+321:For
+322:each
+323:precondition-action
+324:pair
+325:(prei, acti)
+326:∈
+327:Tr(ϕg), Vg evaluates the precondition against the current
+328:state, eval(prei, st) ∈{true, false}. If eval(prei, st) = false, action acti is rejected
+329:before SMT checking.
+330:Phase 2: SMT-Based Constraint Check. For actions with satisfied preconditions
+331:that come from a single-action rule (Or skips this phase for multi-action conse-
+332:quents; Section 3.8), Vg checks whether the candidate action is compatible with
+333:the grounded current-state constraints, Vg(ϕg, st, ti) ∈{true, false}, where ϕg is
+334:the grounded specification, st the current state, and ti ∈Tt the candidate MCP
+335:tool. Let ψg denote the propositional abstraction of ϕg obtained by removing
+336:its temporal operators, and let C denote optional deployment safety constraints
+337:when available. Vg checks satisfiability of the propositional abstraction:
+338:SAT(ψg ∧C ∧�st ∧(ti = true))
+339:where �st encodes the observed runtime values as Boolean or numeric assign-
+340:ments. If satisfiable, execution is permitted; otherwise, the action is blocked.
+341:Because the query ranges over the entire specification ψg, not just the rule that
+342:selected ti, it blocks an action that satisfies its precondition yet conflicts with
+343:another rule under the current state (for example, the reverse direction of a bi-
+344:conditional). This consistency check is active even when C is empty, reducing to
+345:the Phase 1 condition only for an isolated implication. The optional set C adds
+346:deployment safety constraints, such as an emergency-stop rule; in our evaluation,
+347:C is empty.
+348:3.8
+349:Runtime Orchestrator (Or)
+350:Or is the architecture’s reactive component. The prototype does not maintain an
+351:internal recurring loop: the decomposer’s atomic goals am1, . . . , amk are evalu-
+352:ated once each, sequentially in textual order, and a fresh evaluation of a goal’s
+353:resolved rules Tr(ϕg) occurs only on a new invocation (for example, the next
+354:event-triggered run). One evaluation has three steps (Fig. 2):
+355:1. State sampling. Read the observable affordances referenced by ϕg—
+356:properties, sensors, and event resources—once, into the snapshot st. The
+357:snapshot is not refreshed between actions of the same goal.
+358:2. Candidate
+359:selection. For each pair (prei, acti)
+360:∈
+361:Tr(ϕg), evaluate
+362:eval(prei, st); a satisfied precondition means acti is enabled, and it joins
+363:Tcandidates.
+364:3. Check and execute. A candidate whose triggering rule has a single con-
+365:sequent action is admitted only if Vg(ϕg, st, ti) also holds—an SMT test of
+366:7
+367:
+368:============================================================
+369:=== PAGE 8 ===
+--RESULTS--
+634:Results
+635:Table 2 reports per-task required-action accuracy and MCP-ES for both systems.
+636:Both approaches perform similarly on simple property-triggered tasks, but
+637:VanillaOrchestrate degrades as task complexity, event dependence, and device
+638:count increase—to 80%/75% (accuracy/MCP-ES) in Robot Workflow and
+639:83%/87% in Greenhouse Automation.
+640:12
+641:
+642:============================================================
+643:=== PAGE 13 ===
+644:============================================================
+645:
+646:VanillaOrchestrate
+647:SafeOrchestrate
+648:Task
+649:Acc.
+650:MCP-ES
+651:Acc.
+652:MCP-ES
+653:Presence Control
+654:100
+655:100
+656:100
+657:100
+658:AC Control
+659:100
+660:100
+661:100
+662:100
+663:Robot Workflow
+--LIMITATIONS--
+843:Conclusion and Future Work
+844:This paper presents SafeOrchestrate, a runtime-checked framework for LLM-
+845:driven CPS control that combines MCP-based tool execution with guardrails.
+846:The results show improved reliability over purely LLM-driven orchestration, es-
+847:pecially on event-triggered, ordered, and multi-device tasks. The evaluation exer-
+848:cises precondition satisfaction and trigger discipline; because its tasks are largely
+849:single-rule with an empty constraint set C, the SMT layer’s cross-rule and safety-
+850:constraint enforcement is shown only on the worked example (Section 3.9) and
+851:remains to be assessed at scale.
+852:15
+853:
+854:============================================================
+855:=== PAGE 16 ===
+856:============================================================
+857:
+858:Future work will make generated orchestrations reusable through structured
+859:workflow representations, such as SDs [6] or graph-based models, building on
+860:prior work on IoT workflow serialization [22] and potentially grammar-based
+861:generation [13]. We also aim to decouple the orchestration logic from the MCP-
+862:specific backend by supporting direct TD consumption, where actions, prop-
+863:erties, and events are discovered from TDs and invoked through their native
+864:protocol bindings. Finally, we plan component-wise ablation to isolate the con-
+865:tribution of role-aware grounding versus guardrail checking, and automated tra-
+866:jectory scoring to replace manual log inspection. We also plan to evaluate safety-
+

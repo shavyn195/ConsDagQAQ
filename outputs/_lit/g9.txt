@@ -1,0 +1,1412 @@
+##### library/04_credit_assignment/2605.03327_TIDE/2605.03327_TIDE_fulltext.txt  (1712 lines)
+--ABSTRACT--
+24:Abstract
+25:Reinforcement learning (RL) is central for aligning large lan-
+26:guage models (LLMs) with complex reasoning, yet the lead-
+27:ing critic-free algorithm, Group Relative Policy Optimization
+28:(GRPO), broadcasts a single sequence-level advantage uni-
+29:formly across long Chain-of-Thought (CoT) generations and
+30:constrains exploration with an unbounded Kullback-Leibler
+31:(KL) penalty, which dilutes token-level supervision and in-
+32:duces gradient instability and mode-seeking conservatism.
+33:We propose TIDE (Token-level Importance via Deviation
+34:and Entropy), a critic-free RL framework that reinterprets
+35:distribution deviation as a guiding signal rather than a rigid
+36:penalty. TIDE replaces the volatile reverse KL divergence
+37:with the bounded Hellinger distance, safely quantifying
+38:token-level exploration without risk of gradient explosion.
+39:To separate genuine reasoning breakthroughs from confi-
+40:dent hallucinations, an entropy gating mechanism scales
+41:this deviation by the policy’s predictive uncertainty, and
+42:the gated scores redistribute the sequence-level advantage
+43:across tokens. The resulting updates amplify exploratory
+44:steps while suppressing low-entropy deviations, without a
+45:value network and with negligible overhead. Across in-
+46:domain, held-out, and out-of-domain benchmarks, TIDE out-
+47:performs strong critic-free baselines: on the Qwen2.5-32B
+48:backbone it reaches 60.0% and 46.0% Avg@32 accuracy on
+49:AIME 2024 and AIME 2025, respectively, above competitive
+50:baselines such as DAPO. Token-level attribution, causal per-
+51:turbation, and exploration analyses further support the inter-
+52:pretation that the entropy-gated deviation identifies pivotal
+53:reasoning steps rather than merely perturbing optimization
+54:dynamics.
+55:1. Introduction
+56:Aligning large language models (LLMs) with reinforce-
+57:ment learning (RL) has fundamentally advanced their ca-
+--METHOD--
+598:Method
+599:AIME 2024
+600:AIME 2025
+601:Avg@32
+602:Cons@32
+603:Pass@32
+604:Avg@32
+605:Cons@32
+606:Pass@32
+607:GRPO [31]
+608:47.0 (±3.8)
+609:57.0
+610:77.0
+611:33.0 (±3.6)
+612:43.0
+613:60.0
+614:DAPO [43]
+615:50.0 (±3.6)
+616:60.0
+617:80.0
+618:38.0 (±3.4)
+619:47.0
+620:63.0
+621:FIPO [23]
+622:56.0 (±3.3)
+623:73.0
+624:83.0
+625:43.0 (±3.2)
+626:50.0
+627:67.0
+628:TIDE (Ours)
+629:60.0 (±3.1)
+630:73.0
+631:87.0
+632:46.0 (±3.0)
+633:53.0
+634:67.0
+635:Table 2. Comparison on Qwen2.5-7B-Math. All results are
+636:percentages (%): the final-checkpoint average Pass@1 across 32
+637:samples (Avg@32).
+
+##### library/04_credit_assignment/2609.12424_GranularityAdaptiveCredit/2609.12424_GranularityAdaptiveCredit_fulltext.txt  (1792 lines)
+--ABSTRACT--
+32:ABSTRACT
+33:Long-horizon language-model agents trained with reinforcement learning often
+34:receive sparse outcome rewards that do not reveal which decisions along a tra-
+35:jectory deserve credit. Episode-level advantages provide coarse trajectory-wide
+36:credit, while step-level comparisons offer finer resolution with context-dependent
+37:estimation noise. We propose Granularity-Adaptive Credit Assignment (GACA),
+38:a critic-free method that adaptively mixes episode- and step-level credit for each
+39:decision during policy optimization. GACA normalizes the sampled response’s
+40:mean per-token negative log-likelihood (NLL) within each trajectory and uses the
+41:resulting criticality score to determine the step-specific mixture. The computation
+42:reuses rollout log-probabilities without additional training rollouts or model eval-
+43:uations. Our analysis characterizes optimal score-dependent mixing and derives
+44:conditions linking expected NLL to a lower bound on the preferred step-level
+45:weight. Across ALFWorld and WebShop with 1.5B and 7B backbones, GACA
+46:achieves the highest reported mean success rates among the compared methods,
+47:while introducing negligible additional computation.
+48:1
+49:INTRODUCTION
+50:Language-model agents act over many steps to complete household tasks, browse web stores, and
+51:use external tools (Yao et al., 2022b; Shridhar et al., 2020; Yao et al., 2022a). Reinforcement learning
+52:can improve these agents using task outcomes (Ouyang et al., 2022; Guo et al., 2025), but a sparse
+53:terminal reward leaves a difficult credit-assignment problem: which decisions should receive the
+54:learning signal? A trajectory can contain both consequential choices and actions whose alternatives
+55:would have little effect on the outcome (Arjona-Medina et al., 2019).
+56:Critic-free methods avoid training a value model by comparing several rollouts of the same task.
+57:GRPO (Shao et al., 2024) computes an episode-level relative advantage and broadcasts it to every
+58:action. GiGPO (Feng et al., 2026) adds local resolution by grouping steps with the same anchor
+59:observation and comparing their continuation returns. Its fixed combination of episode- and step-
+60:level signals leaves a further question: should every decision rely on these two credit estimates in
+61:the same proportion?
+62:The two granularities offer a decision-dependent estimation trade-off. Episode credit spreads the
+63:outcome over all decisions, while step credit separates local continuations using finite, context-
+64:dependent comparison groups.
+65:We propose Granularity-Adaptive Credit Assignment (GACA),
+--INTRO END--
+69:ity score that measures how surprising the response is relative to other responses in that interaction.
+70:1
+71:arXiv:2609.12424v2  [cs.LG]  4 Oct 2026
+72:
+73:============================================================
+74:=== PAGE 2 ===
+75:============================================================
+76:
+77:Preprint
+78:A bounded mapping converts this score into a step-specific mixing weight, placing more weight
+79:on step-level credit at higher scores. These computations reuse quantities already available for the
+80:policy update, requiring no additional model or training rollouts.
+81:Our analysis characterizes how a score-dependent mixture balances the errors of the two credit
+82:estimates. It then identifies conditions under which greater variation in action values favors step-
+83:level credit and expected NLL provides a lower bound on that variation. These results motivate
+84:increasing the weight of local credit with the NLL-based score.
+85:GACA complements methods that refine the step estimator, including history-consistent grouping
+86:in HGPO (He et al., 2026), behavior-aware grouping in BiPACE (Wang et al., 2026a), and progress-
+87:conditioned credit in ProGPO (Yang et al., 2026). Uncertainty-based modulation in AEM and
+88:STARE rescales an existing advantage (Zhao et al., 2026; Luo et al., 2026); GACA uses uncer-
+89:tainty to control the relative contribution of two credit granularities. Appendix A discusses these
+90:connections.
+91:Our evaluation covers ALFWorld and WebShop with Qwen2.5-Instruct at 1.5B and 7B scales. On
+92:ALFWorld 1.5B, matched ablations compare GACA with five fixed mixtures and within-trajectory
+93:random score assignment. Adaptive mixing reaches 96.88% success, compared with 93.05% for the
+94:best tested fixed mixture and 88.54% for random assignment. These comparisons examine both the
+95:choice of mixing weights and their assignment to individual decisions.
+96:2
+--METHOD--
+97:PRELIMINARIES
+98:2.1
+99:SEQUENTIAL INTERACTION AND POLICY OPTIMIZATION
+100:At step t, the full pre-action state st contains the task, interaction history, and current observation.
+101:The agent samples a response at ∼πθ(· | st) containing reasoning and an action command. The en-
+102:vironment executes its parsed action Ut = ϕ(at), returns reward rt, and continues until termination
+103:at T. The trajectory return is R(τ) = �
+104:t rt, and the discounted step return is ˆgt = �T
+105:k=t γk−trk.
+106:Each task produces a group of G trajectories for relative advantage estimation.
+107:A per-step advantage AGACA
+108:t
+109:is broadcast to the response’s valid tokens. With token importance
+110:ratio ρt,j = πθ(aj
+111:t | st, a<j
+112:t )/πθold(aj
+113:t | st, a<j
+114:t ), training uses the clipped surrogate (Schulman
+115:et al., 2017)
+116:LPG = −Et
+117:
+118:1
+119:|at|
+120:�
+121:j
+122:min
+123:�
+124:ρt,jAGACA
+125:t
+126:, clip(ρt,j, 1 −ϵ, 1 + ϵ)AGACA
+127:t
+128:�
+129:
+130:+ βKL �
+131:KL(πθ∥πref).
+132:(1)
+133:GACA supplies the advantage used in this update. For ALFWorld 1.5B, the expectation uses re-
+134:sponse weights wt = |at|/ �
+135:k∈B |ak| in optimization batch B, giving a mean over valid tokens.
+136:Appendix E specifies loss reduction and regularization.
+--EXP SETUP--
+419:EXPERIMENTS
+420:Our evaluation measures attained task success on two agent benchmarks, progress during training,
+421:and per-update computational cost. Matched ablations examine stepwise credit allocation, followed
+422:by diagnostics of the NLL signal.
+423:4.1
+424:EXPERIMENTAL SETUP
+425:Tasks and training.
+426:We use the verl-agent stack (Feng et al., 2026; Sheng et al., 2025) with
+427:Qwen2.5-Instruct 1.5B and 7B. ALFWorld involves household tasks with a maximum of 50 steps;
+428:WebShop involves product search and purchase within 15 steps. GACA samples groups of 8 trajec-
+429:tories and applies an invalid-action penalty of 0.1. For ALFWorld 1.5B, we use a two-step history
+430:window, rollout temperature 1, and 16 task groups per update. We train this model for 300 parameter
+431:updates. We report its update-150, best, and final evaluations to distinguish performance at a shorter
+432:budget from gains under continued training. Appendix D gives training settings and benchmark
+433:details.
+434:5
+435:
+436:============================================================
+437:=== PAGE 6 ===
+438:============================================================
+439:
+440:Preprint
+441:Evaluation and checkpoint selection.
+442:For ALFWorld, we follow HGPO’s evaluation-seed con-
+443:vention (He et al., 2026): each selected checkpoint receives three stochastic evaluations, summarized
+444:by their mean and population SD. Each backbone uses one trained model. The 1.5B run uses the
+445:in-distribution evaluation split, 128 tasks, and temperature 0.4. It evaluates every 5 updates and se-
+446:lects the update with the highest mean validation success. The selected ALFWorld updates are 275
+447:(1.5B) and 265 (7B). Figure 2 also reports progress at fixed updates. Appendix D.1 gives the seed
+448:values, selection rule, and published-reference protocols.
+449:Reference methods and internal controls.
+450:The benchmark comparison focuses on attained task
+451:success, using selected GACA checkpoints and the strongest published configurations of the listed
+452:reference methods. GRPO and GiGPO results are quoted from Feng et al. (2026); HGPO and its
+453:accompanying GiGPO references are quoted from He et al. (2026). Table 1 retains the K = 4
+454:HGPO configurations, the stronger reported setting in each framework version, and distinguishes
+455:their WebShop horizons. The complete K = 2, 4 comparison appears in Table 7. Internal ALFWorld
+456:1.5B ablations retain the same advantage definitions, normalization, and singleton fallback under a
+457:common training and selection protocol. The fixed-weight controls retain GACA’s convex-mixture
+458:scale; Appendix E distinguishes this scale from the original GiGPO update.
+459:4.2
+460:OVERALL PERFORMANCE
+461:Table 1 reports success rates across four backbone–benchmark settings. GACA has the highest
+462:reported mean among the listed methods in each setting, reaching 96.88% and 98.18% on ALFWorld
+463:and 80.99% and 83.59% on WebShop at 1.5B and 7B, respectively. Relative to updated-framework
+464:HGPO (K = 4), the differences are 2.03 and 2.22 percentage points on ALFWorld and 2.87 and
+465:4.30 points on WebShop. The margins over the original GiGPO reference range from 7.4 to 13.6
+466:points.
+467:Table 1: Success rates (%, mean ± SD). External rows are quoted from the indicated sources.
+468:HGPO’s ALFWorld entries are in-distribution results; K is the history-window length. The complete
+--CONCLUSION--
+674:CONCLUSION
+675:GACA uses rollout NLL to adapt the mixture of episode- and step-level credit during policy opti-
+676:mization, without additional training rollouts or model evaluations. Conditional risk analysis char-
+677:acterizes score-dependent mixing and conditions favoring finer credit. Across ALFWorld and Web-
+678:Shop with two backbone sizes, GACA achieves the highest reported mean success rates among
+679:the compared methods. In matched ALFWorld ablations, GACA improves over the tested fixed
+680:weights and within-trajectory random assignment. Together, these results support step-dependent
+681:credit mixing as a practical design choice for critic-free agent training.
+682:AI USE STATEMENT
+683:Generative AI tools assisted with manuscript editing, theoretical exposition, figure preparation, and
+684:diagnostic experiment design. The authors are responsible for verifying the arguments, implemen-
+685:tation descriptions, references, and reported results.
+686:REPRODUCIBILITY STATEMENT
+687:Appendix B–C contain the theoretical statements and proofs. Appendix D–E specify training set-
+688:tings, advantage normalization, singleton fallback, and criticality construction. Appendix G gives
+689:the full numerical ablation grid, and Appendix H defines the diagnostic estimators. Section 4.1
+
+##### library/04_credit_assignment/2610.00838_SHARPO/2610.00838_SHARPO_fulltext.txt  (903 lines)
+--ABSTRACT--
+17:Abstract
+18:Agentic reinforcement learning (RL) trains a large language model (LLM) to act
+19:over long, multi-step interactions. However, a single localized error can cause
+20:task failure, while trajectory-level rewards provide limited guidance for assigning
+21:credit to individual decisions. To address this limitation, we introduce Segment-
+22:level Hindsight Advantage Reweighting for Policy Optimization (SHARPO), a
+23:credit-assignment mechanism that refines Group Relative Policy Optimization
+24:(GRPO) at the level of environment-facing segments. Inspired by the existing
+25:on-policy self-distillation (OPSD) method, SHARPO computes teacher–student
+26:log-probability gaps within each segment and uses the resulting signal to compute
+27:a bounded multiplier on the GRPO advantage. This multiplier is shared by all
+28:tokens within the segment, allowing credit to vary across different segments. With
+29:Qwen2.5-7B-Instruct, SHARPO outperforms existing baselines on the ALFWorld
+30:and WebShop benchmarks, including GRPO, SDAR, RLSD, and StepOPSD.
+31:1
+32:Introduction
+33:Post-training plays a key role in adapting large language models (LLMs) to specific tasks and
+34:improving their performance in interactive environments [Ouyang et al., 2022, Jin et al., 2025].
+35:Reinforcement learning (RL) supports this adaptation by optimizing agent behavior using feedback
+36:from task outcomes. When these outcomes can be automatically verified, their correctness provides
+37:a direct reward signal for training, as demonstrated in mathematical reasoning and search-based
+38:question answering [Guo et al., 2025a, Jin et al., 2025]. Group Relative Policy Optimization (GRPO)
+39:offers an efficient approach to learning from such rewards without training a separate value network
+40:[Shao et al., 2024]. For each task, GRPO samples a group of rollouts and normalizes their rewards
+41:within the group to estimate advantages. Under outcome supervision, each rollout receives a single
+42:advantage that is shared by all of its generated tokens.
+43:In multi-turn interactions, however, an agent must make a sequence of decisions before receiving
+44:feedback on the final outcome. In this case, the rewards are sparse and are available only at the end
+45:of an episode, hence they provide little direct information about the contribution of each intermediate
+46:step to that outcome. For example, a shopping agent may find a suitable product but select an incorrect
+47:option before completing the purchase. If the resulting trajectory receives a negative advantage,
+48:both the useful search and the mistaken selection inherit the same negative coefficient. The shared
+49:advantage therefore does not distinguish actions that helped accomplish the task from those that led
+50:to failure. This motivates us to design a credit-assignment mechanism in RL that uses finer-grained
+--INTRO END--
+116:feedback within selected interaction segments and assigns a shared advantage weight to each segment.
+117:Compared to StepOPSD [Zhang et al., 2026], which retains token-specific weights within selected
+118:action-centered spans, SHARPO aggregates the feedback within each segment before determining its
+119:weight. Favorable and unfavorable evidence across a substep is therefore considered jointly, allowing
+120:the credit adjustment to reflect the teacher’s overall support for the complete decision.
+121:We evaluate SHARPO on ALFWorld and WebShop using Qwen2.5-7B-Instruct. As shown in Figure 1,
+122:SHARPO achieves higher final validation success rates than baselines on both benchmarks at both
+123:parameter configurations. To summarize, our main contributions are threefold:
+124:• We propose SHARPO, a segment-level credit-assignment method that uses successful peer
+125:rollouts to guide the weighting of intermediate decisions in GRPO. By aggregating self-
+126:distillation feedback over meaningful interaction segments, it supplements sparse outcome
+127:supervision without requiring an external teacher or additional environment rollouts.
+128:2
+129:
+130:============================================================
+131:=== PAGE 3 ===
+132:============================================================
+133:
+134:• We provide a theoretical explanation of why this self-distillation feedback is useful in our
+135:method and how it supports finer-grained credit assignment.
+136:• We demonstrate that SHARPO outperforms GRPO, RLSD, SDAR, and StepOPSD on both
+137:ALFWorld and WebShop. Analyses of subtask success rates and product-matching quality
+138:further characterize these gains.
+139:2
+140:Method
+141:We first review GRPO and OPSD in Section 2.1 and then present SHARPO in Section 2.2. Section 2.3
+142:provides a theoretical analysis of our segment-level credit assignment.
+143:2.1
+--METHOD--
+140:Method
+141:We first review GRPO and OPSD in Section 2.1 and then present SHARPO in Section 2.2. Section 2.3
+142:provides a theoretical analysis of our segment-level credit assignment.
+143:2.1
+144:Preliminaries: GRPO and OPSD
+145:We consider an LLM agent initialized from a pretrained model, with trainable parameters θ. Its
+146:autoregressive policy πθ defines a probability distribution over the next token given the available
+147:context. Starting from a task prompt x, the agent generates responses and receives observations
+148:from the environment after executing actions. Together, these responses and observations form an
+149:interaction trajectory τ. Let yℓdenote the ℓ-th token generated by the agent across τ, and let T be the
+150:total number of such tokens. Each token is sampled as yℓ∼πθ(· | cℓ), where cℓcontains the prompt
+151:x, previously generated tokens, and environment observations available before yℓ. At the end of the
+152:episode, a verifier assigns r(τ) = 1 if the task succeeds and 0 otherwise. We use RL post-training
+153:methods to update the policy parameters θ so as to maximize the expected terminal reward.
+154:Group Relative Policy Optimization (GRPO).
+155:GRPO [Shao et al., 2024] samples G trajectories
+156:{τi}G
+157:i=1 for the same task using the behavior policy πθold, where θold denotes the parameters saved
+158:before sampling and held fixed during subsequent updates. For rewards ri = r(τi), it computes the
+159:trajectory advantage
+160:Ai = ri −mean(r1, . . . , rG)
+161:std(r1, . . . , rG) + ϵ
+162:.
+163:(1)
+164:Here ϵ > 0 is a numerical stabilizer, and the advantage Ai measures whether a trajectory performs
+165:better or worse than its group average and is shared by all Ti generated tokens in that trajectory.
+166:We write ωi,ℓ(θ) = πθ(yi,ℓ| ci,ℓ)/πθold(yi,ℓ| ci,ℓ) for the probability ratio between the current and
+167:behavior policies. Hence we have
+168:ℓi,ℓ(θ; A) = min
+169:�
+170:ωi,ℓ(θ)A, clip
+171:�
+172:ωi,ℓ(θ), 1 −ε, 1 + ε
+173:�
+174:A
+175:�
+176:,
+177:(2)
+178:where the clip function truncates the ratio to [1 −ε, 1 + ε]. Finally, GRPO maximizes
+179:JGRPO(θ) = E
+--EXP SETUP--
+383:Experiments
+384:We conduct experiments on ALFWorld and WebShop to demonstrate the effectiveness of SHARPO
+385:through comparisons with existing RL baselines.
+386:3.1
+387:Setup
+388:We fine-tune Qwen2.5-7B-Instruct [Yang et al., 2024] on two interactive benchmarks, ALFWorld
+389:[Shridhar et al., 2021] and WebShop [Yao et al., 2022]. ALFWorld covers six families of household
+390:tasks. WebShop requires agents to search for and purchase products that satisfy user requests. Both
+391:environments use binary terminal success rewards for training.
+392:All methods share the same backbone, prompts, environments, reward function, optimizer, rollout
+393:settings, and evaluation protocol. We train each configuration for 200 optimization steps with 16
+394:tasks per batch, a learning rate of 5 × 10−7, and a KL coefficient of βKL = 0.01. For SHARPO, we
+395:set α = 0.2, ρmin = 0.25, and ρmax = 4. We evaluate two mixing weights, λ ∈{0.2, 0.05}, each
+396:held fixed throughout training.
+397:Our primary metric is the final validation success rate at step 200, evaluated on 128 held-out tasks. We
+398:report the mean and sample standard deviation over three independent runs. To examine performance
+399:in more detail, we also report subtask success rates by ALFWorld task family and the continuous task
+400:score in WebShop, which measures how well the purchased product matches the request.
+401:We compare our SHARPO with GRPO [Shao et al., 2024], which assigns a single outcome-derived
+402:advantage to all generated tokens within each trajectory. We also consider baselines that combine RL
+403:6
+404:
+405:============================================================
+406:=== PAGE 7 ===
+407:============================================================
+408:
+409:ALFWorld
+410:WebShop
+411:Method
+412:Success rate (%)
+413:Gain
+414:Success rate (%)
+415:Gain
+416:GRPO
+417:70.57 ± 7.83
+418:–
+419:66.15 ± 1.19
+420:–
+421:SDAR
+422:67.19 ± 9.50
+423:−3.39
+424:61.72 ± 6.10
+425:−4.43
+426:RLSD
+427:73.96 ± 5.76
+428:+3.39
+429:69.01 ± 6.31
+430:+2.86
+431:GRPO+OPSD
+432:72.92 ± 4.51
+--RESULTS--
+466:Main results
+467:Table 1 reports the overall comparison. SHARPO achieves the highest mean final validation success
+468:rate on both benchmarks at both tested mixing weights. Relative to GRPO, the gains are 13.80–14.32
+469:percentage points on ALFWorld and 8.85–9.11 points on WebShop. Compared with StepOPSD
+470:at the corresponding reported λ values, SHARPO gains 6.77 points on ALFWorld at both settings
+471:and 5.99–7.55 points on WebShop. These results support the effectiveness of using segment-level
+472:self-distillation feedback to refine GRPO credit assignment.
+473:The improvements persist across both tested mixing weights. Although λ = 0.2 and λ = 0.05 differ
+474:by a factor of four, their mean success rates differ by only 0.52 percentage points on ALFWorld
+475:and 0.26 points on WebShop. Across the three independent runs, SHARPO has lower variability
+476:than GRPO on ALFWorld, with standard deviations of 2.82 and 1.19 points compared with 7.83.
+477:On WebShop, its standard deviations of 1.19 and 1.35 points are comparable to GRPO’s 1.19. The
+478:higher mean success rates therefore accompany lower run-to-run variability on ALFWorld and similar
+479:variability on WebShop.
+480:3.3
+481:Fine-grained analysis
+482:Subtask performance.
+483:Table 2 shows that SHARPO performs strongly across the six ALFWorld
+484:task families. At both tested mixing weights λ = 0.2 and λ = 0.05, it outperforms all evaluated
+485:baselines on Pick, Clean, Cool, and Pick2, and remains within 0.30 percentage points of the best
+486:baseline on Look. These broad gains persist across the two mixing weights, which differ by a factor
+487:of four.
+488:The improvements extend to complicated tasks such as Heat, Cool, and Pick2, which requires
+489:object-state changes or the handling of multiple objects. On Pick2, SHARPO exceeds the strongest
+490:baseline by 7.02 and 10.10 percentage points at λ = 0.2 and 0.05, respectively. On Cool, λ = 0.2
+491:improves over the strongest baseline by 6.89 percentage points. On Heat, λ = 0.05 exceeds SDAR,
+492:the strongest baseline for this task, by 6.67 percentage points. These tasks require several coordinated
+493:decisions, and a final failure can follow both useful intermediate actions and local mistakes. The gains
+494:are consistent with the motivation for segment-level credit assignment, which uses successful-peer
+495:feedback to differentiate the training weights of intermediate decisions.
+--CONCLUSION--
+655:Conclusion
+656:In long-horizon tasks, RL agents often receive rewards only when an episode ends. These sparse
+657:rewards provide little direct feedback on which intermediate decisions helped or harmed task com-
+658:pletion. SHARPO addresses this credit-assignment problem through successful-peer hindsight. It
+659:aggregates teacher–student log-probability gaps within complete interaction segments before assign-
+660:ing each segment a shared, bounded advantage weight, providing differentiated feedback without a
+661:learned critic.
+662:Our analysis explains how the hindsight correction aligns with local decision value under an ideal
+663:success-conditioned reference. On ALFWorld and WebShop, SHARPO achieves higher mean final
+664:success than the baselines at both tested mixing weights. These results support supplementing sparse
+665:outcome supervision with segment-level hindsight feedback for long-horizon agent learning.
+666:References
+667:Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong
+668:Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow
+669:instructions with human feedback. Advances in neural information processing systems, 35:27730–
+670:27744, 2022.
+
+##### library/04_credit_assignment/2610.29292_ContrastiveAttributionTopology/2610.29292_ContrastiveAttributionTopology_fulltext.txt  (1306 lines)
+--ABSTRACT--
+14:Abstract
+15:An LLM multi-agent system (MAS) is only as good as the agents it chooses to trust:
+16:its accuracy and cost hinge on its topology, meaning which agents are included
+17:and how they communicate. A single task score, however, does not reveal which
+18:agents help or hinder performance. We propose Contrastive Attribution Topology
+19:Search (CATS), which searches for compact teams within a fixed supergraph of
+20:specialized agents. An LLM attributer compares execution traces across candidate
+21:topologies and assigns credit to individual agents. CATS uses these credits to update
+22:supergraph edges while progressively pruning weak edges and agents, yielding a
+23:small team for deployment. With small open-weight models and matched candidate
+24:evaluations, CATS improves mean accuracy on BigCodeBench by 5.3 percentage
+25:points over score-only heuristic search while using 54% fewer deployment tokens.
+26:On MBPP, CATS matches the strongest baselines with fewer tokens than the
+27:other searches. In a HotpotQA prompt-poisoning stress test, CATS excludes all
+28:adversarially prompted agents in all three runs, whereas random search retains some
+29:at comparable accuracy. Per-agent credit thus supports both team optimization and
+30:the pruning of potentially harmful agents.
+31:1
+32:Introduction
+33:LLM-based multi-agent systems split work across specialized agents, for example one that writes
+34:code and another that tests it. Such collaboration can improve small models [9, 10], but more agents
+35:and messages mean more tokens. Building a good system therefore requires choosing which agents
+36:to include and how they communicate, that is, the topology. Since the best topology depends on the
+37:task, manual design is difficult [5, 6], which motivates automated search over candidate teams.
+38:Task scores, however, evaluate the team as a whole: a correct solution may contain unnecessary work,
+39:and a failed one may include useful contributions. Scores alone thus say little about which agents to
+40:keep. Can feedback on individual agents guide the search for compact, effective teams?
+41:We introduce Contrastive Attribution Topology Search (CATS), an offline meta-agent that assembles
+42:teams from a fixed agent pool. Starting from a supergraph of candidate links, CATS evaluates
+43:sampled teams on target-domain tasks. An LLM compares their transcripts and assigns each agent
+44:signed credit. CATS then updates link probabilities, prunes weak links and unreachable agents, and
+45:selects one fixed team for deployment. Agent models, prompts, roles, and tools never change.
+46:Our contributions are: (i) contrastive per-agent credit to guide team construction (Figure 1), (ii) higher
+47:mean accuracy and lower deployment token use than score-only search on two coding benchmarks
+--INTRO END--
+445:=== PAGE 4 ===
+446:============================================================
+447:
+448:4
+449:Poisoned-Pool Stress Test
+450:start
+451:start
+452:Figure 3: Selected topologies on HotpotQA
+453:(seed 13). Poisoned agents are in orange.
+454:A meta-agent that assembles teams must also decline
+455:to delegate to agents it should not trust. To probe
+456:this failure mode, we construct a poisoned variant
+457:of HotpotQA [12], a third domain distinct from the
+458:coding tasks above. Its supergraph contains six ad-
+459:versarially prompted agents and four honest agents.
+460:The attacks include plan misdirection, fabricated
+461:evidence, citation spoofing, instruction hijacking,
+462:late answer overwrites, and exact-match sabotage
+463:(Table 3). The search receives no adversarial super-
+464:vision: it observes only task scores and transcripts,
+465:and is never told which agents are poisoned. Table 2
+466:shows why task score alone is insufficient to assess
+467:delegation: comparable scores can mask different levels of poisoned-agent recruitment. CATS retains
+468:no poisoned agents across all three seeds. Random search retains two on average. Score-only search’s
+469:teams are cheap but inaccurate: 1, 2, and 5 agents, one with four poisoned. CATS instead removes
+470:their incoming edges, making them unreachable (Figure 3). Exclusion is therefore a byproduct of the
+471:optimization signal, not a separate security filter.
+472:5
+--METHOD--
+284:Method
+285:CATS repeatedly samples teams from a supergraph, credits each agent, and prunes weak edges.
+286:Supergraph. We search for an optimized multi-agent topology as a subgraph of a hand-crafted
+287:complete directed acyclic graph specialized to a chosen problem domain (Figure 1). Its nodes are
+288:agents and its edges denote direct communication (and thereby the scheduling order). Agents are
+289:specialized via system prompts, optional reasoning, and tool sets. We hand-craft them using domain
+290:knowledge (automating this is left to future work). Each edge e carries a logit θe with sampling
+291:probability αe = σ(θe), initialized to a common α0. Following DARTS [7], we relax the discrete
+292:edge choices to these continuous parameters but replace gradient descent with heuristic credit-based
+293:updates derived from contrastive attribution.
+294:Sampling. At each step, we sample K topologies by independently drawing e ∼Bernoulli(αe),
+295:rejecting graphs with nodes unreachable from the source. Since agents share an environment, not
+296:every agent needs a downstream consumer: edges are optional communication channels. We evaluate
+297:each candidate on N tasks, obtaining scores sk,q. Candidates, tasks, and often agents run in parallel.
+298:Attribution. An LLM attributer assigns each participating agent i in candidate k on task q a credit
+299:ck,q,i ∈[−1, 1] (harmful to helpful) by comparing candidate rollouts on the same task. The attributer
+300:sees task scores, length-capped agent outputs, tool calls, and the final artifact state (e.g., the coding
+301:environment), and runs in parallel across tasks.
+302:Update. Credits are normalized into per-agent advantages Ak,i = |Qk,i|−1 �
+303:q∈Qk,i(ck,q,i −bq),
+304:where Qk,i holds the tasks with a credit for i in k and bq is the mean credit over participating agents and
+305:candidates for task q. Each edge (u, v) fired in candidate k is updated by θuv ←θuv +ηAk,v. Unfired
+306:non-source edges into an active agent v receive a smaller secondary update θuv ←θuv + ηρAk,v.
+307:After each step we prune weak edges whose probability has fallen below the fraction δ of its initial
+308:value (the pruning fraction), E ←{e ∈E : αe ≥δα0}, and remove nodes that are no longer
+309:reachable from the source. This shrinks |E| and thus |V |, reducing the per-step cost.
+310:Selection. After T steps we return the best final candidate G⋆= arg maxk 1
+311:N
+312:�
+313:q sk,q over the
+314:step-T candidates, which are sampled under the accumulated priors. Ties are broken in favor of fewer
+315:agents and then the earlier candidate. As an ablation, we also evaluate the pruned supergraph Gp,
+316:consisting of all nodes and edges that remain after pruning.
+317:2
+318:
+319:============================================================
+320:=== PAGE 3 ===
+321:============================================================
+322:
+323:Table 1: Searched topologies versus hand-crafted
+--EXP SETUP--
+944:Evaluation Protocol
+945:Field caps use o200k_base tokens, retain the prefix, discard the tail, and append the marker
+946:... [truncated] outside the cap. Agent input fields (query and upstream outputs) use the 900/700-
+947:token caps in Table 5; the attributer’s query and string-valued says fields use 120 tokens for coding
+948:and 150 for HotpotQA, with does tool-effect logs and final summaries exempt from field capping.
+949:The assembled attributer prompt is also prefix-capped at its model limit minus the attribution field
+950:cap.
+951:Seeds 13–15 jointly control splits, global randomness, topology sampling, and generation. The
+952:generation endpoint, hosted by the University of Freiburg, used the aliases gemma-4-12b-llmlb
+953:(agents/baselines) and gemma-4-31b-llmlb (attributer). Weight hashes and quantization were not
+954:exposed. Coding runs use fresh temporary directories and process groups with a 30-second timeout.
+955:Crashes, timeouts, empty environments, and unusable results score zero. Deployment tokens count
+956:all agent-call input and output tokens per held-out task. All reported ± values and shaded bands are
+957:Bessel-corrected sample standard deviations over three runs.
+958:Table 7: Dataset splits and grading. Each held-out set contains 100 tasks.
+959:Benchmark
+960:Snapshot and search split
+961:Grading
+962:BigCodeBench
+963:v0.1.4 Instruct, 100 disjoint tasks
+964:Last stored program against hidden tests
+965:MBPP
+966:Revision 4bb6404f, 100 disjoint tasks
+967:Last stored program against hidden tests
+968:HotpotQA
+969:distractor, 100 disjoint tasks
+970:Exact match on last submit_answer phrase
+971:A.5
+972:Per-Seed Results and Additional Analyses
+973:Table 8: Per-seed evaluations supporting the headline comparisons. Each seed groups results for
+974:the selected topologies on its 100-task held-out set. Scores are percentages. Tokens are thousands of
+975:input plus output tokens per task. V/E counts selected agents/edges, including start edges. P counts
+976:poisoned agents (HotpotQA only).
+977:Seed 13
+978:Seed 14
+979:Seed 15
+980:Method
+981:Score
+982:Tokens
+983:V/E
+984:P
+985:Score
+986:Tokens
+987:V/E
+988:P
+989:Score
+990:Tokens
+991:V/E
+992:P
+993:BigCodeBench
+--LIMITATIONS--
+483:Limitations, Responsible Use, and Conclusion
+484:Evaluating a single model family across three domains and three seeds limits what we can conclude
+485:about broader transfer and variance, while high baseline scores on MBPP leave little headroom for
+486:accuracy gains. Moreover, although pruning yields sparse coding teams, this may reflect coordination
+487:via the shared environment rather than a general lack of need for direct communication. Finally, we
+488:only track token cost without optimizing it, making Pareto search over score and cost, as done for
+489:prompts by Büssing et al. [2], a natural next step.
+490:Attribution credits have not been validated against human judgments. Credit–success correlation
+491:(Table 9) is only a consistency check, since the attributer sees system_score. The score-only
+492:baseline was not separately tuned and does not isolate which component of CATS accounts for the
+493:difference. Credit is node-level, propagated equally to all incoming fired edges. A comparison with
+494:Graph-GRPO’s statistical edge-level credit remains future work [3].
+495:CATS turns a hand-crafted supergraph into a small fixed team. It improved the balance between
+496:performance and efficiency on BigCodeBench, reduced unnecessary complexity on the easier MBPP,
+497:and excluded poisoned agents that task scores alone could not detect. In all three domains it matched
+498:or beat score-only heuristic search on score, deployment-token use, or both. This supports attribution
+499:for team optimization and the pruning of potentially harmful agents, not a security guarantee.
+500:Responsible-use statement.
+501:Selecting a topology determines which agents gain access to tools and
+502:task context. Our stress test shows that attribution can exclude fixed adversarial prompts, but this
+503:does not establish deployment safety. An adaptive adversary could act beyond the capped transcript
+504:window or exploit the unverified LLM attributer directly. Tool and data permissions must therefore
+505:remain outside the optimizer.
+506:4
+
+##### library/05_review_queue/2409.16299_HyperAgent-SE/2409.16299_HyperAgent-SE_fulltext.txt  (3379 lines)
+--ABSTRACT--
+15:ABSTRACT
+16:Large Language Models (LLMs) have transformed software engineering (SE), ex-
+17:hibiting exceptional abilities in various coding tasks. Although recent advance-
+18:ments have led to the development of autonomous software agents using LLMs
+19:for end-to-end development tasks, these systems are often tailored to specific SE
+20:tasks. We present HYPERAGENT , a novel generalist multi-agent system that ad-
+21:dresses a broad spectrum of SE tasks across multiple programming languages by
+22:emulating the workflows of human developers. HYPERAGENT consists of four
+23:specialized agents—Planner, Navigator, Code Editor, and Executor—capable of
+24:managing the full lifecycle of SE tasks, from initial planning to final verifica-
+25:tion. HYPERAGENT achieves state-of-the-art results on diverse SE tasks, includ-
+26:ing GitHub issue resolution on the well-known SWE-Bench benchmark, surpass-
+27:ing strong baselines. Additionally, HYPERAGENT excels in repository-level code
+28:generation (RepoExec) and fault localization and program repair (Defects4J), fre-
+29:quently outperforming SOTA baselines.
+30:GitHub: https://github.com/FSoft-AI4Code/HyperAgent
+31:1
+32:INTRODUCTION
+33:In recent years, Large Language Models (LLMs) have demonstrated remarkable capabilities in as-
+34:sisting with various coding tasks, ranging from code generation and completion to bug fixing and
+35:refactoring. These models have transformed the way developers interact with code, providing pow-
+36:erful tools that can understand and generate human-like code snippets with impressive accuracy.
+37:However, as software engineering tasks grow in complexity, there is an emerging need for more
+38:sophisticated solutions that can handle the intricacies of real-world software development.
+39:Software agents built on LLMs have emerged as a promising solution to automate complex software
+40:engineering tasks, leveraging the advanced reasoning and generative abilities of LLMs. These agents
+41:can handle tasks such as code generation, bug localization, and orchestrating multi-step development
+42:processes. However, most current agents are limited in scope, typically focused on a specific SE
+43:task, such as resolving GitHub issues (Jimenez et al., 2023; Chen et al., 2024; Arora et al., 2024;
+44:Xia et al., 2024; Zhang et al., 2024a; Yang et al., 2024) using benchmarks like SWE-bench (Jimenez
+45:et al., 2023), or tackling competitive code generation tasks like APPS (Hendrycks et al., 2021),
+46:HumanEval (Chen et al., 2021a), and MBPP (Austin et al., 2021). Other agents (Qian et al., 2024;
+47:Hong et al., 2023; Nguyen et al., 2024) focus on generating complex software based on requirements.
+48:While these specialized agents excel in their domains, their claim of addressing general software
+--INTRO END--
+155:
+156:============================================================
+157:=== PAGE 3 ===
+158:============================================================
+159:
+160:main advantages over existing methods: (1) Generalizability, the framework adapts easily to vari-
+161:ous tasks with minimal configuration, requiring little additional effort to incorporate new modules,
+162:(2) Efficiency, agents are optimized for processes with varying complexity, employing lightweight
+163:LLMs for tasks like navigation and more advanced models for code editing and execution and (3)
+164:Scalability, the system scales effectively in real-world scenarios with numerous subtasks, handling
+165:complex tasks efficiently.
+166:Experimental results (See Section 5) highlight HYPERAGENT ’s unique position as the first sys-
+167:tem capable of working off-the-shelf across diverse software engineering tasks and programming
+168:languages, often exceeding specialized systems’ performance. Its versatility positions HYPERA-
+169:GENT as a transformative tool for real-world software development. In summary, the key contribu-
+170:tions of this work include:
+171:• Introduction of HYPERAGENT , a generalist multi-agent system that closely mimics typical soft-
+172:ware engineering workflows and is able to handle a broad spectrum of software engineering tasks
+173:across different programming languages.
+174:• Extensive evaluation demonstrating superior performance across various software engineering
+175:benchmarks, including Github issue resolution (SWE-Bench-Python), repository-level code gen-
+176:eration (RepoExec-Python), and fault localization and program repair (Defects4J-Java). To our
+177:knowledge, HYPERAGENT is the first system designed to work off-the-shelf across diverse SE
+178:tasks in multiple programming languages without task-specific adaptations.
+179:• Insights into the design and implementation of scalable, efficient, and generalizable software en-
+180:gineering agent systems, paving the way for more versatile AI-assisted development tools that can
+181:seamlessly integrate into various stages of the software lifecycle.
+182:2
+--METHOD--
+453:Method
+454:Verified (%)
+455:Lite (%)
+456:Avg Time
+457:Avg Cost ($)
+458:AutoCodeRover + GPT-4o
+459:28.80
+460:22.7
+461:720
+462:0.68
+463:SWE-Agent + Claude 3.5 Sonnet
+464:33.60
+465:23.00
+466:–
+467:1.79
+468:SWE-Agent + GPT-4o
+469:23.20
+470:18.33
+471:–
+472:2.55
+473:Agentless + GPT-4o
+474:33.20
+475:24.30
+476:–
+477:0.34
+478:HYPERAGENT-Lite-1
+479:30.20
+480:25.33
+481:106
+482:0.45
+483:HYPERAGENT-Lite-2
+484:16.00
+485:11.00
+486:108
+487:0.76
+488:HYPERAGENT-Full-1
+489:33.00
+490:26.00
+491:320
+492:1.82
+--EXP SETUP--
+523:SETUP
+524:We evaluate our approach using RepoExec (Hai et al., 2024), a benchmark for repository-level
+525:Python code generation that emphasizes executability and correctness. RepoExec contains 355 sam-
+526:ples with 96.25% test coverage and provides gold contexts of varying richness levels, including full,
+527:medium, and small contexts, based on static analysis. However, for our evaluation, we exclude these
+528:contexts to test HYPERAGENT ’s ability to independently navigate codebases and extract relevant
+529:information. We compare HYPERAGENT against several state-of-the-art retrieval-augmented gen-
+530:eration (RAG) baselines, including WizardLM2 and GPT-3.5-Turbo combined with both standard
+531:RAG and Sparse RAG (using BM25 retriever). The context was parsed with a chunking size of 600
+532:using Langchain’s Python code parser 4. Additionally, we report results from CodeLlama (34b and
+533:13b) and StarCoder when provided with full context, serving as performance upper bounds. We
+534:use pass@1 and pass@5 as our primary evaluation metrics, measuring the percentage of instances
+535:where all tests pass after applying the model-generated code patches.
+536:5.2.2
+537:RESULTS
+538:As shown in Table 2, the RepoExec benchmark results reveal insightful comparisons between dif-
+539:ferent code generation approaches. CodeLlama-34b-Python, given full context, achieves the highest
+540:Pass@1 rate at 42.93%. Notably, our HYPERAGENT-Lite-3, which automatically retrieves rele-
+541:vant contexts, outperforms all models in Pass@5 at 53.33%, demonstrating its effective codebase
+542:navigation. In contrast, RAG-based models show limited effectiveness in capturing complex code
+543:relationships, underperforming both HYPERAGENTand full-context models. These findings high-
+544:4https://github.com/langchain-ai/langchain
+545:7
+546:
+547:============================================================
+548:=== PAGE 8 ===
+549:============================================================
+550:
+551:Model
+552:Context Used
+553:Pass@1
+554:Pass@5
+555:Cost ($)
+556:CodeLlama-34b-Python
+557:Full
+558:42.93%
+559:49.54%
+560:–
+561:CodeLlama-13b-Python
+562:Full
+563:38.65%
+564:43.24%
+565:–
+566:StarCoder
+567:Full
+568:28.08%
+569:33.95%
+570:–
+571:WizardLM2 + RAG
+572:Auto-retrieved
+--RESULTS--
+537:RESULTS
+538:As shown in Table 2, the RepoExec benchmark results reveal insightful comparisons between dif-
+539:ferent code generation approaches. CodeLlama-34b-Python, given full context, achieves the highest
+540:Pass@1 rate at 42.93%. Notably, our HYPERAGENT-Lite-3, which automatically retrieves rele-
+541:vant contexts, outperforms all models in Pass@5 at 53.33%, demonstrating its effective codebase
+542:navigation. In contrast, RAG-based models show limited effectiveness in capturing complex code
+543:relationships, underperforming both HYPERAGENTand full-context models. These findings high-
+544:4https://github.com/langchain-ai/langchain
+545:7
+546:
+547:============================================================
+548:=== PAGE 8 ===
+549:============================================================
+550:
+551:Model
+552:Context Used
+553:Pass@1
+554:Pass@5
+555:Cost ($)
+556:CodeLlama-34b-Python
+557:Full
+558:42.93%
+559:49.54%
+560:–
+561:CodeLlama-13b-Python
+562:Full
+563:38.65%
+564:43.24%
+565:–
+566:StarCoder
+--CONCLUSION--
+891:CONCLUSION
+892:In this paper, we introduced HYPERAGENT , a generalist multi-agent system designed to address a
+893:wide range of software engineering tasks. By closely mimicking typical software engineering work-
+894:flows, HYPERAGENT incorporates stages for analysis, planning, feature localization, code editing,
+895:and execution/verification. Our extensive evaluations across diverse benchmarks, including GitHub
+896:issue resolution, code generation at repository-level scale, and fault localization and program repair,
+897:demonstrate that HYPERAGENT not only matches but often exceeds the performance of specialized
+898:systems. The success of HYPERAGENT highlights the potential of generalist approaches in soft-
+899:ware engineering, offering a versatile tool that can adapt to various tasks with minimal configuration
+900:changes. Its design emphasizes generalizability, efficiency, and scalability, making it well-suited for
+901:real-world software development scenarios where tasks can vary significantly in complexity and
+902:scope.
+903:Future work could explore the integration of HYPERAGENT with existing development environ-
+904:ments and version control systems to further streamline the software engineering process. Addi-
+905:tionally, investigating the potential of HYPERAGENT in more specialized domains, such as security-
+906:focused code review or performance optimization, could expand its applicability. Enhancing the
+
+##### library/05_review_queue/2510.10611_HyperAgent-Hypergraph/2510.10611_HyperAgent-Hypergraph_fulltext.txt  (1428 lines)
+--ABSTRACT--
+41:ABSTRACT
+42:Recent advances in large language model-powered multi-agent sys-
+43:tems have demonstrated remarkable collective intelligence through
+44:effective communication. However, existing approaches face two
+45:primary challenges: (i) Ineffective group collaboration modeling, as
+46:they rely on pairwise edge representations in graph structures, lim-
+47:iting their ability to capture relationships among multiple agents;
+48:and (ii) Limited task-adaptiveness in communication topology de-
+49:sign, leading to excessive communication cost for simple tasks
+50:and insufficient coordination for complex scenarios. These issues
+51:restrict the scalability and practical deployment of adaptive col-
+52:laboration frameworks. To address these challenges, we propose
+53:HyperAgent, a hypergraph-based framework that optimizes com-
+54:munication topologies and effectively captures group collaboration
+55:patterns using direct hyperedge representations. Unlike edge-based
+56:approaches, HyperAgent uses hyperedges to link multiple agents
+57:within the same subtask and employs hypergraph convolutional
+58:layers to achieve one-step information aggregation in collabora-
+59:tion groups. Additionally, it incorporates a variational autoencoder
+60:framework with sparsity regularization to dynamically adjust hy-
+61:pergraph topologies based on task complexity. Experiments high-
+62:light the superiority of HyperAgent in both performance and effi-
+63:ciency. For instance, on GSM8K, HyperAgent achieves 95.07% accu-
+64:racy while reducing token consumption by 25.33%, demonstrating
+65:the potential of hypergraph-based optimization for multi-agent
+66:communication.
+67:∗Corresponding author.
+68:This work is licensed under a Creative Commons Attribution Inter-
+69:national 4.0 License.
+70:Proc. of the 25th International Conference on Autonomous Agents and Multiagent Systems
+71:(AAMAS 2026), C. Amato, L. Dennis, V. Mascardi, J. Thangarajah (eds.), May 25 – 29,
+72:2026, Paphos, Cyprus. © 2026 International Foundation for Autonomous Agents and
+73:Multiagent Systems (www.ifaamas.org). https://doi.org/10.65109/
+74:KEYWORDS
+--INTRO END--
+196:• We observe that pairwise graph representations fail to cap-
+197:ture multi-agent collaboration effectively. Existing methods
+198:force a tradeoff between sparse topologies, which fragment
+199:coordination, and dense topologies, which increase commu-
+200:nication overhead.
+201:• We propose HyperAgent, a hypergraph-based framework
+202:that uses hyperedges to represent group collaboration units.
+203:This representation enables direct synchronization within
+204:teams through unified node-edge-node transformations.
+205:• We develop a variational hypergraph autoencoder for task-
+206:adaptive topology generation. It encodes agent features and
+207:task semantics into latent representations and generates
+208:sparse hypergraphs, adjusting complexity according to task
+209:difficulty.
+210:• Extensive experiments demonstrate HyperAgent outperforms
+211:state-of-the-art methods, achieving 88.50% accuracy on MMLU
+212:and 92.90% pass@1 on HumanEval, with up to 25.33% re-
+213:duction in communication token consumption.
+214:
+215:============================================================
+216:=== PAGE 3 ===
+217:============================================================
+218:
+219:Figure 2: The HyperAgent pipeline. We encode agents and tasks into a hypergraph, then apply a variational autoencoder
+220:with sparsity regularization to generate task-adaptive communication topologies. Agents interact through hyperedge-based
+221:collaboration for multiple rounds. The VAE is trained via policy gradients to maximize task performance while minimizing
+222:communication overhead.
+223:2
+--METHOD--
+280:Problem Formulation
+281:We model the multi-agent system as a hypergraph H = (V, E, W).
+282:The node set V = {𝑣1, . . . , 𝑣𝑁} represents 𝑁agents in the system.
+283:Each node 𝑣𝑖∈V corresponds to an agent, formalized as:
+284:𝑣𝑖= {Base𝑖, Role𝑖, State𝑖, Plugin𝑖}
+285:(1)
+286:Each agent 𝑣𝑖is composed of four key elements: (1) Base𝑖, the
+287:language model instance powering 𝑣𝑖; (2) Role𝑖, the agent’s pre-
+288:assigned role or function; (3) State𝑖, representing the agent’s accu-
+289:mulated knowledge and interaction history; and (4) Plugin𝑖, a set of
+290:external tools available to 𝑣𝑖, such as web searchers, code compilers,
+291:or file readers. The hyperedge set E contains collaboration units.
+292:Each hyperedge 𝑒∈E connects multiple agents participating in
+293:the same subtask. The weight matrix W ∈R| E|×| E| assigns impor-
+294:tance scores to different collaboration units. We set W = I|E|×|E|
+295:by default, treating all collaboration units equally.
+296:
+297:============================================================
+298:=== PAGE 4 ===
+299:============================================================
+300:
+301:The hypergraph structure can be represented by an incidence
+302:matrix H ∈{0, 1}|V|×| E|. Each element is defined as:
+303:ℎ𝑣,𝑒=
+304:�
+305:1,
+306:if 𝑣∈𝑒
+307:0,
+308:if 𝑣∉𝑒
+309:(2)
+310:This binary encoding directly captures group-wise collaboration
+311:patterns. The degree of node 𝑣𝑖is 𝑑𝑖= �
+312:𝑒∈E W𝑒𝑒ℎ𝑖,𝑒. The degree
+313:of hyperedge 𝑒is 𝛿𝑒= �
+314:𝑣∈V ℎ𝑣,𝑒. These statistics form diagonal
+315:matrices D ∈R|V|×|V| and B ∈R| E|×| E| respectively.
+316:Each LLM-based agent 𝑣𝑖receives prompt P and generates re-
+317:sponse R𝑖:
+318:R𝑖= 𝑣𝑖(P) = 𝑣𝑖(Psys, Pusr)
+319:(3)
+--EXP SETUP--
+566:EXPERIMENTS
+567:5.1
+568:Datasets
+569:We evaluate HyperAgent on three categories of benchmarks span-
+570:ning diverse reasoning and generation tasks. The general reasoning
+571:category includes MMLU[20], a comprehensive benchmark contain-
+572:ing multiple-choice questions across 57 subjects. The mathematical
+573:reasoning category comprises GSM8K[15] for grade school math
+574:problems, MultiArith[45] for arithmetic word problems, SVAMP[40]
+575:for structurally diverse math questions, and AQuA[35] for algebraic
+576:reasoning. The code generation category uses HumanEval[10], con-
+577:taining 164 programming tasks requiring function implementations.
+578:These benchmarks exhibit varying task complexities and collabora-
+579:tion demands, enabling comprehensive evaluation of hypergraph-
+580:based topology optimization.
+581:5.2
+582:Baselines
+583:We compare HyperAgent against three categories of baselines.
+584:The Single-agent methods include CoT[60] for chain-of-thought
+585:prompting, ComplexCoT[18] for complexity-based prompting, Self-
+586:Consistency[58] for multiple sampling with voting, PHP[69] for
+587:
+588:============================================================
+589:=== PAGE 6 ===
+590:============================================================
+591:
+592:Table 1: Performance comparison with three types of baselines, including single-agent execution, static multi-agent topologies,
+593:and adaptive multi-agent frameworks. The best results are in bold, and the runner-ups are underlined. All multi-agent methods
+594:utilize five gpt-4-based agents. “Mul.”, “Ada.”, and “Rob.” indicate whether the method supports a multi-agent setting, whether
+595:it is task-adaptive, and whether it is adversarially robust, respectively. �, ✓✗and �signifies no/partial/full support in these
+596:aspects.
+597:Method
+598:Mul.
+599:Ada.
+600:Rob.
+601:MMLU
+602:GSM8K
+603:MultiArith
+604:SVAMP
+605:AQuA
+606:HumanEval
+607:Avg.
+608:Single-Agent Methods
+609:Vanilla
+610:�
+611:�
+612:�
+613:82.14
+614:85.40
+615:93.15
+--CONCLUSION--
+1141:CONCLUSION
+1142:In this work, we propose HyperAgent, a hypergraph-based multi-
+1143:agent communication framework that connects agents sharing
+1144:subtasks via hyperedges for efficient single-step information ag-
+1145:gregation. A variational autoencoder with sparsity regularization
+1146:generates task-adaptive topologies. Experiments on multiple bench-
+1147:marks show that HyperAgent outperforms state-of-the-art methods
+1148:while significantly reducing communication overhead.
+1149:
+1150:============================================================
+1151:=== PAGE 9 ===
+1152:============================================================
+1153:
+1154:7
+1155:ACKNOWLEDGMENTS
+1156:This work was supported by the Natural Science Foundation of
+
+##### library/05_review_queue/2510.24663_OrchDAG/2510.24663_OrchDAG_fulltext.txt  (790 lines)
+--ABSTRACT--
+17:Abstract
+18:Agentic tool use has gained traction with the rise of agentic tool calling, yet
+19:most existing work overlooks the complexity of multi-turn tool interactions. We
+20:introduce OrchDAG, a synthetic data generation pipeline that models tool execution
+21:as directed acyclic graphs (DAGs) with controllable complexity. Using this dataset,
+22:we benchmark model performance and propose a graph-based reward to enhance
+23:RLVR training. Experiments show that the dataset presents a challenging but
+24:solvable benchmark, and the proposed reward is effective when combined with
+25:GRPO-style algorithms, highlighting the importance of leveraging topological
+26:structure and data complexity in multi-turn tool use.
+27:1
+28:INTRODUCTION
+29:Large Language Models (LLMs) ([3, 5, 6, 26, 36]) have been at the forefront of advancing artificial
+30:intelligence, marking significant breakthroughs in diverse fields. The planning capabilities of LLMs,
+31:particularly their ability to use tools ([33, 34]), enable them not only to execute commands and
+32:perform web searches but also to enhance their advanced mathematical reasoning abilities. LLM
+33:Compiler [12] and its subsequent work ([7, 8]) propose constructing tooling usage as a directed acyclic
+34:graph (DAG) to enable the parallel execution of independent tools, thereby improving tool-calling
+35:efficiency. CodeAct [28] and CodePlan [29] propose leveraging the generation of pseudo-Python code
+36:to outline high-level reasoning processes for complex multi-step reasoning tasks, where each tool
+37:usage is represented as a function call within the code. ReWOO [30] proposes a modular framework
+38:that decouples the reasoning process from the external observations of each tool usage, thereby
+39:reducing token consumption and improving efficiency. [15] clusters the provided tools into groups
+40:of toolkits, plans at the toolkit level, and replans by selecting tools within the same toolkit if error
+41:comes out. [17] proposes a method called Predictive-Decoding, which leverages Model Predictive
+42:Control from the optimal control field to mitigate early errors in planning and promote non-myopic
+43:planning, thereby enhancing overall accuracy. ReasonFlux [31] proposes a framework in which the
+44:LLM reasons over template fields, executes tools based on the templates, and employs reinforcement
+45:learning to improve planning accuracy using an action completion reward.
+46:In the agentic setting, LLMs are evolving beyond purely textual reasoning toward dynamic agents
+47:capable of planning, tool use, and multi-step (also multi-turn) execution. The introduction of Group
+48:Relative Policy Optimization (GRPO) [22] further inspired the development of Reinforcement
+49:Learning with Verifiable Reward (RLVR) for agentic tool use, driven by its efficiency. The xLAM
+50:∗Work is done during internship in Amazon. Equal contribution.
+--INTRO END--
+106:the plan list after topological sorting, T is the set of available tools, and D is the collection of
+107:descriptions for all available tools. At each step t, the LLM generates an intermediate reasoning
+108:output rt ∼ρθ(rt | T , D, x, p, O1, . . . , Ot−1) and executes the plan step Pt to obtain the observation
+109:Ot. The final response is then generated as R ∼ρθ(R | T , D, x, p, O1, . . . , On).
+110:In later turns, a user may issue an irrelevant query requiring a completely new tool execution graph, or
+111:a dependent query that builds on partial outputs from earlier tool executions or responses. Additionally,
+112:some tools may return errors (e.g., timeouts), requiring unfinished execution paths from prior queries
+113:to be rescheduled.
+114:2
+115:
+116:============================================================
+117:=== PAGE 3 ===
+118:============================================================
+119:
+120:2.2
+121:Tool Execution as DAG
+122:Given a plan p generated by the LLM, we represent it as a directed graph G = (V, E), where
+123:V = (v1, . . . , vn) is the set of nodes and E = (e1, . . . , em) is the set of edges. The node v1
+124:corresponds to the user query, and vn represents the final node that aggregates observations and
+125:returns the response. The intermediate nodes v2, . . . , vn−1 correspond to tool calls, each associated
+126:with an attribute that stores its tool payload in JSON format. An edge ei ∈E denotes a dependency
+127:between two tools, where an output key from the source tool serves as an input key to the target tool.
+128:We represent the tool graph as an ordered list of tasks in a JSON-like text style. Each task contains
+129:four fields : task_id, toolname, payload, and dependencies. A task can be associated with
+130:multiple dependencies. A task can be expressed as {task_id: task_4, toolname: name, payload:
+131:{param1: val1, param2: $2.outputkey1, param3: $3.outputkey4}, dependencies: [task_2,
+132:task_3]}.
+133:3
+--METHOD--
+134:METHODOLOGY
+135:In real-world domains, API specifications and orchestrations are often considerably more complex,
+136:making it challenging for LLMs pretrained on general public data to generate accurate and reliable
+137:plans for diverse user queries. Drawing inspiration from LLMCompiler [12, 8], for queries involving
+138:complex tool interactions, it is advantageous to first construct a tool execution DAG. This DAG serves
+139:as a blueprint for executing tools sequentially or in parallel, with subsequent replanning guided by
+140:both the execution results of the current DAG and any new user queries in later turns.
+141:3.1
+142:OrchDAG – Synthetic Data Generation Pipeline for Multi-Turn Tool Use
+143:As discussed in Section 1, the design of the data generation pipeline follows several key principles to
+144:better reflect real-world tool-use scenarios: (1) the complexity of the tool execution DAG for each
+145:synthetic user query should be controllable through pipeline hyperparameters, (2) the system prompt
+146:provided to the LLM must include irrelevant tools (both schema and description) so that the model
+147:learns to identify and select only the relevant ones, (3) the output payload of each tool should contain
+148:multiple fields, typically four or five, and (4) at least one key output field from a tool should serve as
+149:an input to another tool, but with a different field name, to capture schema misalignment commonly
+150:observed in practice.
+151:Moreover, in multi-turn settings, the data should capture scenarios where certain nodes in the tool
+152:execution DAG fail. When the user issues a follow-up query, the corresponding DAG in the dataset
+153:should exclude nodes that have already been executed in the previous turn, while reusing their
+154:available results whenever applicable. In light of these requirements, we develop a graph-based data
+155:generation pipeline implemented with LangGraph 2, accompanied by a set of validation functions to
+156:ensure the quality of the generated data points.
+157:As shown in Figure 1, the data generation pipeline begins by collecting real high-quality tools
+158:from existing benchmarks, Specifically, we leverage APIGEN [16] and TOOLACE [14]. To ensure
+159:sufficient complexity, we retain only examples where the final answer involves more than two distinct
+160:functions represented in JSON format. Notably, we extract tools directly from the answers rather than
+161:from the system-prompt tool lists. This design choice eliminates the need for additional categorization
+162:or clustering steps, which could introduce unnecessary uncertainty, while naturally yielding a smaller
+163:and more coherent set of related tools. After filtering, APIGEN contributes 2,542 data points and
+164:TOOLACE contributes 1,005.
+165:For each data point, suppose it contains four real tools; these are placed as the first layer of the tool
+166:execution DAG. Based on the hyperparameters of the DAG (height and width), we then randomly
+167:sample a topological order to obtain a DAG template (see Figure 1). According to this template,
+168:we synthesize the tools for each node layer by layer under the following conditions: (1) each input
+169:key must depend on an output key from one of its parent nodes in the DAG, and (2) the field names
+170:should not remain identical across instances but instead vary randomly. After populating the DAG
+171:template, we obtain the tool execution DAG, which is then used to prompt the LLM to generate
+172:the corresponding user query, conditioned on the DAG and a few-shot set of examples. Finally, we
+173:2https://langchain-ai.github.io/langgraph/
+--EXP SETUP--
+304:EXPERIMENTS
+305:In this section, we describe the generated dataset, focusing on the distribution of topological difficulty
+306:in the DAG templates and the proportion of single-turn versus multi-turn settings. For simplicity, we
+307:restrict evaluation to the two-turn setting, leaving extensions to longer horizons for future work. To
+308:ensure independence between training and test data, we construct them from two disjoint sets of data
+309:points from APIGEN [16] and TOOLACE [14]., as described in 3.1.
+310:Table 1: Synthetic Data Distribution (Height and width are hyperparameters controlling DAG
+311:complexity, and success rate is the proportion of data that passes rule-based validation)
+312:Type
+313:data #
+314:Multi-turn proportion
+315:Average Height
+316:Average Width
+317:Sucessful Rate
+318:Training
+319:1800
+320:30%
+321:2.50 ± 0.12
+322:3.4 ± 0.24
+323:0.6
+324:Test
+325:250
+326:25%
+327:2.7 ± 0.08
+328:3.1 ± 0.14
+329:0.7
+330:4.1
+331:Task Difficulty
+332:We investigate two central questions: (1) Given the designed difficulty of our synthetic data, is the
+333:dataset solvable in principle? A dataset that cannot be solved even by advanced closed-source models
+334:such as Claude 4 or GPT-4o would lack practical utility. (2) If it is solvable, does the dataset offer a
+335:sufficient level of challenge to meaningfully evaluate model performance? To begin with, we evaluate
+336:several closed-source and open-source models by providing them with the system prompt defined in
+337:Section 3.1, and measure whether they can correctly predict the DAG by analyzing tool dependencies.
+338:In the multi-turn setting, models must generate the DAG by considering both the available tools and
+339:the observations from previous turns. We use Accuracy (pass@1) to evaluate performance, as our
+340:focus here is on assessing the task difficulty introduced by the dataset.
+341:Table 2: Pass@1 Accuracy for predicting the DAG for single/multi-turn settings (All experiments
+342:were run 10 times with the temperature of the base LLMs set to 0.1)
+343:Models
+344:Zero Shot
+345:One shot
+346:Three shots
+347:GPT-4o
+348:(0.18 ± 0.03)
+349:(0.22 ± 0.02)
+350:(0.24 ± 0.04)
+351:Claude 4
+352:(0.15 ± 0.01)
+353:(0.23 ± 0.03)
+--CONCLUSION--
+546:CONCLUSION
+547:In summary, we introduce OrchDAG, a synthetic multi-turn data generation pipeline that models
+548:tool execution as DAGs with controllable complexity. Leveraging this dataset, we evaluate model
+549:performance and propose a graph-based reward to enhance RLVR training. Extensive experiments
+550:validate the effectiveness of our approach, underscoring the importance of exploiting the topological
+551:structure of tool execution graphs and managing data complexity in multi-turn tool use.
+552:8
+553:
+554:============================================================
+555:=== PAGE 9 ===
+556:============================================================
+557:
+558:Nonetheless, our method remains limited in that it does not yet address multi-turn scenarios involving
+559:implicit dependencies, such as file operations in computer-use tasks. In future work, we aim to extend
+560:our framework to capture these implicit dependency cases.
+561:9
+
+##### library/05_review_queue/2603.19461_HyperAgentsSurvey/2603.19461_HyperAgentsSurvey_fulltext.txt  (4147 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:HyperAgents
+7:Jenny Zhang1,2†, Bingchen Zhao3†, Wannan Yang4†, Jakob Foerster6
+8:Jeff Clune1,2,5, Minqi Jiang‡, Sam Devlin7, Tatiana Shavrina6
+9:1University of British Columbia, 2Vector Institute, 3University of Edinburgh
+10:4New York University, 5Canada CIFAR AI Chair, 6FAIR at Meta, 7Meta Superintelligence Labs
+11:†Work done during internship at Meta, ‡Work done at Meta
+12:Self-improving AI systems aim to reduce reliance on human engineering by learning to improve
+13:their own learning and problem-solving processes. Existing approaches to recursive self-improvement
+14:typically rely on fixed, handcrafted meta-level mechanisms, which fundamentally limit how fast such
+15:systems can improve. The Darwin Gödel Machine (DGM) (Zhang et al., 2025b) demonstrates that
+16:open-ended self-improvement is achievable in coding. Starting from a single coding agent, the DGM
+17:repeatedly generates and evaluates self-modified variants, forming a growing archive of stepping stones
+18:for future improvement. Because both evaluation and self-modification are coding tasks, gains in
+19:coding ability can translate into gains in self-improvement ability. However, this alignment does
+20:not generally hold beyond coding domains. We introduce hyperagents, self-referential agents that
+21:integrate a task agent (which solves the target task) and a meta agent (which modifies itself and the
+22:task agent) into a single editable program. Crucially, the meta-level modification procedure is itself
+23:editable, enabling metacognitive self-modification, improving not only task-solving behavior, but also
+24:the mechanism that generates future improvements. We instantiate this framework by extending DGM
+25:to create DGM-Hyperagents (DGM-H). By allowing the improvement procedure to evolve, the DGM-H
+26:eliminates the assumption of domain-specific alignment between task performance and self-modification
+27:skill, and can potentially support self-accelerating progress on any computable task. Across diverse
+28:domains (coding, paper review, robotics reward design, and Olympiad-level math-solution grading),
+29:the DGM-H improves performance over time and outperforms baselines without self-improvement or
+30:open-ended exploration, as well as prior self-improving systems like DGM. We further show that the
+31:DGM-H improves the process by which it generates new agents (e.g., persistent memory, performance
+32:tracking), and that these meta-level improvements transfer across domains and accumulate across
+33:runs. All experiments were conducted with safety precautions (e.g., sandboxing, human oversight).
+34:We discuss what safety entails in this setting and the broader implications of self-improving systems.
+--INTRO END--
+92:achieves gains comparable to the most established prior self-improving algorithm (the Darwin Gödel Machine,
+93:Zhang et al., 2025b), despite not being handcrafted for coding. Beyond coding, the DGM-H substantially
+94:improves performance on paper review (Zhao et al., 2026) and robotics reward design (Genesis, 2024), with
+95:gains transferring to held-out test tasks and significantly outperforming prior self-improving algorithms,
+96:which struggle outside coding unless customized. Ablations without self-improvement or without open-ended
+97:exploration show little to no progress, highlighting the necessity of each component (Section 5.1). Crucially,
+98:the DGM-H learns transferable mechanisms on how to self-improve (e.g., persistent memory, performance
+99:tracking) that systematically improve its ability to generate better task or meta agents over time. As a
+100:result, meta-level improvements learned by the DGM-H transfer across domains. Specifically, hyperagents
+101:optimized in one setting (i.e., paper review and robotics tasks) remain significantly effective at generating
+102:improved task agents in a different domain (i.e., Olympiad-level math grading), and an ablation shows that
+103:the transferred meta agent, rather than the transferred task agent, accounts for nearly all of this benefit
+104:(Section 5.2). We further show that self-improvements learned by the DGM-H in one setting can compound
+105:with continued self-improvement in another setting (Section 5.3). We note that these results are obtained in
+106:finite benchmark settings with fixed task distributions, frozen closed FMs, fixed evaluation protocols, and (in
+107:the main experiments) fixed parent selection. They demonstrate useful task-level and meta-level improvements
+108:and their transfer across domains; they do not yet establish unbounded or self-accelerating improvement,
+109:which we view as the long-term motivation that DGM-H contributes to (Section 7). We discuss the safety
+110:implications of such open-ended self-improving systems and outline practical considerations for responsible
+111:deployment in Section 6. Overall, hyperagents open up the possibility of improving their ability to improve
+112:2
+113:
+114:============================================================
+115:=== PAGE 3 ===
+116:============================================================
+117:
+118:while improving their ability to perform any computable task.
+119:2
+--METHOD--
+184:Methods
+185:DARWIN GÖDEL MACHINE (DGM)
+186:archive
+187:child
+188:parent
+189:New coding 
+190:agent
+191:Coding agent
+192:select
+193:add
+194:Handcrafted 
+195:instruction-
+196:generation
+197:Self-modify
+198:Evaluate on
+199:coding tasks
+200:Self-improve 
+201:instruction
+202:+
+203:Agent’s repo
+204:Code diff:
+205:New coding agent
+206:Coding 
+207:agent
+208:Task instruction
+209:+
+210:Task repo
+211:Code diff:
+212:Solve task
+213:New
+214:Coding 
+215:agent
+216:Past performances
+217:+
+218:Agent’s repo
+219:Self-improve 
+220:instruction
+221:LLM call
+222:(fixed prompt)
+223:aligned
+--EXP SETUP--
+331:Experiment Setup
+332:The DGM-H is initialized with a single hyperagent built around a frozen FM (Brown et al., 2020) with
+333:external tool-use capabilities (Schick et al., 2023). The FM autonomously invokes tools as needed at each
+334:step. This initial hyperagent is equipped with two tools: a bash tool for executing shell commands, and a
+335:specialized tool for inspecting and modifying files. In the initial hyperagent, the task agent receives the task
+336:inputs and outputs the response from a single FM call. The meta agent receives the location of the agent’s
+337:repository, the location of previous evaluation results, and the number of remaining experiment iterations
+338:(the experiment budget is a hyperparameter), and is tasked with modifying any part of the given codebase
+339:(Appendix A.1). We deliberately keep the implementation of the initial hyperagent (i.e., both the task agent
+340:5
+341:
+342:============================================================
+343:=== PAGE 6 ===
+344:============================================================
+345:
+346:and the meta agent) simple, allowing for a broad search space and avoiding prematurely constraining the range
+347:of possible improvements. Appendix D.1 details the FMs and the hyperparameters used in each experiment,
+348:while Appendix D.2 reports the corresponding cost estimates.
+349:4.1
+350:Baselines
+351:We compare the Darwin Gödel Machine with Hyperagents (DGM-H) against a set of baselines designed
+352:to isolate the contributions of self-improving meta agents, open-ended exploration, and metacognitive self-
+353:modification (i.e., hyperagents) (Appendix B). DGM-H without self-improving meta agents (DGM-H w/o
+354:self-improve) fixes the meta agent modifying other hyperagents to the initial meta agent for the entire
+355:run. While the system can still generate and evaluate new hyperagents, the procedures used to propose
+356:and apply modifications are not themselves modifiable. This baseline replicates the approach of (ADAS,
+357:Hu et al., 2025) in this setting. It tests whether performance gains arise solely from task-level optimization
+358:under a fixed meta-level mechanism, or from improvements in the self-improvement process itself. DGM-H
+359:without open-ended exploration (DGM-H w/o open-ended exploration) removes the archive of previously
+360:generated hyperagents. Instead of retaining previous variants as stepping stones for future exploration, each
+361:newly generated hyperagent replaces its predecessor. After generating a new hyperagent, it is evaluated and
+362:automatically becomes the next selected parent. This baseline isolates the role of open-ended, population-based
+363:search. Comparing against this baseline tests whether sustained improvement requires accumulating and
+364:reusing diverse intermediate solutions.
+365:We also compare against the original implementation of the Darwin Gödel Machine (DGM) (Zhang et al.,
+366:2025b). The DGM relies on a handcrafted, fixed mechanism to generate self-improvement instructions.
+367:Because this instruction-generation mechanism is designed specifically for coding benchmarks and is not
+368:modifiable, the DGM’s self-improvement capacity in other domains is limited (Section 2). To provide a stronger
+369:comparison, we manually customize the DGM’s instruction-generation mechanism for the target domains
+370:(DGM-custom) (Appendix B). This baseline measures how much the DGM relies on human engineering to
+371:remain competitive across domains. Comparing the DGM-H against this baseline tests whether automated
+372:metacognitive self-modification can outperform human-designed self-improvement mechanisms. Additionally,
+373:we compare against static solutions that have been handcrafted for each domain in prior work.
+374:4.2
+375:Domains
+376:We evaluate our method and baselines across diverse domains (i.e., coding, paper review, robotics reward
+377:design, and Olympiad-level math grading) (Appendix C). To reduce computational cost, for each domain we
+378:first evaluate agents on a small subset of the training tasks to estimate overall effectiveness. Only agents that
+379:demonstrate sufficient performance are subsequently evaluated on the remaining training tasks. Agents that
+380:do not are treated as having zero performance on unevaluated tasks. Domain-specific evaluation protocols are
+--RESULTS--
+440:Results
+441:For each experiment, we run each method 5 times. We report medians with 95% bootstrap confidence
+442:intervals computed from 1,000 resamples, using the notation median (CI: lower – upper). In line plots, lines
+443:show median performance and shaded regions indicate the confidence intervals (Figures 2 to 4). Bar plots
+444:report median performance on held-out test sets, with error bars indicating confidence intervals (Figures 2
+445:to 4). Statistical significance is assessed using the Wilcoxon signed-rank test. Overall, the DGM-H exhibits
+446:general self-improvement at both the task and meta levels. Improvements to the task agent transfer to
+447:held-out test tasks within each domain, exceeding open-sourced static baselines (Section 5.1). Meta-level
+448:improvements transfer across domains, enabling hyperagents to significantly improve their ability to generate
+449:better task agents in previously unseen domains (Section 5.2). Self-improvements learned in one DGM-H run
+450:can potentially accelerate learning in subsequent runs and continue to compound as further self-modifications
+451:are applied (Section 5.3). All experiment logs are open-sourced in our codebase.
+452:7
+453:
+454:============================================================
+455:=== PAGE 8 ===
+456:============================================================
+457:
+458:5.1
+459:Improving Task Performance
+460:The DGM-H can achieve self-improvement in coding comparable to prior self-improving algorithms. On
+461:the Polyglot coding benchmark, we use the same experimental settings as in the DGM (e.g., identical FM
+462:parameters, same number of 80 iterations) to enable a direct comparison. Across 5 runs, the DGM-H improves
+463:its training performance on the 50-task Polyglot subset from 0.140 (the initial agent) to 0.340 (CI: 0.300 –
+464:0.380). When evaluated on the full Polyglot benchmark, which consists largely of tasks unseen during training,
+465:performance increases from 0.084 (the initial agent) to 0.267 (CI: 0.231 – 0.280). These improvements are
+466:comparable to those reported for the original DGM, which improves from 0.140 to 0.380 on the training subset
+467:and from 0.142 to 0.307 on the full benchmark (Zhang et al., 2025b). Overall, these results show that the
+468:DGM-H can effectively self-improve in the coding domain and achieve a similar level of improvement to the
+469:original DGM, despite not being handcrafted specifically for coding tasks.
+--LIMITATIONS--
+836:Limitations and Conclusion
+837:This work introduces hyperagents and incorporates them into the Darwin Gödel Machine (DGM) to form DGM-
+838:Hyperagents (DGM-H). DGM-H is a general self-improvement framework that open-endedly evolves an archive
+839:of self-improving hyperagents for any computable task, enabling the system to improve both task performance
+840:and its own self-improvement mechanism. Across diverse domains, the DGM-H produced substantial and
+841:generalizable gains in task performance while also improving its ability to generate improvements, with these
+842:meta-level gains transferring across domains and compounding across runs.
+843:Our results suggest that self-improvements can compound across different experimental settings, but this
+844:version of DGM-H has limitations that constrain truly unbounded progress. First, it operates with a fixed
+845:task distribution. One direction is to co-evolve the task distribution by generating new tasks and curricula
+846:that adapt to the agent’s capabilities (Clune, 2019; Zhang et al., 2024; Faldor et al., 2025; Bolton et al., 2025).
+847:Second, components of the open-ended exploration loop (e.g., parent selection, evaluation protocols) remain
+848:fixed. Although hyperagents can modify their self-improvement mechanisms, they cannot alter the outer
+849:process that determines which agents are selected or how they are evaluated. Keeping these components fixed
+850:improves experimental stability and safety, but limits full self-modifiability. Enabling hyperagents to modify
+851:these outer-loop components and adapt their own search strategy and evaluation process is another promising
+852:direction for future work. Our preliminary results suggest such extensions are feasible (Appendix E.5). We
+853:discuss further limitations in Appendix F.
+854:DGM-H demonstrates that open-ended self-improvement can be made practical across diverse domains.
+855:Provided sufficient safety considerations are worked out, the DGM-H suggests a path toward safe self-
+856:accelerating systems that not only search for better solutions, but continually improve their ability to
+857:self-improve.
+858:14
+859:
+

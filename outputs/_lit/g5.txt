@@ -1,0 +1,877 @@
+##### library/02_objective_factorization/2607.02599_AgentLTL/2607.02599_AgentLTL_fulltext.txt  (5593 lines)
+--ABSTRACT--
+13:Abstract
+14:Tool-using LLM agents are usually evaluated
+15:by final-answer correctness or LLM judges.
+16:Neither captures how an answer was produced.
+17:In safety-critical settings, the procedure itself is
+18:part of correctness. In this paper, we introduce
+19:AGENTLTL, a language derived from First-
+20:Order Linear Temporal Logic (FO-LTL) that
+21:expresses procedural rules over agent traces. It
+22:yields a deterministic, judge-free compliance
+23:score. In this framework, a single specifica-
+24:tion drives two usages. The first is harnessing:
+25:the constraints score completed traces, or gate
+26:tool calls by checking each prefix online, be-
+27:fore execution. The second is finetuning: the
+28:score serves as a dense reward. On a bench-
+29:mark spanning ordering, branching, iteration,
+30:and grounding, block-and-warn harnessing im-
+31:proves compliance on five of seven models.
+32:Finetuning with the same reward yields +38
+33:and +17.5 percentage point gains in accuracy
+34:and compliance on held-out patterns, including
+35:unseen tool-name aliases. These findings are
+36:consistent with the model acquiring procedural
+37:structure rather than memorizing surface tool
+38:names and procedures.
+39:1
+40:Introduction
+41:Tool-augmented LLM agents are increasingly used
+42:in enterprise and safety-critical settings, yet evalu-
+43:ation still focuses on final-answer accuracy, often
+44:with LLM judges. Two traces can produce the same
+45:answer while differing in retrieval, branching, or
+46:tool grounding. Answer correctness collapses these
+--INTRO END--
+56:First-Order Linear Temporal Logic (FO-LTL) for
+57:expressing procedural, semantic, and grounding
+58:constraints over execution traces. Comparing a
+59:trace against these constraints yields a determinis-
+60:tic, judge-free compliance score. The same con-
+61:straints support two uses. When the LTL fragment
+62:permits, they gate tool calls before execution, de-
+63:tecting and blocking violating calls. The score
+64:also serves as a reinforcement learning reward. A
+65:shared constraint language avoids drift between
+66:evaluation, deployment, and training.
+67:Contributions.
+68:(i) We introduce AGENTLTL
+69:and its compliance score. (ii) We build a bench-
+70:mark of 12 workflow templates and evaluate 7 lan-
+71:guage models under three harnesses that intervene
+72:on the trace at different strengths, localizing fail-
+73:ures in ordering, branching, iteration, and argu-
+74:ment grounding. (iii) We show that the same score
+75:is an effective reward: finetuning a target model
+76:improves both compliance and answer correctness
+77:on held-out templates, including unseen tool-name
+78:aliases. (iv) We show that grounding constraints
+79:can detect parametric-memory hallucination by dis-
+80:tinguishing supported answers from unsupported
+81:recall. AGENTLTL, the benchmark, training cor-
+82:pus, and scripts are available here.
+83:2
+--METHOD--
+254:Preliminaries
+255:We model a tool-using agent as a ReAct type of
+256:system (Yao et al., 2023):
+257:A = ⟨M, T , E, H⟩,
+258:where M is a language model, T a tool set, E an
+259:execution environment, and H the context window.
+260:At step i, the model produces a thought θi and pro-
+261:poses a tool invocation with name ni ∈T and
+262:arguments ai. The environment executes the invo-
+263:cation and returns a result ri, which is appended to
+264:the context H. We record the step as the tuple
+265:ci = (ni, ai, ri, i).
+266:AGENTLTL operates on the resulting execution
+267:trace τ = ⟨c0, . . . , cn−1⟩. It also uses a metrics
+268:record µ that stores aggregate statistics over the
+269:trace, such as token and tool call counts.
+270:3.2
+271:Formula Language
+272:AGENTLTL specifies properties over execution
+273:traces using a fragment of FO-LTL. The language
+274:is used to express procedural rules such as “a search
+275:must be cited before the final answer” or “every
+276:opened file must eventually be closed.” Full syntax
+277:and semantics appear in Appendix A.
+278:Formulas are evaluated against a trace τ. A for-
+279:mula φ can contain variables ranging over values
+280:observed in the trace, such as tool arguments, re-
+281:trieved entities, or file names. Under a specific
+282:trace and a variable assignment, φ evaluates to a
+283:boolean. A formula without free variables is a
+284:constraint, denoted by κ, and is either satisfied or
+285:violated by τ. The language has three components.
+286:Atomic propositions.
+287:Atomic propositions de-
+288:scribe observable properties of tool calls, including
+289:occurrence, ordering, argument matching, return-
+290:value checks, and aggregate statistics.
+291:For ex-
+292:ample, CalledWith(search, {q : “foo”}) holds
+293:when a call to search was issued with argument
+--EXP SETUP--
+603:Setup.
+604:We evaluate 7 zero-shot models of
+605:varying parameter sizes (Gemma-4-26B-A4B,
+606:Gemma-4-31B, Qwen3-Next-80B-A3B-Instruct,
+607:DeepSeek-V4-Flash,
+608:Qwen3.5-397B-A17B,
+609:DeepSeek-V4-Pro, Kimi-K2.6) via AGENTLTL’s
+610:smolagents (Roucher et al., 2025) integration.
+611:We run six trials per (model, template, difficulty,
+612:seed) across seeds s ∈{42, 123}, giving 360 runs
+613:per model per setting, with a budget of 10d + 10
+614:tool calls at difficulty d. Answer correctness is
+615:exact integer match; compliance is C(τ, GP ).
+616:4.3
+617:Compliance-Supervised Finetuning
+618:Training corpus.
+619:We build 300 examples from
+620:15 simplified templates, each using 3–7 tool calls
+621:from a pool of four tools and covering sequential,
+622:branching, fan-out, and multi-stage patterns. We in-
+623:stantiate each template with multiple tool permuta-
+624:tions and augment instances by optionally prepend-
+625:ing or appending one extra tool call. This is to
+626:discourage memorization of fixed call sequences.
+627:Two benchmark templates, loop_termination
+628:and branch_selection, are excluded from train-
+629:ing and used only for unseen-pattern evaluation.
+630:Reward.
+631:We train with Group Relative Policy
+632:Optimization (GRPO) using trl (von Werra et al.,
+633:2020) under a weighted reward [0.5,0.25,0.25]
+634:combining three terms: the main term is C(τ, GP );
+635:answer correctness, where correctly formatted but
+636:incorrect answers receive 0.1 to preserve gradient
+637:5
+638:
+639:============================================================
+640:=== PAGE 6 ===
+641:============================================================
+642:
+643:signal; and a trace-distance term Rdist(τ, τ ∗) =
+644:exp(−d(τ, τ ∗)) based on weighted Levenshtein
+645:distance to the gold trace (same tool with different
+646:arguments costs 0.5, a different tool costs 1.0, and
+647:insertions and deletions cost 1.0).
+648:Training setup.
+649:We finetune Qwen3-4B-Instruct
+650:(Team, 2025) with LoRA (r=8, α=16) on q_proj
+651:and v_proj for 1 epoch, using a round-robin-no-
+652:repeat curriculum, fp32 precision, N=16 rollouts
+--RESULTS--
+713:Results
+714:5.1
+715:Harnessing Agents
+716:Enforcement effects.
+717:Table 1 shows block-and-
+718:warn improves compliance for five of seven mod-
+719:els, with the largest gains on the weakest models.
+720:It raises accuracy by +0.019 on average. Two
+721:strong models regress slightly under block-and-
+722:warn.
+723:Soft-block is the worst setting for four
+724:of seven models, since forced termination pre-
+725:vents recovery from violations. The two settings
+726:affect trace length in opposite ways: block-and-
+727:warn pushes models past early stopping points and
+728:lengthens traces, while soft-block shortens them
+729:through forced termination. Enforcement events
+730:concentrate on argument extraction and global se-
+731:quence (L2: 61, 111 and L3:62, 811). Branch and
+732:count violations are sparse but high-impact. Insis-
+733:tence on blocked calls is rare.
+734:Baseline evaluation and compliance profiles.
+735:Table 4 reports per-layer pass-rates. L3 (global
+736:sequence) is the weakest layer for every model. L4
+737:(pair-order) tracks L3 closely, so the same trace fail-
+738:ures violate both global and pairwise ordering. L4
+739:accounts for 55-77% of weighted loss across mod-
+740:els. Branch routing, argument extraction, and call-
+741:count pass at much higher rates, so failures concen-
+742:trate in ordering rather than tool selection or argu-
+--LIMITATIONS--
+1146:Limitations
+1147:Several limitations qualify our findings and point
+1148:to future work.
+1149:Vacuous grounding.
+1150:The trace-grounding predi-
+1151:cate κground is satisfied trivially by refusals, since
+1152:the universal quantifier holds when the answer
+1153:contains no entities to verify. Most of the strict-
+1154:prompt grounding gains for the larger models in
+1155:our repository-QA experiment are refusals rather
+1156:than supported answers.
+1157:Confounded popularity.
+1158:The popularity stratifi-
+1159:cation in the grounding study confounds pretrain-
+1160:ing exposure with repository size and complexity.
+1161:We cannot separate the two with this design. A
+1162:cleaner causal claim would require controlled splits
+1163:matching size across popularity levels, or held-out
+1164:private repositories with no pretraining footprint.
+1165:Synthetic tool environment.
+1166:The benchmark
+1167:uses synthetic arithmetic tools to keep ground truth
+1168:deterministic and decouple procedural compliance
+1169:from world knowledge. The procedural patterns are
+
+##### library/02_objective_factorization/2607.22649_STAIF/2607.22649_STAIF_fulltext.txt  (2343 lines)
+--ABSTRACT--
+10:Abstract
+11:Following complex instructions with multiple
+12:explicit constraints remains a fundamental chal-
+13:lenge for large language models (LLMs). Ex-
+14:isting alignment methods, such as DPO, opti-
+15:mize holistic reward signals that often under-
+16:emphasize strict satisfaction of individual con-
+17:straints, particularly under out-of-distribution
+18:or multi-constraint settings.
+19:In this paper,
+20:we propose STAIF, a stage-wise optimization
+21:framework that decouples the alignment of sub-
+22:jective (soft) constraints from the optimiza-
+23:tion of objectively verifiable (hard) constraints.
+24:Stage 1 applies preference optimization with
+25:multiple negative samples to sharpen the sen-
+26:sitivity to soft constraints, while Stage 2 ap-
+27:plies Reinforcement Learning with Verifiable
+28:Rewards (RLVR) to enforce strict compliance
+29:with hard constraints. To support this method,
+30:we construct STAINSTRUCT, a high-quality
+31:bilingual (English, Chinese) dataset of approx-
+32:imately 31,000 complex multi-constraint in-
+33:structions. Extensive analyses validate the de-
+34:sign of STAIF and show state-of-the-art perfor-
+35:mance on representative benchmarks against
+36:strong baselines, as well as genuine generaliza-
+37:tion. We have released our code and dataset1.
+38:1
+39:Introduction
+40:Large language models (LLMs) have evolved into
+41:general-purpose assistants capable of handling di-
+42:verse real-world tasks through natural language in-
+43:structions. Users often specify multiple constraints
+--INTRO END--
+156:performance competitive with large scale models
+157:such as Gemini 2.5 on IFEval and IFBench despite
+158:being substantially smaller in model size. Ablation
+159:studies confirm that both training stages contribute
+160:meaningfully to the final performance. Experi-
+161:ments demonstrate that the model design of decou-
+162:pling soft/hard constraints and using multiple nega-
+163:tive sampling provides stronger contrastive learn-
+164:ing signals. Fine-grained analysis further reflects
+165:genuine generalization rather than in-distribution
+166:memorization.
+167:The key contributions of this paper are summa-
+168:rized as follows:
+169:• We propose STAIF, a novel two-stage opti-
+170:mization framework with multiple negative
+171:samples that addresses the performance bot-
+172:tleneck of complex instruction following by
+173:decoupling soft-constraint preference align-
+174:ment from hard-constraint verification.
+175:• We propose an automated complex-constraint
+176:data synthesis framework and STAINSTRUCT,
+177:a large-scale high-quality bilingual dataset for
+178:complex instruction following.
+179:• Extensive experiments on various instruction
+180:following benchmarks demonstrate state-of-
+181:the-art (SoTA) performance and strong gener-
+182:alization by STAIF.
+183:2
+--METHOD--
+262:Preliminaries
+263:In this section, we formally define the instruction-
+264:following setting and summarize common align-
+265:ment objectives used throughout the paper. Let x
+266:denote an instruction and y a model response. A
+267:policy πθ(y | x) generates responses with parame-
+268:ters θ, and πref represents a base reference policy.
+269:3.1
+270:DPO
+271:DPO bypasses explicit reward modeling and op-
+272:timizes πθ directly from preferences as discussed
+273:in Rafailov et al. (2023). Under implicit reward
+274:parameterization, it yields the following maximum-
+275:likelihood objective:
+276:LDPO(πθ; πref) =
+277:−E(x,yw,yl)∼Dp
+278:�
+279:log σ
+280:�
+281:β log πθ(yw|x)
+282:πref(yw|x)
+283:−β log πθ(yl|x)
+284:πref(yl|x)
+285:��
+286:(1)
+287:with an implicit reward form:
+288:r(x, y) = β log πθ(y|x)
+289:πref(y|x) + β log Z(x),
+290:(2)
+291:where Z(x) is a partition function.
+292:3.2
+293:RLVR
+294:In settings with objectively checkable outcomes,
+295:reinforcement learning can use a deterministic ver-
+296:ifier V (x, y) ∈{0, 1} (or a scalar score) as reward,
+297:avoiding a learned reward model. This verification
+298:reinforcement learning setup is commonly used
+299:when the correctness can be programmatically vali-
+300:dated (Shao et al., 2024; Peng et al., 2025).
+301:3.3
+--EXP SETUP--
+809:Experiments
+810:6.1
+811:Experimental Setup
+812:Three representative instruction-following bench-
+813:marks are used to evaluate our method’s perfor-
+814:mance: IFEval, IFBench, and CFBench. For
+815:IFEval and IFBench, we report prompt-level and
+816:instruction-level accuracy under both strict and
+817:loose matching. For CFBench, we report constraint
+818:satisfaction rate (CSR), instruction satisfaction rate
+819:(ISR), and priority satisfaction rate (PSR) to pro-
+820:vide a comprehensive view of constraint-following
+821:performance.
+822:We train STAIF on two base models: Qwen2.5-
+823:7B-Instruct (Hui et al., 2024) and Tulu3-8B-SFT
+824:(with RL, Lambert et al. (2025)). These models
+825:represent competitive instruction-tuned baselines
+826:from different model families, allowing us to as-
+827:sess the generalizability of our approach. Detailed
+828:implementation settings are given in Appendix C.
+829:We compared STAIF against a broad set of
+830:strong open-source and proprietary baselines across
+831:the benchmarks, including frontier large/mid-scale
+832:models: GPT-4.1, DeepSeek-v3.2 (DeepSeek-AI
+833:et al., 2025), Gemini 2.5 (Comanici et al., 2025),
+834:Doubao 1.8, and QwQ-32B6 as general reference,
+835:and models with comparable model size for com-
+836:parison: Llama3.1-8B-Instruct (Grattafiori et al.,
+837:2024), Tulu3-8B (Lambert et al., 2025), Crab-7B-
+838:DPO (Qi et al., 2025), and VerIF (Peng et al., 2025).
+839:For the two base models used to train STAIF, we
+840:conduct controlled comparisons by evaluating the
+841:same base models trained, respectively, under SFT
+842:(Wei et al., 2022) and DPO (Rafailov et al., 2023)
+843:with our training data STAINSTRUCT.
+844:6.2
+845:Main Results
+846:Experimental results are in Table 1. STAIF demon-
+847:strates strong performance across all benchmarks.
+848:Performance on Par with Large-scale Models.
+849:Notably, STAIF trained on Tulu3-8B-SFT achieves
+850:competitive or even superior performance com-
+851:pared to models with significantly larger parameter
+852:sizes on IFEval and IFBench. Specifically, on IFE-
+853:val, STAIF on Tulu3-8B-SFT achieves very similar
+854:performance with Gemini 2.5, both achieving an
+855:6https://qwenlm.github.io/blog/qwq-32b/
+856:
+857:============================================================
+858:=== PAGE 7 ===
+--RESULTS--
+845:Main Results
+846:Experimental results are in Table 1. STAIF demon-
+847:strates strong performance across all benchmarks.
+848:Performance on Par with Large-scale Models.
+849:Notably, STAIF trained on Tulu3-8B-SFT achieves
+850:competitive or even superior performance com-
+851:pared to models with significantly larger parameter
+852:sizes on IFEval and IFBench. Specifically, on IFE-
+853:val, STAIF on Tulu3-8B-SFT achieves very similar
+854:performance with Gemini 2.5, both achieving an
+855:6https://qwenlm.github.io/blog/qwq-32b/
+856:
+857:============================================================
+858:=== PAGE 7 ===
+859:============================================================
+860:
+861:Model
+862:IFEval
+863:IFBench
+864:CFBench
+865:P-S
+866:P-L
+867:I-S
+868:I-L
+869:P-S
+870:P-L
+871:I-S
+872:I-L
+873:CSR
+874:ISR
+--LIMITATIONS--
+1351:Limitations
+1352:In the training dataset, we set the number of nega-
+1353:tive samples to be three. The three negative samples
+1354:are constructed respectively through 1) dropping
+1355:50% of the soft constraints; 2) dropping all the soft
+1356:constraints; and 3) inverting the semantics of all the
+1357:soft constraints. While the experiment results show
+1358:effectiveness of using multiple negative samples,
+1359:the number of negative samples and the construc-
+1360:tion scheme are not data driven or tuned to achieve
+1361:better performance.
+1362:Testing results in Section 6 are based on single-
+1363:run. While the consistent direction of improve-
+1364:ment across all metrics and large margin on several
+1365:benchmarks justify that the performance improve-
+1366:ment is not a noise-driven effect, multiple runs
+1367:would further strengthen the evaluation.
+1368:Ethical Considerations
+1369:This
+1370:work
+1371:investigates
+1372:complex
+1373:instruction-
+1374:following capabilities of LLMs. For data collec-
+--CONCLUSION--
+1327:Conclusion
+1328:We propose STAIF, a stage-wise framework that
+1329:separates soft-constraint alignment from hard-
+1330:constraint optimization, combining preference
+1331:learning with multiple negative samples and RL
+1332:with verifiable rewards. We also construct STAIN-
+1333:STRUCT, a large-scale bilingual dataset of complex
+1334:multi-constraint instructions, under an automated
+1335:complex-constraint data synthesis framework.
+1336:Our methodology achieve SoTA performance
+1337:on representative benchmarks with different lan-
+1338:guages and constraint distributions, demonstrating
+1339:the efficacy of STAIF and the potential of RL in
+1340:complex instruction following. In future work, we
+1341:plan to explore further methodology and data en-
+1342:hancement such as stricter product-based reward
+
+##### library/02_objective_factorization/2607.29246_DontMixRewards/2607.29246_DontMixRewards_fulltext.txt  (1706 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:Don’t Mix Rewards, Mix Policies:
+7:Policy Decomposition and Optimization for
+8:Multi-Reward RL
+9:Ruiming Liang1,2,3,∗,‡, Yi Zhong3,4,∗,‡, Yizhen Yuan3, Yinan Zheng3, Tianyi Tan3,
+10:Tianyue Wang1,2, Haiyun Guo1,�, Jinqiao Wang1, Xianyuan Zhan3,�
+11:1Fundation Model Research Center, CASIA, 2School of Artificial Intelligence, UCAS, 3Institute for
+12:AI Industry Research (AIR), Tsinghua University, 4College of Automotive and Energy Engineering
+13:(CAEE), Tongji University
+14:∗Equal contribution, �Corresponding authors, ‡Work done during internship at THU-AIR
+15:Modern large language models (LLMs) are expected not just to answer correctly, but to adapt their
+16:behavior to different human values and use cases. As a result, multi-reward reinforcement learning (RL)
+17:has become an increasingly important problem for LLMs, where each reward captures a different aspect
+18:of desired behavior. However, optimizing with multiple rewards suffers from a more severe alignment
+19:tax issue, where different optimization objectives can trade off or even conflict with each other, leading
+20:to unstable and inefficient post-training. In this work, we propose PRISM , a new multi-reward RL
+21:framework built upon the idea of policy-space decomposition and composition. Instead of compositing
+22:different rewards, PRISM optimizes a set of standalone positive policies and a global negative
+23:policy. This alleviates the potential conflict during multi-reward policy optimization, while enabling
+24:controllability during inference by flexible policy composition. Experiments on scientific reasoning,
+25:tool-use reasoning, and helpfulness–safety alignment show that PRISM consistently outperforms
+26:existing multi-reward RL baselines, with extra controllability for inference-time preference control.
+27:Emails: liangruiming2024@ia.ac.cn, zhanxianyuan@air.tsinghua.edu.cn
+28:1
+29:Introduction
+30:Large language models [2, 19] are widely deployed as general-purpose assistants, making alignment with
+31:human intent a central concern [4, 13]. Reinforcement learning [35] is among the most effective tools for this
+32:purpose, optimizing LLMs directly against reward signals that encode human preferences [5, 23]. Yet human
+33:preferences are rarely captured by a single objective: users expect models to be helpful, safe, and honest at
+34:the same time [21, 39], and these goals often conflict, so improving one dimension costs another [18, 23, 42].
+--INTRO END--
+54:
+55:multi-reward alignment tax.
+56:We therefore introduce PRISM , a multi-reward RL algorithm built on a different philosophy: do not mix
+57:rewards, mix policies. As shown in Figure 1, PRISM learns one standalone positive policy per reward and
+58:a single global negative policy. Desirable behaviors are reward-specific and deserve dedicated optimization
+59:directions. In contrast, undesirable behaviors need not be attributed to individual rewards. A single negative
+60:policy captures the union of all reward-specific failure modes and penalizes them jointly. Each reward drives
+61:updates mainly through its own positive branch. This design alleviates gradient competition among conflicting
+62:preferences and mitigates the multi-reward alignment tax.
+63:For efficiency, all sub-policies share a single language model conditioned on different prefix tokens and are
+64:composed at sampling time via a weighted sum of logits; the same mixture policy serves both training rollouts
+65:and inference. The merge weights thus form an explicit, interpretable interface for preference trade-offs,
+66:adjustable at inference time without retraining.
+67:Experiments on three multi-reward settings show that PRISM consistently outperforms reward-space baselines.
+68:On GPQA [30] and ScienceQA [32], it achieves the best overall score on every backbone, surpassing the
+69:strongest baseline by 17.8, 8.0, and 0.6 points on DeepSeek-R1-1.5B [34], Qwen2.5-1.5B-Instruct, and Qwen2.5-
+70:3B-Instruct [37].
+71:On the tool-calling benchmark BFCL-v3 [24] and the helpfulness–safety benchmarks
+72:Alpaca [36], HH-RLHF [10], and PKU-SafeRLHF [6], it ranks first among all RL methods, and remains more
+73:robust and controllable as reward complexity grows.
+74:Our contributions are threefold:
+75:• We identify the multi-reward alignment tax induced by reward-space composition, and advocate composing
+76:preferences in policy space instead.
+77:• We propose PRISM , which decomposes multi-reward RL into per-reward positive policies and a global
+78:negative policy, realized via prefix-conditioned sub-policies with logit-level composition.
+79:• Experiments on scientific QA, tool-use reasoning, and helpfulness–safety alignment show consistent gains
+80:over strong baselines, with training-free inference-time controllability.
+81:2
+--METHOD--
+82:Preliminaries
+83:2.1
+84:Multi-Reward Policy Optimization
+85:We consider an autoregressive language model parameterized by θ, which defines a conditional distribution
+86:πθ(o | q) over responses o given a query q ∼D.
+87:Alignment is performed against N reward functions
+88:{Rk(o, q)}N
+89:k=1, where each Rk encodes a distinct human preference such as correctness, helpfulness, safety, or
+90:format compliance. The native multi-reward objective is the system of N coupled maximization problems
+91:maxπ
+92:
+93:
+94:
+95:
+96:
+97:
+98:
+99:
+100:
+101:Eo∼π(·|q)[R1(o, q)],
+102:Eo∼π(·|q)[R2(o, q)],
+103:· · ·
+104:Eo∼π(·|q)[RN(o, q)]
+105:s.t.
+106:�
+107:o
+108:π(o | q)do = 1
+109:(1)
+110:which, in general, admits no single solution that simultaneously maximizes every Rk [42]. The dominant
+111:practical workaround is reward-space scalarization [21, 40, 46], which collapses these objectives into one
+112:weighted scalar R(o, q) = �N
+113:k=1 wkRk(o, q) and optimizes a single policy against it. As discussed in Section 1,
+114:this composition principle suffers from scale sensitivity, calibration mismatch, and gradient interference
+115:between conflicting preferences.
+116:2
+117:
+118:============================================================
+119:=== PAGE 3 ===
+120:============================================================
+121:
+--EXP SETUP--
+566:Experiments
+567:4.1
+568:Experiment Setup
+569:We evaluate PRISM on three multi-reward alignment scenarios: scientific question answering, tool-use
+570:reasoning, and helpfulness–safety alignment.
+571:6
+572:
+573:============================================================
+574:=== PAGE 7 ===
+575:============================================================
+576:
+577:Table 1 Main results on scientific QA benchmarks: scientific QA results across all evaluated backbones, where
+578:small gray values denote absolute changes over the corresponding base model. All numbers are percentages. Rows
+579:with “+” denote optimization methods applied to the corresponding backbone. Bold indicates the best result among
+580:optimization methods. Fmt: Percentage of rewards that meet the format requirements. Acc: Percentage of correct
+581:answers. Joint: Percentage of answers that meet the format requirements and are correct. Avg: Average of format and
+582:accuracy.
+583:Results on Scientific QA & GPQA
+584:Model / Method
+585:ScienceQA
+586:GPQA
+587:Overall
+588:Fmt
+589:Acc
+590:Joint
+591:Avg
+592:Fmt
+593:Acc
+594:Joint
+595:Avg
+596:DeepSeek-R1-1.5B
+597:0.00
+598:66.64
+599:0.00
+600:22.21
+601:0.00
+602:29.68
+603:0.00
+604:9.89
+605:16.05
+606:+ GRPO Sum
+607:74.11+74.11
+608:67.85+1.21
+609:54.02+54.02
+610:65.33+43.12
+611:16.96+16.96
+612:29.46-0.22
+613:6.25+6.25
+614:17.56+7.67
+615:41.44+25.39
+--RESULTS--
+583:Results on Scientific QA & GPQA
+584:Model / Method
+585:ScienceQA
+586:GPQA
+587:Overall
+588:Fmt
+589:Acc
+590:Joint
+591:Avg
+592:Fmt
+593:Acc
+594:Joint
+595:Avg
+596:DeepSeek-R1-1.5B
+597:0.00
+598:66.64
+599:0.00
+600:22.21
+601:0.00
+602:29.68
+603:0.00
+604:9.89
+605:16.05
+606:+ GRPO Sum
+607:74.11+74.11
+608:67.85+1.21
+609:54.02+54.02
+610:65.33+43.12
+611:16.96+16.96
+612:29.46-0.22
+--LIMITATIONS--
+1696:Limitations
+1697:There are several limitations in this study. First, PRISM assumes that each reward can be represented by a
+1698:distinct positive policy. It also assumes that a single negative policy can capture the union of reward-specific
+1699:failure modes. This design is effective across all our experimental settings, which cover up to three rewards.
+1700:Validating it at substantially larger reward counts is left for future work. Second, the current policy-space
+1701:composition relies on manually specified merge weights, and how to automatically adapt these weights to
+1702:different prompts, users, or deployment contexts remains underexplored. Third, although per-token latency
+1703:stays that of a single forward pass, mixture decoding requires multiple prefix-conditioned branches, and
+1704:its memory and FLOPs scale with the number of rewards. Future work can study more adaptive policy
+1705:composition mechanisms, more expressive negative-policy designs, and more efficient decoding strategies.
+1706:21
+--CONCLUSION--
+1122:Conclusion
+1123:In this work, we propose PRISM , a policy-space composition framework for multi-reward LLM alignment.
+1124:Instead of scalarizing heterogeneous rewards into a single optimization signal, PRISM keeps each reward
+1125:as a separate optimization direction by learning one positive policy per reward. A single global negative
+1126:policy further captures the union of failure modes. These policies are composed through explicit merge
+1127:weights, enabling controllable preference trade-offs without retraining. Experiments on scientific reasoning,
+1128:tool-use reasoning, and helpfulness–safety alignment show that PRISM consistently outperforms reward-space
+1129:baselines, remains more robust as reward complexity increases, and supports effective inference-time preference
+1130:control. These results suggest that mixing policies rather than rewards offers a more effective and controllable
+1131:path toward multi-reward aligned language models.
+1132:References
+1133:[1] Amo. https://github.com/Artessay/Amo, 2025.
+1134:[2] Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia Leoni Aleman, Diogo
+1135:Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al. Gpt-4 technical report. arXiv preprint
+1136:arXiv:2303.08774, 2023.
+1137:[3] Joshua Achiam, David Held, Aviv Tamar, and Pieter Abbeel. Constrained policy optimization. In International
+
+##### library/02_objective_factorization/2609.00213_AggregationRewardHacking/2609.00213_AggregationRewardHacking_fulltext.txt  (2360 lines)
+--ABSTRACT--
+15:Abstract
+16:Reinforcement learning fine-tuning of large
+17:language models increasingly adopts multi-
+18:ple reward dimensions, including verifiable
+19:rules, task-specific evaluators, and learned re-
+20:ward models, to provide richer supervision
+21:across diverse capabilities. These dimensions
+22:are commonly scalarized with fixed aggrega-
+23:tion weights. We identify a failure mode in
+24:which aggregation itself induces reward hack-
+25:ing: static projection aliases qualitatively differ-
+26:ent reward profiles into a single scalar, steering
+27:optimization toward whichever dimensions are
+28:easiest, densest, or systematically favored by
+29:the reward signal. Over training, this traps the
+30:policy in suboptimal profiles and prevents con-
+31:vergence to better-balanced ones that would
+32:yield higher task performance. To address this,
+33:we propose Adaptive Multi-Reward Projection
+34:(AMRP), a lightweight online method that re-
+35:allocates aggregation weights using three sig-
+36:nals—relative shortfall, reward volatility, and
+37:recent progress—increasing pressure on lag-
+38:ging, unstable, or stagnant dimensions while
+39:relieving saturated ones.
+40:Across structured
+41:reasoning, citation-grounded generation, and
+42:open-ended alignment under GRPO, AMRP
+43:consistently improves reward-profile balance
+44:and downstream performance over fixed and
+45:dynamic weighting baselines; it also remains
+46:effective with GDPO and PPO, supporting
+47:compatibility across RL algorithms.
+48:Our
+--INTRO END--
+129:across three different multi-reward settings: rule-
+130:based mathematical reasoning, citation-grounded
+131:generation with automatic evaluators, and open-
+132:ended alignment with learned reward-model scores.
+133:AMRP consistently improves downstream perfor-
+134:mance and reward-profile dynamics, with partic-
+135:ularly large gains in mathematical reasoning and
+136:citation-grounded generation and consistent gains
+137:in the more correlated open-ended setting. We fur-
+138:ther show that AMRP composes effectively with
+139:GDPO and PPO and remains robust across the
+140:tested hyperparameter ranges.
+141:Our contributions can be summarized as:
+142:• We identify reward-profile collapse as a mode
+143:of aggregation-induced reward hacking in
+144:multi-reward reinforcement learning, arising
+145:from profile aliasing and shortcut lock-in.
+146:• We propose Adaptive Multi-Reward Projec-
+147:tion, a dynamic aggregation method that
+148:adapts reward projection online according to
+149:three signals: relative shortfall, reward volatil-
+150:ity, and recent progress.
+151:• We validate AMRP across structured reason-
+152:ing, citation-grounded generation, and open-
+153:ended alignment with multiple backbones,
+154:showing consistent downstream gains and
+155:compatibility with GRPO, GDPO, and PPO.
+156:2
+--METHOD--
+636:methods such as GDPO, the same online weights
+637:can aggregate normalized per-reward advantages
+638:before final advantage normalization. Thus, AMRP
+639:provides adaptive cross-reward prioritization with-
+640:out modifying the underlying policy objective.
+641:5
+642:Experiments
+643:5.1
+644:Experimental Setups
+645:Training Protocol.
+646:We use full-parameter GRPO
+647:fine-tuning (Shao et al., 2024) with group size
+648:G = 8 across all three settings. Methods share the
+649:same pipeline and differ only in projection weight-
+650:ing. Rewards are scaled to [0, 1], and training roll-
+651:outs use a sampling temperature of 1.0. By default,
+652:AMRP initializes w(0)
+653:i
+654:= ai = 1 for all reward
+655:dimensions and updates the projection weights ev-
+656:ery N steps. Experiments run on NVIDIA A100
+657:GPUs; see Appendix B for details.
+658:Structured Reasoning.
+659:We study mathemati-
+660:cal reasoning with verifiable rewards.
+661:Follow-
+662:ing DeepSeek-style rule-based RLVR with accu-
+663:racy and format rewards (Guo et al., 2025), we
+664:additionally include a soft length-control reward
+665:to model the generation budget. We train on a
+666:10K-sample subset of NuminaMath-1.5 (LI et al.,
+667:2024) and evaluate on MATH-500 (Lightman et al.,
+668:2024), AMC1, and AIME2. The reward profile is
+669:rmath = [racc, rfmt, rlen], covering final-answer ac-
+670:curacy, format compliance, and length control. We
+671:fine-tune Qwen3-4B-Instruct (Yang et al., 2025)
+672:and DeepSeek-Math-7B-Base (Shao et al., 2024)
+673:for one epoch with a maximum completion length
+674:of 3,000 tokens.
+675:1https://huggingface.co/datasets/AI-MO/
+--EXP SETUP--
+642:Experiments
+643:5.1
+644:Experimental Setups
+645:Training Protocol.
+646:We use full-parameter GRPO
+647:fine-tuning (Shao et al., 2024) with group size
+648:G = 8 across all three settings. Methods share the
+649:same pipeline and differ only in projection weight-
+650:ing. Rewards are scaled to [0, 1], and training roll-
+651:outs use a sampling temperature of 1.0. By default,
+652:AMRP initializes w(0)
+653:i
+654:= ai = 1 for all reward
+655:dimensions and updates the projection weights ev-
+656:ery N steps. Experiments run on NVIDIA A100
+657:GPUs; see Appendix B for details.
+658:Structured Reasoning.
+659:We study mathemati-
+660:cal reasoning with verifiable rewards.
+661:Follow-
+662:ing DeepSeek-style rule-based RLVR with accu-
+663:racy and format rewards (Guo et al., 2025), we
+664:additionally include a soft length-control reward
+665:to model the generation budget. We train on a
+666:10K-sample subset of NuminaMath-1.5 (LI et al.,
+667:2024) and evaluate on MATH-500 (Lightman et al.,
+668:2024), AMC1, and AIME2. The reward profile is
+669:rmath = [racc, rfmt, rlen], covering final-answer ac-
+670:curacy, format compliance, and length control. We
+671:fine-tune Qwen3-4B-Instruct (Yang et al., 2025)
+672:and DeepSeek-Math-7B-Base (Shao et al., 2024)
+673:for one epoch with a maximum completion length
+674:of 3,000 tokens.
+675:1https://huggingface.co/datasets/AI-MO/
+676:aimo-validation-amc
+677:2https://huggingface.co/datasets/AI-MO/
+678:aimo-validation-aime
+679:
+680:============================================================
+681:=== PAGE 6 ===
+682:============================================================
+683:
+684:Method
+685:Math
+686:AMC
+687:AIME
+688:Average
+689:Acc.
+690:Fmt.
+691:Len.
+--RESULTS--
+1245:Main Results
+1246:Structured Reasoning.
+1247:In mathematical reason-
+1248:ing, static aggregation often over-optimizes format
+1249:and length rewards while leaving answer accuracy
+1250:under-optimized. As shown in Table 1, AMRP
+1251:achieves the best accuracy on all three benchmarks
+1252:for both base models, with particularly large gains
+1253:on the more challenging AMC and AIME bench-
+1254:marks. For Qwen3-4B-Instruct, AMRP improves
+1255:AIME accuracy from 17.92 to 31.98 and AMC
+1256:accuracy from 53.92 to 63.59 over the strongest
+1257:baseline. Format and length scores are more sen-
+1258:sitive to dataset difficulty: harder problems often
+1259:require longer reasoning trajectories, making re-
+1260:sponses more likely to reach the generation limit
+1261:before completing the reasoning and closing the re-
+1262:quired tags, which reduces both format and length
+1263:rewards. AMRP therefore prioritizes correctness
+1264:when additional reasoning is needed, rather than
+1265:favoring short, format-compliant shortcuts.
+1266:Grounded Generation.
+1267:In citation-grounded
+1268:QA, static aggregation can induce aggregation-
+1269:driven reward hacking, where citation support is
+1270:over-optimized while correctness remains under-
+1271:optimized.
+1272:As shown in Table 2, AMRP sub-
+1273:stantially improves correctness while maintaining
+1274:strong citation quality, yielding the best overall
+--LIMITATIONS--
+1630:Limitations
+1631:This study evaluates AMRP across three represen-
+1632:tative multi-reward post-training settings involv-
+1633:
+1634:============================================================
+1635:=== PAGE 10 ===
+1636:============================================================
+1637:
+1638:ing rule-based rewards, automatic evaluators, and
+1639:learned reward-model scores. While these settings
+1640:cover diverse reward structures, they do not capture
+1641:the full range of modern multi-reward pipelines.
+1642:Our experiments also span multiple RL algorithms
+1643:and reward dimensionalities, but broader evalua-
+1644:tion with more numerous or strongly conflicting re-
+1645:ward dimensions, larger-scale full-parameter train-
+1646:ing, and domains such as code generation, tool use,
+1647:and safety-oriented alignment remains future work.
+1648:Ethical Considerations
+1649:This work studies adaptive reward aggregation for
+1650:multi-reward LLM post-training. AMRP mitigates
+1651:reward imbalance but does not validate the rewards
+1652:themselves; biases, factuality errors, verbosity pref-
+1653:erences, or other artifacts in reward models and
+

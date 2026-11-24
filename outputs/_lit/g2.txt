@@ -1,0 +1,692 @@
+##### library/01_constraint_compiler/2606.05622_AdaPlanBench/2606.05622_AdaPlanBench_fulltext.txt  (4210 lines)
+--ABSTRACT--
+15:Abstract
+16:Planning for real-world problems by language models often involves both
+17:world and user constraints, which may not be fully specified upfront and
+18:are progressively disclosed through interaction. However, existing bench-
+19:marks still underexplore adaptive planning under such progressively re-
+20:vealed dual constraints. To address this gap, we introduce AdaPlanBench,
+21:a dynamic interactive benchmark for evaluating whether Large Language
+22:Model (LLM) agents can adaptively plan and re-plan under progressively
+23:revealed world and user constraints. AdaPlanBench is built on 307 house-
+24:hold tasks, with a scalable constraint construction pipeline that augments
+25:each task with dual constraints. At runtime, agents interact with the en-
+26:vironment in a multi-turn protocol where hidden constraints are revealed
+27:only when the agent proposes a plan that violates them, requiring iterative
+28:plan revision under accumulating feedback. This makes planning chal-
+29:lenging, as agents must infer and track constraints from feedback while
+30:re-planning effectively. Experiments on ten leading LLMs show that adap-
+31:tive planning under dual constraints remains challenging, with the best
+32:model reaching only 67.75% accuracy. We further observe that perfor-
+33:mance degrades as more constraints accumulate, with user constraints
+34:posing a particularly large challenge and failures often stemming from
+35:weaker physical grounding and reduced effectiveness. These results estab-
+36:lish AdaPlanBench as a testbed for dual-constrained interactive planning
+37:and highlight the challenge of reliable adaptation to dynamically revealed
+38:constraints in LLM agents.
+39:1
+40:Introduction
+41:Large Language Model (LLM) agents have achieved remarkable success in real-world inter-
+42:active tasks, including writing complex code (Anthropic, 2026; Guo et al., 2026a), operating
+43:computers (Qin et al., 2025; Wang et al., 2025), and supporting scientific discovery (Shao
+44:et al., 2025; Huang et al., 2025b). While these applications differ in domain, they share
+45:a common structure: agent capability depends on sustained interaction throughout task
+46:execution (Yao et al., 2023; Park et al., 2023). This interaction typically unfolds along two
+47:closely linked dimensions: interaction with users, through which agents infer goals and
+48:preferences, and interaction with the external world, where they gather information and
+--EXP SETUP--
+77:Evaluation
+78:Scalable
+79:Constraints
+80:CostBench (Liu et al., 2025a)
+81:✓
+82:✗
+83:✓
+84:✓
+85:✗
+86:✗
+87:✓
+88:FlowBench (Xiao et al., 2024)
+89:✓
+90:✓
+91:✓
+92:✓
+93:✓
+94:✗
+95:✗
+96:NaturalPlan (Zheng et al., 2024)
+97:✗
+98:✗
+99:✗
+100:✓
+101:✗
+102:✓
+103:✓
+104:PrefEval (Zhao et al., 2025)
+105:✗
+106:✓
+107:✗
+108:✗
+109:✗
+110:✓
+111:✓
+112:RealPref (Guo et al., 2026b)
+113:✗
+114:✗
+115:✗
+116:✗
+117:✓
+118:✓
+119:✗
+120:UserBench (Qian et al., 2025a)
+121:✗
+122:✓
+123:✓
+124:✗
+125:✓
+126:✓
+--RESULTS--
+655:Results
+656:Current LLM Agents are still far from effective under dynamic dual constraints.
+657:The
+658:main results indicate that planning under progressively disclosed dual constraints remains
+659:challenging for all evaluated models. Even GPT-5, the best-performing model, reaches only
+660:67.75% accuracy. Another strong model, Gemini-3.1-Pro, scores only around 35%, while
+661:most models fall below 45%. Open-weight models perform particularly poorly, typically
+662:around 30% or lower. Although most models maintain a valid-plan ratio above 70%, they
+663:still frequently violate already disclosed constraints. Additionally, averaged across the
+664:10 evaluated models, each query contains 0.295 repeated violations of disclosed world
+665:constraints and 0.503 repeated violations of disclosed user constraints. As a result, 17.91%
+666:of queries terminate early in average because the model violates disclosed constraints two
+667:consecutive times without triggering any new constraint. Together, these results indicate
+668:that progressively disclosed dual constraints remain a substantial challenge for current
+669:models, affecting both consistent constraint adherence and overall plan quality.
+670:High valid-plan rates do not necessarily translate into final task success.
+671:A high valid
+672:plan ratio (VPR) does not guarantee strong end-task accuracy. For example, both Gemini-3.1-
+673:Pro and Gemini-3-Flash achieve relatively high VPRs, exceeding 90%, yet their accuracies
+674:remain below 45%. This pattern is further supported by their relatively low AWRV and
+675:AURV, suggesting that these models are reasonably effective at tracking disclosed constraints
+676:and avoiding repeated violations. However, despite maintaining executable plans and
+677:showing relatively strong constraint-tracking behavior, they still often fail to reach correct
+678:final solutions. This pattern suggests that relatively strong constraint tracking alone is
+679:insufficient to ensure strong final performance under progressive disclosure.
+680:6
+681:
+682:============================================================
+683:=== PAGE 7 ===
+684:============================================================
+--LIMITATIONS--
+1043:Limitations
+1044:Limited Domain Coverage.
+1045:AdaPlanBench is currently instantiated in the household
+1046:domain, which provides a natural setting where user preferences and world constraints
+1047:interact. This choice offers a controlled and realistic testbed for studying adaptive planning,
+1048:but some domain specific phenomena from settings such as travel, office workflows, or
+1049:robotics may not yet be covered. We partially mitigate this limitation by focusing on general
+1050:benchmark properties, including dual constraints, progressive disclosure, and open ended
+1051:evaluation, which are not unique to household tasks. Future work can instantiate the same
+1052:framework in additional domains to test how well the findings transfer.
+1053:Potential Bias in LLM-based Evaluation.
+1054:Our evaluation relies on LLM judges for con-
+1055:straint checking and rubric scoring, which may introduce model-specific preferences or
+1056:systematic bias. Although this setup enables scalable evaluation, it is still not equivalent to
+1057:fully manual assessment. We partially mitigate this risk in two ways: first, we use multiple
+1058:judges and aggregate their rubric scores to reduce the bias from a certain judge model;
+1059:second, human annotation shows high consistency with the rubric-based LLM judgments.
+1060:Text-only Evaluation Setting
+1061:AdaPlanBench evaluates adaptive planning in a text-only
+1062:interaction setting, without visual perception, embodied execution, or direct contact with
+1063:real environments. This means the benchmark does not capture the full difficulty of real-
+1064:world agent deployment, especially when perception and action grounding are tightly
+1065:coupled. At the same time, this is a deliberate trade-off: by removing perception errors and
+1066:low-level control noise, the benchmark more cleanly isolates adaptive planning abilities
+
+##### library/01_constraint_compiler/2607.04854_CARL/2607.04854_CARL_fulltext.txt  (2629 lines)
+--ABSTRACT--
+13:Abstract
+14:Despite their strong reasoning capabilities and
+15:extensive world knowledge, Large Language
+16:Models (LLMs) frequently generate plans that
+17:violate task constraints, undermining their re-
+18:liability in real-world applications. This defi-
+19:ciency arises from a lack of systematic mech-
+20:anisms to incorporate constraint information
+21:during the generation process. While existing
+22:approaches attempt to mitigate this by rely-
+23:ing on external tools or task decomposition,
+24:they fail to enhance the model’s intrinsic con-
+25:straint awareness.
+26:To address this, we pro-
+27:pose Constraint-Aware Reinforcement Learn-
+28:ing (CARL), a novel RL framework designed
+29:to strengthen LLMs’ intrinsic focus on con-
+30:straints. CARL introduces a constraint-aware
+31:reward by comparing the model’s output distri-
+32:butions under constrained and unconstrained in-
+33:puts, encouraging constraint focus and penaliz-
+34:ing neglect. Compatible with various RL frame-
+35:works and requiring no external solvers or top
+36:models, CARL enables scalable, end-to-end
+37:constraint-aware planning. Extensive experi-
+38:ments on BlocksWorld, TravelPlanner, and T-
+39:Eval demonstrate that CARL significantly out-
+40:performs standard Reinforcement Fine-Tuning
+41:(RFT) baselines and state-of-the-art reasoning
+42:models, exhibiting a markedly increased focus
+43:on constraints.
+44:1
+45:Introduction
+46:Large Language Models (LLMs) have demon-
+--INTRO END--
+270:mance. Recent advances such as Group Relative
+271:Policy Optimization (GRPO) (Shao et al., 2024)
+272:and Reinforcement Learning with Online Optimiza-
+273:tion (RLOO) (Ahmadian et al., 2024) seek to bal-
+274:ance performance with computational efficiency.
+275:Parallel research has attempted to enhance input
+276:awareness through specialized rewards or prefer-
+277:ence pairs. For example, Kiruluta et al. (2025) uti-
+278:lize attention scores as reward signals to prioritize
+279:crucial tokens, while Gu et al. (2024); Deng et al.
+280:(2024) construct preference pairs from original and
+281:noise-perturbed images to strengthen visual anchor-
+282:ing. However, these methods are primarily limited
+283:to simple QA or visual tasks, and their efficacy
+284:in complex reasoning scenarios such as planning
+285:remains unverified.
+286:In this work, we introduce a constraint-aware
+287:reward mechanism tailored for planning tasks.
+288:Our key innovation lies in quantifying constraint
+289:sensitivity through the distributional shift in log-
+290:probabilities between constrained and uncon-
+291:strained conditions. This formulation is natively
+292:compatible with on-policy methods (PPO, GRPO)
+293:and can be seamlessly adapted to off-policy frame-
+294:works like DPO by transforming constraint signals
+295:into preference pairs, ensuring robust constraint
+296:compliance across training paradigms.
+297:3
+--METHOD--
+154:framework designed to explicitly strengthen LLMs’
+155:focus on constraints. CARL introduces a novel
+156:constraint-aware reward derived from the distri-
+157:butional shift of the model’s outputs under con-
+158:strained versus unconstrained inputs. By utiliz-
+159:ing the KL divergence between log-probabilities in
+160:these two settings as a reward signal, CARL guides
+161:the model to integrate constraint signals more ef-
+162:fectively. Unlike discrete task rewards, our contin-
+163:uous constraint-aware reward provides smoother
+164:optimization gradients and encourages meaningful
+165:exploration during planning failures.
+166:CARL provides a novel and effective training
+167:framework for enhancing intrinsic planning com-
+168:petence. As illustrated in Figure 1, models trained
+169:with CARL exhibit significantly higher attribution
+170:scores for constraint tokens (e.g., non-self-driving
+171:transportation, Asian cuisine) compared to standard
+172:RFT, leading to improved plan validity. Further-
+173:more, CARL is model-agnostic and compatible
+174:with a broad spectrum of RL algorithms, including
+175:on-policy methods like PPO (Yu et al., 2022) and
+176:GRPO (Shao et al., 2024), as well as off-policy
+177:approaches like DPO (Rafailov et al., 2023).
+178:We evaluate CARL across three diverse plan-
+179:ning benchmarks: BlocksWorld (block manipu-
+180:lation) (Valmeekam et al., 2024), TravelPlanner
+181:(travel planning) (Xie et al., 2024a), and T-Eval
+182:(tool use) (Chen et al., 2023). The results demon-
+183:strate consistent and substantial improvements over
+184:RFT. Notably, CARL achieves a 56.1% final pass
+185:rate on TravelPlanner—a +11.1% gain over the
+186:baseline—outperforming state-of-the-art reasoning
+187:models such as o1-preview (10.0%) and DeepSeek-
+188:R1 (12.2%). Ablation studies and attribution analy-
+189:sis further confirm that these gains stem from a suc-
+190:cessfully acquired awareness of constraints. Our
+191:contributions are summarized as follows:
+192:• We propose CARL, a novel RL framework
+193:that systematically enhances LLMs’ focus on
+--EXP SETUP--
+560:Experiments
+561:5.1
+562:Datasets and Settings
+563:Datasets.
+564:We evaluate CARL across three com-
+565:plementary planning benchmarks that collectively
+566:cover classical symbolic planning, real-world con-
+567:strained decision-making, and tool-mediated plan-
+568:ning:
+569:• BlocksWorld (Valmeekam et al., 2024) is a
+570:formal symbolic planning environment with
+571:well-defined action schemas and static con-
+572:straints. Given an initial block configuration
+573:and a goal state, models must generate action
+574:sequences that strictly adhere to the physi-
+575:cal constraints specified in the prompt. This
+576:benchmark provides a controlled setting to
+577:isolate and evaluate core constraint-handling
+578:capabilities.
+579:• TravelPlanner (Xie et al., 2024a) presents
+580:a real-world travel planning challenge where
+581:models must generate plans based on provided
+582:information and user queries, aligning with
+583:commonsense and the hard constraints spec-
+584:ified in the queries. Unlike the static nature
+585:of BlocksWorld, the hard constraints in Trav-
+586:elPlanner are dynamic, as they need to be
+587:inferred from the query and satisfied through
+588:item selection.
+589:
+590:============================================================
+591:=== PAGE 6 ===
+592:============================================================
+593:
+594:Model
+595:BlocksWorld
+596:TravelPlanner
+597:T-Eval
+598:Commonsense
+599:Hard
+600:Final
+601:Precision
+602:Recall
+603:F1-score
+604:Micro
+605:Macro
+606:Micro
+607:Macro
+608:GPT-4o
+609:42.4
+--RESULTS--
+802:Results on Planning Benchmarks.
+803:Table 1 sum-
+804:marizes the main evaluation results across all plan-
+805:ning benchmarks, highlighting the comparative per-
+806:formance of CARL against state-of-the-art LLMs
+807:and RFT. There are three key takeaways:
+808:First, CARL significantly boosts the planning ca-
+809:pabilities of Qwen3-8B and DeepSeek-R1-Distill-
+810:Llama-8B. For example, with fewer than 128 train-
+811:ing queries, CARL significantly boosts Qwen3-
+812:8B’s planning performance, achieving an absolute
+813:improvement of 53.9% on TravelPlanner (from
+814:2.2% to 56.1%).
+815:It consistently outperforms
+816:RFT and significantly surpasses state-of-the-art
+817:reasoning-oriented models such as o1-preview
+818:(10.0%) and DeepSeek-R1 (12.2%). Furthermore,
+819:CARL enables the performance of the 14B model
+820:comparable to top models on BlocksWorld, as
+821:
+822:============================================================
+823:=== PAGE 7 ===
+824:============================================================
+825:
+826:Figure 3: Performance comparison of DPO and CA-
+827:DPO with different preference pairs on BlocksWorld.
+828:shown in Figure 4 and Table 11.
+829:Second, CARL effectively mitigates constraint
+830:neglects or violations in multi-constraint planning
+831:tasks. While baseline models often perform well
+--LIMITATIONS--
+1045:Limitations
+1046:First, regarding training efficiency, CARL incurs
+1047:a marginal computational overhead due to the ad-
+1048:ditional forward pass for unconstrained queries.
+1049:However, as detailed in Appendix B.2, this cost is
+1050:significantly lower than that of scaling up rollouts
+1051:to achieve comparable gains. Second, our evalu-
+1052:ation is currently confined to single-agent bench-
+1053:marks. Extending CARL to complex combinatorial
+1054:planning scenarios, such as multi-robot collabora-
+1055:tion, remains a direction for future work.
+1056:Acknowledgements
+1057:This work was supported by the National Nat-
+1058:ural Science Foundation of China under Grant
+1059:42394060 and 42394064, Ant Group Research
+1060:Fund, and Information Technology Center and
+1061:State Key Lab of CAD&CG, Zhejiang University.
+1062:References
+1063:Arash Ahmadian, Chris Cremer, Matthias Gallé,
+1064:Marzieh Fadaee, Julia Kreutzer, Olivier Pietquin,
+1065:Ahmet Üstün, and Sara Hooker. 2024. Back to ba-
+1066:sics: Revisiting reinforce style optimization for learn-
+1067:ing from human feedback in llms. arXiv preprint
+1068:arXiv:2402.14740.
+--CONCLUSION--
+1020:Conclusion
+1021:In this paper, we introduced CARL, a novel RL
+1022:framework designed to fundamentally enhance the
+1023:intrinsic constraint sensitivity of LLMs in planning
+1024:
+1025:============================================================
+1026:=== PAGE 9 ===
+1027:============================================================
+1028:
+1029:tasks. By leveraging the distributional divergence
+1030:between model outputs under constrained and un-
+1031:constrained inputs, CARL formulates an effective
+1032:reward signal to improve constraint compliance
+1033:without reliance on external solvers or task-specific
+1034:engineering. Extensive experiments across diverse
+1035:benchmarks demonstrate that CARL significantly
+
+##### library/01_constraint_compiler/2610.00797_Sapien/2610.00797_Sapien_fulltext.txt  (1860 lines)
+--ABSTRACT--
+10:Abstract
+11:Contextual security defenses prevent AI agents from tak-
+12:ing rogue actions by synthesizing a task-specific policy and
+13:enforcing it on the agent’s tool calls. In multi-step tasks,
+14:however, which actions are valid often depends on what the
+15:agent has already done and learned. We present Sapien, a
+16:policy engine for enforcing stateful contextual policies. A
+17:Sapien policy specifies permitted tool-call sequences using
+18:a regular expression extended with stateful predicates, de-
+19:ferred policy generation, and scoped semantic checks. We
+20:show that Sapien stays within a few percent of an uncon-
+21:strained agent’s utility. Even if the agent is fully hijacked,
+22:Sapien’s policies rule out 93–95% of attacks on AgentDojo
+23:and 62–85% on Toolathlon (twice as many as tool allowlists
+24:on long-horizon tasks).
+25:1
+26:Introduction
+27:AI agents use large language models (LLMs) to autonomously
+28:plan and carry out natural-language tasks by calling exter-
+29:nal tools [15, 17, 39]. Unlike traditional programs governed
+30:by hard-coded control flow, agents rely on the LLM’s rea-
+31:soning to interpret tool outputs and dynamically plan their
+32:next steps, allowing them to tackle complex, long-horizon
+33:tasks. Increasingly, developers aim for general-purpose agents,
+34:equipping AI models with a broad suite of tools to handle
+35:open-ended tasks across domains on behalf of a user—for
+36:example, managing online accounts, organizing meetings
+37:and notes, or coordinating travel.
+38:Yet delegating tool invocation to an LLM makes agents
+39:inherently unreliable and prone to rogue actions—tool calls
+40:that diverge from the user’s intent. As trajectories span more
+41:steps, agents are more likely to encounter untrusted content
+42:that hijacks them via prompt injection [19, 64], or to spon-
+43:taneously drift from their goal, misinterpret a tool output,
+--INTRO END--
+133:Sapien’s policies rule out 93–95% of attacks on AgentDojo
+134:and 62–85% on Toolathlon (doubling the defense rate of tool
+135:allowlists for the latter).
+136:This paper makes the following contributions:
+137:1. A stateful policy language targeting autonomous AI
+138:agents performing long-horizon tasks (§4);
+139:2. Sapien, an automaton-based engine that synthesizes
+140:policies from trusted user prompts and enforces them
+141:over tool calls with actionable recovery feedback (§5);
+142:and
+143:3. An evaluation of Sapien’s effect on utility and worst-
+144:case security, the latter using an analytical methodol-
+145:ogy that checks whether a policy admits any attack
+146:trajectory by a fully hijacked agent (§6).
+147:While prior systems [9, 45, 62] also express dependencies
+148:across tool calls, they rely on static policies derived ahead of
+149:time (manually or with offline LLM assistance) from fixed
+150:domain rules (§8).1 This suits single-purpose agents, but
+151:not general-purpose agents whose appropriate actions may
+152:vary with every user request. Beyond the design of Sapien’s
+153:language and enforcement engine, our work suggests that
+154:today’s LLMs can synthesize expressive, fine-grained policies
+155:from natural language, providing strong protection across
+156:diverse tasks without humans writing or auditing policies.
+157:1Progent [51] generates task-specific policies with an LLM, but its policy
+158:language only constrains individual tool calls; to adapt across steps, it feeds
+159:tool outputs back to an LLM after every call to rewrite those rules (§8).
+160:2
+--EXP SETUP--
+859:Evaluation
+860:Our evaluation measures the advantages of Sapien’s ap-
+861:proach to balance utility-security tradeoffs and its practi-
+862:cality:
+863:1. Utility: Does Sapien impact the agent’s task success rate?
+864:2. Security: Can attackers achieve their goals (caused e.g.,
+865:by prompt injections) in the presence of Sapien policies?
+866:3. Efficiency: What latency and overheads does Sapien add
+867:to agent execution, and why?
+868:Baselines. We compare three agents that differ in what
+869:governs their tool calls: no policy (“NoPolicy”), a Sapien
+870:policy, and a per-task allow-list of tool names generated from
+871:the task prompt in the style of Conseca [57] (“AllowList”).
+872:AllowList stands in for coarse-grained, stateless contextual
+873:policies: it allows or denies each tool for the whole task,
+874:regardless of arguments or execution state, and is generated
+875:in a single LLM call (without Sapien’s self-correction pass,
+876:§5.3).
+877:Benchmarks. We evaluate Sapien on AgentDojo [13] and
+878:Toolathlon [31]. AgentDojo comprises 97 short tasks (most
+879:within five turns) set in synthetic environments across four
+880:suites—workspace, Slack, travel, and banking—each exposing
+881:a small set of 11–28 tools. Toolathlon features 108 longer-
+882:horizon tasks (dozens of turns) situated in a realistic en-
+883:vironment with a local file/shell workspace and 32 soft-
+884:ware applications—including GitHub, Notion, and Google
+885:Workspace—that together expose over 600 tools via MCP.
+886:To prevent Toolathlon from granting agents blanket, un-
+887:limited capabilities via a handful of “almighty tools” like
+888:local_python_execute, all agents upfront deny access to
+889:local_python_execute (impacting a handful of tasks that
+890:would otherwise use it for arbitrary computation), and we
+891:require Sapien to specify command predicates (e.g., the com-
+892:mand must be grep) for terminal_run_command.
+893:Models. We evaluate Sapien using four models: Gemini 3.8
+894:Flash, Gemini 3.1 Pro, Claude Sonnet 5, and Claude Opus 5.
+895:Each run uses the same model for agent execution and policy
+896:generation (Sapien or AllowList). On AgentDojo, we run
+897:all 97 tasks (949 attack instances) on all four models. For
+898:Toolathlon, we run all 108 tasks (212 attack instances) with
+899:Gemini 3.8 Flash and, due to cost, a random subset of 20 tasks
+900:(40 attack instances) with the other three models.
+901:Utility. Utility is the fraction of tasks the agent completes
+902:in a benign environment, measured using each benchmark’s
+903:native completion criteria. AgentDojo compares the final
+904:environment state or tool-call trajectory against a per-task
+905:specification. Toolathlon runs a per-task verification script
+906:comparing the agent’s workspace against a ground-truth
+907:workspace and querying modified external services.
+908:Analytical security. In standard agent security evalua-
+--CONCLUSION--
+1531:Conclusion
+1532:General-purpose agents need task-specific policies that track
+1533:what the agent has done and learned. Sapien provides a state-
+1534:ful policy language and an engine that enforces such policies
+1535:over tool calls. Our evaluation shows that Sapien preserves
+1536:utility while tightly constraining even a fully hijacked agent,
+1537:making stateful contextual policies a promising path toward
+1538:safely deploying autonomous agents.
+1539:Acknowledgments
+1540:We thank Marco Gruteser, Christoph Kern, Pierre Tholoniat,
+1541:Julien Piet, Dan Ramage, Ananth Balashankar, Greg Ganger,
+1542:Hank Levy, and David Culler for their helpful feedback and
+1543:ideas that contributed to this work.
+1544:References
+1545:[1] Aleph One. 1996. Smashing the Stack for Fun and Profit. Phrack
+1546:Magazine 7, 49 (1996). http://phrack.org/issues/49/14.html
+
+##### library/01_constraint_compiler/2610.23190_LangNCO/2610.23190_LangNCO_fulltext.txt  (3313 lines)
+--ABSTRACT--
+11:Abstract
+12:Neural combinatorial optimization (NCO) rapidly produces
+13:high-quality solutions for problem structures encountered dur-
+14:ing training, but operational requirements may change af-
+15:ter deployment and be communicated in natural language.
+16:We propose LangNCO, a framework that compiles instance-
+17:specific requirements into structured inference-time interven-
+18:tions for a frozen NCO solver, without changing the pre-
+19:trained policy’s architecture, learned input representation, or
+20:parameters. A pretrained LLM serves as a replaceable se-
+21:mantic front end, translating each requirement into a schema-
+22:validated domain-specific language (DSL) rule set. A deter-
+23:ministic Rule Executor applies the rules as nonexpansive hard
+24:action masks. Because local masking prevents immediate vi-
+25:olations but does not ensure that a complete feasible contin-
+26:uation remains reachable, Critical-Offset Decoding extracts
+27:rule-referenced critical nodes and reallocates part of a fixed
+28:rollout budget to multi-strength biased rollouts. Using con-
+29:trolled task-specific language to isolate solver adaptation from
+30:open-ended language robustness, we evaluate a CVRP policy
+31:on road closures, time windows, vehicle assignments, visit-
+32:order requirements, all pairwise combinations, and twelve
+33:additional constraint types. LangNCO achieves 100% fea-
+34:sibility on the four primary datasets with mean reference
+35:gaps of 1.63–3.26%, 97.33–100% feasibility when separately
+36:generated rules are composed for pairwise constraints, and
+37:98.67% feasibility across the additional constraints. These re-
+38:sults demonstrate modular post-training adaptation of a frozen
+39:NCO solver through inspectable language-derived rules, with-
+40:out retraining.
+41:1
+42:Introduction
+43:Combinatorial optimization underlies routing, scheduling,
+44:production planning, and robotic decision making. In these
+--INTRO END--
+117:needed by an assigned customer, delay a time-window cus-
+118:tomer beyond recovery, or close a route before a prerequisite
+119:is served. We therefore introduce Critical-Offset Decoding,
+120:which extracts explicitly referenced critical nodes from the
+121:generated rules and reallocates part of a fixed rollout budget
+122:to multi-strength biased rollouts. It never revives a masked
+123:action and balances completion-oriented exploration with the
+124:original policy’s cost-oriented search.
+125:Our contributions are threefold. First, we formulate post-
+126:training request adaptation of a fixed CVRP policy and intro-
+127:duce a modular language-to-rule interface whose validated
+128:output drives deterministic, nonexpansive action interven-
+129:tion, without adding constraint-specific inputs to the NCO
+130:policy or changing its architecture or weights. Second, we
+131:propose Critical-Offset Decoding, which biases a subset of
+132:rollouts toward rule-derived critical nodes, reducing future
+133:deadlocks and improving solution quality without increas-
+134:ing the rollout budget. Third, we evaluate the framework on
+135:four primary constraint types, all pairwise combinations, and
+136:twelve additional types. The complete method attains 100%
+137:feasibility on all four primary datasets with mean reference
+138:gaps of 1.63–3.26%, 97.33–100% feasibility when separately
+139:generated rules are composed for pairwise constraints, and
+140:98.67% feasibility across the additional constraints. These
+141:results show that structured language-derived rules can ex-
+142:tend a frozen NCO solver beyond its training-time problem
+143:definition without retraining.
+144:2
+--METHOD--
+228:Method
+229:Problem Setting
+230:Let x be a capacitated vehicle routing problem (CVRP) in-
+231:stance on nodes V = {0, 1, . . . , n}, where node 0 is the
+232:depot, customer i has demand di, and vehicle capacity is Q.
+233:A solution τ consists of depot-to-depot routes that visit ev-
+234:ery customer exactly once without exceeding capacity. With
+235:edge cost cij, its travel cost is C(τ | x).
+236:A pretrained autoregressive NCO policy πθ selects the
+237:next node at from a partial state st. Its parameters θ remain
+238:fixed throughout this work.
+239:At inference time, the target instance is accompanied by a
+240:natural-language specification ℓ, which may contain one or
+241:more requirements. Let Ω(x, ℓ) denote the set of solutions
+242:satisfying the base CVRP constraints and the requirements
+243:expressed by ℓ. The ideal constrained objective is
+244:τ ⋆∈arg
+245:min
+246:τ∈Ω(x,ℓ) C(τ | x).
+247:(1)
+248:The LLM rule generator maps ℓto a validated DSL rule
+249:set r = G(ℓ). The set Ω(x, ℓ) is a conceptual definition of
+250:the target solutions and is not available to the solver. During
+251:inference, the solver operates only on the generated rule set
+252:r.
+253:The base decoder applies a CVRP feasibility mask
+254:mbase
+255:t
+256:(a), where a value of one denotes an admissible action.
+257:We derive an additional rule mask mrule
+258:t
+259:(a, r) and apply
+260:mt(a, r) = mbase
+261:t
+262:(a) ∧mrule
+263:t
+264:(a, r).
+265:(2)
+266:Thus, a generated rule may remove a base-feasible action
+267:but cannot re-enable an action prohibited by the CVRP envi-
+--EXP SETUP--
+593:Experiments
+594:Experimental Setup
+595:Base solver and data.
+596:We use RouteFinder (Berto et al.
+597:2025b) trained only on standard CVRP. The base test set
+598:contains 300 instances from the LLMCoSolver benchmark
+599:(Jiang et al. 2025a), with 10–100 customer nodes and LKH-3
+600:near-optimal routes supplied for the unconstrained instances.
+601:Decoding uses POMO-style multistarts and eight geometric
+602:augmentations. The RouteFinder architecture and parameters
+603:remain fixed in all experiments.
+604:Constraint-augmented datasets.
+605:We construct four pri-
+606:mary datasets by adding one hard constraint to each base
+607:instance and selecting its targets so that the original high-
+608:quality solution violates the new requirement. Road closes
+609:an adjacent non-depot edge in both directions. Time imposes
+610:a no-wait hard time window of width 18–20 on an early-route
+611:customer, using travel time ⌈0.1 × Euclidean distance⌉. Ve-
+612:hicle assigns two capacity-compatible, high-demand cus-
+613:tomers, selected from different reference routes when pos-
+614:sible, to the same vehicle. Order requires two prerequisite
+615:nodes to precede a target node on the same route, using a
+616:sandwich construction such that neither the original route
+617:nor its reversal satisfies the precedence constraint. Every re-
+618:tained primary instance has a constraint-feasible reference
+619:solution.
+620:The constraints are expressed using controlled, task-
+621:specific natural-language descriptions with instance-specific
+622:
+623:============================================================
+624:=== PAGE 6 ===
+625:============================================================
+626:
+627:entities and values. Our evaluation focuses on constraint-type
+628:and compositional breadth rather than systematic robustness
+629:to paraphrasing.
+630:Methods and metrics.
+631:LLMCoSolver and Direct GPT-
+632:5 serve as direct-solution baselines that generate com-
+633:plete routes from the problem description. NCO w/o In-
+634:tervention is the unmodified pretrained RouteFinder de-
+635:coder; it receives neither the natural-language constraint
+636:nor a derived rule mask. Our variants use either Gemma4
+637:(gemma4:31b-it-q8_0) or GPT-5 only to generate the
+638:DSL, after which both use the same Rule Executor and
+639:Critical-Offset Decoding.
+640:DSL generation uses an initial attempt and up to two
+641:validation-feedback retries after parsing, schema-validation,
+642:or compile-check failures. If no valid rule is obtained, the
+--LIMITATIONS--
+919:limitations from semantic rule-generation errors.
+920:5
+921:Conclusion and Future Work
+922:We introduced LangNCO, a framework for adapting a frozen
+923:NCO solver to instance-specific natural-language constraints
+924:at inference time. An LLM compiles each requirement into
+925:a schema-validated DSL rule, which a deterministic Rule
+926:Executor applies as an action mask. Critical-Offset Decod-
+927:ing further uses rule-derived critical nodes to mitigate future
+928:deadlocks within a fixed rollout budget. In the controlled de-
+929:coding evaluation with independently implemented reference
+930:rule masks, it achieved 100% feasibility on all four primary
+931:constraints under the same budget of 100 rollouts per POMO
+932:start and augmentation, compared with 87.67–100% for stan-
+933:dard sampling, while yielding lower mean reference gaps
+934:on the three nonlocal constraints. The complete LangNCO
+935:pipeline achieved 100% feasibility with mean reference gaps
+936:of 1.63–3.26% on the primary constraints, 97.33–100% fea-
+937:sibility when separately generated rules are composed for all
+938:pairwise combinations, and 98.67% feasibility across twelve
+939:
+940:============================================================
+941:=== PAGE 8 ===
+942:============================================================
+

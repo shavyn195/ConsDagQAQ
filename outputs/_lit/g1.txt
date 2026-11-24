@@ -1,0 +1,689 @@
+##### library/01_constraint_compiler/2509.25586_ATLAS/2509.25586_ATLAS_fulltext.txt  (4952 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:ATLAS: Constraints-Aware Multi-Agent
+7:Collaboration for Real-World Travel Planning
+8:Jihye Choi1 2 *, Jinsung Yoon1, Jiefeng Chen1, Somesh Jha2 and Tomas Pfister1
+9:1Google Cloud, 2University of Wisconsin-Madison
+10:While Large Language Models (LLMs) have shown remarkable advancements in reasoning and tool use,
+11:they often fail to generate optimal, grounded solutions under complex constraints. Real-world travel
+12:planning exemplifies these challenges, evaluating agents’ abilities to handle constraints that are explicit,
+13:implicit, and even evolving based on interactions with dynamic environments and user needs. In this
+14:paper, we present ATLAS, a general multi-agent framework designed to effectively handle such complex
+15:nature of constraints awareness in real-world travel planning tasks. ATLAS introduces a principled
+16:approach to address the fundamental challenges of constraint-aware planning through dedicated
+17:mechanisms for dynamic constraint management, iterative plan critique, and adaptive interleaved
+18:search. ATLAS demonstrates state-of-the-art performance on the TravelPlanner benchmark, improving
+19:the final pass rate from 23.3% to 44.4% over its best alternative. More importantly, our work is the
+20:first to demonstrate quantitative effectiveness on real-world travel planning tasks with live information
+21:search and multi-turn feedback. In this realistic setting, ATLAS showcases its superior overall planning
+22:performance, achieving an 84% final pass rate which significantly outperforms baselines including ReAct
+23:(59%) and a monolithic agent (27%).
+24:1. Introduction
+25:Constraint awareness and compliance is a fundamental aspect of intelligence, crucial for reasoning
+26:and problem-solving (Dechter, 2003; Holyoak and Simon, 1999). Solving real-world problems under
+27:constraints requires a delicate interplay of understanding requirements, searching for information,
+28:and synthesizing a solution that respects all rules. While Large Language Models (LLMs) have
+29:made rapid advancements in reasoning and tool use (Nakano et al., 2021; Schick et al., 2023),
+30:their reliability is still limited in practical tasks with complex, multifaceted constraints. Despite
+31:their capabilities, they often produce plans that are incoherent or invalid, a critical shortcoming for
+32:real-world deployment (Kambhampati et al., 2024; Valmeekam et al., 2023).
+33:Existing research often sidesteps the core challenge. Some methods focus on constraint compliance
+34:but assume all necessary information is provided upfront (Lee et al., 2025; Parmar et al., 2025),
+--METHOD--
+495:Method
+496:Delivery ↑
+497:Commonsense ↑
+498:Hard Constraint ↑
+499:Final Pass ↑
+500:Micro
+501:Macro
+502:Micro
+503:Macro
+504:Validation
+505:(#180)
+506:Gemini-2.5-Pro
+507:ReAct
+508:98.33
+509:80.32
+510:29.63
+511:55.55
+512:46.56
+513:20.56
+514:ReAct+Reflexion
+515:100.00
+516:79.10
+517:27.22
+518:59.29
+519:50.00
+520:22.22
+521:ReAct+EvoAgent
+522:100.00
+523:78.06
+524:23.89
+525:57.86
+526:40.56
+527:12.22
+528:PMC
+529:100.00
+530:78.68
+531:30.56
+532:43.33
+533:37.22
+534:23.33
+
+##### library/01_constraint_compiler/2510.08992_ConstraintsOfThought/2510.08992_ConstraintsOfThought_fulltext.txt  (1734 lines)
+--ABSTRACT--
+15:Abstract
+16:While large language models (LLMs) can generate multi-step plans, they frequently
+17:produce steps that violate high-level intent or domain constraints. We introduce
+18:Constraints-of-Thought (Const-o-T), a structured intermediate representation that
+19:converts each reasoning step into an 〈intent, constraint〉pair, where the constraint
+20:is an executable predicate evaluated by a domain validator. These constraints
+21:restrict the feasible action space at each state and transform free-form reasoning
+22:traces into controllers that actively shape search. The primary contribution of this
+23:work is the executable intent–constraint representation, which converts reasoning
+24:steps into constraints that directly restrict the planner’s feasible action space. We
+25:demonstrate the utility of this representation by integrating it with Monte Carlo
+26:Tree Search (MCTS), where extracted constraints restrict the planner’s admissible
+27:actions during search. This yields both improved task accuracy and reduced search
+28:complexity, reflected in lower branching factors and faster convergence. Across
+29:four domains representing distinct reasoning settings including planning, code
+30:synthesis, symbolic reasoning, and scientific knowledge, Const-o-T consistently
+31:outperforms prompting-only and search-based baselines. Each reasoning step
+32:produces an executable constraint κt that induces a restricted action set Aκt(s) ⊆
+33:A(s), which is enforced prior to node expansion during search.The key intellectual
+34:contribution is demonstrating that executable intent–constraint representations can
+35:serve as a general, domain-agnostic prior that converts language model reasoning
+36:from descriptive rationales into verifiable search controllers.
+37:1
+38:Introduction
+39:Large language models (LLMs) can generate multi-step reasoning traces, but these traces often violate
+40:domain constraints and fail to align with user intent. While approaches such as Chain-of-Thought
+41:(CoT) reasoning [1] appear to “think through” the space of possible plans, they produce free-form
+42:reasoning without an executable mechanism to enforce feasibility during planning. As a result,
+43:generated actions frequently violate domain constraints or logical consistency across a range of tasks,
+44:including combinatorial planning (e.g., strategy games and program synthesis [2, 3, 4]) and symbolic
+45:reasoning (e.g., arithmetic [5]). Prior work typically uses reasoning traces as guidance or post-hoc
+46:verification, but does not modify the planner’s feasible action space, leading to exploration of invalid
+47:or misaligned actions during search [6].
+48:We propose Constraints-of-Thought (Const-o-T), a framework that converts reasoning steps into
+--INTRO END--
+104:focusing exploration on feasible trajectories.
+105:We demonstrate the practical benefits of this representation by integrating Const-o-T with MCTS
+106:for constraint-guided planning. The key novelty of our approach is the executable intent–constraint
+107:representation, while MCTS serves as a supporting mechanism that operationalizes these constraints
+108:during search. In our framework, an LLM first generates a sequence of 〈intent, constraint〉pairs from
+109:the user’s strategic input. Each constraint κt induces a restricted action set Aκt(s) ⊆A(s), and this
+110:restriction is enforced before node expansion during search, pruning infeasible actions and reducing
+111:the branching factor. Prior approaches incorporate constraints through scoring, verification, or
+112:affordance weighting, where the full action set A(s) is still considered during generation. In contrast,
+113:our approach restricts the admissible action set to Aκt(s) prior to expansion, preventing infeasible
+114:actions from entering the search process. We evaluate Const-o-T across four domains, where it
+115:consistently outperforms strong baselines. These results demonstrate that structured intermediate
+116:representations can effectively guide planning and improve reliability. Because Const-o-T produces
+117:interpretable intent–constraint pairs that expose the system’s reasoning process, we also evaluate
+118:whether this representation improves human understanding and perceived alignment with system
+119:behavior, finding that users report significantly higher transparency, usability, trust, and alignment.
+120:Our work makes the following contributions:
+121:1. Constraints-of-Thought (Const-o-T). We propose an executable intermediate representation that
+122:decomposes strategies into 〈intent, constraint〉pairs, where constraints define a reduced feasible
+123:action space A′(s).
+124:2. Constraint-Guided MCTS. We integrate Const-o-T with MCTS, operationalizing executable
+125:constraints as search controllers that restrict the feasible action space during exploration.
+126:3. Computational Evaluation. We empirically show consistent branching-factor reduction and
+127:compute-normalized gains across heterogeneous domains.
+128:4. Human Evaluation. We conduct a user study on the board game Risk showing that the structured
+129:⟨intent, constraint⟩representation improves transparency, trust, and alignment with user strategies
+130:(p < 0.05).
+131:2
+--METHOD--
+384:Method
+385:LLaMA 3.3
+386:GPT-4.1
+387:GPT-5.2
+388:Claude Haiku
+389:DeepSeek R1
+390:GPT-OSS-120B
+391:Direct Prompt
+392:0.64
+393:0.60
+394:0.58
+395:0.63
+396:0.76
+397:0.61
+398:CoT [1]
+399:0.74
+400:0.54
+401:0.56
+402:0.64
+403:0.73
+404:0.70
+405:CoT+RS [27]
+406:0.72
+407:0.64
+408:0.70
+409:0.70
+410:0.87
+411:0.66
+412:LLMFP [21]
+413:1.13
+414:0.81
+415:1.08
+416:1.03
+417:1.15
+418:0.82
+419:CTP [28]
+420:0.68
+421:0.56
+422:0.59
+423:0.65
+--EXP SETUP--
+479:Experiments
+480:We evaluate our approach along three dimensions: task accuracy, structural alignment of generated
+481:plans, and interpretability of intermediate reasoning steps. We benchmark our method against a
+482:diverse set of baselines spanning prompting-based, search-based, and constraint-based planning
+483:approaches. The prompting baselines include Direct Prompt, Chain-of-Thought (CoT) [1], Tree-of-
+484:Thought (ToT) [14], CoT with Rejection Sampling (CoT+RS) [27], Constraint Template Prompting
+485:(CTP) [28], and Chain-of-Verification (CoV) [29]. For search-based methods, we consider classical
+486:MCTS [30] as well as MCTS augmented with CoT reasoning. We also include a constraint-based
+487:planning baseline, LLMFP [21], which translates natural language problems into formal optimization
+488:constraints. Unless otherwise specified, all baselines are evaluated consistently across all domains.
+489:4.1
+490:Game Strategy: Risk
+491:Risk is a strategy board game played on a world map of 21 territories grouped into six continents.
+492:We focus on the initial troop placement studied in prior work [19] (See Appendix §G for illustrative
+493:example). We use the Commander’s Intent (CI) dataset [19], which contains 1, 053 examples of
+494:natural language strategies paired with corresponding ground-truth territories for troop placement.
+495:We measure alignment using Earth Mover’s Distance (EMD) [31], which quantifies the minimum
+496:cost of transforming the predicted troop placement distribution into the ground-truth distribution. Our
+497:results demonstrate that across all evaluated LLMs, MCTS with Const-o-T consistently achieves the
+498:lowest EMD, indicating the best alignment between predicted and ground-truth troop placements.
+499:The key improvement comes from constraint-guided search, which restricts the action space to
+500:strategy-consistent troop placements during planning (See Table 1).
+501:4.2
+502:CAD Code Generation
+503:The task involves translating natural language descriptions of 3D objects into executable parametric
+504:CAD scripts, where constraint enforcement helps maintain syntactic validity and geometric cor-
+505:rectness. We utilize CADPrompt [32], a dataset containing 200 3D design examples, each paired
+506:with a natural language description and a corresponding Python script (See Figure 13). We report
+507:Hausdorff distance between generated and ground-truth objects and the percentage of generated
+508:examples compiling successfully. The results in Table 2 demonstrate that MCTS with Const-o-T
+509:achieves the best performance across both LLaMA and GPT-4.1, with the lowest Hausdorff distances
+510:(0.21 and 0.12) and the highest success rate of 95.5% for GPT-4.1.
+511:6
+512:
+513:============================================================
+514:=== PAGE 7 ===
+515:============================================================
+516:
+517:Figure 2: User study ratings across three interaction modes: alignment, agnostic, and adversarial.
+518:Statistical significance is indicated by asterisks (∗p < 0.05, ∗∗p < 0.01, ∗∗∗p < 0.001).
+519:Table 2: Evaluation metrics across benchmarks. For CADPrompt, we report the median Hausdorff
+520:Distance (HD) and Success Rate (SR). For GSM8K, Math-500, and GPQA, we report accuracy.
+521:Method
+522:CADPrompt [32]
+523:GSM8K [5]
+524:Math-500 [5]
+525:GPQA[33]
+526:LLaMA-3
+527:GPT-4.1
+528:LLaMA-3
+--LIMITATIONS--
+773:Limitations
+774:Const-o-T depends on accurate constraint extraction; when LLMs misinterpret user input or produce
+775:incomplete symbolic constraints, the search may be guided toward suboptimal solutions. Additionally,
+776:the framework assumes users can articulate intent in natural language; however, for complex scenarios,
+777:users may struggle to express nuanced preferences, potentially leading to constraint extraction failures
+778:and human-AI alignment issues.
+779:8
+780:Conclusion
+781:We introduced Constraints-of-Thought (Const-o-T), a framework that transforms unconstrained
+782:natural language reasoning into structured, verifiable constraints for guiding language model planning.
+783:By representing each reasoning step as an ⟨intent, constraint⟩pair, our approach provides actionable
+784:control over the search process rather than merely explanatory rationales. Our integration with MCTS
+785:demonstrates how constraints can effectively prune infeasible branches and direct exploration toward
+786:semantically meaningful actions. Comprehensive evaluation across four domains shows consistent
+787:improvements in accuracy, structural alignment, and constraint satisfaction. These findings suggest
+788:that structured constraint extraction represents a promising direction for constraint-guided reasoning
+789:in LLM-based planning systems.
+790:9
+791:
+792:============================================================
+793:=== PAGE 10 ===
+794:============================================================
+795:
+796:Acknowledgment
+
+##### library/01_constraint_compiler/2602.20424_ImplicitIntelligence/2602.20424_ImplicitIntelligence_fulltext.txt  (2743 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:Implicit Intelligence - Evaluating Agents on What Users Don’t Say
+7:Ved Sirdeshmukh, Marc Wetter
+8:Applied Machine Learning Research
+9:{vsirdeshmukh, mwetter}@labelbox.com
+10:Real-world requests to AI agents are fundamentally underspecified. Natural
+11:human communication relies on shared context and unstated constraints
+12:that speakers expect listeners to infer. Current agentic benchmarks test
+13:explicit instruction-following but fail to evaluate whether agents can reason
+14:about implicit requirements spanning accessibility needs, privacy bound-
+15:aries, catastrophic risks, and contextual constraints. We present Implicit
+16:Intelligence, an evaluation framework testing whether AI agents can move
+17:beyond prompt-following to become genuine goal-fulfillers, paired with
+18:Agent-as-a-World (AaW), a harness where interactive worlds are defined
+19:in human-readable YAML files and simulated by language models. Our
+20:scenarios feature apparent simplicity in user requests, hidden complexity
+21:in correct solutions, and discoverability of constraints through environ-
+22:mental exploration. Evaluating 16 frontier and open-weight models across
+23:205 scenarios, we find that even the best-performing model achieves only
+24:48.3% scenario pass rate, revealing substantial room for improvement
+25:in bridging the gap between literal instruction-following and human-like
+26:contextual reasoning.
+27:1
+28:Introduction
+29:The gap between what users say and what they mean represents a fundamental challenge in deploying
+30:AI agents. Natural communication is inherently underspecified: speakers rely on shared context,
+31:implicit assumptions, and unstated constraints they expect listeners to infer. A simple request often
+32:carries invisible requirements that, if violated, render any technically correct solution useless or
+33:harmful.
+34:Current benchmarks have driven progress in explicit instruction-following and tool use, testing
+--INTRO END--
+39:We argue the next frontier lies not in more sophisticated tool use or longer planning, but in Implicit
+40:Intelligence: the capacity to identify, reason about, and satisfy requirements users expect but
+41:never explicitly state. We introduce an evaluation framework probing this capability through four
+42:categories: Implicit Reasoning, inferring unstated goals from environmental context; Catastrophic
+43:Risk Avoidance, preventing irreversible actions a reasonable person would never intend; Privacy
+44:& Security, respecting sensitive boundaries users assume but don’t articulate; and Accessibility,
+45:adapting to user needs discoverable through environmental context.
+46:1
+47:arXiv:2602.20424v1  [cs.AI]  23 Feb 2026
+48:
+49:============================================================
+50:=== PAGE 2 ===
+51:============================================================
+52:
+53:To enable systematic evaluation, we introduce Agent-as-a-World (AaW), a paradigm where interactive
+54:worlds are defined in single YAML files and simulated by language models. Unlike traditional
+55:simulations requiring complex infrastructure or extensive engineering, AaW leverages LLMs as
+56:universal simulators. Each scenario includes entities with state and actions, contextual information
+57:revealing implicit constraints, execution rules governing dynamics, and evaluation rubrics assessing
+58:whether implicit requirements were satisfied.
+59:Our scenarios share three properties: apparent simplicity in user requests that appear straightfor-
+60:ward; hidden complexity in correct solutions requiring reasoning beyond explicit instructions; and
+61:discoverability of constraints through proactive environmental exploration.
+62:Together, Implicit Intelligence and Agent-as-a-World provide a scalable framework for developing
+63:AI agents that bridge the gap between literal instruction-following and human-like contextual rea-
+64:soning. By making implicit expectations explicit in evaluation, we drive progress toward agents that
+65:understand what users mean, not just what they say.
+66:2
+--METHOD--
+323:Dataset Construction
+324:Constructing an evaluation dataset for implicit intelligence presents a unique challenge: scenarios
+325:must be difficult enough to cause frontier models to fail, yet fair enough that failure reflects genuine
+326:reasoning gaps rather than arbitrary tricks. We address this through a hybrid pipeline that combines
+327:synthetic generation with expert human refinement, illustrated in Figure 3.
+328:5.1
+329:Seed Sources
+330:Scenario generation begins with diverse seeds that ground scenarios in realistic user contexts. First,
+331:we leverage an iOS Actions Library Cassinelli (2026) consisting of 303 executable actions derived
+332:directly from Apple’s Shortcuts framework, spanning seven functional domains: apps (103 actions),
+333:documents (48), location (18), media (66), scripting (45), sharing (7), and web (16). These
+334:actions cover common iOS capabilities such as calendar management, file operations, media control,
+335:5
+336:
+337:============================================================
+338:=== PAGE 6 ===
+339:============================================================
+340:
+341:Synthetic Generation Phase
+342:Seeds 
+343:* iOS Actions 
+344:* Persona 
+345:* Category 
+346:Planner 
+347:Drafts Scenario YAML 
+348:Execute 
+349:Run against Attempter 
+350:Attempter 
+351:Pass?
+352:Candidate Scenario 
+353:Yes - Refine
+354:No - Fail
+355:Human Refinement Phase
+356:Logical Consistency 
+357:Is the scenario fair? 
+358:Evaluation Objectivity 
+359:Is the rubric binary and 
+360:objective?  
+361:Model Failure 
+362:Does it stump ≥1 frontier 
+--EXP SETUP--
+358:Evaluation Objectivity 
+359:Is the rubric binary and 
+360:objective?  
+361:Model Failure 
+362:Does it stump ≥1 frontier 
+363:model? 
+364:Final Scenario 
+365:Added to benchmark 
+366:Figure 3: The hybrid construction pipeline to synthetically create scenarios for Implicit Intelligence and using human-in-the-loop to refine
+367:automation logic, and focus-mode configuration, ensuring that scenarios reflect authentic iOS action
+368:signatures and constraints. Second, we draw from PersonaHub Ge et al. (2025) to introduce
+369:demographic and contextual diversity, sampling personas with varied ages, occupations, and health
+370:conditions to shape scenario context without explicitly revealing implicit requirements.
+371:While our scenarios are grounded in iOS Shortcuts, a realistic action space with 303 operations, the
+372:evaluation targets are domain-agnostic. iOS Shortcuts provides ecological validity (real users interact
+373:with this environment daily), action diversity (operations span communication, media, accessibility,
+374:privacy, and system control), and natural opportunities for implicit requirements through accessibility
+375:settings, contact relationships, and calendar conflicts. The implicit requirements transfer across
+376:agentic domains. iOS Shortcuts provides the grounding; implicit intelligence provides the evaluation
+377:target.
+378:5.2
+379:Synthetic Generation
+380:The first phase uses an iterative refinemnent loop to generate inherently challenging scenarios through
+381:three stages: (1) Plan, where an agent generates an initial YAML scenario based on a category and
+382:persona; (2) Attempt, where the scenario is executed against a rotating attempter model, essentially
+383:the Primary Agent (GPT-5 series, Claude Opus/Sonnet, Gemini 3 Pro), to record the full trajectory;
+384:and (3) Refine, where the Planner receives successful trajectories and modifies the scenario, adding
+385:timing constraints, order dependencies, or verification steps, to induce failure. This loop continues
+386:until the attempter fails or a maximum iteration count is reached.
+387:5.3
+388:Scenario Validation
+389:To ensure implicit requirements reflect genuine user expectations and provide a measurable challenge,
+390:synthetic candidates undergo a rigorous three-stage review. First, an author refines the synthetic
+391:scenario including environmental context. Second, two independent experts validate the draft for
+392:Logical Consistency (requirements are discoverable without arbitrary "tricks"), Shared Expectations
+393:(avoiding author idiosyncrasies), and Rubric Objectivity (binary pass conditions). Finally, scenarios
+394:must achieve unanimous consensus and pass a Difficulty Gate: candidates are retained only if they
+395:cause at least one frontier model (including GPT-5.2, GPT-5, Claude Opus/Sonnet 4.5, and Gemini 3
+396:Pro) to fail (≤70% score) while allowing at least one to pass (100% score). Scenarios passed by all
+397:models are discarded.
+398:6
+399:
+400:============================================================
+401:=== PAGE 7 ===
+402:============================================================
+403:
+404:5.4
+405:World Model Consistency
+406:Throughout both synthetic generation and human validation, the World Model is fixed at Claude Opus
+407:4.5. This choice reflects empirical findings (detailed in Section 7) that Claude Opus 4.5 provides the
+--RESULTS--
+511:Main Results
+512:Table 2 presents the primary evaluation results across all models and categories; full model endpoint
+513:specifications are provided in Appendix A.7.
+514:The benchmark reveals that implicit intelligence remains a substantial challenge. Even the best-
+515:performing model, GPT-5.2-pro, achieves only 48.3% SPR, failing to satisfy all implicit requirements
+516:in more than half of scenarios. This contrasts sharply with near-ceiling performance on established
+517:reasoning benchmarks, suggesting that inferring unstated user needs represents a distinct capability.
+518:Category-level analysis reveals that catastrophic risk avoidance and privacy protection require different
+519:model strengths. Claude Opus 4.5 excels at recognizing potentially harmful actions, while GPT-5.2-
+520:pro leads on privacy-sensitive scenarios. Open-weight models struggle particularly with catastrophic
+521:risk, often proceeding with dangerous operations that frontier models refuse.
+522:8
+523:
+524:============================================================
+525:=== PAGE 9 ===
+526:============================================================
+527:
+528:Model
+529:SPR (%)↑
+530:NSS (%)↑
+531:Implicit
+532:Catastrophic
+533:Privacy
+534:Access.
+535:OpenAI
+536:GPT-4.1
+537:18.5±5.4
+538:49.4±4.5
+539:21.4
+540:19.6
+--LIMITATIONS--
+723:Limitations.
+724:We acknowledge several limitations. Our scenario construction reflects the perspec-
+725:tives of the authors; implicit requirements may not fully represent the diversity of real-world user
+726:expectations across cultures, age groups, and technical backgrounds. Benchmark temporality poses a
+727:challenge: iOS features evolve with each software update, meaning scenario validity may degrade
+728:over time. Our action space is constrained to approximately 300 native iOS actions, while real-world
+729:usage extends to third-party applications with their own implicit conventions. However, the Agent-as-
+730:a-World architecture makes extending coverage straightforward, as new applications can be defined
+731:entirely in YAML.
+732:Conclusion. We introduced Implicit Intelligence, an evaluation framework testing whether AI
+733:agents can move beyond literal instruction-following to become genuine goal-fulfillers, paired with
+734:Agent-as-a-World, a harness enabling scalable evaluation through LLM-simulated environments.
+735:Evaluating frontier models across four categories of implicit requirements, we find substantial room
+736:for improvement. The gap between strong performance on established benchmarks and modest results
+737:here reveals that implicit intelligence remains a frontier challenge distinct from general reasoning
+738:capabilities.
+739:10
+740:
+741:============================================================
+742:=== PAGE 11 ===
+743:============================================================
+744:
+745:References
+746:Matthew Cassinelli. Action directory. https://matthewcassinelli.com/sirishortcuts/actions/,
+
+##### library/01_constraint_compiler/2604.17886_PRefine/2604.17886_PRefine_fulltext.txt  (4768 lines)
+--ABSTRACT--
+12:Abstract
+13:Users often omit essential details in their re-
+14:quests to LLM-based agents, resulting in under-
+15:specified inputs for tool use. This poses a fun-
+16:damental challenge for tool-augmented agents,
+17:as API execution typically requires complete
+18:arguments, highlighting the need for person-
+19:alized tool calling. To study this problem, we
+20:present Multi-Session Personalized Tool Call-
+21:ing (MPT), a benchmark comprising 4,695 in-
+22:stances over 459 multi-session interaction his-
+23:tories that cover three challenges: Preference
+24:Recall, Induction, and Transfer. We further pro-
+25:pose PREFINE, a test-time memory method
+26:that maintains the user’s latent preference as
+27:a textual hypothesis revised through a generate–
+28:verify–refine loop. Across five LLMs, existing
+29:memory systems often fail to improve on full-
+30:history prompting; PREFINE outperforms all
+31:baselines and alone surpasses it on Preference
+32:Transfer. These results indicate that memory
+33:for personalized agents must abstract behavior
+34:into preferences, rather than simply archive it.
+35:1
+36:Introduction
+37:LLM-based agents increasingly rely on external
+38:tools to perform complex tasks such as deep re-
+39:search (Xu and Peng, 2025) and computer use
+40:(Sager et al., 2026). These tools, typically realized
+41:as parameterized functions, are invoked with ar-
+42:guments often missing from user requests; e.g., a
+43:query as simple as “Book a flight for my trip” speci-
+44:fies neither the origin, the destination, nor the price.
+45:A direct solution to such underspecification is to
+--INTRO END--
+129:↑ Preference-inferred Args.
+130:Figure 1: Example of latent preference modeling for personalized tool calling. No prior session involves flights, so
+131:flight_class=“Economy” cannot be retrieved from past calls. Instead, the agent must model the user’s preference
+132:from its cross-function expressions (price_range, free_entry, car_type) and apply it to the unseen argument.
+133:revised across sessions through a generate–verify–
+134:refine loop. A candidate hypothesis enters memory
+135:only after being verified against the accumulated
+136:behavioral record, yielding a memory that is an
+137:abstraction of user behavior rather than a raw log.
+138:Across five LLMs and six methods, agents
+139:reliably recover explicit arguments but struggle
+140:with omitted preference-sensitive ones, and perfor-
+141:mance degrades from Recall through Induction to
+142:Transfer. Retrieval- and organization-based mem-
+143:ories (RAG, Mem0, LangMem) even fall below
+144:full-history prompting, indicating that surfacing
+145:past records is not enough unless the evidence is
+146:abstracted into a preference. PREFINE, in contrast,
+147:outperforms all baselines, and is the only method to
+148:exceed full-history prompting on Transfer without
+149:session context. Its advantage also holds as compet-
+150:ing and unrelated observations accumulate in his-
+151:tory, a difficulty we quantify with a new evidence
+152:interference score: all methods degrade under high
+153:interference, but PREFINE remains the best. Abla-
+154:tions on PREFINE further show that verification,
+155:not repeated refinement, drives these gains.
+156:2
+--METHOD--
+450:Benchmark Construction: MPT
+451:Building on §3, we present Multi-Session Person-
+452:alized Tool-Calling (MPT),1 a benchmark that
+453:evaluates whether an agent can infer the dominant
+454:preference from a history H and apply it to a query
+455:q with unspecified preference-sensitive arguments.
+456:We construct separate pools of histories (§4.2) and
+457:queries (§4.3), then pair them into final instances
+458:(§4.4). Figure 2 illustrates the overall process.
+459:4.1
+460:Preprocessing
+461:Source Corpora
+462:We reviewed 23 dialogue cor-
+463:pora against multi-session structure, API calls with
+464:arguments, and satisfaction of C1–C3 (§3), se-
+465:lecting SGD (Rastogi et al., 2020), the English
+466:portion of DuRecDial 2.0 (Liu et al., 2021), and
+467:HomeBench (Li et al., 2025b). See Appendix B.1
+468:for screening and preprocessing details.
+469:Preference Realization
+470:We group preference-
+471:relevant arguments across functions into latent
+472:preferences. For example, price_range=“cheap”
+473:in GetRestaurants and free_entry=True in
+474:GetTravel both express low_cost.2 MPT defines
+475:each preference over multiple functions rather than
+476:a single parameter or tool (Table 1). This require-
+477:ment (C1) restricts the eligible preferences in the
+478:source corpora. The resulting five latent prefer-
+479:ences nevertheless cover 18 realizations over 16
+480:1https://anonymous.4open.science/r/MPT-4051/
+481:2We keep the original schema definitions and apply nor-
+482:malization following Moghe et al. (2024); see Appendix A.7.
+483:function–parameter pairs in 13 functions (Table 2).
+484:Human validation of the cost and party-size prefer-
+485:ences yielded 89.7% and 97.4% agreement (Fleiss’
+486:κ = 0.701 and 0.880; 19 annotators); ambiguous
+487:preferences were excluded (Appendix B.2).
+488:4.2
+489:History Composition
+--EXP SETUP--
+3008:Setup
+3009:Annotators were presented with argu-
+3010:ment values drawn from the API schemas in
+3011:MPT, and asked to classify each value into
+3012:one of three categories: low_cost, high_cost,
+3013:or Neither for the cost pair, and solo_usage,
+3014:group_usage, or Neither for the party-size pair.
+3015:For example, given price_range=“Cheap” in
+3016:GetRestaurants
+3017:and
+3018:free_entry=True
+3019:in
+3020:GetTravel, annotators judged whether each
+3021:value realizes low_cost. The study covered 27
+3022:argument values across 12 functions for the cost
+3023:pair, and the counts 1 to 4 for the party-size pair.
+3024:The study targets these two pairs because each
+3025:is realized through heterogeneous arguments
+3026:(price_range, free_entry, car_type for the
+3027:former;
+3028:passengers,
+3029:number_of_tickets,
+3030:number_of_seats
+3031:for
+3032:the
+3033:latter),
+3034:whereas
+3035:prefers_star and eco follow from the argument
+3036:value itself and admit no comparable judgment.
+3037:Results
+3038:Annotators agreed with our realization
+3039:in 89.7% of cases for the cost pair and 97.4% for
+3040:the party-size pair. Inter-annotator agreement, mea-
+3041:sured by Fleiss’ κ (Fleiss, 1971), was κ = 0.701
+3042:(substantial) for cost and κ = 0.880 (almost per-
+3043:fect) for party size, following the interpretation
+3044:scale of Landis and Koch (1977). All 19 anno-
+3045:tators confirmed that the names solo_usage and
+3046:group_usage clearly represent the intended mean-
+3047:17
+3048:
+3049:============================================================
+3050:=== PAGE 18 ===
+3051:============================================================
+3052:
+3053:ing, while 16 of 19 (84%) confirmed the same for
+3054:low_cost and high_cost.
+3055:Discussion
+3056:The slightly lower agreement on
+3057:the cost pair (κ
+--RESULTS--
+3037:Results
+3038:Annotators agreed with our realization
+3039:in 89.7% of cases for the cost pair and 97.4% for
+3040:the party-size pair. Inter-annotator agreement, mea-
+3041:sured by Fleiss’ κ (Fleiss, 1971), was κ = 0.701
+3042:(substantial) for cost and κ = 0.880 (almost per-
+3043:fect) for party size, following the interpretation
+3044:scale of Landis and Koch (1977). All 19 anno-
+3045:tators confirmed that the names solo_usage and
+3046:group_usage clearly represent the intended mean-
+3047:17
+3048:
+3049:============================================================
+3050:=== PAGE 18 ===
+3051:============================================================
+3052:
+3053:ing, while 16 of 19 (84%) confirmed the same for
+3054:low_cost and high_cost.
+3055:Discussion
+3056:The slightly lower agreement on
+3057:the cost pair (κ
+3058:=
+3059:0.701 vs. 0.880) likely
+3060:reflects the broader semantic range of cost-
+3061:related signals: whereas party size is unambigu-
+3062:ous, cost-conscious behavior is realized through
+3063:heterogeneous argument types, price_range,
+3064:average_star, free_entry, car_type, and oth-
+3065:ers, leaving more room for individual interpreta-
+3066:tion. Nevertheless, substantial agreement on both
+--LIMITATIONS--
+1660:Limitations
+1661:This work focuses on a controlled setting for eval-
+1662:uating latent preference reasoning in personalized
+1663:tool-calling. In particular, we study whether an
+1664:agent can infer reusable preference constraints
+1665:from interaction history and apply them to under-
+1666:specified API parameters under a schema-bounded
+1667:action space.
+1668:A history may reflect several preferences, but
+1669:each MPT query targets only one, which persists
+1670:across sessions (C3) and keeps the gold argument
+1671:unambiguous. Preferences that shift over time or
+1672:combine within a query are a natural extension.
+1673:The five preferences in Table 2 can be extended
+1674:by adding realization mappings, and inferred pref-
+1675:erences transfer to seven unseen functions (§7.2).
+1676:PREFINE keeps its memory as free text, so a hy-
+1677:pothesis can state several constraints, though select-
+1678:ing among them per query is not evaluated. Finally,
+1679:users are composed from existing corpora, since a
+1680:latent preference must be known to be scored.
+1681:Ethics Statement
+1682:MPT is derived from three publicly released cor-
+1683:pora. SGD is distributed under CC BY-SA 4.0 and
+

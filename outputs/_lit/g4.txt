@@ -1,0 +1,728 @@
+##### library/02_objective_factorization/2603.01620_ToolRLA/2603.01620_ToolRLA_fulltext.txt  (1127 lines)
+--ABSTRACT--
+10:Abstract
+11:Tool-integrated agents that interleave reasoning
+12:with API calls are promising for complex tasks,
+13:yet aligning them for high-stakes, domain-
+14:specific deployment remains challenging: ex-
+15:isting reinforcement learning approaches rely
+16:on coarse binary rewards that cannot distin-
+17:guish tool selection errors from malformed
+18:parameters.
+19:We present ToolRLA, a three-
+20:stage post-training pipeline (SFT →GRPO
+21:→DPO) for domain-specific tool agents. The
+22:core contribution is a fine-grained reward func-
+23:tion with multiplicative correctness decompo-
+24:sition spanning four dimensions—format va-
+25:lidity, tool selection, parameter accuracy, and
+26:regulatory compliance—that encodes domain
+27:priority orderings as inductive biases in the
+28:reward landscape.
+29:Deployed on a financial
+30:advisory copilot (80+ advisors, 1,200+ daily
+31:queries), ToolRLA achieves over three months:
+32:a 47% improvement in task completion rate
+33:(62%→91%), a 63% reduction in tool invoca-
+34:tion errors (38%→14%), and a 93% reduction
+35:in regulatory violations (12%→0.8%), within
+36:sub-2-second latency. Ablation studies show
+37:the multiplicative reward design accounts for 7
+38:percentage points of improvement over additive
+39:alternatives. Generalization is further validated
+40:on ToolBench and API-Bank.
+41:1
+42:Introduction
+43:Large language models (LLMs) augmented with
+--INTRO END--
+123:plicative composition of tool-name, coverage, and
+124:parameter accuracy sub-scores, so a wrong tool
+125:selection collapses correctness regardless of param-
+126:eter quality. A large negative compliance penalty
+127:(Rcpl ∈{−10, 0}) enforces compliance ≻correct-
+128:ness ≻efficiency as an inductive bias in the reward
+129:landscape.
+130:Deployment and Results.
+131:Deployed on a finan-
+132:cial advisory copilot (80+ advisors, 1,200+ daily
+133:queries), ToolRLA achieves over three months:
+134:TCR 62%→91% (+47%),
+135:TIER 38%→14%
+136:(−63%), latency 2.8s→1.6s (−43%), violation rate
+137:12%→0.8% (−93%), satisfaction 3.1→4.3/5.
+138:Contributions.
+139:(1)
+140:A
+141:four-dimensional
+142:multiplicatively-decomposed reward function for
+143:tool invocation quality, with ablation evidence for
+144:multiplicative over additive composition. (2) A
+145:three-stage pipeline (SFT→GRPO→DPO) with
+146:characterization of each stage’s role and systematic
+147:ablation. (3) Multi-month production deployment
+148:validation plus public benchmark generalization
+149:on ToolBench and API-Bank.
+150:2
+--EXP SETUP--
+210:evaluation dimension.
+211:A recent ACL 2025 ef-
+212:fort (Bloomberg AI Engineering, 2025) proposes
+213:training-free joint optimization for tool utilization
+214:but does not address compliance alignment. Tool-
+215:RLA is among the first to integrate compliance as
+216:an explicit RL reward signal, validated with multi-
+217:month production deployment data.
+218:3
+219:The ToolRLA Framework
+220:Figure 2 illustrates the three-stage ToolRLA
+221:pipeline. We describe each component in detail
+222:below.
+223:3.1
+224:System Architecture: Single-Model ReAct
+225:Agent
+226:From Pipeline to ReAct.
+227:Our production prede-
+228:cessor was a cascaded multi-model pipeline (in-
+229:2
+230:
+231:============================================================
+232:=== PAGE 3 ===
+233:============================================================
+234:
+235:τ1: Correct (right tool, right params)
+236:τ2: Wrong tool selected
+237:τ3: Right tool, wrong params
+238:τ4: Regulatory violation
+239:(a) Binary Reward
+240:+1
+241:0
+242:0
+243:0
+244:identical
+245:zero reward:
+246:no signal
+247:(b) ToolRLA Fine-Grained Reward
+248:+3.0
+249:veto
+250:+1.5
+251:+2.0
+252:−7 (λ=10)
+253:Rfmt
+254:Rcor
+255:Reff
+256:Rcpl
+257:Figure 1: Motivation for ToolRLA’s fine-grained reward decomposition. (a) Coarse binary rewards assign identical
+258:zero reward to qualitatively distinct failures—wrong tool (τ2), wrong parameters (τ3), and regulatory violation (τ4)—
+259:providing no gradient signal to distinguish or prioritize them. (b) ToolRLA’s four-component reward differentiates
+--RESULTS--
+608:Results
+609:5.1
+610:Main Results on FA-Bench
+611:Table 1 reports performance on our internal FA-
+612:Bench across all baselines. ToolRLA achieves the
+613:best result on every metric, reaching 91% TCR and
+614:14% TIER.
+615:SFT alone reduces cascading errors (TCR
+616:62%→68%) but TIER stagnates at 38%, confirm-
+617:ing supervised imitation is insufficient. Adding
+618:coarse GRPO delivers the largest single jump
+619:(TIER 38%→21%, TCR →82%), establishing RL
+620:as the decisive stage. ToolRLA’s multiplicative
+621:Rcor then reduces TIER a further 7pp to 14% over
+622:additive alternatives. DPO adds marginal TIER
+623:gain (15%→14%) but delivers the compliance im-
+624:provements: CRR rises to 96% and VR drops from
+625:12% to 0.8%.
+626:5.2
+627:Ablation Study
+628:Table 2 reports the ablation over reward compo-
+629:nents, holding the GRPO training procedure con-
+630:stant and varying only the reward function configu-
+631:ration.
+632:Multiplicative vs. additive Rcor.
+633:Additive com-
+634:position raises TIER by 7pp (15%→22%) and
+635:drops TCR by 8pp: the optimizer learns to com-
+636:pensate wrong tool selection with high parameter
+637:scores, a pathological behavior the multiplicative
+--LIMITATIONS--
+851:Discussion and Limitations
+852:Generalizability.
+853:Public benchmark results on
+854:ToolBench and API-Bank suggest the multiplica-
+855:tive reward structure transfers beyond the financial
+856:domain. The prerequisite-chain insight applies to
+857:any setting where tool selection errors and parame-
+858:ter errors have qualitatively different semantics and
+859:domain constraints require explicit priority order-
+860:ing.
+861:Limitations.
+862:Sandbox fidelity: our reward de-
+863:pends on a weekly-synchronized data replica; a
+864:backend API field rename once caused zero accu-
+865:racy scores for two days, underscoring the need
+866:for automated schema consistency checks. FA-
+867:Bench privacy: the internal benchmark cannot be
+868:7
+869:
+870:============================================================
+871:=== PAGE 8 ===
+872:============================================================
+873:
+874:Metric
+--CONCLUSION--
+931:Conclusion
+932:We presented ToolRLA, a three-stage post-training
+933:framework for tool-integrated agents in domain-
+934:specific settings. The central contribution is a fine-
+935:grained multiplicative reward function that evalu-
+936:ates tool invocation quality along four dimensions
+937:and encodes task-specific priority orderings as in-
+938:ductive biases in the reward landscape. Ablation
+939:studies demonstrate that multiplicative composi-
+940:tion of the correctness reward accounts for 7 per-
+941:centage points of TIER improvement over additive
+942:alternatives, and that the three-stage pipeline (SFT
+943:→GRPO →DPO) is strictly better than any pre-
+944:fix thereof. Deployed on a production financial
+945:advisory copilot over three months, ToolRLA de-
+946:livers a 47% improvement in task completion rate,
+
+##### library/02_objective_factorization/2603.25111_SEVerA/2603.25111_SEVerA_fulltext.txt  (3638 lines)
+--ABSTRACT--
+1:
+2:============================================================
+3:=== PAGE 1 ===
+4:============================================================
+5:
+6:SEVerA: Verified Self-Evolving Agents with Specification
+7:Guidance
+8:DEBANGSHU BANERJEE∗, University of Illinois Urbana-Champaign, USA
+9:CHANGMING XU∗, University of Illinois Urbana-Champaign, USA
+10:EUGENE IE, Google, USA
+11:MING ZHANG, Google, USA
+12:DAIYI PENG, Google, USA
+13:CHU-CHENG LIN, Google, USA
+14:TARUN SURESH, Stanford University, USA
+15:GAGANDEEP SINGH, University of Illinois Urbana-Champaign, USA
+16:Recent advances have demonstrated the effectiveness of self-evolving LLM agents on tasks such as program
+17:repair and scientific discovery. In this paradigm, a planner LLM continuously synthesizes agent programs that
+18:invoke parametric components, including generative models such as LLMs, and fine-tunes them. However,
+19:existing work has shown that self-evolving agent frameworks can exhibit undesirable behavior on unseen
+20:inputs. Because these synthesized programs are often executed autonomously, the lack of formal guarantees
+21:that hold for all inputs raises serious reliability and security concerns. To address this gap, we introduce
+22:specification-driven self-evolving agent synthesis, which combines formal behavioral specifications that the
+23:synthesized agents must satisfy on all inputs with best-effort soft objectives that capture task utility. We
+24:propose Formally Guarded Generative Models (FGGM), which allow the planner LLM to bind each generative-
+25:model call to a formal output contract. Each FGGM call automatically wraps the underlying parametric
+26:generative model within a stateful rejection sampler and a verified fallback, treating model outputs as samples
+27:from a proposal distribution. Consequently, every returned output satisfies the specified contract for any input
+28:and any parameter setting of the underlying model. Building on FGGM, we present SEVerA (Self-Evolving
+29:Verified Agents), a four-stage framework for specification-driven agent synthesis. In the Ideation stage, the
+30:planner LLM proposes task-specific generative components by constructing FGGMs. In the Search stage, the
+31:planner LLM synthesizes candidate parametric programs containing multiple FGGM components. In the
+32:Verification stage, we prove correctness with respect to the hard constraints for all parameter values, thereby
+33:reducing the remaining optimization problem to unconstrained learning. Finally, in the Learning stage, we
+34:apply scalable gradient-based optimization, including GRPO-style fine-tuning for LLMs, to optimize the soft
+--INTRO END--
+127:local contracts on model calls using Hoare-style preconditions and postconditions defined by
+128:trusted, user-provided oracles. FGGM operates solely on LLM output strings and is compatible with
+129:both open-source and closed-source models. The FGGM framework provides formal guarantees on
+130:model outputs while also enabling gradient-based parameter optimization to tune the underlying
+131:model to conform to the specified contracts.
+132:• We introduce SEVerA: the first self-evolving agent synthesis algorithm with verifiable guarantees.
+133:The approach consists of four stages: (a) Ideation, where a planner LLM proposes task-specific
+134:generative components through FGGM setup; (b) Search and (c) Verify, which together instantiate
+135:component-based synthesis, in which the planner LLM samples parametric programs in a verifier-
+136:aware language such as Dafny that invoke the proposed components and the language’s built-in
+137:verifier checks that they satisfy the user-specified specification over all parameter values of the
+138:embedded generative-model calls; and (d) Learn, where verified parametric programs reduce the
+139:constrained learning problem to an unconstrained optimization problem over model parameters,
+140:enabling scalable gradient-based training without sacrificing correctness.
+141:• We prove that SEVerA is sound: any synthesized agent satisfies the behavioral specification for all
+142:inputs and parameter values (Theorem 5.7). We further show that, under sufficient conditions,
+143:SEVerA can construct specification-compliant agents that match or exceed the utility of the
+144:underlying GMs, and that FGGMs preserve the expressivity of transformer-based models.
+145:• We evaluate SEVerA on tasks spanning LLM-assisted program verification, symbolic math syn-
+146:thesis, agentic tool use, and constrained symbolic regression. Across all benchmarks, SEVerA
+147:achieves provably zero constraint violations while outperforming state-of-the-art agents in task
+148:performance: 97.0% verification rate on HumanEvalDafny (vs. 86.9% for the best baseline), 66.0%
+149:accuracy on GSM-Symbolic (vs. 44.7% for the best constrained-decoding method), and 52.6% pass
+150:rate on 𝜏2-bench’s airline domain using Qwen3-8B. Notably, on 𝜏2-bench airline SEVerA even
+151:beats Agent-C [22] with Claude Sonnet 4.5, a state-of-the-art constrained agent using a frontier
+152:model. These results show that behavioral constraints do not merely enforce safety but actively
+153:prune the search space of candidate programs and steer synthesis toward higher-quality agents.
+154:2
+--METHOD--
+1367:Method
+1368:Ver. & NoDiff (%) ↑
+1369:Ver. (%) ↑
+1370:Vio. (%) ↓
+1371:Time (s)
+1372:HumanEvalDafny
+1373:LLM (Claude Sonnet 4.5)
+1374:73.7
+1375:76.8
+1376:8.1
+1377:9.8
+1378:DafnyBench baseline
+1379:86.9
+1380:87.9
+1381:4.0
+1382:16.1
+1383:SEVerA (w/o constraints)
+1384:84.8
+1385:88.9
+1386:5.1
+1387:15.7
+1388:SEVerA
+1389:97.0 (+10.1)
+1390:97.0 (+9.1)
+1391:0.0 (-4.0)
+1392:18.2
+1393:DafnyBench
+1394:LLM (Claude Sonnet 4.5)
+1395:68.7
+1396:71.1
+1397:10.3
+1398:10.3
+1399:DafnyBench baseline
+1400:81.6
+1401:84.0
+1402:8.2
+1403:20.1
+1404:SEVerA (w/o constraints)
+1405:79.2
+1406:84.8
+--RESULTS--
+1349:Main Results
+1350:We begin with the central question motivating SEVerA:
+1351:RQ1 (Safety). What goes wrong without formal constraints, and does SEVerA eliminate these failures?
+1352:We compare unconstrained agent synthesis against SEVerA across all four tasks to show that hard
+1353:behavioral specifications are necessary: without them, agents silently produce invalid outputs on
+1354:unseen inputs that are undetectable by soft performance metrics.
+1355:, Vol. 1, No. 1, Article . Publication date: October 2026.
+1356:
+1357:============================================================
+1358:=== PAGE 21 ===
+1359:============================================================
+1360:
+1361:SEVerA : Verified Self-Evolving Agents with Specification Guidance
+1362:21
+1363:Table 2. Dafny program verification results on HumanEvalDafny and DafnyBench. Verif. & NoDiff counts
+1364:a program as correct only if it both verifies and passes the AST-based diff check against the original; Verif.
+1365:counts verification alone.
+1366:Dataset
+1367:Method
+1368:Ver. & NoDiff (%) ↑
+1369:Ver. (%) ↑
+1370:Vio. (%) ↓
+1371:Time (s)
+1372:HumanEvalDafny
+1373:LLM (Claude Sonnet 4.5)
+1374:73.7
+1375:76.8
+1376:8.1
+1377:9.8
+1378:DafnyBench baseline
+--CONCLUSION--
+1793:Conclusion
+1794:We presented SEVerA, a framework for specification-driven synthesis of self-evolving LLM agents
+1795:with formal behavioral guarantees. Its core abstraction, the Formally Guarded Generative Model
+1796:(FGGM), binds each generative-model call to a Hoare-style local contract enforced by a stateful
+1797:rejection sampler with a verified fallback. Because the fallback discharges the contract for every
+1798:parameter value, correctness is parameter-independent and survives arbitrary fine-tuning. This
+1799:lets SEVerA split the constrained learning problem into four stages (ideation, search, verification,
+1800:and learning), so that scalable methods such as GRPO can optimize task reward without putting
+1801:the specification at risk. We proved that SEVerA is sound, gave a sufficient condition under which
+1802:a verified agent matches or exceeds the reward of the best unconstrained model, and showed
+1803:that FGGMs retain the expressivity of the underlying transformer. Across program verification,
+1804:symbolic math synthesis, policy-compliant tool use, and constrained symbolic regression, SEVerA
+1805:attains zero constraint violations on held-out inputs while improving task performance over both
+1806:unconstrained frameworks and task-specific state of the art. These results suggest that behavioral
+1807:specifications play a dual role: certifying compliance on all inputs and, by pruning shortcut-laden
+1808:candidates, steering evolution toward higher-utility agents.
+
+##### library/02_objective_factorization/2605.08327_InteractiveCritiqueRevision/2605.08327_InteractiveCritiqueRevision_fulltext.txt  (1275 lines)
+--ABSTRACT--
+23:Abstract
+24:In structured decision-making workflows such as form filling, compliance check-
+25:ing, and maintenance reporting, LLM outputs must be locally correct, globally
+26:consistent, and auditable against task-specific rules. Existing refinement methods
+27:often rely on heuristic debate, self-play, or LLM-generated supervision, creating a
+28:second-order assurance problem. We propose DPA-GRPO (Dual Paired-Action
+29:Group-Relative Policy Optimization), a paired-action training method for a two-
+30:player generator–verifier game with structured verifier interventions. The generator
+31:proposes outputs and may revise them when challenged; the verifier either remains
+32:silent or raises a safety assurance case (SAC) containing a claim, argument, and
+33:evidence. These SAC/no-SAC and KEEP/REVISE decisions induce paired coun-
+34:terfactual action groups, which DPA-GRPO uses for role-specific KL-regularized
+35:GRPO updates. We analyze the unregularized game and show that positive proba-
+36:bility on strictly lower-reward intervention or revision actions creates a profitable
+37:unilateral deviation. Under standard stochastic-approximation assumptions, DPA-
+38:GRPO tracks the corresponding game ODE, whose isolated asymptotically stable
+39:limit points are stationary and candidate local equilibria under role-wise local
+40:optimality. Experiments on TaxCalcBench TY24 show that DPA-GRPO improves
+41:structured decision accuracy over zero-shot generation and generator-only RL
+42:baselines across Qwen3-4B and Qwen3-8B. Training increases correct silent accep-
+43:tance, reduces missed errors, and improves calibrated revision behavior, indicating
+44:gains for both generator and verifier.
+45:1
+46:Introduction
+47:Large language models (LLMs) have achieved strong performance on open-ended generation, reason-
+48:ing, and tool-use tasks [Brown et al., 2020, Achiam et al., 2023, Wei et al., 2022, Yao et al., 2022,
+49:Schick et al., 2023], yet their use in complex, structured decision-making workflows remains brittle.
+50:In domains such as form filling, compliance checking, maintenance reporting, and program-like
+51:reasoning, LLM outputs must be plausible, locally correct, globally consistent, and auditable against
+52:required rules and standards [Ji et al., 2023, Huang et al., 2025, Cobbe et al., 2021, Lightman et al.,
+53:2023]. Addressing this mismatch is crucial for high-stakes structured workflows.
+54:Preprint.
+55:arXiv:2605.08327v1  [cs.LG]  8 May 2026
+56:
+--INTRO END--
+63:to directly verify or supervise other LLMs creates a second-order verification problem in which the
+64:verifier itself requires assessment. A verifier rewarded for finding errors may produce persuasive
+65:objections with weak grounding [Ji et al., 2023, Huang et al., 2025, Bai et al., 2022, Madaan et al.,
+66:2023, Shinn et al., 2023]. A generator that follows verifier feedback uncritically may over-correct
+67:accurate outputs. A generator that discounts useful feedback may preserve unsafe errors. Second,
+68:multi-agent debate improves reasoning by allowing model instances to challenge one another. Existing
+69:implementations often use debate as a prompting or test-time scaling mechanism rather than as a
+70:role-specific training paradigm [Du et al., 2024, Khan et al., 2024a], without a systematic framework
+71:to co-train or co-adapt all agents in concert [Cobbe et al., 2021, Lightman et al., 2023, Lifshitz et al.,
+72:2025, Jung et al., 2026, Yu et al., 2025a]. Finally, recent work on self-play and competitive evaluation
+73:methods shows promise for learning from game outcomes and inter-model competition, and leave
+74:open safety-case-style assurance with respect to specific requirements and auditability [Kuba et al.,
+75:2025, Alyahya et al., 2025, Liu et al., 2025, Liao et al., 2024]. The challenges to get AI agents to
+76:agree are highlighted in [Berdoz et al., 2026].
+77:We propose DPA-GRPO (Dual Paired-Action Group-Relative Policy Optimization), a game-theoretic
+78:solution for safety-case-based assurance of structured LLM outputs. Game theory provides a mathe-
+79:matical framework for analyzing strategic interaction between learning agents, and a well-designed
+80:equilibrium pushes them toward desired collective behaviors. We train a two-player Markov game
+81:[Shapley, 1953] between a generator and a verifier. The generator proposes solutions (e.g., form fill-
+82:ing or multi-step planning) and may revise them when challenged. The verifier observes the proposed
+83:solutions and chooses whether to remain silent or raise a safety assurance case (SAC) consisting of a
+84:claim, argument, and evidence. This idea is closely related to a long tradition of safety certification.
+85:Safety-critical engineering has long used safety cases: structured claim-argument-evidence records
+86:that justify why a system satisfies required properties and is sufficiently safe for deployment [Kelly
+87:and Weaver, 2004, Denney et al., 2015a, Dezfuli et al., 2015, Lincoln, 2012]. Such records are
+88:attractive for LLM validation because they make objections interpretable: the verifier states a claim,
+89:supports it with an argument, and grounds the argument in evidence. This structure provides a
+90:structured interface for verifier challenges and generator revisions. A more detailed discussion of
+--METHOD--
+498:Method
+499:Backbone
+500:Case taxonomy
+501:Train acc.
+502:Test
+503:acc.↑
+504:Case 1 + Case 3↑
+505:Case 4↓
+506:Case 6a↑
+507:Train-A↑
+508:Train-B↑
+509:Train-C↑
+510:Untrained baselines
+511:Zero-shot
+512:Qwen3-4B
+513:0.41 + 0
+514:0.59
+515:–
+516:0.53
+517:0.32
+518:0.26
+519:0.41
+520:Zero-shot
+521:Qwen3-8B
+522:0.53 + 0
+523:0.47
+524:–
+525:0.84
+526:0.42
+527:0.42
+528:0.53
+529:Trained single-agent generator-only baselines
+530:GRPO
+531:Qwen3-4B
+532:0.52 + 0
+533:0.48
+534:–
+535:0.74
+536:0.47
+537:0.32
+--EXP SETUP--
+610:Experimental Setup
+611:Benchmark and evaluation units.
+612:TaxCalcBench TY24 provides synthetic U.S. federal tax-form
+613:instances with ground-truth Form 1040 outputs produced by a deterministic tax engine. We use a
+614:fixed-seed 80/20 train/test split. Although each tax return contains many form fields, our evaluation
+615:follows the benchmark protocol and scores 19 selected Form 1040 lines per case. A decision unit
+616:corresponds to a structured output component, such as a form field or tax-form line, that can be
+617:checked against the ground-truth Form 1040 output. We measure accuracy as the fraction of evaluated
+618:decision units whose submitted value exactly matches the ground-truth value.
+619:Models and methods.
+620:We evaluate Qwen3-4B and Qwen3-8B backbones [Yang et al., 2025]. The
+621:zero-shot baselines use the generator directly without parameter updates and without the verifier loop.
+622:The trained single-agent baselines update only the generator using GRPO-style objectives, including
+623:GRPO [Shao et al., 2024], DAPO [Yu et al., 2025b], and GSPO [Zheng et al., 2025]. These baselines
+624:produce a single proposal for each decision unit and are evaluated by proposal correctness.
+625:7
+626:
+627:============================================================
+628:=== PAGE 8 ===
+629:============================================================
+630:
+631:Case 1
+632:Generator correct,
+633:Verifier silent
+634:Case 4
+635:Generator wrong,
+636:Verifier missed it
+637:Case 6a
+638:Generator skips a
+639:bad revision
+640:0
+641:10
+642:20
+643:30
+644:40
+645:50
+646:60
+647:70
+648:% of line transitions
+649:(a) Case-mix shift during training
+650:27.4%
+651:42.4%
+652:55.3%
+653:37.2%
+654:9.3%
+655:16.6%
+656:+15.1%
+657:-18.1%
+658:+7.4%
+659:Initial joint policy
+--LIMITATIONS--
+990:Limitations and Broader Impact
+991:DPA-GRPO is evaluated on TaxCalcBench TY24, a controlled benchmark with deterministic ground-
+992:truth Form 1040 outputs. This setting is useful for studying verifiable structured decisions, but future
+993:work should evaluate the method on additional domains with noisier, incomplete, or partially subjec-
+994:tive supervision. Our theoretical analysis is local and relies on standard stochastic-approximation
+995:and game-theoretic assumptions; it does not imply global convergence or guarantee that finite-step
+996:LLM training reaches a Nash equilibrium. Empirically, performance may depend on model capacity,
+997:reward design, SAC quality, and the frequency of useful revision opportunities.
+998:The method also incurs additional computational cost relative to generator-only training because it
+999:trains both a generator and a verifier and constructs paired counterfactual action groups. While LoRA
+1000:adapters reduce this cost, scaling to larger models and longer workflows may require more efficient
+1001:sampling and verifier-scoring strategies. From a broader-impact perspective, SACs can improve
+1002:auditability by exposing claim-argument-evidence records, but they should not be interpreted as
+1003:formal guarantees of correctness or safety. In high-stakes settings, outputs should remain subject to
+1004:expert review and independent validation.
+1005:13
+1006:
+1007:============================================================
+1008:=== PAGE 14 ===
+1009:============================================================
+1010:
+1011:C
+1012:Algorithm
+1013:Algorithm 1 DPA-GRPO training for the generator–verifier game.
+--CONCLUSION--
+767:Conclusion
+768:We proposed DPA-GRPO, a two-player generator-verifier framework for verifiable assurance reason-
+769:ing in structured LLM workflows. By representing verifier feedback as safety assurance cases and
+770:converting intervention/revision decisions into paired counterfactual actions, DPA-GRPO provides
+771:training signals for both agents while preserving interpretability. Our analysis connects the induced
+772:case taxonomy to local Nash equilibrium conditions and stochastic-approximation dynamics. Experi-
+773:ments on TaxCalcBench TY24 show that DPA-GRPO improves structured decision accuracy over
+774:zero-shot generation and generator-only RL baselines across Qwen3-4B and Qwen3-8B backbones.
+775:The decision-unit taxonomy further shows that training increases correct silent acceptance, reduces
+776:missed errors, and improves calibrated responses to verifier interventions. These results suggest that
+777:structured verifier interventions can serve not only as explanations, but also as actionable training
+778:signals for improving both generator and verifier behavior.
+779:9
+780:
+781:============================================================
+782:=== PAGE 10 ===
+
+##### library/02_objective_factorization/2605.23382_PARPO/2605.23382_PARPO_fulltext.txt  (3597 lines)
+--ABSTRACT--
+18:Abstract
+19:Agentic reinforcement learning (Agentic RL) has achieved strong progress in tasks
+20:with clear success signals. However, many real-world agent applications require
+21:user-conditioned behavior: the same query may call for different planning strategies
+22:and tool-use decisions across users. This setting raises key challenges: generic
+23:rewards cannot capture heterogeneous user preferences, observed behaviors are
+24:entangled with conformity effects, and flat memories cannot support personal-
+25:ized skill retrieval. To this end, we propose a unified personalized Agentic RL
+26:framework that embeds personalization into training-time optimization. At its
+27:core is Personalized Anchor Reward-Decoupled Policy Optimization (PARPO),
+28:which decouples generic task-quality rewards from personalized preference re-
+29:wards and uses user-specific anchors to stabilize learning under heterogeneous
+30:reward scales. We further introduce a two-stage preference-disentangled reward
+31:model and Preference-Aligned Skill Evolution Graph Memory (PSGM) for per-
+32:sonalized supervision and preference-aligned skill retrieval. Together, they form a
+33:closed loop of preference identification, policy optimization, and structured skill
+34:accumulation. Experiments on ETAPP, ETAPP-Hard, and SJAgent show that our
+35:framework consistently outperforms strong memory and RL baselines. Code and
+36:data are included in the supplementary materials.
+37:1
+38:Introduction
+39:Large language model (LLM)-based agentic reinforcement learning (Agentic RL) has emerged as
+40:a powerful paradigm for optimizing LLM agents, achieving strong performance in code genera-
+41:tion [Gehring et al., 2025, Le et al., 2022, Yang et al., 2024], web navigation [Nakano et al., 2021,
+42:Qi et al., 2025], tool use [Qian et al., 2026, Feng et al., 2026a, Xia et al., 2026], and long-horizon
+43:planning [Tang et al., 2026, Peng et al., 2026, Xi et al., 2026]. However, most of this progress
+44:has been made in verifiable settings [Qian et al., 2026, Jin et al., 2025, Shao et al., 2024], where
+45:policy optimization can rely on a unique ground-truth answer. In contrast, in many real-world agent
+46:applications—such as e-commerce assistance, travel planning, and daily scheduling [Skarlinski
+47:et al., 2024, Schmidgall et al., 2024, Ning et al., 2025, Xie et al., 2024, Lyu et al., 2026]—this
+48:verifiability breaks down because optimal behavior is user-dependent: the same query may admit
+49:multiple plausible trajectories, with the preferred one determined by the user’s preferences, habits,
+50:and constraints.
+51:Recent work has begun to extend LLM optimization beyond strictly verifiable tasks. Non-verifiable
+--INTRO END--
+79:the same trajectory, nor can they handle heterogeneous reward scales across users. (C2) Personalized
+80:preference disentanglement: observed user behaviors are often shaped by both intrinsic interests
+81:and external conformity or contextual effects, making individualized preference signals noisy and
+82:difficult to identify accurately. (C3) User-aware memory and skill organization: existing agent
+83:memories are often flat and query-centric, and thus cannot explicitly model or retrieve the structured
+84:relations among users, intents, skills, tools, scenarios, and trajectories.
+85:To bridge this gap, we propose a unified personalized Agentic RL framework that embeds personaliza-
+86:tion into the training-time optimization loop. At its core is Personalized Anchor Reward-Decoupled
+87:Policy Optimization (PARPO), which decouples generic task-quality rewards from personalized pref-
+88:erence rewards and uses user-specific anchors to stabilize learning under heterogeneous reward scales.
+89:PARPO preserves general task competence while enabling user-contingent policy improvement. To
+90:provide cleaner personalized supervision, we develop a two-stage preference-disentangled reward
+91:model that separates intrinsic interests from conformity and contextual effects. To support personal-
+92:ized rollout context, we introduce Preference-Aligned Skill Evolution Graph Memory (PSGM), an
+93:evolving heterogeneous graph memory that organizes users, skills, tools, scenarios, and trajectories
+94:for preference-aligned skill retrieval. Together, these components form a closed loop of preference
+95:identification, personalized policy optimization, and structured skill accumulation. Our contributions
+96:are summarized as follows:
+97:• We formulate personalized Agentic RL for user-conditioned agent tasks, where optimal behavior
+98:depends on individual preferences.
+99:• We propose PARPO, an anchor-stabilized and reward-decoupled policy optimization method for
+100:learning personalized policies under heterogeneous user reward scales.
+101:• We introduce a preference-disentangled reward model and PSGM to provide reliable personalized
+102:supervision and preference-aligned skill retrieval.
+103:• We evaluate our framework on ETAPP [Hao et al., 2025], ETAPP-Hard, and SJAgent (a real-world
+104:industrial agent training scenario from a large Chinese e-commerce platform), showing gains in
+105:personalization and procedural quality while maintaining factual and logical quality.
+106:2
+--METHOD--
+316:Method
+317:To address the challenge of personalized decision-making in user-conditioned tasks, we propose a
+318:unified Agentic RL framework. As illustrated in Figure 2, the framework operates as a closed loop of
+319:personalized retrieval, generation, evaluation, and refinement. Given a user query and profile, the
+320:framework first retrieves relevant historical skills from a graph-based memory to form a personalized
+321:rollout context. Conditioned on this enriched context, the LLM-based policy interacts with the
+322:environment to generate decision-making trajectories. These trajectories are then evaluated by a
+323:dual-reward system: a general task-quality reward and a personalized preference reward. Finally, the
+324:policy is updated using these decoupled signals, and high-value trajectories are consolidated back
+325:into memory as reusable skills.
+326:In the following, we first introduce the core of our framework—the policy optimization algorithm
+327:(PARPO, §4.1). We then detail the two supporting modules that make this optimization possible: the
+328:personalized reward model that provides user-conditioned signals (§4.2), and the skill graph memory
+329:that structures the rollout context (§4.3).
+330:4.1
+331:PARPO: Personalized Anchor Reward-Decoupled Policy Optimization
+332:We now introduce the policy optimizer in our framework. PARPO separates task quality from
+333:personalized alignment, allowing the policy to improve user-specific behavior without entangling
+334:it with shared supervision. In implementation, PARPO is instantiated as a dual-track GRPO-style
+335:advantage estimator built on the personalized reward model in Section 4.2 and the graph memory in
+336:Section 4.3.
+337:Theoretical justification.
+338:Appendix C shows that under heterogeneous user preferences, personal-
+339:ized optimization is preferable to user-agnostic optimization, while standard GRPO incurs structural
+340:bias from pooled baselines and normalization. The analysis yields three conclusions. First, under
+341:heterogeneous user preferences, user-aware optimization is never worse than user-agnostic optimiza-
+342:tion: when different users prefer different trajectories for the same query, a single average-optimal
+343:policy necessarily compromises across users. Second, standard GRPO introduces structural bias in
+344:personalized settings because it uses pooled baselines and pooled normalization statistics. As a result,
+345:its advantage estimate can deviate from the true user-specific advantage due to both reward-center
+346:mismatch and reward-scale mismatch, with the dominant error controlled by cross-user preference
+347:heterogeneity. Third, PARPO reduces this bias by decoupling generic task-quality rewards from
+348:personalized preference rewards and calibrating the personalized branch with user-specific anchors.
+349:4
+350:
+351:============================================================
+352:=== PAGE 5 ===
+353:============================================================
+354:
+355:In our implementation and experiments, PARPO reduces this bias primarily through reward decompo-
+--EXP SETUP--
+643:Experiments
+644:5.1
+645:Experimental Setup
+646:5.1.1
+647:Baselines
+648:We compare against prompting, memory, RL, and memory-RL baselines, including REACT, MEM0,
+649:GRPO, DAPO, GSPO, GIGPO, MEMRL, and SKILLRL. We also report GPT-4o and Claude
+650:Sonnet 4 as closed-source references. All open-source methods are evaluated under the same model
+651:scales, task settings, and tool interfaces whenever applicable. We further include a GDPO-style
+652:variant in the ablation study, which removes PARPO’s user-anchor calibration while keeping the
+653:same personalized reward and memory components. For baselines in personalized environments, we
+654:additionally provide the native personalization reward to ensure fair comparison.
+655:5.1.2
+656:Benchmarks, Evaluation, and Training Details
+657:We evaluate on ETAPP and SJAgent. ETAPP is a public benchmark for personal assistant agents,
+658:covering user behaviors in daily-life scenarios; we further construct a more challenging split, ETAPP-
+659:Hard. SJAgent is a realistic environment for merchant decision-making and recommendation, built
+660:from merchant data on a major Chinese e-commerce platform. Environment details are provided in
+661:Appendix D.2, and the construction pipeline of ETAPP-Hard is given in Appendix D.3.
+662:For ETAPP, we report Judge, Personal, Proactive, and Procedure. For SJAgent, we report Reward,
+663:Data Authenticity, Business Logic, Merchant Profile Match, Task Completion, and Market Anal-
+664:ysis Depth. Metric definitions, official evaluation prompts, and scoring criteria are provided in
+665:Appendix D.4, and training hyperparameters are listed in Appendix D.5.
+666:5.2
+667:Main Results on Personalized Decision-Making Benchmarks
+668:Table 1 reports results on ETAPP, ETAPP-Hard, and SJAgent. Our method achieves the best overall
+669:performance under both 4B and 8B settings and outperforms all open-source baselines on most
+670:metrics. On ETAPP and ETAPP-Hard, it obtains the highest judge scores, with larger gains on
+671:ETAPP-Hard, indicating stronger robustness in challenging personalized scenarios. It also performs
+672:best on Personal, Proactive, and Procedure, showing better preference alignment and decision quality.
+673:On SJAgent, our method again achieves the highest Reward and leads on key dimensions including
+674:Data Authenticity, Business Logic, Task Completion, and Market Analysis Depth, demonstrating
+675:strong cross-domain generalization.
+676:5.3
+677:Ablation Study
+678:Table 2 reports ablation results on ETAPP. A1 removes skill memory, and A2 replaces PSGM with
+679:the original flat skill pipeline. Within PSGM, B1 removes hierarchical communities, B2 replaces
+680:Leiden with Louvain, B3 disables dynamic graph updates, and B4 replaces dense retrieval with BM25.
+681:Within reward learning, C1 replaces PARPO with GRPO, C2/C3 remove the base/personalized reward
+682:7
+683:
+684:============================================================
+685:=== PAGE 8 ===
+686:============================================================
+687:
+688:Table 1: Main Results on ETAPP, ETAPP-Hard and SJAgent. Ours significantly outperforms the
+689:strongest baseline, SkillRL, under the paired t-test (p < 0.005)
+690:Metric
+691:Closed-source
+692:Open-source Models
+--LIMITATIONS--
+1575:Conclusion and Limitations
+1576:This work studied personalized Agentic RL for user-conditioned tasks, where optimal behavior
+1577:depends on user preferences rather than a single correct answer. We proposed a unified framework
+1578:centered on PARPO, which decouples general-quality and personalized rewards and stabilizes training
+1579:with user-specific anchors. Experiments on ETAPP, ETAPP-Hard, and SJAgent showed consistent
+1580:and significant gains in personalization while preserving overall task quality, highlighting the value
+1581:of training-time personalized optimization for user-centric agents. A key limitation of this work is
+1582:the scale of the human evaluation: due to annotation cost and limited expert availability, we reported
+1583:judgments from only 15 experts on 20 randomly sampled examples. Although these results broadly
+1584:agree with the LLM evaluations, future work should expand the human study to a larger and more
+1585:diverse pool of annotators and evaluation instances to better assess robustness, generalizability, and
+1586:real-world validity.
+1587:10
+1588:
+1589:============================================================
+1590:=== PAGE 11 ===
+1591:============================================================
+1592:
+1593:References
+1594:Jonas Gehring, Kunhao Zheng, Jade Copet, Vegard Mella, Taco Cohen, and Gabriel Synnaeve.
+1595:RLEF: Grounding code LLMs in execution feedback with reinforcement learning. In Forty-second
+1596:International Conference on Machine Learning, 2025. URL https://openreview.net/forum?
+1597:id=PzSG5nKe1q.
+1598:Hung Le, Yue Wang, Akhilesh Deepak Gotmare, Silvio Savarese, and Steven Chu Hong Hoi. Coderl:
+

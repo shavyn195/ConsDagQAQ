@@ -1,0 +1,736 @@
+##### papers/AgentGym-RL_2509.08755/AgentGym-RL_2509.08755_fulltext.txt  (3100 lines)
+--ABSTRACT--
+15:Abstract
+16:Developing autonomous LLM agents capable of making a series of intelligent decisions to solve
+17:complex, real-world tasks is a fast-evolving frontier. Like human cognitive development, agents
+18:are expected to acquire knowledge and skills through exploration and interaction with the
+19:environment. Despite advances, the community still lacks a unified, interactive reinforcement
+20:learning (RL) framework that can effectively train such agents from scratch—without relying
+21:on supervised fine-tuning (SFT)—across diverse and realistic environments. To bridge this gap,
+22:we introduce AgentGym-RL, a new framework to train LLM agents for multi-turn interactive
+23:decision-making through RL. The framework features a modular and decoupled architecture,
+24:ensuring high flexibility and extensibility. It encompasses a wide variety of real-world scenarios,
+25:and supports mainstream RL algorithms. Furthermore, we propose ScalingInter-RL, a training
+26:approach designed for exploration-exploitation balance and stable RL optimization. In early
+27:stages, it emphasizes exploitation by restricting the number of interaction, and gradually shifts
+28:towards exploration with larger horizons to encourage diverse problem-solving strategies. In
+29:this way, the agent develops more diverse behaviors and is less prone to collapse under long
+30:horizons. We perform extensive experiments to validate the stability and effectiveness of both the
+31:AgentGym-RL framework and ScalingInter-RL approach. Our agents match or surpass commercial
+32:models on 27 tasks across diverse environments. We offer key insights and will open-source
+33:complete AgentGym-RL framework—including code and datasets—to empower the research
+34:community in developing the next generation of intelligent agents.
+35:Correspondence: zhxi22@m.fudan.edu.cn, tgui@fudan.edu.cn, qz@fudan.edu.cn
+36:Code: https://github.com/woooodyy/AgentGym-RL
+37:Project: https://AgentGym-RL.github.io
+38:1
+39:arXiv:2509.08755v1  [cs.LG]  10 Sep 2025
+40:
+41:============================================================
+42:=== PAGE 2 ===
+43:============================================================
+44:
+45:BabyAI
+46:TextCraft
+47:SciWorld
+48:WebArena
+--INTRO END--
+161:2
+162:
+163:============================================================
+164:=== PAGE 3 ===
+165:============================================================
+166:
+167:Figure 2 Overview of the AgentGym-RL framework. It features a decoupled, flexible, and extensible architecture,
+168:comprising three primary modules—the environment, the agent, and the training module. It supports diverse scenarios,
+169:environments, and algorithms.
+170:Our extensive experiments prove that AgentGym-RL delivers consistent and significant performance gains
+171:for agents across five tasks spanning 5 scenarios (Figure 1a). Open-source models (e.g., Qwen-2.5-7B [83])
+172:trained with our framework and method achieved an average improvement of 33.65 points, matching—or even
+173:outperforming—larger commercial, closed-source models such as OpenAI-o3 [42] and Gemini-2.5-Pro [10]. We
+174:also conducted numerous analytical experiments to provide key findings and insights, showing that scaling
+175:post-training and test-time compute have significant potential for developing agentic intelligence (Figure 1b).
+176:We hope our work will be a valuable contribution to the community’s progress.
+177:In summary, our main contributions are:
+178:1. We propose and open-source AgentGym-RL, a new unified, modular, and flexible end-to-end RL
+179:framework designed for agent multi-turn interactive decision-making that includes a diversity of scenarios
+180:and environments.
+181:2. We propose ScalingInter-RL, a progressive interaction-scaling framework that incrementally adapts
+182:agents to their environment, facilitating the refinement of interaction patterns and skill acquisition. It
+183:enhances optimization stability in RL and achieves a balance between exploration and exploitation.
+184:3. Our extensive experiments demonstrate that AgentGym-RL and ScalingInter-RL deliver significant
+185:and consistent performance gains, matching or exceeding commercial models. In addition, we conduct
+186:empirical analyses that yield critical insights into agent design and operational paradigms, offering
+187:valuable guidance and resources for future research.
+188:2
+--METHOD--
+189:Preliminaries
+190:2.1
+191:Formulation
+192:In this work, we study the multi-turn interactive decision-making tasks, i.e., agentic tasks, and we model them
+193:as a Partially Observable Markov Decision Process (POMDP) (U, S, A, O, T , r) like Xi et al. [77], Zhou et al.
+194:3
+195:
+196:============================================================
+197:=== PAGE 4 ===
+198:============================================================
+199:
+200:[95], where U, S, O, T : S × A →S, r: U × S →R represents the instruction space, the state space, the action
+201:space, the observation space, the deterministic state transition function, and the reward function, respectively.
+202:Given a task instruction u ∈U, the agentic task requires the LLM agent to generate a sequence of actions
+203:aT
+204:k ∼πθ(·|sk) based on its policy πθ parameterized by θ to complete the given task, where ak ∈A, and sk ∈S,
+205:and T is the thinking path [88]. The agent then receives an observation ok ∈O from the environment, and the
+206:state is then transitioned to T (sk, ak) = sk+1. Finally after N turns of interactions, the environment e provides
+207:an outcome reward r(τ) ∈[0, 1] to describe the completion of the multi-turn interactive decision-making tasks.
+208:2.2
+209:Policy Gradient
+210:We utilize policy gradient methods [63] that optimizes our policy to maximize the expected cumulative reward.
+211:Unlike value-based methods that estimate the value function to derive a policy, policy gradient methods
+212:directly search the policy parameter space to find the optimal policy.
+213:The core idea of policy gradient methods is to perform gradient ascent according to the objective J(θ), which
+214:is a function of the policy parameters θ. Specifically, J(θ) represents the expected cumulative reward the
+215:agent anticipates receiving when following policy πθ and interacting with the environment. Mathematically,
+216:this is expressed as the expectation of the total reward r(τ) over trajectories τ generated by the policy:
+217:J(θ) = Eτ∼πθ [r(τ)]
+218:(1)
+219:To perform gradient ascent on J(θ), we require the policy gradient ∇θJ(θ). In the vanilla policy gradient
+220:methods, the policy gradient can be estimated by:
+221:∇θJ(θ) = Eτ∼πθ
+222:�
+223:r(τ)
+224:K
+225:�
+226:k=0
+227:∇θ log πθ(ak|sk)
+228:�
+--EXP SETUP--
+495:Experiments
+496:To verify the stability and effectiveness of the AgentGym-RL framework, we conduct extensive experiments
+497:across a diverse set of scenarios and environments. Our results demonstrate that LLM agents are capable
+498:of exploring and learning from scratch based solely on environment feedback, without the need for prior
+499:supervised fine-tuning, ultimately achieving performance that is comparable to, or even surpasses, that of
+500:commercial closed-source models such as OpenAI o3.
+501:9
+502:
+503:============================================================
+504:=== PAGE 10 ===
+505:============================================================
+506:
+507:4.1
+508:Experimental Settings
+509:Scenarios, Environments and Tasks.
+510:As mentioned before, we include five scenarios in AgentGym-
+511:RL. Specifically, for web navigation, we include WebArena [94] which is a realistic and reproducible web
+512:environment containing four distinct domains prevalent on the internet: online shopping, discussion forums,
+513:collaborative development, and business content management; for deep search, we include a RAG-based
+514:environment [19, 26, 28, 32, 38, 46, 67, 85] which enables LLMs to interact with search engines and solve
+515:multi-turn retrieval and reasoning tasks; for digital games, we include TextCraft [45], a text-based crafting
+516:game environment in which agents complete tasks via natural language interactions and task-based planning;
+517:for embodied tasks, we include BabyAI [7] which provides a controllable grid world with text instructions for
+518:embodied reasoning in simulated environments; for scientific tasks, we include SciWorld [69] which offers a
+519:scientific exploration simulator where agents conduct scientific experiments through text-driven reasoning
+520:cycles.
+521:Baselines and backbone models.
+522:We leverage Qwen-2.5-3B and Qwen-2.5-7B [83] as our primary
+523:backbone models. We introduce the closed-source Gemini 2.5 Pro [10], OpenAI o3 [42], and GPT-4o [22] as
+524:baselines. Additionally, we include the open-source DeepSeek-R1 [12], Qwen-2.5-72B [83], Llama-3.1-8B [14],
+525:and Llama-3.1-70B [14] models for comparison.
+526:Detailed settings of each environment.
+527:We provide detailed descriptions of the tools, APIs, and
+528:experimental settings for each environment in Appendix B.
+529:0
+530:100
+531:200
+532:300
+533:Step
+534:0.10
+535:0.15
+536:0.20
+537:0.25
+538:0.30
+539:Rewards
+540:WebArena
+541:0
+542:100
+543:200
+544:300
+--LIMITATIONS--
+1785:Limitations in Scientific Scenario.
+1786:Figure 15 reveals fundamental procedural execution failures that
+1787:persist in SciWorld task completion despite the RL agent’s ability to reach task-relevant game states. These
+1788:instances exemplify two distinct failure modalities: first, when confronted with interaction failures requiring
+1789:systematic debugging, the agent inappropriately substitutes direct factual recall for the intended experimental
+1790:procedure; second, the agent demonstrates insufficient systematic exploration, as evidenced by its premature
+1791:task termination after navigating to the outdoor environment and focusing only on the chameleon egg rather
+1792:than analyzing all available animals that the task demands. These failures collectively indicate that the model
+1793:lacks the deep procedural understanding necessary for executing rigorous scientific comparative analyses.
+1794:Over-Interaction Patterns in Web Navigation.
+1795:Figure 16 demonstrates a prevalent failure mode of
+1796:excessive and inefficient interaction sequences during web navigation tasks. Despite successfully navigating
+1797:to the correct target websites in both illustrated cases, the RL agent engages in superfluous interaction
+1798:patterns—including redundant clicking, unnecessary hovering, and excessive scrolling—that impede successful
+1799:information extraction from the target pages. These behavioral patterns suggest that the reinforcement
+1800:learning process failed to instill the precision and efficiency required for optimal task completion, indicating a
+1801:gap between state-reaching capabilities and effective action selection within those states.
+1802:18
+1803:
+1804:============================================================
+1805:=== PAGE 19 ===
+1806:============================================================
+1807:
+1808:Base Model
+--CONCLUSION--
+1947:Conclusion and Future Work
+1948:In this work, we introduced AgentGym-RL, a novel and unified reinforcement learning framework designed to
+1949:train LLM-based agents with long-horizon, multi-turn decision-making capabilities. The framework features
+1950:diverse environments and tasks, supports mainstream RL algorithms, and is highly extensible—offering
+1951:the community a practical and powerful toolkit. Additionally, we proposed the ScalingInter-RL method to
+1952:progressively enhance agents’ interactive intelligence in a staged manner. Extensive experiments demonstrate
+1953:the effectiveness of both the framework and the method. However, several important directions remain for
+1954:future exploration:
+1955:Developing agents with generalization and transfer capabilities.
+1956:Currently, our trained agents
+1957:perform well within in-domain settings. A key challenge going forward is to enable agents to adapt seamlessly
+1958:to novel environments and unfamiliar tools while maintaining high performance.
+1959:Scaling RL training to longer-horizon and more realistic, physically grounded tasks.
+1960:Most
+1961:existing studies—including ours—focus on relatively simple digital tasks. However, real-world tasks are often
+1962:longer-horizon, more complex, and grounded in the physical world. These tasks demand that agents process
+
+##### papers/ReAct_2210.03629/ReAct_2210.03629_fulltext.txt  (2918 lines)
+--ABSTRACT--
+14:ABSTRACT
+15:While large language models (LLMs) have demonstrated impressive performance
+16:across tasks in language understanding and interactive decision making, their
+17:abilities for reasoning (e.g. chain-of-thought prompting) and acting (e.g. action
+18:plan generation) have primarily been studied as separate topics. In this paper, we
+19:explore the use of LLMs to generate both reasoning traces and task-specific actions
+20:in an interleaved manner, allowing for greater synergy between the two: reasoning
+21:traces help the model induce, track, and update action plans as well as handle
+22:exceptions, while actions allow it to interface with and gather additional information
+23:from external sources such as knowledge bases or environments. We apply our
+24:approach, named ReAct, to a diverse set of language and decision making tasks
+25:and demonstrate its effectiveness over state-of-the-art baselines in addition to
+26:improved human interpretability and trustworthiness. Concretely, on question
+27:answering (HotpotQA) and fact verification (Fever), ReAct overcomes prevalent
+28:issues of hallucination and error propagation in chain-of-thought reasoning by
+29:interacting with a simple Wikipedia API, and generating human-like task-solving
+30:trajectories that are more interpretable than baselines without reasoning traces.
+31:Furthermore, on two interactive decision making benchmarks (ALFWorld and
+32:WebShop), ReAct outperforms imitation and reinforcement learning methods by
+33:an absolute success rate of 34% and 10% respectively, while being prompted with
+34:only one or two in-context examples.
+35:1
+36:INTRODUCTION
+37:A unique feature of human intelligence is the ability to seamlessly combine task-oriented actions with
+38:verbal reasoning (or inner speech, Alderson-Day & Fernyhough, 2015), which has been theorized to
+39:play an important role in human cognition for enabling self-regulation or strategization (Vygotsky,
+40:1987; Luria, 1965; Fernyhough, 2010) and maintaining a working memory (Baddeley, 1992). Con-
+41:sider the example of cooking up a dish in the kitchen. Between any two specific actions, we may
+42:reason in language in order to track progress (“now that everything is cut, I should heat up the pot of
+43:water”), to handle exceptions or adjust the plan according to the situation (“I don’t have salt, so let
+44:me use soy sauce and pepper instead”), and to realize when external information is needed (“how do
+45:I prepare dough? Let me search on the Internet”). We may also act (open a cookbook to read the
+46:recipe, open the fridge, check ingredients) to support the reasoning and to answer questions (“What
+47:dish can I make right now?”). This tight synergy between “acting” and “reasoning” allows humans
+--INTRO END--
+714:On the value of internal reasoning vs. external feedback
+715:To our knowledge, ReAct is the first
+716:demonstration of combined reasoning and action using an LLM applied to an interactive environment
+717:within a closed-loop system. Perhaps the closest prior work is Inner Monologue (IM), from Huang
+718:et al. (2022b), in which actions from an embodied agent are motivated by an eponymous “inner
+719:monologue”. However, IM’s “inner monologue” is limited to observations of the environment
+720:state and what needs to be completed by the agent for the goal to be satisfied. In contrast, the
+721:reasoning traces in ReAct for decision making is flexible and sparse, allowing diverse reasoning
+722:types (see Section 2) to be induced for different tasks.
+723:To demonstrate the differences between ReAct and IM, and to highlight the importance of internal
+724:reasoning vs. simple reactions to external feedback, we ran an ablation experiment using a thought
+725:pattern composed of IM-like dense external feedback. As can be seen in Table 3, ReAct substantially
+726:outperforms IM-style prompting (ReAct-IM) (71 vs. 53 overall success rate), with consistent
+727:advantages on five out of six tasks. Qualitatively, we observed that ReAct-IM often made mistakes
+728:in identifying when subgoals were finished, or what the next subgoal should be, due to a lack of high-
+729:level goal decomposition. Additionally, many ReAct-IM trajectories struggled to determine where
+730:an item would likely be within the ALFWorld environment, due to a lack of commonsense reasoning.
+731:Both shortcomings can be addressed in the ReAct paradigm. More details about ReAct-IM is in
+732:Appendix B.2. An example prompt for ReAct-IM can be found in Appendix C.4, and an example
+733:trajectory in Appendix D.2.3.
+734:8
+735:
+736:============================================================
+737:=== PAGE 9 ===
+738:============================================================
+739:
+740:Published as a conference paper at ICLR 2023
+741:5
+--METHOD--
+313:METHODS
+314:ReAct Prompting
+315:For HotpotQA and Fever, we randomly select 6 and 3 cases2 from the training
+316:set and manually compose ReAct-format trajectories to use as few-shot exemplars in the prompts.
+317:Similar to Figure 1(d), each trajectory consists of multiple thought-action-observation steps (i.e. dense
+318:thought), where free-form thoughts are used for various purposes. Specifically, we use a combination
+319:of thoughts that decompose questions (“I need to search x, find y, then find z”), extract information
+320:from Wikipedia observations (“x was started in 1844”, “The paragraph does not tell x”), perform
+321:commonsense (“x is not y, so z must instead be...”) or arithmetic reasoning (“1844 < 1989”), guide
+322:2We find more examples do not improve performance.
+323:4
+324:
+325:============================================================
+326:=== PAGE 5 ===
+327:============================================================
+328:
+329:Published as a conference paper at ICLR 2023
+330:Prompt Methoda
+331:HotpotQA
+332:Fever
+333:(EM)
+334:(Acc)
+335:Standard
+336:28.7
+337:57.1
+338:CoT (Wei et al., 2022)
+339:29.4
+340:56.3
+341:CoT-SC (Wang et al., 2022a)
+342:33.4
+343:60.4
+344:Act
+345:25.7
+346:58.9
+347:ReAct
+348:27.4
+349:60.9
+350:CoT-SC →ReAct
+351:34.2
+352:64.6
+--RESULTS--
+429:RESULTS AND OBSERVATIONS
+430:ReAct outperforms Act consistently
+431:Table 1 shows HotpotQA and Fever results using PaLM-
+432:540B as the base model with different prompting methods. We note that ReAct is better than Act
+433:on both tasks, demonstrating the value of reasoning to guide acting, especially for synthesizing the
+434:final answer, as shown in Figure 1 (1c-d). Fine-tuning results 3 also confirm the benefit of reasoning
+435:traces for more informed acting.
+436:3Of all trajectories with correct final answers, those with 7 steps on HotpotQA and 5 steps on FEVER only
+437:take up 0.84% and 1.33% respectively.
+438:5
+439:
+440:============================================================
+441:=== PAGE 6 ===
+442:============================================================
+443:
+444:Published as a conference paper at ICLR 2023
+445:Type
+446:Definition
+447:ReAct
+448:CoT
+449:Success
+450:True positive
+451:Correct reasoning trace and facts
+452:94%
+453:86%
+454:False positive
+455:Hallucinated reasoning trace or facts
+456:6%
+457:14%
+458:Failure
+--CONCLUSION--
+790:CONCLUSION
+791:We have proposed ReAct – a simple yet effective method for synergizing reasoning and acting in
+792:large language models. Through a diverse set of experiments on multi-hop question-answering, fact
+793:checking, and interactive decision-making tasks, we show that ReAct leads to superior performance
+794:with interpretable decision traces. Despite the simplicity of our method, complex tasks with large
+795:action spaces require more demonstrations to learn well, which unfortunately can easily go beyond
+796:the input length limit of in-context learning. We explore the fine-tuning approach on HotpotQA
+797:6Human feedback can also be incorporated in a complementary manner but we leave it for future work.
+798:9
+799:
+800:============================================================
+801:=== PAGE 10 ===
+802:============================================================
+803:
+804:Published as a conference paper at ICLR 2023
+805:with initial promising results, but learning from more high-quality human annotations will be the
+
+##### papers/rStar2-Agent_2508.20722/rStar2-Agent_2508.20722_fulltext.txt  (1620 lines)
+--ABSTRACT--
+17:Abstract
+18:We introduce rStar2-Agent, a 14B math reasoning model trained with agentic reinforcement learn-
+19:ing to achieve frontier-level performance. Beyond current long CoT, the model demonstrates
+20:advanced cognitive behaviors, such as thinking carefully before using Python coding tools and
+21:reflecting on code execution feedback to autonomously explore, verify, and refine intermediate
+22:steps in complex problem-solving. This capability is enabled through three key innovations that
+23:makes agentic RL effective at scale: (i) an efficient RL infrastructure with a reliable Python code
+24:environment that supports high-throughput execution and mitigates the high rollout costs, enabling
+25:training on limited GPU resources (64 MI300X GPUs); (ii) GRPO-RoC, an agentic RL algorithm
+26:with a Resample-on-Correct rollout strategy that addresses the inherent environment noises from
+27:coding tools, allowing the model to reason more effectively in a code environment; (iii) An ef-
+28:ficient agent training recipe that starts with non-reasoning SFT and progresses through multi-RL
+29:stages, yielding advanced cognitive abilities with minimal compute cost. To this end, rStar2-Agent
+30:boosts a pre-trained 14B model to state of the art in only 510 RL steps within one week, achieving
+31:average pass@1 scores of 80.6% on AIME24 and 69.8% on AIME25, surpassing DeepSeek-R1
+32:(671B) with significantly shorter responses. Beyond mathematics, rStar2-Agent-14B also demon-
+33:strates strong generalization to alignment, scientific reasoning, and agentic tool-use tasks. Code
+34:and training recipes are available at https://github.com/microsoft/rStar.
+35:Model
+36:AIME24
+37:AIME25
+38:HMMT25
+39:OpenAI o3-mini (medium)
+40:79.6
+41:77.0
+42:53.0
+43:DeepSeek-R1 (671B)
+44:79.8
+45:70.0
+46:44.4
+47:DeepSeek-R1-Zero (671B)
+48:71.0
+49:53.3
+50:46.0
+--INTRO END--
+837:To ensure reliable RL supervision, we follow two rules when collecting math problems. First, problems must be
+838:high-quality, challenging, and have correctly labeled final answers. Second, answers must be integers. The integer-
+839:only requirement is is essential because verifying equivalence between different algebraic expressions is notoriously
+840:difficult. For example, current rule-based verifiers such as Prime and math verifier struggle to recognize that
+841:(a+b)(b+c)(c+a) and (a+c)(c+b)(b+a) represent the same solution. Such cases can lead to incorrect rewards
+842:by misclassifying correct rollouts as incorrect. Therefore, we only include math problems with integer answers.
+843:Guided by these rules, we collect over 100K candidate problems from three sources. First, we include 17K integer-
+844:only problems from the DAPO training set [Yu et al., 2025]. Next, we add 93K problems from the Art of Problem
+845:Solving (AoPS) forums via OpenMathReasoning [Moshkov et al., 2025]. Finally, we include 937 challenging prob-
+846:lems from Project Euler [Huggingface], which require both mathematical insight and programming skills.
+847:We then perform extensive cleaning to produce a final set of 42K high-quality problem-answer pairs. For the Open-
+848:MathReasoning dataset, we remove unverifiable answers (e.g., The limit does not exist), overly complex
+849:formats (e.g., Perimeter=54cm, Area=180cm²), and incorrect answers. Specifically, we use Qwen3-32B to gen-
+850:erate 16 responses per problem and retain only those with integer answers that match the original labeled answer
+851:at least twice. For the Project Euler dataset, we remove problems with excessively large numerical answers (e.g.,
+852:6.5e27330467) that can cause verifiers to time out. This process produces a clean, verifiable dataset for RL training.
+853:4.3
+854:Multi-Stage RL Training
+855:We then run large-scale agentic reinforcement learning using GRPO-RoC, with a learning rate of 1e-6 and a batch
+856:size of 512 prompts. For each prompt, we first oversample 2G = 32 multi-turn rollouts and then select 16 using
+857:the RoC strategy. To improve training efficiency, we adopt a multi-stage strategy that gradually increases both the
+858:maximum training length and the difficulty of the data as shown in Table 2. Unlike other RL methods that heavily
+859:rely on scaling the training length, often using at least 16K token length throughout, we start with shorter lengths
+860:and scale up across stages (8K→12K→12K). This high efficiency is enabled by GRPO-RoC, which allows strong
+861:performance even with shorter response length. We detail each stage below.
+862:Table 2: Comparison of training recipes among leading reasoning models.
+863:rStar2-Agent is trained with non-
+864:reasoning SFT, uses much short RL training lengths, and applies data difficulty filtering only at the final stage.
+--METHOD--
+865:Method
+866:Has Reasoning SFT? RL Stages Total Steps
+867:Max Training Length
+868:Data Difficulty Filtering
+869:DeepSeek-R1-Zero
+870:✗
+871:-
+872:>9K
+873:-
+874:-
+875:DeepSeek-R1
+876:✓
+877:-
+878:-
+879:-
+880:-
+881:DAPO [Yu et al., 2025]
+882:✗
+883:1
+884:>5K
+885:20K
+886:✗
+887:ReTool [Feng et al., 2025]
+888:✓
+889:1
+890:400
+891:16K
+892:-
+893:MiniMax [Chen et al., 2025]
+894:✓
+895:4
+896:>4K
+897:40K→48K→56K→80K
+898:All Stages
+899:MiMo [Xiaomi et al., 2025]
+900:✓
+901:3
+902:175K
+903:32K→38K→48K
+904:All Stages
+--EXP SETUP--
+985:Experiments
+986:5.1
+987:Setup
+988:Training Setup. We run experiments on two models: Qwen3-14B-Base and Qwen2.5-32B-Instruct. For Qwen3-
+989:14B-Base, we preform a non-reasoning SFT before RL to instill basic tool-use and instruction-following abilities,
+990:13
+991:
+992:============================================================
+993:=== PAGE 14 ===
+994:============================================================
+995:
+996:Table 3: With GRPO-RoC agentic RL training, rStar2-Agent-14B achieves competitive mathematical reasoning
+997:comparable with frontier LLMs, while using significantly less training compute and smaller model sizes.
+998:Model
+999:Reasoning SFT before RL?
+1000:MATH-500
+1001:AIME24
+1002:AIME25
+1003:HMMT Feb.25
+1004:OpenAI o3-mini (medium)
+1005:-
+1006:98.0
+1007:79.6
+1008:77.0
+1009:53.0
+1010:DeepSeek-R1 (671B)
+1011:✓
+1012:97.3
+1013:79.8
+1014:70.0
+1015:44.4
+1016:Claude-Opus-4.0 (Think)
+1017:✓
+1018:98.2
+1019:76.0
+1020:69.2
+1021:-
+1022:Kimi k1.5
+1023:✓
+1024:96.2
+1025:77.5
+1026:-
+1027:-
+1028:Magistral Medium
+1029:✓
+1030:94.3
+1031:73.6
+1032:64.9
+1033:-
+1034:QWQ-32B
+--CONCLUSION--
+1455:Conclusion
+1456:This work introduces rStar2-Agent, a 14B math reasoning model that “ thinks smarter than merely longer”, achieving
+1457:performance comparable to the 671B DeepSeek-R1 through large-scale agentic reinforcement learning. Its success
+1458:is driven by the GRPO-RoC algorithm for effective training in a code environment, a scalable RL infrastructure,
+1459:and a compute-efficient training recipe. Extensive experiments on two base model sizes demonstrate the superiority
+1460:of the rStar2-Agent approach, with the 14B model reaching a pass@1 accuracy of 80.6% on AIME24 and 69.8%
+1461:on AIME25, surpassing DeepSeek-R1 while producing shorter responses and generalizing beyond mathematics.
+1462:Analysis further reveals that agentic reasoning introduces reflection tokens from tool responses, driving exploration,
+1463:self-reflection, and error correction. We plan to extend rStar2-Agent to broader reasoning domains and valuable
+1464:environments. The code, datasets and recipes are publicly released to support further research and collaboration.
+1465:References
+1466:Marah Abdin, Sahaj Agarwal, Ahmed Awadallah, Vidhisha Balachandran, Harkirat Behl, Lingjiao Chen, Gustavo
+1467:de Rosa, Suriya Gunasekar, Mojan Javaheripi, Neel Joshi, et al. Phi-4-reasoning technical report. arXiv preprint
+1468:arXiv:2504.21318, 2025.
+1469:AIME. Aime problems and solutions. URL https://artofproblemsolving.com/wiki/index.php/AIME_
+1470:Problems_and_Solutions.
+
+##### papers/ToolRL_2504.13958/ToolRL_2504.13958_fulltext.txt  (3077 lines)
+--ABSTRACT--
+11:Abstract
+12:Current Large Language Models (LLMs) of-
+13:ten undergo supervised fine-tuning (SFT) to ac-
+14:quire tool use capabilities. However, SFT strug-
+15:gles to generalize to unfamiliar or complex tool
+16:use scenarios. Recent advancements in rein-
+17:forcement learning (RL), particularly with R1-
+18:like models, have demonstrated promising rea-
+19:soning and generalization abilities. Yet, reward
+20:design for tool use presents unique challenges:
+21:multiple tools may be invoked with diverse pa-
+22:rameters, and coarse-grained reward signals,
+23:such as answer matching, fail to offer the fine-
+24:grained feedback required for effective learning.
+25:In this work, we present the first comprehen-
+26:sive study on reward design for tool selection
+27:and application tasks within the RL paradigm.
+28:We systematically explore a wide range of re-
+29:ward strategies, analyzing their types, scales,
+30:granularity, and temporal dynamics. Building
+31:on these insights, we propose a principled re-
+32:ward design tailored for tool use tasks and apply
+33:it to train LLMs using Group Relative Policy
+34:Optimization (GRPO). Empirical evaluations
+35:across diverse benchmarks demonstrate that
+36:our approach yields robust, scalable, and stable
+37:training, achieving a 17% improvement over
+38:base models and a 15% gain over SFT mod-
+39:els. These results highlight the critical role of
+40:thoughtful reward design in enhancing the tool
+41:use capabilities and generalization performance
+42:of LLMs. All the code are released to facilitate
+43:future research.1
+44:1
+--INTRO END--
+260:extensive experiments, we identify reward designs
+261:that best align with agentic tool use and uncover
+262:insights into what makes a reward “useful” for tool
+263:invoking LLMs. We summarize the core insights
+264:we derive as follows:
+265:• Longer reasoning trace is not inherently better
+266:and length rewards can degrade performance.
+267:• Dynamic reward scale helps models transition
+268:smoothly from simple to complex behaviors.
+269:• Finegrained reward decomposition leads to more
+270:stable and effective learning.
+271:We also summarize the overall contributions of our
+272:paper as follows:
+273:• We present the first systematic study on RL-
+274:based training for general-purpose tool selection
+275:and application in LLMs.
+276:• We propose a principled reward design frame-
+277:work tailored for TIR and validate its effective-
+278:ness through RL algorithms including GRPO.
+279:• We conduct extensive experiments analyzing the
+280:effects of various reward strategies and distill
+281:actionable insights for future research on LLM-
+282:agent training.
+283:This work pioneers the application of RL to general
+284:TIR and provides the first empirical roadmap for
+285:reward design in TIR, paving the way toward more
+286:capable and autonomous LLM agents.
+287:2
+--METHOD--
+366:Method
+367:Supervised fine-tuning (SFT), as illustrated in Fig-
+368:ure 1, often suffers from overfitting to certain pat-
+369:terns and constrains the model’s ability to learn
+370:optimal strategies for tool use. To address this, we
+371:introduce a reinforcement learning (RL) approach
+372:for enhancing tool-integrated reasoning (TIR) in
+373:LLMs. In this section, we begin by defining the
+374:TIR task (Section 3.1), followed by our customized
+375:rollout strategy (Section 3.2) and reward design
+376:(Section 3.3). These components are then inte-
+377:grated into the Group Relative Policy Optimization
+378:(GRPO) framework (Shao et al., 2024) to guide
+379:model training on general TIR tasks (Section 3.4).
+380:3.1
+381:Task Definition
+382:Tool-Integrated Reasoning (TIR) is the process of
+383:incorporating external tools into the reasoning tra-
+384:jectory of an LLM to solve a user task. A typical
+385:TIR trajectory involves multiple tool invocations
+386:over several reasoning steps, with the final outcome
+387:determined by the cumulative success of these in-
+388:termediate decisions.
+389:Formally, given a tool set T = {t1, t2, . . . , tn}
+390:containing n available tools, and a user query Q,
+391:the reasoning trajectory up to step k is denoted as:
+392:sk = (r1, T1, o1) , (r2, T2, o2) , . . . , (rk, Tk, ok) ,
+393:where ri denotes the model’s natural language rea-
+394:soning at step i, Ti ⊆T denotes the set of tool
+395:calls invoked at step i, and oi denotes the observa-
+396:tion received after executing tools in Ti, possibly
+397:including both environment and user feedback.
+398:At each step k + 1, the model must generate
+399:the next reasoning step rk+1, select a set of tools
+400:Tk+1 ⊆T , and formulate a grounded tool call (i.e.,
+401:a parameterized invocation of each tool) to make
+402:progress toward solving Q.
+403:The model’s policy is defined as π : sk →
+404:(rk+1, Tk+1), where the model’s objective at each
+405:step is to select a tool set Tk+1 that maximizes the
+--EXP SETUP--
+685:Experiments
+686:4.1
+687:Training Dataset
+688:To support robust tool learning through RL, we
+689:construct a mixed dataset spanning diverse tool use
+690:scenarios:
+691:• ToolACE (Liu et al., 2024): A general tool
+692:use dataset where the model learns when to in-
+693:voke tools versus respond directly, improving
+694:decision-making in multi-step interactions.
+695:• Hammer (Masked) (Lin et al., 2024): A subset
+696:of Hammer with randomized tool and parameter
+697:names, forcing the model to rely on descriptions
+698:rather than memorized labels, thus enhancing
+699:generalization and reducing overfitting to certain
+700:tools.
+701:• xLAM (Zhang et al., 2024): A compositional
+702:dataset requiring one or multiple tool calls per
+703:turn, encouraging the model to reason about tool
+704:dependencies and plan diverse tool calling action
+705:actively.
+706:For RL training, we sample 2K examples from
+707:ToolACE and 1K each from Hammer and xLAM,
+708:creating a balanced dataset spanning diverse levels
+709:of complexity and tool use. Multi-step trajectories
+710:are decomposed into single-step instances, with
+711:prior dialogue history injected into the user prompt
+712:(as shown in Figure 12) to preserve context. This
+713:setup encourages strategic exploration and teaches
+714:the model to select and apply tools appropriately
+715:within each step. Please see Appendix B for more
+716:details and justifications.
+717:4.2
+718:Experiment Settings
+719:Training.
+720:We conduct all RL experiments using
+721:the veRL framework (Sheng et al., 2024), adopt-
+722:ing the GRPO algorithm detailed in the previous
+723:section. For each training step, we sample a batch
+724:of 512, and generate 4 responses per query, train-
+725:ing for 15 epochs in total (see Appendix B for full
+726:configuration details). To encourage broader pol-
+727:icy exploration, we remove KL regularization and
+728:apply a generation temperature of 1.0. We initial-
+729:ize our models with the Qwen-2.5-Instruct (Team,
+730:2024) and Llama-3.2-Instruct (Dubey et al., 2024)
+731:series, which are further tuned under the GRPO
+732:objective with our customized reward design.
+733:Evaluation.
+734:We evaluate our approach on
+--RESULTS--
+766:results are reported in terms of accuracy.
+767:Baselines.
+768:We compare our approach against sev-
+769:eral baselines to better isolate the effects of GRPO
+770:training: (1) Raw Instruct Model: the original
+771:model without any additional fine-tuning or RL,
+772:evaluated using the same prompts. (2) SFT on
+773:RL Data: the instruct model fine-tuned using the
+774:same 4K / selected 400 data points as the RL train-
+775:ing set, providing a comparison point to assess
+776:whether GRPO training outperforms standard SFT.
+777:(3) GRPO on SFT Model: GRPO is applied to
+778:a model that has already undergone SFT on the
+779:selected 400 data points. This setup allows us to
+780:evaluate the impact of initializing GRPO with a
+781:format-aware model, in contrast to starting from
+782:the raw instruct model in a cold start manner. (4)
+783:PPO: We also include the standard PPO setting as
+784:a baseline to evaluate whether our reward design is
+785:effective beyond GRPO. We report results for both
+786:a cold start PPO model and a PPO model initialized
+787:with SFT, using the same hyperparameters as in the
+788:GRPO setup for a fair comparison. Please refer to
+789:Appendix B for more details and justifications.
+790:4.3
+791:Results
+792:Main Results.
+793:We report BFCL and API-Bank
+794:results in Table 1 and Table 2, respectively.
+795:Our GRPO method, trained from scratch on the
+--CONCLUSION--
+2097:Conclusion
+2098:In this paper, we present a reward design tailored
+2099:for GRPO training on tool use tasks. Empirically,
+2100:our model trained from scratch using GRPO con-
+2101:sistently outperforms both SFT-based and SFT-
+2102:initialized RL baselines, as well as models trained
+2103:with alternative RL algorithms, across a variety of
+2104:held-out tool use benchmarks. Furthermore, we
+2105:demonstrate that our model generalizes well to QA
+2106:settings, exhibiting robust multi-turn interactions,
+2107:emergent proactiveness, and metacognitive behav-
+2108:iors, all of which are key traits for efficient and
+2109:adaptable tool use, lying at the core of foundational
+2110:agent capabilities. Our in-depth analysis of reward
+2111:types, scaling strategies, granularity, and temporal
+2112:dynamics provides further insights into how reward
+
