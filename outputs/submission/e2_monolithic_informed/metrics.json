@@ -1,0 +1,180 @@
+{
+  "design": "B1 monolithic query->plan vs v5 pipeline (compiler + symbolic planner)",
+  "prompt_mode": "informed",
+  "model": "models/Qwen3-1.7B",
+  "seed": 42,
+  "precision": "bf16",
+  "data_sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "code_sha256": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+  "budget": {
+    "steps": 9000,
+    "tokens": {
+      "prompt": 30066537,
+      "completion": 1056099
+    },
+    "examples": 12000,
+    "dropped": 0
+  },
+  "train_rows": 12000,
+  "elapsed_s": 7792.5,
+  "splits": {
+    "dev": {
+      "n": 900,
+      "elapsed_s": 98.2,
+      "planned": 0.9988888888888889,
+      "safe_success": 0.9566666666666667,
+      "faithful": 0.9222222222222223,
+      "faithful_constrained": 0.8833333333333333,
+      "none_faithful": 1.0,
+      "by_variant": {
+        "explicit": {
+          "n": 300,
+          "faithful": 0.8833333333333333
+        },
+        "implicit": {
+          "n": 300,
+          "faithful": 0.8833333333333333
+        },
+        "none": {
+          "n": 300,
+          "faithful": 1.0
+        }
+      },
+      "gen_tokens": 25689
+    },
+    "test_tpl_ho": {
+      "n": 1050,
+      "elapsed_s": 112.6,
+      "planned": 1.0,
+      "safe_success": 0.9323809523809524,
+      "faithful": 0.8123809523809524,
+      "faithful_constrained": 0.83,
+      "none_faithful": 0.7771428571428571,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.8428571428571429
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.8171428571428572
+        },
+        "none": {
+          "n": 350,
+          "faithful": 0.7771428571428571
+        }
+      },
+      "gen_tokens": 29736
+    },
+    "test_tool_ho": {
+      "n": 1050,
+      "elapsed_s": 117.4,
+      "planned": 0.900952380952381,
+      "safe_success": 0.5342857142857143,
+      "faithful": 0.520952380952381,
+      "faithful_constrained": 0.2814285714285714,
+      "none_faithful": 1.0,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.27714285714285714
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.2857142857142857
+        },
+        "none": {
+          "n": 350,
+          "faithful": 1.0
+        }
+      },
+      "gen_tokens": 31069
+    },
+    "test_struct_ho": {
+      "n": 1050,
+      "elapsed_s": 161.3,
+      "planned": 0.5666666666666667,
+      "safe_success": 0.36857142857142855,
+      "faithful": 0.36095238095238097,
+      "faithful_constrained": 0.05857142857142857,
+      "none_faithful": 0.9657142857142857,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.06
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.05714285714285714
+        },
+        "none": {
+          "n": 350,
+          "faithful": 0.9657142857142857
+        }
+      },
+      "gen_tokens": 46998
+    }
+  },
+  "paired_vs_pipeline": {
+    "dev": {
+      "diff": -0.10166666666666668,
+      "ci95": [
+        -0.14,
+        -0.06666666666666665
+      ],
+      "n": 600,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.985,
+      "monolithic_faithful_constrained": 0.8833333333333333
+    },
+    "test_tpl_ho": {
+      "diff": -0.13714285714285723,
+      "ci95": [
+        -0.1757142857142857,
+        -0.09857142857142853
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9671428571428572,
+      "monolithic_faithful_constrained": 0.83
+    },
+    "test_tool_ho": {
+      "diff": -0.6357142857142857,
+      "ci95": [
+        -0.6885714285714285,
+        -0.582857142857143
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9171428571428571,
+      "monolithic_faithful_constrained": 0.2814285714285714
+    },
+    "test_struct_ho": {
+      "diff": -0.8999999999999999,
+      "ci95": [
+        -0.9257142857142857,
+        -0.8714285714285714
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9585714285714285,
+      "monolithic_faithful_constrained": 0.05857142857142857
+    },
+    "overall": {
+      "diff": -0.4562962962962963,
+      "ci95": [
+        -0.4837037037037037,
+        -0.4288888888888889
+      ],
+      "n": 2700,
+      "boot": 10000
+    }
+  },
+  "preregistered_rule": "mono >= pipe - 1pp and CI covers 0 => separation claim falsified (report as is)"
+}

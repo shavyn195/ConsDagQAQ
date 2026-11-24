@@ -266,8 +266,22 @@ TODO(v6)：v6 六个 run 的结果与 v5 的一致性检查；主表是否切到
 
    以上均来自同文件 `interventions_on_initial_failures`。前者对应"读错约束"，后者对应"搜索受限"。
 
-TODO(E2)：插入 E1 × E2 × symbolic 三向对照，包括单体直出计划的 faithful 与成本列（token、时延）。
-待补（第三波，需 API 授权，见待决策清单）：DeepSeek 作为规划器的一列，用来把"消费者可换"补成双向插拔。
+TODO(E2)：插入公平完整输入E2 × symbolic对照，包括单体直出计划的faithful与成本列（token、时延）。
+
+**补充：v5强弱编译器×外部消费者交叉。** 两个冻结编译器分别接符号消费者和DeepSeek零样本消费者（thinking关闭、最多384输出token）。四切分受约束faithful（%）：
+
+| 编译器→消费者 | dev | tpl_ho | tool_ho | struct_ho |
+|---|---:|---:|---:|---:|
+| 1.7B seed42→符号 | 98.50 | 96.71 | 91.71 | 95.86 |
+| DeepSeek十示例→符号 | 99.33 | 99.29 | 99.71 | 99.86 |
+| 1.7B seed42→DeepSeek零示例 | 39.67 | 37.43 | 29.86 | 30.71 |
+| DeepSeek十示例→DeepSeek零示例 | 40.50 | 37.57 | 34.29 | 31.86 |
+
+来源：`outputs/submission/deepseek_planner_v5_parse_parity/e2_shared_analysis.json:table`。原API读取器直接要求整个回答为JSON，5339次响应中5337次带Markdown代码块，原受约束全零作为格式遵从成绩保留。此表是披露后的缓存评分对齐，复用原E2读取器，且只移除单个代码块也得到完全相同的8100条执行判定；不改工具／顺序／数值，无新模型调用。不可把格式零分当规划能力结论，也不可把修正成绩追认为预注册。
+
+在API消费者下，强减弱编译器的tool_ho差为+4.43pp、任务组配对95%CI[+2.29,+6.71]；dev/tpl/struct分别+0.83/+0.14/+1.14pp，区间均含零。该观察不支持无衰减换消费者，且不能代表DeepSeek的规划能力上限；零样本消费者与十示例编译器是不同子任务。强编译器→API的有效计划中，仍有大量已给定时限与隐私违反，并非只因最小改动指标苛刻（`failure_diagnostic.json`）。完整结果与限定见 `reports/consumer_cross_results_20261125.md`。
+
+该v5交叉与上方v4 SFT网格版本不同，分表报告；不拼成同面板三向排名。区间条件于固定权重和API缓存，未作多重比较校正。实际5339请求共6,331,727 token，只是规划阶段用量，不含编译、未返回usage的重试和完整账单，不能用于宣称端到端价格优势。
 
 ### 5.3 行为-记录裂缝与 seed 方差的双轴机制
 
@@ -330,6 +344,8 @@ TODO(E2)：
 - 历史判定规则保留在原文件中。CI 跨零不构成等价证据，最终报告不能采用该推断；新公共信息完整臂记录为探索性公平性修正。
 - 待补：四个切分加 overall 的配对差与 CI、训练 token 账、推理生成 token 与时延。
 - `src/sub_e2_public_contract.py` 给单体完整公开政策、显示名称、data_class 与任务结构，保留原训练循环并保存原始计划。12,000 条训练样本均在 1280 token 上限内；评测保留完整输入。对照为 seed42 条件下的比较，不能替代三 seed 架构优势检验。
+
+informed诊断臂已完成，受约束faithful为88.33/83.00/28.14/5.86%，N faithful为100/77.71/100/96.57%（`outputs/submission/e2_monolithic_informed/metrics.json:splits`）。此臂仍缺policy、工具显示名称、data_class等公开信息，不进入公平架构主表，不以其低分证明架构优势或触发E5。9000步、无长度丢弃；实际训练prompt/target token与独立重放一致。完整公开输入E2尚在接力队列。
 
 训练配方的token重放核算已完成（`outputs/submission/audit_20261125/training_token_budget.json`）：三轮编译器序列总量28,732,221，完整单体36,402,576；其中受监督target（含EOS）分别2,670,729和1,056,099。两者都是9000更新，但编译器的序列量为单体0.7893倍、target量为2.5289倍，不能称匹配计算或相同监督量。该重放不表示排队中的单体已经完成训练；也不估算FLOPs、延迟或货币成本。旧`train_seconds`混入zero-shot和trained评测，不用作纯训练时长；单体`elapsed_s`也含评测与分析。历史tokenizer哈希未保存，本次固定当前部署同模型tokenizer并披露限制。
 
