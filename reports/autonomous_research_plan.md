@@ -13,6 +13,7 @@
 - 最新快照01:02:35：E2 7400/9000，75次已记录loss有限，GPU47%；API2970/5339。下一次先核实进程与新产物，不把此快照当实时状态。主表仍为v5，v6单列，禁止按结果好坏选版本。
 - 本轮精读ATLAS、CGAP、Coordination Tax、SpecHarness的直接相关章节并核验元数据，见 `reports/literature_architecture_recheck_20261125.md`。SpecHarness已有七编译器覆盖／记录有效性评测，不能主张首次独立记录审计；Coordination Tax已有异构角色，其3.22倍不是我们的成功门槛。OpenAlex新检索超时，不宣称全覆盖查漏完成。
 - 新全量训练token重放在服务器CPU完成：编译器三轮序列28,732,221、完整单体36,402,576；target含EOS分别2,670,729／1,056,099。不能叫同算力或相同监督量。历史train_seconds混入评测，不作纯训练耗时。产物 `outputs/submission/audit_20261125/training_token_budget.json` 已双侧验哈希；没有新增GPU任务或更改运行中源代码。
+- 01:14巡检：informed E2到8300/9000，GPU66%、18,308MiB，E2/E3 supervisor、恢复接力、API worker与分析等待进程均在；API最终配对产物尚未生成。原每小时任务`consdag-2`仍含已被取代的追问pilot主线，现已按最新投稿方案v3更新，保留ACTIVE、原线程和每小时间隔，防止下轮自动切换方向。调度新增近邻重合、E2公平输入、成本口径及v6原预算约束；未新增或中断GPU运行。
 
 授权更新：2026-11-23 晚。用户要求休息后继续推进；若当前结果不足以支撑目标，可以主动修订创新点、实验和数据。目标是产生可核查的研究证据，不保证任何 venue 录用。
 
