@@ -8,15 +8,15 @@
 
 **定稿措辞**（负结果章内）：
 
-> We evaluate reward-side credit assignment across three arms—action-level attribution, preventive-action rewards, and a weighted repair-SFT mixture—with the last arm replicated over three training orders. Under our measurement power (three seeds per arm; paired task-group bootstrap intervals spanning roughly ±4-5 points on the constrained faithful rate), we observe **no stable effect** in any direction: the two GRPO arms differ from their controls by +1/0/−1 and 0/+2/−2 percentage points across seeds, and the weighted repair-SFT arm by +1/−3/−6 points across its three training orders (36→37, 44→41, 44→38). One comparison is not covered by this claim and is reported separately: the frozen-planner transfer contrast (whole-trajectory vs. functional-only reward) is +0/+1/+3 points on tpl_ho with a 95% interval of [+0.28, +7.22], i.e. a small positive effect our design cannot resolve from noise. We therefore **do not detect** a benefit of reward-side credit assignment on this task; we explicitly do not claim to have proven the effect is zero.
+> In the tested v4 setting, action-level and preventive credit assignment show no consistent improvement over whole-trajectory rewards. Their per-seed changes are +1/0/−1 successful cases out of 120, and 0/+2/−2 out of 90, respectively. The paired task-group intervals, conditional on the three observed seeds, are [−3.89, +3.61] and [−4.81, +4.45] percentage points. These are uncertainty intervals, not minimum detectable effects or confidence intervals over training seeds. Separately, whole-trajectory rewards exceed functional-only rewards by +4/+2/+7 cases out of 120, with a conditional interval of [+0.28, +7.22] points; this is evidence for adding a constraint signal in that setting, not for the proposed credit allocation. The frozen-transfer comparison is separate and must not inherit that interval. Weighted repair-SFT is also separate from GRPO: its three training-order changes are +1/−3/−6 cases out of 80. We do not infer a universal zero effect from these experiments.
 >
-> Provenance: GRPO arms and weighted repair-SFT orders from `outputs/e2_v4/{action-credit-1.7B-pilot-v1, verified-repair-sft-1.7B-orders-v1}`; frozen transfer from `outputs/e2_v4/frozen-planner-transfer-v1`. Numbers re-verified in the 2026-11-24 audit (`outputs/submission/audit_20261124/recompute.json`).
+> Provenance: `outputs/e2_v4/action-credit-1.7B-pilot-v1/rechecked-original-42-43-44.json`, its `preventive-comparison-v1/rechecked-prevention-42-43-44.json`, and `outputs/e2_v4/verified-repair-sft-1.7B-orders-v1/independent-replay.json`. The inventory audit `recompute.json` is not the source of GRPO intervals.
 >
 > The diagnostic instrument built for this evaluation—the 2×2 attribution protocol isolating compiler-side recovery (112/118) from planner-side recovery (47/138)—is retained in the main analysis as a measurement contribution, independent of the training outcome.
 
-中文对照（内部审校用）：三臂为「动作级归因 / 预防动作 / 加权修复 SFT（三种训练顺序）」，不是「GRPO 三 seed×三臂」。区间约 ±4-5pp。冻结迁移的「整轨迹 − 只奖功能」为 +0/+1/+3，区间 [+0.28,+7.22]，属小正效应、本设计分辨不出，必须单列，不能并入「未检出」。不写「证明为零」。
+中文审校：净增数字是“道”，不是 pp；分母120／90／80不同。正区间 [+0.28,+7.22] 属原面板 trace-minus-function，不属于冻结迁移；区间不含0不能同时称“无法与噪声区分”。训练顺序与模型种子分开。
 
-**配套 Limitation 句**：GRPO 消融为单架构、单数据域、三 seed；功效上限约 ±4-5pp，更小效应本设计不可检。
+**配套 Limitation 句**：单架构、单数据域、三个观测 seed，条件区间仍较宽；未进行前瞻性功效分析，不报告 MCD。
 
 ## 2. symbolic 规划器列措辞防御（R2「单调=构造必然」一刀的防御）
 
@@ -24,11 +24,11 @@
 
 **定稿措辞**（结果章，紧贴网格表）：
 
-> The monotone row for the symbolic planner is expected by construction—a perfectly obedient consumer converts compiler quality into execution quality without loss. We report it as an **interface sanity check, not as a result**: it verifies that our compile-plan-execute decomposition adds no attenuation of its own, which is precisely the property required before the separation can carry any interpretation.
+> On the frozen v4 panel, all four compilers can supply records to the same symbolic consumer. We report the resulting execution rates as a compatibility check within this interface. The ordering of aggregate rates does not establish lossless compilation: the consumer uses type and params and ignores several audited fields.
 >
-> The non-constructive evidence is the prompted-compiler cell: DeepSeek's 10-shot compiler output, fed through the same symbolic interface, **exceeds our best trained 4B compiler (0.9950 vs 0.9786 faithful)**. The interface is therefore not tuned to our own models—it is consumable by a compiler we did not train, at a quality level our own training has not reached. Conversely, the two SFT-planner columns stay flat at 0.25-0.30 across all four compilers (safe success 0.88-0.95), showing that consumer quality, not compiler quality, is the binding constraint in that regime.
+> DeepSeek's ten-shot compiler yields 0.9950 constrained faithful success through this interface, compared with 0.9786 for the tested 4B compiler. This demonstrates use by an external compiler in the measured setting. The two neural candidate-pool-and-repair consumers yield faithful rates of 0.25–0.30 despite safe success of 0.88–0.95, consistent with excess edits limiting faithful performance. These observations do not prove portability to arbitrary consumers or isolate architecture as the cause.
 
-中文对照（内部审校用）：符号行单调是构造必然，只作「接口无衰减验证」，不是卖点；**非常构造性的证据是 DeepSeek 行 > 4B 行**（接口不被自家模型特化，未被训练到的编译质量也能无损消费）；反向证据是 SFT 规划器两列对编译器质量全平（0.25-0.30，safe 0.88-0.95）——该区间瓶颈在消费者不在编译器。
+中文审校：称“所测接口兼容性”，删除“无衰减／任何人可接／完全与编译质量无关”。神经列须写明四候选池＋单编辑修复，不能冒充单次神经规划器。
 
 **E1 汇总表引用口径**（与 `scripts/submission/summarise_e1.py` 输出一致，五轴分列时 faithful 列必须标注为受约束行口径 faithful_constrained）：
 
@@ -51,5 +51,5 @@
 
 ## 4. 下一步（不属本文件）
 
-- E2 落地后：若单体 faithful >> 0.30，R2「神经消费者不可行」批评自动化解，写作时在 Discussion 引 E2；若也 ~0.3，触发 E5 条件分叉。
+- E2 落地后先核对公开信息与原始输出。单个分数不能识别“任务难／架构缺陷／监督不足”；E5 根据有效对照和错误类型决定。
 - DeepSeek-planner 臂（第三波）：把 2×2 升级为强弱交叉，届时本文件 §2 的「消费者也可换」一句才完整。

@@ -9,7 +9,7 @@ A4 去 scope：角色绑定字段移除（规划器从不读它，预期下游 f
   记录轴 = run_e1.score()（金标与预测按同一臂 schema 同步裁剪后复用官方评分器）
           + full-contract 解析率（部署成本：被 fail-closed 评测器拒绝的比例）
   下游轴 = 符号规划器（主管线同款）回放 faithful_constrained
-预注册诚实预期：A1 下游崩（typed 必要性）；A2/A4 下游不变（字段消费方分层）；
+假设：A1 表示变化是否影响下游需实测；A2/A4 不直接参与执行，但可能改变训练；
 A3 下游不变但隐式行 core F1 可能下滑（三态信号是否承载恢复能力由数据回答）。
 """
 from __future__ import annotations
@@ -177,6 +177,9 @@ def train_ablated(model: Any, tokenizer: Any, rows: list[dict[str, Any]], arm: s
             continue
         examples.append((prefix + completion, [-100] * len(prefix) + completion))
 
+    if dropped:
+        raise ValueError(f"Training length coverage failed: {dropped} rows exceed max_seq_len; do not silently change the cohort")
+
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=args.learning_rate)
     trainable = [p for p in model.parameters() if p.requires_grad]
     rng = random.Random(args.seed)
@@ -208,6 +211,8 @@ def train_ablated(model: Any, tokenizer: Any, rows: list[dict[str, Any]], arm: s
                 optimizer.zero_grad(set_to_none=True)
                 accumulation = 0
                 done += 1
+                if done == 1 or done % 100 == 0:
+                    print(json.dumps({"optimizer_step": done, "loss": float(out.loss.detach().cpu())}), flush=True)
         if accumulation:
             torch.nn.utils.clip_grad_norm_(trainable, 1.0, error_if_nonfinite=True)
             optimizer.step()
@@ -250,6 +255,8 @@ def coerce_item(item: Any) -> dict[str, Any] | None:
 
 def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str, Any]:
     """下游轴：宽松约束 -> 符号规划器（主管线同款）-> faithful（安全且改动数=金标最小）。"""
+    if len(rows) != len(raw):
+        raise ValueError("Prediction coverage differs from the evaluation cohort")
     out = []
     for row, text in zip(rows, raw):
         task = row["task"]
@@ -257,6 +264,7 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
         items = extract_constraints(text)
         coerced = [c for c in (coerce_item(i) for i in (items or [])) if c is not None]
         pred = [c for c in coerced if normalize_constraint(c, task) is not None]
+        valid_output = items is not None and len(items) == len(coerced) == len(pred)
         fixed, info = symbolic_plan(task, pred)
         env = check(task, fixed, gold)
         changes = info["changes"]
@@ -267,6 +275,7 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
             "sample_id": row["sample_id"], "variant": row["variant"], "gold_count": len(gold),
             "planned": fixed is not None, "safe_success": bool(env["safe_success"]),
             "faithful": bool(env["safe_success"]) and ((extra == 0) if gold else not deviates),
+            "valid_output": valid_output,
             "n_constraints_pred": len(coerced),
             "n_constraints_usable": len(pred),
             "n_constraints_unusable": len(coerced) - len(pred),
@@ -275,14 +284,44 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
     none_rows = [o for o in out if not o["gold_count"]]
     return {
         "n": len(out),
+        "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
         "faithful_constrained": (sum(o["faithful"] for o in constrained) / len(constrained)) if constrained else None,
+        "valid_faithful_constrained": (sum(o["faithful"] and o["valid_output"] for o in constrained) / len(constrained)) if constrained else None,
+        "invalid_output_rate": sum(not o["valid_output"] for o in out) / len(out) if out else None,
         "safe_constrained": (sum(o["safe_success"] for o in constrained) / len(constrained)) if constrained else None,
         "none_faithful": (sum(o["faithful"] for o in none_rows) / len(none_rows)) if none_rows else None,
+        "none_valid_faithful": (sum(o["faithful"] and o["valid_output"] for o in none_rows) / len(none_rows)) if none_rows else None,
         "none_false_alarm": (sum(o["n_constraints_usable"] > 0 for o in none_rows) / len(none_rows)) if none_rows else None,
         "none_planned_constraints_mean": (sum(o["n_constraints_pred"] for o in none_rows) / len(none_rows)) if none_rows else None,
         "implicit_faithful": (lambda items: sum(o["faithful"] for o in items) / len(items) if items else None)(
             [o for o in constrained if o["variant"] == "implicit"]),
     }
+
+
+def generate_ablated(model: Any, tokenizer: Any, rows: list[dict[str, Any]], arm: str,
+                     max_new_tokens: int, batch_size: int) -> list[str]:
+    """Use the same arm-specific prompt at training and inference."""
+    tokenizer.padding_side = "left"
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    device = next(model.parameters()).device
+    raw: list[str] = []
+    for start in range(0, len(rows), batch_size):
+        batch = rows[start:start + batch_size]
+        encoded = [render_chat(tokenizer, ablated_chat_messages(row, arm),
+                               add_generation_prompt=True)["input_ids"][0].tolist() for row in batch]
+        width = max(map(len, encoded))
+        ids = torch.full((len(batch), width), tokenizer.pad_token_id, dtype=torch.long)
+        attention = torch.zeros_like(ids)
+        for i, values in enumerate(encoded):
+            ids[i, width - len(values):] = torch.tensor(values)
+            attention[i, width - len(values):] = 1
+        with torch.no_grad():
+            output = model.generate(input_ids=ids.to(device), attention_mask=attention.to(device),
+                                    do_sample=False, max_new_tokens=max_new_tokens,
+                                    pad_token_id=tokenizer.eos_token_id)
+        raw.extend(tokenizer.decode(output[i, width:], skip_special_tokens=True) for i in range(len(batch)))
+    return raw
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -324,13 +363,11 @@ def main(argv: list[str] | None = None) -> None:
         model = PeftModel.from_pretrained(model, out_dir / "adapter")
         model.eval()
 
-    from run_e1 import generate_batched
-
     report: dict[str, Any] = {"arm": args.arm, "dropped_fields": {
         "A1": "typed representation", "A2": "evidence_span", "A3": "three-state", "A4": "scope"}[args.arm]}
     for split in SPLITS:
         rows = data[split]
-        _, raw = generate_batched(model, tokenizer, rows, args.max_new_tokens, args.eval_batch_size)
+        raw = generate_ablated(model, tokenizer, rows, args.arm, args.max_new_tokens, args.eval_batch_size)
         (out_dir / "predictions").mkdir(parents=True, exist_ok=True)
         (out_dir / "predictions" / f"{split}.jsonl").write_text(
             "\n".join(json.dumps({"sample_id": r["sample_id"], "raw": t}, ensure_ascii=False)
@@ -359,6 +396,8 @@ def main(argv: list[str] | None = None) -> None:
 
     metrics = {
         "arm": args.arm, "model": args.model, "seed": args.seed, "precision": args.precision,
+        "protocol_revision": "20261125-arm-prompt-parity",
+        "config": {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         "data_sha256": hashlib.sha256((args.data_dir / "train.jsonl").read_bytes()).hexdigest(),
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "budget": budget, "train_rows": len(train_rows),

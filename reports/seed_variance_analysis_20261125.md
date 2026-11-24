@@ -32,13 +32,13 @@
 | 4B struct_ho | 634 | 64 | 2 | **0** |
 
 record 级失败 Jaccard：1.7B tool_ho 42v43=0.146 / 42v44=0.123 / 43v44=0.335；1.7B struct_ho 0.058/0.057/0.310；4B tool_ho 0.045/0.226/0.111；4B struct_ho 0/0/0.031。
-**含义**：执行级失败几乎不同时发生——同一批样本极少被所有 seed 同时击穿。这不是「系统性难度」，是 seed 特异波动。
+**含义**：三 seed 共同失败在绝对量上较少，但在部分切分高于独立失败期望约 3.7–6.0 倍。共享难例与 seed 敏感性同时存在；仅凭重叠不能识别优化噪声、数据覆盖或表示缺陷的因果贡献。
 
 ## 3. 字段级归因：两类字段、两种机制
 
 对失败记录做金标-预测字段比对（同 type 贪心匹配；未匹配记 missed/extra）。
 
-### 3.1 params（规划器实际消费的字段）= 训练噪声
+### 3.1 params（规划器实际消费的字段）：seed 特异错误
 
 params 错误记录数 per seed 与三 seed 交集 IOU：
 
@@ -50,7 +50,7 @@ params 错误记录数 per seed 与三 seed 交集 IOU：
 | 4B struct_ho | 3 / 26 / 52 | 1 | 0.014 |
 
 实例（`scripts/submission/diag_field_mismatch_samples.py` 抽查）：`max_total_cost_cny` 金标 100 预测 1000；`tool_auth.required_role` 金标 `rent_cloud_gpu_job` 预测 `launch_fl_production_round`。
-**含义**：直接决定规划器行为的字段，其错误在不同 seed 间几乎不重叠（IOU 0.01-0.08）——执行级 faithful 的跨 seed 波动主要由 params 的 seed 特异性错误驱动，是训练噪声，不是样本固有难度。
+**含义**：直接参与规划的字段在三个 seed 间重叠较低（IOU 0.01–0.08），与执行波动相伴。尚无控制干预证明这来自训练噪声，也不能据此排除样本难度。
 
 ### 3.2 scope（记录轴独有、规划器不消费）= 系统性绑定缺陷，执行级不可见
 
@@ -65,7 +65,7 @@ scope 错误记录数 per seed 与三 seed 交集 IOU：
 
 实例：金标 budget scope 是计费角色集合 `['role:lease_partner_dataset','role:rent_cloud_gpu_job']`，模型绑定到 `['role:billable_steps']` 或与预算无关的角色三连；privacy scope 金标 4 个外发角色，模型漏绑 `sync_to_partner_hub`。
 **含义（分两种）**：
-- 1.7B 与 4B struct_ho：scope 绑定错误规模大（每 seed 300-420 条记录）且 seed 间高度一致（IOU 0.63-0.81）——**系统性缺陷：模型学不会角色绑定**；
+- 1.7B 的 tool/struct 及 4B struct：scope 错误每 seed 302–426 条，三 seed 交集 IOU 0.629–0.810，显示这些切分中持续的绑定错误；不推出模型原则上无法学习；
 - 4B tool_ho：scope 错误率本身在 seed 间飘（67→309→446），是 seed 稳定性问题。
 - 共同点：`plan()` 只读 type+params，scope 错误对 faithful 零影响——**记录轴上最大规模的缺陷在执行级指标中完全不可见**。
 
@@ -73,12 +73,12 @@ scope 错误记录数 per seed 与三 seed 交集 IOU：
 
 按预注册口径如实表述：
 
-1. **行为轴的跨 seed 方差主要由规划器实际消费的 params 字段的 seed 特异性错误驱动**（三 seed 共杀率 0-2.1%；params 错误 IOU 0.01-0.08）。单 seed 排序不可信有机制解释：seed 换的是 params 噪声，不是能力。
+1. **行为轴的跨 seed 差异伴随 params 字段的 seed 特异错误**（三 seed 共失败率 0–2.1%；params 错误 IOU 0.01–0.08）。单 seed 排序不稳定；优化、覆盖和表示的作用尚未因果识别。
 2. **记录轴存在规模最大且 seed 间高度一致的缺陷类别（scope 角色绑定，IOU 0.63-0.81），但执行级指标对其完全不敏感**（规划器不消费 scope）。只看 faithful 会漏掉它；只看记录轴会把行为无关的 scope 错误计为模型失败。
 3. 合起来：「记录轴与行为轴可分离」在本任务上有实证——行为指标单独报告不足以刻画编译器质量，这正是双轴评测（记录轴 + 执行轴）作为基准设计的理由，也直接支撑 C3 的诊断定位。
 4. 限定词（必须写进论文）：分析为固定观测 seed 的描述性分解，无 seed 总体区间推断；字段匹配为同 type 贪心最优，未建模多约束的匹配歧义；scope 的系统性结论在 4B tool_ho 上不成立（该切分 scope 错误率 seed 间在飘），须按切分分别陈述。
 
 ## 5. 对后续实验的指向（不改变队列）
 
-- E3 A4（去 scope）预期「下游 faithful 不变」——本节的 3.2 给出先验：scope 不被规划器消费，去掉它执行轴应不动，但部署成本（字段契约）下降。若 A4 下游确实不变而记录轴显著劣化，则 scope 的诊断价值得到正面证明。
+- E3 A4（去 scope）：直接删除同一预测的未消费字段不改变执行；重训后的模型可能因监督或序列长度变化而改变其他字段，不能预设执行不变。刻意删字段后的完整契约解析率下降也不能单独证明该字段有用。
 - E2 单体对照若 faithful 也平坦，注意区分「任务难」与「架构缺陷」：本节证明规划器消费的 params 在小模型上噪声大，单体直出计划同样要写对这些字段。
