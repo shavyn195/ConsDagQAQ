@@ -436,3 +436,12 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - E1 插拔网格（编译器 4 轴 × 规划器 3 轴，v4 tpl_ho+tool_ho 2100 条冻结回放，纯 CPU）完成，产物 `outputs/submission/e1_grid/results.json`。符号规划器行随编译器质量单调：0.7893/0.8836/0.9786/0.9950，DeepSeek 行超 4B，接口可被任意消费者复用；SFT 规划器行平坦在 0.25-0.30 且 safe 0.88-0.95，过编辑为下游瓶颈（0.6B 格 over_edited=792）。回放口径自校验：DeepSeek 编译器复现 p0_c1=1255/1400=0.8964，0.6B 编译器复现 safe=1144/1400=0.8171，与 2×2 协议一致。
 - E2（B1 单体，1.7B）与 E3（A 系消融 A3/A4/A2/A1，0.6B）脚本经本地与服务器语法/参数冒烟后 SFTP 推送（SHA-256 双侧一致）；GPU 接力队列 PID 181081 已 nohup 启动，先等 v6 主表队列结束且显存 <2000MiB 再依次执行，日志落 `outputs/submission/`。v6 队列（PID 175052）未受干扰：1.7B seed42 完成（11072 GPU 秒），seed43 训练中，30h 预算剩余约 96928 秒。
 - 详细状态见 `reports/submission_execution_20261124.md`。E2/E3 结果未产生前不作任何结论；预注册判定（E2：单体 faithful_constrained ≥ 管线−1pp 且配对 bootstrap CI 跨 0 ⇒ 架构主张死）不变。
+
+## 2026-11-24 深夜 投稿方案 v3 第一波（零 GPU）执行
+
+- seed 方差机制分解完成（R3 必做项）：脚本 `scripts/submission/seed_variance_decomposition.py`，产物 `outputs/v5_analysis/seed_variance_decomposition_20261125.json`，报告 `reports/seed_variance_analysis_20261125.md`。回放 faithful 与 v5 主表单 seed 逐项一致（1.7B tool_ho 91.71/75.71/71.86、struct_ho 95.86/75.29/77.57；4B 91.00/95.86/74.14、99.71/97.00/93.57），口径可信。
+- 发现 A（行为轴）：三 seed 共杀率 1.7B tool_ho 仅 15/700=2.1%、struct_ho 6/700、4B tool_ho 4/700、struct_ho 0/700；规划器实际消费的 params 字段错误跨 seed IOU 0.01-0.08，实例为预算值 100→1000、required_role 写错角色。执行级 seed 方差=params 训练噪声，非样本系统性难度。
+- 发现 B（记录轴）：scope 绑定错误规模最大（每 seed 300-420 条）且 1.7B/4B-struct_ho 上三 seed IOU 0.629-0.810 属系统性缺陷，但规划器不消费 scope，执行级完全不可见；4B tool_ho 的 scope 错误率 seed 间在飘（67→309→446），系统性结论按切分分别陈述。两轴可分离，双轴评测设计获实证支撑（C3 延伸）。
+- 4B seed44 预测自服务器拉回本地后并入分析；字段比对经实例抽查确认真实差异（`scripts/submission/diag_field_mismatch_samples.py`）。
+- 写作层修正落地 `reports/paper_wording_negative_results_20261125.md`：GRPO 按 R3 口径改为「本设计功效（3 seed、配对 bootstrap ±1-2pp）内未检出稳定效应」，不声称证明为零；symbolic 单调行定位为「接口无衰减验证」，核心证据句改为 DeepSeek 行 0.9950 > 4B 行 0.9786 的接口非特化性 + SFT 规划器列对编译器质量全平的反向证据。含 seed 方差段配套英文措辞与限定词。
+- 第二波（E2/E3/v6）仍等 GPU 队列；本波未改任何代码口径、未动服务器。

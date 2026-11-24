@@ -1,0 +1,1328 @@
+{
+ "purpose": "cross-seed variance decomposition: field-level attribution of behavioural swings",
+ "data_dir": "data/processed_v5",
+ "models": {
+  "Qwen3-1.7B": {
+   "dev": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 600,
+      "n_failed": 9,
+      "faithful_rate": 0.985,
+      "safe_rate": 0.9883333333333333,
+      "field_error_totals_all_records": {
+       "params": 12,
+       "missed": 4,
+       "extra": 2,
+       "evidence_span": 2,
+       "scope": 1
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 5,
+       "missed": 4,
+       "extra": 1,
+       "evidence_span": 1
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 600,
+      "n_failed": 12,
+      "faithful_rate": 0.98,
+      "safe_rate": 0.985,
+      "field_error_totals_all_records": {
+       "scope": 9,
+       "params": 12,
+       "missed": 1,
+       "extra": 3,
+       "state": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 9,
+       "missed": 1,
+       "extra": 2
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 600,
+      "n_failed": 2,
+      "faithful_rate": 0.9966666666666667,
+      "safe_rate": 0.9966666666666667,
+      "field_error_totals_all_records": {
+       "params": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 2
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 2,
+      "union": 19,
+      "jaccard": 0.10526315789473684,
+      "universe": 600
+     },
+     "42_vs_44": {
+      "intersection": 0,
+      "union": 11,
+      "jaccard": 0.0,
+      "universe": 600
+     },
+     "43_vs_44": {
+      "intersection": 0,
+      "union": 14,
+      "jaccard": 0.0,
+      "universe": 600
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 579,
+     "1": 19,
+     "2": 2
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 4,
+       "43": 1,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 5,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 1.6666666666666667
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 2,
+       "43": 3,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 5,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 1.6666666666666667
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 12,
+       "43": 12,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 23,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 8.666666666666666
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 1,
+       "43": 9,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 10,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 3.3333333333333335
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 2,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 2,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 0.6666666666666666
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 2,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 2,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 0.6666666666666666
+     }
+    }
+   },
+   "test_tpl_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 23,
+      "faithful_rate": 0.9671428571428572,
+      "safe_rate": 0.9728571428571429,
+      "field_error_totals_all_records": {
+       "params": 24,
+       "state": 22,
+       "missed": 6,
+       "extra": 47,
+       "scope": 3,
+       "evidence_span": 17
+      },
+      "field_error_totals_in_failed_records": {
+       "missed": 6,
+       "params": 13,
+       "extra": 8,
+       "scope": 1,
+       "evidence_span": 1
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 31,
+      "faithful_rate": 0.9557142857142857,
+      "safe_rate": 0.9728571428571429,
+      "field_error_totals_all_records": {
+       "extra": 49,
+       "params": 11,
+       "state": 27,
+       "missed": 11,
+       "scope": 4
+      },
+      "field_error_totals_in_failed_records": {
+       "extra": 20,
+       "params": 10,
+       "missed": 7,
+       "state": 3
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 15,
+      "faithful_rate": 0.9785714285714285,
+      "safe_rate": 0.9942857142857143,
+      "field_error_totals_all_records": {
+       "params": 3,
+       "scope": 2,
+       "extra": 21,
+       "missed": 2,
+       "evidence_span": 3,
+       "state": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 2,
+       "scope": 2,
+       "missed": 2,
+       "extra": 12,
+       "state": 1
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 1,
+      "union": 53,
+      "jaccard": 0.018867924528301886,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 0,
+      "union": 38,
+      "jaccard": 0.0,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 5,
+      "union": 41,
+      "jaccard": 0.12195121951219512,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 637,
+     "1": 57,
+     "2": 6
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 6,
+       "43": 11,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 18,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 6.333333333333333
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 47,
+       "43": 49,
+       "44": 21
+      },
+      "all_seed_intersection": 1,
+      "union": 98,
+      "intersection_over_union": 0.01020408163265306,
+      "mean_per_seed": 39.0
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 24,
+       "43": 10,
+       "44": 3
+      },
+      "all_seed_intersection": 0,
+      "union": 34,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 12.333333333333334
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 3,
+       "43": 4,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 9,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 3.0
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 21,
+       "43": 25,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 36,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 16.0
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 16,
+       "43": 0,
+       "44": 3
+      },
+      "all_seed_intersection": 0,
+      "union": 18,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 6.333333333333333
+     }
+    }
+   },
+   "test_tool_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 58,
+      "faithful_rate": 0.9171428571428571,
+      "safe_rate": 0.9185714285714286,
+      "field_error_totals_all_records": {
+       "scope": 430,
+       "params": 54,
+       "evidence_span": 3,
+       "missed": 10,
+       "extra": 8
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 52,
+       "scope": 64,
+       "missed": 8,
+       "extra": 6,
+       "evidence_span": 2
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 170,
+      "faithful_rate": 0.7571428571428571,
+      "safe_rate": 0.7642857142857142,
+      "field_error_totals_all_records": {
+       "params": 173,
+       "scope": 427,
+       "state": 11,
+       "extra": 35,
+       "missed": 37,
+       "evidence_span": 5
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 168,
+       "scope": 188,
+       "state": 2,
+       "missed": 12,
+       "extra": 7,
+       "evidence_span": 3
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 197,
+      "faithful_rate": 0.7185714285714285,
+      "safe_rate": 0.7214285714285714,
+      "field_error_totals_all_records": {
+       "params": 184,
+       "scope": 478,
+       "missed": 91,
+       "extra": 84,
+       "evidence_span": 8
+      },
+      "field_error_totals_in_failed_records": {
+       "missed": 87,
+       "scope": 168,
+       "params": 135,
+       "extra": 80,
+       "evidence_span": 8
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 29,
+      "union": 199,
+      "jaccard": 0.1457286432160804,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 28,
+      "union": 227,
+      "jaccard": 0.12334801762114538,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 92,
+      "union": 275,
+      "jaccard": 0.33454545454545453,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 409,
+     "1": 172,
+     "2": 104,
+     "3": 15
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 10,
+       "43": 35,
+       "44": 89
+      },
+      "all_seed_intersection": 2,
+      "union": 123,
+      "intersection_over_union": 0.016260162601626018,
+      "mean_per_seed": 44.666666666666664
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 8,
+       "43": 35,
+       "44": 84
+      },
+      "all_seed_intersection": 2,
+      "union": 117,
+      "intersection_over_union": 0.017094017094017096,
+      "mean_per_seed": 42.333333333333336
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 54,
+       "43": 165,
+       "44": 173
+      },
+      "all_seed_intersection": 20,
+      "union": 261,
+      "intersection_over_union": 0.07662835249042145,
+      "mean_per_seed": 130.66666666666666
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 384,
+       "43": 352,
+       "44": 404
+      },
+      "all_seed_intersection": 288,
+      "union": 458,
+      "intersection_over_union": 0.62882096069869,
+      "mean_per_seed": 380.0
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 11,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 11,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 3.6666666666666665
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 3,
+       "43": 5,
+       "44": 8
+      },
+      "all_seed_intersection": 0,
+      "union": 15,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 5.333333333333333
+     }
+    }
+   },
+   "test_struct_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 29,
+      "faithful_rate": 0.9585714285714285,
+      "safe_rate": 0.9628571428571429,
+      "field_error_totals_all_records": {
+       "scope": 389,
+       "params": 38,
+       "missed": 33,
+       "extra": 32,
+       "evidence_span": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 24,
+       "scope": 29,
+       "missed": 5,
+       "extra": 4
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 173,
+      "faithful_rate": 0.7528571428571429,
+      "safe_rate": 0.7585714285714286,
+      "field_error_totals_all_records": {
+       "params": 182,
+       "scope": 521,
+       "missed": 129,
+       "extra": 119,
+       "state": 3,
+       "evidence_span": 15
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 168,
+       "scope": 211,
+       "missed": 40,
+       "extra": 29,
+       "state": 2,
+       "evidence_span": 6
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 157,
+      "faithful_rate": 0.7757142857142857,
+      "safe_rate": 0.7771428571428571,
+      "field_error_totals_all_records": {
+       "missed": 39,
+       "extra": 41,
+       "scope": 489,
+       "params": 129,
+       "evidence_span": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "missed": 39,
+       "extra": 40,
+       "scope": 140,
+       "params": 126,
+       "evidence_span": 1
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 11,
+      "union": 191,
+      "jaccard": 0.05759162303664921,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 10,
+      "union": 176,
+      "jaccard": 0.056818181818181816,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 78,
+      "union": 252,
+      "jaccard": 0.30952380952380953,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "2": 81,
+     "0": 434,
+     "1": 179,
+     "3": 6
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 33,
+       "43": 123,
+       "44": 39
+      },
+      "all_seed_intersection": 5,
+      "union": 165,
+      "intersection_over_union": 0.030303030303030304,
+      "mean_per_seed": 65.0
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 32,
+       "43": 118,
+       "44": 41
+      },
+      "all_seed_intersection": 5,
+      "union": 161,
+      "intersection_over_union": 0.031055900621118012,
+      "mean_per_seed": 63.666666666666664
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 38,
+       "43": 169,
+       "44": 124
+      },
+      "all_seed_intersection": 8,
+      "union": 243,
+      "intersection_over_union": 0.03292181069958848,
+      "mean_per_seed": 110.33333333333333
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 358,
+       "43": 426,
+       "44": 418
+      },
+      "all_seed_intersection": 349,
+      "union": 475,
+      "intersection_over_union": 0.7347368421052631,
+      "mean_per_seed": 400.6666666666667
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 3,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 3,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 1.0
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 2,
+       "43": 15,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 17,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 6.333333333333333
+     }
+    }
+   }
+  },
+  "Qwen3-4B": {
+   "dev": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 600,
+      "n_failed": 0,
+      "faithful_rate": 1.0,
+      "safe_rate": 1.0,
+      "field_error_totals_all_records": {},
+      "field_error_totals_in_failed_records": {}
+     },
+     "43": {
+      "seed": "43",
+      "n": 600,
+      "n_failed": 1,
+      "faithful_rate": 0.9983333333333333,
+      "safe_rate": 0.9983333333333333,
+      "field_error_totals_all_records": {
+       "params": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 1
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 600,
+      "n_failed": 0,
+      "faithful_rate": 1.0,
+      "safe_rate": 1.0,
+      "field_error_totals_all_records": {},
+      "field_error_totals_in_failed_records": {}
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 0,
+      "union": 1,
+      "jaccard": 0.0,
+      "universe": 600
+     },
+     "42_vs_44": {
+      "intersection": 0,
+      "union": 0,
+      "jaccard": null,
+      "universe": 600
+     },
+     "43_vs_44": {
+      "intersection": 0,
+      "union": 1,
+      "jaccard": 0.0,
+      "universe": 600
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 599,
+     "1": 1
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 2,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 2,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 0.6666666666666666
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     }
+    }
+   },
+   "test_tpl_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 18,
+      "faithful_rate": 0.9742857142857143,
+      "safe_rate": 0.9828571428571429,
+      "field_error_totals_all_records": {
+       "state": 12,
+       "params": 10,
+       "scope": 3,
+       "missed": 2,
+       "extra": 9
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 10,
+       "scope": 3,
+       "missed": 2,
+       "extra": 8,
+       "state": 2
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 50,
+      "faithful_rate": 0.9285714285714286,
+      "safe_rate": 0.9328571428571428,
+      "field_error_totals_all_records": {
+       "params": 17,
+       "missed": 29,
+       "extra": 19,
+       "evidence_span": 4,
+       "scope": 4,
+       "state": 10
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 15,
+       "missed": 28,
+       "extra": 11,
+       "scope": 4,
+       "state": 6,
+       "evidence_span": 1
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 2,
+      "faithful_rate": 0.9971428571428571,
+      "safe_rate": 0.9971428571428571,
+      "field_error_totals_all_records": {
+       "state": 9,
+       "extra": 1,
+       "missed": 1,
+       "params": 2,
+       "evidence_span": 1
+      },
+      "field_error_totals_in_failed_records": {
+       "missed": 1,
+       "params": 1
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 11,
+      "union": 57,
+      "jaccard": 0.19298245614035087,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 0,
+      "union": 20,
+      "jaccard": 0.0,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 0,
+      "union": 52,
+      "jaccard": 0.0,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 641,
+     "2": 11,
+     "1": 48
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 2,
+       "43": 28,
+       "44": 1
+      },
+      "all_seed_intersection": 0,
+      "union": 31,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 10.333333333333334
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 9,
+       "43": 19,
+       "44": 1
+      },
+      "all_seed_intersection": 0,
+      "union": 29,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 9.666666666666666
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 10,
+       "43": 17,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 23,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 9.666666666666666
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 3,
+       "43": 4,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 6,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 2.3333333333333335
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 10,
+       "43": 8,
+       "44": 9
+      },
+      "all_seed_intersection": 0,
+      "union": 27,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 9.0
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 4,
+       "44": 1
+      },
+      "all_seed_intersection": 0,
+      "union": 5,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 1.6666666666666667
+     }
+    }
+   },
+   "test_tool_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 63,
+      "faithful_rate": 0.91,
+      "safe_rate": 0.91,
+      "field_error_totals_all_records": {
+       "params": 70,
+       "scope": 74,
+       "extra": 1
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 70,
+       "scope": 70
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 29,
+      "faithful_rate": 0.9585714285714285,
+      "safe_rate": 0.9585714285714285,
+      "field_error_totals_all_records": {
+       "scope": 349,
+       "params": 31,
+       "missed": 2,
+       "extra": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 29,
+       "scope": 39
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 181,
+      "faithful_rate": 0.7414285714285714,
+      "safe_rate": 0.7414285714285714,
+      "field_error_totals_all_records": {
+       "scope": 546,
+       "params": 216,
+       "evidence_span": 4,
+       "missed": 4,
+       "extra": 4
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 190,
+       "scope": 221,
+       "missed": 4,
+       "extra": 4
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 4,
+      "union": 88,
+      "jaccard": 0.045454545454545456,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 45,
+      "union": 199,
+      "jaccard": 0.22613065326633167,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 21,
+      "union": 189,
+      "jaccard": 0.1111111111111111,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "1": 145,
+     "0": 493,
+     "2": 58,
+     "3": 4
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 2,
+       "44": 4
+      },
+      "all_seed_intersection": 0,
+      "union": 6,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 2.0
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 1,
+       "43": 2,
+       "44": 4
+      },
+      "all_seed_intersection": 0,
+      "union": 7,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 2.3333333333333335
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 63,
+       "43": 31,
+       "44": 201
+      },
+      "all_seed_intersection": 4,
+      "union": 223,
+      "intersection_over_union": 0.017937219730941704,
+      "mean_per_seed": 98.33333333333333
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 67,
+       "43": 309,
+       "44": 446
+      },
+      "all_seed_intersection": 22,
+      "union": 462,
+      "intersection_over_union": 0.047619047619047616,
+      "mean_per_seed": 274.0
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 0,
+      "intersection_over_union": null,
+      "mean_per_seed": 0.0
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 4
+      },
+      "all_seed_intersection": 0,
+      "union": 4,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 1.3333333333333333
+     }
+    }
+   },
+   "test_struct_ho": {
+    "per_seed": {
+     "42": {
+      "seed": "42",
+      "n": 700,
+      "n_failed": 2,
+      "faithful_rate": 0.9971428571428571,
+      "safe_rate": 0.9971428571428571,
+      "field_error_totals_all_records": {
+       "scope": 314,
+       "missed": 10,
+       "extra": 10,
+       "params": 3,
+       "evidence_span": 1
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 2
+      }
+     },
+     "43": {
+      "seed": "43",
+      "n": 700,
+      "n_failed": 21,
+      "faithful_rate": 0.97,
+      "safe_rate": 0.97,
+      "field_error_totals_all_records": {
+       "scope": 387,
+       "params": 26,
+       "missed": 73,
+       "extra": 73,
+       "evidence_span": 4,
+       "severity": 1
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 22,
+       "scope": 19,
+       "severity": 1,
+       "missed": 3,
+       "extra": 3,
+       "evidence_span": 2
+      }
+     },
+     "44": {
+      "seed": "44",
+      "n": 700,
+      "n_failed": 45,
+      "faithful_rate": 0.9357142857142857,
+      "safe_rate": 0.9371428571428572,
+      "field_error_totals_all_records": {
+       "scope": 398,
+       "params": 52,
+       "missed": 52,
+       "extra": 53,
+       "evidence_span": 8,
+       "state": 2
+      },
+      "field_error_totals_in_failed_records": {
+       "params": 42,
+       "missed": 3,
+       "extra": 4,
+       "scope": 17
+      }
+     }
+    },
+    "record_failure_overlap": {
+     "42_vs_43": {
+      "intersection": 0,
+      "union": 23,
+      "jaccard": 0.0,
+      "universe": 700
+     },
+     "42_vs_44": {
+      "intersection": 0,
+      "union": 47,
+      "jaccard": 0.0,
+      "universe": 700
+     },
+     "43_vs_44": {
+      "intersection": 2,
+      "union": 64,
+      "jaccard": 0.03125,
+      "universe": 700
+     }
+    },
+    "record_failure_count_by_number_of_seeds": {
+     "0": 634,
+     "1": 64,
+     "2": 2
+    },
+    "field_stability": {
+     "missed": {
+      "records_with_error_per_seed": {
+       "42": 10,
+       "43": 73,
+       "44": 52
+      },
+      "all_seed_intersection": 2,
+      "union": 102,
+      "intersection_over_union": 0.0196078431372549,
+      "mean_per_seed": 45.0
+     },
+     "extra": {
+      "records_with_error_per_seed": {
+       "42": 10,
+       "43": 73,
+       "44": 52
+      },
+      "all_seed_intersection": 2,
+      "union": 102,
+      "intersection_over_union": 0.0196078431372549,
+      "mean_per_seed": 45.0
+     },
+     "params": {
+      "records_with_error_per_seed": {
+       "42": 3,
+       "43": 25,
+       "44": 52
+      },
+      "all_seed_intersection": 1,
+      "union": 74,
+      "intersection_over_union": 0.013513513513513514,
+      "mean_per_seed": 26.666666666666668
+     },
+     "scope": {
+      "records_with_error_per_seed": {
+       "42": 302,
+       "43": 355,
+       "44": 365
+      },
+      "all_seed_intersection": 299,
+      "union": 369,
+      "intersection_over_union": 0.8102981029810298,
+      "mean_per_seed": 340.6666666666667
+     },
+     "state": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 0,
+       "44": 2
+      },
+      "all_seed_intersection": 0,
+      "union": 2,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 0.6666666666666666
+     },
+     "severity": {
+      "records_with_error_per_seed": {
+       "42": 0,
+       "43": 1,
+       "44": 0
+      },
+      "all_seed_intersection": 0,
+      "union": 1,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 0.3333333333333333
+     },
+     "evidence_span": {
+      "records_with_error_per_seed": {
+       "42": 1,
+       "43": 4,
+       "44": 8
+      },
+      "all_seed_intersection": 0,
+      "union": 11,
+      "intersection_over_union": 0.0,
+      "mean_per_seed": 4.333333333333333
+     }
+    }
+   }
+  }
+ }
+}
