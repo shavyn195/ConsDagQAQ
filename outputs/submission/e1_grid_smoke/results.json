@@ -1,0 +1,94 @@
+{
+  "design": {
+    "panel": "v4 tpl_ho+tool_ho (frozen)",
+    "records": 2100,
+    "compiler_axis": [
+      "0.6B-SFT"
+    ],
+    "planner_axis": [
+      "symbolic"
+    ],
+    "boot": 10000,
+    "boot_seed": 20261124,
+    "note": "CPU replay of frozen caches; gold visible only to the evaluator, never to repair."
+  },
+  "cells": {
+    "0.6B-SFT | symbolic": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 0.9638095238095238,
+        "safe_success": 0.9152380952380952,
+        "faithful": 0.7571428571428571,
+        "faithful_ci95_group": [
+          0.7276190476190476,
+          0.7847619047619048
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.8542857142857143
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.7914285714285715
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.6257142857142857
+          }
+        },
+        "faithful_constrained": 0.8228571428571428
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9885714285714285,
+        "safe_success": 0.8380952380952381,
+        "faithful": 0.8361904761904762,
+        "faithful_ci95_group": [
+          0.8066666666666666,
+          0.8638095238095238
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.7685714285714286
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.7428571428571429
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.9971428571428571
+          }
+        },
+        "faithful_constrained": 0.7557142857142857
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9761904761904762,
+        "safe_success": 0.8766666666666667,
+        "faithful": 0.7966666666666666,
+        "faithful_ci95_group": [
+          0.7757142857142857,
+          0.8171428571428572
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.8114285714285714
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.7671428571428571
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.8114285714285714
+          }
+        },
+        "faithful_constrained": 0.7892857142857143
+      }
+    }
+  }
+}

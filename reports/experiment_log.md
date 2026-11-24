@@ -429,3 +429,10 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 两位盲审者材料已导出到 `data/review_v6_seed20261125_n5/`，共 250 条唯一请求；协议在 `reports/v6_human_review_protocol.md`。尚未人工审阅，`human_validation_status=pending`。
 - 完整 `python -m pytest -q -rs`：116 passed、2 skipped；两项跳过原因是本机无 torch。Python 编译与 Git Bash 语法检查通过。
 - 远程只读认证检查：环境未配置 `SEETA_PASSWORD` 或 `DASHSCOPE_API_KEY`，绕开无效 SSH 配置后，密钥认证仍被拒绝。没有修改服务器文件，没有启动 v6 GPU smoke/训练或 PE；不能报告任何 v6 模型结果。未 commit、未 push。
+
+## 2026-11-24 19:16 CST 投稿补充实验接力队列启动
+
+- 执行依据 `reports/submission_plan_emnlp2027.md`（用户定稿）；授权为用户指令「这次破例，你来完成」。方案「核心数字速查」与素材逐项核对全部一致（主表 faithful、2×2 的 112/118 与 47/138、DeepSeek 行 1255/1292、符号规划器 1149/1400、裂缝 699/700 vs 552/700）。
+- E1 插拔网格（编译器 4 轴 × 规划器 3 轴，v4 tpl_ho+tool_ho 2100 条冻结回放，纯 CPU）完成，产物 `outputs/submission/e1_grid/results.json`。符号规划器行随编译器质量单调：0.7893/0.8836/0.9786/0.9950，DeepSeek 行超 4B，接口可被任意消费者复用；SFT 规划器行平坦在 0.25-0.30 且 safe 0.88-0.95，过编辑为下游瓶颈（0.6B 格 over_edited=792）。回放口径自校验：DeepSeek 编译器复现 p0_c1=1255/1400=0.8964，0.6B 编译器复现 safe=1144/1400=0.8171，与 2×2 协议一致。
+- E2（B1 单体，1.7B）与 E3（A 系消融 A3/A4/A2/A1，0.6B）脚本经本地与服务器语法/参数冒烟后 SFTP 推送（SHA-256 双侧一致）；GPU 接力队列 PID 181081 已 nohup 启动，先等 v6 主表队列结束且显存 <2000MiB 再依次执行，日志落 `outputs/submission/`。v6 队列（PID 175052）未受干扰：1.7B seed42 完成（11072 GPU 秒），seed43 训练中，30h 预算剩余约 96928 秒。
+- 详细状态见 `reports/submission_execution_20261124.md`。E2/E3 结果未产生前不作任何结论；预注册判定（E2：单体 faithful_constrained ≥ 管线−1pp 且配对 bootstrap CI 跨 0 ⇒ 架构主张死）不变。

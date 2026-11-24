@@ -1,0 +1,946 @@
+{
+  "design": {
+    "panel": "v4 tpl_ho+tool_ho (frozen)",
+    "records": 2100,
+    "compiler_axis": [
+      "0.6B-SFT",
+      "1.7B-SFT",
+      "4B-SFT",
+      "prompted-compiler(skill-style)"
+    ],
+    "planner_axis": [
+      "SFT-order42",
+      "SFT-order44",
+      "symbolic"
+    ],
+    "boot": 10000,
+    "boot_seed": 20261124,
+    "note": "CPU replay of frozen caches; gold visible only to the evaluator, never to repair."
+  },
+  "cells": {
+    "0.6B-SFT | SFT-order42": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9123809523809524,
+        "faithful": 0.20666666666666667,
+        "faithful_ci95_group": [
+          0.17904761904761904,
+          0.2342857142857143
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.3028571428571429
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.25142857142857145
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06571428571428571
+          }
+        },
+        "faithful_constrained": 0.27714285714285714
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8428571428571429,
+        "faithful": 0.17333333333333334,
+        "faithful_ci95_group": [
+          0.14857142857142858,
+          0.19904761904761906
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.22285714285714286
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.22857142857142856
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.2257142857142857
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.8776190476190476,
+        "faithful": 0.19,
+        "faithful_ci95_group": [
+          0.17142857142857143,
+          0.20904761904761904
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.26285714285714284
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.24
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.06714285714285714
+          }
+        },
+        "faithful_constrained": 0.25142857142857145
+      }
+    },
+    "1.7B-SFT | SFT-order42": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9542857142857143,
+        "faithful": 0.23523809523809525,
+        "faithful_ci95_group": [
+          0.20666666666666667,
+          0.26476190476190475
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.32857142857142857
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2857142857142857
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.09142857142857143
+          }
+        },
+        "faithful_constrained": 0.30714285714285716
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8438095238095238,
+        "faithful": 0.17238095238095238,
+        "faithful_ci95_group": [
+          0.14761904761904762,
+          0.1980952380952381
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.21428571428571427
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2342857142857143
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.22428571428571428
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.8990476190476191,
+        "faithful": 0.2038095238095238,
+        "faithful_ci95_group": [
+          0.18523809523809523,
+          0.22333333333333333
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.2714285714285714
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.26
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.08
+          }
+        },
+        "faithful_constrained": 0.26571428571428574
+      }
+    },
+    "4B-SFT | SFT-order42": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9476190476190476,
+        "faithful": 0.23904761904761904,
+        "faithful_ci95_group": [
+          0.21047619047619048,
+          0.26857142857142857
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.3314285714285714
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2914285714285714
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.09428571428571429
+          }
+        },
+        "faithful_constrained": 0.31142857142857144
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8980952380952381,
+        "faithful": 0.18761904761904763,
+        "faithful_ci95_group": [
+          0.16285714285714287,
+          0.21428571428571427
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.23714285714285716
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2571428571428571
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.24714285714285714
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.9228571428571428,
+        "faithful": 0.21333333333333335,
+        "faithful_ci95_group": [
+          0.19333333333333333,
+          0.23285714285714285
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.2842857142857143
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.2742857142857143
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.08142857142857143
+          }
+        },
+        "faithful_constrained": 0.2792857142857143
+      }
+    },
+    "prompted-compiler(skill-style) | SFT-order42": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9628571428571429,
+        "faithful": 0.24285714285714285,
+        "faithful_ci95_group": [
+          0.21333333333333335,
+          0.2723809523809524
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.33714285714285713
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.29428571428571426
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.09714285714285714
+          }
+        },
+        "faithful_constrained": 0.3157142857142857
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8980952380952381,
+        "faithful": 0.18761904761904763,
+        "faithful_ci95_group": [
+          0.16285714285714287,
+          0.21428571428571427
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.23714285714285716
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2571428571428571
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.24714285714285714
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.9304761904761905,
+        "faithful": 0.21523809523809523,
+        "faithful_ci95_group": [
+          0.19523809523809524,
+          0.23523809523809525
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.28714285714285714
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.2757142857142857
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.08285714285714285
+          }
+        },
+        "faithful_constrained": 0.2814285714285714
+      }
+    },
+    "0.6B-SFT | SFT-order44": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.940952380952381,
+        "faithful": 0.2019047619047619,
+        "faithful_ci95_group": [
+          0.17523809523809525,
+          0.22857142857142856
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.3
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.26857142857142857
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.037142857142857144
+          }
+        },
+        "faithful_constrained": 0.2842857142857143
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8676190476190476,
+        "faithful": 0.18095238095238095,
+        "faithful_ci95_group": [
+          0.15523809523809523,
+          0.20761904761904762
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.24
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.2342857142857143
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.23714285714285716
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.9042857142857142,
+        "faithful": 0.19142857142857142,
+        "faithful_ci95_group": [
+          0.17238095238095238,
+          0.21047619047619048
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.27
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.25142857142857145
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.05285714285714286
+          }
+        },
+        "faithful_constrained": 0.26071428571428573
+      }
+    },
+    "1.7B-SFT | SFT-order44": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9733333333333334,
+        "faithful": 0.22476190476190477,
+        "faithful_ci95_group": [
+          0.19714285714285715,
+          0.25333333333333335
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.3171428571428571
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.31142857142857144
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.045714285714285714
+          }
+        },
+        "faithful_constrained": 0.3142857142857143
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.8647619047619047,
+        "faithful": 0.18476190476190477,
+        "faithful_ci95_group": [
+          0.15904761904761905,
+          0.21047619047619048
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.24
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.24571428571428572
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.24285714285714285
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.919047619047619,
+        "faithful": 0.20476190476190476,
+        "faithful_ci95_group": [
+          0.18571428571428572,
+          0.22428571428571428
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.2785714285714286
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.2785714285714286
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.05714285714285714
+          }
+        },
+        "faithful_constrained": 0.2785714285714286
+      }
+    },
+    "4B-SFT | SFT-order44": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9619047619047619,
+        "faithful": 0.22285714285714286,
+        "faithful_ci95_group": [
+          0.19523809523809524,
+          0.25142857142857145
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.32285714285714284
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.29714285714285715
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.04857142857142857
+          }
+        },
+        "faithful_constrained": 0.31
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.9161904761904762,
+        "faithful": 0.20095238095238097,
+        "faithful_ci95_group": [
+          0.1742857142857143,
+          0.22857142857142856
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.26571428571428574
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.26857142857142857
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.2671428571428571
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.939047619047619,
+        "faithful": 0.2119047619047619,
+        "faithful_ci95_group": [
+          0.19238095238095237,
+          0.2319047619047619
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.29428571428571426
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.28285714285714286
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.05857142857142857
+          }
+        },
+        "faithful_constrained": 0.2885714285714286
+      }
+    },
+    "prompted-compiler(skill-style) | SFT-order44": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9809523809523809,
+        "faithful": 0.23142857142857143,
+        "faithful_ci95_group": [
+          0.20285714285714285,
+          0.26
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.32571428571428573
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.32
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.04857142857142857
+          }
+        },
+        "faithful_constrained": 0.32285714285714284
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9990476190476191,
+        "safe_success": 0.9161904761904762,
+        "faithful": 0.20095238095238097,
+        "faithful_ci95_group": [
+          0.1742857142857143,
+          0.22857142857142856
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.26571428571428574
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.26857142857142857
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.06857142857142857
+          }
+        },
+        "faithful_constrained": 0.2671428571428571
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9995238095238095,
+        "safe_success": 0.9485714285714286,
+        "faithful": 0.21619047619047618,
+        "faithful_ci95_group": [
+          0.1961904761904762,
+          0.2361904761904762
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.2957142857142857
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.29428571428571426
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.05857142857142857
+          }
+        },
+        "faithful_constrained": 0.295
+      }
+    },
+    "0.6B-SFT | symbolic": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 0.9638095238095238,
+        "safe_success": 0.9152380952380952,
+        "faithful": 0.7571428571428571,
+        "faithful_ci95_group": [
+          0.7276190476190476,
+          0.7847619047619048
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.8542857142857143
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.7914285714285715
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.6257142857142857
+          }
+        },
+        "faithful_constrained": 0.8228571428571428
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9885714285714285,
+        "safe_success": 0.8380952380952381,
+        "faithful": 0.8361904761904762,
+        "faithful_ci95_group": [
+          0.8066666666666666,
+          0.8638095238095238
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.7685714285714286
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.7428571428571429
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.9971428571428571
+          }
+        },
+        "faithful_constrained": 0.7557142857142857
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9761904761904762,
+        "safe_success": 0.8766666666666667,
+        "faithful": 0.7966666666666666,
+        "faithful_ci95_group": [
+          0.7757142857142857,
+          0.8171428571428572
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.8114285714285714
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.7671428571428571
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.8114285714285714
+          }
+        },
+        "faithful_constrained": 0.7892857142857143
+      }
+    },
+    "1.7B-SFT | symbolic": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 0.9876190476190476,
+        "safe_success": 0.98,
+        "faithful": 0.8885714285714286,
+        "faithful_ci95_group": [
+          0.8666666666666667,
+          0.9085714285714286
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.9714285714285714
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.9428571428571428
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.7514285714285714
+          }
+        },
+        "faithful_constrained": 0.9571428571428572
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 0.9952380952380953,
+        "safe_success": 0.8733333333333333,
+        "faithful": 0.8733333333333333,
+        "faithful_ci95_group": [
+          0.8504761904761905,
+          0.8952380952380953
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.8314285714285714
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.7885714285714286
+          },
+          "none": {
+            "n": 350,
+            "faithful": 1.0
+          }
+        },
+        "faithful_constrained": 0.81
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9914285714285714,
+        "safe_success": 0.9266666666666666,
+        "faithful": 0.8809523809523809,
+        "faithful_ci95_group": [
+          0.8652380952380953,
+          0.8961904761904762
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.9014285714285715
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.8657142857142858
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.8757142857142857
+          }
+        },
+        "faithful_constrained": 0.8835714285714286
+      }
+    },
+    "4B-SFT | symbolic": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 0.9923809523809524,
+        "safe_success": 0.9723809523809523,
+        "faithful": 0.9152380952380952,
+        "faithful_ci95_group": [
+          0.8971428571428571,
+          0.9323809523809524
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.9771428571428571
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.94
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.8285714285714286
+          }
+        },
+        "faithful_constrained": 0.9585714285714285
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 0.9990476190476191,
+        "faithful": 0.9990476190476191,
+        "faithful_ci95_group": [
+          0.9971428571428571,
+          1.0
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.9971428571428571
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 1.0
+          },
+          "none": {
+            "n": 350,
+            "faithful": 1.0
+          }
+        },
+        "faithful_constrained": 0.9985714285714286
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9961904761904762,
+        "safe_success": 0.9857142857142858,
+        "faithful": 0.9571428571428572,
+        "faithful_ci95_group": [
+          0.9471428571428572,
+          0.9661904761904762
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.9871428571428571
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.97
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.9142857142857143
+          }
+        },
+        "faithful_constrained": 0.9785714285714285
+      }
+    },
+    "prompted-compiler(skill-style) | symbolic": {
+      "test_tpl_ho": {
+        "n": 1050,
+        "planned": 0.9952380952380953,
+        "safe_success": 0.9933333333333333,
+        "faithful": 0.9666666666666667,
+        "faithful_ci95_group": [
+          0.9552380952380952,
+          0.9771428571428571
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 0.9942857142857143
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 0.9857142857142858
+          },
+          "none": {
+            "n": 350,
+            "faithful": 0.92
+          }
+        },
+        "faithful_constrained": 0.99
+      },
+      "test_tool_ho": {
+        "n": 1050,
+        "planned": 1.0,
+        "safe_success": 1.0,
+        "faithful": 1.0,
+        "faithful_ci95_group": [
+          1.0,
+          1.0
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 350,
+            "faithful": 1.0
+          },
+          "implicit": {
+            "n": 350,
+            "faithful": 1.0
+          },
+          "none": {
+            "n": 350,
+            "faithful": 1.0
+          }
+        },
+        "faithful_constrained": 1.0
+      },
+      "overall": {
+        "n": 2100,
+        "planned": 0.9976190476190476,
+        "safe_success": 0.9966666666666667,
+        "faithful": 0.9833333333333333,
+        "faithful_ci95_group": [
+          0.9771428571428571,
+          0.9885714285714285
+        ],
+        "by_variant": {
+          "explicit": {
+            "n": 700,
+            "faithful": 0.9971428571428571
+          },
+          "implicit": {
+            "n": 700,
+            "faithful": 0.9928571428571429
+          },
+          "none": {
+            "n": 700,
+            "faithful": 0.96
+          }
+        },
+        "faithful_constrained": 0.995
+      }
+    }
+  }
+}
