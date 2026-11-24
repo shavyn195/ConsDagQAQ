@@ -231,6 +231,23 @@ def extract_constraints(text: str) -> list[Any] | None:
     return None
 
 
+def coerce_item(item: Any) -> dict[str, Any] | None:
+    """把预测条目转成约束 dict。A1 臂的输出是自由文本 '<type>: <params json>'，必须可解析，
+    否则下游轴会被 isinstance 过滤成空约束集，使 A1 的 faithful 恒为 0（不是测出来的）。"""
+    if isinstance(item, dict):
+        return item
+    if isinstance(item, str):
+        match = re.match(r"\s*([a-z_]+)\s*:\s*(\{.*\})\s*$", item, flags=re.DOTALL)
+        if match:
+            try:
+                params = json.loads(match.group(2))
+            except json.JSONDecodeError:
+                return None
+            if isinstance(params, dict):
+                return {"type": match.group(1), "params": params}
+    return None
+
+
 def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str, Any]:
     """下游轴：宽松约束 -> 符号规划器（主管线同款）-> faithful（安全且改动数=金标最小）。"""
     out = []
@@ -238,8 +255,8 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
         task = row["task"]
         gold = row["gold"]["constraints"]
         items = extract_constraints(text)
-        pred = [c for c in (items or [])
-                if isinstance(c, dict) and normalize_constraint(c, task) is not None]
+        coerced = [c for c in (coerce_item(i) for i in (items or [])) if c is not None]
+        pred = [c for c in coerced if normalize_constraint(c, task) is not None]
         fixed, info = symbolic_plan(task, pred)
         env = check(task, fixed, gold)
         changes = info["changes"]
@@ -250,7 +267,9 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
             "sample_id": row["sample_id"], "variant": row["variant"], "gold_count": len(gold),
             "planned": fixed is not None, "safe_success": bool(env["safe_success"]),
             "faithful": bool(env["safe_success"]) and ((extra == 0) if gold else not deviates),
-            "usable_constraints": info["unusable_constraints"],
+            "n_constraints_pred": len(coerced),
+            "n_constraints_usable": len(pred),
+            "n_constraints_unusable": len(coerced) - len(pred),
         })
     constrained = [o for o in out if o["gold_count"]]
     none_rows = [o for o in out if not o["gold_count"]]
@@ -259,7 +278,8 @@ def downstream_faithful(rows: list[dict[str, Any]], raw: list[str]) -> dict[str,
         "faithful_constrained": (sum(o["faithful"] for o in constrained) / len(constrained)) if constrained else None,
         "safe_constrained": (sum(o["safe_success"] for o in constrained) / len(constrained)) if constrained else None,
         "none_faithful": (sum(o["faithful"] for o in none_rows) / len(none_rows)) if none_rows else None,
-        "none_false_alarm": (sum(o["usable_constraints"] > 0 for o in none_rows) / len(none_rows)) if none_rows else None,
+        "none_false_alarm": (sum(o["n_constraints_usable"] > 0 for o in none_rows) / len(none_rows)) if none_rows else None,
+        "none_planned_constraints_mean": (sum(o["n_constraints_pred"] for o in none_rows) / len(none_rows)) if none_rows else None,
         "implicit_faithful": (lambda items: sum(o["faithful"] for o in items) / len(items) if items else None)(
             [o for o in constrained if o["variant"] == "implicit"]),
     }

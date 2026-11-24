@@ -1,5 +1,7 @@
 # Seed 方差机制分解（2026-11-24 深夜，R3 必做项 · 零 GPU）
 
+> **修订说明（2026-11-25 00:1x，经 CC 独立审计）**：原文 §4 结论「不是系统性难度」过强，已改为「以 seed 特异为主，另存在 3.7-6.0× 独立期望的共同难例核」；§3.2 的「300-420 条/seed」上限应为 426/446；正文「19.9pp」应为 21.71pp（4B tool_ho）；IoU 0.629 属 1.7B tool_ho 而非 struct_ho。独立复算见 `outputs/submission/audit_20261124/recompute.json`（含 `all_three_expected_if_independent`）。
+
 输入：v5 三种子冻结预测（本地 `outputs/e1/*/trained_predictions`，4B seed44 自服务器拉回）。
 脚本：`scripts/submission/seed_variance_decomposition.py`；产物：`outputs/v5_analysis/seed_variance_decomposition_20261125.json`。
 口径：faithful = 编译器预测 → 符号规划器 `plan()` → `check()` 的 safe_success 且改动数等于金标最小改动（v5 主表 e1_exec_v2 口径）。

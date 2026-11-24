@@ -25991,3 +25991,192 @@ warning: in the working copy of 'outputs/_lit/sections.py', LF will be replaced 
 - **会话 ID**：`b3f1c2a4-5d6e-4f7a-8b9c-0d1e2f3a4b5c`
 
 新报告是 `reports/literature_audit_v4.md`：逐篇清单、威胁矩阵、被证伪论断、带行号的待修清单，附录是 116 条核验过的原文。
+
+---
+
+## [2026-11-24 22:37:58] 投稿方案 v3 核对与推进（CC 会话）
+
+### 输入
+
+
+你是这份投稿项目的独立审计人兼执行者。工作目录：d:\Proj\AAAKXSJKJ\all\consdag_constraint_compiler_exp
+
+## 任务
+
+先核对代码是否「符合投稿方案 v3」，再按方案推进。方案原文在 `reports/submission_plan_v3_20261124.md`（用户定稿，禁止修改）。上一版全文在 `reports/submission_plan_emnlp2027.md`（同样禁改）。
+
+## 阶段 A：核对（只读，必须先做）
+
+逐条核对方案 v3 的每一项要求与仓库真实代码/产物是否一致，输出一张合规矩阵，每行给出：方案条目 → 代码/产物证据（文件路径+行号或 JSON 字段）→ 判定（符合/部分/不符合/未实现）。
+
+必须核对的最小集合：
+
+1. E1 插拔网格：`src/sub_e1_grid.py` 是否真的实现了「编译器轴 × 规划器轴」网格、faithful 口径是否为「safe 且改动数等于金标最小改动」、bootstrap 是否按 group 重采样。对照 `outputs/submission/e1_grid/results.json` 抽查 2 个格子的数值能否从脚本逻辑复算出来。
+2. E2 单体对照：`src/sub_e2_monolithic.py` 是否满足「同底座、同数据、同预算、bf16、seed 42」、预注册判定（mono ≥ pipe−1pp 且 CI 跨 0 ⇒ 架构主张死）是否写在代码里而非事后解释、成本列（token/时延）是否真的采集。
+3. E3 四臂消融：`src/sub_e3_ablation.py` 的 A1/A2/A3/A4 定义是否与方案一致；哨兵值注入（A3: state="explicit"、A4: scope=[]）是否会让被消融字段两侧恒等匹配从而复用官方 score()，这是否构成口径作弊，给出判断。
+4. seed 方差分析：`scripts/submission/seed_variance_decomposition.py` 的字段比对口径是否有漏洞（同 type 贪心匹配、evidence_span 严格比较、scope 集合比较），其输出 `outputs/v5_analysis/seed_variance_decomposition_20261125.json` 的数字能否复算。
+5. 措辞件：`reports/paper_wording_negative_results_20261125.md` 是否严格遵守已死主张红线（不得声称 GRPO 有效、不得声称小模型打平强模型、不得声称 human-validated semantics），三处数字是否与仓库实际产物一致。
+6. 方案与事实的偏差：方案里写「v6 六 run 齐」「E4 其余 G1 已在跑」「DeepSeek-planner 纯 API 缓存复用近零成本」「v5 素材全齐」，逐条核实真伪，指出偏差。
+
+禁止：不要连服务器（GPU 上有正在跑的 E2 训练），不要启动/停止任何训练，不要修改 `outputs/e1_v5*`、`outputs/e1_v6*`、`data/processed_v*`、`configs/v6_*` 这些冻结资产。
+
+## 阶段 B：按方案推进（阶段 A 之后）
+
+在不动 GPU、不动冻结资产的前提下，执行方案第一波第 4 项「论文主体按原方案 §5 写作清单开工」。写作清单见 `reports/submission_plan_emnlp2027.md` 的 §5 与 §6（写作义务）。
+
+要求：
+- 只写「现在有证据支撑」的部分：方法章（编译-规划分离架构、typed 约束对象）、基准章（数据构造、construction conditions）、负结果章（GRPO，按 R3 措辞）、E1 插拔网格结果章、seed 方差发现章。
+- 明确标注哪些小节待 E2/E3/v6 结果回来再补，用 `TODO(E2)` / `TODO(E3)` / `TODO(v6)` 标记，不要编造数字。
+- 所有数字必须能从仓库产物追溯到源文件，每个数字后面用括号标注来源路径。
+- 写到 `reports/paper_draft_v1.md`。
+- 遵守已死主张红线；负结果如实报；不得使用「human-validated」「小模型超越强模型」这类表述。
+
+## 交付
+
+1. 阶段 A 的合规矩阵（先输出，作为对话正文）
+2. 阶段 B 完成后报告：写了哪些章、引用了哪些数字及其来源、留了哪些 TODO
+3. 若阶段 A 发现代码与方案不一致，不要自行改代码，列成「待用户决策清单」
+
+输出用中文，结论先行，不要客套。
+
+
+### 续跑输入 [2026-11-24 23:06:41]（上一轮 403 中断）
+
+
+上一轮你因 403（API Key 配置尚未生效）在最后一步中断，但你已经完成并写出了 `outputs/submission/audit_20261124/recompute.json` 和 `scripts/submission/audit_recompute_20261124.py`。现在继续，不要重复已完成的复算。
+
+## 第一步：输出合规矩阵（对话正文，不写文件）
+
+基于你已复算的证据 + 仓库代码，对 `reports/submission_plan_v3_20261124.md` 逐条给判定：符合 / 部分符合 / 不符合 / 未实现。每行给出证据路径（文件+行号或 JSON 字段）。
+
+必须覆盖：
+1. E1 网格口径（faithful = safe 且改动数=金标最小改动；group bootstrap）
+2. E2 单体对照的预注册判定是否前置写在代码里
+3. E3 四臂定义 + 哨兵值注入是否构成口径作弊
+4. seed 方差分析的口径漏洞（含你算出的"独立假设期望值"与实测三 seed 共杀的比值）
+5. 措辞件是否守住已死主张红线
+6. 方案里「v6 六 run 齐」「G1 已在跑」「DeepSeek-planner 纯 API 缓存复用近零成本」「素材全齐」四条的真伪
+
+## 第二步：写论文草稿
+
+写 `reports/paper_draft_v1.md`。只写现在有证据的部分：
+
+- §1 Introduction 骨架（动机：行为轴饱和、记录轴真空、隐式约束失效；贡献 C1/C2/C3 一句话式）
+- §2 Related Work 骨架（只列近邻群名称与定位差异，不写未核验的具体论断）
+- §3 方法：编译-规划分离架构、typed 约束对象六字段、最小改动规划器、独立检查器
+- §4 基准：数据构造（E/I/N 最小三元组、双 group-held-out、construction conditions）
+- §5 实验：E1 插拔网格 12 格（含 CI 与 symbolic DeepSeek−4B 的显著差）、v5 三 seed 主表、seed 方差双轴发现
+- §6 负结果：GRPO 三臂三 seed（按「未检出」口径）
+- §7 Limitations
+
+规则：
+- 每个数字后括号标注来源路径；无来源的数字不许写
+- 待 E2/E3/v6 结果的小节用 `TODO(E2)` / `TODO(E3)` / `TODO(v6)` 占位，不许编造
+- 禁写：小模型打平/超越强模型、human-validated semantics、GRPO 有效、任意跨域泛化
+- 中文写，学术语气，不写客套
+
+## 约束
+
+不要连服务器（GPU 正在跑 E2 训练）。不要修改 outputs/e1_v5*、outputs/e1_v6*、data/processed_v*、configs/v6_*。
+
+
+### 输出 [2026-11-24 23:26]
+
+
+**结论：** 现有代码和产物能支撑 E1 网格、v5 三 seed 主表和 seed 方差这三块，草稿已写到 `reports/paper_draft_v1.md`。但有三个硬问题，需要你在 E2 出结果前拍板：
+
+1. **E2 单体对照对单体不公平。** 单体模型用的是编译器的提示词，看不到计划所需的任务结构和工具时长；方案原本要防的就是"单体被绑手脚"。
+2. **E3 的 A1 臂和 N 误报列有口径缺陷。** A1 下游"崩"是代码写死的结果，不是测出来的；N 误报列统计错了字段。
+3. **方案里有两条与事实不符。** "DeepSeek-planner 可复用缓存、近零成本"不成立；GRPO 段的"+1/−3/−6"和"±1-2pp"数字来源和标签有误，措辞件照抄了。
+
+全程没有连服务器，没有改冻结资产，也没有 commit。
+
+## 阶段 A：合规矩阵
+
+| # | 方案条目 | 证据 | 判定 |
+|---|---|---|---|
+| 1a | E1：编译器轴 × 规划器轴网格 | `src/sub_e1_grid.py:29-41`，4×3 共 12 格；我在临时目录复跑了 6 格，和 `results.json` 逐位一致 | 符合 |
+| 1b | E1：faithful = safe 且改动数等于金标最小改动 | `sub_e1_grid.py:101-104`；symbolic 列用两种独立方法算改动数，差异 0（`recompute.json`） | 符合 |
+| 1c | E1：bootstrap 按 group 重采样 | `sub_e1_grid.py:115-131` 确实按 group 重采样，但 CI 是对全 2100 行的 faithful 算的（第 141 行）。表里报的是只含受约束行的 faithful，第 182 行却没算 CI。我补算后写入 `recompute.json:e1_constrained` | 部分符合 |
+| 1d | 方案要求架构实验"全部挂 v5" | E1 用的是 v4 面板（`sub_e1_grid.py:50`）；两个"SFT 规划器"其实是同一规划器的两种训练顺序 | 不符合 |
+| 1e | symbolic 列 DeepSeek 行高于 4B 行 | 配对差 +1.64pp，95% CI [+0.93, +2.43]（`recompute.json:e1_constrained.symbolic_deepseek_minus_4B`），显著 | 符合（已核实） |
+| 2a | E2：同底座、同数据、bf16、seed 42、超参一致 | `sub_e2_monolithic.py:245-258` 与 `outputs/e1/Qwen3-1.7B-v5-seed42/metrics.json:config` 一致。v5 train 中 8000 条 witness 计划全部安全，且改动数都是最小 | 符合 |
+| 2b | E2：单体不被绑手脚（同信息） | 单体复用编译器提示（`sub_e2_monolithic.py:63` → `run_e1.py:87-106`）：只有工具目录，没有阶段与备选、finish、工具时长，还要求按约束 JSON 输出，而训练目标是计划。tool_ho 的 196 种结构、struct_ho 的 299 种结构在 train 中全部没出现过；24 个角色的时长全部随任务变化（`draft_numbers.json`） | 不符合（信息不对等，偏向管线） |
+| 2c | E2：预注册判定写在代码里 | 只在 docstring 第 4-6 行和输出字符串第 316 行写了文字，没有任何代码计算判定；"管线显著赢"的那条分支也没有阈值 | 部分符合 |
+| 2d | E2：成本列（token、时延） | 单体侧记了训练 token、生成 token 和时延（第 93-95、156-158 行）；管线侧完全没记，成本比算不出来 | 部分符合 |
+| 2e | E2：对照的管线 | 只和管线 seed42 比；seed42 恰好是管线三个 seed 中 tool_ho 最好的一个（91.71，另两个是 75.71/71.86） | 风险点 |
+| 3a | E3：A1-A4 的定义 | `sub_e3_ablation.py:40-116` 中 A2/A3/A4 与方案一致。A1 方案写的是"lite 版：不重训规划器只换输入"，代码是重训编译器、输出自由文本 | A2-A4 符合，A1 部分符合 |
+| 3b | E3：哨兵值是否构成口径作弊 | 数学上等价于把该字段从匹配键里去掉，本身不算作弊。但 `--baseline-run` 只定义、从没用过（第 274 行），基线没有按同样口径重算；如果拿消融臂的记录 F1 去比基线的完整 strict F1，会系统性偏向消融臂。另外基线 `Qwen3-0.6B-v5-seed42` 本地不存在 | 部分符合（缺同口径基线；论文里直接比就是口径偏差） |
+| 3c | E3：A1 下游轴 | 自由文本字符串会被 `isinstance(c, dict)` 过滤掉（第 241-242 行）。我把完美的 A1 输出喂进去，下游 faithful 仍是 0.0。"A1 下游崩"由代码保证，不是测出来的 | 不符合 |
+| 3d | E3：N 误报列 | 第 253 行把 `unusable_constraints` 存进了名叫 `usable_constraints` 的字段。我测试了一条无约束样本、模型凭空编出一条可用约束：误报率返回 0.0 | Bug |
+| 3e | E3：full-contract 解析率 | A3/A4 删掉的字段正是 `strict_parse` 要求的必填字段，所以这一列在 A3/A4 上必然约等于 0，没有信息量 | 口径无效 |
+| 4a | seed 方差：复算 | 我复跑了脚本，输出与 `seed_variance_decomposition_20261125.json` 完全一致 | 符合 |
+| 4b | seed 方差：同 type 贪心匹配 | v5 测试集没有同 type 的多条金标；和暴力最优匹配比，每个切分只有 0-2 条记录的判定会翻转 | 漏洞可忽略 |
+| 4c | seed 方差：params、evidence、scope 的比较方式 | params 1158 处不一致中，0 处只是整数/浮点差异，1 处行为等价；scope 按集合比较正确；evidence 按严格字符串比较，符合"逐字拷贝"的规格 | 符合 |
+| 4d | seed 方差：结论"不是系统性难度" | 三个 seed 都失败的记录数是独立假设期望的 **3.79×（1.7B tool 15/3.96）、3.73×（1.7B struct 6/1.61）、5.97×（4B tool 4/0.67）**（`draft_numbers.json:three_seed_cofail`）。确实存在一个小的共同难例核。另外各 seed 失败数差别很大，Jaccard 被机械压低：58 对 197 时上界只有 0.29 | 结论过强 |
+| 4e | seed 报告 §3.1 的 params 表 | 标题写"错误记录数"，填的却是错误总条数（报告 54/173/184，JSON 里的记录数是 54/165/173）；IOU 又是按记录数算的 | 不一致 |
+| 5a | 措辞件：红线 | 没有声称 GRPO 有效、没有声称打平强模型、没有用 human-validated | 符合 |
+| 5b | 措辞件：GRPO 数字 | +1/0/−1、0/+2/−2 对得上。但 +1/−3/−6 是**加权修复 SFT 在三种训练顺序下**的结果（36→37、44→41、44→38，`verified-repair-sft-1.7B-orders-v1/independent-replay.json`），不是"GRPO 三 seed"；+0/+1/+3 是 tpl_ho 冻结迁移的"整轨迹 − 只奖功能"。实际区间约 ±3.6-4.8pp，不是 ±1-2pp。措辞件也漏报了"整轨迹 − 只奖功能"那个为正的区间 [+0.28, +7.22] | 不符合 |
+| 5c | 措辞件：seed 段 | "up to 19.9pp" 实际最大是 21.71pp（4B tool）；"300-420 records" 实际上限是 426 / 446；"IoU 0.63-0.81 on struct_ho" 里的 0.629 其实是 1.7B tool_ho | 部分符合 |
+| 6a | "v6 六 run 齐"（方案里是待达成项） | 本地只有 1.7B seed42 一个 run；`outputs/v6_analysis/main.json` 中所有 arm 的 observed_runs 都是空 | 1/6 |
+| 6b | "G1 已在跑" | 按队列脚本 `run_submission_queue.sh:16-20`，E2 要等 v6 队列进程结束才会启动。你说 E2 现在在跑，那 v6 队列要么已经退出，要么 E2 是绕过队列手动起的；按 11072 秒一个 run 推算，v6 不可能已经跑满六个。没连服务器，无法确认 | 与事实矛盾，待核 |
+| 6c | "DeepSeek-planner 可复用缓存、近零成本" | 仓库里的 DeepSeek 缓存全是**编译器**输出，src 里没有任何规划器臂代码；`access_status.json` 记录 API key 不在、状态为 blocked | 不符合 |
+| 6d | "v5 素材全齐" | 4B 三 seed 的主表没有聚合（`v5_main_0530` 里只有两个 seed）；E3 需要的 0.6B v5 基线本地缺失；E1 不在 v5 上 | 部分符合 |
+
+## 阶段 B：草稿 `reports/paper_draft_v1.md`
+
+**已写的章节：**
+- §1 引言骨架和 C1/C2/C3
+- §2 相关工作骨架（只列近邻和定位差异）
+- §3 方法：架构、typed 约束对象六字段、字段由谁消费、最小改动规划器、检查器、fail-closed 评测
+- §4 基准：E/I/N 三元组、witness 构造条件、留出切分设计
+- §5.1 v5 三 seed 主表、参考臂、strict F1
+- §5.2 E1 网格 12 格（每格带受约束行 CI）、DeepSeek − 4B 的显著差、2×2 归因
+- §5.3 裂缝与 seed 方差的双轴机制，已改成"共同难例核 3.7-6.0×"的说法
+- §5.5 部署测量
+- §6 GRPO 负结果：按"条件于三 seed、未检出"的口径；加权修复 SFT 单独列出，不和 GRPO 混写
+- §7 局限
+
+**数字来源：** 每个数字后面都标了来源路径。主要来自：
+- `outputs/v5_analysis/{main, v5_main_0530_20261124, seed_variance_decomposition_20261125}.json`
+- `outputs/e1/*-v5-seed*/metrics.json`
+- `outputs/submission/e1_grid/results.json`
+- `outputs/e2_v4/{failure-interventions-2x2-v1, action-credit-1.7B-pilot-v1, verified-repair-sft-1.7B-orders-v1, frozen-planner-transfer-v1}`
+- `outputs/e1_v4_side/*`、`outputs/compiler_efficiency_v1/results.json`
+
+本轮新增的派生数字只来自两个文件，都只读冻结资产，生成脚本放在 `scripts/submission/`：
+- `outputs/submission/audit_20261124/recompute.json`：受约束行 CI、配对差、witness 最小性、摆幅、独立基线
+- `outputs/submission/audit_20261124/draft_numbers.json`：数据规模、结构签名重叠、三 seed 均值±标准差、共杀比
+
+E1 复算时，因为 Windows 缺 `fcntl`，我在 `/tmp` 放了一个桩模块，仓库里没有改动。
+
+**留下的 TODO：**
+- **TODO(E2)：** 摘要、C2 结论句、三向对照表、§5.4 全节。
+- **TODO(E3)：** 摘要、§5.6、局限第 5 条。
+- **TODO(v6)：** §4.2 的一致性检查和主表决策、局限第 4 条。
+- **另外待补：** 4B 三 seed 的 N 误报和完整记录（还没有聚合产物，所以没写）、DeepSeek-planner 列、Discussion 的 "Why not a skill"、§6 冻结迁移行的分母确认。
+
+## 待用户决策清单（代码都没动）
+
+1. **E2 信息不对等（最急，E2 正在训练）。** 三个选项：
+   - (a) 结果照收，论文写明"单体没有看到任务结构"，并把预注册判定降级；
+   - (b) E2 跑完后，再用补了任务结构的提示词另起一轮；
+   - (c) 现在就停掉重跑（需要动 GPU，由你决定）。
+
+   另外，管线基准是否改成三 seed 均值，而不是只比 seed42？
+2. **E2 判定和成本比要落成代码。** 需要补：判定计算、管线侧的 token 和时延。这些可以在 CPU 上事后补，不影响正在跑的训练。
+3. **E3 修正，要在 E3 开跑前定。**
+   - A1 的下游评测要改为能解析自由文本，否则改成方案原意的 lite 版；
+   - 修第 253 行的 N 误报 bug；
+   - 用 `--baseline-run` 按同样的哨兵口径重算 0.6B 基线，并先确认服务器上有这个基线；
+   - full-contract 解析率这一列改用按臂裁剪后的契约。
+4. **E1 要不要在 v5 上重跑。** 需要先在 v5 上生成神经规划器的候选池，涉及 GPU；否则就在论文里明确"E1 用的是 v4 面板"。
+5. **方案 v3 和措辞件的数字更正。** 方案禁改，所以只能在措辞件和论文里改：
+   - "+1/−3/−6" 改标为"加权 SFT、三种训练顺序"；
+   - "+0/+1/+3" 改标为"冻结迁移"；
+   - "±1-2pp" 改为约 ±4-5pp；
+   - seed 段的 19.9、300-420、IoU 归属三处更正。
+6. **DeepSeek-planner 的成本要重估。** 没有缓存可以复用，需要新写规划器臂，并且要先配置 API key。
+7. **v6 队列状态待核。** 需要你在服务器侧确认 v6 队列是跑完了还是中断了，以及 E2 是怎么起的。
+8. **seed 方差报告的表述。** "不是系统性难度"要不要统一改成"以 seed 特异为主，另有 3.7-6.0× 的共同难例核"？草稿已经按后一种写了。
+

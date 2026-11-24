@@ -8,13 +8,15 @@
 
 **定稿措辞**（负结果章内）：
 
-> We evaluate three GRPO credit-assignment variants—action-level attribution, preventive-action rewards, and a weighted-SFT mixture—each across three training seeds. Under our measurement power (three seeds; paired task-group bootstrap intervals spanning roughly ±1-2 points on the constrained faithful rate), we observe **no stable effect** in any direction: mean differences across seeds are +1/0/−1, 0/+2/−2, and +1/−3/−6 percentage points for the three variants respectively, with the frozen-weight held-out control at +0/+1/+3. We therefore **do not detect** a benefit of reward-side credit assignment on this task; we explicitly do not claim to have proven the effect is zero, as the confidence intervals of our design cannot exclude effects below approximately 2 points.
+> We evaluate reward-side credit assignment across three arms—action-level attribution, preventive-action rewards, and a weighted repair-SFT mixture—with the last arm replicated over three training orders. Under our measurement power (three seeds per arm; paired task-group bootstrap intervals spanning roughly ±4-5 points on the constrained faithful rate), we observe **no stable effect** in any direction: the two GRPO arms differ from their controls by +1/0/−1 and 0/+2/−2 percentage points across seeds, and the weighted repair-SFT arm by +1/−3/−6 points across its three training orders (36→37, 44→41, 44→38). One comparison is not covered by this claim and is reported separately: the frozen-planner transfer contrast (whole-trajectory vs. functional-only reward) is +0/+1/+3 points on tpl_ho with a 95% interval of [+0.28, +7.22], i.e. a small positive effect our design cannot resolve from noise. We therefore **do not detect** a benefit of reward-side credit assignment on this task; we explicitly do not claim to have proven the effect is zero.
+>
+> Provenance: GRPO arms and weighted repair-SFT orders from `outputs/e2_v4/{action-credit-1.7B-pilot-v1, verified-repair-sft-1.7B-orders-v1}`; frozen transfer from `outputs/e2_v4/frozen-planner-transfer-v1`. Numbers re-verified in the 2026-11-24 audit (`outputs/submission/audit_20261124/recompute.json`).
 >
 > The diagnostic instrument built for this evaluation—the 2×2 attribution protocol isolating compiler-side recovery (112/118) from planner-side recovery (47/138)—is retained in the main analysis as a measurement contribution, independent of the training outcome.
 
-中文对照（内部审校用）：三臂三种子「未检出稳定效应（在本设计的功效范围内）」；区间约 ±1-2pp，不能排除 <2pp 的效应；不写「证明为零」。2×2 归因协议（编译器救回 112/118、规划器救回 47/138）作为测量贡献保留在主分析，与训练结果脱钩。
+中文对照（内部审校用）：三臂为「动作级归因 / 预防动作 / 加权修复 SFT（三种训练顺序）」，不是「GRPO 三 seed×三臂」。区间约 ±4-5pp。冻结迁移的「整轨迹 − 只奖功能」为 +0/+1/+3，区间 [+0.28,+7.22]，属小正效应、本设计分辨不出，必须单列，不能并入「未检出」。不写「证明为零」。
 
-**配套 Limitation 句**：GRPO 消融为单架构、单数据域、三 seed；功效上限约 ±1-2pp，更小效应本设计不可检。
+**配套 Limitation 句**：GRPO 消融为单架构、单数据域、三 seed；功效上限约 ±4-5pp，更小效应本设计不可检。
 
 ## 2. symbolic 规划器列措辞防御（R2「单调=构造必然」一刀的防御）
 
@@ -41,9 +43,11 @@
 
 ## 3. seed 方差段的配套措辞（R3 红旗→富矿，配 `reports/seed_variance_analysis_20261125.md`）
 
-> Cross-seed swings in the constrained faithful rate (up to 19.9pp on tool_ho) are not driven by systematically hard samples: only 2.1% (15/700) of records fail under all three seeds, and errors in the planner-consumed params field overlap across seeds at Jaccard 0.01-0.08. The largest error category—scope role binding, present in 300-420 records per seed—is highly consistent across seeds (IoU 0.63-0.81 on 1.7B and 4B struct_ho) yet invisible to the execution axis, because the planner never reads scope. Record-axis and behaviour-axis failures are therefore separable in this task, which is the empirical motivation for reporting both.
+> Cross-seed swings in the constrained faithful rate (up to 21.7pp on tool_ho) are dominated by seed-specific errors rather than a systematically hard sample core: only 2.1% (15/700) of records fail under all three seeds, and errors in the planner-consumed params field overlap across seeds at Jaccard 0.01-0.08. That common hard core is nonetheless real: it exceeds the independent-failure expectation by 3.7-6.0× (15 vs 3.96 on 1.7B tool_ho; 6 vs 1.61 on 1.7B struct_ho; 4 vs 0.67 on 4B tool_ho). The largest error category—scope role binding, present in up to 446 records per seed—is highly consistent across seeds (IoU 0.735/0.810 on 1.7B/4B struct_ho; 0.629 on 1.7B tool_ho) yet invisible to the execution axis, because the planner never reads scope. Record-axis and behaviour-axis failures are therefore separable in this task, which is the empirical motivation for reporting both.
 
-限定词（必须随段写出）：描述性分解，固定观测 seed，无 seed 总体区间；同 type 贪心匹配，未建模多约束匹配歧义；scope 的系统性结论在 4B tool_ho 不成立（该切分 scope 错误率 seed 间 67→309→446 在飘），按切分分别陈述。
+限定词（必须随段写出）：描述性分解，固定观测 seed，无 seed 总体区间；同 type 贪心匹配（与暴力最优匹配相比，仅 0-2 条记录判定翻转）；scope 的系统性结论在 4B tool_ho 不成立（该切分 scope 错误率 seed 间 67→309→446 在飘），按切分分别陈述。
+
+数字来源：`outputs/submission/audit_20261124/recompute.json`（摆幅、独立假设期望、共杀比）与 `outputs/v5_analysis/seed_variance_decomposition_20261125.json`（字段 IOU），已由 2026-11-24 审计独立复算。
 
 ## 4. 下一步（不属本文件）
 

@@ -1,0 +1,221 @@
+{
+ "purpose": "derived numbers for reports/paper_draft_v1.md (read-only on frozen assets)",
+ "dataset_v5": {
+  "dev": {
+   "rows": 900,
+   "groups": 300,
+   "variants": {
+    "explicit": 300,
+    "implicit": 300,
+    "none": 300
+   }
+  },
+  "test_struct_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "test_tool_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "test_tpl_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "train": {
+   "rows": 12000,
+   "groups": 4000,
+   "variants": {
+    "explicit": 4000,
+    "implicit": 4000,
+    "none": 4000
+   }
+  },
+  "total_rows": 16050
+ },
+ "dataset_v6": {
+  "dev": {
+   "rows": 900,
+   "groups": 300,
+   "variants": {
+    "explicit": 300,
+    "implicit": 300,
+    "none": 300
+   }
+  },
+  "test_composition_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "test_struct_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "test_tool_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "test_tpl_ho": {
+   "rows": 1050,
+   "groups": 350,
+   "variants": {
+    "explicit": 350,
+    "implicit": 350,
+    "none": 350
+   }
+  },
+  "train": {
+   "rows": 12000,
+   "groups": 4000,
+   "variants": {
+    "explicit": 4000,
+    "implicit": 4000,
+    "none": 4000
+   }
+  },
+  "total_rows": 17100
+ },
+ "v5_structure_and_tool_values": {
+  "train_distinct_signatures": 324,
+  "dev": {
+   "distinct_signatures": 178,
+   "unseen_in_train": 0
+  },
+  "test_struct_ho": {
+   "distinct_signatures": 299,
+   "unseen_in_train": 299
+  },
+  "test_tool_ho": {
+   "distinct_signatures": 196,
+   "unseen_in_train": 196
+  },
+  "test_tpl_ho": {
+   "distinct_signatures": 203,
+   "unseen_in_train": 0
+  },
+  "train_roles": 24,
+  "roles_with_varying_cost": 3,
+  "roles_with_varying_duration": 24
+ },
+ "v5_three_seed_faithful": {
+  "Qwen3-1.7B | dev": {
+   "per_seed_pct": [
+    98.5,
+    98.0,
+    99.67
+   ],
+   "mean_pct": 98.72,
+   "sd_pct": 0.86
+  },
+  "Qwen3-1.7B | test_tpl_ho": {
+   "per_seed_pct": [
+    96.71,
+    95.57,
+    97.86
+   ],
+   "mean_pct": 96.71,
+   "sd_pct": 1.14
+  },
+  "Qwen3-1.7B | test_tool_ho": {
+   "per_seed_pct": [
+    91.71,
+    75.71,
+    71.86
+   ],
+   "mean_pct": 79.76,
+   "sd_pct": 10.53
+  },
+  "Qwen3-1.7B | test_struct_ho": {
+   "per_seed_pct": [
+    95.86,
+    75.29,
+    77.57
+   ],
+   "mean_pct": 82.9,
+   "sd_pct": 11.28
+  },
+  "Qwen3-4B | dev": {
+   "per_seed_pct": [
+    100.0,
+    99.83,
+    100.0
+   ],
+   "mean_pct": 99.94,
+   "sd_pct": 0.1
+  },
+  "Qwen3-4B | test_tpl_ho": {
+   "per_seed_pct": [
+    97.43,
+    92.86,
+    99.71
+   ],
+   "mean_pct": 96.67,
+   "sd_pct": 3.49
+  },
+  "Qwen3-4B | test_tool_ho": {
+   "per_seed_pct": [
+    91.0,
+    95.86,
+    74.14
+   ],
+   "mean_pct": 87.0,
+   "sd_pct": 11.4
+  },
+  "Qwen3-4B | test_struct_ho": {
+   "per_seed_pct": [
+    99.71,
+    97.0,
+    93.57
+   ],
+   "mean_pct": 96.76,
+   "sd_pct": 3.08
+  }
+ },
+ "three_seed_cofail": {
+  "Qwen3-1.7B | test_tool_ho": {
+   "observed": 15,
+   "expected_if_independent": 3.96,
+   "ratio": 3.79
+  },
+  "Qwen3-1.7B | test_struct_ho": {
+   "observed": 6,
+   "expected_if_independent": 1.61,
+   "ratio": 3.73
+  },
+  "Qwen3-4B | test_tool_ho": {
+   "observed": 4,
+   "expected_if_independent": 0.67,
+   "ratio": 5.97
+  }
+ }
+}

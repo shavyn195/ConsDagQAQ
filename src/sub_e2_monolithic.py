@@ -40,6 +40,38 @@ def monolithic_target(row: dict[str, Any]) -> str:
     return json.dumps(default_plan(row["task"]), separators=(",", ":"))
 
 
+def informed_chat_messages(row: dict[str, Any]) -> list[dict[str, str]]:
+    """信息对齐版提示：把任务结构（阶段/备选/默认/finish/可选前置/工具成本与时长）显式给出。
+
+    旧版直接复用编译器提示，只给工具目录和 query，单体看不到任何计划结构，
+    在未见结构切分上不可能产出合法计划（tool_ho 196 种、struct_ho 299 种结构 train 中未出现）。
+    这一版让单体与"编译器 + 规划器"拿到同等信息，才是公平对照。
+    """
+    task = row["task"]
+    contract = {
+        "stages": [{"stage": s["stage"], "alternatives": s["alternatives"], "default": s["default"]}
+                   for s in task["stages"]],
+        "finish": task["finish"],
+        "optional": task["optional"],
+        "tools": {role: {"cost_cny": spec["cost_cny"], "duration_min": spec["duration_min"],
+                         "recipient": spec["recipient"], "clears_pii": spec["clears_pii"]}
+                  for role, spec in task["tools"].items()},
+    }
+    prompt = (
+        "You are a tool planner for tasks in a trusted data space. Produce one executable plan that "
+        "completes the task and satisfies every constraint stated in the user query. Return a JSON array "
+        "of tool role names in execution order.\n"
+        "Task contract (JSON): " + json.dumps(contract, ensure_ascii=False, separators=(",", ":")) + "\n"
+        "Rules: exactly one tool per stage; include every finish tool after the last stage; insert an "
+        "optional tool only when a constraint requires it; keep the plan as close to the defaults as "
+        "possible while satisfying the constraints.\n"
+        "User query: " + row["query"] + "\n"
+        "JSON:"
+    )
+    return [{"role": "system", "content": "Output a JSON array only."},
+            {"role": "user", "content": prompt}]
+
+
 def train_monolithic(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     """与 run_e1.train_lora 同构的训练循环，仅替换 target 与 prompt 后的 loss mask 规则。"""
     from peft import LoraConfig, get_peft_model
@@ -60,7 +92,7 @@ def train_monolithic(model: Any, tokenizer: Any, rows: list[dict[str, Any]], arg
     examples = []
     dropped = 0
     for row in rows:
-        prefix = render_chat(tokenizer, chat_messages(row), add_generation_prompt=True)["input_ids"][0].tolist()
+        prefix = render_chat(tokenizer, prompt_messages(row, args), add_generation_prompt=True)["input_ids"][0].tolist()
         completion = tokenizer(monolithic_target(row) + tokenizer.eos_token, add_special_tokens=False)["input_ids"]
         if len(prefix) + len(completion) > args.max_seq_len:
             dropped += 1
@@ -144,16 +176,58 @@ def parse_plan(text: str, row: dict[str, Any]) -> list[str] | None:
     return plan
 
 
+def prompt_messages(row: dict[str, Any], args: argparse.Namespace) -> list[dict[str, str]]:
+    return informed_chat_messages(row) if args.prompt_mode == "informed" else chat_messages(row)
+
+
+def generate_batched_prompted(model: Any, tokenizer: Any, rows: list[dict[str, Any]], max_new_tokens: int,
+                              batch_size: int, args: argparse.Namespace) -> tuple[list[dict[str, Any]], list[str]]:
+    """与 run_e1.generate_batched 同构，只是提示词由 prompt_messages 决定（支持 informed 臂）。"""
+    from run_e1 import extract_json, normalise_prediction
+
+    tokenizer.padding_side = "left"
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    device = next(model.parameters()).device
+    predictions: list[dict[str, Any]] = []
+    raw_outputs: list[str] = []
+    for start in range(0, len(rows), batch_size):
+        batch = rows[start:start + batch_size]
+        encoded_list = [
+            render_chat(tokenizer, prompt_messages(row, args), add_generation_prompt=True)["input_ids"][0].tolist()
+            for row in batch
+        ]
+        maxlen = max(len(ids) for ids in encoded_list)
+        input_ids = torch.full((len(batch), maxlen), tokenizer.pad_token_id, dtype=torch.long)
+        attention = torch.zeros((len(batch), maxlen), dtype=torch.long)
+        for i, ids in enumerate(encoded_list):
+            input_ids[i, maxlen - len(ids):] = torch.tensor(ids)
+            attention[i, maxlen - len(ids):] = 1
+        input_ids, attention = input_ids.to(device), attention.to(device)
+        with torch.no_grad():
+            output = model.generate(
+                input_ids=input_ids, attention_mask=attention,
+                do_sample=False, max_new_tokens=max_new_tokens,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+        for i in range(len(batch)):
+            raw = tokenizer.decode(output[i, maxlen:], skip_special_tokens=True)
+            raw_outputs.append(raw)
+            predictions.append(normalise_prediction(extract_json(raw)))
+    return predictions, raw_outputs
+
+
 def evaluate(model: Any, tokenizer: Any, data: dict[str, list[dict[str, Any]]], args: argparse.Namespace,
              out_dir: Path) -> dict[str, Any]:
-    from run_e1 import generate_batched
+    from run_e1 import generate_batched  # noqa: F401  (保留下游 import 兼容)
 
     report: dict[str, Any] = {}
     out_dir.mkdir(parents=True, exist_ok=True)
     for split in SPLITS:
         rows = data[split]
         t0 = time.time()
-        predictions, raw = generate_batched(model, tokenizer, rows, args.max_new_tokens, args.eval_batch_size)
+        predictions, raw = generate_batched_prompted(model, tokenizer, rows, args.max_new_tokens,
+                                                     args.eval_batch_size, args)
         elapsed = round(time.time() - t0, 1)
         gen_tokens = sum(len(tokenizer(t, add_special_tokens=False)["input_ids"]) for t in raw)
         outcomes = []
@@ -257,6 +331,8 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--eval-batch-size", type=int, default=32)
     ap.add_argument("--precision", choices=("fp16", "bf16"), default="bf16")
     ap.add_argument("--skip-train", action="store_true", help="仅用已存 adapter 复测")
+    ap.add_argument("--prompt-mode", choices=("compiler", "informed"), default="compiler",
+                    help="compiler=旧版（复用编译器提示，信息不对等）；informed=给出完整任务结构（公平对照）")
     args = ap.parse_args(argv)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -306,6 +382,7 @@ def main(argv: list[str] | None = None) -> None:
 
     metrics = {
         "design": "B1 monolithic query->plan vs v5 pipeline (compiler + symbolic planner)",
+        "prompt_mode": args.prompt_mode,
         "model": args.model, "seed": args.seed, "precision": args.precision,
         "data_sha256": {s: hashlib.sha256((args.data_dir / f"{s}.jsonl").read_bytes()).hexdigest()
                         for s in ["train"] + list(data)},
