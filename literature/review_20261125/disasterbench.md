@@ -1,0 +1,7 @@
+# DisasterBench review
+
+Source: [ACL Anthology 2026.findings-emnlp.1665](https://aclanthology.org/2026.findings-emnlp.1665/), *DisasterBench: Benchmarking LLM Planning under Typed Tool Interface Constraints*. The ACL Anthology proceedings record and Crossref DOI `10.18653/2026.findings-emnlp.1665` were checked on 2026-11-24 UTC. The local PDF and extracted text are recorded in `source_verification.json`.
+
+DisasterBench builds 233 disaster-response planning tasks around 26 openly available tools. It evaluates tool selection, parameter bindings, and inter-step dependencies, and introduces First-Point-of-Failure (FPoF) to attribute the earliest root cause in a failed workflow. Reference task-workflow pairs undergo two rounds of expert review by four PhD researchers with complementary domain expertise.
+
+This is a direct prior for typed tool-workflow constraints, expert-reviewed executable references, and first-error attribution. ConsDAG must not claim those broad ideas as new. DisasterBench focuses on whether a workflow is grounded in compatible tool interfaces; it does not train a compact compiler for per-request budget, deadline, privacy, authorization, and ordering records, or test E/I/N renderings of one request. A defensible ConsDAG analysis is narrower: measure how errors in each typed request record relate to faithful execution by a fixed planner, across its controlled renderings and training seeds. The semantic labels in ConsDAG still need independent validation.
