@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 SUBSETS = ["dev", "test_tpl_ho", "test_tool_ho"]
-OPTIONAL_SUBSETS = ["test_struct_ho"]  # v5 起新增；v4 数据目录没有该文件，行为不变
+OPTIONAL_SUBSETS = ["test_struct_ho", "test_composition_ho"]  # V6 additions; absent files keep older runs unchanged
 
 
 def eval_subsets(data_dir: Path) -> list[str]:
@@ -85,7 +85,7 @@ def catalog_lines(row: dict[str, Any]) -> str:
 
 
 def chat_messages_v4(row: dict[str, Any]) -> list[dict[str, str]]:
-    if row.get("spec_version") == "v5":
+    if row.get("spec_version") in {"v5", "v6"}:
         from dataset_v5_spec import POLICY_CARD
     else:
         from dataset_v4_spec import POLICY_CARD
@@ -517,9 +517,14 @@ def evaluate_all(model: Any, tokenizer: Any, data: dict[str, list[dict[str, Any]
         predictions, raw = generate_batched(model, tokenizer, rows, args.max_new_tokens, args.eval_batch_size)
         results[subset] = score(rows, predictions, raw)
         if rows and "task" in rows[0]:
-            from eval_exec import evaluate as evaluate_exec
+            if rows[0].get("spec_version") == "v6":
+                from eval_exec_v6 import evaluate_v6
 
-            results[subset]["exec"] = evaluate_exec(rows, raw)[0]
+                results[subset]["exec"] = evaluate_v6(rows, raw)[0]
+            else:
+                from eval_exec import evaluate as evaluate_exec
+
+                results[subset]["exec"] = evaluate_exec(rows, raw)[0]
         results[subset]["eval_seconds"] = round(time.time() - t0, 1)
         pred_dir = out_dir / f"{tag}_predictions"
         pred_dir.mkdir(parents=True, exist_ok=True)
@@ -617,7 +622,7 @@ def train_lora(model: Any, tokenizer: Any, rows: list[dict[str, Any]], args: arg
     return model
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default=str(ROOT / "models" / "Qwen3-0.6B"))
     parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "processed_v4")
@@ -636,7 +641,7 @@ def main() -> None:
                         help="Run only this many optimizer steps and skip saving/evaluation; for launch checks.")
     parser.add_argument("--skip-zeroshot", action="store_true")
     parser.add_argument("--skip-train", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.smoke_train_steps is not None and args.smoke_train_steps < 1:
         parser.error("--smoke-train-steps must be at least 1")
 

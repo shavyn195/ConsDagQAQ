@@ -1,0 +1,106 @@
+{
+  "dataset": "consdag_trusted_constraint_dataset_v6",
+  "spec_version": "v6",
+  "synthetic_only": true,
+  "human_validation_status": "pending",
+  "seed": 20261124,
+  "groups": {
+    "train": 4000,
+    "dev": 300,
+    "test_tpl_ho": 350,
+    "test_tool_ho": 350,
+    "test_struct_ho": 350,
+    "test_composition_ho": 350
+  },
+  "records": {
+    "train": 12000,
+    "dev": 900,
+    "test_tpl_ho": 1050,
+    "test_tool_ho": 1050,
+    "test_struct_ho": 1050,
+    "test_composition_ho": 1050
+  },
+  "heldout_constraint_combination": [
+    "privacy",
+    "tool_auth"
+  ],
+  "constraint_type_distribution": {
+    "train": {
+      "deadline": 1184,
+      "tool_auth": 1022,
+      "order": 1669,
+      "privacy": 1094,
+      "budget": 1010
+    },
+    "dev": {
+      "deadline": 90,
+      "tool_auth": 61,
+      "budget": 82,
+      "order": 134,
+      "privacy": 77
+    },
+    "test_tpl_ho": {
+      "order": 154,
+      "privacy": 91,
+      "budget": 86,
+      "deadline": 95,
+      "tool_auth": 88
+    },
+    "test_tool_ho": {
+      "tool_auth": 84,
+      "deadline": 96,
+      "privacy": 103,
+      "budget": 72,
+      "order": 148
+    },
+    "test_struct_ho": {
+      "tool_auth": 123,
+      "order": 145,
+      "deadline": 121,
+      "privacy": 74,
+      "budget": 90
+    },
+    "test_composition_ho": {
+      "tool_auth": 350,
+      "privacy": 350
+    }
+  },
+  "constraints_per_group": {
+    "2": 2299,
+    "1": 3054,
+    "3": 347
+  },
+  "near_miss_subtype_distribution": {
+    "waiver": 2708,
+    "permission": 2804,
+    "other_party": 2759,
+    "revoked": 2656
+  },
+  "generation_rejections": {
+    "train_composition_filter": 346,
+    "dev_composition_filter": 20,
+    "test_tpl_ho_composition_filter": 31,
+    "test_tool_ho_composition_filter": 21,
+    "test_struct_ho_composition_filter": 37,
+    "test_composition_ho_composition_filter": 7364
+  },
+  "witness_contract": {
+    "positive": "Each explicit or implicit gold constraint has a query evidence span, a feasible witness plan, and a counterfactual plan that violates that constraint when it is relaxed.",
+    "none": "Each none record has empty gold and a default-plan no-op witness; negative near-miss labels remain synthetic and are not human-validated."
+  },
+  "sha256": {
+    "train": "f909353cb7bbe34e28615cb373b01af00ab57435da42f0af32a0afd1801ce601",
+    "dev": "dded8d43239a88ae656a8b925107abd2749e88c1534654c4885d1cf8208183d5",
+    "test_tpl_ho": "152c232c5df243160ad31fc4d02ed6e2d697ee612199b0ea5d9a2f43943a26c7",
+    "test_tool_ho": "34e70cb0463fcf0b9a06fad431345fefc4752a2dc369bc9f62a4201dfc170543",
+    "test_struct_ho": "b4b7be414d4a37e6825eef5bd842590df5a8a2508e540dd5e929f8b94f9e4ffd",
+    "test_composition_ho": "928109d6c59613d27084a70af34dc8c68645072e2d9830666297f5e20b7f2428"
+  },
+  "limitations": [
+    "Synthetic, hand-templated labels; generated witnesses are not independent human semantic judgments.",
+    "The blind human recoverability and N-control audit is pending.",
+    "test_struct_ho remains a compound shift; test_composition_ho holds out the privacy + tool_auth pair and contains exactly that pair.",
+    "Pair exclusion changes feasible task selection and constraint cardinality; this split is not a causal composition intervention.",
+    "E/I/N encode generated surface conditions, not ambiguity or information insufficiency."
+  ]
+}

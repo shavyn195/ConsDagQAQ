@@ -43,6 +43,11 @@ JUDGE_PROMPT = (
 )
 
 
+def render_recover_prompt(query: str) -> str:
+    """Insert query text literally; the output schema itself contains JSON braces."""
+    return RECOVER_PROMPT.replace("{query}", query)
+
+
 def call_api(client: Any, model: str, prompt: str, max_retries: int = 3) -> str:
     for attempt in range(max_retries):
         try:
@@ -122,7 +127,7 @@ def main() -> None:
 
     # I 版：oracle 恢复 -> 判官匹配
     for row in implicit_sample:
-        raw = call_api(client, args.model, RECOVER_PROMPT.format(query=row["query"]))
+        raw = call_api(client, args.model, render_recover_prompt(row["query"]))
         recovered = recovered_constraints(parse_json_block(raw))
         if recovered is None:
             stats["implicit"]["recovery_parse_failures"] += 1
@@ -160,7 +165,7 @@ def main() -> None:
 
     # N 版：恢复须为空
     for row in none_sample:
-        raw = call_api(client, args.model, RECOVER_PROMPT.format(query=row["query"]))
+        raw = call_api(client, args.model, render_recover_prompt(row["query"]))
         recovered = recovered_constraints(parse_json_block(raw))
         stats["none"]["n"] += 1
         if recovered is None:

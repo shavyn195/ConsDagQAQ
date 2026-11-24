@@ -408,3 +408,24 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 远端 `/root/ConsDagV5` 只读检查确认 RTX 4080 SUPER 32GB 正在运行 `Qwen3-1.7B` v5 seed43；约 7,100/9,000 optimizer steps，最近日志 loss 为有限值，未触发 NaN/非有限保护。
 - 当次 GPU 查询为约 21,144/32,760 MiB、利用率 53%；队列脚本仍保持 seed43/44 后接力 0.6B 的原登记顺序，没有抢占或重复启动。
 - 本地 `python -m pytest -q` 复核通过 71 项（7.79s）。远端结果未在 seed43 完成前回收；下一次只读检查优先拉取 metrics、预测、manifest 并校验 SHA-256。
+
+## 2026-11-24 13:00 CST v5 队列收口与 4B seed44 回收
+
+- 服务器 `/root/ConsDagV5` 队列运行正常：1.7B/4B 三种子与 0.6B seed42/43 已完成，0.6B seed44 训练中；GPU 19,698 MiB / 40%，无 NaN、OOM 或异常退出。
+- 4B seed44 于 06:54 CST 完成，`metrics.json` 已回收本地，SHA-256 `1391b9d2...bf476f`，与服务器一致；五个数据文件哈希与 `metrics.json` 内 `data_sha256` 逐一相同。
+- 受约束 faithful_success：4B seed42 为 100.00/97.43/91.00/99.71，seed43 为 99.83/92.86/95.86/97.00，seed44 为 100.00/99.71/74.14/93.57（dev/tpl_ho/tool_ho/struct_ho，%）。三种子均值 ± 样本标准差为 99.94±0.10、96.67±3.49、87.00±11.40、96.76±3.08。
+- 4B 相对 DeepSeek 十示例均值差为 +0.61/−2.62/−12.71/−3.10pp。tool_ho 即使 seed44 记为 100%，均值上界仅 95.62%，仍低 4.10pp；原 H2 的 −3pp 门槛在该切分不可能通过。
+- 0.6B seed42/43 受约束 faithful 为 dev 98.67/97.67、tpl 91.29/90.57、tool 64.29/66.57、struct 71.71/74.14（%），seed44 待完成，仅用于方差报告。
+- 独立审查脚本发现的 `eval_exec.py` 解析失败 fail-open（空约束走默认计划，N 记录可能判 faithful）在当前五组训练 run 的 N 输出中未触发；`oracle_check.py` 的 format 花括号缺陷未修复。两项均未改动代码，待批准。
+- 审查附件 `reports/_audit_work_20261124/metrics_per_record.json`（17.1 MB）已移出仓库到本地临时目录，其余报告与汇总 JSON 保留。
+
+## 2026-11-24 v6 本地实现与数据冻结
+
+- 设计见 `reports/design_v6_ccfb.md`。定位为合成基准与评分审计；不宣称新编译器架构、人工语义验证完成或 CCF-B 达标。v5 数据、保存的预测和历史执行评分保持原样；`oracle_check.py` 的 JSON 花括号插值缺陷已修复。
+- `data/processed_v6/` 共 17,100 条、5,700 组：train 12,000，dev 900，四个测试切分各 1,050。`privacy + tool_auth` 及其所有超集从其他切分排除，composition 测试仅有精确二类型组合；筛选会改变任务构成，不解释为因果组合干预。
+- 独立 verifier 为 PASS：六切分之间 45 项 query/goal/group 重叠全部为 0；E/I/N 对齐、可完成的正例与反事实 witness、保留约束、空集 no-op 和 SHA-256 检查通过。相同种子在临时目录二次生成，六个 JSONL 字节哈希完全一致。全量金标 CPU 复算无解析或 faithful 失败；这些是参考自洽检查，不是模型性能。
+- v6 执行评分对解析失败 fail-closed，N 分别统计解析失败、非空约束和状态错误。strict/core F1、record exact、evidence exact、safe/faithful 分开报告。H1 改为每种子配对任务组区间；训练均值须三种子完整；H3 沿用命名切分的独立组重采样；H4 固定 DeepSeek 十示例为模型诊断臂，不判定标签真假。
+- 队列含 32 GB GPU 检查、源码/数据/模型/环境 provenance、完成标记、预测与 adapter 哈希、失败日志保留、禁止覆盖未完成 smoke/run、NaN 中止和累计 30 小时预算（包含 smoke 与失败任务）。PE 请求按模型、参数、完整输入与数据指纹缓存，只从环境读取 key。
+- 两位盲审者材料已导出到 `data/review_v6_seed20261125_n5/`，共 250 条唯一请求；协议在 `reports/v6_human_review_protocol.md`。尚未人工审阅，`human_validation_status=pending`。
+- 完整 `python -m pytest -q -rs`：116 passed、2 skipped；两项跳过原因是本机无 torch。Python 编译与 Git Bash 语法检查通过。
+- 远程只读认证检查：环境未配置 `SEETA_PASSWORD` 或 `DASHSCOPE_API_KEY`，绕开无效 SSH 配置后，密钥认证仍被拒绝。没有修改服务器文件，没有启动 v6 GPU smoke/训练或 PE；不能报告任何 v6 模型结果。未 commit、未 push。
