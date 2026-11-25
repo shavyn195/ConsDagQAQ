@@ -1,0 +1,135 @@
+{
+  "checked_utc": "2026-11-25T03:18:44.932383+00:00",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 64 %, 21214 MiB, 32760 MiB",
+  "loadavg": "12.23 9.18 7.76 14/5992 206398",
+  "processes": [
+    {
+      "pid": 189623,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "/root/ConsDagV5/scripts/submission/recover_v6_frozen.py",
+        "--after-pid",
+        "187699",
+        "--public-control-root",
+        "/root/ConsDagSubmissionReview"
+      ],
+      "cwd": "/root/ConsDagV5"
+    },
+    {
+      "pid": 204883,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/sub_e2_public_contract.py"
+      ],
+      "cwd": "/root/ConsDagSubmissionReview"
+    }
+  ],
+  "logs": {
+    "outputs/submission/queue2.log": {
+      "last_loss": null,
+      "loss_observations": 0,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"event\":\"e3_start\",\"time\":\"2026-11-25T06:01:15+08:00\",\"arm\":\"A2\"}",
+        "{\"event\":\"e3_done\",\"time\":\"2026-11-25T08:13:27+08:00\",\"arm\":\"A2\"}",
+        "{\"event\":\"e3_start\",\"time\":\"2026-11-25T08:13:27+08:00\",\"arm\":\"A1\"}",
+        "{\"event\":\"e3_done\",\"time\":\"2026-11-25T10:19:33+08:00\",\"arm\":\"A1\"}",
+        "{\"event\":\"queue2_end\",\"time\":\"2026-11-25T10:19:33+08:00\"}"
+      ]
+    },
+    "outputs/submission/e2_public_contract.log": {
+      "last_loss": {
+        "optimizer_step": 4200,
+        "loss": 0.006119016092270613
+      },
+      "loss_observations": 43,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"optimizer_step\": 3800, \"loss\": 4.705869287136011e-05}",
+        "{\"optimizer_step\": 3900, \"loss\": 0.0002718525065574795}",
+        "{\"optimizer_step\": 4000, \"loss\": 5.2626855904236436e-05}",
+        "{\"optimizer_step\": 4100, \"loss\": 0.00023287789372261614}",
+        "{\"optimizer_step\": 4200, \"loss\": 0.006119016092270613}"
+      ]
+    },
+    "outputs/submission/e3_A1.log": {
+      "last_loss": {
+        "optimizer_step": 9000,
+        "loss": 1.3828258715875563e-06
+      },
+      "loss_observations": 91,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"arm\": \"A1\", \"split\": \"dev\", \"faithful_constrained\": 0.9816666666666667}",
+        "{\"arm\": \"A1\", \"split\": \"test_tpl_ho\", \"faithful_constrained\": 0.8542857142857143}",
+        "{\"arm\": \"A1\", \"split\": \"test_tool_ho\", \"faithful_constrained\": 0.5085714285714286}",
+        "{\"arm\": \"A1\", \"split\": \"test_struct_ho\", \"faithful_constrained\": 0.5357142857142857}",
+        "{\"saved\": \"outputs/submission/e3_A1/metrics.json\"}"
+      ]
+    },
+    "outputs/submission/e3_A2.log": {
+      "last_loss": {
+        "optimizer_step": 9000,
+        "loss": 5.853136826772243e-06
+      },
+      "loss_observations": 91,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"arm\": \"A2\", \"split\": \"dev\", \"faithful_constrained\": 0.9883333333333333}",
+        "{\"arm\": \"A2\", \"split\": \"test_tpl_ho\", \"faithful_constrained\": 0.9557142857142857}",
+        "{\"arm\": \"A2\", \"split\": \"test_tool_ho\", \"faithful_constrained\": 0.49857142857142855}",
+        "{\"arm\": \"A2\", \"split\": \"test_struct_ho\", \"faithful_constrained\": 0.35428571428571426}",
+        "{\"saved\": \"outputs/submission/e3_A2/metrics.json\"}"
+      ]
+    },
+    "outputs/submission/e3_A3.log": {
+      "last_loss": {
+        "optimizer_step": 9000,
+        "loss": 1.1324866591166938e-06
+      },
+      "loss_observations": 91,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"arm\": \"A3\", \"split\": \"dev\", \"faithful_constrained\": 0.9916666666666667}",
+        "{\"arm\": \"A3\", \"split\": \"test_tpl_ho\", \"faithful_constrained\": 0.9257142857142857}",
+        "{\"arm\": \"A3\", \"split\": \"test_tool_ho\", \"faithful_constrained\": 0.40285714285714286}",
+        "{\"arm\": \"A3\", \"split\": \"test_struct_ho\", \"faithful_constrained\": 0.42714285714285716}",
+        "{\"saved\": \"outputs/submission/e3_A3/metrics.json\"}"
+      ]
+    },
+    "outputs/submission/e3_A4.log": {
+      "last_loss": {
+        "optimizer_step": 9000,
+        "loss": 1.585477889420872e-06
+      },
+      "loss_observations": 91,
+      "all_logged_losses_finite": true,
+      "error_markers": [],
+      "tail": [
+        "{\"arm\": \"A4\", \"split\": \"dev\", \"faithful_constrained\": 0.9966666666666667}",
+        "{\"arm\": \"A4\", \"split\": \"test_tpl_ho\", \"faithful_constrained\": 0.9385714285714286}",
+        "{\"arm\": \"A4\", \"split\": \"test_tool_ho\", \"faithful_constrained\": 0.6485714285714286}",
+        "{\"arm\": \"A4\", \"split\": \"test_struct_ho\", \"faithful_constrained\": 0.7871428571428571}",
+        "{\"saved\": \"outputs/submission/e3_A4/metrics.json\"}"
+      ]
+    }
+  },
+  "source_hashes": {
+    "src/sub_e3_ablation.py": "5e0c0514b04b328b2ff260f63250c907b957f4983db9aad1ed9be1ed1635ce16",
+    "scripts/submission/analyse_deepseek_planner.py": "9f8bd148dac97e34993cfbeb2c75422dd84fe0f4ab57a82c035bf30479e48211",
+    "src/eval_exec.py": "ac766ad6d5ad15c7ee18749b7a7cd2d1c601c00bb451e14eb8eccb27b3462b51",
+    "src/trust_env.py": "01dc6b70d13fd56392d9eb6a21bf5ff70a5e35708dddcf6294ef9d5d6163e78f"
+  },
+  "completed_v6": [
+    "Qwen3-1.7B-v6-seed42",
+    "Qwen3-1.7B-v6-seed43"
+  ],
+  "public_metrics_exists": false
+}

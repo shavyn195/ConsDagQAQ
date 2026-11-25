@@ -1,0 +1,35 @@
+{
+  "created_utc": "2026-11-24T18:26:29.267507+00:00",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 29 %, 16024 MiB, 32760 MiB",
+  "processes": "   PID STAT     ELAPSED COMMAND\n187699 S       03:04:15 bash scripts/submission/run_e2_informed_then_e3.sh\n189623 Ss      02:01:15 /root/miniconda3/bin/python -u /root/ConsDagV5/scripts/submission/recover_v6_frozen.py --after-pid 187699 --public-control-root /root/ConsDagSubmissionReview\n191491 Sl         54:20 /root/miniconda3/bin/python -u src/sub_e3_ablation.py --arm A3 --data-dir data/processed_v5 --model models/Qwen3-0.6B --baseline-run outputs/e1/Qwen3-0.6B-v5-seed42 --seed 42 --precision bf16 --out-dir outputs/submission/e3_A3\n",
+  "e3_last_step": {
+    "optimizer_step": 4100,
+    "loss": 2.7934296667808667e-05
+  },
+  "e3_all_logged_losses_finite": true,
+  "e3_source_sha256": "5e0c0514b04b328b2ff260f63250c907b957f4983db9aad1ed9be1ed1635ce16",
+  "api_complete": true,
+  "api_parsing_audit": {
+    "rows": 8100,
+    "unique_responses": 5339,
+    "unique_response_formats": {
+      "single_fence_json_array": 5337,
+      "strict_json_array": 2
+    },
+    "finish_reason_counts": {
+      "stop": 5339
+    },
+    "outcome_disagreements": {
+      "strict_json_versus_shared_outcome": 7865
+    },
+    "original_strict_outcomes_exactly_reproduced": true,
+    "original_symbolic_outcomes_exactly_reproduced": true,
+    "api_calls_made": 0,
+    "requests_reconstructed_exactly": true,
+    "interpretation": "Strict format compliance is retained. e2_shared uses the existing monolithic plan reader with public task only. No role/value/order repair or gold-guided parsing. This is a disclosed post-hoc parsing parity analysis, not a new inference result."
+  },
+  "e2_informed_complete": true,
+  "e2_public_started": false,
+  "v6_budget_used_seconds": 19899.38310811296,
+  "next_queue": "E3 A3/A4/A2/A1, public-contract E2, frozen v6 continuation"
+}

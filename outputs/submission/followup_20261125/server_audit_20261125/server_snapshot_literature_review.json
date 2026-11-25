@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-11-24T17:02:35.302195+00:00",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 47 %, 18308 MiB, 32760 MiB",
+  "processes": "   PID STAT     ELAPSED COMMAND\n187699 S       01:40:21 bash scripts/submission/run_e2_informed_then_e3.sh\n187717 Sl      01:40:21 /root/miniconda3/bin/python -u src/sub_e2_monolithic.py --prompt-mode informed --data-dir data/processed_v5 --model models/Qwen3-1.7B --pipeline-run outputs/e1/Qwen3-1.7B-v5-seed42 --seed 42 --precision bf16 --out-dir outputs/submission/e2_monolithic_informed\n188913 Ssl     01:01:58 /root/miniconda3/bin/python -u scripts/submission/deepseek_planner.py\n189623 Ss         37:21 /root/miniconda3/bin/python -u /root/ConsDagV5/scripts/submission/recover_v6_frozen.py --after-pid 187699 --public-control-root /root/ConsDagSubmissionReview\n189765 Ssl        34:26 /root/miniconda3/bin/python -u scripts/submission/analyse_deepseek_planner.py --after-pid 188913\n",
+  "e2_last_step": {
+    "optimizer_step": 7400,
+    "loss": 7.698640729358885e-06
+  },
+  "e2_logged_losses_finite": true,
+  "e2_loss_observations": 75,
+  "api_unique_responses": 2970,
+  "api_response_lines": 2970,
+  "api_incomplete_lines_at_snapshot": 0,
+  "api_total_unique_expected": 5339,
+  "api_aggregate_exists": false,
+  "public_e2_metrics_exists": false,
+  "token_audit_sha256": "90c9aabeff8f9a53eac02c39de64ea2e96fb3893c1da4407d3c3dd526393b672",
+  "v6_completion_markers": [
+    "Qwen3-1.7B-v6-seed42",
+    "Qwen3-1.7B-v6-seed43"
+  ],
+  "recovery_log_tail": "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T16:25:24.922442+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\", \"all_recovered_completion\": []}\n"
+}

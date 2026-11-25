@@ -1,0 +1,65 @@
+{
+  "utc": "2026-11-25T06:14:09.180355+00:00",
+  "queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 19899.38310811296,
+    "active": {
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "started_at": "2026-11-25T04:35:24.967858+00:00",
+      "reserved_seconds": 88100.61689188704
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 43,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 8827.253966415301,
+      "finished_at": "2026-11-24T13:07:51.054583+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "runs": {
+    "Qwen3-1.7B-v6-seed42": {
+      "metrics_exists": true,
+      "completion_exists": true,
+      "predictions": {
+        "zeroshot_predictions": 5,
+        "trained_predictions": 5
+      }
+    },
+    "Qwen3-1.7B-v6-seed43": {
+      "metrics_exists": true,
+      "completion_exists": true,
+      "predictions": {
+        "zeroshot_predictions": 0,
+        "trained_predictions": 5
+      }
+    },
+    "Qwen3-1.7B-v6-seed44": {
+      "metrics_exists": false,
+      "completion_exists": false,
+      "predictions": {
+        "zeroshot_predictions": 0,
+        "trained_predictions": 0
+      }
+    }
+  },
+  "gpu": [
+    "NVIDIA GeForce RTX 4080 SUPER, 61 %, 17420 MiB, 32760 MiB"
+  ],
+  "processes": [
+    "189623      1    13:48:55 python          /root/miniconda3/bin/python -u /root/ConsDagV5/scripts/submission/recover_v6_frozen.py --after-pid 187699 --public-control-root /root/ConsDagSubmissionReview",
+    "208814 189623    01:39:41 python          /root/miniconda3/bin/python -u src/run_v6_relay.py --project-root /root/ConsDagV6Frozen --mode wait --budget-hours 30 --python /root/miniconda3/bin/python",
+    "208832 208814    01:39:39 python          /root/miniconda3/bin/python src/run_v6_relay.py --mode queue --project-root /root/ConsDagV6Frozen --gpu 0 --python /root/miniconda3/bin/python --budget-hours 30.0",
+    "208880 208832    01:38:44 timeout         /usr/bin/timeout --signal=KILL 88100.366892s /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-1.7B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-1.7B-v6-seed44 --precision bf16 --seed 44 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 32 --skip-zeroshot",
+    "208881 208880    01:38:44 python          /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-1.7B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-1.7B-v6-seed44 --precision bf16 --seed 44 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 32 --skip-zeroshot"
+  ]
+}

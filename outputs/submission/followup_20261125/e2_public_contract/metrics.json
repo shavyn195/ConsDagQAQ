@@ -1,0 +1,181 @@
+{
+  "design": "B1 monolithic query->plan vs v5 pipeline (compiler + symbolic planner)",
+  "prompt_mode": "public_contract",
+  "model": "/root/ConsDagSubmissionReview/models/Qwen3-1.7B",
+  "seed": 42,
+  "precision": "bf16",
+  "data_sha256": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "code_sha256": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+  "budget": {
+    "steps": 9000,
+    "tokens": {
+      "prompt": 35346477,
+      "completion": 1056099
+    },
+    "examples": 12000,
+    "dropped": 0
+  },
+  "train_rows": 12000,
+  "elapsed_s": 8028.5,
+  "splits": {
+    "dev": {
+      "n": 900,
+      "elapsed_s": 107.1,
+      "planned": 1.0,
+      "safe_success": 0.9644444444444444,
+      "faithful": 0.9377777777777778,
+      "faithful_constrained": 0.9066666666666666,
+      "none_faithful": 1.0,
+      "by_variant": {
+        "explicit": {
+          "n": 300,
+          "faithful": 0.9166666666666666
+        },
+        "implicit": {
+          "n": 300,
+          "faithful": 0.8966666666666666
+        },
+        "none": {
+          "n": 300,
+          "faithful": 1.0
+        }
+      },
+      "gen_tokens": 25815
+    },
+    "test_tpl_ho": {
+      "n": 1050,
+      "elapsed_s": 122.9,
+      "planned": 1.0,
+      "safe_success": 0.9523809523809523,
+      "faithful": 0.8361904761904762,
+      "faithful_constrained": 0.8728571428571429,
+      "none_faithful": 0.7628571428571429,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.8714285714285714
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.8742857142857143
+        },
+        "none": {
+          "n": 350,
+          "faithful": 0.7628571428571429
+        }
+      },
+      "gen_tokens": 29892
+    },
+    "test_tool_ho": {
+      "n": 1050,
+      "elapsed_s": 127.6,
+      "planned": 0.819047619047619,
+      "safe_success": 0.5942857142857143,
+      "faithful": 0.5876190476190476,
+      "faithful_constrained": 0.38142857142857145,
+      "none_faithful": 1.0,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.38285714285714284
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.38
+        },
+        "none": {
+          "n": 350,
+          "faithful": 1.0
+        }
+      },
+      "gen_tokens": 30821
+    },
+    "test_struct_ho": {
+      "n": 1050,
+      "elapsed_s": 229.8,
+      "planned": 0.5514285714285714,
+      "safe_success": 0.43047619047619046,
+      "faithful": 0.42095238095238097,
+      "faithful_constrained": 0.14285714285714285,
+      "none_faithful": 0.9771428571428571,
+      "by_variant": {
+        "explicit": {
+          "n": 350,
+          "faithful": 0.15714285714285714
+        },
+        "implicit": {
+          "n": 350,
+          "faithful": 0.12857142857142856
+        },
+        "none": {
+          "n": 350,
+          "faithful": 0.9771428571428571
+        }
+      },
+      "gen_tokens": 47577
+    }
+  },
+  "paired_vs_pipeline": {
+    "dev": {
+      "diff": -0.07833333333333337,
+      "ci95": [
+        -0.11166666666666658,
+        -0.046666666666666634
+      ],
+      "n": 600,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.985,
+      "monolithic_faithful_constrained": 0.9066666666666666
+    },
+    "test_tpl_ho": {
+      "diff": -0.0942857142857143,
+      "ci95": [
+        -0.12857142857142856,
+        -0.06000000000000005
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9671428571428572,
+      "monolithic_faithful_constrained": 0.8728571428571429
+    },
+    "test_tool_ho": {
+      "diff": -0.5357142857142857,
+      "ci95": [
+        -0.5900000000000001,
+        -0.48142857142857143
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9171428571428571,
+      "monolithic_faithful_constrained": 0.38142857142857145
+    },
+    "test_struct_ho": {
+      "diff": -0.8157142857142856,
+      "ci95": [
+        -0.8485714285714285,
+        -0.7814285714285714
+      ],
+      "n": 700,
+      "boot": 10000,
+      "pipeline_faithful_constrained": 0.9585714285714285,
+      "monolithic_faithful_constrained": 0.14285714285714285
+    },
+    "overall": {
+      "diff": -0.39222222222222225,
+      "ci95": [
+        -0.4185185185185185,
+        -0.36518518518518517
+      ],
+      "n": 2700,
+      "boot": 10000
+    }
+  },
+  "preregistered_rule": "Exploratory fair-input correction, seed42 only. Report paired group CI and signed difference; an inconclusive superiority test is not evidence of equivalence. Preserve the old decision rule as history.",
+  "public_protocol_sha256": "37df82ab05dca1c02f3a500557226f0efc8ada7f6bfaa450fc1d992f06739720"
+}
