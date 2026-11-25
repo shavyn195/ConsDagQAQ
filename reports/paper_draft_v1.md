@@ -3,7 +3,7 @@
 版本：2026-11-25。依据：`reports/submission_plan_v3_20261124.md`（第一波第 4 项）、`reports/submission_plan_emnlp2027.md` §1、§5、§6。
 写作纪律：
 - 每个数字后括号注明来源，括号里的 JSON 字段路径用 `文件:字段` 表示；
-- 待补实验用 `TODO(E2)` / `TODO(v6)` 占位，不写预测值；
+- 尚未完成的实验用 `TODO(v6)` 占位，不写预测值；
 - 不出现已死主张：小模型打平/超越强模型、human-validated semantics、GRPO/信用分配有效、跨域泛化。
 
 本稿复核数字的来源包括：
@@ -19,7 +19,7 @@
 
 ## 摘要（占位）
 
-TODO(E2) TODO(v6)：摘要待完整公开输入 E2 和 v6 主结果落地后定稿。E3 消融现已完成并进入 §5.6。现阶段可写的三句：
+TODO(v6)：摘要待 v6 主结果落地后定稿。完整公开输入 E2 已完成，其单 seed 限定见 §5.4；E3 消融现已完成并进入 §5.6。现阶段可写的三句：
 1. 我们发布 E/I/N 配对的可执行约束基准；
 2. 我们实现独立训练与审计的编译-规划分离架构，并在明确版本和消费者条件下评估组件替换；
 3. 我们测得行为轴与记录轴的差异，并分解其跨 seed 错误模式。
@@ -43,10 +43,10 @@ v5 基准上，DeepSeek 十示例编译器接符号规划器后，受约束 fait
 
 **贡献（按 C1→C2→C3 排序）：**
 - **C1 基准。** ConsDagQAQ 将同一构造任务的 E/I/N 呈现、类型化请求记录和固定规划器执行结果放在同一评测协议中。SCHEDBench 已测同一调度实例的自然语言表述变化与求解器可行性，DisasterBench 已测类型化工具工作流并做首个失败点归因；因此本文不主张配对表述、可执行约束评测或工具失败诊断本身首创。可检验的增量限于 E/I/N 状态、约束记录与下游 faithful execution 的联合分析。金标是生成器级构造条件，由 witness 计划经检查器验证，未独立验证自然语言语义。
-- **C2 系统架构。** 编译-规划分离：独立训练的小编译器输出 typed 约束对象，由下游规划器消费，并单独审计记录。Qwen3＋LoRA 未改变底座网络结构；本项是系统组织与可检验接口设计，不是新神经网络。组件替换能力限定于已测消费者；相比单体的质量、成本收益由输入完整的对照检验，尚不预设成立。
+- **C2 系统架构。** 编译-规划分离：独立训练的小编译器输出 typed 约束对象，由下游规划器消费，并单独审计记录。Qwen3＋LoRA 未改变底座网络结构；本项是系统组织与可检验接口设计，不是新神经网络。seed42 的完整公开输入 E2 中，编译器加符号规划器在四个切分的 faithful execution 均高于直出计划单体；但训练目标与 token 量不同，因此只支持当前合成设置下两套方案的结果差异，不能单独识别普遍架构因果或成本收益。
 - **C3 发现。** 本文分析记录字段质量与固定规划器 faithful execution 的不一致，并用字段消融和多 seed 分解检验哪些记录错误会传到执行指标。DisasterBench 已有通用工作流首错归因，故这里不把“提出失败归因”当新贡献。现有 seed 分析显示执行轴的波动主要关联规划器消费的 params 字段；scope 的记录缺陷在多数切分上较稳定，却对执行指标不敏感。
 
-TODO(E2)：原不完整输入臂仅作诊断。公共信息完整臂作为公开披露的探索性修正，按配对差值与区间陈述；CI 跨零不证明等价，更不能单凭一项检验宣布架构成立或死亡。若无可靠优势，C2 定位为可复现参考架构与诊断接口，不作为性能创新。
+完整公开输入 E2 是公开披露的探索性公平输入修正；四切分差值和限制见 §5.4。informed 旧臂和不完整输入旧臂仅作诊断，不进入公平架构比较。seed42 上当前差异不等于训练种子总体推断，CI 也未作多重比较校正。
 
 ---
 
@@ -66,7 +66,7 @@ TODO(E2)：原不完整输入臂仅作诊断。公共信息完整臂作为公开
 | 类型化工具工作流与失败归因 | DisasterBench（Findings of EMNLP 2026） | 233 个任务、26 个工具，评测工具、参数、依赖，并以 FPoF 归因首错；参考工作流经过四位博士两轮专家审阅。故本文不能泛称工具约束基准或失败诊断新颖，需收窄到约束记录字段对 faithful execution 的条件影响。 |
 | 安全规格与工具执行验证 | Towards Verifiably Safe Tool Use for LLM Agents（ICSE-NIER 2026） | 已有从安全需求到形式规格、工具标记及验证的架构先例。正文本轮无法从 ACM 获取，具体方法细节需在投稿前复核；无论如何，通用“规格编译后再执行检查”不能单独作为 C2 创新。 |
 | 约束表示的可靠性验证 | CIRCE（2610.41089） | CIRCE 对三个基准的结构表示做全量规则核验，对另四个基准各抽20例人工核验；它预测解题难度而非生成执行约束。该设计说明，即便有程序检查，语义正确性仍需独立证据 |
-| 分解成本之争 | Coordination Tax（2610.37700）、MA-Evolve（2609.04217） | Coordination Tax已含异构角色对照，3.22倍是其特定实验结果而非本研究门槛。本文E2控制底座、训练行、更新次数与LoRA配置，另核算用量；相同epoch不等于相同计算预算（TODO(E2)） |
+| 分解成本之争 | Coordination Tax（2610.37700）、MA-Evolve（2609.04217） | Coordination Tax已含异构角色对照，3.22倍是其特定实验结果而非本研究门槛。本文E2控制底座、训练行、更新次数与LoRA配置，另核算用量；同更新数不等于计算匹配，训练 target 和 token 量也不同（§5.4） |
 | 评测器可靠性 / 失效归因 | DisasterBench（Findings of EMNLP 2026）、Trace 审计（2610.30491）、Who&When Pro（2607.09996） | DisasterBench 的 FPoF 已定位工具工作流首错；本文只能检验约束记录字段错误如何对应固定 planner 的执行成功，不把一般失效归因作为贡献。 |
 | skill 范式 | Agentic Skills 综述（2608.29596）、Skill 参考架构（2606.20631）、SkillFusion（2610.15481）、SkillBrowser（2610.23554） | 放入 Discussion "Why not a skill?"（本稿未写） |
 
@@ -273,7 +273,7 @@ TODO(v6)：v6 六个 run 的结果与 v5 的一致性检查；主表是否切到
 
    以上均来自同文件 `interventions_on_initial_failures`。前者对应"读错约束"，后者对应"搜索受限"。
 
-TODO(E2)：插入公平完整输入E2 × symbolic对照，包括单体直出计划的faithful与成本列（token、时延）。
+完整公开输入 E2 × symbolic 对照、N 版计划偏离和单体实际用量见 §5.4；API 消费者交叉结果另见报告 `reports/consumer_cross_results_20261125.md`。API 响应数与模型生成 token 不能和单体时延混为同一成本口径。
 
 **补充：v5强弱编译器×外部消费者交叉。** 两个冻结编译器分别接符号消费者和DeepSeek零样本消费者（thinking关闭、最多384输出token）。四切分受约束faithful（%）：
 
@@ -345,16 +345,25 @@ v4 单 seed 上的典型样例：4B tool_ho 执行 faithful 699/700，含证据�
 - 字段匹配取同 type 的第一个未用预测。v5 测试切分上没有同 type 的多条金标，与暴力最优匹配相比，每切分只有 0–2 条记录的 params/scope 判定会翻转（审计抽查 1.7B tool/struct、4B struct）；
 - params 比较未做整/浮点规范化。1158 处 params 不一致中，0 处仅为整/浮差异，1 处行为等价（审计抽查）。
 
-### 5.4 E2 单体对照（同训练配方，单独核算计算成本）
+### 5.4 E2 单体对照（完整公开输入）
 
-TODO(E2)：
-- 历史判定规则保留在原文件中。CI 跨零不构成等价证据，最终报告不能采用该推断；新公共信息完整臂记录为探索性公平性修正。
-- 待补：四个切分加 overall 的配对差与 CI、训练 token 账、推理生成 token 与时延。
-- `src/sub_e2_public_contract.py` 给单体完整公开政策、显示名称、data_class 与任务结构，保留原训练循环并保存原始计划。12,000 条训练样本均在 1280 token 上限内；评测保留完整输入。对照为 seed42 条件下的比较，不能替代三 seed 架构优势检验。
+完整设置、逐切分结果与 N 版分解见 `reports/e2_public_contract_readout_20261125.md`。简表报告受约束 E/I 的 faithful success；差值为单体减编译器+符号规划器，区间按 E/I 任务组 bootstrap 10,000 次，条件于当前 seed42 权重：
 
-informed诊断臂已完成，受约束faithful为88.33/83.00/28.14/5.86%，N faithful为100/77.71/100/96.57%（`outputs/submission/e2_monolithic_informed/metrics.json:splits`）。此臂仍缺policy、工具显示名称、data_class等公开信息，不进入公平架构主表，不以其低分证明架构优势或触发E5。9000步、无长度丢弃；实际训练prompt/target token与独立重放一致。完整公开输入E2尚在接力队列。
+| 切分 | 单体 | 编译器+符号规划器 | 差值 pp [95% CI] |
+|---|---:|---:|---:|
+| dev | 90.67% | 98.50% | −7.83 [−11.17, −4.67] |
+| tpl_ho | 87.29% | 96.71% | −9.43 [−12.86, −6.00] |
+| tool_ho | 38.14% | 91.71% | −53.57 [−59.00, −48.14] |
+| struct_ho | 14.29% | 95.86% | −81.57 [−84.86, −78.14] |
+| 合并 E/I | 56.37% | 95.59% | −39.22 [−41.85, −36.52] |
 
-训练配方的token重放核算已完成（`outputs/submission/audit_20261125/training_token_budget.json`）：三轮编译器序列总量28,732,221，完整单体36,402,576；其中受监督target（含EOS）分别2,670,729和1,056,099。两者都是9000更新，但编译器的序列量为单体0.7893倍、target量为2.5289倍，不能称匹配计算或相同监督量。该重放不表示排队中的单体已经完成训练；也不估算FLOPs、延迟或货币成本。旧`train_seconds`混入zero-shot和trained评测，不用作纯训练时长；单体`elapsed_s`也含评测与分析。历史tokenizer哈希未保存，本次固定当前部署同模型tokenizer并披露限制。
+来源（逐行顺序与表格一致）：`e2_public_contract_independent_audit.json:splits.dev.paired_monolithic_minus_pipeline`、`.splits.test_tpl_ho.paired_monolithic_minus_pipeline`、`.splits.test_tool_ho.paired_monolithic_minus_pipeline`、`.splits.test_struct_ho.paired_monolithic_minus_pipeline`、`.overall_paired_monolithic_minus_pipeline`；各臂点估计分别来自同对象的 `monolithic_faithful_constrained`、`pipeline_faithful_constrained` 字段。
+
+该探索性 seed42 比较支持当前合成设置下分离管线具有更高 faithful execution；它不是架构总体优势检验。两臂均用 Qwen3-1.7B、12,000 行、bf16、LoRA 和 9,000 更新，但单体 target 是计划、编译器 target 是约束。三轮 prompt/target/total token 分别为编译器 26.06M/2.67M/28.73M，单体 35.35M/1.06M/36.40M；故更新数相同不代表 FLOPs 或监督量相同。单体 `elapsed_s=8028.5` 含初始化、训练、评测和分析；不据此主张训练或推理效率。
+
+完整公开输入单体的 planned/safe/faithful 均报告。其 tpl_ho N 版有 83/350 条有效计划偏离默认值（`e2_public_contract_independent_audit.json:splits.test_tpl_ho.none.counts`）；struct_ho 有 8/350 条计划无效（`.splits.test_struct_ho.none.counts`），二者分开计数，不能将所有非-faithful N 结果叫约束抽取误报。评测有 59 条 struct_ho 的提示加金标计划超过 1,280-token 训练上限（`.coverage_note.test_struct_ho_rows_over_max_seq_len`），但评测输入没有被截断；训练集无长度丢弃。独立 CPU 复算对齐所有数据与源哈希、逐条结果和配对区间；没有重新调用模型。
+
+早期 informed 诊断臂缺少公开政策、工具显示名称和 data_class，保留为不完整信息诊断，不进入该主比较（`reports/e2_informed_readout_20261125.md`）。
 
 ### 5.5 部署测量
 
@@ -420,6 +429,5 @@ E3 在 0.6B、bf16、seed42 上依次完成四个 9,000-step 消融；每臂使�
 
 ## 附：本稿 TODO 汇总
 
-- TODO(E2)：摘要；引言 C2 句；相关工作"分解成本之争"行；§5.2 三向对照；§5.4 全节。
 - TODO(v6)：§4.2 v6 结果与主表决策；§7 第 4 条。
 - 非 TODO 标签的待补项：DeepSeek-planner 列；Discussion "Why not a skill?"；§6 冻结迁移行的分母确认。4B 三 seed 的 N 误报与完整记录聚合已补入 §5.1。

@@ -467,3 +467,16 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 
 - 新鲜只读快照：E2 已到8,100/9,000步，82条loss均有限，最新0.0000121；GPU利用率51%、显存21,214/32,760MiB。恢复监督进程PID189623是E2进程PID204883的父进程，公开输入对照结束后将继续v6流程；未启动并行训练。
 - 6项本地协议/公平配对评分测试通过。最终指标尚未生成；等待评测落盘后按样本/任务组配对主表编译器管线，并单独核成本、token与延迟，不把旧informed诊断臂代入主结论。
+
+## 2026-11-25 13:14 CST E2 完成、独立复算与 v6 只读监控
+
+- 完整公开输入 E2 单体已完成。Qwen3-1.7B、bf16、seed42、12,000行、9,000 optimizer steps；同seed编译器+符号规划器四切分 faithful 为 98.50/96.71/91.71/95.86%，单体为 90.67/87.29/38.14/14.29%（dev/tpl_ho/tool_ho/struct_ho）。E/I 配对任务组 bootstrap 10,000次的单体减管线差值为 −7.83/−9.43/−53.57/−81.57pp；CI见 `reports/e2_public_contract_readout_20261125.md`。
+- CPU 独立复算覆盖数据/代码哈希、逐条预测与已存评分、E/I/N 完整组和原有配对 bootstrap，四切分和 overall 均完全复现。无模型重跑、API调用或GPU占用。产物：`outputs/submission/followup_20261125/e2_public_contract_independent_audit_v2.json`；脚本与回归测试：`scripts/submission/audit_e2_public_contract.py`、`tests/test_submission_e2_audit.py`。
+- 更正旧 `none_false_alarm_rate` 解释：tpl_ho 为 83/350 条有效计划偏离默认值；struct_ho 为 8/350 条无效计划、0条有效偏离。该单体不输出约束，不能把此量称为编译器误报。结构留出59条完整评测输入超过训练长度上限，但评测未截断、训练集无样本丢弃。
+- 训练token重放：编译器 prompt/target/total 为26,061,492/2,670,729/28,732,221；单体为35,346,477/1,056,099/36,402,576。两臂更新数相同，但计算量未匹配；单体`elapsed_s=8028.5`包括初始化、训练、评测与分析。不能声称成本或速度优势。
+- 13:07 CST 服务器只读快照：RTX 4080 SUPER 利用率63%、显存17,420/32,760MiB；既有 v6 队列 PID208814/208832 正运行 Qwen3-1.7B seed44，日志到2,200/9,000，当前 loss 有限（8.98e-6），队列状态`running`，已预留预算88,100.617秒。没有其他 GPU 作业被中断或抢占。本轮未干预作业。
+
+## 2026-11-25 13:37 CST v6 seed44 只读检查
+
+- 新鲜只读快照：v6 队列状态`running`，活动作业仍是 Qwen3-1.7B seed44；日志推进到4,400/9,000 optimizer steps，已见的45条 loss 记录均有限，最新为`1.67649e-6`。指标和完成标记尚未生成，当前不能报告 v6 结果。
+- RTX 4080 SUPER 利用率65%、显存17,420/32,760MiB。现有 relay、队列与训练进程均在运行；未新开、停止、重启或抢占 GPU 作业。只读快照：`outputs/submission/followup_20261125/server_snapshot_continuation.json`。

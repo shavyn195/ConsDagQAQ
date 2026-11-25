@@ -1,0 +1,221 @@
+{
+  "revision": "20261125-e2-public-replay-v2",
+  "created_utc": "2026-11-25T05:14:27.383554+00:00",
+  "data_hashes": {
+    "train": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+    "dev": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "test_tpl_ho": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "test_tool_ho": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "test_struct_ho": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3"
+  },
+  "splits": {
+    "dev": {
+      "records": 900,
+      "groups": 300,
+      "constrained_records": 600,
+      "valid_plan_rate": 1.0,
+      "faithful_constrained": 0.9066666666666666,
+      "safe_success_constrained": 0.9466666666666667,
+      "pipeline_faithful_constrained": 0.985,
+      "none": {
+        "n": 300,
+        "counts": {
+          "invalid_plan": 0,
+          "valid_default": 300,
+          "valid_changed": 0
+        },
+        "faithful_rate": 1.0,
+        "invalid_plan_rate": 0.0,
+        "valid_deviation_rate": 0.0,
+        "note": "All rates use all N rows. Plan deviation is not compiler false-alarm rate."
+      },
+      "constrained_failure_counts": {
+        "constraint_violation": 32,
+        "safe_extra_changes": 24
+      },
+      "paired_monolithic_minus_pipeline": {
+        "diff": -0.07833333333333337,
+        "ci95": [
+          -0.11166666666666658,
+          -0.046666666666666634
+        ],
+        "n": 600,
+        "boot": 10000
+      },
+      "replay_matches_saved_outcomes": true
+    },
+    "test_tpl_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constrained_records": 700,
+      "valid_plan_rate": 1.0,
+      "faithful_constrained": 0.8728571428571429,
+      "safe_success_constrained": 0.9285714285714286,
+      "pipeline_faithful_constrained": 0.9671428571428572,
+      "none": {
+        "n": 350,
+        "counts": {
+          "invalid_plan": 0,
+          "valid_default": 267,
+          "valid_changed": 83
+        },
+        "faithful_rate": 0.7628571428571429,
+        "invalid_plan_rate": 0.0,
+        "valid_deviation_rate": 0.23714285714285716,
+        "note": "All rates use all N rows. Plan deviation is not compiler false-alarm rate."
+      },
+      "constrained_failure_counts": {
+        "constraint_violation": 50,
+        "safe_extra_changes": 39
+      },
+      "paired_monolithic_minus_pipeline": {
+        "diff": -0.0942857142857143,
+        "ci95": [
+          -0.12857142857142856,
+          -0.06000000000000005
+        ],
+        "n": 700,
+        "boot": 10000
+      },
+      "replay_matches_saved_outcomes": true
+    },
+    "test_tool_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constrained_records": 700,
+      "valid_plan_rate": 0.819047619047619,
+      "faithful_constrained": 0.38142857142857145,
+      "safe_success_constrained": 0.3914285714285714,
+      "pipeline_faithful_constrained": 0.9171428571428571,
+      "none": {
+        "n": 350,
+        "counts": {
+          "invalid_plan": 0,
+          "valid_default": 350,
+          "valid_changed": 0
+        },
+        "faithful_rate": 1.0,
+        "invalid_plan_rate": 0.0,
+        "valid_deviation_rate": 0.0,
+        "note": "All rates use all N rows. Plan deviation is not compiler false-alarm rate."
+      },
+      "constrained_failure_counts": {
+        "invalid_plan": 190,
+        "constraint_violation": 236,
+        "safe_extra_changes": 7
+      },
+      "paired_monolithic_minus_pipeline": {
+        "diff": -0.5357142857142857,
+        "ci95": [
+          -0.5900000000000001,
+          -0.48142857142857143
+        ],
+        "n": 700,
+        "boot": 10000
+      },
+      "replay_matches_saved_outcomes": true
+    },
+    "test_struct_ho": {
+      "records": 1050,
+      "groups": 350,
+      "constrained_records": 700,
+      "valid_plan_rate": 0.5514285714285714,
+      "faithful_constrained": 0.14285714285714285,
+      "safe_success_constrained": 0.15714285714285714,
+      "pipeline_faithful_constrained": 0.9585714285714285,
+      "none": {
+        "n": 350,
+        "counts": {
+          "invalid_plan": 8,
+          "valid_default": 342,
+          "valid_changed": 0
+        },
+        "faithful_rate": 0.9771428571428571,
+        "invalid_plan_rate": 0.022857142857142857,
+        "valid_deviation_rate": 0.0,
+        "note": "All rates use all N rows. Plan deviation is not compiler false-alarm rate."
+      },
+      "constrained_failure_counts": {
+        "constraint_violation": 127,
+        "invalid_plan": 463,
+        "safe_extra_changes": 10
+      },
+      "paired_monolithic_minus_pipeline": {
+        "diff": -0.8157142857142856,
+        "ci95": [
+          -0.8485714285714285,
+          -0.7814285714285714
+        ],
+        "n": 700,
+        "boot": 10000
+      },
+      "replay_matches_saved_outcomes": true
+    }
+  },
+  "file_hashes": {
+    "metrics.json": "c16f4ff139def3bafbb732a24349b13e7ccb0d9c375596e3c5def4ee73523e81",
+    "public_protocol.json": "37df82ab05dca1c02f3a500557226f0efc8ada7f6bfaa450fc1d992f06739720",
+    "baseline_metrics": "b4e9a6c93aa77ff9f6b36f050806f0f0b30feffa3fd2c28ee63363bf2763c047",
+    "training_token_budget": "90c9aabeff8f9a53eac02c39de64ea2e96fb3893c1da4407d3c3dd526393b672",
+    "audit_script": "cd9629a3b9be0365cb5dbd9097ce539fe97fca9b932eefbd3376c07a17afcfe1",
+    "predictions/dev.jsonl": "8196dc8c868e990b201ab8ab99e6120b941ed3a40a7090d971321dc69d1b388e",
+    "raw_predictions/dev.jsonl": "4887b90de4481b18303ecb991225395301fca8bbe49a982e0541e8f5b54759af",
+    "pipeline/dev.jsonl": "a153ac5318d212517082bb27044d06507dad2ef38217017c42d5b35ac83b5ce5",
+    "predictions/test_tpl_ho.jsonl": "6c15a813883ae366ca4eff1ec7b55aa04615fd3c129230fc7bfe4d495a4af1a3",
+    "raw_predictions/test_tpl_ho.jsonl": "83500e3b168ed0c77f42db1a210c9083f7e097730189b652c32b68da893de258",
+    "pipeline/test_tpl_ho.jsonl": "31ec4284d1926b9ca40463f5803aaa895187385fd464f1a2c64bc52906244674",
+    "predictions/test_tool_ho.jsonl": "4df0783f8fee3ad6246cd79e4c54597fff12b27f9f9ad0560407042ae9f661d5",
+    "raw_predictions/test_tool_ho.jsonl": "3596d01e0490ba5d18c758e3c792d772182d5746954088d74dab58b8d4ab1299",
+    "pipeline/test_tool_ho.jsonl": "4aeeed852a489f81f7ac92386abd735a04ed44fe2ed8c6f57f0147023453ed7b",
+    "predictions/test_struct_ho.jsonl": "892f8816bbfa7503f63bce0eba8cddea86c93565256775cdf9b40261a1c83e68",
+    "raw_predictions/test_struct_ho.jsonl": "3e935b03e35bce0087f5ee40b9cbef83f2c22ae1ee74d4419f35d907f5ab954b",
+    "pipeline/test_struct_ho.jsonl": "c43c6905aa42798b8aa9bf3ba816fc37034cf43611cd65bab1cbf566ded5a224"
+  },
+  "overall_paired_monolithic_minus_pipeline": {
+    "diff": -0.39222222222222225,
+    "ci95": [
+      -0.4185185185185185,
+      -0.36518518518518517
+    ],
+    "n": 2700,
+    "boot": 10000
+  },
+  "cost": {
+    "steps": 9000,
+    "prompt_tokens": 35346477,
+    "completion_tokens": 1056099,
+    "elapsed_s": 8028.5,
+    "evaluation": {
+      "dev": {
+        "gen_tokens": 25815,
+        "elapsed_s": 107.1
+      },
+      "test_tpl_ho": {
+        "gen_tokens": 29892,
+        "elapsed_s": 122.9
+      },
+      "test_tool_ho": {
+        "gen_tokens": 30821,
+        "elapsed_s": 127.6
+      },
+      "test_struct_ho": {
+        "gen_tokens": 47577,
+        "elapsed_s": 229.8
+      }
+    }
+  },
+  "coverage_note": {
+    "max_seq_len": 1280,
+    "test_struct_ho_rows_over_max_seq_len": 59,
+    "eval_context_limit": 131072,
+    "training_examples_dropped": 0,
+    "length_definition": "Prompt plus gold target, not input-only length; evaluation is untruncated."
+  },
+  "limits": [
+    "Exploratory fair-input correction, seed42 only; four pointwise CIs, no multiplicity correction.",
+    "Task-group bootstrap conditions on fixed weights, not the training-seed population.",
+    "Same rows and updates are not matched compute. Targets and source/target token counts differ.",
+    "elapsed_s includes initialization, training and evaluation. No speed, price or FLOP advantage inferred.",
+    "No compiler false-alarm rate is defined for a model that outputs plans rather than constraints."
+  ]
+}
