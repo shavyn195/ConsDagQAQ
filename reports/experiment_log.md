@@ -488,3 +488,12 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 对零样本的配对任务组检查中，两个已完成 seed 的 dev 和 composition_ho 差值、区间下界均为正；正式 H1 仍 pending seed44。两种子在 dev 与 composition_ho 的预测 JSONL 哈希逐字节相同，记录为需解释的稳定输出现象；不视作独立样本证据或无泄漏证明。composition_ho 仅测试已知工具/措辞条件下未见的 privacy+tool_auth 类型对；其 100% 不能外推到结构或真实语义泛化。
 - 语义盲审状态仍为 pending，所有 E/I/N 标签仍为生成器构造。完整中期读数：`reports/v6_interim_1p7b_seed42_43_20261125.md`；复算汇总：`outputs/submission/followup_20261125/v6_1p7b_seed42_43_interim_analysis.json`。
 - 新鲜服务器只读快照：1.7B seed44 到6,600/9,000步，67条loss均有限、最新 `1.19564e-6`；RTX 4080 SUPER 利用率47%、显存17,420/32,760MiB。未干预队列。快照：`outputs/submission/followup_20261125/server_snapshot_20261125_1405.json`。
+
+## 2026-11-25 14:29 CST v6 同分母交叉诊断与训练续查
+
+- 补记14:11日志审计：seed42/43各91条loss全有限、训练9,000步；seed44为6,900步/70条全有限。原件`server_training_log_audit_20261125_1417.json`按内部UTC时间标注，避免文件名导致时间误读。14:17续查到7,400步/75条全有限；14:29:38到8,300/9,000步/84条全有限，GPU56%、17,420/32,760MiB。metrics/completion尚无；未停止、重启、抢占或追加GPU任务。
+- 新增事后诊断`scripts/submission/analyze_v6_seed_diagnostics.py`：只接受冻结验证器认可的完整run，从raw逐题重放评分与执行，复现原metrics并在同一E/I分母计算行为/记录2×2计数和跨seed任务组失败重叠。原训练、评分器、金标、提示和测试集未变；所有数字条件于已完成seed42/43。
+- tool_ho：执行faithful为687/700、698/700，但严格记录正确仅383/700（54.71%）、460/700（65.71%）；执行成功而记录不正确为304/238题。struct_ho对应653/700、699/700 versus 434/700、395/700，交叉错误219/304题。旧overall record exact包含N，不可和E/I指标不加说明地比较。
+- core匹配条件下的scope错误约束次数：tool合计607（budget282/privacy325），struct546（budget359/privacy187）；scope错误记录Jaccard为.760/.771。执行失败任务组交集/并集则1/14、0/37。前者是重复出现的记录问题，后者提示两seed行为失败敏感性；不能将此写成完整优化机制证明。当前符号规划器不消费scope/state/severity/evidence，不能将记录差异夸大成这些字段的执行因果贡献。
+- 本机专项测试11/11通过；服务器独立CPU目录未装pytest，直接调用9个无fixture回归函数均通过。服务器复算JSON与本机逐字节相同（SHA-256 `8ab240c16d339f4730653de7f8fb3f8ccc0fecacaca6d21707be476bd51e0f03`），且10份预测双侧哈希一致。详见`reports/v6_execution_record_diagnostic_20261125.md`及`v6_seed_diagnostic_server_parity.json`。
+- 等seed44完成再做三seed聚合。正式H4仍指定DeepSeek，当前小模型N警报不替代H4；v6 PE与语义有效性仍未解决，不能从高执行率宣称CCF-B已具备完整证据。没有重新开启定时任务。

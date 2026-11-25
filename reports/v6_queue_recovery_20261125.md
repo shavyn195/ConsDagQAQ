@@ -31,3 +31,9 @@ v6 原队列账本因 `ValueError: Release file inventory differs from the local
 13:37 CST 只读检查：队列仍为 `running`，同一 seed44 作业推进到 4,400/9,000；日志中已观察到的 45 条 loss 均有限，最新值 `1.6764878409958328e-06`。RTX 4080 SUPER 利用率 65%、显存 17,420/32,760 MiB。metrics 和 completion 标记尚未出现；本次只查看状态，没有触碰训练或队列。快照记录在 `outputs/submission/followup_20261125/server_snapshot_continuation.json`。
 
 14:06 CST 只读检查：同一作业到 6,600/9,000；67 条已观察 loss 均有限，最新 `1.1956371963606216e-06`。GPU 利用率 47%、显存 17,420/32,760 MiB；队列仍为 `running`，metrics/completion 尚未出现。本轮未干预队列。快照：`outputs/submission/followup_20261125/server_snapshot_20261125_1405.json`。
+
+14:11 CST日志扫描：三个已开始的1.7B作业中，seed42/43均9,000步、各91条loss全部有限；seed44为6,900步、70条loss全部有限。原件`server_training_log_audit_20261125_1417.json`内部时间为06:11 UTC，报告以内部时间为准，不按文件名认定14:17。
+
+14:17 CST新鲜完整日志检查：seed44到7,400/9,000步，75条loss全部有限；GPU64%、17,420/32,760MiB。14:29:38 CST继续到8,300步，84条loss全部有限；GPU56%、显存不变，队列仍running、metrics/completion尚未出现。新快照分别为`outputs/submission/followup_20261125/server_training_audit_20261125_061707Z.json`、`outputs/submission/followup_20261125/server_snapshot_20261125_062938Z.json`。
+
+本轮未修改或干预GPU进程、冻结代码、数据、队列状态和预算。新增诊断只在独立CPU目录执行，复算结果与本机逐字节一致；报告见`reports/v6_execution_record_diagnostic_20261125.md`。

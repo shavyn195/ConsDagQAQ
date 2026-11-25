@@ -1,0 +1,581 @@
+{
+  "analysis": "v6 execution-versus-record diagnostic",
+  "seeds": [
+    42,
+    43
+  ],
+  "data_sha256": {
+    "train": "f909353cb7bbe34e28615cb373b01af00ab57435da42f0af32a0afd1801ce601",
+    "dev": "dded8d43239a88ae656a8b925107abd2749e88c1534654c4885d1cf8208183d5",
+    "test_tpl_ho": "152c232c5df243160ad31fc4d02ed6e2d697ee612199b0ea5d9a2f43943a26c7",
+    "test_tool_ho": "34e70cb0463fcf0b9a06fad431345fefc4752a2dc369bc9f62a4201dfc170543",
+    "test_struct_ho": "b4b7be414d4a37e6825eef5bd842590df5a8a2508e540dd5e929f8b94f9e4ffd",
+    "test_composition_ho": "928109d6c59613d27084a70af34dc8c68645072e2d9830666297f5e20b7f2428"
+  },
+  "diagnostic_source_sha256": "f62b8382dc217ffa46463366724dad528d11d99360e59492669f989fe8f63dac",
+  "verified_runs": {
+    "42": {
+      "fingerprint": "b6287a0c4e000a2f967ab2d77fda8d6810ef8d4f7cd6a7dbd37a2994f43969cb",
+      "artifact_sha256": {
+        "metrics.json": "edbd58eebfddc6f16ba8c2dafc826e33beb4654e70b360a99a97a88c12b5bb43",
+        "trained_predictions/dev.jsonl": "d4f1d59ef6303a86966689fdc36055989c1ca099e13eed295e6d06d98e64373c",
+        "trained_predictions/test_tpl_ho.jsonl": "c926f846404d5d6af75e0cf858108b8ecd4a848bd0895b0dd4289de5815c04aa",
+        "trained_predictions/test_tool_ho.jsonl": "1b75823ca8e23361e57694882738c99f5a15a27860e7d96ec27f904c013ffb4d",
+        "trained_predictions/test_struct_ho.jsonl": "1a3506c216980bd400fbc3485b7e974597fa1db688bbe11824368d47171ddd27",
+        "trained_predictions/test_composition_ho.jsonl": "fe5dd94ba56049cc8d4e8deecf40f38f608fbc3b66d78937f0b5174090c308d9",
+        "zeroshot_predictions/dev.jsonl": "08b7be1a7e94a6e583e15f279da4f7fe6c61af3d6a04e7f5ef0f4d19e314e40a",
+        "zeroshot_predictions/test_tpl_ho.jsonl": "071f22afc4fb1012757290978bbe4b3dbfbd019d99415e4f6df4732409d9dbda",
+        "zeroshot_predictions/test_tool_ho.jsonl": "ebc6bf6baa443347e985799f64f85c8e8aed830a4dd9a31ea4a710b4b9111e4d",
+        "zeroshot_predictions/test_struct_ho.jsonl": "bbe48c46c4cab0ecbc8812c2b5403c8d442d93fc368d26c9d2a6e5858eee8e44",
+        "zeroshot_predictions/test_composition_ho.jsonl": "5766d61c21c2700a1aca8db26f90f7c5785c96188eddb79ab6591736bab51e8d",
+        "token_coverage.json": "021d0d90122a8a8e48a3557c3d57436ad51a3ec2d1680c3c633a4d371f550b0c",
+        "adapter/adapter_config.json": "7a3b094f21f843c3c1d255b5598c24228d276a1dd09d01123c398fb8214fabb2",
+        "adapter/adapter_model.safetensors": "40a3950ce5c24dc09fcc5a8eef94f82d905371de45582567541a827fedc6db75"
+      }
+    },
+    "43": {
+      "fingerprint": "696c116f4a8f4dd348b9d4ea6c902adc46761fc7fdcb7e2e22c1a428e3fa67b8",
+      "artifact_sha256": {
+        "metrics.json": "43b53e7b32acc4c2e97db0f1d82b11a46a8335ccaaee6f46a4a420dd8a450a8d",
+        "trained_predictions/dev.jsonl": "d4f1d59ef6303a86966689fdc36055989c1ca099e13eed295e6d06d98e64373c",
+        "trained_predictions/test_tpl_ho.jsonl": "6424a636e3e680926d3c2deddd3404c3d3fe03afdf16ef8fc5bd1ff25254344e",
+        "trained_predictions/test_tool_ho.jsonl": "77680a0bba6be3f5b6456781be1ce6b4304fb989b04d1b9a904e587891472b95",
+        "trained_predictions/test_struct_ho.jsonl": "59b67e13ad6c1c369ef300b8bf00dfdb01bd1a96696485c33431f266e01cb754",
+        "trained_predictions/test_composition_ho.jsonl": "fe5dd94ba56049cc8d4e8deecf40f38f608fbc3b66d78937f0b5174090c308d9",
+        "token_coverage.json": "021d0d90122a8a8e48a3557c3d57436ad51a3ec2d1680c3c633a4d371f550b0c",
+        "adapter/adapter_config.json": "7a3b094f21f843c3c1d255b5598c24228d276a1dd09d01123c398fb8214fabb2",
+        "adapter/adapter_model.safetensors": "dc216d1eb6c95049afa18ef9d50020c6d2ee817e5895416e591f5644402f0372"
+      }
+    }
+  },
+  "subsets": {
+    "dev": {
+      "per_seed": {
+        "42": {
+          "constrained_records": 600,
+          "faithful_success": 600,
+          "faithful_rate": 1.0,
+          "strict_record_exact": 600,
+          "strict_record_exact_rate": 1.0,
+          "faithful_but_not_strict_exact": 0,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 0,
+          "faithful_and_strict_exact": 600,
+          "strict_constraint_f1": 1.0,
+          "core_constraint_f1": 1.0,
+          "record_exact_match": 1.0,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 300,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {},
+          "core_missing_constraints": 0,
+          "core_extra_constraints": 0
+        },
+        "43": {
+          "constrained_records": 600,
+          "faithful_success": 600,
+          "faithful_rate": 1.0,
+          "strict_record_exact": 600,
+          "strict_record_exact_rate": 1.0,
+          "faithful_but_not_strict_exact": 0,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 0,
+          "faithful_and_strict_exact": 600,
+          "strict_constraint_f1": 1.0,
+          "core_constraint_f1": 1.0,
+          "record_exact_match": 1.0,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 300,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {},
+          "core_missing_constraints": 0,
+          "core_extra_constraints": 0
+        }
+      },
+      "field_mismatch_counts_on_core_matches": {},
+      "field_mismatch_counts_by_type_on_core_matches": {},
+      "record_failure_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "seed_a_failed_groups": 0,
+          "seed_b_failed_groups": 0,
+          "intersection": 0,
+          "union": 0,
+          "jaccard": null
+        }
+      },
+      "field_error_record_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "scope": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "constraint_state": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "severity": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "evidence_span": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          }
+        }
+      }
+    },
+    "test_tpl_ho": {
+      "per_seed": {
+        "42": {
+          "constrained_records": 700,
+          "faithful_success": 665,
+          "faithful_rate": 0.95,
+          "strict_record_exact": 648,
+          "strict_record_exact_rate": 0.9257142857142857,
+          "faithful_but_not_strict_exact": 17,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 35,
+          "faithful_and_strict_exact": 648,
+          "strict_constraint_f1": 0.9528392685274302,
+          "core_constraint_f1": 0.9672762271414822,
+          "record_exact_match": 0.9228571428571428,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 0.9523809523809523,
+          "n_alarm": {
+            "count": 29,
+            "total": 350,
+            "rate": 0.08285714285714285
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "constraint_state": 15
+          },
+          "core_missing_constraints": 23,
+          "core_extra_constraints": 16
+        },
+        "43": {
+          "constrained_records": 700,
+          "faithful_success": 685,
+          "faithful_rate": 0.9785714285714285,
+          "strict_record_exact": 669,
+          "strict_record_exact_rate": 0.9557142857142857,
+          "faithful_but_not_strict_exact": 16,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 15,
+          "faithful_and_strict_exact": 669,
+          "strict_constraint_f1": 0.9532798489853704,
+          "core_constraint_f1": 0.9636621047663992,
+          "record_exact_match": 0.9266666666666666,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 0.9476190476190476,
+          "n_alarm": {
+            "count": 46,
+            "total": 350,
+            "rate": 0.13142857142857142
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "constraint_state": 11
+          },
+          "core_missing_constraints": 7,
+          "core_extra_constraints": 21
+        }
+      },
+      "field_mismatch_counts_on_core_matches": {
+        "constraint_state": 26
+      },
+      "field_mismatch_counts_by_type_on_core_matches": {
+        "budget": {
+          "constraint_state": 12
+        },
+        "deadline": {
+          "constraint_state": 1
+        },
+        "order": {
+          "constraint_state": 3
+        },
+        "privacy": {
+          "constraint_state": 8
+        },
+        "tool_auth": {
+          "constraint_state": 2
+        }
+      },
+      "record_failure_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "seed_a_failed_groups": 28,
+          "seed_b_failed_groups": 10,
+          "intersection": 7,
+          "union": 31,
+          "jaccard": 0.22580645161290322
+        }
+      },
+      "field_error_record_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "scope": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "constraint_state": {
+            "seed_a_error_records": 14,
+            "seed_b_error_records": 10,
+            "intersection": 0,
+            "union": 24,
+            "jaccard": 0.0
+          },
+          "severity": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "evidence_span": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          }
+        }
+      }
+    },
+    "test_tool_ho": {
+      "per_seed": {
+        "42": {
+          "constrained_records": 700,
+          "faithful_success": 687,
+          "faithful_rate": 0.9814285714285714,
+          "strict_record_exact": 383,
+          "strict_record_exact_rate": 0.5471428571428572,
+          "faithful_but_not_strict_exact": 304,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 13,
+          "faithful_and_strict_exact": 383,
+          "strict_constraint_f1": 0.6451292246520874,
+          "core_constraint_f1": 0.9870775347912525,
+          "record_exact_match": 0.6980952380952381,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "scope": 344
+          },
+          "core_missing_constraints": 13,
+          "core_extra_constraints": 13
+        },
+        "43": {
+          "constrained_records": 700,
+          "faithful_success": 698,
+          "faithful_rate": 0.9971428571428571,
+          "strict_record_exact": 460,
+          "strict_record_exact_rate": 0.6571428571428571,
+          "faithful_but_not_strict_exact": 238,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 2,
+          "faithful_and_strict_exact": 460,
+          "strict_constraint_f1": 0.7365805168986084,
+          "core_constraint_f1": 0.9980119284294234,
+          "record_exact_match": 0.7714285714285715,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "scope": 263
+          },
+          "core_missing_constraints": 2,
+          "core_extra_constraints": 2
+        }
+      },
+      "field_mismatch_counts_on_core_matches": {
+        "scope": 607
+      },
+      "field_mismatch_counts_by_type_on_core_matches": {
+        "budget": {
+          "scope": 282
+        },
+        "privacy": {
+          "scope": 325
+        }
+      },
+      "record_failure_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "seed_a_failed_groups": 13,
+          "seed_b_failed_groups": 2,
+          "intersection": 1,
+          "union": 14,
+          "jaccard": 0.07142857142857142
+        }
+      },
+      "field_error_record_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "scope": {
+            "seed_a_error_records": 304,
+            "seed_b_error_records": 238,
+            "intersection": 234,
+            "union": 308,
+            "jaccard": 0.7597402597402597
+          },
+          "constraint_state": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "severity": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "evidence_span": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          }
+        }
+      }
+    },
+    "test_struct_ho": {
+      "per_seed": {
+        "42": {
+          "constrained_records": 700,
+          "faithful_success": 653,
+          "faithful_rate": 0.9328571428571428,
+          "strict_record_exact": 434,
+          "strict_record_exact_rate": 0.62,
+          "faithful_but_not_strict_exact": 219,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 47,
+          "faithful_and_strict_exact": 434,
+          "strict_constraint_f1": 0.7366515837104073,
+          "core_constraint_f1": 0.9556561085972851,
+          "record_exact_match": 0.7466666666666667,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 0.9990476190476191,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "scope": 242
+          },
+          "core_missing_constraints": 50,
+          "core_extra_constraints": 48
+        },
+        "43": {
+          "constrained_records": 700,
+          "faithful_success": 699,
+          "faithful_rate": 0.9985714285714286,
+          "strict_record_exact": 395,
+          "strict_record_exact_rate": 0.5642857142857143,
+          "faithful_but_not_strict_exact": 304,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 1,
+          "faithful_and_strict_exact": 395,
+          "strict_constraint_f1": 0.7025316455696202,
+          "core_constraint_f1": 0.9773960216998192,
+          "record_exact_match": 0.7095238095238096,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {
+            "scope": 304
+          },
+          "core_missing_constraints": 25,
+          "core_extra_constraints": 25
+        }
+      },
+      "field_mismatch_counts_on_core_matches": {
+        "scope": 546
+      },
+      "field_mismatch_counts_by_type_on_core_matches": {
+        "budget": {
+          "scope": 359
+        },
+        "privacy": {
+          "scope": 187
+        }
+      },
+      "record_failure_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "seed_a_failed_groups": 36,
+          "seed_b_failed_groups": 1,
+          "intersection": 0,
+          "union": 37,
+          "jaccard": 0.0
+        }
+      },
+      "field_error_record_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "scope": {
+            "seed_a_error_records": 231,
+            "seed_b_error_records": 288,
+            "intersection": 226,
+            "union": 293,
+            "jaccard": 0.7713310580204779
+          },
+          "constraint_state": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "severity": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "evidence_span": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          }
+        }
+      }
+    },
+    "test_composition_ho": {
+      "per_seed": {
+        "42": {
+          "constrained_records": 700,
+          "faithful_success": 700,
+          "faithful_rate": 1.0,
+          "strict_record_exact": 700,
+          "strict_record_exact_rate": 1.0,
+          "faithful_but_not_strict_exact": 0,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 0,
+          "faithful_and_strict_exact": 700,
+          "strict_constraint_f1": 1.0,
+          "core_constraint_f1": 1.0,
+          "record_exact_match": 1.0,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {},
+          "core_missing_constraints": 0,
+          "core_extra_constraints": 0
+        },
+        "43": {
+          "constrained_records": 700,
+          "faithful_success": 700,
+          "faithful_rate": 1.0,
+          "strict_record_exact": 700,
+          "strict_record_exact_rate": 1.0,
+          "faithful_but_not_strict_exact": 0,
+          "strict_exact_but_not_faithful": 0,
+          "neither": 0,
+          "faithful_and_strict_exact": 700,
+          "strict_constraint_f1": 1.0,
+          "core_constraint_f1": 1.0,
+          "record_exact_match": 1.0,
+          "evidence_exact_rate": 1.0,
+          "state_accuracy": 1.0,
+          "n_alarm": {
+            "count": 0,
+            "total": 350,
+            "rate": 0.0
+          },
+          "field_mismatch_counts_on_core_matches": {},
+          "core_missing_constraints": 0,
+          "core_extra_constraints": 0
+        }
+      },
+      "field_mismatch_counts_on_core_matches": {},
+      "field_mismatch_counts_by_type_on_core_matches": {},
+      "record_failure_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "seed_a_failed_groups": 0,
+          "seed_b_failed_groups": 0,
+          "intersection": 0,
+          "union": 0,
+          "jaccard": null
+        }
+      },
+      "field_error_record_overlap_by_seed_pair": {
+        "42_vs_43": {
+          "scope": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "constraint_state": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "severity": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          },
+          "evidence_span": {
+            "seed_a_error_records": 0,
+            "seed_b_error_records": 0,
+            "intersection": 0,
+            "union": 0,
+            "jaccard": null
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "The planner consumes type and params, but not compiler scope/state/severity/evidence; the diagnostic does not treat these record fields as execution causes.",
+    "Seed-overlap comparisons are conditional on the listed completed seeds and do not estimate seed-population uncertainty.",
+    "All labels remain generator-constructed; this analysis does not establish human recoverability."
+  ]
+}
