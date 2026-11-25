@@ -498,3 +498,12 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 本机专项测试11/11通过；服务器独立CPU目录未装pytest，直接调用9个无fixture回归函数均通过。服务器复算JSON与本机逐字节相同（SHA-256 `8ab240c16d339f4730653de7f8fb3f8ccc0fecacaca6d21707be476bd51e0f03`），且10份预测双侧哈希一致。详见`reports/v6_execution_record_diagnostic_20261125.md`及`v6_seed_diagnostic_server_parity.json`。
 - 等seed44完成再做三seed聚合。正式H4仍指定DeepSeek，当前小模型N警报不替代H4；v6 PE与语义有效性仍未解决，不能从高执行率宣称CCF-B已具备完整证据。没有重新开启定时任务。
 - 同步状态：上述分析及报告已本地提交`5007d4a`，服务器隔离CPU审计目录已同步并复算成功。GitHub推送连续两次失败（连接重置、443端口超时），尚未确认远端分支更新；这是仓库同步阻塞，不影响既有GPU训练。下轮先重试推送，不能将此提交表述为已推送。
+
+## 2026-11-25 16:49 CST v6 1.7B 三种子完成与4B接力
+
+- seed44于15:15:55完成，v6原队列于15:16:10自动启动4B seed42。16:35 GPU98%、30,024MiB；16:47快照确认4B已进入训练700/9,000步，8条loss均有限，GPU95%、17,748MiB。1.7B三seed各91条loss均有限。未干预或额外启动GPU任务；既有30小时累计预算保持不变。
+- seed44全部9项完成产物双侧哈希核验；服务器CPU检查224个适配器张量全部有限。冻结汇总器在服务器独立审计目录核验三run的来源/配方/数据/产物后重算五切分；交叉诊断本机再重放，和服务器结果逐字节一致，SHA-256 `2ec9bad92fe64bd2abf3a6014e6d54d0f8639f9be4b7b567c70db1f449e7368c`。没有把低分seed44当NaN坏权重排除。
+- 1.7B faithful三seed精确计数均值±sample SD（dev/tpl/tool/struct/composition，%）：98.61±2.41 / 93.86±4.68 / 96.67±4.00 / 91.10±10.04 / 97.67±4.04。冻结分析器因先舍入每run输出tool96.66%，与精确计数仅0.01pp显示差异，原分析器未改。seed44为95.83/88.71/92.14/80.14/93.00%；此前把约55%简写为tool/struct表现，已明确纠正为strict F1约56.6/55.2%，不是执行成功率。
+- H1的1.7B部分通过，各seed dev/composition提升区间下界均>0；总体H1等待4B。H3 tool-minus-struct区间[3.95,7.19]pp，按登记规则inconclusive。v6 PE三个完整缓存均missing_pe_config，H2/H4仍pending，不能复用v5数字充当新基线。
+- 同分母E/I严格记录正确率tool/struct三seed均值56.05%/53.43%；tpl N broad alarm分别29/350、46/350、7/350。第三seed还有core/证据差错，不能概括为仅scope错误。更新论文草稿§5.7及`reports/v6_1p7b_three_seed_readout_20261125.md`，v5仍为主表。
+- Git同步复核发现：用户当前main已是`c3c60a3`且远端main同哈希，包含先前`5007d4a/7b6ad1e`，所以这些工作已由main同步。旧本地codex分支顶端`12416dd`另含111.75MiB适配器，推旧分支被GitHub尺寸上限拒绝；没有改写/删除该历史或权重。当前新增工作在从干净main派生的`codex/v6-three-seed-readout`分支，显式暂存本轮报告、统计及元数据，不包含权重。

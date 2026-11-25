@@ -1,0 +1,80 @@
+{
+  "server_utc": "2026-11-25T08:35:23Z",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 98 %, 30024 MiB, 32760 MiB",
+  "processes": [
+    "208814 189623    04:00:56 python          /root/miniconda3/bin/python -u src/run_v6_relay.py --project-root /root/ConsDagV6Frozen --mode wait --budget-hours 30 --python /root/miniconda3/bin/python",
+    "208832 208814    04:00:54 python          /root/miniconda3/bin/python src/run_v6_relay.py --mode queue --project-root /root/ConsDagV6Frozen --gpu 0 --python /root/miniconda3/bin/python --budget-hours 30.0",
+    "213163 208832    01:19:13 timeout         /usr/bin/timeout --signal=KILL 78470.253207s /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed42 --precision bf16 --seed 42 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16",
+    "213164 213163    01:19:13 python          /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed42 --precision bf16 --seed 42 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16"
+  ],
+  "queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 29529.496792894788,
+    "active": {
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "started_at": "2026-11-25T07:16:10.868617+00:00",
+      "reserved_seconds": 78470.50320710521
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 9630.113684781827,
+      "finished_at": "2026-11-25T07:15:55.088293+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "runs": {
+    "Qwen3-1.7B-v6-seed42": {
+      "steps": 9000,
+      "loss_records": 91,
+      "nonfinite": 0,
+      "metrics": true,
+      "completion": true,
+      "tail": [
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9528392685274302, \"state_acc\": 0.9523809523809523}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.6451292246520874, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.7366515837104073, \"state_acc\": 0.9990476190476191}",
+        "{\"subset\": \"test_composition_ho\", \"tag\": \"trained\", \"f1\": 1.0, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1_v6/Qwen3-1.7B-v6-seed42/metrics.json\"}"
+      ]
+    },
+    "Qwen3-1.7B-v6-seed43": {
+      "steps": 9000,
+      "loss_records": 91,
+      "nonfinite": 0,
+      "metrics": true,
+      "completion": true,
+      "tail": [
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.9532798489853704, \"state_acc\": 0.9476190476190476}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.7365805168986084, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.7025316455696202, \"state_acc\": 1.0}",
+        "{\"subset\": \"test_composition_ho\", \"tag\": \"trained\", \"f1\": 1.0, \"state_acc\": 1.0}",
+        "{\"saved\": \"outputs/e1_v6/Qwen3-1.7B-v6-seed43/metrics.json\"}"
+      ]
+    },
+    "Qwen3-1.7B-v6-seed44": {
+      "steps": 9000,
+      "loss_records": 91,
+      "nonfinite": 0,
+      "metrics": true,
+      "completion": true,
+      "tail": [
+        "{\"subset\": \"test_tpl_ho\", \"tag\": \"trained\", \"f1\": 0.8932882665379044, \"state_acc\": 0.9485714285714286}",
+        "{\"subset\": \"test_tool_ho\", \"tag\": \"trained\", \"f1\": 0.5659809332664325, \"state_acc\": 0.9809523809523809}",
+        "{\"subset\": \"test_struct_ho\", \"tag\": \"trained\", \"f1\": 0.5515345854328905, \"state_acc\": 0.9714285714285714}",
+        "{\"subset\": \"test_composition_ho\", \"tag\": \"trained\", \"f1\": 0.9510439164866811, \"state_acc\": 0.9666666666666667}",
+        "{\"saved\": \"outputs/e1_v6/Qwen3-1.7B-v6-seed44/metrics.json\"}"
+      ]
+    }
+  }
+}
