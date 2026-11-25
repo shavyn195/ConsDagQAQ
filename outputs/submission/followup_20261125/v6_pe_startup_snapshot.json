@@ -1,0 +1,211 @@
+{
+  "utc": "2026-11-25T09:38:05.055325+00:00",
+  "queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 29529.496792894788,
+    "active": {
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "started_at": "2026-11-25T07:16:10.868617+00:00",
+      "reserved_seconds": 78470.50320710521
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 9630.113684781827,
+      "finished_at": "2026-11-25T07:15:55.088293+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "latest_loss": {
+    "optimizer_step": 3600,
+    "loss": 4.5299498196982313e-07,
+    "elapsed_s": 8446.4
+  },
+  "loss_record_count": 37,
+  "nonfinite_count": 0,
+  "gpu": "90 %, 21480 MiB, 32760 MiB",
+  "processes": [
+    {
+      "pid": 208814,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/run_v6_relay.py",
+        "--project-root",
+        "/root/ConsDagV6Frozen",
+        "--mode",
+        "wait",
+        "--budget-hours",
+        "30",
+        "--python",
+        "/root/miniconda3/bin/python",
+        ""
+      ]
+    },
+    {
+      "pid": 208832,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "src/run_v6_relay.py",
+        "--mode",
+        "queue",
+        "--project-root",
+        "/root/ConsDagV6Frozen",
+        "--gpu",
+        "0",
+        "--python",
+        "/root/miniconda3/bin/python",
+        "--budget-hours",
+        "30.0",
+        ""
+      ]
+    },
+    {
+      "pid": 213163,
+      "args": [
+        "/usr/bin/timeout",
+        "--signal=KILL",
+        "78470.253207s",
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/run_e1_v6.py",
+        "--model",
+        "models/Qwen3-4B",
+        "--data-dir",
+        "data/processed_v6",
+        "--out-dir",
+        "outputs/e1_v6/Qwen3-4B-v6-seed42",
+        "--precision",
+        "bf16",
+        "--seed",
+        "42",
+        "--epochs",
+        "3",
+        "--learning-rate",
+        "0.0002",
+        "--lora-rank",
+        "16",
+        "--lora-alpha",
+        "32",
+        "--gradient-accumulation-steps",
+        "4",
+        "--max-seq-len",
+        "1280",
+        "--max-new-tokens",
+        "384",
+        "--eval-batch-size",
+        "16",
+        ""
+      ]
+    },
+    {
+      "pid": 213164,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/run_e1_v6.py",
+        "--model",
+        "models/Qwen3-4B",
+        "--data-dir",
+        "data/processed_v6",
+        "--out-dir",
+        "outputs/e1_v6/Qwen3-4B-v6-seed42",
+        "--precision",
+        "bf16",
+        "--seed",
+        "42",
+        "--epochs",
+        "3",
+        "--learning-rate",
+        "0.0002",
+        "--lora-rank",
+        "16",
+        "--lora-alpha",
+        "32",
+        "--gradient-accumulation-steps",
+        "4",
+        "--max-seq-len",
+        "1280",
+        "--max-new-tokens",
+        "384",
+        "--eval-batch-size",
+        "16",
+        ""
+      ]
+    },
+    {
+      "pid": 216853,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "/root/consdag_audits/v6_pe_20261125/supervise_v6_pe.py",
+        "--project-root",
+        "/root/ConsDagV6Frozen",
+        "--audit-dir",
+        "/root/consdag_audits/v6_pe_20261125",
+        ""
+      ]
+    },
+    {
+      "pid": 216854,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/run_pe_v6.py",
+        "--model",
+        "deepseek-v4-pro-0813",
+        "--style",
+        "few",
+        "--workers",
+        "8",
+        ""
+      ]
+    }
+  ],
+  "pe_state": {
+    "schema_version": 1,
+    "status": "running",
+    "pid": 216853,
+    "project_root": "/root/ConsDagV6Frozen",
+    "credential_source": "inherited environment",
+    "gpu_use": false,
+    "arms": [
+      {
+        "model": "deepseek-v4-pro-0813",
+        "style": "few",
+        "status": "running",
+        "workers": 8,
+        "started_at": "2026-11-25T09:37:21.053485+00:00"
+      }
+    ],
+    "updated_at": "2026-11-25T09:37:21.053508+00:00"
+  },
+  "pe_cache": {
+    "deepseek-v4-pro-0813-few": {
+      "completion_marker": false,
+      "files": {
+        "dev.jsonl": {
+          "records": 56,
+          "unique_ids": 56,
+          "models": [
+            "deepseek-v4-pro-0813"
+          ]
+        }
+      }
+    }
+  },
+  "pe_logs": {
+    "supervisor.log": "{\"schema_version\": 1, \"status\": \"running\", \"pid\": 216853, \"project_root\": \"/root/ConsDagV6Frozen\", \"credential_source\": \"inherited environment\", \"gpu_use\": false, \"arms\": [], \"updated_at\": \"2026-11-25T09:37:20.847259+00:00\"}\n{\"schema_version\": 1, \"status\": \"running\", \"pid\": 216853, \"project_root\": \"/root/ConsDagV6Frozen\", \"credential_source\": \"inherited environment\", \"gpu_use\": false, \"arms\": [{\"model\": \"deepseek-v4-pro-0813\", \"style\": \"few\", \"status\": \"running\", \"workers\": 8, \"started_at\": \"2026-11-25T09:37:21.053485+00:00\"}], \"updated_at\": \"2026-11-25T09:37:21.053508+00:00\"}\n",
+    "deepseek-v4-pro-0813-few.log": ""
+  }
+}

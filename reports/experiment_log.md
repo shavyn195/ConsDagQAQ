@@ -508,3 +508,11 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 同分母E/I严格记录正确率tool/struct三seed均值56.05%/53.43%；tpl N broad alarm分别29/350、46/350、7/350。第三seed还有core/证据差错，不能概括为仅scope错误。更新论文草稿§5.7及`reports/v6_1p7b_three_seed_readout_20261125.md`，v5仍为主表。
 - Git同步复核发现：用户当前main已是`c3c60a3`且远端main同哈希，包含先前`5007d4a/7b6ad1e`，所以这些工作已由main同步。旧本地codex分支顶端`12416dd`另含111.75MiB适配器，推旧分支被GitHub尺寸上限拒绝；没有改写/删除该历史或权重。当前新增工作在从干净main派生的`codex/v6-three-seed-readout`分支，显式暂存本轮报告、统计及元数据，不包含权重。
 - 16:54后续确认：4B seed42到1,100/9,000步，12条loss均有限，GPU72%、21,480/32,760MiB，原队列正常运行。审计报告与统计提交`cf76198`及审计换行保护提交`2f3d740`已成功推送至`origin/codex/v6-three-seed-readout`。新产物在Git中保留原始字节；原适配器文件和旧分支未删除。
+
+## 2026-11-25 17:38 CST v6 强PE正式启动，与GPU队列并行
+
+- 服务器155项冻结文件校验通过；两次train接入检查确认官方接口可调用指定DeepSeek/qwen-max模型，temperature=0、max_tokens=384，DeepSeek关闭thinking。接入样本不是评测结果。
+- 在独立目录部署并双侧核验`scripts/submission/supervise_v6_pe.py`，17:37:20启动PID216853，按原登记顺序接力DeepSeek十示例→qwen-max零示例→qwen-max十示例，每臂5,100条。仅CPU/API，8并发、CPU低优先级、数学库线程1、GPU不可见；未改冻结runner、数据、提示或评分器。凭据仅通过SSH标准输入与子进程环境传递，不进入代码/配置/实验日志。
+- 17:38:05实际核验：DeepSeek进程PID216854，dev缓存56条唯一样本ID、返回模型名一致，尚未全量完成。缓存指纹/响应哈希/完成清单沿用冻结实现；任一臂失败停止后续、保留成功响应。三臂成功后自动运行冻结分析器；不能把部分缓存当完整PE或复用v5替代v6。
+- 同时4B seed42推进到3,600/9,000步，37条已记录loss全有限，GPU90%、21,480/32,760MiB。原GPU队列及30小时累计预算未改，继续4B其余seed再接0.6B。未恢复定时任务，未抢占其他作业。
+- 启动报告`reports/v6_pe_launch_20261125.md`；预检、train接入、启动和实际进度在`outputs/submission/followup_20261125/v6_pe_*.json`。H2/H4仍等待完整PE；本轮未产生新的正式性能结论。

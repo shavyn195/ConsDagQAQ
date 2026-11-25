@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-25T09:32:48.842758+00:00",
+  "release_files_verified": 155,
+  "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  "canary_split": "train",
+  "canary_sample_id": "train-00000-E",
+  "maximum_canary_requests": 2,
+  "canaries": [
+    {
+      "model": "deepseek-v4-pro-0813",
+      "style": "few",
+      "request_fingerprint": "05ff0d1a06fd0fd777d2cfe2a5d1a3b4d23cf2737b2aee18948c62f27811e1b2",
+      "started_at": "2026-11-25T09:32:49.731661+00:00",
+      "status": "ok",
+      "returned_model": "deepseek-v4-pro-0813",
+      "finish": "stop",
+      "usage": {
+        "completion_tokens": 121,
+        "prompt_tokens": 8674,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 8795
+      },
+      "strict_parse_ok": true,
+      "response_sha256": "3d0b31a5a70fedb157061faa6a4bdc54a88d5e42bc3d776aa256b7621a528583",
+      "elapsed_seconds": 4.365
+    },
+    {
+      "model": "qwen-max",
+      "style": "zero",
+      "request_fingerprint": "5c892ecf5d38cdd9dd46f6db9c3f57ca8a8d425c18edba1d0971855948d8a84f",
+      "started_at": "2026-11-25T09:32:54.097217+00:00",
+      "status": "ok",
+      "returned_model": "qwen-max",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 694,
+        "completion_tokens": 159,
+        "total_tokens": 853,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "strict_parse_ok": true,
+      "response_sha256": "25bffbd81931b2e059c944425245f04d7c6dcf3a51e34665cbf72a56e8c80f3f",
+      "elapsed_seconds": 3.713
+    }
+  ],
+  "evaluation_requests_per_arm": 5100,
+  "status": "ready_for_registered_queue"
+}
