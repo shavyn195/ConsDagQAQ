@@ -27,6 +27,38 @@ def optimal_next_actions(plans: Sequence[Sequence[str]], prefix: Sequence[str]) 
     return frozenset(result)
 
 
+def teacher_prefixes(plans: Sequence[Sequence[str]], representative: Sequence[str], *,
+                     coverage: str = "representative") -> list[tuple[tuple[str, ...], str | None]]:
+    """Shared input states and a valid deterministic single target per state.
+
+    All-optimal coverage is a baseline for non-deterministic oracle learning,
+    not a new objective. Preserve the representative next action wherever
+    that representative supports the prefix. Else use the lexicographically
+    first complete accepted continuation. Never splice independent marginals.
+    """
+    accepted = sorted({tuple(plan) for plan in plans})
+    representative = tuple(representative)
+    if representative not in accepted:
+        raise ValueError("Representative must be a complete accepted plan")
+    if coverage == "representative":
+        prefixes = [representative[:k] for k in range(len(representative) + 1)]
+    elif coverage == "all_optimal":
+        prefixes = sorted({plan[:k] for plan in accepted for k in range(len(plan) + 1)},
+                          key=lambda prefix: (len(prefix), prefix))
+    else:
+        raise ValueError(f"Unknown training prefix coverage: {coverage}")
+    result = []
+    for prefix in prefixes:
+        k = len(prefix)
+        if k <= len(representative) and representative[:k] == prefix:
+            target_plan = representative
+        else:
+            target_plan = next(plan for plan in accepted if len(plan) >= k and plan[:k] == prefix)
+        action = target_plan[k] if k < len(target_plan) else None
+        result.append((prefix, action))
+    return result
+
+
 def positive_set_nll(logits: torch.Tensor, allowed: torch.Tensor, positive: torch.Tensor) -> torch.Tensor:
     """Mean -log probability mass on the accepted next-action set.
 

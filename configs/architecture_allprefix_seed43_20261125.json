@@ -1,0 +1,109 @@
+{
+  "status": "registered_before_shared_prefix_control",
+  "purpose": "Repair common training-state coverage before interpreting set loss; this is an established oracle-learning baseline, not a novelty claim",
+  "baseline_version": "v6 frozen; new development pilot only",
+  "encoder": "Qwen3-0.6B frozen object encoder; promote to 1.7B only after pilot",
+  "max_model_size_default": "4B",
+  "seed_pilot": 43,
+  "seeds_confirmation": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    {
+      "name": "dense_single",
+      "attention": "dense",
+      "target": "one_optimal_plan"
+    },
+    {
+      "name": "dense_set",
+      "attention": "dense",
+      "target": "prefix_conditional_optimal_action_set"
+    }
+  ],
+  "fixed": {
+    "public_inputs": [
+      "tool_specs",
+      "workflow_structure",
+      "constraint_record",
+      "execution_prefix"
+    ],
+    "exclude_inputs": [
+      "witness_plan",
+      "gold_future_actions",
+      "attribution_labels",
+      "gold_constraints_in_e2e"
+    ],
+    "raw_query_in_oracle_record_pilot": false,
+    "head_width": 128,
+    "head_layers": 2,
+    "head_attention_heads": 4,
+    "learning_rate": 0.0003,
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "adam_epsilon": 1e-08,
+    "weight_decay": 0.01,
+    "learning_rate_schedule": "constant",
+    "max_grad_norm": 1.0,
+    "finite_checks": [
+      "loss",
+      "gradients",
+      "parameters"
+    ],
+    "precision_head": "fp32",
+    "batch_size_prefixes": 64,
+    "max_updates_per_arm": 1000,
+    "prefix_sampling": "Uniform over unique prefixes of all accepted optimal plans, same flat list and sampled indices for both arms",
+    "deployment_masks": "identical structural masks; no gold or optimal-continuation masks",
+    "decoding": "greedy with fixed maximum calls",
+    "early_stopping": false,
+    "prefix_coverage": "all_optimal"
+  },
+  "selection": {
+    "train_groups": "fixed hash selection of original train groups; no test groups",
+    "development": "original dev plus separate train-derived rename/number/redundancy/no-op probes",
+    "final_test": "new frozen confirmation set after mechanism selection; existing v6 test is retrospective"
+  },
+  "budget": {
+    "pilot_arm_runs": 2,
+    "maximum_additional_gpu_hours": 0,
+    "maximum_additional_api_calls": 0,
+    "cpu_development_fallback": "server only, 2 threads, nice 15, timeout 3600s; no GPU visibility",
+    "cpu_training_admission": "100-step projection <=2400 seconds total for this two-arm run; 3600-second hard timeout",
+    "calibration": "time 100 updates and count encoder/label-generation costs before admission",
+    "must_not_preempt_existing_queue": true
+  },
+  "gates": {
+    "success_diagnostic": "Report each seed, paired development intervals and N failure; direction must agree across seeds to call a consistent development effect",
+    "stop": "No model-size scaling or additional graph/CLIP arms from this diagnostic alone, even if positive; independently specified numerical interventions and strong controls required",
+    "failure": "Any nonfinite value, accepted action masked, data/hash mismatch or timeout stops that run without overwriting artifacts"
+  },
+  "implementation_state": {
+    "solver_supervision_audit": "implemented and run on server",
+    "prefix_conditional_set_targets": "implemented and tested",
+    "set_probability_loss": "implemented and tested",
+    "graph_policy_and_full_trainer": "implemented; server analytic tests and tiny four-arm smoke required before development pilot",
+    "graph_form": "directed relation-biased graph Transformer; dense control has identical inputs, biases and parameter count",
+    "prefix_sampling_detail": "All accepted full-plan branches; deterministic valid single continuation preserves representative targets where supported",
+    "language_features": "frozen last-hidden-state mean pooling of public tool descriptions and predicate-type descriptions; arguments in numeric/binding channels",
+    "implemented_development_probes": [
+      "original subsets including N",
+      "identifier rename plus catalog reorder with descriptions preserved",
+      "duplicate constraints"
+    ],
+    "pending_development_probes": [
+      "numeric threshold changes",
+      "resource-coupled OOD"
+    ]
+  },
+  "followup_decision": {
+    "trigger": "Opposite effects in seeds42/43 and observed alternative-prefix coverage gap",
+    "change": "Shared prefix distribution only; same model, optimizer, updates, labels, source train/dev and probes",
+    "source_baseline_commit": "1135889",
+    "expected": "Coverage may help set loss especially on order constraints; result can be negative. Not a new-method test."
+  }
+}

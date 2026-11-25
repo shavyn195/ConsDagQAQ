@@ -6,7 +6,36 @@ import unittest
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from constraint_set_learning import optimal_next_actions, positive_set_nll
+from constraint_set_learning import optimal_next_actions, positive_set_nll, teacher_prefixes
+
+
+def test_all_optimal_prefixes_cover_branches_without_hybrids():
+    # Hand-enumerated language {a,x; b,y}; both endings and EOS must be taught.
+    plans = [["a", "x"], ["b", "y"]]
+    rows = teacher_prefixes(plans, plans[0], coverage="all_optimal")
+    assert rows == [((), "a"), (("a",), "x"), (("b",), "y"),
+                    (("a", "x"), None), (("b", "y"), None)]
+    assert all(a in optimal_next_actions(plans, p) for p, a in rows)
+    assert (("a", "y"), None) not in rows
+
+
+def test_prefix_coverage_keeps_representative_targets_and_removes_duplicates():
+    # On the shared root, prefer b because b,y was the designated representative.
+    plans = [["a", "x"], ["b", "y"], ["a", "x"]]
+    representative = plans[1]
+    old = teacher_prefixes(plans, representative)
+    assert old == [((), "b"), (("b",), "y"), (("b", "y"), None)]
+    broad = dict(teacher_prefixes(plans, representative, coverage="all_optimal"))
+    assert len(broad) == 5
+    assert all(broad[p] == a for p, a in old)
+
+
+def test_prefix_coverage_handles_eos_and_rejects_wrong_representative():
+    # Empty and one-action plans are both legal in this toy language.
+    rows = teacher_prefixes([[], ["a"]], [], coverage="all_optimal")
+    assert rows == [((), None), (("a",), None)]
+    with unittest.TestCase().assertRaises(ValueError):
+        teacher_prefixes([["a"]], ["b"], coverage="all_optimal")
 
 
 def test_prefix_support_cannot_mix_two_correct_plans():

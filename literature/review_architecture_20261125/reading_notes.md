@@ -38,3 +38,13 @@
 同作者2012年COLING的[A Dynamic Oracle for Arc-Eager Dependency Parsing](https://aclanthology.org/C12-1059/)已核对元数据，959–976页，本轮未另读全文。最初候选D12-1025题名不符已排除，记录在`acl_candidate_mismatch.json`，不将该错误入口用作引文。
 
 三篇补充PDF保存在本目录pdf/，全文缓存不提交Git；其他论文沿用用户已有literature/extracted目录。参考条目只标arXiv，未把预印本写成已录用论文。全部URL和摘要元数据可在本目录JSON中复核。
+
+## CCTU外部证据可用性核验
+
+2026-11-25追加阅读本地v2全文§3.1–3.3与Limitations，行338–625、1544–1586。其200题来自FTRL，覆盖多轮工具调用、资源次数、条件先后关系、并行调用和输出约束；论文声称每条题及验证代码经两位标注者连续审核。该流程是原论文的报告，不是我们的独立复审。其检查器可拒绝违规调用并反馈，因此结果包含运行时纠正；不能与一次性DAG产出混为同一协议。
+
+[数据卡](https://huggingface.co/datasets/Junjie-Ye/CCTU)与API已核对，公开且CC-BY-4.0，固定revision `13188b75ab4988c1b054fa78a2f34f1b475fb7ef`。已检查第一行结构，包含messages、工具描述、工具实现代码、未解子查询、answer、constraints_list；未执行下载内容。留存`cctu_data_source.json`与`cctu_schema_probe.json`。第一行已被用于适配器检查，后续不得称为未观察确认题。
+
+适用边界：条件先后关系可作约束绑定的候选外部切片；调用次数不是人民币预算，轮数不是分钟deadline，不能强行重命名为同一约束。若覆盖不足要扩大输出schema并重新登记任务，或只报告预先确定的重叠子集和覆盖率。不能筛选模型容易成功的题。保留原验证反馈行为，另报第一次违规与最终恢复。隐私约束不由此得到外部验证。
+
+数据卡BibTeX缺少PDF v2列出的Zelin Li，正式引文沿用已核验论文元数据，不照抄数据卡。仍需取得官方执行器并核对工具依赖及评测协议，当前没有完成外部模型评测。

@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import torch
 
 from constraint_pointer import ConstraintPointer, collate, policy_input
-from constraint_set_learning import optimal_next_actions, positive_set_nll
+from constraint_set_learning import optimal_next_actions, positive_set_nll, teacher_prefixes
 import trust_env as env
 
 
@@ -75,16 +75,14 @@ def intervention(example: dict, name: str) -> dict:
     return result
 
 
-def make_prefixes(data: list[dict]) -> list[tuple]:
+def make_prefixes(data: list[dict], *, coverage: str = "representative") -> list[tuple]:
     result = []
     for ex in data:
-        # Both losses see exactly the same representative-plan prefixes.
-        # Alternative correct plans change targets, not the sampled inputs.
-        plan = ex["plan"]
-        for k in range(len(plan) + 1):
-            item = policy_input(ex["task"], ex["constraints"], plan[:k])
-            accepted = optimal_next_actions(ex["optimal_plans"], plan[:k])
-            single = plan[k] if k < len(plan) else None
+        # Both losses share the same state distribution, including alternative
+        # accepted branches when all_optimal coverage is explicitly selected.
+        for prefix, single in teacher_prefixes(ex["optimal_plans"], ex["plan"], coverage=coverage):
+            item = policy_input(ex["task"], ex["constraints"], list(prefix))
+            accepted = optimal_next_actions(ex["optimal_plans"], prefix)
             positives = [item.actions.index(a) for a in accepted]
             if any(not item.allowed[i] for i in positives):
                 raise AssertionError("Structure mask excluded a teacher-accepted action")
@@ -222,13 +220,21 @@ def main() -> None:
     dev = examples(args.lattice_dir / "dev_lattice.jsonl", args.dev_groups)
     if {x["group_id"] for x in train} & {x["group_id"] for x in dev}:
         raise ValueError("Training/development group leakage")
-    prefixes = make_prefixes(train)
+    coverage = fixed.get("prefix_coverage", "representative")
+    prefixes = make_prefixes(train, coverage=coverage)
     make_prefixes(dev)  # Reachability audit only; no dev target is optimized.
     development = {name: [intervention(ex, name) for ex in dev]
                    for name in ("original", "rename_reorder", "duplicate")}
     texts = sorted({text for ex in train + dev for text in policy_input(ex["task"], ex["constraints"], []).texts})
     embeddings = object_embeddings(texts, args.model, args.out)
+    prefix_manifest = [(ex["group_id"], ex["subset"], prefix, single,
+                        sorted(optimal_next_actions(ex["optimal_plans"], prefix),
+                               key=lambda action: (action is None, action or "")))
+                       for ex in train for prefix, single in
+                       teacher_prefixes(ex["optimal_plans"], ex["plan"], coverage=coverage)]
     write_json(args.out / "inputs.json", {"train_examples": len(train), "train_prefixes": len(prefixes),
+               "prefix_coverage": coverage, "sampling": "uniform over shared flattened unique prefixes",
+               "prefix_manifest_sha256": hashlib.sha256(json.dumps(prefix_manifest).encode()).hexdigest(),
                "dev_examples": len(dev), "dev_groups": len({x["group_id"] for x in dev}),
                "structural_reachability": "all accepted plans checked on selected train and dev",
                "scope": "oracle predicate records; no raw query, compiler, API, or test split",
