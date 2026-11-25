@@ -480,3 +480,11 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 
 - 新鲜只读快照：v6 队列状态`running`，活动作业仍是 Qwen3-1.7B seed44；日志推进到4,400/9,000 optimizer steps，已见的45条 loss 记录均有限，最新为`1.67649e-6`。指标和完成标记尚未生成，当前不能报告 v6 结果。
 - RTX 4080 SUPER 利用率65%、显存17,420/32,760MiB。现有 relay、队列与训练进程均在运行；未新开、停止、重启或抢占 GPU 作业。只读快照：`outputs/submission/followup_20261125/server_snapshot_continuation.json`。
+
+## 2026-11-25 14:06 CST v6 1.7B 两种子中期复算与 seed44 监控
+
+- seed42/43 的 v6 metrics、provenance、completion、适配器、token coverage 与全部逐题预测从服务器只读回收。按 completion 逐项验证了 seed42 的14项和 seed43 的9项产物哈希，并核验155项冻结源码/数据哈希；v6 独立分析器在 CPU 上重放并复算了全部五个测试切分。没有重训、API调用或额外GPU作业。
+- 中期 faithful 均值（仅两种子）：dev 100.00%、tpl_ho 96.43%、tool_ho 98.93%、struct_ho 96.58%、composition_ho 100.00%。tool/struct 的严格记录 F1 为64.51–73.66%、record exact 为69.81–77.14%，明显低于执行轴。模板留出 N 合同警报为8.29%/13.14%，超预登记5%门槛；警报来自非空预测和错误 query_state，不是解析失败。
+- 对零样本的配对任务组检查中，两个已完成 seed 的 dev 和 composition_ho 差值、区间下界均为正；正式 H1 仍 pending seed44。两种子在 dev 与 composition_ho 的预测 JSONL 哈希逐字节相同，记录为需解释的稳定输出现象；不视作独立样本证据或无泄漏证明。composition_ho 仅测试已知工具/措辞条件下未见的 privacy+tool_auth 类型对；其 100% 不能外推到结构或真实语义泛化。
+- 语义盲审状态仍为 pending，所有 E/I/N 标签仍为生成器构造。完整中期读数：`reports/v6_interim_1p7b_seed42_43_20261125.md`；复算汇总：`outputs/submission/followup_20261125/v6_1p7b_seed42_43_interim_analysis.json`。
+- 新鲜服务器只读快照：1.7B seed44 到6,600/9,000步，67条loss均有限、最新 `1.19564e-6`；RTX 4080 SUPER 利用率47%、显存17,420/32,760MiB。未干预队列。快照：`outputs/submission/followup_20261125/server_snapshot_20261125_1405.json`。

@@ -29,3 +29,5 @@ v6 原队列账本因 `ValueError: Release file inventory differs from the local
 13:26 CST 再次只读检查：同一 v6 seed44 进程继续运行，日志到 3,600/9,000，最近记录 loss `3.1263273285730975e-06`；RTX 4080 SUPER 利用率 67%、显存 17,420/32,760 MiB，queue 状态仍为 `running`。本次检查没有启动、停止或抢占作业。
 
 13:37 CST 只读检查：队列仍为 `running`，同一 seed44 作业推进到 4,400/9,000；日志中已观察到的 45 条 loss 均有限，最新值 `1.6764878409958328e-06`。RTX 4080 SUPER 利用率 65%、显存 17,420/32,760 MiB。metrics 和 completion 标记尚未出现；本次只查看状态，没有触碰训练或队列。快照记录在 `outputs/submission/followup_20261125/server_snapshot_continuation.json`。
+
+14:06 CST 只读检查：同一作业到 6,600/9,000；67 条已观察 loss 均有限，最新 `1.1956371963606216e-06`。GPU 利用率 47%、显存 17,420/32,760 MiB；队列仍为 `running`，metrics/completion 尚未出现。本轮未干预队列。快照：`outputs/submission/followup_20261125/server_snapshot_20261125_1405.json`。
