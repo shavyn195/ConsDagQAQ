@@ -535,3 +535,9 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 小模型同样存在编码差异，但seed44解析失败仍为14/15/20/29/35（E/I，共113/3,400），没有被等价诊断豁免。当前不能凭小模型更高strict分数主张语义超过强模型；报告与草稿方法/§5.7已补充这一限制。
 - 本机专项12项通过；服务器直接执行7项分类/谓词真值表检查通过。20组复算完全匹配，双侧产物哈希通过；`v6_pe_record_error_comparison.json` SHA `2eb575da...c3fdd4`，`v6_pe_predicate_equivalence.json` SHA `5d492ab8...6eae93`。完整报告`reports/v6_predicate_equivalence_audit_20261125.md`。后续不根据测试差错改金标、挑seed或调提示，保留GPU原接力。
 - 19:43:22续查4B trained dev与test_tpl_ho已完成，GPU55%、21,480/32,760MiB；完整metrics/completion仍未落盘，队列running。对应`v6_status_post_equivalence.json`；不报告局部指标为正式4B结果。
+
+## 2026-11-25 19:46 CST 审计同步与稿件一致性修正
+
+- 13个审计文件提交为`2e2eb00`，已推送到`origin/codex/v6-three-seed-readout`；暂存文件凭据模式和大小检查通过，审计JSON与源码在Git中的原始字节与工作区一致。未提交适配器权重。
+- 19:46:29服务器实查：4B seed42完成9,000步，91条loss均有限，trained dev/tpl两个切分完成，整体metrics/completion尚未生成；GPU59%、21,480/32,760MiB。原队列继续，1.7B三seed均已完成。状态存入`v6_status_followthrough.json`。qwen-max账户欠费状态未变，本轮未重试API。
+- 对草稿引言、C3贡献和局限作一致性修正：隐式参考记录符合度不能等同语义可恢复性；witness和模型一致率不能代替独立语义验证；C3明确区分参考记录、冻结谓词和执行行为。保留全部原始数值；v5等价编码比例仍待独立计数，不套用v6结果。更新已完成的DeepSeek-planner与v6章节状态，避免把已完成项继续列为缺失。

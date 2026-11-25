@@ -1,0 +1,87 @@
+{
+  "utc": "2026-11-25T11:46:29.720591+00:00",
+  "queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 29529.496792894788,
+    "active": {
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "started_at": "2026-11-25T07:16:10.868617+00:00",
+      "reserved_seconds": 78470.50320710521
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 9630.113684781827,
+      "finished_at": "2026-11-25T07:15:55.088293+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "gpu": "59 %, 21480 MiB, 32760 MiB",
+  "active_run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-4B-v6-seed42",
+  "latest_loss": {
+    "optimizer_step": 9000,
+    "loss": 2.384185471271394e-08,
+    "elapsed_s": 14359.9
+  },
+  "loss_record_count": 91,
+  "nonfinite_count": 0,
+  "trained_split_progress": [
+    "dev",
+    "test_tpl_ho"
+  ],
+  "metrics_exists": false,
+  "completion_exists": false,
+  "all_runs": {
+    "Qwen3-1.7B-v6-seed42": {
+      "complete": true,
+      "metrics": true,
+      "trained_splits": [
+        "dev",
+        "test_tpl_ho",
+        "test_tool_ho",
+        "test_struct_ho",
+        "test_composition_ho"
+      ]
+    },
+    "Qwen3-1.7B-v6-seed43": {
+      "complete": true,
+      "metrics": true,
+      "trained_splits": [
+        "dev",
+        "test_tpl_ho",
+        "test_tool_ho",
+        "test_struct_ho",
+        "test_composition_ho"
+      ]
+    },
+    "Qwen3-1.7B-v6-seed44": {
+      "complete": true,
+      "metrics": true,
+      "trained_splits": [
+        "dev",
+        "test_tpl_ho",
+        "test_tool_ho",
+        "test_struct_ho",
+        "test_composition_ho"
+      ]
+    },
+    "Qwen3-4B-v6-seed42": {
+      "complete": false,
+      "metrics": false,
+      "trained_splits": [
+        "dev",
+        "test_tpl_ho"
+      ]
+    }
+  }
+}

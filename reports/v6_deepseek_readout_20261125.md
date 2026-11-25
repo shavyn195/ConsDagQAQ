@@ -34,7 +34,7 @@
 
 以下两列使用同一E/I分母。严格记录正确包括顶层query_state及type/state/severity/scope/params多重集；不含description/confidence/evidence。不是含N的overall record_exact，也不是strict F1。
 
-| 切分 | DeepSeek faithful成功数 | 严格记录正确数 | 严格记录正确率 | 执行成功但记录错误 |
+| 切分 | DeepSeek faithful成功数 | 严格参考记录匹配数 | 严格参考记录匹配率 | 执行成功但参考记录不匹配 |
 |---|---:|---:|---:|---:|
 | dev | 588/600 | 527/600 | 87.83% | 61 |
 | tpl_ho | 697/700 | 641/700 | 91.57% | 56 |
