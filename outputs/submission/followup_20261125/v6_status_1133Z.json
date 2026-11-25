@@ -1,0 +1,94 @@
+{
+  "utc": "2026-11-25T11:33:12.488439+00:00",
+  "gpu": "59 %, 21480 MiB, 32760 MiB",
+  "queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 29529.496792894788,
+    "active": {
+      "model": "Qwen3-4B",
+      "seed": 42,
+      "started_at": "2026-11-25T07:16:10.868617+00:00",
+      "reserved_seconds": 78470.50320710521
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 44,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 9630.113684781827,
+      "finished_at": "2026-11-25T07:15:55.088293+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "latest_loss": {
+    "optimizer_step": 9000,
+    "loss": 2.384185471271394e-08,
+    "elapsed_s": 14359.9
+  },
+  "loss_records": 91,
+  "nonfinite_count": 0,
+  "log_tail": [
+    "{\"optimizer_step\": 8500, \"loss\": 2.2718845116287412e-07, \"elapsed_s\": 13795.1}",
+    "{\"optimizer_step\": 8600, \"loss\": 3.576278473360617e-08, \"elapsed_s\": 13914.3}",
+    "{\"optimizer_step\": 8700, \"loss\": 1.963445726005375e-07, \"elapsed_s\": 14033.0}",
+    "{\"optimizer_step\": 8800, \"loss\": 1.26754130747031e-07, \"elapsed_s\": 14146.3}",
+    "{\"optimizer_step\": 8900, \"loss\": 2.0957737945082044e-07, \"elapsed_s\": 14253.4}",
+    "{\"optimizer_step\": 9000, \"loss\": 2.384185471271394e-08, \"elapsed_s\": 14359.9}",
+    "{\"subset\": \"dev\", \"tag\": \"trained\", \"f1\": 1.0, \"state_acc\": 1.0}"
+  ],
+  "runs": {
+    "Qwen3-1.7B-v6-seed42": {
+      "completion": true,
+      "metrics": true,
+      "trained_predictions": {
+        "dev.jsonl": 694418,
+        "test_tpl_ho.jsonl": 837744,
+        "test_tool_ho.jsonl": 831303,
+        "test_struct_ho.jsonl": 891396,
+        "test_composition_ho.jsonl": 1173128
+      }
+    },
+    "Qwen3-1.7B-v6-seed43": {
+      "completion": true,
+      "metrics": true,
+      "trained_predictions": {
+        "dev.jsonl": 694418,
+        "test_tpl_ho.jsonl": 861210,
+        "test_tool_ho.jsonl": 824463,
+        "test_struct_ho.jsonl": 897569,
+        "test_composition_ho.jsonl": 1173128
+      }
+    },
+    "Qwen3-1.7B-v6-seed44": {
+      "completion": true,
+      "metrics": true,
+      "trained_predictions": {
+        "dev.jsonl": 714573,
+        "test_tpl_ho.jsonl": 854455,
+        "test_tool_ho.jsonl": 816152,
+        "test_struct_ho.jsonl": 907151,
+        "test_composition_ho.jsonl": 1213364
+      }
+    },
+    "Qwen3-4B-v6-seed42": {
+      "completion": false,
+      "metrics": false,
+      "trained_predictions": {
+        "dev.jsonl": 694418
+      }
+    }
+  },
+  "processes": [
+    "208814   25124 /root/miniconda3/bin/python -u src/run_v6_relay.py --project-root /root/ConsDagV6Frozen --mode wait --budget-hours 30 --python /root/miniconda3/bin/python",
+    "208832   25122 /root/miniconda3/bin/python src/run_v6_relay.py --mode queue --project-root /root/ConsDagV6Frozen --gpu 0 --python /root/miniconda3/bin/python --budget-hours 30.0",
+    "213163   15421 /usr/bin/timeout --signal=KILL 78470.253207s /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed42 --precision bf16 --seed 42 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16",
+    "213164   15421 /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed42 --precision bf16 --seed 42 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16"
+  ]
+}

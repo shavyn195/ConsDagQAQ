@@ -99,6 +99,8 @@ schema 见 `src/run_e1.py` 的 `SCHEMA_HINT_V4`；每种类型的参数与 scope
 
 **字段消费方分层（设计声明）。** 规划器与检查器的归一化函数只读 `type` 与 `params`（`src/trust_env.py:33-61`，`normalize_constraint`）。`state`、`severity`、`scope`、`evidence_span` 只进入记录轴评分。因此，scope 或 evidence 错误不改变执行结果是**构造性质**，不是实验发现。§5.3 中"scope 错误对执行不可见"的表述以此为前提。
 
+这个映射还具有多对一性质：当前tool_auth与order在角色相同时都变成相同的条件前置谓词。因此，core键不匹配也不必然表示执行约束不同。严格记录指标衡量参考编码规范符合度，不等于自然语言语义正确率；v6的事后等价复核见§5.7。该限制同样适用于使用这个执行器的旧版结果，不能把v6比例直接套给v5。
+
 ### 3.3 最小改动规划器
 
 符号规划器 `plan()`（`src/trust_env.py:164-190`）的做法：
@@ -408,6 +410,8 @@ v6 DeepSeek十示例的5,100条完整缓存通过逐请求及产物核验后，1
 来源与分母见`reports/v6_1p7b_three_seed_readout_20261125.md`及`outputs/submission/followup_20261125/{main_3seed,result_3seed}.json`。冻结汇总器先舍入每run后计算得到tool均值96.66%，逐条计数为96.6667%；仅有0.01pp显示差异，冻结分析器未修改。
 
 强模型也呈现两轴差异：DeepSeek在composition_ho上faithful为699/700（99.86%），严格记录正确仅527/700（75.29%），有172条执行成功但记录错误。它的整体N报警各切分均低于5%，但tool_ho的permission子型为9/150=6%，超过预登记H4门槛；子型可重叠，不能加总。该门槛失败是模型诊断，不能当成金标语义已被证伪。完整读数见`reports/v6_deepseek_readout_20261125.md`，冻结分析与整数复核分别为`outputs/submission/followup_20261125/main_after_deepseek.json`及`v6_pe_deepseek_integer_audit.json`。记录差异仍须结合未被消费字段这一实现限制解释，不构成这些字段的执行必要性证明。
+
+进一步的事后复核表明，上述172条全部具有与金标相同的冻结检查谓词：120条tool_auth被写成同角色order，52条为state/query_state与参考不一致。五切分一共494条DeepSeek行为成功但记录不匹配，其中488条（98.79%）属于谓词等价；这一比例仅描述本次v6数据。故“记录错误”在此只指参考契约不一致，不能当成语义理解失败或执行安全缺陷。DeepSeek在组合切分的谓词一致率为699/700，1.7B三seed均值为97.29%，不能据其较低strict分数声称小模型理解更好。新增诊断保留原主指标与H1–H4不变，只用于解释；规范符合度、谓词一致性与单计划执行成功必须区分。来源：`reports/v6_predicate_equivalence_audit_20261125.md`及`outputs/submission/followup_20261125/v6_pe_predicate_equivalence.json`。
 
 ## 6 负结果：奖励侧信用分配未检出稳定效应
 
