@@ -56,3 +56,17 @@
 选取TRACER、MMA-SafetyBench、Penny Wise Pixel Foolish、DWIM和PriMobiBench，仅核对摘要；前四篇获取全文与章节目录，不称已经精读方法。未运行其代码。API结果中首次公开日期晚于2026-11-25的条目剔除，不用未来条目建立新颖性结论。
 
 用户随后澄清唯一目标是CCF-B。此次快速筛查用于避免凭“多模态”标签盲目转向，不构成启动新训练、求职优化或机器人任务的决定。
+
+## 第五阶段：Qwen局部图修复设想核验
+
+2026-11-25，在本地全文库搜索 `graph repair|plan repair|local repair|局部修复|图编辑|minimal.*repair|minimum.*repair`，找到2609.19654；复核既有Plan-and-Patch的Related Work，沿其参考文献定位Atomic Task Graph，再读取ATG原文§4.1/§4.3/§7。不是依据二手论文断言ATG的方法。
+
+两次arXiv API `id_list`查询分别为`2610.10786,2609.19654`和`2607.01942`。返回元数据已保存到`outputs/architecture_20261125/local_graph_repair_source_check.json`；固定版本与全文分别匹配。ATG HTML获取成功，原文缓存不随本次提交上传。阅读笔记为`local_graph_repair_notes.md`，研究裁决为`reports/local_graph_repair_review_20261125.md`。
+
+| 条目 | 核验状态 | 裁决/更正 |
+|---|---|---|
+| arxiv260701942 | arXiv-only；作者、题名、日期及指定方法段已核验 | ATG已覆盖影响区域定位、冻结其余图、替换/插入/改依赖及接口保持；不能声称Qwen提出的通用流程无人做过。 |
+| arxiv260919654 | arXiv-only；元数据与本地全文核验 | 重规划/修复/编辑、稳定性与成本组合已有直接比较；不另行宣称本项目首次定义这些维度。 |
+| arxiv261010786 | 既有条目复核 | 局部补全近邻保持成立；本次补上其引用的更直接图修复工作ATG。 |
+
+当前结论没有证明任何更窄机制不存在先例，也没有把十例手工成功认定为方法成立。服务器访问本次受认证阻塞；文献核验不等于新GPU实验已启动。

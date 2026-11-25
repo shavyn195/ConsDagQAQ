@@ -1,0 +1,42 @@
+{
+  "checked_utc": "2026-11-25T15:43:35.067767+00:00",
+  "source": "https://export.arxiv.org/api/query?id_list=2610.10786%2C2609.19654&max_results=2",
+  "entries": [
+    {
+      "id": "http://arxiv.org/abs/2609.19654v1",
+      "title": "Replan, Repair, or Edit? A Unified Empirical Evaluation of Travel Agents for Itinerary Revision under Resource Disruptions",
+      "summary": "Travel-planning agents generate itineraries that may become infeasible after acceptance because of flight cancellations, hotel unavailability, or attraction closures. Revising these itineraries involves full replanning, classical plan repair, and LLM-based travel-agent revision, whose differing task formulations and evaluation protocols hinder comparison. We conduct a systematic empirical study using two TREK-derived benchmark sets: 500 single-disruption cases, including feasible and infeasible instances, and 200 feasible simultaneous compound-disruption cases. We compare LLM-Z3 full replanning, IPyHOPPER hierarchical repair, and an iTIMO local-revision adapter across effectiveness, plan stability, and computational cost. LLM-Z3 with Gemini achieved the highest observed compound-disruption success. IPyHOPPER nearly matched that configuration's single-disruption overall success, while preserving substantially more of the accepted itinerary on successful repairs. Successful hierarchical and local repairs made fewer edits and retained more accepted commitments than full replanning. Computational profiles differed: IPyHOPPER used no LLM inference, the evaluated LLM-Z3 adapter used compact one-call inference, and the iTIMO adapter consumed substantially more tokens. The study provides practical guidelines for balancing feasibility recovery, commitment preservation, and computational cost within evaluated settings.",
+      "published": "2026-09-17T03:50:39Z",
+      "updated": "2026-09-17T03:50:39Z"
+    },
+    {
+      "id": "http://arxiv.org/abs/2610.10786v1",
+      "title": "Plan-and-Patch: Diffusion Language Models for Agentic Planning",
+      "summary": "Planning is increasingly important for long-horizon agents, where successful execution requires coordinating subgoals, tool use, and intermediate outcomes over many steps. Yet assumptions made during planning may be invalidated by the environment, tools may return unexpected results, or actions may fail. Effective agents must therefore not only generate plans, but also revise them. Such revisions often affect only part of a plan, leaving the preceding and subsequent structure intact. Rather than regenerate the entire plan and risk unnecessary changes, repair can regenerate the affected region conditioned on the preserved prefix and suffix. We introduce Plan-and-Patch, a plan-and-act framework in which a diffusion language model (dLLM) generates a structured, program-like plan through parallel unmasking and repairs it by filling in selected regions while keeping the surrounding steps fixed. We compare DreamReasoner-8B and Qwen3-8B as diffusion and autoregressive (AR) planners. On Natural Plan without task-specific training, diffusion (53.7%) achieves nearly twice the plan repair success rate of AR (27.0%). After task-specific training on agentic benchmarks, ALFWorld and TextCraft, the planners achieve similar observed success in plan generation, while diffusion reduces mean plan-generation latency by 39-46% relative to AR. Our results show that Plan-and-Patch provides a framework for faster plan generation and effective plan repair in long-horizon agents.",
+      "published": "2026-10-07T18:45:45Z",
+      "updated": "2026-10-07T18:45:45Z"
+    },
+    {
+      "id": "http://arxiv.org/abs/2607.01942v1",
+      "title": "Atomic Task Graph: A Unified Framework for Agentic Planning and Execution",
+      "summary": "LLM-based agents have shown strong potential for solving complex multi-step tasks, yet existing performance improvements often rely on either scaling to larger backbone models or task-specific fine-tuning. The former incurs substantial computational costs, while the latter typically generalizes poorly across different tasks. Although prompt-based control is training-free and broadly applicable, existing methods still leave input-output dependencies between subtasks implicit in textual trajectories, making verified intermediate results difficult to reuse. To address these limitations, we propose Atomic Task Graph (ATG), a unified control framework for planning and execution. Specifically, ATG maintains an explicit graph to expose dependencies and support reuse. During planning, it recursively decomposes a high-level task into subtasks, forming a sequence of directed acyclic graphs (DAGs) whose evolution can be traced. During execution, the dependencies exposed by ATG allow independent branches to be executed in parallel, thereby improving execution efficiency. When failures are detected, ATG leverages the graph evolution history to localize the error source and repair only the affected region, preserving validated regions unchanged. Experiments show that ATG consistently outperforms strong baselines in success rate and execution efficiency across three interactive benchmarks using only 7B-8B backbones.",
+      "published": "2026-07-02T09:34:20Z",
+      "updated": "2026-07-02T09:34:20Z",
+      "authors": [
+        "Yue Zhang",
+        "Sihan Chen",
+        "Ziwen Huang",
+        "Hanyun Cui",
+        "Kangye Ji",
+        "Zhi Wang"
+      ],
+      "html_status": 200
+    }
+  ],
+  "source_sha256": {
+    "literature/review_grpo_alignment_20261125/2607.01942v1.html": "a4b89058c018bb1474a633ead0299b5d9f0550e20d94ab76ef429a52031f1e6b",
+    "literature/review_grpo_alignment_20261125/2610.10786v1.html": "283a9e43c6ecd801944f784d7e79fc2d01e81d46ed7a17a3d1f11f5a523eaeb7",
+    "literature/extracted/library/07_idea_menu_20261125/2609.19654_ReplanRepairEdit/2609.19654_ReplanRepairEdit_fulltext.txt": "61f5df64caba5c3ff083782638b8b169e4ac57b30aaec80e0e2dce8d3008bf88"
+  },
+  "scope": "Targeted prior-art audit; no new numerical experiment, no live server status available in this check."
+}
