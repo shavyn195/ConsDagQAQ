@@ -37,3 +37,9 @@ v6 原队列账本因 `ValueError: Release file inventory differs from the local
 14:17 CST新鲜完整日志检查：seed44到7,400/9,000步，75条loss全部有限；GPU64%、17,420/32,760MiB。14:29:38 CST继续到8,300步，84条loss全部有限；GPU56%、显存不变，队列仍running、metrics/completion尚未出现。新快照分别为`outputs/submission/followup_20261125/server_training_audit_20261125_061707Z.json`、`outputs/submission/followup_20261125/server_snapshot_20261125_062938Z.json`。
 
 本轮未修改或干预GPU进程、冻结代码、数据、队列状态和预算。新增诊断只在独立CPU目录执行，复算结果与本机逐字节一致；报告见`reports/v6_execution_record_diagnostic_20261125.md`。
+
+## 16:54 CST：1.7B 三seed完成，4B自动接力
+
+seed44于15:15:55完成全部评测及完成标记，15:16:10原relay自动接入4B seed42。16:54:11只读快照：4B训练1,100/9,000步，12条已记录loss全部有限，GPU72%、21,480/32,760MiB，queue仍running。没有修改队列顺序、预算或运行进程。当前已完成run累计29,529.497秒；78,470.503秒为活动作业启动时的预算预留，实时剩余量须扣活动消耗。
+
+1.7B三seed的冻结分析与跨机诊断已完成，见`reports/v6_1p7b_three_seed_readout_20261125.md`。seed44全224个适配器张量有限；没有证据将其较低泛化结果按NaN失败剔除。最新快照：`outputs/submission/followup_20261125/v6_4b_relay_final_check.json`。

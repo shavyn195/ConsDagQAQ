@@ -507,3 +507,4 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - H1的1.7B部分通过，各seed dev/composition提升区间下界均>0；总体H1等待4B。H3 tool-minus-struct区间[3.95,7.19]pp，按登记规则inconclusive。v6 PE三个完整缓存均missing_pe_config，H2/H4仍pending，不能复用v5数字充当新基线。
 - 同分母E/I严格记录正确率tool/struct三seed均值56.05%/53.43%；tpl N broad alarm分别29/350、46/350、7/350。第三seed还有core/证据差错，不能概括为仅scope错误。更新论文草稿§5.7及`reports/v6_1p7b_three_seed_readout_20261125.md`，v5仍为主表。
 - Git同步复核发现：用户当前main已是`c3c60a3`且远端main同哈希，包含先前`5007d4a/7b6ad1e`，所以这些工作已由main同步。旧本地codex分支顶端`12416dd`另含111.75MiB适配器，推旧分支被GitHub尺寸上限拒绝；没有改写/删除该历史或权重。当前新增工作在从干净main派生的`codex/v6-three-seed-readout`分支，显式暂存本轮报告、统计及元数据，不包含权重。
+- 16:54后续确认：4B seed42到1,100/9,000步，12条loss均有限，GPU72%、21,480/32,760MiB，原队列正常运行。审计报告与统计提交`cf76198`及审计换行保护提交`2f3d740`已成功推送至`origin/codex/v6-three-seed-readout`。新产物在Git中保留原始字节；原适配器文件和旧分支未删除。
