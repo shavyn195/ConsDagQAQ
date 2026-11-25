@@ -1,5 +1,5 @@
 {
-  "status": "specified_not_launched",
+  "status": "implemented_cpu_smoke_pending",
   "purpose": "Separate supervision-set effects from graph architecture effects before scaling",
   "baseline_version": "v6 frozen; new development pilot only",
   "encoder": "Qwen3-0.6B frozen object encoder; promote to 1.7B only after pilot",
@@ -21,6 +21,10 @@
     "head_attention_heads": 4,
     "learning_rate": 0.0003,
     "optimizer": "AdamW",
+    "betas": [0.9, 0.999],
+    "adam_epsilon": 1e-8,
+    "weight_decay": 0.01,
+    "learning_rate_schedule": "constant",
     "max_grad_norm": 1.0,
     "finite_checks": ["loss", "gradients", "parameters"],
     "precision_head": "fp32",
@@ -40,6 +44,8 @@
     "pilot_arm_runs": 4,
     "maximum_additional_gpu_hours": 4,
     "maximum_additional_api_calls": 0,
+    "cpu_development_fallback": "server only, 2 threads, nice 15, timeout 3600s; no GPU visibility",
+    "cpu_training_admission": "100-step measured projection <=2400s total for four arms",
     "calibration": "time 100 updates and count encoder/label-generation costs before admission",
     "must_not_preempt_existing_queue": true
   },
@@ -53,6 +59,11 @@
     "solver_supervision_audit": "implemented and run on server",
     "prefix_conditional_set_targets": "implemented and tested",
     "set_probability_loss": "implemented and tested",
-    "graph_policy_and_full_trainer": "not yet implemented; config is not a runnable training claim"
+    "graph_policy_and_full_trainer": "implemented; server analytic tests and tiny four-arm smoke required before development pilot",
+    "graph_form": "directed relation-biased graph Transformer; dense control has identical inputs, biases and parameter count",
+    "prefix_sampling_detail": "representative-plan prefixes for both losses; set targets include every teacher-accepted next action for that prefix",
+    "language_features": "frozen last-hidden-state mean pooling of public tool descriptions and predicate-type descriptions; arguments in numeric/binding channels",
+    "implemented_development_probes": ["original subsets including N", "identifier rename plus catalog reorder with descriptions preserved", "duplicate constraints"],
+    "pending_development_probes": ["numeric threshold changes", "resource-coupled OOD"]
   }
 }

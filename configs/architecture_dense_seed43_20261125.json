@@ -1,0 +1,109 @@
+{
+  "status": "seed43_dense_followup_after_development_pilot",
+  "purpose": "Separate supervision-set effects from graph architecture effects before scaling",
+  "baseline_version": "v6 frozen; new development pilot only",
+  "encoder": "Qwen3-0.6B frozen object encoder; promote to 1.7B only after pilot",
+  "max_model_size_default": "4B",
+  "seed_pilot": 43,
+  "seeds_confirmation": [
+    42,
+    43,
+    44
+  ],
+  "arms": [
+    {
+      "name": "dense_single",
+      "attention": "dense",
+      "target": "one_optimal_plan"
+    },
+    {
+      "name": "dense_set",
+      "attention": "dense",
+      "target": "prefix_conditional_optimal_action_set"
+    }
+  ],
+  "fixed": {
+    "public_inputs": [
+      "tool_specs",
+      "workflow_structure",
+      "constraint_record",
+      "execution_prefix"
+    ],
+    "exclude_inputs": [
+      "witness_plan",
+      "gold_future_actions",
+      "attribution_labels",
+      "gold_constraints_in_e2e"
+    ],
+    "raw_query_in_oracle_record_pilot": false,
+    "head_width": 128,
+    "head_layers": 2,
+    "head_attention_heads": 4,
+    "learning_rate": 0.0003,
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "adam_epsilon": 1e-08,
+    "weight_decay": 0.01,
+    "learning_rate_schedule": "constant",
+    "max_grad_norm": 1.0,
+    "finite_checks": [
+      "loss",
+      "gradients",
+      "parameters"
+    ],
+    "precision_head": "fp32",
+    "batch_size_prefixes": 64,
+    "max_updates_per_arm": 1000,
+    "prefix_sampling": "same train-derived optimal prefixes for all arms",
+    "deployment_masks": "identical structural masks; no gold or optimal-continuation masks",
+    "decoding": "greedy with fixed maximum calls",
+    "early_stopping": false
+  },
+  "selection": {
+    "train_groups": "fixed hash selection of original train groups; no test groups",
+    "development": "original dev plus separate train-derived rename/number/redundancy/no-op probes",
+    "final_test": "new frozen confirmation set after mechanism selection; existing v6 test is retrospective"
+  },
+  "budget": {
+    "pilot_arm_runs": 2,
+    "maximum_additional_gpu_hours": 4,
+    "maximum_additional_api_calls": 0,
+    "cpu_development_fallback": "server only, 2 threads, nice 15, timeout 3600s; no GPU visibility",
+    "cpu_training_admission": "100-step measured projection <=2400s total for four arms",
+    "calibration": "time 100 updates and count encoder/label-generation costs before admission",
+    "must_not_preempt_existing_queue": true
+  },
+  "gates": {
+    "continue_to_three_seeds": "dev challenge faithful +5pp vs strongest same-budget baseline; N deviation <= baseline+1pp; no mask exclusion of accepted plans",
+    "stop_scaling": "gain <3pp or fails entirely after parameter/name interventions; retain negative result",
+    "graph_retention": "incremental gain over dense_set, not merely over dense_single",
+    "contrastive_branch": "only after set-target baseline; feasibility-checked multi-positive targets; same candidates and full backward through both scores"
+  },
+  "implementation_state": {
+    "solver_supervision_audit": "implemented and run on server",
+    "prefix_conditional_set_targets": "implemented and tested",
+    "set_probability_loss": "implemented and tested",
+    "graph_policy_and_full_trainer": "implemented; server analytic tests and tiny four-arm smoke required before development pilot",
+    "graph_form": "directed relation-biased graph Transformer; dense control has identical inputs, biases and parameter count",
+    "prefix_sampling_detail": "representative-plan prefixes for both losses; set targets include every teacher-accepted next action for that prefix",
+    "language_features": "frozen last-hidden-state mean pooling of public tool descriptions and predicate-type descriptions; arguments in numeric/binding channels",
+    "implemented_development_probes": [
+      "original subsets including N",
+      "identifier rename plus catalog reorder with descriptions preserved",
+      "duplicate constraints"
+    ],
+    "pending_development_probes": [
+      "numeric threshold changes",
+      "resource-coupled OOD"
+    ]
+  },
+  "followup_decision": {
+    "base_config_sha256": "b46ef4cfc74ec84873e7c116a9564d6624956b5978422c3a87ca3e7f5c00612d",
+    "trigger": "seed42 dense_set minus dense_single +4.180064pp on original dev, in predeclared 3-5pp followup band",
+    "change": "seed only for the same two dense arms; no source data, loss, input, optimizer, or epoch changes",
+    "graph_scaling": "stopped after no independent gain in initial pilot"
+  }
+}

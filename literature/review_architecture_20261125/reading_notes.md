@@ -27,6 +27,14 @@
 
 ## 检索覆盖及修正
 
-共记录9个探索性检索式；并非系统性穷尽。新找到的GNNVerifier和CONSTRAINER显著缩小了可主张空间。对比学习的负结果不能跨任务推出“对比学习必然没用”；同样，别的论文有GNN不意味着所有具体图机制都没有创新。当前判断是需要机制与单变量对照，不是宣布某个模块被禁止。
+共记录11个探索性检索式；并非系统性穷尽。新找到的GNNVerifier和CONSTRAINER显著缩小了可主张空间。对比学习的负结果不能跨任务推出“对比学习必然没用”；同样，别的论文有GNN不意味着所有具体图机制都没有创新。当前判断是需要机制与单变量对照，不是宣布某个模块被禁止。
+
+## 追加核查：集合目标不是独立的新颖点
+
+[Goldberg与Nivre，Training Deterministic Parsers with Non-Deterministic Oracles，TACL 2013](https://aclanthology.org/Q13-1033/)，403–414页，DOI 10.1162/tacl_a_00237。原始出版元数据及PDF哈希见`nondeterministic_oracle_source.json`；已下载并阅读§3–4，提取文本311–445、530–584行明确给出状态下的正确转移集合，以及偏离金标路径后的最优转移与探索训练。
+
+这篇的对象是依存句法分析，不是工具工作流；仍然直接阻止我们把“前缀条件多个正确动作”和“为偏离路径求恢复oracle”当作全新思想。当前集合损失的具体概率形式与该文训练算法不是同一实现，但从这种差异不能直接推出新的方法贡献。集合监督应定位为强基线／构件；候选新意需要落在请求参数与图决策的干预机制并获得实证，而非改任务名称。
+
+同作者2012年COLING的[A Dynamic Oracle for Arc-Eager Dependency Parsing](https://aclanthology.org/C12-1059/)已核对元数据，959–976页，本轮未另读全文。最初候选D12-1025题名不符已排除，记录在`acl_candidate_mismatch.json`，不将该错误入口用作引文。
 
 三篇补充PDF保存在本目录pdf/，全文缓存不提交Git；其他论文沿用用户已有literature/extracted目录。参考条目只标arXiv，未把预印本写成已录用论文。全部URL和摘要元数据可在本目录JSON中复核。

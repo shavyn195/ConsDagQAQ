@@ -1,0 +1,137 @@
+{
+  "scope": "oracle-record train/dev pilot, one seed; numerical/combination challenges still pending",
+  "analysis_source_sha256": "084fd3a636055920433e346f6fbd71757d32b4ef61652723ae1c1a19b65bc891",
+  "elapsed_seconds": 277.7302393820137,
+  "summary": {
+    "dense_single": {
+      "parameters": 563920,
+      "train_seconds": 57.910559638403356,
+      "development": {
+        "original": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8731019522776573,
+          "faithful_constrained": 0.8118971061093248,
+          "safe": 0.93058568329718,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.279826464208243,
+          "seconds": 16.347825969569385
+        },
+        "rename_reorder": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8731019522776573,
+          "faithful_constrained": 0.8118971061093248,
+          "safe": 0.93058568329718,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.279826464208243,
+          "seconds": 16.553043242543936
+        },
+        "duplicate": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8503253796095445,
+          "faithful_constrained": 0.7781350482315113,
+          "safe": 0.9490238611713666,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.268980477223427,
+          "seconds": 16.7802224336192
+        }
+      }
+    },
+    "dense_set": {
+      "parameters": 563920,
+      "train_seconds": 70.00647599250078,
+      "development": {
+        "original": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8394793926247288,
+          "faithful_constrained": 0.7620578778135049,
+          "safe": 0.96529284164859,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.238611713665944,
+          "seconds": 16.481079700402915
+        },
+        "rename_reorder": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8394793926247288,
+          "faithful_constrained": 0.7620578778135049,
+          "safe": 0.96529284164859,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.238611713665944,
+          "seconds": 16.39061640948057
+        },
+        "duplicate": {
+          "rows": 922,
+          "groups": 300,
+          "faithful": 0.8655097613882863,
+          "faithful_constrained": 0.8006430868167203,
+          "safe": 0.9642082429501084,
+          "completion": 1.0,
+          "n_failure_or_deviation": 0.0,
+          "mean_calls": 6.214750542299349,
+          "seconds": 17.050385137088597
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "original": {
+      "dense_set_minus_dense_single": {
+        "constrained_rows": 622,
+        "groups": 300,
+        "difference_pp": -4.983922829581994,
+        "wins": 46,
+        "losses": 77,
+        "descriptive_group_bootstrap_95ci_pp": [
+          -9.15066830590757,
+          -0.6642339741844118
+        ],
+        "limitation": "Exploratory development comparison, one training seed; not a seed-population CI or multiplicity-adjusted claim."
+      }
+    },
+    "rename_reorder": {
+      "dense_set_minus_dense_single": {
+        "constrained_rows": 622,
+        "groups": 300,
+        "difference_pp": -4.983922829581994,
+        "wins": 46,
+        "losses": 77,
+        "descriptive_group_bootstrap_95ci_pp": [
+          -9.15066830590757,
+          -0.6642339741844118
+        ],
+        "limitation": "Exploratory development comparison, one training seed; not a seed-population CI or multiplicity-adjusted claim."
+      }
+    },
+    "duplicate": {
+      "dense_set_minus_dense_single": {
+        "constrained_rows": 622,
+        "groups": 300,
+        "difference_pp": 2.2508038585209005,
+        "wins": 64,
+        "losses": 50,
+        "descriptive_group_bootstrap_95ci_pp": [
+          -1.5975720897845498,
+          6.07487288015226
+        ],
+        "limitation": "Exploratory development comparison, one training seed; not a seed-population CI or multiplicity-adjusted claim."
+      }
+    }
+  },
+  "artifact_sha256": {
+    "dense_single/original.json": "84c392b9af99efd85ebad06150ed5a286390fd7e31130c2ff10b460a453650d6",
+    "dense_set/original.json": "7710a9eb4071217be0fae323bb5beb87fc283f181e4cc33781e1efbd49f8d736",
+    "dense_single/rename_reorder.json": "f4eb8caaf756b3fb3a451aade45675312452eeb327b7e4261b4bd34b0178097b",
+    "dense_set/rename_reorder.json": "7b7c385977bb1c54a052662a682f508239ca40c8d32f929207c4d409555eb53e",
+    "dense_single/duplicate.json": "d0acd2b9bc6e797055e5bb95b24c7a2e0b86451dff132bfcf36d91c6a76a9724",
+    "dense_set/duplicate.json": "6f78cdb636bbd51dfc3100150e089b8bf676dd1aef7d3eed033c791e4819fe78"
+  }
+}
