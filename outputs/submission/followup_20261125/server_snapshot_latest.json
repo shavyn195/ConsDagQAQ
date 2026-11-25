@@ -1,0 +1,135 @@
+{
+  "checked_utc": "2026-11-25T03:32:49.476959+00:00",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER, 81 %, 21214 MiB, 32760 MiB",
+  "processes": [
+    {
+      "pid": 189623,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "/root/ConsDagV5/scripts/submission/recover_v6_frozen.py",
+        "--after-pid",
+        "187699",
+        "--public-control-root",
+        "/root/ConsDagSubmissionReview"
+      ],
+      "cwd": "/root/ConsDagV5"
+    },
+    {
+      "pid": 204883,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-u",
+        "src/sub_e2_public_contract.py"
+      ],
+      "cwd": "/root/ConsDagSubmissionReview"
+    },
+    {
+      "pid": 206807,
+      "args": [
+        "/root/miniconda3/bin/python",
+        "-c",
+        "\nimport datetime as dt,json,subprocess,math\nfrom pathlib import Path\nr={'checked_utc':dt.datetime.now(dt.timezone.utc).isoformat(),'gpu':subprocess.check_output(['nvidia-smi','--query-gpu=name,utilization.gpu,memory.used,memory.total','--format=csv,noheader'],text=True).strip(),'processes':[]}\nfor p in Path('/proc').iterdir():\n if not p.name.isdigit(): continue\n try:\n  a=[x.decode(errors='replace') for x in p.joinpath('cmdline').read_bytes().split(bytes([0])) if x]\n  if any(any(k in x for k in ['sub_e2_public_contract.py','recover_v6_frozen.py','run_v6_relay.py','analyse_e3_ablation.py']) for x in a):\n   r['processes'].append({'pid':int(p.name),'args':a,'cwd':str(p.joinpath('cwd').resolve())})\n except (FileNotFoundError,PermissionError,ProcessLookupError): pass\nfor rel in ['outputs/submission/e2_public_contract.log','outputs/submission/e2_informed.log','outputs/submission/queue2.log']:\n p=Path('/root/ConsDagV5')/rel\n if p.exists():\n  t=p.read_text(errors='replace'); ls=[]\n  for line in t.splitlines():\n   try: o=json.loads(line)\n   except: continue\n   if isinstance(o,dict) and 'optimizer_step' in o: ls.append(o)\n  r[rel]={'loss_count':len(ls),'last':ls[-1] if ls else None,'finite':all(math.isfinite(x['loss']) for x in ls),'tail':t.splitlines()[-5:]}\nfor q in ['/root/ConsDagV5/outputs/e1_v6/queue_state.json','/root/ConsDagV6Frozen/outputs/e1_v6/queue_state.json']:\n p=Path(q)\n if p.exists(): r[q]=json.loads(p.read_text())\nr['recovery_logs']={}\nfor root in ['/root/ConsDagV5/outputs/submission','/root/ConsDagV6Frozen/outputs/submission']:\n for p in Path(root).glob('*recover*'):\n  if p.is_file(): r['recovery_logs'][str(p)]={'tail':p.read_text(errors='replace').splitlines()[-8:]}\nprint(json.dumps(r))\n"
+      ],
+      "cwd": "/root"
+    }
+  ],
+  "outputs/submission/e2_public_contract.log": {
+    "loss_count": 53,
+    "last": {
+      "optimizer_step": 5200,
+      "loss": 0.033058058470487595
+    },
+    "finite": true,
+    "tail": [
+      "{\"optimizer_step\": 4800, \"loss\": 7.82758797868155e-06}",
+      "{\"optimizer_step\": 4900, \"loss\": 0.006203845608979464}",
+      "{\"optimizer_step\": 5000, \"loss\": 9.394759217684623e-06}",
+      "{\"optimizer_step\": 5100, \"loss\": 0.01807398535311222}",
+      "{\"optimizer_step\": 5200, \"loss\": 0.033058058470487595}"
+    ]
+  },
+  "outputs/submission/e2_informed.log": {
+    "loss_count": 91,
+    "last": {
+      "optimizer_step": 9000,
+      "loss": 0.00017381389625370502
+    },
+    "finite": true,
+    "tail": [
+      "{\"split\": \"dev\", \"faithful_constrained\": 0.8833333333333333}",
+      "{\"split\": \"test_tpl_ho\", \"faithful_constrained\": 0.83}",
+      "{\"split\": \"test_tool_ho\", \"faithful_constrained\": 0.2814285714285714}",
+      "{\"split\": \"test_struct_ho\", \"faithful_constrained\": 0.05857142857142857}",
+      "{\"saved\": \"outputs/submission/e2_monolithic_informed/metrics.json\", \"overall_paired\": {\"diff\": -0.4562962962962963, \"ci95\": [-0.4837037037037037, -0.4288888888888889], \"n\": 2700, \"boot\": 10000}}"
+    ]
+  },
+  "outputs/submission/queue2.log": {
+    "loss_count": 0,
+    "last": null,
+    "finite": true,
+    "tail": [
+      "{\"event\":\"e3_start\",\"time\":\"2026-11-25T06:01:15+08:00\",\"arm\":\"A2\"}",
+      "{\"event\":\"e3_done\",\"time\":\"2026-11-25T08:13:27+08:00\",\"arm\":\"A2\"}",
+      "{\"event\":\"e3_start\",\"time\":\"2026-11-25T08:13:27+08:00\",\"arm\":\"A1\"}",
+      "{\"event\":\"e3_done\",\"time\":\"2026-11-25T10:19:33+08:00\",\"arm\":\"A1\"}",
+      "{\"event\":\"queue2_end\",\"time\":\"2026-11-25T10:19:33+08:00\"}"
+    ]
+  },
+  "/root/ConsDagV5/outputs/e1_v6/queue_state.json": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 19899.38310811296,
+    "active": null,
+    "status": "failed",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 43,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 8827.253966415301,
+      "finished_at": "2026-11-24T13:07:51.054583+00:00"
+    },
+    "failure": "ValueError: Release file inventory differs from the locally sealed inventory"
+  },
+  "/root/ConsDagV6Frozen/outputs/e1_v6/queue_state.json": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 19899.38310811296,
+    "active": null,
+    "status": "failed",
+    "last_job": {
+      "model": "Qwen3-1.7B",
+      "seed": 43,
+      "eval_batch_size": 32,
+      "outcome": "complete",
+      "gpu_seconds": 8827.253966415301,
+      "finished_at": "2026-11-24T13:07:51.054583+00:00"
+    },
+    "failure": "ValueError: Release file inventory differs from the locally sealed inventory"
+  },
+  "recovery_logs": {
+    "/root/ConsDagV5/outputs/submission/v6_recovery.log": {
+      "tail": [
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T15:55:42.870596+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [\"Qwen3-1.7B-v6-seed43\"], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\"}",
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T15:59:11.991850+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\"}"
+      ]
+    },
+    "/root/ConsDagV5/outputs/submission/v6_recovery_public_control.log": {
+      "tail": [
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T16:25:24.922442+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\", \"all_recovered_completion\": []}"
+      ]
+    },
+    "/root/ConsDagV6Frozen/outputs/submission/v6_recovery.log": {
+      "tail": [
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T15:55:42.870596+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [\"Qwen3-1.7B-v6-seed43\"], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\"}",
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T15:59:11.991850+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\"}"
+      ]
+    },
+    "/root/ConsDagV6Frozen/outputs/submission/v6_recovery_public_control.log": {
+      "tail": [
+        "{\"source\": \"/root/ConsDagV5\", \"isolated_root\": \"/root/ConsDagV6Frozen\", \"time\": \"2026-11-24T16:25:24.922442+00:00\", \"reason\": \"Only unsealed submission scripts were added; every sealed byte still matches\", \"recovered_completion\": [], \"budget_seconds_used\": 19899.38310811296, \"original_failure_preserved\": \"ValueError: Release file inventory differs from the locally sealed inventory\", \"release_seal_sha256\": \"7711bfe8cf6345310ffe8c61ca58fe1ea4f12cf601382cfda1795304d19204fa\", \"all_recovered_completion\": []}"
+      ]
+    }
+  }
+}

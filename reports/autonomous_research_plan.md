@@ -4,13 +4,15 @@
 
 以用户批准的投稿方案 v3 及 `reports/submission_v3_joint_audit_20261125.md` 为当前依据；下文早晨队列与“追问”候选是历史记录。主线为基准、分离架构对照、记录／行为诊断，不继续擅自切换方向。
 
-- 正在跑：`/root/ConsDagV5` E3 A3（PID191491，父队列187699）；informed E2已01:32完成并自动接力。该E2受约束faithful为88.33/83.00/28.14/5.86%，仍缺公开信息，只作诊断，不据此判架构胜出或触发E5。
-- E3 四臂评测提示错误已修复，同一投影下重算完整基线也已部署，服务器CPU4项检查通过。A1 是字符串序列化表示，不能叫“无类型”。
+- 最新只读状态（2026-11-25 11:32 北京时间）：E3 A3/A4/A2/A1 四臂均已完成并回收；完整公开输入 E2 正在训练，5,200/9,000 步，已记录 loss 有限，无 NaN/OOM/Traceback；RTX 4080 SUPER 利用率 81%、显存 21,214/32,760 MiB。只读检查期间未改动或抢占服务器作业；v6 recovery supervisor 仍等待 E2 及其 supervisor 退出。
+- E3 已按逐题预测复算、核对代码/数据/基线哈希、ID 覆盖与 E/I/N 配对，服务器 CPU 回归 7 项通过。A1 是字符串序列化表示，不能叫“无类型”。四臂单 seed 的主要结果和限制见 `reports/e3_ablation_readout_20261125.md`：A3 去三态在 tool/struct 留出低 24/29pp，但无效输出升至 24–25%，tpl_ho N 误报 20.29%；A2 去 evidence 在 OOD 下降且无效输出升高；A4 去 scope 的执行结果未下降，struct_ho 反而 +7pp，故不能宣称所有字段都对执行必要。区间只条件于 seed42，未做多重比较校正。
+- informed E2 已于 01:32 完成，但缺公开政策、工具显示名与 `data_class`，只作诊断；受约束 faithful 为 88.33/83.00/28.14/5.86%，不据此判架构胜出或触发 E5。完整公开输入 E2 的协议通过长度预检，正在原队列中训练并保存原始计划，结束后按既有接力安排运行 v6。
+- 当前推进顺序：不碰在跑的 E2，不改 v5 主表。待 E2 结束后先做公平对照配对/成本复算；同时让既有 recovery supervisor 在持有 GPU 锁且确认资源可用后续跑冻结 v6。再结合预算和这批单 seed 消融，决定是否在队列收束后给 A3/A4 加 seed43/44 复测；未复测前不把其写成字段因果必要性。
 - DeepSeek规划器API任务已完成：8100配对条件、5339独立请求，原缓存 `outputs/submission/deepseek_planner_v5`。5337个回答带代码块，原整个回答json.loads导致受约束全零；不能当作规划失败结论。旁路 `deepseek_planner_v5_parse_parity` 保留严格格式、单代码块、E2共享读取器三套统计，后两者8100条判定完全一致，0新增API请求。
-- v6 原队列是 inventory 变化中止，非 NaN。原 seal 内容全部匹配，seed43 完整产物校验后恢复；隔离根 `/root/ConsDagV6Frozen`。等待进程已更新为189623：当前E2/E3后接完整公开输入E2，再续v6；原30小时v6预算已用5.53小时。
-- 完整公开输入E2位于 `/root/ConsDagSubmissionReview`，12,000训练行长度全部合格，输入包括公开目录、政策、data_class，保存原始计划；已测试和预检，尚未训练。C2定义为系统架构而非Qwen网络改造，收益待有效对照。
+- v6 原队列曾因 inventory 变化中止，非 NaN。原 seal 内容全部匹配，seed43 的完成标记已由隔离恢复流程核验；隔离根 `/root/ConsDagV6Frozen`。恢复进程189623等待 E2 supervisor 退出后先运行完整公开输入 E2，再续 v6；当前 snapshot 仍显示原队列 bookkeeping `status=failed`、`active=null`，需观察 recovery 是否成功恢复，不能把 seed43 完成等同于 v6 队列全完成。
+- 完整公开输入 E2 位于 `/root/ConsDagSubmissionReview`，12,000训练行长度全部合格，输入包括公开目录、政策、data_class，保存原始计划；截至 11:19 正在训练，已到约4,400/9,000步。C2定义为系统架构而非Qwen网络改造，架构收益尚待公平对照。
 - API消费者同解析口径下：1.7B编译器接API受约束faithful39.67/37.43/29.86/30.71%；强编译器接API40.50/37.57/34.29/31.86%。tool_ho强减弱+4.43pp、组配对95%CI[2.29,6.71]，其余区间跨零。大量时限／隐私执行违反，不能写无衰减迁移，也不能把零样本禁思考384-token消费者当强模型规划上限。见 `reports/consumer_cross_results_20261125.md`。API分析及CPU重放均已完成，等待进程189765退出是正常完成。
-- 最新快照02:26:29：E3 A3到4100/9000，已记录loss有限，GPU29%、16,024MiB，源码哈希匹配；API完成并复算，完整公开输入E2尚未开始，v6已用时间19,899.38秒未变。下一次先核实进程与新产物，不把此快照当实时状态。主表仍为v5，v6单列，禁止按结果好坏选版本。
+- 02:26:29、03:34:32 等更早快照仅作历史证据；其后 E3 四臂结束并自动转入完整公开输入 E2。主表仍为 v5，v6 单列，禁止按结果好坏选版本。
 - 本轮精读ATLAS、CGAP、Coordination Tax、SpecHarness的直接相关章节并核验元数据，见 `reports/literature_architecture_recheck_20261125.md`。SpecHarness已有七编译器覆盖／记录有效性评测，不能主张首次独立记录审计；Coordination Tax已有异构角色，其3.22倍不是我们的成功门槛。OpenAlex新检索超时，不宣称全覆盖查漏完成。
 - 新全量训练token重放在服务器CPU完成：编译器三轮序列28,732,221、完整单体36,402,576；target含EOS分别2,670,729／1,056,099。不能叫同算力或相同监督量。历史train_seconds混入评测，不作纯训练耗时。产物 `outputs/submission/audit_20261125/training_token_budget.json` 已双侧验哈希；没有新增GPU任务或更改运行中源代码。
 - 01:14巡检：informed E2到8300/9000，GPU66%、18,308MiB，E2/E3 supervisor、恢复接力、API worker与分析等待进程均在；API最终配对产物尚未生成。原每小时任务`consdag-2`仍含已被取代的追问pilot主线，现已按最新投稿方案v3更新，保留ACTIVE、原线程和每小时间隔，防止下轮自动切换方向。调度新增近邻重合、E2公平输入、成本口径及v6原预算约束；未新增或中断GPU运行。

@@ -1,9 +1,9 @@
 # ConsDagQAQ：逐请求参数级约束的编译-规划分离与行为-记录裂缝（论文草稿 v1）
 
-版本：2026-11-24。依据：`reports/submission_plan_v3_20261124.md`（第一波第 4 项）、`reports/submission_plan_emnlp2027.md` §1、§5、§6。
+版本：2026-11-25。依据：`reports/submission_plan_v3_20261124.md`（第一波第 4 项）、`reports/submission_plan_emnlp2027.md` §1、§5、§6。
 写作纪律：
 - 每个数字后括号注明来源，括号里的 JSON 字段路径用 `文件:字段` 表示；
-- 待补实验用 `TODO(E2)` / `TODO(E3)` / `TODO(v6)` 占位，不写预测值；
+- 待补实验用 `TODO(E2)` / `TODO(v6)` 占位，不写预测值；
 - 不出现已死主张：小模型打平/超越强模型、human-validated semantics、GRPO/信用分配有效、跨域泛化。
 
 本稿复核数字的来源包括：
@@ -11,6 +11,7 @@
 - `outputs/submission/audit_20261124/draft_numbers.json`，由 `scripts/submission/draft_numbers_20261124.py` 生成。
 - `outputs/submission/audit_20261125/v5_record_axes_three_seed.json`，三seed含证据记录与N误报复算。
 - `outputs/submission/audit_20261125/training_token_budget.json`，冻结训练配方的token重放计数。
+- `reports/e3_ablation_readout_20261125.md` 与 `outputs/submission/followup_20261125/paired_replay.json`，E3四臂逐样本复算和按任务组配对区间。
 
 以上分析只读冻结资产，零GPU；不替代原始预测和训练日志。近邻复核见 `reports/literature_architecture_recheck_20261125.md`。
 
@@ -18,7 +19,7 @@
 
 ## 摘要（占位）
 
-TODO(E2) TODO(E3)：摘要待 E2 单体对照与 E3 消融落地后定稿。现阶段可写的三句：
+TODO(E2) TODO(v6)：摘要待完整公开输入 E2 和 v6 主结果落地后定稿。E3 消融现已完成并进入 §5.6。现阶段可写的三句：
 1. 我们发布 E/I/N 配对的可执行约束基准；
 2. 我们实现独立训练与审计的编译-规划分离架构，并在明确版本和消费者条件下评估组件替换；
 3. 我们测得行为轴与记录轴的差异，并分解其跨 seed 错误模式。
@@ -365,13 +366,18 @@ informed诊断臂已完成，受约束faithful为88.33/83.00/28.14/5.86%，N fai
 
 ### 5.6 E3 字段消融
 
-TODO(E3)：表格格式学 ATLAS，每行去掉一个组件。四臂（`src/sub_e3_ablation.py:3-6`）：
-- A1 将 typed 对象改为保留 type/params 的字符串序列化表示；
-- A2 去 evidence_span；
-- A3 去三态；
-- A4 去 scope。
+E3 在 0.6B、bf16、seed42 上依次完成四个 9,000-step 消融；每臂使用同一训练行、LoRA 配方和冻结 v5 执行评分，完整基线先投影到与消融相同的字段。差值区间按 E/I 任务组配对 bootstrap 10,000 次，条件于 seed42，不是训练 seed 总体推断；16 个点态比较未做多重校正。完整设置与逐切分记录见 `reports/e3_ablation_readout_20261125.md`。
 
-每臂报当前契约下的记录轴、解析率与下游 faithful；完整基线按同一字段投影重算后比较。A1 仅做对象到字符串序列化，条目数量不是准确率。保留冻结 v5 fallback 指标，并单列拒绝畸形输出的 valid-faithful，防止 N 行坏 JSON 被记作正确空集。提示、评分投影与空集处理修复已通过服务器 CPU 回归检查。主结果三 seed，消融单 seed（0.6B seed42），结果未出前不声称字段必要性。
+| 消融 | dev Δpp | tpl_ho Δpp | tool_ho Δpp | struct_ho Δpp | tool/struct 无效输出率 |
+|---|---:|---:|---:|---:|---:|
+| A1：type/params 字符串序列化 | −0.50 [−1.50, 0.50] | −5.86 [−8.86, −2.71] | −13.43 [−17.57, −9.29] | −18.14 [−23.00, −13.29] | 12.29% / 16.67% |
+| A2：去 evidence_span | +0.17 [−0.83, 1.17] | +4.29 [+2.14, +6.43] | −14.43 [−18.00, −11.00] | −36.29 [−41.29, −31.29] | 27.81% / 25.24% |
+| A3：合并 explicit/implicit | +0.50 [−0.33, 1.33] | +1.29 [−0.86, 3.57] | −24.00 [−28.14, −20.00] | −29.00 [−34.43, −23.43] | 24.19% / 25.33% |
+| A4：去 scope | +1.00 [+0.33, +1.83] | +2.57 [+0.29, +5.00] | +0.57 [−3.29, +4.29] | +7.00 [+3.00, +11.14] | 8.57% / 9.24% |
+
+表中为消融减完整基线同字段投影的百分点差及组配对点态 95% 区间。A1 在结构留出上的 faithful 为 53.57%（基线同投影 71.71%），但其输出是字符串，记录项数量不能解释为字段准确率。A2/A3 的留出下降伴随较高的无效输出率；A3 的 tpl_ho N false-alarm 为 71/350（20.29%），其他三个切分为 0。每臂训练 token 不同：A1/A2/A3/A4 的监督 completion token 分别 0.894M/1.868M/2.521M/2.169M；9,000 次更新不代表相同 FLOPs 或监督量。
+
+结果仅支持有限的单 seed 结论。A3 在 tool/struct 留出低 24/29pp，与三态监督有用的假设一致，但它同时改变 prompt、query_state、constraint.state、schema 与 target，且无效输出率升高，不能隔离为三态的因果效应。A2 也在 OOD 切分下降，不能将全部差异归因于 evidence 的语义价值。A4 去 scope 后 tool_ho 与基线近似，struct_ho 高 7pp（区间 [+3.00,+11.14]）；这否定“每个字段都被证明对执行必要”的宽泛表述。由于执行器本来不读取 scope，且只有一个训练 seed，该结果不能证明去 scope 提升性能；它要求将 scope 的价值限定为记录完整性或另行验证其消费者效用。所有结论限于当前合成基准和 seed42。
 
 ---
 
@@ -405,7 +411,7 @@ TODO(E3)：表格格式学 ATLAS，每行去掉一个组件。四臂（`src/sub_
    - 作者自审 spot-check 若完成，只写作 author spot-check，不称 human validation。
 3. **OOD 方差。** tool_ho/struct_ho 的 faithful 跨 seed 摆幅达 21.71pp（§5.1），单 seed 结论不可信。seed 方差分解是描述性的（§5.3 限定词）。
 4. **面板版本混用。** E1 网格、2×2 归因、v4 裂缝样例挂在 v4 面板上；主表与 seed 分析挂在 v5 上。两类数字不可横比。TODO(v6)：v6 只作为发布数字。
-5. **消融单 seed。** TODO(E3)。
+5. **消融单 seed。** E3 的 A1–A4 都只有 0.6B seed42；任务组 bootstrap 区间条件于该模型权重，不能代表 seed 总体，A3/A4 主要结论需在额外 seed 上复测（§5.6）。
 6. **GRPO 功效。** 条件区间宽约 ±4–5pp，三 seed，单架构，单数据域（§6）。
 7. **强模型对照。** 强模型数字只作锚点，不是擂台。训练编译器在 OOD 切分上的 faithful 未达到 DeepSeek 十示例的非劣效标准（§5.1）。
 8. **部署测量规模小。** 30 条请求、单卡、两种 Qwen3 尺寸（§5.5）。
@@ -415,6 +421,5 @@ TODO(E3)：表格格式学 ATLAS，每行去掉一个组件。四臂（`src/sub_
 ## 附：本稿 TODO 汇总
 
 - TODO(E2)：摘要；引言 C2 句；相关工作"分解成本之争"行；§5.2 三向对照；§5.4 全节。
-- TODO(E3)：摘要；§5.6 全节；§7 第 5 条。
 - TODO(v6)：§4.2 v6 结果与主表决策；§7 第 4 条。
 - 非 TODO 标签的待补项：DeepSeek-planner 列；Discussion "Why not a skill?"；§6 冻结迁移行的分母确认。4B 三 seed 的 N 误报与完整记录聚合已补入 §5.1。

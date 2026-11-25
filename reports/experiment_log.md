@@ -445,3 +445,13 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 4B seed44 预测自服务器拉回本地后并入分析；字段比对经实例抽查确认真实差异（`scripts/submission/diag_field_mismatch_samples.py`）。
 - 写作层修正落地 `reports/paper_wording_negative_results_20261125.md`：GRPO 按 R3 口径改为「本设计功效（3 seed、配对 bootstrap ±1-2pp）内未检出稳定效应」，不声称证明为零；symbolic 单调行定位为「接口无衰减验证」，核心证据句改为 DeepSeek 行 0.9950 > 4B 行 0.9786 的接口非特化性 + SFT 规划器列对编译器质量全平的反向证据。含 seed 方差段配套英文措辞与限定词。
 - 第二波（E2/E3/v6）仍等 GPU 队列；本波未改任何代码口径、未动服务器。
+
+## 2026-11-25 11:30 CST E3 四臂回收与 E2 实况
+
+- 使用用户先前授权的 SeetaCloud 登录信息只读连接 `connect.westc.seetacloud.com:40958`。11:17 快照：RTX 4080 SUPER 54%利用率、21,214/32,760MiB 显存；完整公开输入 E2 PID 204883 正在服务器隔离目录 `/root/ConsDagSubmissionReview` 训练。11:19日志为4,400/9,000步，loss有限，未见NaN/OOM/Traceback；之后没有在本地推测新的步数。
+- 远端 `queue2.log` 记录 A3、A4、A2、A1 均按序完成（A3 03:47、A4 06:01、A2 08:13、A1 10:19，北京时间），每臂 9,000 步、12,000样本、0长度丢弃。逐日志检查每臂91条loss均有限；代码哈希均为 `5e0c0514...1635ce16`。未更改或中断任何远端运行。E2 后续由既有 recovery supervisor 持 GPU 锁接入 v6；远端 v6 queue_state 的原始 `status=failed` 仍需新快照验证恢复结果。
+- 四臂 metrics、逐题预测与0.6B seed42基线预测经SFTP回收；按SHA-256校验并保留原始服务器输出。分析前将配对分析脚本和测试上传到隔离CPU目录 `/root/consdag_audits/e3_followup_20261125_1120`，不覆盖训练仓库。CPU回归测试7项通过；配对复算核验样本ID/E-I-N完整组、每臂源码/数据哈希、baseline预测哈希，并复现训练端已存执行与记录指标。
+- 受约束 faithful 相对同字段投影基线（dev/tpl/tool/struct，%）：A1差−0.50/−5.86/−13.43/−18.14；A2 +0.17/+4.29/−14.43/−36.29；A3 +0.50/+1.29/−24.00/−29.00；A4 +1.00/+2.57/+0.57/+7.00。区间为10,000次配对任务组bootstrap、只条件于seed42、点态且未经多重校正。A2/A3的tool/struct无效输出率25%上下；A3 tpl_ho N false alarm 71/350=20.29%；A4去scope后struct faithful反而高7pp，要求删掉“所有字段对执行都必要”的主张。
+- 解释限制：单seed、训练token量各臂不同（监督completion 0.894M–2.521M）、A1结构不再等价字段F1；prompt/schema/target一起变化，不对单字段作因果归因。A4也不能说明scope提高了执行，因为当前符号执行器本就不消费scope。完整读数及解释见 `reports/e3_ablation_readout_20261125.md`；配对输出、远端快照和双侧哈希清单在 `outputs/submission/followup_20261125/`。
+- 11:32 CST 新鲜只读快照：完整公开输入 E2 到 5,200/9,000 步，累计53条日志loss均有限，GPU 81%、显存21,214/32,760MiB；recovery PID189623仍等待既有E2 supervisor退出，v6旧queue_state仍为inventory错误后的`failed/active=null`，尚未恢复到新作业。快照 `outputs/submission/followup_20261125/server_snapshot_latest.json`。
+- 论文草稿§5.6已填入实际消融与限定，摘要仍等公平完整输入E2/v6；本轮未改v5主结果。下一步先等待E2完成，按冻结协议做公平配对和成本复算；随后核验恢复进程是否续上v6，再决定是否用额外种子复测A3/A4。数据语义仍是生成器构造条件，未被独立人工验证。

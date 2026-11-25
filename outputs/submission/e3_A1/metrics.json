@@ -1,0 +1,217 @@
+{
+  "arm": "A1",
+  "model": "models/Qwen3-0.6B",
+  "seed": 42,
+  "precision": "bf16",
+  "protocol_revision": "20261125-arm-prompt-and-score-parity",
+  "baseline_prediction_sha256": {
+    "dev": "02c6925973e92709195ebbdab7d2a929f17c9fafea8a41a04f55ac87899d3a6f",
+    "test_tpl_ho": "290361e9889a2955a811c282c7688939654d9cf7ff8bec4b721ac8f311259499",
+    "test_tool_ho": "bddeca1224cc91f3f41257eda71c77637e01abc4c26a56f2f8a1eec9aa86cb62",
+    "test_struct_ho": "d6d9658b031287aa74311f66b82b7d80d7b29cddecc0d09a2a464dca0dc88c89"
+  },
+  "config": {
+    "arm": "A1",
+    "data_dir": "data/processed_v5",
+    "model": "models/Qwen3-0.6B",
+    "out_dir": "outputs/submission/e3_A1",
+    "baseline_run": "outputs/e1/Qwen3-0.6B-v5-seed42",
+    "seed": 42,
+    "epochs": 3,
+    "learning_rate": 0.0002,
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "gradient_accumulation_steps": 4,
+    "max_seq_len": 1280,
+    "max_new_tokens": 384,
+    "eval_batch_size": 32,
+    "precision": "bf16",
+    "skip_train": false
+  },
+  "data_sha256": "5334504af4397fe0acc087c87c04eb0789200b4a314be415792c28a142e3d413",
+  "code_sha256": "5e0c0514b04b328b2ff260f63250c907b957f4983db9aad1ed9be1ed1635ce16",
+  "budget": {
+    "steps": 9000,
+    "tokens": {
+      "prompt": 24657492,
+      "completion": 894018
+    },
+    "examples": 12000,
+    "dropped": 0
+  },
+  "train_rows": 12000,
+  "elapsed_s": 7563.2,
+  "splits": {
+    "arm": "A1",
+    "dropped_fields": "object-to-string serialization",
+    "dev": {
+      "record": {
+        "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+        "gold_items": 972,
+        "pred_items": 972
+      },
+      "arm_contract_parse_rate": 1.0,
+      "downstream": {
+        "n": 900,
+        "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+        "faithful_constrained": 0.9816666666666667,
+        "valid_faithful_constrained": 0.9816666666666667,
+        "invalid_output_rate": 0.0,
+        "safe_constrained": 0.9833333333333333,
+        "none_faithful": 1.0,
+        "none_valid_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "none_planned_constraints_mean": 0.0,
+        "implicit_faithful": 0.9633333333333334
+      },
+      "baseline_same_projection": {
+        "record": {
+          "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+          "gold_items": 972,
+          "pred_items": 972
+        },
+        "arm_contract_parse_rate": 1.0,
+        "downstream": {
+          "n": 900,
+          "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+          "faithful_constrained": 0.9866666666666667,
+          "valid_faithful_constrained": 0.9866666666666667,
+          "invalid_output_rate": 0.0,
+          "safe_constrained": 0.9866666666666667,
+          "none_faithful": 1.0,
+          "none_valid_faithful": 1.0,
+          "none_false_alarm": 0.0,
+          "none_planned_constraints_mean": 0.0,
+          "implicit_faithful": 0.9733333333333334
+        }
+      }
+    },
+    "test_tpl_ho": {
+      "record": {
+        "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+        "gold_items": 1104,
+        "pred_items": 1012
+      },
+      "arm_contract_parse_rate": 1.0,
+      "downstream": {
+        "n": 1050,
+        "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+        "faithful_constrained": 0.8542857142857143,
+        "valid_faithful_constrained": 0.8542857142857143,
+        "invalid_output_rate": 0.0,
+        "safe_constrained": 0.8542857142857143,
+        "none_faithful": 1.0,
+        "none_valid_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "none_planned_constraints_mean": 0.0,
+        "implicit_faithful": 0.7742857142857142
+      },
+      "baseline_same_projection": {
+        "record": {
+          "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+          "gold_items": 1104,
+          "pred_items": 1236
+        },
+        "arm_contract_parse_rate": 0.9990476190476191,
+        "downstream": {
+          "n": 1050,
+          "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+          "faithful_constrained": 0.9128571428571428,
+          "valid_faithful_constrained": 0.91,
+          "invalid_output_rate": 0.002857142857142857,
+          "safe_constrained": 0.9314285714285714,
+          "none_faithful": 0.8914285714285715,
+          "none_valid_faithful": 0.8914285714285715,
+          "none_false_alarm": 0.16857142857142857,
+          "none_planned_constraints_mean": 0.18857142857142858,
+          "implicit_faithful": 0.9085714285714286
+        }
+      }
+    },
+    "test_tool_ho": {
+      "record": {
+        "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+        "gold_items": 1102,
+        "pred_items": 1095
+      },
+      "arm_contract_parse_rate": 0.9904761904761905,
+      "downstream": {
+        "n": 1050,
+        "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+        "faithful_constrained": 0.5085714285714286,
+        "valid_faithful_constrained": 0.5085714285714286,
+        "invalid_output_rate": 0.12285714285714286,
+        "safe_constrained": 0.5085714285714286,
+        "none_faithful": 1.0,
+        "none_valid_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "none_planned_constraints_mean": 0.0,
+        "implicit_faithful": 0.4828571428571429
+      },
+      "baseline_same_projection": {
+        "record": {
+          "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+          "gold_items": 1102,
+          "pred_items": 1090
+        },
+        "arm_contract_parse_rate": 0.9942857142857143,
+        "downstream": {
+          "n": 1050,
+          "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+          "faithful_constrained": 0.6428571428571429,
+          "valid_faithful_constrained": 0.6428571428571429,
+          "invalid_output_rate": 0.08095238095238096,
+          "safe_constrained": 0.65,
+          "none_faithful": 1.0,
+          "none_valid_faithful": 1.0,
+          "none_false_alarm": 0.0,
+          "none_planned_constraints_mean": 0.0,
+          "implicit_faithful": 0.6485714285714286
+        }
+      }
+    },
+    "test_struct_ho": {
+      "record": {
+        "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+        "gold_items": 1162,
+        "pred_items": 1140
+      },
+      "arm_contract_parse_rate": 0.9933333333333333,
+      "downstream": {
+        "n": 1050,
+        "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+        "faithful_constrained": 0.5357142857142857,
+        "valid_faithful_constrained": 0.5357142857142857,
+        "invalid_output_rate": 0.16666666666666666,
+        "safe_constrained": 0.5371428571428571,
+        "none_faithful": 1.0,
+        "none_valid_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "none_planned_constraints_mean": 0.0,
+        "implicit_faithful": 0.5
+      },
+      "baseline_same_projection": {
+        "record": {
+          "representation_note": "type/params string serialization; set-size proxy is not accuracy",
+          "gold_items": 1162,
+          "pred_items": 1153
+        },
+        "arm_contract_parse_rate": 0.9952380952380953,
+        "downstream": {
+          "n": 1050,
+          "note": "faithful_constrained retains the frozen v5 execution convention; valid_faithful additionally rejects malformed or unusable predictions",
+          "faithful_constrained": 0.7171428571428572,
+          "valid_faithful_constrained": 0.7171428571428572,
+          "invalid_output_rate": 0.11619047619047619,
+          "safe_constrained": 0.7185714285714285,
+          "none_faithful": 1.0,
+          "none_valid_faithful": 1.0,
+          "none_false_alarm": 0.0,
+          "none_planned_constraints_mean": 0.0,
+          "implicit_faithful": 0.7028571428571428
+        }
+      }
+    }
+  },
+  "note": "gold visible only at evaluation; prompt+target ablated symmetrically"
+}
