@@ -1,0 +1,1341 @@
+{
+  "created_utc": "2026-11-25T17:36:43.083453+00:00",
+  "provenance": {
+    "outputs\\local_planning_20261126\\cpu-dev-v2\\protocol.json": "1cf59716dd125925efb8fdc9435ecd21ac191e3052a5c004ce45ae8a35dd4f6b",
+    "src\\run_e1.py": "c0b51ff280fda630c96084552eb6da15f7821c5d788bb0724c57ee52e77ea1b0",
+    "src\\trust_env.py": "01dc6b70d13fd56392d9eb6a21bf5ff70a5e35708dddcf6294ef9d5d6163e78f",
+    "src\\dataset_v5_spec.py": "53111df8ae305c16fa58f620046f936980ae8113d064db86c1f6d7d0e9b6d15d",
+    "scripts\\research_followup\\common.py": "13627afb142fa4e2b34439c3bf87d09460591cea3b2561d296966dd1f9858bed",
+    "data\\processed_v5\\dev.jsonl": "f614a32adc74ca7708a286c0f97e0d2befbd226cc696c2db5b2a34126600b24a",
+    "outputs\\local_planning_20261126\\cpu-dev-v2\\dev.jsonl": "9ef2212e789f36d69509d49cbf755a28d92cf3420742f2aa6aa14a564beae3c6",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed42\\metrics.json": "b4e9a6c93aa77ff9f6b36f050806f0f0b30feffa3fd2c28ee63363bf2763c047",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed42\\trained_predictions\\dev.jsonl": "a153ac5318d212517082bb27044d06507dad2ef38217017c42d5b35ac83b5ce5",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed43\\metrics.json": "a11caaab323dc07df21cf619b15e1ae9418e2df4f44c534ffbbdd11897fb71db",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed43\\trained_predictions\\dev.jsonl": "12cdf13aee83dce708b801d3ad5cd96fad67f952d6c4d05b455189d77c1e4b4d",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed44\\metrics.json": "01fb4cd7f27ee3e333d491d7b225de96f8fd767ae8b92d7120f0862606929162",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed44\\trained_predictions\\dev.jsonl": "c48d55f6d67810680c42d94f39ae5b9808fb4e8adc04298706124a17531dcd42",
+    "outputs\\local_planning_20261126\\cpu-heldout\\protocol.json": "4f9faace83b8e04f0be6e2af59387fdaac18c4c32672a297494f5301ca415382",
+    "data\\processed_v5\\test_tpl_ho.jsonl": "40d891221b4411a4e7736588a78a3a3a90952c3e3180ef285d713a586b33f8f7",
+    "outputs\\local_planning_20261126\\cpu-heldout\\test_tpl_ho.jsonl": "1fcaab7a008604a22961b1893619b3a95692c1f19d3e0b175bc0850f13517e7d",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed42\\trained_predictions\\test_tpl_ho.jsonl": "31ec4284d1926b9ca40463f5803aaa895187385fd464f1a2c64bc52906244674",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed43\\trained_predictions\\test_tpl_ho.jsonl": "a5fb2344773e64b0eee69d7a77680fad7c9b8a3ab14804f0d4837f43fa0a1606",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed44\\trained_predictions\\test_tpl_ho.jsonl": "ed7039f072d6e1ef7639e27e7aefcb04aa28e39516d48ef7a1e41e272d12b25c",
+    "data\\processed_v5\\test_tool_ho.jsonl": "c5310f7859a06c22997a69edd62a59fb4ec1a4faf5cf8fd6f766ef02e97140e7",
+    "outputs\\local_planning_20261126\\cpu-heldout\\test_tool_ho.jsonl": "0e13a3ff2e748710fd9e42d52931edb573e66e9bf748677ff8a6d1d385eac28a",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed42\\trained_predictions\\test_tool_ho.jsonl": "4aeeed852a489f81f7ac92386abd735a04ed44fe2ed8c6f57f0147023453ed7b",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed43\\trained_predictions\\test_tool_ho.jsonl": "68a70149677a61224f2de18faa181ae57203e1644af033eab76c000b4d737ba7",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed44\\trained_predictions\\test_tool_ho.jsonl": "dd85cc4c4c2f37b3b41b1e8f5d13a629d54e36930639e847e269866ebb4b066f",
+    "data\\processed_v5\\test_struct_ho.jsonl": "25f073cdcafef92d3318d8932f53ab1544929b5a58254f73cc245208c2460da3",
+    "outputs\\local_planning_20261126\\cpu-heldout\\test_struct_ho.jsonl": "3a464c7bc4b99cad44fce31bbe6ed9ecba677a3916ed6ef8eb3375391bc55fca",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed42\\trained_predictions\\test_struct_ho.jsonl": "c43c6905aa42798b8aa9bf3ba816fc37034cf43611cd65bab1cbf566ded5a224",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed43\\trained_predictions\\test_struct_ho.jsonl": "fb8459e406cebe7a9eeac1b9c51b5dbd468bf4d8fdcdf3dc933230224f2c2b4b",
+    "outputs\\e1\\Qwen3-1.7B-v5-seed44\\trained_predictions\\test_struct_ho.jsonl": "434fca03b98e14927bd0be5f8fd5c583994486048f91f374841f633852ad3b5d"
+  },
+  "analysis_sha256": "b992dd929e75da658a16c195cbd0f8458a33851c03669863eeb18195c22e5bcc",
+  "splits": {
+    "dev": {
+      "n": 900,
+      "groups": 300,
+      "arms": {
+        "original": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.9066666666666666,
+          "safe": 0.9466666666666667,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "repaired": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.9416666666666667,
+          "safe": 0.9916666666666667,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "placebo": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.905,
+          "safe": 0.95,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "symbolic": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.985,
+          "safe": 0.9883333333333333,
+          "valid": 0.9988888888888889,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        }
+      },
+      "strata": {
+        "EI/legal=1/predicate_match=0": {
+          "n": 16,
+          "original_faithful": 14,
+          "repaired_faithful": 13,
+          "wins": 1,
+          "losses": 2,
+          "delta_pp": -6.25,
+          "original_safe": 15,
+          "repaired_safe": 16,
+          "edited": 3,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=1": {
+          "n": 584,
+          "original_faithful": 530,
+          "repaired_faithful": 552,
+          "wins": 22,
+          "losses": 0,
+          "delta_pp": 3.767123287671233,
+          "original_safe": 553,
+          "repaired_safe": 579,
+          "edited": 26,
+          "illegal_to_legal": 0
+        },
+        "N/legal=1/predicate_match=1": {
+          "n": 300,
+          "original_faithful": 300,
+          "repaired_faithful": 300,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 300,
+          "repaired_safe": 300,
+          "edited": 0,
+          "illegal_to_legal": 0
+        }
+      },
+      "agreement": {
+        "EI/support=1": {
+          "n": 16,
+          "predicate_matches": 0,
+          "strict_matches": 0,
+          "edited": 3,
+          "new_harms": 2
+        },
+        "EI/support=2": {
+          "n": 15,
+          "predicate_matches": 15,
+          "strict_matches": 15,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "EI/support=3": {
+          "n": 569,
+          "predicate_matches": 569,
+          "strict_matches": 569,
+          "edited": 26,
+          "new_harms": 0
+        },
+        "N/support=2": {
+          "n": 3,
+          "predicate_matches": 3,
+          "strict_matches": 3,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "N/support=3": {
+          "n": 297,
+          "predicate_matches": 297,
+          "strict_matches": 297,
+          "edited": 0,
+          "new_harms": 0
+        }
+      },
+      "policies": {
+        "predicate_2": {
+          "aggregate": {
+            "n": 900,
+            "constrained_n": 600,
+            "faithful": 0.9433333333333334,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 300,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 26,
+          "retained_EI_wins": 22,
+          "lost_EI_wins": 1,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": 0.0016666666666666668,
+            "ci95": [
+              -0.0033333333333333335,
+              0.006708333333332727
+            ],
+            "groups": 300,
+            "wins": 2,
+            "losses": 1,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "predicate_3": {
+          "aggregate": {
+            "n": 900,
+            "constrained_n": 600,
+            "faithful": 0.9433333333333334,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 300,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 26,
+          "retained_EI_wins": 22,
+          "lost_EI_wins": 1,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": 0.0016666666666666668,
+            "ci95": [
+              -0.0033333333333333335,
+              0.006708333333332727
+            ],
+            "groups": 300,
+            "wins": 2,
+            "losses": 1,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_2": {
+          "aggregate": {
+            "n": 900,
+            "constrained_n": 600,
+            "faithful": 0.9433333333333334,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 300,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 26,
+          "retained_EI_wins": 22,
+          "lost_EI_wins": 1,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": 0.0016666666666666668,
+            "ci95": [
+              -0.0033333333333333335,
+              0.006708333333332727
+            ],
+            "groups": 300,
+            "wins": 2,
+            "losses": 1,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_3": {
+          "aggregate": {
+            "n": 900,
+            "constrained_n": 600,
+            "faithful": 0.9433333333333334,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 300,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 26,
+          "retained_EI_wins": 22,
+          "lost_EI_wins": 1,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": 0.0016666666666666668,
+            "ci95": [
+              -0.0033333333333333335,
+              0.006708333333332727
+            ],
+            "groups": 300,
+            "wins": 2,
+            "losses": 1,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        }
+      },
+      "none_sets": {
+        "old_valid_misedit": [],
+        "new_harm": [],
+        "symbolic_failure": []
+      },
+      "none_intersections": {
+        "old_valid_misedit&symbolic_failure": 0,
+        "new_harm&old_valid_misedit": 0,
+        "new_harm&symbolic_failure": 0
+      },
+      "none_union": 0,
+      "seed_diagnostics": {
+        "42": {
+          "raw_invalid": 0,
+          "consumer_unusable": 0,
+          "predicate_matches": 884,
+          "strict_matches": 884
+        },
+        "43": {
+          "raw_invalid": 0,
+          "consumer_unusable": 3,
+          "predicate_matches": 881,
+          "strict_matches": 870
+        },
+        "44": {
+          "raw_invalid": 0,
+          "consumer_unusable": 1,
+          "predicate_matches": 898,
+          "strict_matches": 898
+        }
+      }
+    },
+    "test_tpl_ho": {
+      "n": 1050,
+      "groups": 350,
+      "arms": {
+        "original": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.8728571428571429,
+          "safe": 0.9285714285714286,
+          "valid": 1.0,
+          "none_n": 350,
+          "none_faithful": 0.7628571428571429,
+          "none_invalid": 0,
+          "none_valid_changed": 83
+        },
+        "repaired": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.92,
+          "safe": 0.9928571428571429,
+          "valid": 1.0,
+          "none_n": 350,
+          "none_faithful": 0.7371428571428571,
+          "none_invalid": 0,
+          "none_valid_changed": 92
+        },
+        "placebo": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.8657142857142858,
+          "safe": 0.9285714285714286,
+          "valid": 1.0,
+          "none_n": 350,
+          "none_faithful": 0.7371428571428571,
+          "none_invalid": 0,
+          "none_valid_changed": 92
+        },
+        "symbolic": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.9671428571428572,
+          "safe": 0.9728571428571429,
+          "valid": 0.9933333333333333,
+          "none_n": 350,
+          "none_faithful": 0.9685714285714285,
+          "none_invalid": 0,
+          "none_valid_changed": 11
+        }
+      },
+      "strata": {
+        "EI/legal=1/predicate_match=0": {
+          "n": 62,
+          "original_faithful": 53,
+          "repaired_faithful": 52,
+          "wins": 2,
+          "losses": 3,
+          "delta_pp": -1.6129032258064515,
+          "original_safe": 57,
+          "repaired_safe": 59,
+          "edited": 6,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=1": {
+          "n": 638,
+          "original_faithful": 558,
+          "repaired_faithful": 592,
+          "wins": 34,
+          "losses": 0,
+          "delta_pp": 5.329153605015674,
+          "original_safe": 593,
+          "repaired_safe": 636,
+          "edited": 43,
+          "illegal_to_legal": 0
+        },
+        "N/legal=1/predicate_match=0": {
+          "n": 25,
+          "original_faithful": 22,
+          "repaired_faithful": 13,
+          "wins": 0,
+          "losses": 9,
+          "delta_pp": -36.0,
+          "original_safe": 25,
+          "repaired_safe": 25,
+          "edited": 10,
+          "illegal_to_legal": 0
+        },
+        "N/legal=1/predicate_match=1": {
+          "n": 325,
+          "original_faithful": 245,
+          "repaired_faithful": 245,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 325,
+          "repaired_safe": 325,
+          "edited": 0,
+          "illegal_to_legal": 0
+        }
+      },
+      "agreement": {
+        "EI/support=0": {
+          "n": 2,
+          "predicate_matches": 0,
+          "strict_matches": 0,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "EI/support=1": {
+          "n": 68,
+          "predicate_matches": 8,
+          "strict_matches": 7,
+          "edited": 6,
+          "new_harms": 3
+        },
+        "EI/support=2": {
+          "n": 50,
+          "predicate_matches": 50,
+          "strict_matches": 47,
+          "edited": 5,
+          "new_harms": 0
+        },
+        "EI/support=3": {
+          "n": 580,
+          "predicate_matches": 580,
+          "strict_matches": 564,
+          "edited": 38,
+          "new_harms": 0
+        },
+        "N/support=1": {
+          "n": 33,
+          "predicate_matches": 13,
+          "strict_matches": 13,
+          "edited": 5,
+          "new_harms": 5
+        },
+        "N/support=2": {
+          "n": 42,
+          "predicate_matches": 38,
+          "strict_matches": 38,
+          "edited": 4,
+          "new_harms": 4
+        },
+        "N/support=3": {
+          "n": 275,
+          "predicate_matches": 274,
+          "strict_matches": 274,
+          "edited": 1,
+          "new_harms": 0
+        }
+      },
+      "policies": {
+        "predicate_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.9214285714285714,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 350,
+            "none_faithful": 0.7514285714285714,
+            "none_invalid": 0,
+            "none_valid_changed": 87
+          },
+          "edited_after_gate": 48,
+          "retained_EI_wins": 34,
+          "lost_EI_wins": 2,
+          "prevented_N_new_harms": 5,
+          "remaining_N_new_harms": 4,
+          "vs_repair": {
+            "delta": 0.0014285714285714286,
+            "ci95": [
+              -0.005714285714285714,
+              0.01
+            ],
+            "groups": 350,
+            "wins": 3,
+            "losses": 2,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "predicate_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.9157142857142857,
+            "safe": 0.9828571428571429,
+            "valid": 1.0,
+            "none_n": 350,
+            "none_faithful": 0.7628571428571429,
+            "none_invalid": 0,
+            "none_valid_changed": 83
+          },
+          "edited_after_gate": 39,
+          "retained_EI_wins": 30,
+          "lost_EI_wins": 6,
+          "prevented_N_new_harms": 9,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.004285714285714286,
+            "ci95": [
+              -0.012857142857142857,
+              0.005714285714285714
+            ],
+            "groups": 350,
+            "wins": 3,
+            "losses": 6,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.9214285714285714,
+            "safe": 0.99,
+            "valid": 1.0,
+            "none_n": 350,
+            "none_faithful": 0.7542857142857143,
+            "none_invalid": 0,
+            "none_valid_changed": 86
+          },
+          "edited_after_gate": 47,
+          "retained_EI_wins": 34,
+          "lost_EI_wins": 2,
+          "prevented_N_new_harms": 6,
+          "remaining_N_new_harms": 3,
+          "vs_repair": {
+            "delta": 0.0014285714285714286,
+            "ci95": [
+              -0.005714285714285714,
+              0.01
+            ],
+            "groups": 350,
+            "wins": 3,
+            "losses": 2,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.9128571428571428,
+            "safe": 0.98,
+            "valid": 1.0,
+            "none_n": 350,
+            "none_faithful": 0.7628571428571429,
+            "none_invalid": 0,
+            "none_valid_changed": 83
+          },
+          "edited_after_gate": 36,
+          "retained_EI_wins": 28,
+          "lost_EI_wins": 8,
+          "prevented_N_new_harms": 9,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.007142857142857143,
+            "ci95": [
+              -0.017142857142857144,
+              0.002857142857142857
+            ],
+            "groups": 350,
+            "wins": 3,
+            "losses": 8,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        }
+      },
+      "none_sets": {
+        "old_valid_misedit": [
+          "test_tpl_ho-00000-N",
+          "test_tpl_ho-00003-N",
+          "test_tpl_ho-00011-N",
+          "test_tpl_ho-00014-N",
+          "test_tpl_ho-00017-N",
+          "test_tpl_ho-00020-N",
+          "test_tpl_ho-00023-N",
+          "test_tpl_ho-00024-N",
+          "test_tpl_ho-00026-N",
+          "test_tpl_ho-00029-N",
+          "test_tpl_ho-00032-N",
+          "test_tpl_ho-00033-N",
+          "test_tpl_ho-00039-N",
+          "test_tpl_ho-00040-N",
+          "test_tpl_ho-00043-N",
+          "test_tpl_ho-00044-N",
+          "test_tpl_ho-00045-N",
+          "test_tpl_ho-00052-N",
+          "test_tpl_ho-00054-N",
+          "test_tpl_ho-00056-N",
+          "test_tpl_ho-00064-N",
+          "test_tpl_ho-00066-N",
+          "test_tpl_ho-00072-N",
+          "test_tpl_ho-00077-N",
+          "test_tpl_ho-00083-N",
+          "test_tpl_ho-00087-N",
+          "test_tpl_ho-00093-N",
+          "test_tpl_ho-00094-N",
+          "test_tpl_ho-00096-N",
+          "test_tpl_ho-00098-N",
+          "test_tpl_ho-00103-N",
+          "test_tpl_ho-00106-N",
+          "test_tpl_ho-00113-N",
+          "test_tpl_ho-00114-N",
+          "test_tpl_ho-00118-N",
+          "test_tpl_ho-00119-N",
+          "test_tpl_ho-00120-N",
+          "test_tpl_ho-00124-N",
+          "test_tpl_ho-00128-N",
+          "test_tpl_ho-00139-N",
+          "test_tpl_ho-00146-N",
+          "test_tpl_ho-00151-N",
+          "test_tpl_ho-00153-N",
+          "test_tpl_ho-00154-N",
+          "test_tpl_ho-00159-N",
+          "test_tpl_ho-00160-N",
+          "test_tpl_ho-00165-N",
+          "test_tpl_ho-00168-N",
+          "test_tpl_ho-00169-N",
+          "test_tpl_ho-00189-N",
+          "test_tpl_ho-00190-N",
+          "test_tpl_ho-00196-N",
+          "test_tpl_ho-00199-N",
+          "test_tpl_ho-00203-N",
+          "test_tpl_ho-00205-N",
+          "test_tpl_ho-00207-N",
+          "test_tpl_ho-00210-N",
+          "test_tpl_ho-00214-N",
+          "test_tpl_ho-00234-N",
+          "test_tpl_ho-00236-N",
+          "test_tpl_ho-00241-N",
+          "test_tpl_ho-00248-N",
+          "test_tpl_ho-00250-N",
+          "test_tpl_ho-00252-N",
+          "test_tpl_ho-00261-N",
+          "test_tpl_ho-00267-N",
+          "test_tpl_ho-00275-N",
+          "test_tpl_ho-00278-N",
+          "test_tpl_ho-00284-N",
+          "test_tpl_ho-00292-N",
+          "test_tpl_ho-00304-N",
+          "test_tpl_ho-00306-N",
+          "test_tpl_ho-00313-N",
+          "test_tpl_ho-00316-N",
+          "test_tpl_ho-00317-N",
+          "test_tpl_ho-00322-N",
+          "test_tpl_ho-00324-N",
+          "test_tpl_ho-00325-N",
+          "test_tpl_ho-00329-N",
+          "test_tpl_ho-00335-N",
+          "test_tpl_ho-00338-N",
+          "test_tpl_ho-00345-N",
+          "test_tpl_ho-00346-N"
+        ],
+        "new_harm": [
+          "test_tpl_ho-00015-N",
+          "test_tpl_ho-00035-N",
+          "test_tpl_ho-00042-N",
+          "test_tpl_ho-00142-N",
+          "test_tpl_ho-00227-N",
+          "test_tpl_ho-00263-N",
+          "test_tpl_ho-00273-N",
+          "test_tpl_ho-00314-N",
+          "test_tpl_ho-00323-N"
+        ],
+        "symbolic_failure": [
+          "test_tpl_ho-00015-N",
+          "test_tpl_ho-00035-N",
+          "test_tpl_ho-00042-N",
+          "test_tpl_ho-00098-N",
+          "test_tpl_ho-00142-N",
+          "test_tpl_ho-00189-N",
+          "test_tpl_ho-00227-N",
+          "test_tpl_ho-00263-N",
+          "test_tpl_ho-00273-N",
+          "test_tpl_ho-00314-N",
+          "test_tpl_ho-00323-N"
+        ]
+      },
+      "none_intersections": {
+        "old_valid_misedit&symbolic_failure": 2,
+        "new_harm&old_valid_misedit": 0,
+        "new_harm&symbolic_failure": 9
+      },
+      "none_union": 92,
+      "seed_diagnostics": {
+        "42": {
+          "raw_invalid": 0,
+          "consumer_unusable": 2,
+          "predicate_matches": 963,
+          "strict_matches": 943
+        },
+        "43": {
+          "raw_invalid": 0,
+          "consumer_unusable": 8,
+          "predicate_matches": 962,
+          "strict_matches": 935
+        },
+        "44": {
+          "raw_invalid": 0,
+          "consumer_unusable": 1,
+          "predicate_matches": 987,
+          "strict_matches": 985
+        }
+      }
+    },
+    "test_tool_ho": {
+      "n": 1050,
+      "groups": 350,
+      "arms": {
+        "original": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.38142857142857145,
+          "safe": 0.3914285714285714,
+          "valid": 0.819047619047619,
+          "none_n": 350,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "repaired": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.5328571428571428,
+          "safe": 0.6485714285714286,
+          "valid": 0.819047619047619,
+          "none_n": 350,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "placebo": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.38857142857142857,
+          "safe": 0.43142857142857144,
+          "valid": 0.819047619047619,
+          "none_n": 350,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "symbolic": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.9171428571428571,
+          "safe": 0.9185714285714286,
+          "valid": 0.9876190476190476,
+          "none_n": 350,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        }
+      },
+      "strata": {
+        "EI/legal=0/predicate_match=0": {
+          "n": 18,
+          "original_faithful": 0,
+          "repaired_faithful": 0,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 0,
+          "repaired_safe": 0,
+          "edited": 0,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=0/predicate_match=1": {
+          "n": 172,
+          "original_faithful": 0,
+          "repaired_faithful": 0,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 0,
+          "repaired_safe": 0,
+          "edited": 0,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=0": {
+          "n": 42,
+          "original_faithful": 25,
+          "repaired_faithful": 14,
+          "wins": 2,
+          "losses": 13,
+          "delta_pp": -26.19047619047619,
+          "original_safe": 28,
+          "repaired_safe": 18,
+          "edited": 18,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=1": {
+          "n": 468,
+          "original_faithful": 242,
+          "repaired_faithful": 359,
+          "wins": 117,
+          "losses": 0,
+          "delta_pp": 25.0,
+          "original_safe": 246,
+          "repaired_safe": 436,
+          "edited": 190,
+          "illegal_to_legal": 0
+        },
+        "N/legal=1/predicate_match=1": {
+          "n": 350,
+          "original_faithful": 350,
+          "repaired_faithful": 350,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 350,
+          "repaired_safe": 350,
+          "edited": 0,
+          "illegal_to_legal": 0
+        }
+      },
+      "agreement": {
+        "EI/support=0": {
+          "n": 11,
+          "predicate_matches": 0,
+          "strict_matches": 0,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "EI/support=1": {
+          "n": 129,
+          "predicate_matches": 88,
+          "strict_matches": 50,
+          "edited": 45,
+          "new_harms": 11
+        },
+        "EI/support=2": {
+          "n": 181,
+          "predicate_matches": 174,
+          "strict_matches": 104,
+          "edited": 44,
+          "new_harms": 2
+        },
+        "EI/support=3": {
+          "n": 379,
+          "predicate_matches": 378,
+          "strict_matches": 154,
+          "edited": 119,
+          "new_harms": 0
+        },
+        "N/support=2": {
+          "n": 2,
+          "predicate_matches": 2,
+          "strict_matches": 2,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "N/support=3": {
+          "n": 348,
+          "predicate_matches": 348,
+          "strict_matches": 348,
+          "edited": 0,
+          "new_harms": 0
+        }
+      },
+      "policies": {
+        "predicate_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.5185714285714286,
+            "safe": 0.6185714285714285,
+            "valid": 0.819047619047619,
+            "none_n": 350,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 163,
+          "retained_EI_wins": 98,
+          "lost_EI_wins": 21,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.014285714285714285,
+            "ci95": [
+              -0.03428571428571429,
+              0.004285714285714286
+            ],
+            "groups": 350,
+            "wins": 11,
+            "losses": 21,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "predicate_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.4857142857142857,
+            "safe": 0.5614285714285714,
+            "valid": 0.819047619047619,
+            "none_n": 350,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 119,
+          "retained_EI_wins": 73,
+          "lost_EI_wins": 46,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.047142857142857146,
+            "ci95": [
+              -0.07571428571428572,
+              -0.02
+            ],
+            "groups": 350,
+            "wins": 13,
+            "losses": 46,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.43714285714285717,
+            "safe": 0.4585714285714286,
+            "valid": 0.819047619047619,
+            "none_n": 350,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 51,
+          "retained_EI_wins": 41,
+          "lost_EI_wins": 78,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.09571428571428571,
+            "ci95": [
+              -0.13,
+              -0.06285714285714286
+            ],
+            "groups": 350,
+            "wins": 11,
+            "losses": 78,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.42,
+            "safe": 0.44,
+            "valid": 0.819047619047619,
+            "none_n": 350,
+            "none_faithful": 1.0,
+            "none_invalid": 0,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 34,
+          "retained_EI_wins": 27,
+          "lost_EI_wins": 92,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.11285714285714285,
+            "ci95": [
+              -0.14857142857142858,
+              -0.07714285714285714
+            ],
+            "groups": 350,
+            "wins": 13,
+            "losses": 92,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        }
+      },
+      "none_sets": {
+        "old_valid_misedit": [],
+        "new_harm": [],
+        "symbolic_failure": []
+      },
+      "none_intersections": {
+        "old_valid_misedit&symbolic_failure": 0,
+        "new_harm&old_valid_misedit": 0,
+        "new_harm&symbolic_failure": 0
+      },
+      "none_union": 0,
+      "seed_diagnostics": {
+        "42": {
+          "raw_invalid": 0,
+          "consumer_unusable": 11,
+          "predicate_matches": 990,
+          "strict_matches": 658
+        },
+        "43": {
+          "raw_invalid": 4,
+          "consumer_unusable": 115,
+          "predicate_matches": 872,
+          "strict_matches": 633
+        },
+        "44": {
+          "raw_invalid": 5,
+          "consumer_unusable": 83,
+          "predicate_matches": 804,
+          "strict_matches": 534
+        }
+      }
+    },
+    "test_struct_ho": {
+      "n": 1050,
+      "groups": 350,
+      "arms": {
+        "original": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.14285714285714285,
+          "safe": 0.15714285714285714,
+          "valid": 0.5514285714285714,
+          "none_n": 350,
+          "none_faithful": 0.9771428571428571,
+          "none_invalid": 8,
+          "none_valid_changed": 0
+        },
+        "repaired": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.27285714285714285,
+          "safe": 0.30714285714285716,
+          "valid": 0.5514285714285714,
+          "none_n": 350,
+          "none_faithful": 0.9771428571428571,
+          "none_invalid": 8,
+          "none_valid_changed": 0
+        },
+        "placebo": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.15428571428571428,
+          "safe": 0.17142857142857143,
+          "valid": 0.5514285714285714,
+          "none_n": 350,
+          "none_faithful": 0.9771428571428571,
+          "none_invalid": 8,
+          "none_valid_changed": 0
+        },
+        "symbolic": {
+          "n": 1050,
+          "constrained_n": 700,
+          "faithful": 0.9585714285714285,
+          "safe": 0.9628571428571429,
+          "valid": 0.9895238095238095,
+          "none_n": 350,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        }
+      },
+      "strata": {
+        "EI/legal=0/predicate_match=0": {
+          "n": 31,
+          "original_faithful": 0,
+          "repaired_faithful": 0,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 0,
+          "repaired_safe": 0,
+          "edited": 0,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=0/predicate_match=1": {
+          "n": 432,
+          "original_faithful": 0,
+          "repaired_faithful": 0,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 0,
+          "repaired_safe": 0,
+          "edited": 0,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=0": {
+          "n": 10,
+          "original_faithful": 2,
+          "repaired_faithful": 2,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 2,
+          "repaired_safe": 3,
+          "edited": 2,
+          "illegal_to_legal": 0
+        },
+        "EI/legal=1/predicate_match=1": {
+          "n": 227,
+          "original_faithful": 98,
+          "repaired_faithful": 189,
+          "wins": 91,
+          "losses": 0,
+          "delta_pp": 40.08810572687225,
+          "original_safe": 108,
+          "repaired_safe": 212,
+          "edited": 104,
+          "illegal_to_legal": 0
+        },
+        "N/legal=0/predicate_match=1": {
+          "n": 8,
+          "original_faithful": 0,
+          "repaired_faithful": 0,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 0,
+          "repaired_safe": 0,
+          "edited": 0,
+          "illegal_to_legal": 0
+        },
+        "N/legal=1/predicate_match=1": {
+          "n": 342,
+          "original_faithful": 342,
+          "repaired_faithful": 342,
+          "wins": 0,
+          "losses": 0,
+          "delta_pp": 0.0,
+          "original_safe": 342,
+          "repaired_safe": 342,
+          "edited": 0,
+          "illegal_to_legal": 0
+        }
+      },
+      "agreement": {
+        "EI/support=0": {
+          "n": 9,
+          "predicate_matches": 0,
+          "strict_matches": 0,
+          "edited": 0,
+          "new_harms": 0
+        },
+        "EI/support=1": {
+          "n": 104,
+          "predicate_matches": 72,
+          "strict_matches": 48,
+          "edited": 11,
+          "new_harms": 0
+        },
+        "EI/support=2": {
+          "n": 162,
+          "predicate_matches": 162,
+          "strict_matches": 79,
+          "edited": 16,
+          "new_harms": 0
+        },
+        "EI/support=3": {
+          "n": 425,
+          "predicate_matches": 425,
+          "strict_matches": 195,
+          "edited": 79,
+          "new_harms": 0
+        },
+        "N/support=3": {
+          "n": 350,
+          "predicate_matches": 350,
+          "strict_matches": 350,
+          "edited": 0,
+          "new_harms": 0
+        }
+      },
+      "policies": {
+        "predicate_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.26571428571428574,
+            "safe": 0.29285714285714287,
+            "valid": 0.5514285714285714,
+            "none_n": 350,
+            "none_faithful": 0.9771428571428571,
+            "none_invalid": 8,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 95,
+          "retained_EI_wins": 86,
+          "lost_EI_wins": 5,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.007142857142857143,
+            "ci95": [
+              -0.014285714285714285,
+              -0.0014285714285714286
+            ],
+            "groups": 350,
+            "wins": 0,
+            "losses": 5,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "predicate_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.24857142857142858,
+            "safe": 0.27,
+            "valid": 0.5514285714285714,
+            "none_n": 350,
+            "none_faithful": 0.9771428571428571,
+            "none_invalid": 8,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 79,
+          "retained_EI_wins": 74,
+          "lost_EI_wins": 17,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.024285714285714285,
+            "ci95": [
+              -0.037142857142857144,
+              -0.014285714285714285
+            ],
+            "groups": 350,
+            "wins": 0,
+            "losses": 17,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_2": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.19714285714285715,
+            "safe": 0.22,
+            "valid": 0.5514285714285714,
+            "none_n": 350,
+            "none_faithful": 0.9771428571428571,
+            "none_invalid": 8,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 44,
+          "retained_EI_wins": 38,
+          "lost_EI_wins": 53,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.07571428571428572,
+            "ci95": [
+              -0.10285714285714286,
+              -0.05142857142857143
+            ],
+            "groups": 350,
+            "wins": 0,
+            "losses": 53,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        },
+        "strict_3": {
+          "aggregate": {
+            "n": 1050,
+            "constrained_n": 700,
+            "faithful": 0.16,
+            "safe": 0.1757142857142857,
+            "valid": 0.5514285714285714,
+            "none_n": 350,
+            "none_faithful": 0.9771428571428571,
+            "none_invalid": 8,
+            "none_valid_changed": 0
+          },
+          "edited_after_gate": 13,
+          "retained_EI_wins": 12,
+          "lost_EI_wins": 79,
+          "prevented_N_new_harms": 0,
+          "remaining_N_new_harms": 0,
+          "vs_repair": {
+            "delta": -0.11285714285714285,
+            "ci95": [
+              -0.14285714285714285,
+              -0.08428571428571428
+            ],
+            "groups": 350,
+            "wins": 0,
+            "losses": 79,
+            "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+          }
+        }
+      },
+      "none_sets": {
+        "old_valid_misedit": [],
+        "new_harm": [],
+        "symbolic_failure": []
+      },
+      "none_intersections": {
+        "old_valid_misedit&symbolic_failure": 0,
+        "new_harm&old_valid_misedit": 0,
+        "new_harm&symbolic_failure": 0
+      },
+      "none_union": 0,
+      "seed_diagnostics": {
+        "42": {
+          "raw_invalid": 0,
+          "consumer_unusable": 9,
+          "predicate_matches": 1009,
+          "strict_matches": 672
+        },
+        "43": {
+          "raw_invalid": 5,
+          "consumer_unusable": 146,
+          "predicate_matches": 871,
+          "strict_matches": 532
+        },
+        "44": {
+          "raw_invalid": 0,
+          "consumer_unusable": 65,
+          "predicate_matches": 889,
+          "strict_matches": 578
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Exposed v5 historical panel; exploratory, not confirmation or a new calibrated method.",
+    "Gate anchored to seed42; seeds43/44 provide support, not selected replacement predictions.",
+    "Three separately trained compilers imply three inference costs in deployment; saved replay cost excludes these.",
+    "Predicate signature equality is sufficient for this consumer, not NL truth or complete finite-world equivalence.",
+    "Invalid raw predictions preserved; invalids cannot vote as a valid empty constraint set.",
+    "Bootstrap intervals condition on fixed weights and are not seed-variance intervals.",
+    "Fallback retains original plan; retention is not a safety guarantee."
+  ]
+}

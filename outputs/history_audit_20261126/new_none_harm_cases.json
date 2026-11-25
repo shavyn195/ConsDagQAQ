@@ -1,0 +1,1284 @@
+[
+  {
+    "sample_id": "test_tpl_ho-00015-N",
+    "group_id": "test_tpl_ho-00015",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 1,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Convert the customer churn panel into the scheduled digest for the analytics chapter. Input files land in the shared drop folder every Monday. The ordering of the workflow validation before the production run was lifted for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"Input files land in the shared drop folder every Monday.\",\"params\":{\"max_duration_hours\":7},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          420.0
+        ]
+      ],
+      [],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "repaired": [
+        "download_raw_file",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "placebo": [
+        "request_data_access",
+        "anonymize_sensitive_fields",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "symbolic": [
+        "download_raw_file",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 35,
+      "semantic_checks": 36,
+      "decision_seconds_including_symbolic": 0.0013033552095293999
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00015-N",
+        "group_id": "test_tpl_ho-00015",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00015-N",
+        "group_id": "test_tpl_ho-00015",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00015-N",
+        "group_id": "test_tpl_ho-00015",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00015-N",
+        "group_id": "test_tpl_ho-00015",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00035-N",
+    "group_id": "test_tpl_ho-00035",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 2,
+    "strict_support": 2,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Get the help-center macros analyzed and the write-up over to the compliance office. The external API call has no approval gate in this engagement. The quality cross-check and the report delivery are fully independent of each other on this request. A 4-hour window exists for the other lane only, not for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"A 4-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":4},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[{\"evidence_span\":\"A 4-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":4},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          240.0
+        ]
+      ],
+      [],
+      [
+        [
+          "deadline",
+          240.0
+        ]
+      ]
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "repaired": [
+        "download_raw_file",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "placebo": [
+        "download_raw_file",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "symbolic": [
+        "download_raw_file",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 41,
+      "semantic_checks": 42,
+      "decision_seconds_including_symbolic": 0.001937882974743843
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00035-N",
+        "group_id": "test_tpl_ho-00035",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00035-N",
+        "group_id": "test_tpl_ho-00035",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00035-N",
+        "group_id": "test_tpl_ho-00035",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00035-N",
+        "group_id": "test_tpl_ho-00035",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00042-N",
+    "group_id": "test_tpl_ho-00042",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 1,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Get the fraud alerts archive analyzed and the write-up over to the marketing team. Input files land in the shared drop folder every Monday. The workflow validation and the sandbox job are fully independent of each other on this request.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"Input files land in the shared drop folder every Monday.\",\"params\":{\"max_duration_hours\":7},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          420.0
+        ]
+      ],
+      [],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files"
+      ],
+      "repaired": [
+        "request_data_access",
+        "upload_data_asset",
+        "call_external_api",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files"
+      ],
+      "placebo": [
+        "request_data_access",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files",
+        "record_finance_approval"
+      ],
+      "symbolic": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 41,
+      "semantic_checks": 42,
+      "decision_seconds_including_symbolic": 0.0018957983702421188
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00042-N",
+        "group_id": "test_tpl_ho-00042",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00042-N",
+        "group_id": "test_tpl_ho-00042",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00042-N",
+        "group_id": "test_tpl_ho-00042",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00042-N",
+        "group_id": "test_tpl_ho-00042",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00142-N",
+    "group_id": "test_tpl_ho-00142",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 1,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Generate the working brief on the contract corpus and route it to the data governance board. Input files land in the shared drop folder every Monday. The data-asset purchase has no approval gate in this engagement. The ordering of the workflow validation before the sandbox job was lifted for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"Input files land in the shared drop folder every Monday.\",\"params\":{\"max_duration_hours\":7},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          420.0
+        ]
+      ],
+      [],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "repaired": [
+        "purchase_data_asset",
+        "mount_data_into_sandbox",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "placebo": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "validate_workflow",
+        "notify_stakeholders"
+      ],
+      "symbolic": [
+        "purchase_data_asset",
+        "mount_data_into_sandbox",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 41,
+      "semantic_checks": 42,
+      "decision_seconds_including_symbolic": 0.0019191848114132881
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00142-N",
+        "group_id": "test_tpl_ho-00142",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00142-N",
+        "group_id": "test_tpl_ho-00142",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00142-N",
+        "group_id": "test_tpl_ho-00142",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00142-N",
+        "group_id": "test_tpl_ho-00142",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00227-N",
+    "group_id": "test_tpl_ho-00227",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 2,
+    "strict_support": 2,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Walk the procurement bid sheets end to end and close the loop with the analytics chapter. The old rule tying the production run to the permission grant was removed this quarter for this engagement. A 4-hour window exists for the other lane only, not for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"A 4-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":4},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[{\"evidence_span\":\"A 4-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":4},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          240.0
+        ]
+      ],
+      [],
+      [
+        [
+          "deadline",
+          240.0
+        ]
+      ]
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "download_raw_file",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "repaired": [
+        "purchase_data_asset",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "placebo": [
+        "grant_resource_permission",
+        "download_raw_file",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "symbolic": [
+        "download_raw_file",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 41,
+      "semantic_checks": 42,
+      "decision_seconds_including_symbolic": 0.0019202763214707375
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00227-N",
+        "group_id": "test_tpl_ho-00227",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00227-N",
+        "group_id": "test_tpl_ho-00227",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00227-N",
+        "group_id": "test_tpl_ho-00227",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00227-N",
+        "group_id": "test_tpl_ho-00227",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00263-N",
+    "group_id": "test_tpl_ho-00263",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 2,
+    "strict_support": 2,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      false
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Round out the payroll adjustment files analysis for the clinical affairs unit. Field names match the catalog conventions. An old CNY 1,600 limit on this engagement was withdrawn when the budget was renewed. A 6-hour window exists for the other lane only, not for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"A 6-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":6},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[{\"evidence_span\":\"A 6-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":6},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          360.0
+        ]
+      ],
+      [],
+      [
+        [
+          "deadline",
+          360.0
+        ]
+      ]
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "repaired": [
+        "purchase_data_asset",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "placebo": [
+        "request_data_access",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "validate_workflow",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "symbolic": [
+        "purchase_data_asset",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 33,
+      "semantic_checks": 34,
+      "decision_seconds_including_symbolic": 0.0013041794300079346
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00263-N",
+        "group_id": "test_tpl_ho-00263",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00263-N",
+        "group_id": "test_tpl_ho-00263",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00263-N",
+        "group_id": "test_tpl_ho-00263",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00263-N",
+        "group_id": "test_tpl_ho-00263",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00273-N",
+    "group_id": "test_tpl_ho-00273",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 2,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      false,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      false,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Generate the working brief on the customer records and route it to the executive briefing group. The data steward rotated to a new team last month. A 5-hour window exists for the other lane only, not for this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"A 5-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":5},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"explicit\",\"type\":\"deadline\"}],\"query_state\":\"explicit\"}",
+      "43": "{\"constraints\":[{\"evidence_span\":\"A 5-hour window exists for the other lane only, not for this engagement.\",\"params\":{\"max_duration_hours\":5},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          300.0
+        ]
+      ],
+      [
+        [
+          "deadline",
+          300.0
+        ]
+      ],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "repaired": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "call_external_api",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "placebo": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "cross_check_data_quality",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "symbolic": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 46,
+      "semantic_checks": 47,
+      "decision_seconds_including_symbolic": 0.0021932190284132957
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00273-N",
+        "group_id": "test_tpl_ho-00273",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00273-N",
+        "group_id": "test_tpl_ho-00273",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00273-N",
+        "group_id": "test_tpl_ho-00273",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00273-N",
+        "group_id": "test_tpl_ho-00273",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00314-N",
+    "group_id": "test_tpl_ho-00314",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 1,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Fetch the market research panel, run the numbers, and pass the pack to the finance team. Input files land in the shared drop folder every Monday. The quality cross-check and the report delivery are fully independent of each other on this request.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"Input files land in the shared drop folder every Monday.\",\"params\":{\"max_duration_hours\":7},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          420.0
+        ]
+      ],
+      [],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "repaired": [
+        "download_raw_file",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "placebo": [
+        "request_data_access",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "symbolic": [
+        "download_raw_file",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 35,
+      "semantic_checks": 36,
+      "decision_seconds_including_symbolic": 0.0012814560905098915
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00314-N",
+        "group_id": "test_tpl_ho-00314",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00314-N",
+        "group_id": "test_tpl_ho-00314",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00314-N",
+        "group_id": "test_tpl_ho-00314",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00314-N",
+        "group_id": "test_tpl_ho-00314",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  },
+  {
+    "sample_id": "test_tpl_ho-00323-N",
+    "group_id": "test_tpl_ho-00323",
+    "split": "test_tpl_ho",
+    "variant": "none",
+    "original_legal": true,
+    "predicate_match": false,
+    "strict_match": false,
+    "predicate_support": 1,
+    "strict_support": 1,
+    "valid_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "usable_by_seed": [
+      true,
+      true,
+      true
+    ],
+    "predicate_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "strict_match_by_seed": [
+      false,
+      true,
+      true
+    ],
+    "edited": true,
+    "original_faithful": true,
+    "repaired_faithful": false,
+    "query": "Push the inventory snapshot through the pipeline and drop the result with the product team. Input files land in the shared drop folder every Monday. Nothing ties the stakeholder notification to the archival in this engagement.",
+    "raw_by_seed": {
+      "42": "{\"constraints\":[{\"evidence_span\":\"Input files land in the shared drop folder every Monday.\",\"params\":{\"max_duration_hours\":7},\"scope\":[\"role:*\"],\"severity\":\"high\",\"state\":\"implicit\",\"type\":\"deadline\"}],\"query_state\":\"implicit\"}",
+      "43": "{\"constraints\":[],\"query_state\":\"none\"}",
+      "44": "{\"constraints\":[],\"query_state\":\"none\"}"
+    },
+    "signatures": [
+      [
+        [
+          "deadline",
+          420.0
+        ]
+      ],
+      [],
+      []
+    ],
+    "gold": {
+      "constraints": [],
+      "query_state": "none"
+    },
+    "decision": {
+      "original": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "repaired": [
+        "download_raw_file",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "placebo": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "symbolic": [
+        "download_raw_file",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "compile_valid": true,
+      "usable": true,
+      "triggered": true,
+      "candidate_count": 34,
+      "semantic_checks": 35,
+      "decision_seconds_including_symbolic": 0.0016426872462034225
+    },
+    "scores": {
+      "original": {
+        "sample_id": "test_tpl_ho-00323-N",
+        "group_id": "test_tpl_ho-00323",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": true,
+        "extra_changes": 0,
+        "deviates_from_default": false
+      },
+      "repaired": {
+        "sample_id": "test_tpl_ho-00323-N",
+        "group_id": "test_tpl_ho-00323",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "placebo": {
+        "sample_id": "test_tpl_ho-00323-N",
+        "group_id": "test_tpl_ho-00323",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      },
+      "symbolic": {
+        "sample_id": "test_tpl_ho-00323-N",
+        "group_id": "test_tpl_ho-00323",
+        "variant": "none",
+        "planned": true,
+        "completed": true,
+        "safe_success": true,
+        "faithful_success": false,
+        "extra_changes": 1,
+        "deviates_from_default": true
+      }
+    }
+  }
+]
