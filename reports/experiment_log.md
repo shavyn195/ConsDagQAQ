@@ -497,3 +497,4 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - core匹配条件下的scope错误约束次数：tool合计607（budget282/privacy325），struct546（budget359/privacy187）；scope错误记录Jaccard为.760/.771。执行失败任务组交集/并集则1/14、0/37。前者是重复出现的记录问题，后者提示两seed行为失败敏感性；不能将此写成完整优化机制证明。当前符号规划器不消费scope/state/severity/evidence，不能将记录差异夸大成这些字段的执行因果贡献。
 - 本机专项测试11/11通过；服务器独立CPU目录未装pytest，直接调用9个无fixture回归函数均通过。服务器复算JSON与本机逐字节相同（SHA-256 `8ab240c16d339f4730653de7f8fb3f8ccc0fecacaca6d21707be476bd51e0f03`），且10份预测双侧哈希一致。详见`reports/v6_execution_record_diagnostic_20261125.md`及`v6_seed_diagnostic_server_parity.json`。
 - 等seed44完成再做三seed聚合。正式H4仍指定DeepSeek，当前小模型N警报不替代H4；v6 PE与语义有效性仍未解决，不能从高执行率宣称CCF-B已具备完整证据。没有重新开启定时任务。
+- 同步状态：上述分析及报告已本地提交`5007d4a`，服务器隔离CPU审计目录已同步并复算成功。GitHub推送连续两次失败（连接重置、443端口超时），尚未确认远端分支更新；这是仓库同步阻塞，不影响既有GPU训练。下轮先重试推送，不能将此提交表述为已推送。
