@@ -1,0 +1,209 @@
+{
+  "utc": "2026-11-25T13:17:06.690546+00:00",
+  "source_sha256": "ece3c7b2643d42054ba619563c4bbfbc87528d98516c356ba04e20606b05c150",
+  "release_files_verified": 155,
+  "scope": "development diagnostic; train/dev only; no test selection",
+  "candidate_domain": "stage assignments x finish permutations x canonical optional ordered subsets",
+  "splits": {
+    "train": {
+      "data_sha256": "f909353cb7bbe34e28615cb373b01af00ab57435da42f0af32a0afd1801ce601",
+      "selection": "sha256(group_id) ascending",
+      "counts": {
+        "groups": 256,
+        "subset_labels": 776,
+        "multiple_min_edit_plans": 350,
+        "solver_min_edit_disagreement": 0,
+        "solver_not_in_canonical_domain": 0,
+        "representative_plan_changed": 0,
+        "edited_slots": 372,
+        "unattributed_edited_slots": 0,
+        "groups_with_multiple_full_optima": 176,
+        "duplicate_controls_requiring_edit": 372,
+        "duplicate_controls_empty_loo": 372
+      },
+      "totals": {
+        "candidate_plans": 106920
+      },
+      "tie_examples": [
+        {
+          "sample_id": "train-03751-E",
+          "types": [
+            "budget",
+            "deadline"
+          ],
+          "optimal_count": 2,
+          "first_plans": [
+            [
+              "download_raw_file",
+              "run_production_mode",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ],
+            [
+              "download_raw_file",
+              "call_external_api",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ]
+          ]
+        },
+        {
+          "sample_id": "train-04343-E",
+          "types": [
+            "deadline"
+          ],
+          "optimal_count": 2,
+          "first_plans": [
+            [
+              "download_raw_file",
+              "run_production_mode",
+              "aggregate_dataset_stats",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ],
+            [
+              "download_raw_file",
+              "call_external_api",
+              "aggregate_dataset_stats",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ]
+          ]
+        },
+        {
+          "sample_id": "train-02601-E",
+          "types": [
+            "deadline"
+          ],
+          "optimal_count": 2,
+          "first_plans": [
+            [
+              "purchase_data_asset",
+              "upload_data_asset",
+              "run_production_mode",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "notify_stakeholders"
+            ],
+            [
+              "download_raw_file",
+              "upload_data_asset",
+              "call_external_api",
+              "generate_analysis_report",
+              "deliver_report_to_team",
+              "notify_stakeholders"
+            ]
+          ]
+        }
+      ],
+      "lattice_sha256": "b369fe1ac5798c5c73c92d947c0b57dfed17b3519c5fab6ca54f5ba7a7aacd5c"
+    },
+    "dev": {
+      "data_sha256": "dded8d43239a88ae656a8b925107abd2749e88c1534654c4885d1cf8208183d5",
+      "selection": "sha256(group_id) ascending",
+      "counts": {
+        "groups": 300,
+        "subset_labels": 922,
+        "multiple_min_edit_plans": 414,
+        "solver_min_edit_disagreement": 0,
+        "solver_not_in_canonical_domain": 0,
+        "representative_plan_changed": 0,
+        "edited_slots": 446,
+        "unattributed_edited_slots": 0,
+        "groups_with_multiple_full_optima": 216,
+        "duplicate_controls_requiring_edit": 444,
+        "duplicate_controls_empty_loo": 444
+      },
+      "totals": {
+        "candidate_plans": 129438
+      },
+      "tie_examples": [
+        {
+          "sample_id": "dev-00044-E",
+          "types": [
+            "deadline"
+          ],
+          "optimal_count": 2,
+          "first_plans": [
+            [
+              "download_raw_file",
+              "call_external_api",
+              "generate_analysis_report",
+              "notify_stakeholders",
+              "archive_project_files"
+            ],
+            [
+              "purchase_data_asset",
+              "call_external_api",
+              "generate_analysis_report",
+              "notify_stakeholders",
+              "archive_project_files"
+            ]
+          ]
+        },
+        {
+          "sample_id": "dev-00061-E",
+          "types": [
+            "tool_auth",
+            "order"
+          ],
+          "optimal_count": 3,
+          "first_plans": [
+            [
+              "download_raw_file",
+              "mount_data_into_sandbox",
+              "run_production_mode",
+              "aggregate_dataset_stats",
+              "generate_analysis_report",
+              "cross_check_data_quality",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ],
+            [
+              "download_raw_file",
+              "mount_data_into_sandbox",
+              "execute_sandbox_job",
+              "aggregate_dataset_stats",
+              "generate_analysis_report",
+              "cross_check_data_quality",
+              "deliver_report_to_team",
+              "archive_project_files"
+            ]
+          ]
+        },
+        {
+          "sample_id": "dev-00227-E",
+          "types": [
+            "budget",
+            "order"
+          ],
+          "optimal_count": 4,
+          "first_plans": [
+            [
+              "download_raw_file",
+              "validate_workflow",
+              "run_production_mode",
+              "generate_analysis_report",
+              "archive_project_files",
+              "notify_stakeholders"
+            ],
+            [
+              "download_raw_file",
+              "execute_sandbox_job",
+              "generate_analysis_report",
+              "archive_project_files",
+              "notify_stakeholders"
+            ]
+          ]
+        }
+      ],
+      "lattice_sha256": "369e20bb8fcd4098daac4bc6fd3adc822c7da02ff83c8211f9481b5702179070"
+    }
+  },
+  "elapsed_seconds": 19.876976056024432,
+  "status": "completed"
+}

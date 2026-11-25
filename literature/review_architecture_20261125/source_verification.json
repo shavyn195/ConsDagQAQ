@@ -1,0 +1,315 @@
+[
+  {
+    "id": "2609.27421",
+    "url": "https://arxiv.org/abs/2609.27421",
+    "http_status": 200,
+    "title": [
+      "Counterfactual Constraint-Conditioned On-Policy Distillation for Multi-Constraint Instruction Following"
+    ],
+    "authors": [
+      "Zheng, Yanzhao",
+      "Yu, Yuanqiang",
+      "Xu, Tianze",
+      "Ma, Chao",
+      "Zhang, Zhentao",
+      "Zhu, Jihuai",
+      "Dong, Baohua",
+      "Zhu, Hangcheng",
+      "Huang, Ruohui"
+    ],
+    "date": [
+      "2026/09/23"
+    ],
+    "abstract": "Abstract: Multi-constraint instruction following requires a model to respond to a query under many simultaneously active constraints. Even strong instruction-tuned models still routinely violate some of them. Existing approaches either augment supervision with sequence- or token-level RL rewards from external verifiers or learned graders, or use on-policy distillation (OPD) against a single full-context teacher whose probability mass becomes diluted as more constraints become simultaneously active. We propose CC-OPD (Counterfactual Constraint-Conditioned On-Policy Distillation), which inverts the standard supervision-generation direction in distillation. Rather than enriching the teacher with information beyond what the student sees, CC-OPD ablates each constraint from the teacher's conditioning in turn, and constructs the per-constraint signal from the resulting per-token probability differentials. The resulting per-token leave-one-out log-likelihood shifts are summed, clipped, and added to the vanilla OPD reward as a token-level shaping term. All shaping terms are obtained from the frozen teacher, without an external verifier during distillation, and the reward equals vanilla OPD wherever the aggregate shift is zero. Across two Qwen model pairs and seven benchmarks, CC-OPD achieves the highest average among all evaluated student-training methods. A 1.5B student trained with CC-OPD surpasses its own 7B RL-trained teacher on the MulDimIF benchmark.",
+    "html_sha256": "622f9ac3475f3f58cb09ebb25f67f7ad1f5ac4f69dfdda9bab682f679555b388"
+  },
+  {
+    "id": "2412.08920",
+    "url": "https://arxiv.org/abs/2412.08920",
+    "http_status": 200,
+    "title": [
+      "From Text to Trajectory: Exploring Complex Constraint Representation and Decomposition in Safe Reinforcement Learning"
+    ],
+    "authors": [
+      "Dong, Pusen",
+      "Zhu, Tianchen",
+      "Qiu, Yue",
+      "Zhou, Haoyi",
+      "Li, Jianxin"
+    ],
+    "date": [
+      "2024/12/12"
+    ],
+    "abstract": "Abstract: Safe reinforcement learning (RL) requires the agent to finish a given task while obeying specific constraints. Giving constraints in natural language form has great potential for practical scenarios due to its flexible transfer capability and accessibility. Previous safe RL methods with natural language constraints typically need to design cost functions manually for each constraint, which requires domain expertise and lacks flexibility. In this paper, we harness the dual role of text in this task, using it not only to provide constraint but also as a training signal. We introduce the Trajectory-level Textual Constraints Translator (TTCT) to replace the manually designed cost function. Our empirical results demonstrate that TTCT effectively comprehends textual constraint and trajectory, and the policies trained by TTCT can achieve a lower violation rate than the standard cost function. Extra studies are conducted to demonstrate that the TTCT has zero-shot transfer capability to adapt to constraint-shift environments.",
+    "html_sha256": "83b905ab56e57d1726f2a3c6cc3855437dd85bdd449bb566a8ee0f84452b98b6"
+  },
+  {
+    "id": "2605.11706",
+    "url": "https://arxiv.org/abs/2605.11706",
+    "http_status": 200,
+    "title": [
+      "GRAFT: Graph-Tokenized LLMs for Tool Planning"
+    ],
+    "authors": [
+      "Gao, Xinyi",
+      "Ren, Xinyu",
+      "Yu, Junliang",
+      "Chen, Tong",
+      "Nguyen, Quoc Viet Hung",
+      "Yin, Hongzhi"
+    ],
+    "date": [
+      "2026/05/12"
+    ],
+    "abstract": "Abstract: Large language models (LLMs) are increasingly used to complete complex tasks by selecting and coordinating external tools across multiple steps. This requires aligning tool choices with subtask intent while satisfying directional execution dependencies among tools. To do this, existing methods model these dependencies as tool graphs and incorporate the graphs with LLMs through retrieval, serialization, or prompt-level injection. However, these external graph-use strategies all follow a matching paradigm, which often fails to align tool choices with the underlying subtask structure, producing semantically plausible plans that violate graph constraints. This issue is further exacerbated by error accumulation, where an early incorrect tool selection shifts the plan into an invalid graph state and causes subsequent predictions to drift away from the valid execution path. To address these challenges, we propose GRAFT, a graph-tokenized language model framework for dependency-aware tool planning. GRAFT internalizes the tool graph by mapping each tool node to a dedicated special token and learning directed tool dependencies within the representation space. It further introduces on-policy tool context distillation, training the model on its own sampled trajectories while distilling stepwise planning signals. Experiments show that GRAFT achieves state-of-the-art performance in exact sequence matching and dependency legality, supporting more reliable LLM tool planning in complex workflows.",
+    "html_sha256": "8c055b7e1ef4366396940d64d2f1249a6763dbcc278535d8dc4fba6b7b3bb4c1"
+  },
+  {
+    "id": "2608.22149",
+    "url": "https://arxiv.org/abs/2608.22149",
+    "http_status": 200,
+    "title": [
+      "Meta-Ctrl: Guaranteed Plan Generation by Decoupling Syntactic and Semantic Constraints"
+    ],
+    "authors": [
+      "Yidou-Weng, Gwen",
+      "Sun, Edward",
+      "Ma, Tianyi",
+      "Dogan, Metin Alp",
+      "Wang, Benjie",
+      "Peng, Allen",
+      "Broeck, Guy Van den",
+      "Cui, Yuchen"
+    ],
+    "date": [
+      "2026/08/23"
+    ],
+    "abstract": "Abstract: LLMs generate fluent plans for robots but routinely violate the syntactic and se8mantic constraints they must satisfy to execute, and existing remedies trade formal guarantees against plan quality: soft methods (affordance scoring, grounded decoding) give no guarantee, while symbolic planners (LLM+P) discard the LM's commonsense. We propose \\textbf{Meta-Ctrl}, a constrained-decoding framework that guarantees the encoded constraints while preserving the base LM's plan quality. Meta-Ctrl introduces \\emph{meta-tokens}---a compact vocabulary of grounded actions---enforcing syntax at the token level and semantics (preconditions, goals, ordering) at the action level, an exact factorization that cuts the memory of constrained decoding from over 107TB to under 2GB. With it, a small open-weight LM becomes competitive where it otherwise sits at the bottom of the leaderboard: on WAH-NL under the LoTa-Bench protocol it reaches the highest reported subgoal success rate, exceeding GPT-4's, with consistent gains across the Embodied Agent Interface. We further demonstrate it on a real tabletop robot, where every generated plan satisfies its preconditions and goals by construction. Project website: this https URL",
+    "html_sha256": "aaa9fa446e3aa2ddcc0c9b4d5fc1950ae4ae38d6ff0b791a88c9eb8b7b7067bc"
+  },
+  {
+    "id": "2611.20569",
+    "url": "https://arxiv.org/abs/2611.20569",
+    "http_status": 200,
+    "title": [
+      "ToolGraph as a Q-Function for Test-Time Scaling of Tool-Use Agents"
+    ],
+    "authors": [
+      "Shen, Ke",
+      "Bhaumik, Ankita",
+      "Dong, Li",
+      "Liu, Shengjie",
+      "Li, Shuzhen",
+      "Janvekar, Naveed Ahmed"
+    ],
+    "date": [
+      "2026/11/16"
+    ],
+    "abstract": "Abstract: Tool-use agents must chain interdependent calls, yet which outputs satisfy which later inputs in a deployed catalog is not something a general-purpose language model reliably infers from tool descriptions alone. We compile that structure once into a reusable external representation. ToolGraph is a directed, weighted dependency graph over a tool catalog: parameter matching and interventional probes, which execute a candidate chain with and without its proposed predecessor, propose edges whose evidence is combined into an edge confidence. Prior work uses such graphs to retrieve tools, search for tool paths, or score the next call. We ask instead whether the same structure can supply a \\emph{multi-step} value by composing graph paths into a goal-conditioned action value \\(Q(s,a,g)\\). We study three estimators (dynamic programming over entity sets, a GraphSAGE estimator distilled from it, and an LLM scorer conditioned on graph evidence) plus a verbalizer that returns action--goal feedback to the agent, which keeps final action selection. Across two tool-use benchmarks and three backbones, we compare value ranking against personalized-PageRank retrieval over the identical graph, and against direct and reflective agents. Composition pays off only when the estimator also reads the concrete state: the LLM estimator improves on PageRank in every benchmark--backbone setting, by \\(8.3\\) points on average, while the two purely structural estimators fall below it, because a value defined over tool types cannot separate a correct tool called with a wrong argument. Graph construction is a one-time cost; we report it separately rather than assume it amortized away (at our scale it is comparable to request-time cost) and sweep four knobs controlling how much graph evidence to expose against success and tokens.",
+    "html_sha256": "f3fe94cfaa99eb40556dd7d72523ed2a6e88d6f0017e68ca37dca5a7cf6336d5"
+  },
+  {
+    "id": "2507.02833",
+    "url": "https://arxiv.org/abs/2507.02833",
+    "http_status": 200,
+    "title": [
+      "Generalizing Verifiable Instruction Following"
+    ],
+    "authors": [
+      "Pyatkin, Valentina",
+      "Malik, Saumya",
+      "Graf, Victoria",
+      "Ivison, Hamish",
+      "Huang, Shengyi",
+      "Dasigi, Pradeep",
+      "Lambert, Nathan",
+      "Hajishirzi, Hannaneh"
+    ],
+    "date": [
+      "2025/07/03"
+    ],
+    "abstract": "Abstract: A crucial factor for successful human and AI interaction is the ability of language models or chatbots to follow human instructions precisely. A common feature of instructions are output constraints like ``only answer with yes or no\" or ``mention the word `abrakadabra' at least 3 times\" that the user adds to craft a more useful answer. Even today's strongest models struggle with fulfilling such constraints. We find that most models strongly overfit on a small set of verifiable constraints from the benchmarks that test these abilities, a skill called precise instruction following, and are not able to generalize well to unseen output constraints. We introduce a new benchmark, IFBench, to evaluate precise instruction following generalization on 58 new, diverse, and challenging verifiable out-of-domain constraints. In addition, we perform an extensive analysis of how and on what data models can be trained to improve precise instruction following generalization. Specifically, we carefully design constraint verification modules and show that reinforcement learning with verifiable rewards (RLVR) significantly improves instruction following. In addition to IFBench, we release 29 additional new hand-annotated training constraints and verification functions, RLVR training prompts, and code.",
+    "html_sha256": "768f12044e4167f572df513aeee477a86ee5dc446f0e99239a46184b2f9dcbe8"
+  },
+  {
+    "id": "2603.15309",
+    "url": "https://arxiv.org/abs/2603.15309",
+    "http_status": 200,
+    "title": [
+      "CCTU: A Benchmark for Tool Use under Complex Constraints"
+    ],
+    "authors": [
+      "Ye, Junjie",
+      "Zhang, Guoqiang",
+      "Fu, Wenjie",
+      "Li, Zelin",
+      "Gui, Tao",
+      "Zhang, Qi",
+      "Huang, Xuanjing"
+    ],
+    "date": [
+      "2026/03/16"
+    ],
+    "abstract": "Abstract: Solving problems through tool use under explicit constraints constitutes a highly challenging yet unavoidable scenario for large language models (LLMs), requiring capabilities such as function calling, instruction following, and self-refinement. However, progress has been hindered by the absence of dedicated evaluations. To address this, we introduce CCTU, a benchmark for evaluating LLM tool use under complex constraints. CCTU is grounded in a taxonomy of 12 constraint categories spanning four dimensions (i.e., resource, behavior, toolset, and response). The benchmark comprises 200 carefully curated and challenging test cases across diverse tool-use scenarios, each involving an average of seven constraint types and an average prompt length exceeding 4,700 tokens. To enable reliable evaluation, we develop an executable constraint validation module that performs step-level validation and enforces compliance during multi-turn interactions between models and their environments. We evaluate nine state-of-the-art LLMs in both thinking and non-thinking modes. Results indicate that when strict adherence to all constraints is required, no model achieves a task completion rate above 20\\%. Further analysis reveals that models violate constraints in over 50\\% of cases, particularly in the resource and response dimensions. Moreover, LLMs demonstrate limited capacity for self-refinement even after receiving detailed feedback on constraint violations, highlighting a critical bottleneck in the development of robust tool-use agents. To facilitate future research, we release the data and code.",
+    "html_sha256": "83fb548a0da9e746346749a961b5d52bbb0c6a0f8f68a9f9ca8fd44e2dc5f516"
+  },
+  {
+    "id": "2610.09219",
+    "url": "https://arxiv.org/abs/2610.09219",
+    "http_status": 200,
+    "title": [
+      "CM-DPO: Constraint-Margin Direct Preference Optimization for LLM Planning"
+    ],
+    "authors": [
+      "Karanjai, Rabimba",
+      "Gu, Qun",
+      "Madhavarao, Hemanth Hegadehalli",
+      "Sun, Wenhuan",
+      "Yu, Xiaojiao",
+      "Hada, Suryabhan Singh",
+      "George, Libin N.",
+      "Kona, Uma",
+      "Williamson, Richard",
+      "Pang, Linsey",
+      "Mehrotra, Prakhar"
+    ],
+    "date": [
+      "2026/10/06"
+    ],
+    "abstract": "Abstract: Direct Preference Optimization (DPO) treats all constraint violations equally: a $1 budget overshoot and a $1,000 overshoot induce the same training signal. It is also susceptible to length and style bias when preference pairs come from different model families. We introduce Constraint-Margin DPO (CM-DPO), which replaces DPO's binary preference signal with a continuous margin derived from a deterministic symbolic verifier and scaled by violation severity. Hard and soft constraints are separated through a lexicographic objective, ensuring hard constraints are never traded off against preferences. To supply CM-DPO with bias-reduced training pairs, we generate preference data through procedurally generated constraint profiles (DCCG) and minimal-edit distillation from a reasoning teacher (RT-MED), within a framework we call SynPlan-R. On TravelPlanner, NaturalPlan, and out-of-distribution PlanBench, an 8B model fine-tuned with CM-DPO achieves 89.2% pass rate and 93.4% solve rate, matching multi-agent systems at 13x lower latency while outperforming GPT-4o on unseen Blocksworld by 9.2 points.",
+    "html_sha256": "513a52f0be25a4ae741d5dc1400422968e849f2cde9b183ef0a152f36c13d8d9"
+  },
+  {
+    "id": "2603.14730",
+    "url": "https://arxiv.org/abs/2603.14730",
+    "http_status": 200,
+    "title": [
+      "GNNVerifier: Graph-based Verifier for LLM Task Planning"
+    ],
+    "authors": [
+      "Hao, Yu",
+      "Wang, Qiuyu",
+      "Yang, Cheng",
+      "Li, Yawen",
+      "Zhang, Zhiqiang",
+      "Shi, Chuan"
+    ],
+    "date": [
+      "2026/03/16"
+    ],
+    "abstract": "Abstract: Large language models (LLMs) facilitate the development of autonomous agents. As a core component of such agents, task planning aims to decompose complex natural language requests into concrete, solvable sub-tasks. Since LLM-generated plans are frequently prone to hallucinations and sensitive to long-context prom-pts, recent research has introduced plan verifiers to identify and correct potential flaws. However, most existing approaches still rely on an LLM as the verifier via additional prompting for plan review or self-reflection. LLM-based verifiers can be misled by plausible narration and struggle to detect failures caused by structural relations across steps, such as type mismatches, missing intermediates, or broken dependencies. To address these limitations, we propose a graph-based verifier for LLM task planning. Specifically, the proposed method has four major components: Firstly, we represent a plan as a directed graph with enriched attributes, where nodes denote sub-tasks and edges encode execution order and dependency constraints. Secondly, a graph neural network (GNN) then performs structural evaluation and diagnosis, producing a graph-level plausibility score for plan acceptance as well as node/edge-level risk scores to localize erroneous regions. Thirdly, we construct controllable perturbations from ground truth plan graphs, and automatically generate training data with fine-grained annotations. Finally, guided by the feedback from our GNN verifier, we enable an LLM to conduct local edits (e.g., tool replacement or insertion) to correct the plan when the graph-level score is insufficient. Extensive experiments across diverse datasets, backbone LLMs, and planners demonstrate that our GNNVerifier achieves significant gains in improving plan quality. Our data and code is available at this https URL .",
+    "html_sha256": "f8a9effaec2ef2dc3edd318061bb4651db347250be43bc053c6c00b5aede1bbe"
+  },
+  {
+    "id": "2106.03051",
+    "url": "https://arxiv.org/abs/2106.03051",
+    "http_status": 200,
+    "title": [
+      "ScheduleNet: Learn to solve multi-agent scheduling problems with reinforcement learning"
+    ],
+    "authors": [
+      "Park, Junyoung",
+      "Bakhtiyar, Sanjar",
+      "Park, Jinkyoo"
+    ],
+    "date": [
+      "2021/06/06"
+    ],
+    "abstract": "Abstract: We propose ScheduleNet, a RL-based real-time scheduler, that can solve various types of multi-agent scheduling problems. We formulate these problems as a semi-MDP with episodic reward (makespan) and learn ScheduleNet, a decentralized decision-making policy that can effectively coordinate multiple agents to complete tasks. The decision making procedure of ScheduleNet includes: (1) representing the state of a scheduling problem with the agent-task graph, (2) extracting node embeddings for agent and tasks nodes, the important relational information among agents and tasks, by employing the type-aware graph attention (TGA), and (3) computing the assignment probability with the computed node embeddings. We validate the effectiveness of ScheduleNet as a general learning-based scheduler for solving various types of multi-agent scheduling tasks, including multiple salesman traveling problem (mTSP) and job shop scheduling problem (JSP).",
+    "html_sha256": "3998083d2bcb9333a9422b4b0c0d5838f75ecd7e6a1139cf429118df1f871b64"
+  },
+  {
+    "id": "2602.19633",
+    "url": "https://arxiv.org/abs/2602.19633",
+    "http_status": 200,
+    "title": [
+      "TAPE: Tool-Guided Adaptive Planning and Constrained Execution in Language Model Agents"
+    ],
+    "authors": [
+      "Jeong, Jongwon",
+      "Kim, Jungtaek",
+      "Lee, Kangwook"
+    ],
+    "date": [
+      "2026/02/23"
+    ],
+    "abstract": "Abstract: Language Model (LM) agents have demonstrated remarkable capabilities in solving tasks that require multiple interactions with the environment. However, they remain vulnerable in environments where a single error often leads to irrecoverable failure, particularly under strict feasibility constraints. We systematically analyze existing agent frameworks, identifying imperfect planning and stochastic execution as the primary causes. To address these challenges, we propose Tool-guided Adaptive Planning with constrained Execution (TAPE). TAPE enhances planning capability by aggregating multiple plans into a graph and employing an external solver to identify a feasible path. During execution, TAPE employs constrained decoding to reduce sampling noise, while adaptively re-planning whenever environmental feedback deviates from the intended state. Experiments across Sokoban, ALFWorld, MuSiQue, and GSM8K-Hard demonstrate that TAPE consistently outperforms existing frameworks, with particularly large gains on hard settings, improving success rates by 21.0 percentage points on hard settings on average, and by 20.0 percentage points for weaker base models on average. Code and data available at here.",
+    "html_sha256": "157845dcf9ce0e2f6aa6a79615add2579f60157bf41b7a08f2977f6e6c8ba354"
+  },
+  {
+    "id": "2611.10627",
+    "url": "https://arxiv.org/abs/2611.10627",
+    "http_status": 200,
+    "title": [
+      "CONSTRAINER: Promptable Graph-Structured Optimization via Constraint Conditioning"
+    ],
+    "authors": [
+      "Memon, Zeeshan",
+      "Tian, Mingke",
+      "Song, Xinyuan",
+      "Jin, Hongwei",
+      "Kim, Kibaek",
+      "Zhao, Liang"
+    ],
+    "date": [
+      "2026/11/07"
+    ],
+    "abstract": "Abstract: Neural methods for graph-structured optimization have achieved strong performance within individual problem classes, but are typically trained for fixed formulations, limiting reuse across related problem variants. Recent progress in foundation models has motivated shared neural backbones trained across multiple graph-structured optimization tasks; however, existing approaches primarily share instance-level representations while treating feasibility constraints implicitly. A key source of shared structure across constrained optimization problems is the constraint set itself, which often exhibits substantial overlap across tasks. We propose CONSTRAINER, a constraint-conditioned framework for graph-structured optimization that treats constraints as structured inputs. Constraint specifications are parsed into operator graphs and encoded using a graph neural network to produce invariant constraint embeddings, which condition a shared backbone model for solution prediction. We evaluate our approach on power grid optimization and mixed-integer linear programming problems, where it shows improved solution optimality and enables efficient transfer learning and generalization compared to baseline methods.",
+    "html_sha256": "8e1efbac229bcfc966294f82e7d371dad72c86aac060df2d6b9b9efd6b9cd833"
+  },
+  {
+    "id": "2610.23190",
+    "url": "https://arxiv.org/abs/2610.23190",
+    "http_status": 200,
+    "title": [
+      "LangNCO: Compiling Natural-Language Constraints into Inference-Time Interventions for Neural Combinatorial Optimization"
+    ],
+    "authors": [
+      "Ohigashi, Hironori"
+    ],
+    "date": [
+      "2026/10/16"
+    ],
+    "abstract": "Abstract: Neural combinatorial optimization (NCO) rapidly produces high-quality solutions for problem structures encountered during training, but operational requirements may change after deployment and be communicated in natural language. We propose LangNCO, a framework that compiles instance-specific requirements into structured inference-time interventions for a frozen NCO solver, without changing the pretrained policy's architecture, learned input representation, or parameters. A pretrained LLM serves as a replaceable semantic front end, translating each requirement into a schema-validated domain-specific language (DSL) rule set. A deterministic Rule Executor applies the rules as nonexpansive hard action masks. Because local masking prevents immediate violations but does not ensure that a complete feasible continuation remains reachable, Critical-Offset Decoding extracts rule-referenced critical nodes and reallocates part of a fixed rollout budget to multi-strength biased rollouts. Using controlled task-specific language to isolate solver adaptation from open-ended language robustness, we evaluate a CVRP policy on road closures, time windows, vehicle assignments, visit-order requirements, all pairwise combinations, and twelve additional constraint types. LangNCO achieves 100% feasibility on the four primary datasets with mean reference gaps of 1.63--3.26%, 97.33--100% feasibility when separately generated rules are composed for pairwise constraints, and 98.67% feasibility across the additional constraints. These results demonstrate modular post-training adaptation of a frozen NCO solver through inspectable language-derived rules, without retraining.",
+    "html_sha256": "6e6589f119ab9a59d7ace13db43ea9af234887d43bd9edbd1723c21c20ba5c54"
+  },
+  {
+    "id": "2010.16011",
+    "url": "https://arxiv.org/abs/2010.16011",
+    "http_status": 200,
+    "title": [
+      "POMO: Policy Optimization with Multiple Optima for Reinforcement Learning"
+    ],
+    "authors": [
+      "Kwon, Yeong-Dae",
+      "Choo, Jinho",
+      "Kim, Byoungjip",
+      "Yoon, Iljoo",
+      "Gwon, Youngjune",
+      "Min, Seungjai"
+    ],
+    "date": [
+      "2020/10/30"
+    ],
+    "abstract": "Abstract: In neural combinatorial optimization (CO), reinforcement learning (RL) can turn a deep neural net into a fast, powerful heuristic solver of NP-hard problems. This approach has a great potential in practical applications because it allows near-optimal solutions to be found without expert guides armed with substantial domain knowledge. We introduce Policy Optimization with Multiple Optima (POMO), an end-to-end approach for building such a heuristic solver. POMO is applicable to a wide range of CO problems. It is designed to exploit the symmetries in the representation of a CO solution. POMO uses a modified REINFORCE algorithm that forces diverse rollouts towards all optimal solutions. Empirically, the low-variance baseline of POMO makes RL training fast and stable, and it is more resistant to local minima compared to previous approaches. We also introduce a new augmentation-based inference method, which accompanies POMO nicely. We demonstrate the effectiveness of POMO by solving three popular NP-hard problems, namely, traveling salesman (TSP), capacitated vehicle routing (CVRP), and 0-1 knapsack (KP). For all three, our solver based on POMO shows a significant improvement in performance over all recent learned heuristics. In particular, we achieve the optimality gap of 0.14% with TSP100 while reducing inference time by more than an order of magnitude.",
+    "html_sha256": "1fcd77e5851232d3daebab2c4a94c56328451ac8a151331cb8c1dd6853350fc8"
+  },
+  {
+    "id": "1803.08475",
+    "url": "https://arxiv.org/abs/1803.08475",
+    "http_status": 200,
+    "title": [
+      "Attention, Learn to Solve Routing Problems!"
+    ],
+    "authors": [
+      "Kool, Wouter",
+      "van Hoof, Herke",
+      "Welling, Max"
+    ],
+    "date": [
+      "2018/03/22"
+    ],
+    "abstract": "Abstract: The recently presented idea to learn heuristics for combinatorial optimization problems is promising as it can save costly development. However, to push this idea towards practical implementation, we need better models and better ways of training. We contribute in both directions: we propose a model based on attention layers with benefits over the Pointer Network and we show how to train this model using REINFORCE with a simple baseline based on a deterministic greedy rollout, which we find is more efficient than using a value function. We significantly improve over recent learned heuristics for the Travelling Salesman Problem (TSP), getting close to optimal results for problems up to 100 nodes. With the same hyperparameters, we learn strong heuristics for two variants of the Vehicle Routing Problem (VRP), the Orienteering Problem (OP) and (a stochastic variant of) the Prize Collecting TSP (PCTSP), outperforming a wide range of baselines and getting results close to highly optimized and specialized algorithms.",
+    "html_sha256": "39e067cbb4f583c4eaabbe06e6a72696fe51ade63fc2253828d57fa3d1bc0192"
+  }
+]

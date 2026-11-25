@@ -1,0 +1,58 @@
+{
+  "status": "specified_not_launched",
+  "purpose": "Separate supervision-set effects from graph architecture effects before scaling",
+  "baseline_version": "v6 frozen; new development pilot only",
+  "encoder": "Qwen3-0.6B frozen object encoder; promote to 1.7B only after pilot",
+  "max_model_size_default": "4B",
+  "seed_pilot": 42,
+  "seeds_confirmation": [42, 43, 44],
+  "arms": [
+    {"name": "dense_single", "attention": "dense", "target": "one_optimal_plan"},
+    {"name": "dense_set", "attention": "dense", "target": "prefix_conditional_optimal_action_set"},
+    {"name": "graph_single", "attention": "typed_graph", "target": "one_optimal_plan"},
+    {"name": "graph_set", "attention": "typed_graph", "target": "prefix_conditional_optimal_action_set"}
+  ],
+  "fixed": {
+    "public_inputs": ["tool_specs", "workflow_structure", "constraint_record", "execution_prefix"],
+    "exclude_inputs": ["witness_plan", "gold_future_actions", "attribution_labels", "gold_constraints_in_e2e"],
+    "raw_query_in_oracle_record_pilot": false,
+    "head_width": 128,
+    "head_layers": 2,
+    "head_attention_heads": 4,
+    "learning_rate": 0.0003,
+    "optimizer": "AdamW",
+    "max_grad_norm": 1.0,
+    "finite_checks": ["loss", "gradients", "parameters"],
+    "precision_head": "fp32",
+    "batch_size_prefixes": 64,
+    "max_updates_per_arm": 1000,
+    "prefix_sampling": "same train-derived optimal prefixes for all arms",
+    "deployment_masks": "identical structural masks; no gold or optimal-continuation masks",
+    "decoding": "greedy with fixed maximum calls",
+    "early_stopping": false
+  },
+  "selection": {
+    "train_groups": "fixed hash selection of original train groups; no test groups",
+    "development": "original dev plus separate train-derived rename/number/redundancy/no-op probes",
+    "final_test": "new frozen confirmation set after mechanism selection; existing v6 test is retrospective"
+  },
+  "budget": {
+    "pilot_arm_runs": 4,
+    "maximum_additional_gpu_hours": 4,
+    "maximum_additional_api_calls": 0,
+    "calibration": "time 100 updates and count encoder/label-generation costs before admission",
+    "must_not_preempt_existing_queue": true
+  },
+  "gates": {
+    "continue_to_three_seeds": "dev challenge faithful +5pp vs strongest same-budget baseline; N deviation <= baseline+1pp; no mask exclusion of accepted plans",
+    "stop_scaling": "gain <3pp or fails entirely after parameter/name interventions; retain negative result",
+    "graph_retention": "incremental gain over dense_set, not merely over dense_single",
+    "contrastive_branch": "only after set-target baseline; feasibility-checked multi-positive targets; same candidates and full backward through both scores"
+  },
+  "implementation_state": {
+    "solver_supervision_audit": "implemented and run on server",
+    "prefix_conditional_set_targets": "implemented and tested",
+    "set_probability_loss": "implemented and tested",
+    "graph_policy_and_full_trainer": "not yet implemented; config is not a runnable training claim"
+  }
+}
