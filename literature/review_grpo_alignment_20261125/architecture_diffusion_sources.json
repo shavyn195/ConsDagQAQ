@@ -1,0 +1,240 @@
+[
+  {
+    "id": "http://arxiv.org/abs/2601.12979v3",
+    "title": "The Bitter Lesson of Diffusion Language Models for Agentic Workflows: A Comprehensive Reality Check",
+    "published": "2026-01-19T11:45:39Z",
+    "updated": "2026-04-24T07:46:42Z",
+    "summary": "The pursuit of real-time agentic interaction has driven interest in Diffusion-based Large Language Models (dLLMs) as alternatives to auto-regressive backbones, promising to break the sequential latency bottleneck. However, does such efficiency gains translate into effective agentic behavior? In this work, we present a comprehensive evaluation of dLLMs (e.g., LLaDA, Dream) across two distinct agentic paradigms: Embodied Agents (requiring long-horizon planning) and Tool-Calling Agents (requiring precise formatting). Contrary to the efficiency hype, our results on Agentboard and BFCL reveal a \"bitter lesson\": current dLLMs fail to serve as reliable agentic backbones, frequently leading to systematically failure. (1) In Embodied settings, dLLMs suffer repeated attempts, failing to branch under temporal feedback. (2) In Tool-Calling settings, dLLMs fail to maintain symbolic precision (e.g. strict JSON schemas) under diffusion noise. To assess the potential of dLLMs in agentic workflows, we introduce DiffuAgent, a multi-agent evaluation framework that integrates dLLMs as plug-and-play cognitive cores. Our analysis shows that dLLMs are effective in non-causal roles (e.g., memory summarization and tool selection) but require the incorporation of causal, precise, and logically grounded reasoning mechanisms into the denoising process to be viable for agentic tasks.",
+    "authors": [
+      "Qingyu Lu",
+      "Liang Ding",
+      "Kanjian Zhang",
+      "Jinxia Zhang",
+      "Dacheng Tao"
+    ],
+    "comment": "ACL 2026 - Main Conference",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2110.01056v1",
+    "title": "Dr.Aid: Supporting Data-governance Rule Compliance for Decentralized Collaboration in an Automated Way",
+    "published": "2021-10-03T17:59:28Z",
+    "updated": "2021-10-03T17:59:28Z",
+    "summary": "Collaboration across institutional boundaries is widespread and increasing today. It depends on federations sharing data that often have governance rules or external regulations restricting their use. However, the handling of data governance rules (aka. data-use policies) remains manual, time-consuming and error-prone, limiting the rate at which collaborations can form and respond to challenges and opportunities, inhibiting citizen science and reducing data providers' trust in compliance. Using an automated system to facilitate compliance handling reduces substantially the time needed for such non-mission work, thereby accelerating collaboration and improving productivity. We present a framework, Dr.Aid, that helps individuals, organisations and federations comply with data rules, using automation to track which rules are applicable as data is passed between processes and as derived data is generated. It encodes data-governance rules using a formal language and performs reasoning on multi-input-multi-output data-flow graphs in decentralised contexts. We test its power and utility by working with users performing cyclone tracking and earthquake modelling to support mitigation and emergency response. We query standard provenance traces to detach Dr.Aid from details of the tools and systems they are using, as these inevitably vary across members of a federation and through time. We evaluate the model in three aspects by encoding real-life data-use policies from diverse fields, showing its capability for real-world usage and its advantages compared with traditional frameworks. We argue that this approach will lead to more agile, more productive and more trustworthy collaborations and show that the approach can be adopted incrementally. This, in-turn, will allow more appropriate data policies to emerge opening up new forms of collaboration.",
+    "authors": [
+      "Rui Zhao",
+      "Malcolm Atkinson",
+      "Petros Papapanagiotou",
+      "Federica Magnoni",
+      "Jacques Fleuriot"
+    ],
+    "comment": "Accepted for The 24th ACM Conference on Computer-Supported Cooperative Work and Social Computing (CSCW)",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2604.23626v1",
+    "title": "GraphPlanner: Graph Memory-Augmented Agentic Routing for Multi-Agent LLMs",
+    "published": "2026-04-26T09:38:32Z",
+    "updated": "2026-04-26T09:38:32Z",
+    "summary": "LLM routing has achieved promising results in integrating the strengths of diverse models while balancing efficiency and performance. However, to support more realistic and challenging applications, routing must extend into agentic LLM settings, where task planning, multi-round cooperation among heterogeneous agents, and memory utilization are indispensable. To address this gap, we propose GraphPlanner, a heterogeneous graph memory-augmented agentic router for multi-agent LLMs that generates routing workflows for each query and supports both inductive and transductive inference. GraphPlanner formulates workflow generation as a Markov Decision Process (MDP), where at each step it selects both the LLM backbone and the agent role, including Planner, Executor, and Summarizer. By leveraging a heterogeneous graph, denoted as GARNet, to capture interaction memories among queries, agents, and responses, GraphPlanner integrates historical memory and workflow memory into richer state representations. The entire pipeline is optimized with reinforcement learning, jointly improving task-specific performance and computational efficiency. We evaluate GraphPlanner across 14 diverse LLM tasks and demonstrate that: (1) GraphPlanner outperforms strong single-round and multi-round routers, improving accuracy by up to 9.3% while reducing GPU cost from 186.26 GiB to 1.04 GiB; (2) GraphPlanner generalizes robustly to unseen tasks and LLMs, exhibiting strong zero-shot capabilities; and (3) GraphPlanner effectively leverages historical memories, supporting both inductive and transductive inference for more adaptive routing. Our code for GraphPlanner is released at https://github.com/ulab-uiuc/GraphPlanner.",
+    "authors": [
+      "Tao Feng",
+      "Haozhen Zhang",
+      "Zijie Lei",
+      "Peixuan Han",
+      "Jiaxuan You"
+    ],
+    "comment": null,
+    "journal_ref": "ICLR 2026"
+  },
+  {
+    "id": "http://arxiv.org/abs/2606.05728v1",
+    "title": "DiG-Plan: Mitigating Early Commitment for Tool-Graph Planning via Diffusion Guidance",
+    "published": "2026-06-04T05:37:31Z",
+    "updated": "2026-06-04T05:37:31Z",
+    "summary": "Generating executable tool plans requires selecting appropriate subsets from tool libraries, a combinatorial search problem with an exponentially large solution space. However, we identify a critical misalignment in predominant approaches: standard autoregressive (AR) decoding suffers from early commitment, where initial token choices rigidly constrain the search trajectory. A controlled study shows that masked denoising raises Pass@10 solution coverage from 0.320 to 0.943 over AR sampling under matched compute. Motivated by this, we propose DiG-Plan, a framework that decouples combinatorial exploration from structural refinement. DiG-Plan employs a diffusion-based proposer to generate diverse tool sets via iterative refinement, followed by an AR refiner for dependency prediction. On TaskBench, DiG-Plan improves over AR baselines by a 10% relative margin, with the largest gains on complex compositional tasks; API-Bank results show that the propose-refine-select design remains effective across domains. Code is available at https://github.com/puddingyeah/DiG-Plan.",
+    "authors": [
+      "Yansi Li",
+      "Zhuosheng Zhang"
+    ],
+    "comment": "Accepted at IJCAI-ECAI 2026. This is an author preprint; the final version will appear in the IJCAI Proceedings",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2205.09991v2",
+    "title": "Planning with Diffusion for Flexible Behavior Synthesis",
+    "published": "2022-05-20T07:02:03Z",
+    "updated": "2022-12-21T01:06:18Z",
+    "summary": "Model-based reinforcement learning methods often use learning only for the purpose of estimating an approximate dynamics model, offloading the rest of the decision-making work to classical trajectory optimizers. While conceptually simple, this combination has a number of empirical shortcomings, suggesting that learned models may not be well-suited to standard trajectory optimization. In this paper, we consider what it would look like to fold as much of the trajectory optimization pipeline as possible into the modeling problem, such that sampling from the model and planning with it become nearly identical. The core of our technical approach lies in a diffusion probabilistic model that plans by iteratively denoising trajectories. We show how classifier-guided sampling and image inpainting can be reinterpreted as coherent planning strategies, explore the unusual and useful properties of diffusion-based planning methods, and demonstrate the effectiveness of our framework in control settings that emphasize long-horizon decision-making and test-time flexibility.",
+    "authors": [
+      "Michael Janner",
+      "Yilun Du",
+      "Joshua B. Tenenbaum",
+      "Sergey Levine"
+    ],
+    "comment": "ICML 2022 (long talk). Project page and code at https://diffusion-planning.github.io/",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2609.29421v2",
+    "title": "Rufus-Air: An Open LLM Post-Training Recipe",
+    "published": "2026-09-24T11:45:03Z",
+    "updated": "2026-09-25T05:52:41Z",
+    "summary": "Rufus-Air is an open and reproducible post-training recipe on GLM-4.5-Air-Base (106B-A12B), organized as a serial pipeline of eight stages: SFT, Reasoning RL, Coding RL, Instruction-Following RL, General Agent, Coding Agent, Search Agent, and RLHF. We document the data, reward design, infrastructure, stage order, and stagewise results needed to reproduce the recipe. Stages progress from basic to advanced capabilities and from hard, verifiable rewards to softer judge-based signals. Training builds on open-source components and public data, much of it used as released, without new human annotation or an in-house distillation teacher. Our main findings are that (i) diverse, high-quality SFT establishes a strong capability floor; (ii) difficulty filtering keeps RL prompts within a productive learning range; (iii) reward reliability provides a practical principle for ordering stages; and (iv) infrastructure and engineering choices are part of the recipe, not just an implementation detail. Rufus-Air improves over the official GLM-4.5-Air post-trained release and is competitive with similarly sized open models.",
+    "authors": [
+      "Chia-Yuan Chang",
+      "Renyuan Cheng",
+      "Rui Feng",
+      "Xiaotian Han",
+      "Yuan He",
+      "Hongye Jin",
+      "Linwei Li",
+      "Shiyang Li",
+      "Fenglin Liu",
+      "Xin Liu",
+      "Priyanka Nigam",
+      "Haoyang Wen",
+      "Zhenghao Xu",
+      "Zhuocheng Xu",
+      "Bing Yin",
+      "Qingyu Yin",
+      "Chao Zhang",
+      "Rongzhi Zhang",
+      "Zhihan Zhang",
+      "Zixuan Zhang",
+      "Zixuan Zhang",
+      "Tuo Zhao"
+    ],
+    "comment": "48 pages, 9 figures, 20 tables. Authors are listed alphabetically by surname; all contributed while at Amazon. The two authors named Zixuan Zhang are different people",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2610.10786v1",
+    "title": "Plan-and-Patch: Diffusion Language Models for Agentic Planning",
+    "published": "2026-10-07T18:45:45Z",
+    "updated": "2026-10-07T18:45:45Z",
+    "summary": "Planning is increasingly important for long-horizon agents, where successful execution requires coordinating subgoals, tool use, and intermediate outcomes over many steps. Yet assumptions made during planning may be invalidated by the environment, tools may return unexpected results, or actions may fail. Effective agents must therefore not only generate plans, but also revise them. Such revisions often affect only part of a plan, leaving the preceding and subsequent structure intact. Rather than regenerate the entire plan and risk unnecessary changes, repair can regenerate the affected region conditioned on the preserved prefix and suffix. We introduce Plan-and-Patch, a plan-and-act framework in which a diffusion language model (dLLM) generates a structured, program-like plan through parallel unmasking and repairs it by filling in selected regions while keeping the surrounding steps fixed. We compare DreamReasoner-8B and Qwen3-8B as diffusion and autoregressive (AR) planners. On Natural Plan without task-specific training, diffusion (53.7%) achieves nearly twice the plan repair success rate of AR (27.0%). After task-specific training on agentic benchmarks, ALFWorld and TextCraft, the planners achieve similar observed success in plan generation, while diffusion reduces mean plan-generation latency by 39-46% relative to AR. Our results show that Plan-and-Patch provides a framework for faster plan generation and effective plan repair in long-horizon agents.",
+    "authors": [
+      "Syamantak Kumar",
+      "Jiang Guo",
+      "Hassan Hamad",
+      "Hideo Kobayashi",
+      "Yi Xiang",
+      "Yezhou Yang",
+      "Yanjun Qi",
+      "Daniele Bonadiman",
+      "Jiarong Jiang"
+    ],
+    "comment": null,
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2503.18813v2",
+    "title": "Defeating Prompt Injections by Design",
+    "published": "2025-03-24T15:54:10Z",
+    "updated": "2025-06-24T08:05:33Z",
+    "summary": "Large Language Models (LLMs) are increasingly deployed in agentic systems that interact with an untrusted environment. However, LLM agents are vulnerable to prompt injection attacks when handling untrusted data. In this paper we propose CaMeL, a robust defense that creates a protective system layer around the LLM, securing it even when underlying models are susceptible to attacks. To operate, CaMeL explicitly extracts the control and data flows from the (trusted) query; therefore, the untrusted data retrieved by the LLM can never impact the program flow. To further improve security, CaMeL uses a notion of a capability to prevent the exfiltration of private data over unauthorized data flows by enforcing security policies when tools are called. We demonstrate effectiveness of CaMeL by solving $77\\%$ of tasks with provable security (compared to $84\\%$ with an undefended system) in AgentDojo. We release CaMeL at https://github.com/google-research/camel-prompt-injection.",
+    "authors": [
+      "Edoardo Debenedetti",
+      "Ilia Shumailov",
+      "Tianqi Fan",
+      "Jamie Hayes",
+      "Nicholas Carlini",
+      "Daniel Fabian",
+      "Christoph Kern",
+      "Chongyang Shi",
+      "Andreas Terzis",
+      "Florian Tramèr"
+    ],
+    "comment": "Updated version with newer models and link to the code",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2303.04137v5",
+    "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+    "published": "2023-03-07T18:50:03Z",
+    "updated": "2024-03-14T04:36:31Z",
+    "summary": "This paper introduces Diffusion Policy, a new way of generating robot behavior by representing a robot's visuomotor policy as a conditional denoising diffusion process. We benchmark Diffusion Policy across 12 different tasks from 4 different robot manipulation benchmarks and find that it consistently outperforms existing state-of-the-art robot learning methods with an average improvement of 46.9%. Diffusion Policy learns the gradient of the action-distribution score function and iteratively optimizes with respect to this gradient field during inference via a series of stochastic Langevin dynamics steps. We find that the diffusion formulation yields powerful advantages when used for robot policies, including gracefully handling multimodal action distributions, being suitable for high-dimensional action spaces, and exhibiting impressive training stability. To fully unlock the potential of diffusion models for visuomotor policy learning on physical robots, this paper presents a set of key technical contributions including the incorporation of receding horizon control, visual conditioning, and the time-series diffusion transformer. We hope this work will help motivate a new generation of policy learning techniques that are able to leverage the powerful generative modeling capabilities of diffusion models. Code, data, and training details is publicly available diffusion-policy.cs.columbia.edu",
+    "authors": [
+      "Cheng Chi",
+      "Zhenjia Xu",
+      "Siyuan Feng",
+      "Eric Cousineau",
+      "Yilun Du",
+      "Benjamin Burchfiel",
+      "Russ Tedrake",
+      "Shuran Song"
+    ],
+    "comment": "An extended journal version of the original RSS2023 paper",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2411.02322v2",
+    "title": "LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation",
+    "published": "2024-11-04T17:47:15Z",
+    "updated": "2025-03-01T02:44:51Z",
+    "summary": "Directed acyclic graphs (DAGs) serve as crucial data representations in domains such as hardware synthesis and compiler/program optimization for computing systems. DAG generative models facilitate the creation of synthetic DAGs, which can be used for benchmarking computing systems while preserving intellectual property. However, generating realistic DAGs is challenging due to their inherent directional and logical dependencies. This paper introduces LayerDAG, an autoregressive diffusion model, to address these challenges. LayerDAG decouples the strong node dependencies into manageable units that can be processed sequentially. By interpreting the partial order of nodes as a sequence of bipartite graphs, LayerDAG leverages autoregressive generation to model directional dependencies and employs diffusion models to capture logical dependencies within each bipartite graph. Comparative analyses demonstrate that LayerDAG outperforms existing DAG generative models in both expressiveness and generalization, particularly for generating large-scale DAGs with up to 400 nodes-a critical scenario for system benchmarking. Extensive experiments on both synthetic and real-world flow graphs from various computing platforms show that LayerDAG generates valid DAGs with superior statistical properties and benchmarking performance. The synthetic DAGs generated by LayerDAG enhance the training of ML-based surrogate models, resulting in improved accuracy in predicting performance metrics of real-world DAGs across diverse computing platforms.",
+    "authors": [
+      "Mufei Li",
+      "Viraj Shitole",
+      "Eli Chien",
+      "Changhai Man",
+      "Zhaodong Wang",
+      "Srinivas Sridharan",
+      "Ying Zhang",
+      "Tushar Krishna",
+      "Pan Li"
+    ],
+    "comment": "Accepted by ICLR 2025 (Spotlight); Code available at https://github.com/Graph-COM/LayerDAG",
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2405.04235v2",
+    "title": "LTLDoG: Satisfying Temporally-Extended Symbolic Constraints for Safe Diffusion-based Planning",
+    "published": "2024-05-07T11:54:22Z",
+    "updated": "2024-09-30T08:42:00Z",
+    "summary": "Operating effectively in complex environments while complying with specified constraints is crucial for the safe and successful deployment of robots that interact with and operate around people. In this work, we focus on generating long-horizon trajectories that adhere to novel static and temporally-extended constraints/instructions at test time. We propose a data-driven diffusion-based framework, LTLDoG, that modifies the inference steps of the reverse process given an instruction specified using finite linear temporal logic ($\\text{LTL}_f$). LTLDoG leverages a satisfaction value function on $\\text{LTL}_f$ and guides the sampling steps using its gradient field. This value function can also be trained to generalize to new instructions not observed during training, enabling flexible test-time adaptability. Experiments in robot navigation and manipulation illustrate that the method is able to generate trajectories that satisfy formulae that specify obstacle avoidance and visitation sequences. Code and supplementary material are available online at https://github.com/clear-nus/ltldog.",
+    "authors": [
+      "Zeyu Feng",
+      "Hao Luan",
+      "Pranav Goyal",
+      "Harold Soh"
+    ],
+    "comment": null,
+    "journal_ref": "in IEEE Robotics and Automation Letters, vol. 9, no. 10, pp. 8571-8578, Oct. 2024"
+  },
+  {
+    "id": "http://arxiv.org/abs/2610.15177v1",
+    "title": "Only What You've Signed up For: Secure Workflows with Constrained Diffusion Agents",
+    "published": "2026-10-10T20:58:01Z",
+    "updated": "2026-10-10T20:58:01Z",
+    "summary": "As agentic AI systems take on increasingly complex and consequential tasks, securing them against prompt injection becomes critical. Existing defenses often rely on detecting or reasoning about injected malicious instructions and can therefore remain vulnerable to adaptive attacks that optimize the injection itself. Diffusion language models (dLLMs), an emerging framework for language generation, offer a new opportunity for security enforcement: by iteratively refining their sequence wide predictions, they enable broader-scope constraint enforcement throughout generation. This paper introduces Policy-Constrained Diffusion Agents (CoDA), a framework that enforces task dependent security policies directly within the denoising process of diffusion language models. At each denoising step, CoDA projects token distributions onto a policy-compliant set, maintaining constraint satisfaction throughout generation. We evaluate CoDA across state-of-the-art diffusion language model families under both static and adaptive prompt-injection attacks. Results demonstrate substantial reductions in attack success rate with competitive task utility and practical inference overhead.",
+    "authors": [
+      "Michael Cardei",
+      "Anjun Hu",
+      "Chenrui Ma",
+      "Francesco Pinto",
+      "Chawin Sitawarin",
+      "Chulin Xie",
+      "Ferdinando Fioretto"
+    ],
+    "comment": null,
+    "journal_ref": null
+  },
+  {
+    "id": "http://arxiv.org/abs/2603.02669v1",
+    "title": "IMR-LLM: Industrial Multi-Robot Task Planning and Program Generation using Large Language Models",
+    "published": "2026-03-03T06:55:27Z",
+    "updated": "2026-03-03T06:55:27Z",
+    "summary": "In modern industrial production, multiple robots often collaborate to complete complex manufacturing tasks. Large language models (LLMs), with their strong reasoning capabilities, have shown potential in coordinating robots for simple household and manipulation tasks. However, in industrial scenarios, stricter sequential constraints and more complex dependencies within tasks present new challenges for LLMs. To address this, we propose IMR-LLM, a novel LLM-driven Industrial Multi-Robot task planning and program generation framework. Specifically, we utilize LLMs to assist in constructing disjunctive graphs and employ deterministic solving methods to obtain a feasible and efficient high-level task plan. Based on this, we use a process tree to guide LLMs to generate executable low-level programs. Additionally, we create IMR-Bench, a challenging benchmark that encompasses multi-robot industrial tasks across three levels of complexity. Experimental results indicate that our method significantly surpasses existing methods across all evaluation metrics.",
+    "authors": [
+      "Xiangyu Su",
+      "Juzhan Xu",
+      "Oliver van Kaick",
+      "Kai Xu",
+      "Ruizhen Hu"
+    ],
+    "comment": null,
+    "journal_ref": null
+  }
+]

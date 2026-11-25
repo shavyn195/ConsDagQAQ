@@ -1,0 +1,417 @@
+{
+  "retrieved_utc": "2026-11-25",
+  "entries": [
+    {
+      "id": "2504.11468v1",
+      "url": "https://arxiv.org/abs/2504.11468v1",
+      "title": "SFT or RL? An Early Investigation into Training R1-Like Reasoning Large Vision-Language Models",
+      "authors": [
+        "Hardy Chen",
+        "Haoqin Tu",
+        "Fali Wang",
+        "Hui Liu",
+        "Xianfeng Tang",
+        "Xinya Du",
+        "Yuyin Zhou",
+        "Cihang Xie"
+      ],
+      "published": "2025-04-10T16:54:05Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "This work revisits the dominant supervised fine-tuning (SFT) then reinforcement learning (RL) paradigm for training Large Vision-Language Models (LVLMs), and reveals a key finding: SFT can significantly undermine subsequent RL by inducing ``pseudo reasoning paths'' imitated from expert models. While these paths may resemble the native reasoning paths of RL models, they often involve prolonged, hesitant, less informative steps, and incorrect reasoning. To systematically study this effect, we introduce VLAA-Thinking, a new multimodal dataset designed to support reasoning in LVLMs. Constructed via a six-step pipeline involving captioning, reasoning distillation, answer rewrite and verification, VLAA-Thinking comprises high-quality, step-by-step visual reasoning traces for SFT, along with a more challenging RL split from the same data source. Using this dataset, we conduct extensive experiments comparing SFT, RL and their combinations. Results show that while SFT helps models learn reasoning formats, it often locks aligned models into imitative, rigid reasoning modes that impede further learning. In contrast, building on the Group Relative Policy Optimization (GRPO) with a novel mixed reward module integrating both perception and cognition signals, our RL approach fosters more genuine, adaptive reasoning behavior. Notably, our model VLAA-Thinker, based on Qwen2.5VL 3B, achieves top-1 performance on Open LMM Reasoning Leaderboard (https://huggingface.co/spaces/opencompass/Open_LMM_Reasoning_Leaderboard) among 4B scale LVLMs, surpassing the previous state-of-the-art by 1.8%. We hope our findings provide valuable insights in developing reasoning-capable LVLMs and can inform future research in this area."
+    },
+    {
+      "id": "2510.00977v3",
+      "url": "https://arxiv.org/abs/2510.00977v3",
+      "title": "It Takes Two: Your GRPO Is Secretly DPO",
+      "authors": [
+        "Yihong Wu",
+        "Liheng Ma",
+        "Lei Ding",
+        "Muzhi Li",
+        "Xinyu Wang",
+        "Kejia Chen",
+        "Zhan Su",
+        "Zhanguang Zhang",
+        "Chenyang Huang",
+        "Yingxue Zhang",
+        "Mark Coates",
+        "Jian-Yun Nie"
+      ],
+      "published": "2025-10-01T14:52:11Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "GRPO has emerged as a prominent reinforcement learning algorithm for post-training LLMs. Unlike critic-based methods, GRPO computes advantages by estimating the \\emph{value baselines} from group-level statistics, eliminating the need for a critic network. Consequently, the prevailing view emphasizes the necessity of large group sizes, which are assumed to yield more accurate statistical estimates. In this paper, we propose a different view that the efficacy of GRPO stems from its implicit contrastive objective in the optimization, which helps reduce variance via the control variate method. This makes GRPO structurally related to preference learning methods such as DPO. This perspective motivates 2-GRPO, a minimal group-size variant that constructs contrastive signals with only two rollouts. We provide a rigorous theoretical analysis of 2-GRPO and empirically validate its effectiveness: 2-GRPO retains $97.6\\%$ of the performance of 16-GRPO, while requiring only $12.5\\%$ of the rollouts and $21\\%$ of the training time."
+    },
+    {
+      "id": "2609.07081v1",
+      "url": "https://arxiv.org/abs/2609.07081v1",
+      "title": "SupGRPO: Enhancing GRPO with Matching-based Online SFT for Text Spotting",
+      "authors": [
+        "Xudong Xie",
+        "Yuzhe Li",
+        "Jing Shi",
+        "Zhifei Zhang",
+        "Curtis Wigington",
+        "Zhaowen Wang"
+      ],
+      "published": "2026-09-07T06:11:48Z",
+      "comment": "Accepted by ECCV 2026",
+      "journal_ref": null,
+      "abstract": "Text spotting requires both accurate text recognition and precise spatial localization. Current specialised spotters excel at predicting tight bounding boxes in natural scenes, but falter on complex or artistic text, whereas multimodal large language models (MLLMs) possess strong recognition capabilities yet remain weak at localisation. To equip the text spotter with general and powerful recognition capabilities and to maximize its localization ability, we explore two MLLM-based fine-tuning methods: Supervised Fine-Tuning (SFT) and reinforcement learning fine-tuning based on Group Relative Policy Optimisation (GRPO). An interesting finding is that SFT is less effective than GRPO at enhancing recognition, while GRPO is less effective than SFT at enhancing detection. To compensate for each other's shortcomings, we introduce a joint training strategy, SupGRPO, which simultaneously optimizes the model using both SFT and GRPO. SupGRPO employs the specially designed reward functions and develops a matching-based online SFT applied solely to coordinate tokens. It both mitigates the reward sparsity problem of GRPO and avoids the instance order dependency problem of SFT. To evaluate particularly challenging cases, we curate ATS, a dataset for artistic text spotting. Experiments demonstrate that SupGRPO improves both text recognition and detection, and attains superior performance. Our code and dataset will be released at https://github.com/Psycho-9/SupGRPO."
+    },
+    {
+      "id": "2602.10815v1",
+      "url": "https://arxiv.org/abs/2602.10815v1",
+      "title": "Why Does RL Generalize Better Than SFT? A Data-Centric Perspective on VLM Post-Training",
+      "authors": [
+        "Aojun Lu",
+        "Tao Feng",
+        "Hangjie Yuan",
+        "Wei Li",
+        "Yanan Sun"
+      ],
+      "published": "2026-02-11T12:55:15Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "The adaptation of large-scale Vision-Language Models (VLMs) through post-training reveals a pronounced generalization gap: models fine-tuned with Reinforcement Learning (RL) consistently achieve superior out-of-distribution (OOD) performance compared to those trained with Supervised Fine-Tuning (SFT). This paper posits a data-centric explanation for this phenomenon, contending that RL's generalization advantage arises from an implicit data filtering mechanism that inherently prioritizes medium-difficulty training samples. To test this hypothesis, we systematically evaluate the OOD generalization of SFT models across training datasets of varying difficulty levels. Our results confirm that data difficulty is a critical factor, revealing that training on hard samples significantly degrades OOD performance. Motivated by this finding, we introduce Difficulty-Curated SFT (DC-SFT), a straightforward method that explicitly filters the training set based on sample difficulty. Experiments show that DC-SFT not only substantially enhances OOD generalization over standard SFT, but also surpasses the performance of RL-based training, all while providing greater stability and computational efficiency. This work offers a data-centric account of the OOD generalization gap in VLMs and establishes a more efficient pathway to achieving robust generalization. Code is available at https://github.com/byyx666/DC-SFT."
+    },
+    {
+      "id": "2604.28123v4",
+      "url": "https://arxiv.org/abs/2604.28123v4",
+      "title": "Beyond SFT-to-RL: Pre-alignment via Black-Box On-Policy Distillation for Multimodal RL",
+      "authors": [
+        "Sudong Wang",
+        "Weiquan Huang",
+        "Xiaomin Yu",
+        "Zuhao Yang",
+        "Hehai Lin",
+        "Keming Wu",
+        "Chaojun Xiao",
+        "Chen Chen",
+        "Wenxuan Wang",
+        "Beier Zhu",
+        "Yunjian Zhang",
+        "Chengwei Qin"
+      ],
+      "published": "2026-04-30T17:12:53Z",
+      "comment": "NeurIPS 2026",
+      "journal_ref": null,
+      "abstract": "The standard post-training recipe for large multimodal models (LMMs) applies supervised fine-tuning (SFT) on curated demonstrations followed by reinforcement learning with verifiable rewards (RLVR). However, SFT introduces distributional drift that neither preserves the model's original capabilities nor faithfully matches the supervision distribution. This problem is further amplified in multimodal reasoning, where perception errors and reasoning failures follow distinct drift patterns that compound during subsequent RL. We introduce PRISM, a three-stage pipeline that mitigates this drift by inserting an explicit distribution-alignment stage between SFT and RLVR. Building on the principle of on-policy distillation (OPD), PRISM casts alignment as a black-box, response-level adversarial game between the policy and a Mixture-of-Experts (MoE) discriminator with dedicated perception and reasoning experts, providing disentangled corrective signals that steer the policy toward the supervision distribution without requiring access to teacher logits. While 1.26M public demonstrations suffice for broad SFT initialization, distribution alignment demands higher-fidelity supervision; we therefore curate 113K additional demonstrations from Gemini 3 Flash, featuring dense visual grounding and step-by-step reasoning on the hardest unsolved problems. Experiments on Qwen3-VL show that PRISM consistently improves downstream RLVR performance across multiple RL algorithms (GRPO, DAPO, GSPO) and diverse multimodal benchmarks, improving average accuracy by +4.4 and +6.0 points over the SFT-to-RLVR baseline on 4B and 8B, respectively. Our code, data, and model checkpoints are publicly available at https://github.com/XIAO4579/PRISM."
+    },
+    {
+      "id": "2511.06722v1",
+      "url": "https://arxiv.org/abs/2511.06722v1",
+      "title": "Revisiting the Data Sampling in Multimodal Post-training from a Difficulty-Distinguish View",
+      "authors": [
+        "Jianyu Qi",
+        "Ding Zou",
+        "Wenrui Yan",
+        "Rui Ma",
+        "Jiaxu Li",
+        "Zhijie Zheng",
+        "Zhiguo Yang",
+        "Rongchang Zhao"
+      ],
+      "published": "2025-11-10T05:31:59Z",
+      "comment": "Accpeted by AAAI 2026",
+      "journal_ref": null,
+      "abstract": "Recent advances in Multimodal Large Language Models (MLLMs) have spurred significant progress in Chain-of-Thought (CoT) reasoning. Building on the success of Deepseek-R1, researchers extended multimodal reasoning to post-training paradigms based on reinforcement learning (RL), focusing predominantly on mathematical datasets. However, existing post-training paradigms tend to neglect two critical aspects: (1) The lack of quantifiable difficulty metrics capable of strategically screening samples for post-training optimization. (2) Suboptimal post-training paradigms that fail to jointly optimize perception and reasoning capabilities. To address this gap, we propose two novel difficulty-aware sampling strategies: Progressive Image Semantic Masking (PISM) quantifies sample hardness through systematic image degradation, while Cross-Modality Attention Balance (CMAB) assesses cross-modal interaction complexity via attention distribution analysis. Leveraging these metrics, we design a hierarchical training framework that incorporates both GRPO-only and SFT+GRPO hybrid training paradigms, and evaluate them across six benchmark datasets. Experiments demonstrate consistent superiority of GRPO applied to difficulty-stratified samples compared to conventional SFT+GRPO pipelines, indicating that strategic data sampling can obviate the need for supervised fine-tuning while improving model accuracy. Our code will be released at https://github.com/qijianyu277/DifficultySampling."
+    },
+    {
+      "id": "2604.16557v2",
+      "url": "https://arxiv.org/abs/2604.16557v2",
+      "title": "S-GRPO: Unified Post-Training for Large Vision-Language Models",
+      "authors": [
+        "Yuming Yan",
+        "Kai Tang",
+        "Sihong Chen",
+        "Ke Xu",
+        "Dan Hu",
+        "Qun Yu",
+        "Pengfei Hu"
+      ],
+      "published": "2026-04-17T08:39:07Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "Current post-training methodologies for adapting Large Vision-Language Models (LVLMs) generally fall into two paradigms: Supervised Fine-Tuning (SFT) and Reinforcement Learning (RL). Despite their prevalence, both approaches suffer from inefficiencies when applied in isolation. SFT forces the model's generation along a single expert trajectory, often inducing catastrophic forgetting of general multimodal capabilities due to distributional shifts. Conversely, RL explores multiple generated trajectories but frequently encounters optimization collapse - a cold-start problem where an unaligned model fails to spontaneously sample any domain-valid trajectories in sparse-reward visual tasks. In this paper, we propose Supervised Group Relative Policy Optimization (S-GRPO), a unified post-training framework that integrates the guidance of imitation learning into the multi-trajectory exploration of preference optimization. Tailored for direct-generation visual tasks, S-GRPO introduces Conditional Ground-Truth Trajectory Injection (CGI). When a binary verifier detects a complete exploratory failure within a sampled group of trajectories, CGI injects the verified ground-truth trajectory into the candidate pool. By assigning a deterministic maximal reward to this injected anchor, S-GRPO enforces a positive signal within the group-relative advantage estimation. This mechanism reformulates the supervised learning objective as a high-advantage component of the policy gradient, compelling the model to dynamically balance between exploiting the expert trajectory and exploring novel visual concepts. Theoretical analysis and empirical results demonstrate that S-GRPO gracefully bridges the gap between SFT and RL, drastically accelerates convergence, and achieves superior domain adaptation while preserving the base model's general-purpose capabilities."
+    },
+    {
+      "id": "2605.20555v3",
+      "url": "https://arxiv.org/abs/2605.20555v3",
+      "title": "LAPO: KL-Free Logit-Averaged Policy Optimization to Leverage RL and SFT in LLM Post-Training",
+      "authors": [
+        "Xingwei Gan",
+        "Ying Zhu"
+      ],
+      "published": "2026-05-19T23:15:18Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "From a classical statistical perspective, model averaging and parameter shrinkage (e.g., Ridge regression with an $l_2$-penalty) are deeply connected mechanisms designed to reduce estimator variance and lower mean squared error. Motivated by this insight, we introduce Logit-Averaged Policy Optimization (LAPO), a KL-free and critic-free post-training framework that replaces explicit KL regularization with logit averaging inside Group Relative Policy Optimization (GRPO); in particular, averaging the logits of the trainable policy and a frozen reference policy functions as an implicit structural regularizer that stabilizes rollout trajectories. For selecting the mixing weight, we propose a compute-efficient adaptive algorithm that dynamically balances exploration and structural anchoring throughout training, evaluated against a static fixed-weight baseline. This adaptive mechanism eliminates explicit KL penalty backpropagation and expensive, fragile hyperparameter sweeps while reducing the incidence of uninformative zero-reward rollout groups. Mathematically, embedding logit averaging within the reinforcement learning loop operates as an in-training Product of Experts (PoE): the multiplicative geometric mean enables the reference anchor to act as a soft logical \"AND\" that vetoes non-compliant tokens, enforcing schema rigor and safety guardrails without the catastrophic forgetting typical of sequential fine-tuning. Evaluated across Qwen2.5-Instruct models (1.5B, 3B, and 7B), LAPO consistently outperforms canonical KL-regularized GRPO, achieving a 7%-15% accuracy gain on MATH and a 2%-5% gain on cn_k12 and MMLU. Finally, the resulting mixed teacher policy can be distilled back into a single student network, fully restoring standard $1\\times$ inference latency."
+    },
+    {
+      "id": "2601.03661v1",
+      "url": "https://arxiv.org/abs/2601.03661v1",
+      "title": "AMIR-GRPO: Inducing Implicit Preference Signals into GRPO",
+      "authors": [
+        "Amir Hossein Yari",
+        "Fajri Koto"
+      ],
+      "published": "2026-01-07T07:22:58Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "Reinforcement learning has become the primary paradigm for aligning large language models (LLMs) on complex reasoning tasks, with group relative policy optimization (GRPO) widely used in large-scale post-training. However, GRPO faces structural limitations in reasoning-heavy settings: sequence-level advantage normalization introduces systematic length bias, penalties for low-quality trajectories are diluted, and the scalar objective discards rich pairwise preference information embedded in within-group reward rankings. As a result, valuable supervision from costly rollouts remains underutilized.\n  We propose AMIR-GRPO, which augments GRPO with an implicit DPO-style contrastive regularizer constructed directly from intra-group reward rankings, requiring no additional annotations. This mechanism amplifies suppression of low-reward trajectories, attenuates response-level length bias, and transforms each rollout group into a denser set of supervision constraints. Across multiple mathematical reasoning benchmarks, AMIR-GRPO consistently outperforms strong GRPO baselines, yields clearer separation between correct and incorrect reasoning chains, and delivers broader coverage gains beyond the subset of instances solved by standard GRPO."
+    },
+    {
+      "id": "2601.12979v3",
+      "url": "https://arxiv.org/abs/2601.12979v3",
+      "title": "The Bitter Lesson of Diffusion Language Models for Agentic Workflows: A Comprehensive Reality Check",
+      "authors": [
+        "Qingyu Lu",
+        "Liang Ding",
+        "Kanjian Zhang",
+        "Jinxia Zhang",
+        "Dacheng Tao"
+      ],
+      "published": "2026-01-19T11:45:39Z",
+      "comment": "ACL 2026 - Main Conference",
+      "journal_ref": null,
+      "abstract": "The pursuit of real-time agentic interaction has driven interest in Diffusion-based Large Language Models (dLLMs) as alternatives to auto-regressive backbones, promising to break the sequential latency bottleneck. However, does such efficiency gains translate into effective agentic behavior? In this work, we present a comprehensive evaluation of dLLMs (e.g., LLaDA, Dream) across two distinct agentic paradigms: Embodied Agents (requiring long-horizon planning) and Tool-Calling Agents (requiring precise formatting). Contrary to the efficiency hype, our results on Agentboard and BFCL reveal a \"bitter lesson\": current dLLMs fail to serve as reliable agentic backbones, frequently leading to systematically failure. (1) In Embodied settings, dLLMs suffer repeated attempts, failing to branch under temporal feedback. (2) In Tool-Calling settings, dLLMs fail to maintain symbolic precision (e.g. strict JSON schemas) under diffusion noise. To assess the potential of dLLMs in agentic workflows, we introduce DiffuAgent, a multi-agent evaluation framework that integrates dLLMs as plug-and-play cognitive cores. Our analysis shows that dLLMs are effective in non-causal roles (e.g., memory summarization and tool selection) but require the incorporation of causal, precise, and logically grounded reasoning mechanisms into the denoising process to be viable for agentic tasks.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2110.01056v1",
+      "url": "https://arxiv.org/abs/2110.01056v1",
+      "title": "Dr.Aid: Supporting Data-governance Rule Compliance for Decentralized Collaboration in an Automated Way",
+      "authors": [
+        "Rui Zhao",
+        "Malcolm Atkinson",
+        "Petros Papapanagiotou",
+        "Federica Magnoni",
+        "Jacques Fleuriot"
+      ],
+      "published": "2021-10-03T17:59:28Z",
+      "comment": "Accepted for The 24th ACM Conference on Computer-Supported Cooperative Work and Social Computing (CSCW)",
+      "journal_ref": null,
+      "abstract": "Collaboration across institutional boundaries is widespread and increasing today. It depends on federations sharing data that often have governance rules or external regulations restricting their use. However, the handling of data governance rules (aka. data-use policies) remains manual, time-consuming and error-prone, limiting the rate at which collaborations can form and respond to challenges and opportunities, inhibiting citizen science and reducing data providers' trust in compliance. Using an automated system to facilitate compliance handling reduces substantially the time needed for such non-mission work, thereby accelerating collaboration and improving productivity. We present a framework, Dr.Aid, that helps individuals, organisations and federations comply with data rules, using automation to track which rules are applicable as data is passed between processes and as derived data is generated. It encodes data-governance rules using a formal language and performs reasoning on multi-input-multi-output data-flow graphs in decentralised contexts. We test its power and utility by working with users performing cyclone tracking and earthquake modelling to support mitigation and emergency response. We query standard provenance traces to detach Dr.Aid from details of the tools and systems they are using, as these inevitably vary across members of a federation and through time. We evaluate the model in three aspects by encoding real-life data-use policies from diverse fields, showing its capability for real-world usage and its advantages compared with traditional frameworks. We argue that this approach will lead to more agile, more productive and more trustworthy collaborations and show that the approach can be adopted incrementally. This, in-turn, will allow more appropriate data policies to emerge opening up new forms of collaboration.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2604.23626v1",
+      "url": "https://arxiv.org/abs/2604.23626v1",
+      "title": "GraphPlanner: Graph Memory-Augmented Agentic Routing for Multi-Agent LLMs",
+      "authors": [
+        "Tao Feng",
+        "Haozhen Zhang",
+        "Zijie Lei",
+        "Peixuan Han",
+        "Jiaxuan You"
+      ],
+      "published": "2026-04-26T09:38:32Z",
+      "comment": null,
+      "journal_ref": "ICLR 2026",
+      "abstract": "LLM routing has achieved promising results in integrating the strengths of diverse models while balancing efficiency and performance. However, to support more realistic and challenging applications, routing must extend into agentic LLM settings, where task planning, multi-round cooperation among heterogeneous agents, and memory utilization are indispensable. To address this gap, we propose GraphPlanner, a heterogeneous graph memory-augmented agentic router for multi-agent LLMs that generates routing workflows for each query and supports both inductive and transductive inference. GraphPlanner formulates workflow generation as a Markov Decision Process (MDP), where at each step it selects both the LLM backbone and the agent role, including Planner, Executor, and Summarizer. By leveraging a heterogeneous graph, denoted as GARNet, to capture interaction memories among queries, agents, and responses, GraphPlanner integrates historical memory and workflow memory into richer state representations. The entire pipeline is optimized with reinforcement learning, jointly improving task-specific performance and computational efficiency. We evaluate GraphPlanner across 14 diverse LLM tasks and demonstrate that: (1) GraphPlanner outperforms strong single-round and multi-round routers, improving accuracy by up to 9.3% while reducing GPU cost from 186.26 GiB to 1.04 GiB; (2) GraphPlanner generalizes robustly to unseen tasks and LLMs, exhibiting strong zero-shot capabilities; and (3) GraphPlanner effectively leverages historical memories, supporting both inductive and transductive inference for more adaptive routing. Our code for GraphPlanner is released at https://github.com/ulab-uiuc/GraphPlanner.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2606.05728v1",
+      "url": "https://arxiv.org/abs/2606.05728v1",
+      "title": "DiG-Plan: Mitigating Early Commitment for Tool-Graph Planning via Diffusion Guidance",
+      "authors": [
+        "Yansi Li",
+        "Zhuosheng Zhang"
+      ],
+      "published": "2026-06-04T05:37:31Z",
+      "comment": "Accepted at IJCAI-ECAI 2026. This is an author preprint; the final version will appear in the IJCAI Proceedings",
+      "journal_ref": null,
+      "abstract": "Generating executable tool plans requires selecting appropriate subsets from tool libraries, a combinatorial search problem with an exponentially large solution space. However, we identify a critical misalignment in predominant approaches: standard autoregressive (AR) decoding suffers from early commitment, where initial token choices rigidly constrain the search trajectory. A controlled study shows that masked denoising raises Pass@10 solution coverage from 0.320 to 0.943 over AR sampling under matched compute. Motivated by this, we propose DiG-Plan, a framework that decouples combinatorial exploration from structural refinement. DiG-Plan employs a diffusion-based proposer to generate diverse tool sets via iterative refinement, followed by an AR refiner for dependency prediction. On TaskBench, DiG-Plan improves over AR baselines by a 10% relative margin, with the largest gains on complex compositional tasks; API-Bank results show that the propose-refine-select design remains effective across domains. Code is available at https://github.com/puddingyeah/DiG-Plan.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2205.09991v2",
+      "url": "https://arxiv.org/abs/2205.09991v2",
+      "title": "Planning with Diffusion for Flexible Behavior Synthesis",
+      "authors": [
+        "Michael Janner",
+        "Yilun Du",
+        "Joshua B. Tenenbaum",
+        "Sergey Levine"
+      ],
+      "published": "2022-05-20T07:02:03Z",
+      "comment": "ICML 2022 (long talk). Project page and code at https://diffusion-planning.github.io/",
+      "journal_ref": null,
+      "abstract": "Model-based reinforcement learning methods often use learning only for the purpose of estimating an approximate dynamics model, offloading the rest of the decision-making work to classical trajectory optimizers. While conceptually simple, this combination has a number of empirical shortcomings, suggesting that learned models may not be well-suited to standard trajectory optimization. In this paper, we consider what it would look like to fold as much of the trajectory optimization pipeline as possible into the modeling problem, such that sampling from the model and planning with it become nearly identical. The core of our technical approach lies in a diffusion probabilistic model that plans by iteratively denoising trajectories. We show how classifier-guided sampling and image inpainting can be reinterpreted as coherent planning strategies, explore the unusual and useful properties of diffusion-based planning methods, and demonstrate the effectiveness of our framework in control settings that emphasize long-horizon decision-making and test-time flexibility.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2609.29421v2",
+      "url": "https://arxiv.org/abs/2609.29421v2",
+      "title": "Rufus-Air: An Open LLM Post-Training Recipe",
+      "authors": [
+        "Chia-Yuan Chang",
+        "Renyuan Cheng",
+        "Rui Feng",
+        "Xiaotian Han",
+        "Yuan He",
+        "Hongye Jin",
+        "Linwei Li",
+        "Shiyang Li",
+        "Fenglin Liu",
+        "Xin Liu",
+        "Priyanka Nigam",
+        "Haoyang Wen",
+        "Zhenghao Xu",
+        "Zhuocheng Xu",
+        "Bing Yin",
+        "Qingyu Yin",
+        "Chao Zhang",
+        "Rongzhi Zhang",
+        "Zhihan Zhang",
+        "Zixuan Zhang",
+        "Zixuan Zhang",
+        "Tuo Zhao"
+      ],
+      "published": "2026-09-24T11:45:03Z",
+      "comment": "48 pages, 9 figures, 20 tables. Authors are listed alphabetically by surname; all contributed while at Amazon. The two authors named Zixuan Zhang are different people",
+      "journal_ref": null,
+      "abstract": "Rufus-Air is an open and reproducible post-training recipe on GLM-4.5-Air-Base (106B-A12B), organized as a serial pipeline of eight stages: SFT, Reasoning RL, Coding RL, Instruction-Following RL, General Agent, Coding Agent, Search Agent, and RLHF. We document the data, reward design, infrastructure, stage order, and stagewise results needed to reproduce the recipe. Stages progress from basic to advanced capabilities and from hard, verifiable rewards to softer judge-based signals. Training builds on open-source components and public data, much of it used as released, without new human annotation or an in-house distillation teacher. Our main findings are that (i) diverse, high-quality SFT establishes a strong capability floor; (ii) difficulty filtering keeps RL prompts within a productive learning range; (iii) reward reliability provides a practical principle for ordering stages; and (iv) infrastructure and engineering choices are part of the recipe, not just an implementation detail. Rufus-Air improves over the official GLM-4.5-Air post-trained release and is competitive with similarly sized open models.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2610.10786v1",
+      "url": "https://arxiv.org/abs/2610.10786v1",
+      "title": "Plan-and-Patch: Diffusion Language Models for Agentic Planning",
+      "authors": [
+        "Syamantak Kumar",
+        "Jiang Guo",
+        "Hassan Hamad",
+        "Hideo Kobayashi",
+        "Yi Xiang",
+        "Yezhou Yang",
+        "Yanjun Qi",
+        "Daniele Bonadiman",
+        "Jiarong Jiang"
+      ],
+      "published": "2026-10-07T18:45:45Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "Planning is increasingly important for long-horizon agents, where successful execution requires coordinating subgoals, tool use, and intermediate outcomes over many steps. Yet assumptions made during planning may be invalidated by the environment, tools may return unexpected results, or actions may fail. Effective agents must therefore not only generate plans, but also revise them. Such revisions often affect only part of a plan, leaving the preceding and subsequent structure intact. Rather than regenerate the entire plan and risk unnecessary changes, repair can regenerate the affected region conditioned on the preserved prefix and suffix. We introduce Plan-and-Patch, a plan-and-act framework in which a diffusion language model (dLLM) generates a structured, program-like plan through parallel unmasking and repairs it by filling in selected regions while keeping the surrounding steps fixed. We compare DreamReasoner-8B and Qwen3-8B as diffusion and autoregressive (AR) planners. On Natural Plan without task-specific training, diffusion (53.7%) achieves nearly twice the plan repair success rate of AR (27.0%). After task-specific training on agentic benchmarks, ALFWorld and TextCraft, the planners achieve similar observed success in plan generation, while diffusion reduces mean plan-generation latency by 39-46% relative to AR. Our results show that Plan-and-Patch provides a framework for faster plan generation and effective plan repair in long-horizon agents.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2503.18813v2",
+      "url": "https://arxiv.org/abs/2503.18813v2",
+      "title": "Defeating Prompt Injections by Design",
+      "authors": [
+        "Edoardo Debenedetti",
+        "Ilia Shumailov",
+        "Tianqi Fan",
+        "Jamie Hayes",
+        "Nicholas Carlini",
+        "Daniel Fabian",
+        "Christoph Kern",
+        "Chongyang Shi",
+        "Andreas Terzis",
+        "Florian Tramèr"
+      ],
+      "published": "2025-03-24T15:54:10Z",
+      "comment": "Updated version with newer models and link to the code",
+      "journal_ref": null,
+      "abstract": "Large Language Models (LLMs) are increasingly deployed in agentic systems that interact with an untrusted environment. However, LLM agents are vulnerable to prompt injection attacks when handling untrusted data. In this paper we propose CaMeL, a robust defense that creates a protective system layer around the LLM, securing it even when underlying models are susceptible to attacks. To operate, CaMeL explicitly extracts the control and data flows from the (trusted) query; therefore, the untrusted data retrieved by the LLM can never impact the program flow. To further improve security, CaMeL uses a notion of a capability to prevent the exfiltration of private data over unauthorized data flows by enforcing security policies when tools are called. We demonstrate effectiveness of CaMeL by solving $77\\%$ of tasks with provable security (compared to $84\\%$ with an undefended system) in AgentDojo. We release CaMeL at https://github.com/google-research/camel-prompt-injection.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2303.04137v5",
+      "url": "https://arxiv.org/abs/2303.04137v5",
+      "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+      "authors": [
+        "Cheng Chi",
+        "Zhenjia Xu",
+        "Siyuan Feng",
+        "Eric Cousineau",
+        "Yilun Du",
+        "Benjamin Burchfiel",
+        "Russ Tedrake",
+        "Shuran Song"
+      ],
+      "published": "2023-03-07T18:50:03Z",
+      "comment": "An extended journal version of the original RSS2023 paper",
+      "journal_ref": null,
+      "abstract": "This paper introduces Diffusion Policy, a new way of generating robot behavior by representing a robot's visuomotor policy as a conditional denoising diffusion process. We benchmark Diffusion Policy across 12 different tasks from 4 different robot manipulation benchmarks and find that it consistently outperforms existing state-of-the-art robot learning methods with an average improvement of 46.9%. Diffusion Policy learns the gradient of the action-distribution score function and iteratively optimizes with respect to this gradient field during inference via a series of stochastic Langevin dynamics steps. We find that the diffusion formulation yields powerful advantages when used for robot policies, including gracefully handling multimodal action distributions, being suitable for high-dimensional action spaces, and exhibiting impressive training stability. To fully unlock the potential of diffusion models for visuomotor policy learning on physical robots, this paper presents a set of key technical contributions including the incorporation of receding horizon control, visual conditioning, and the time-series diffusion transformer. We hope this work will help motivate a new generation of policy learning techniques that are able to leverage the powerful generative modeling capabilities of diffusion models. Code, data, and training details is publicly available diffusion-policy.cs.columbia.edu",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2411.02322v2",
+      "url": "https://arxiv.org/abs/2411.02322v2",
+      "title": "LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation",
+      "authors": [
+        "Mufei Li",
+        "Viraj Shitole",
+        "Eli Chien",
+        "Changhai Man",
+        "Zhaodong Wang",
+        "Srinivas Sridharan",
+        "Ying Zhang",
+        "Tushar Krishna",
+        "Pan Li"
+      ],
+      "published": "2024-11-04T17:47:15Z",
+      "comment": "Accepted by ICLR 2025 (Spotlight); Code available at https://github.com/Graph-COM/LayerDAG",
+      "journal_ref": null,
+      "abstract": "Directed acyclic graphs (DAGs) serve as crucial data representations in domains such as hardware synthesis and compiler/program optimization for computing systems. DAG generative models facilitate the creation of synthetic DAGs, which can be used for benchmarking computing systems while preserving intellectual property. However, generating realistic DAGs is challenging due to their inherent directional and logical dependencies. This paper introduces LayerDAG, an autoregressive diffusion model, to address these challenges. LayerDAG decouples the strong node dependencies into manageable units that can be processed sequentially. By interpreting the partial order of nodes as a sequence of bipartite graphs, LayerDAG leverages autoregressive generation to model directional dependencies and employs diffusion models to capture logical dependencies within each bipartite graph. Comparative analyses demonstrate that LayerDAG outperforms existing DAG generative models in both expressiveness and generalization, particularly for generating large-scale DAGs with up to 400 nodes-a critical scenario for system benchmarking. Extensive experiments on both synthetic and real-world flow graphs from various computing platforms show that LayerDAG generates valid DAGs with superior statistical properties and benchmarking performance. The synthetic DAGs generated by LayerDAG enhance the training of ML-based surrogate models, resulting in improved accuracy in predicting performance metrics of real-world DAGs across diverse computing platforms.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2405.04235v2",
+      "url": "https://arxiv.org/abs/2405.04235v2",
+      "title": "LTLDoG: Satisfying Temporally-Extended Symbolic Constraints for Safe Diffusion-based Planning",
+      "authors": [
+        "Zeyu Feng",
+        "Hao Luan",
+        "Pranav Goyal",
+        "Harold Soh"
+      ],
+      "published": "2024-05-07T11:54:22Z",
+      "comment": null,
+      "journal_ref": "in IEEE Robotics and Automation Letters, vol. 9, no. 10, pp. 8571-8578, Oct. 2024",
+      "abstract": "Operating effectively in complex environments while complying with specified constraints is crucial for the safe and successful deployment of robots that interact with and operate around people. In this work, we focus on generating long-horizon trajectories that adhere to novel static and temporally-extended constraints/instructions at test time. We propose a data-driven diffusion-based framework, LTLDoG, that modifies the inference steps of the reverse process given an instruction specified using finite linear temporal logic ($\\text{LTL}_f$). LTLDoG leverages a satisfaction value function on $\\text{LTL}_f$ and guides the sampling steps using its gradient field. This value function can also be trained to generalize to new instructions not observed during training, enabling flexible test-time adaptability. Experiments in robot navigation and manipulation illustrate that the method is able to generate trajectories that satisfy formulae that specify obstacle avoidance and visitation sequences. Code and supplementary material are available online at https://github.com/clear-nus/ltldog.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2610.15177v1",
+      "url": "https://arxiv.org/abs/2610.15177v1",
+      "title": "Only What You've Signed up For: Secure Workflows with Constrained Diffusion Agents",
+      "authors": [
+        "Michael Cardei",
+        "Anjun Hu",
+        "Chenrui Ma",
+        "Francesco Pinto",
+        "Chawin Sitawarin",
+        "Chulin Xie",
+        "Ferdinando Fioretto"
+      ],
+      "published": "2026-10-10T20:58:01Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "As agentic AI systems take on increasingly complex and consequential tasks, securing them against prompt injection becomes critical. Existing defenses often rely on detecting or reasoning about injected malicious instructions and can therefore remain vulnerable to adaptive attacks that optimize the injection itself. Diffusion language models (dLLMs), an emerging framework for language generation, offer a new opportunity for security enforcement: by iteratively refining their sequence wide predictions, they enable broader-scope constraint enforcement throughout generation. This paper introduces Policy-Constrained Diffusion Agents (CoDA), a framework that enforces task dependent security policies directly within the denoising process of diffusion language models. At each denoising step, CoDA projects token distributions onto a policy-compliant set, maintaining constraint satisfaction throughout generation. We evaluate CoDA across state-of-the-art diffusion language model families under both static and adaptive prompt-injection attacks. Results demonstrate substantial reductions in attack success rate with competitive task utility and practical inference overhead.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    },
+    {
+      "id": "2603.02669v1",
+      "url": "https://arxiv.org/abs/2603.02669v1",
+      "title": "IMR-LLM: Industrial Multi-Robot Task Planning and Program Generation using Large Language Models",
+      "authors": [
+        "Xiangyu Su",
+        "Juzhan Xu",
+        "Oliver van Kaick",
+        "Kai Xu",
+        "Ruizhen Hu"
+      ],
+      "published": "2026-03-03T06:55:27Z",
+      "comment": null,
+      "journal_ref": null,
+      "abstract": "In modern industrial production, multiple robots often collaborate to complete complex manufacturing tasks. Large language models (LLMs), with their strong reasoning capabilities, have shown potential in coordinating robots for simple household and manipulation tasks. However, in industrial scenarios, stricter sequential constraints and more complex dependencies within tasks present new challenges for LLMs. To address this, we propose IMR-LLM, a novel LLM-driven Industrial Multi-Robot task planning and program generation framework. Specifically, we utilize LLMs to assist in constructing disjunctive graphs and employ deterministic solving methods to obtain a feasible and efficient high-level task plan. Based on this, we use a process tree to guide LLMs to generate executable low-level programs. Additionally, we create IMR-Bench, a challenging benchmark that encompasses multi-robot industrial tasks across three levels of complexity. Experimental results indicate that our method significantly surpasses existing methods across all evaluation metrics.",
+      "review_level": "see reading_notes.md for scope; publication comments not independently verified"
+    }
+  ]
+}

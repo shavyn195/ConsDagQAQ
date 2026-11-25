@@ -1,0 +1,10 @@
+{
+  "checked_utc": "2026-11-25T15:00:04.724378+00:00",
+  "stdout": "2026-11-25T23:00:05+08:00\nNVIDIA GeForce RTX 4080 SUPER, 52 %, 30292 MiB, 32760 MiB\n208814    10:25:37 /root/miniconda3/bin/python -u src/run_v6_relay.py --project-root /root/ConsDagV6Frozen --mode wait --budget-hours 30 --python /root/miniconda3/bin/python\n208832    10:25:35 /root/miniconda3/bin/python src/run_v6_relay.py --mode queue --project-root /root/ConsDagV6Frozen --gpu 0 --python /root/miniconda3/bin/python --budget-hours 30.0\n",
+  "stderr": "",
+  "exit_code": 0,
+  "action": "read_only_no_job_change",
+  "process_check_utc": "2026-11-25T15:01:39.510250+00:00",
+  "process_stdout": "2026-11-25T23:01:40+08:00\n220951, /root/miniconda3/bin/python, 30282 MiB\n208814    10:27:12 /root/miniconda3/bin/python -u src/run_v6_relay.py --project-root /root/ConsDagV6Frozen --mode wait --budget-hours 30 --python /root/miniconda3/bin/python\n208832    10:27:10 /root/miniconda3/bin/python src/run_v6_relay.py --mode queue --project-root /root/ConsDagV6Frozen --gpu 0 --python /root/miniconda3/bin/python --budget-hours 30.0\n220950    02:45:57 /usr/bin/timeout --signal=KILL 60517.446691s /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed43 --precision bf16 --seed 43 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16 --skip-zeroshot\n220951    02:45:57 /root/miniconda3/bin/python -u src/run_e1_v6.py --model models/Qwen3-4B --data-dir data/processed_v6 --out-dir outputs/e1_v6/Qwen3-4B-v6-seed43 --precision bf16 --seed 43 --epochs 3 --learning-rate 0.0002 --lora-rank 16 --lora-alpha 32 --gradient-accumulation-steps 4 --max-seq-len 1280 --max-new-tokens 384 --eval-batch-size 16 --skip-zeroshot\n",
+  "process_exit_code": 0
+}

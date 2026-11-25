@@ -1,0 +1,188 @@
+{
+  "utc": "2026-11-25T14:45:03.932119+00:00",
+  "launch_channel": "timed_out_waiting_for_background_shell_stdout; verified via separate connection; not relaunched",
+  "source_commit": "b69e391",
+  "alignment_smoke_v1/completion.json": {
+    "scope": "Oracle-candidate retrieval diagnostic, not a complete compiler or new-method confirmation",
+    "smoke": true,
+    "status": "completed",
+    "frozen_cosine": {
+      "n": 6,
+      "all": {
+        "predicate_correct": 0.3333333333333333,
+        "gold_candidate_faithful": 0.6666666666666666,
+        "none_false_alarm": 0.3333333333333333,
+        "hard_pair_accuracy": 0.6111111111111112
+      },
+      "explicit": {
+        "predicate_correct": 0.5,
+        "gold_candidate_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "hard_pair_accuracy": 0.9166666666666666
+      },
+      "implicit": {
+        "predicate_correct": 0.5,
+        "gold_candidate_faithful": 1.0,
+        "none_false_alarm": 0.0,
+        "hard_pair_accuracy": 0.9166666666666666
+      },
+      "none": {
+        "predicate_correct": 0.0,
+        "gold_candidate_faithful": 0.0,
+        "none_false_alarm": 1.0,
+        "hard_pair_accuracy": 0.0
+      }
+    },
+    "seeds": {
+      "42": {
+        "arms": {
+          "bce": {
+            "n": 6,
+            "all": {
+              "predicate_correct": 0.3333333333333333,
+              "gold_candidate_faithful": 0.3333333333333333,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9444444444444444
+            },
+            "explicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9166666666666666
+            },
+            "implicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9166666666666666
+            },
+            "none": {
+              "predicate_correct": 1.0,
+              "gold_candidate_faithful": 1.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 1.0
+            }
+          },
+          "rank": {
+            "n": 6,
+            "all": {
+              "predicate_correct": 0.3333333333333333,
+              "gold_candidate_faithful": 0.3333333333333333,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9444444444444444
+            },
+            "explicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9166666666666666
+            },
+            "implicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9166666666666666
+            },
+            "none": {
+              "predicate_correct": 1.0,
+              "gold_candidate_faithful": 1.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 1.0
+            }
+          },
+          "contrastive": {
+            "n": 6,
+            "all": {
+              "predicate_correct": 0.3333333333333333,
+              "gold_candidate_faithful": 0.3333333333333333,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.9166666666666666
+            },
+            "explicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.875
+            },
+            "implicit": {
+              "predicate_correct": 0.0,
+              "gold_candidate_faithful": 0.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 0.875
+            },
+            "none": {
+              "predicate_correct": 1.0,
+              "gold_candidate_faithful": 1.0,
+              "none_false_alarm": 0.0,
+              "hard_pair_accuracy": 1.0
+            }
+          }
+        },
+        "comparisons": {
+          "contrastive_minus_bce": {
+            "difference_pp": 0.0,
+            "conditional_group_bootstrap95_pp": [
+              0.0,
+              0.0
+            ],
+            "note": "Conditional on this fitted seed; exploratory development interval, not seed-population inference"
+          },
+          "contrastive_minus_rank": {
+            "difference_pp": 0.0,
+            "conditional_group_bootstrap95_pp": [
+              0.0,
+              0.0
+            ],
+            "note": "Conditional on this fitted seed; exploratory development interval, not seed-population inference"
+          }
+        }
+      }
+    },
+    "elapsed_seconds": 18.931296905502677,
+    "screening_gate_passed": false,
+    "decision": "do_not_scale_from_this_probe"
+  },
+  "alignment_pilot_v1/progress.json": {
+    "stage": "encoding",
+    "done": 444,
+    "total": 1424,
+    "seconds": 57.32811765745282
+  },
+  "alignment_pilot_v1/dataset_audit.json": {
+    "splits": {
+      "train": {
+        "groups": 128,
+        "queries": 384,
+        "candidates": 1233,
+        "types": {
+          "budget": 27,
+          "deadline": 44,
+          "privacy": 32,
+          "order": 47,
+          "tool_auth": 31
+        },
+        "excluded": {
+          "different_predicate_but_same_domain_behavior": 76
+        }
+      },
+      "dev": {
+        "groups": 64,
+        "queries": 192,
+        "candidates": 613,
+        "types": {
+          "deadline": 21,
+          "tool_auth": 12,
+          "order": 26,
+          "budget": 15,
+          "privacy": 16
+        },
+        "excluded": {
+          "different_predicate_but_same_domain_behavior": 32
+        }
+      }
+    },
+    "dataset_sha256": "1d1d8cb6b3f9b4d3850b11cf660f41672a6dfbb836a15d4b1c9ae8fae4cc2a48",
+    "warning": "Gold-derived candidate pools: not end-to-end compilation"
+  },
+  "runtime": "   PID     ELAPSED %CPU %MEM STAT\n225514       01:12  182  0.6 RNl\n97 %, 30292 MiB\n"
+}

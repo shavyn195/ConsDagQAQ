@@ -1,0 +1,78 @@
+{
+  "utc": "2026-11-25T14:43:57.486379+00:00",
+  "config": {
+    "status": "registered_before_development_run",
+    "question": "Does bidirectional multi-positive alignment improve discrimination of minimally changed constraint records over BCE and pairwise ranking on identical data?",
+    "scope": "Oracle-candidate retrieval diagnostic, not a complete compiler or new-method confirmation",
+    "source": "frozen v6 train/dev only; sha256(group_id) selection; E/I/N stay grouped",
+    "train_groups": 128,
+    "dev_groups": 64,
+    "seeds": [
+      42,
+      43
+    ],
+    "arms": [
+      "bce",
+      "rank",
+      "contrastive"
+    ],
+    "encoder": "/root/autodl-tmp/models/Qwen3-0.6B",
+    "encoder_mode": "frozen base, FP32 CPU, mean last hidden state; no truncation",
+    "projection_hidden": 256,
+    "projection_dim": 128,
+    "temperature": 0.1,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "adam_epsilon": 1e-08,
+    "max_grad_norm": 1.0,
+    "steps": 800,
+    "batch_groups": 8,
+    "threads": 2,
+    "encoder_batch_size": 4,
+    "max_input_tokens": 512,
+    "cpu_timeout_seconds": 3600,
+    "maximum_gpu_hours": 0,
+    "maximum_api_calls": 0,
+    "negative_policy": "Same task candidate pool for all E/I/N. Mutate one bound, role, class or omission. Drop predicate-different candidates indistinguishable from any gold on the enumerated task domain; preserve witness for retained differences. Do not use other batches as automatic negatives.",
+    "positive_policy": "Frozen normalized predicate-set equality, including duplicate/reordered predicates; E and I can share positives. Not general linguistic equivalence.",
+    "matching": "Identical projections, initial state, sampled group sequence, encoder cache, candidate pools and update count per seed; only loss changes",
+    "metrics": [
+      "predicate_retrieval_accuracy",
+      "E/I/N accuracy",
+      "N_false_alarm",
+      "gold_candidate_faithful",
+      "single_mutation_discrimination",
+      "training_and_encoding_seconds"
+    ],
+    "analysis": "Paired task-group bootstrap per fitted seed, descriptive only; show both seeds and all arms",
+    "gate": "Proceed to an end-to-end binding experiment only if contrastive beats both BCE and rank by >=3pp predicate retrieval in each seed, with N false alarm no more than 1pp worse. Passing is screening evidence, not publication evidence.",
+    "stop": "Nonfinite loss/gradient/parameter, hash mismatch, unsupported record, time budget, or no stable gain stops scaling. Never overwrite a failed run.",
+    "limitations": [
+      "Gold-derived candidate pool makes this easier than free-form compilation",
+      "No held-out tool or template confirmation in this pilot",
+      "Frozen encoder probe cannot determine whether end-to-end contrastive finetuning would work",
+      "Finite execution-domain equivalence is not universal semantic equivalence"
+    ]
+  },
+  "smoke": false,
+  "source_sha256": {
+    "scripts/architecture/run_alignment_pilot.py": "452a6df595b5b9d7a64e47c2654a068a2d682be353f1437474988cc750ea00ca",
+    "src/constraint_alignment.py": "4b1fd65dae67b6e7b4809e6f3256409129c3fe7dcf69c8cf57e503f994583d74",
+    "src/constraint_alignment_data.py": "19efd51a22cfb552c33119476c6ea02ef11ebc4df8c587b5e3b1078e75b3251e",
+    "scripts/architecture/audit_solver_supervision.py": "ece3c7b2643d42054ba619563c4bbfbc87528d98516c356ba04e20606b05c150"
+  },
+  "frozen_env_sha256": "01dc6b70d13fd56392d9eb6a21bf5ff70a5e35708dddcf6294ef9d5d6163e78f",
+  "config_sha256": "15cbbd22a4959f44e651d7df607399a060c9828d8ebac06d5071b2e247bad1a2",
+  "device": "cpu",
+  "torch": "2.12.1+cu130",
+  "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]",
+  "data_sha256": {
+    "train": "f909353cb7bbe34e28615cb373b01af00ab57435da42f0af32a0afd1801ce601",
+    "dev": "dded8d43239a88ae656a8b925107abd2749e88c1534654c4885d1cf8208183d5"
+  }
+}

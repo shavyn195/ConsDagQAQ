@@ -1,0 +1,140 @@
+{
+  "scope": "Oracle-candidate retrieval diagnostic, not a complete compiler or new-method confirmation",
+  "smoke": true,
+  "status": "completed",
+  "frozen_cosine": {
+    "n": 6,
+    "all": {
+      "predicate_correct": 0.3333333333333333,
+      "gold_candidate_faithful": 0.6666666666666666,
+      "none_false_alarm": 0.3333333333333333,
+      "hard_pair_accuracy": 0.6111111111111112
+    },
+    "explicit": {
+      "predicate_correct": 0.5,
+      "gold_candidate_faithful": 1.0,
+      "none_false_alarm": 0.0,
+      "hard_pair_accuracy": 0.9166666666666666
+    },
+    "implicit": {
+      "predicate_correct": 0.5,
+      "gold_candidate_faithful": 1.0,
+      "none_false_alarm": 0.0,
+      "hard_pair_accuracy": 0.9166666666666666
+    },
+    "none": {
+      "predicate_correct": 0.0,
+      "gold_candidate_faithful": 0.0,
+      "none_false_alarm": 1.0,
+      "hard_pair_accuracy": 0.0
+    }
+  },
+  "seeds": {
+    "42": {
+      "arms": {
+        "bce": {
+          "n": 6,
+          "all": {
+            "predicate_correct": 0.3333333333333333,
+            "gold_candidate_faithful": 0.3333333333333333,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9444444444444444
+          },
+          "explicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9166666666666666
+          },
+          "implicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9166666666666666
+          },
+          "none": {
+            "predicate_correct": 1.0,
+            "gold_candidate_faithful": 1.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 1.0
+          }
+        },
+        "rank": {
+          "n": 6,
+          "all": {
+            "predicate_correct": 0.3333333333333333,
+            "gold_candidate_faithful": 0.3333333333333333,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9444444444444444
+          },
+          "explicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9166666666666666
+          },
+          "implicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9166666666666666
+          },
+          "none": {
+            "predicate_correct": 1.0,
+            "gold_candidate_faithful": 1.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 1.0
+          }
+        },
+        "contrastive": {
+          "n": 6,
+          "all": {
+            "predicate_correct": 0.3333333333333333,
+            "gold_candidate_faithful": 0.3333333333333333,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.9166666666666666
+          },
+          "explicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.875
+          },
+          "implicit": {
+            "predicate_correct": 0.0,
+            "gold_candidate_faithful": 0.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 0.875
+          },
+          "none": {
+            "predicate_correct": 1.0,
+            "gold_candidate_faithful": 1.0,
+            "none_false_alarm": 0.0,
+            "hard_pair_accuracy": 1.0
+          }
+        }
+      },
+      "comparisons": {
+        "contrastive_minus_bce": {
+          "difference_pp": 0.0,
+          "conditional_group_bootstrap95_pp": [
+            0.0,
+            0.0
+          ],
+          "note": "Conditional on this fitted seed; exploratory development interval, not seed-population inference"
+        },
+        "contrastive_minus_rank": {
+          "difference_pp": 0.0,
+          "conditional_group_bootstrap95_pp": [
+            0.0,
+            0.0
+          ],
+          "note": "Conditional on this fitted seed; exploratory development interval, not seed-population inference"
+        }
+      }
+    }
+  },
+  "elapsed_seconds": 18.931296905502677,
+  "screening_gate_passed": false,
+  "decision": "do_not_scale_from_this_probe"
+}
