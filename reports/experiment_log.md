@@ -607,3 +607,11 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 ORSMT p3/6原文已覆盖逐条源契约及unresolved保留undecided；MetaAct类型契约、合取和组合回放不能省略。本项目whole-record实现缺陷不等于其他论文固有缺陷。原文粒度记录partial_contract_granularity.md；未复现官方代码。
 
 02:14:55只读快照：v6 4B seed44继续running、GPU85%、26956/32760MiB，固定规划器仍waiting_for_original_queue。未改code-v2/原队列/预算，下一项为独立自然错误及同预算语义复核，当前未启动。详细读数partial_contract_probe_readout_20261126.md。
+
+### 2026-11-26 02:26 CST — 运行来源补审与真实复合错误
+
+提交c78b5be前源码Git字节检查在run_e1.py失败后仍提交推送，原检查不得追认为通过。本轮七个输入逐项补审：run_e1.py和dataset_v5_spec.py只有CRLF/LF差异，其余五项字节相同；三结果Git对象与服务器回执完全匹配。另存run_source_bytes.zip并逐成员核对实际启动SHA，git_provenance_audit.json记录原失败和解决。未改冻结源码、运行协议或结果，无需重跑探针。
+
+本地仅分析已回收八条隐私损失及三seed原始输出，不生成新计划或模型预测。六个任务组、24份记录均有正确可用privacy谓词，其中16份整体失效；按非互斥标签，14份有目录外角色、2份还绑错另一合法目标、另有缺字段/错误类型等。数据/预测SHA与历史审计匹配，病例计数及整体可用状态复核；独立逐字段检查privacy参数和两个复合误绑案例通过。汇总元数据将independent_task_groups改为task_groups时，验证命令首次因路径分隔符键查找失败，修正键匹配后通过；两次案例文件字节完全相同，未改变任何结果。该问题与原实验无关。
+
+产物natural_privacy_loss_audit_20261126.md及同名outputs目录。不能把“只有first-role错”的受控结果外推为真实错误改进；下一项需同预算核验完整义务绑定，同时保留仅修不合法字段对照。仍不调整旧面板门槛，不扩新训练，固定可信数据空间与CCF-B目标。
