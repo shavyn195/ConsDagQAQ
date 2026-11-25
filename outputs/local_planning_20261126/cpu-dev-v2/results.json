@@ -1,0 +1,83 @@
+{
+  "splits": {
+    "dev": {
+      "arms": {
+        "original": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.9066666666666666,
+          "safe": 0.9466666666666667,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "repaired": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.9416666666666667,
+          "safe": 0.9916666666666667,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "placebo": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.905,
+          "safe": 0.95,
+          "valid": 1.0,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        },
+        "symbolic": {
+          "n": 900,
+          "constrained_n": 600,
+          "faithful": 0.985,
+          "safe": 0.9883333333333333,
+          "valid": 0.9988888888888889,
+          "none_n": 300,
+          "none_faithful": 1.0,
+          "none_invalid": 0,
+          "none_valid_changed": 0
+        }
+      },
+      "counts": {
+        "triggered": 35,
+        "compile_invalid": 0,
+        "compile_unusable": 0,
+        "candidates": 1301,
+        "semantic_checks": 2201,
+        "edited": 29
+      },
+      "repaired_minus_original": {
+        "delta": 0.035,
+        "ci95": [
+          0.016666666666666666,
+          0.056666666666666664
+        ],
+        "groups": 300,
+        "wins": 23,
+        "losses": 2,
+        "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+      },
+      "repaired_minus_placebo": {
+        "delta": 0.03666666666666667,
+        "ci95": [
+          0.018333333333333333,
+          0.058333333333333334
+        ],
+        "groups": 300,
+        "wins": 22,
+        "losses": 0,
+        "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+      }
+    }
+  },
+  "elapsed_s": 3.165980434976518
+}

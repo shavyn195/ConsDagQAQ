@@ -1,0 +1,56 @@
+{
+  "observed_at_utc": "2026-11-25T16:39:25.329560+00:00",
+  "original_queue": {
+    "schema_version": 2,
+    "budget_seconds": 108000,
+    "gpu_seconds_used": 60916.51530426275,
+    "active": {
+      "model": "Qwen3-4B",
+      "seed": 44,
+      "started_at": "2026-11-25T15:59:58.197742+00:00",
+      "reserved_seconds": 47083.48469573725
+    },
+    "status": "running",
+    "last_job": {
+      "model": "Qwen3-4B",
+      "seed": 43,
+      "eval_batch_size": 16,
+      "outcome": "complete",
+      "gpu_seconds": 13434.21199531015,
+      "finished_at": "2026-11-25T15:59:37.140790+00:00"
+    },
+    "manual_resume": {
+      "time_utc": "2026-11-25T03:55:39.792239+00:00",
+      "reason": "audited inventory-only release failure; sealed bytes and prior completions verified",
+      "audit_record": "outputs/submission/audit_20261125/v6_queue_manual_resume.jsonl",
+      "budget_seconds_preserved": 19899.38310811296
+    }
+  },
+  "waiter": {
+    "status": "waiting_for_original_queue",
+    "pid": 228433,
+    "utc": "2026-11-25T16:26:17.427045+00:00"
+  },
+  "gpu": {
+    "stdout": "2026/11/26 00:39:27.173, NVIDIA GeForce RTX 4080 SUPER, 97 %, 26956 MiB, 32760 MiB\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "waiter_process": {
+    "stdout": "228433       13:25 /root/miniconda3/bin/python /root/consdag_audits/local-planning-20261126/code-v2/waiter.py --root /root/ConsDagV6Frozen --out /root/consdag_audits/local-planning-20261126/gpu-fixed-planner --groups 48\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "heldout_log": {
+    "stdout": "{\"test_tool_ho\": {\"arms\": {\"original\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.38142857142857145, \"safe\": 0.3914285714285714, \"valid\": 0.819047619047619, \"none_n\": 350, \"none_faithful\": 1.0, \"none_invalid\": 0, \"none_valid_changed\": 0}, \"repaired\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.5328571428571428, \"safe\": 0.6485714285714286, \"valid\": 0.819047619047619, \"none_n\": 350, \"none_faithful\": 1.0, \"none_invalid\": 0, \"none_valid_changed\": 0}, \"placebo\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.38857142857142857, \"safe\": 0.43142857142857144, \"valid\": 0.819047619047619, \"none_n\": 350, \"none_faithful\": 1.0, \"none_invalid\": 0, \"none_valid_changed\": 0}, \"symbolic\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.9171428571428571, \"safe\": 0.9185714285714286, \"valid\": 0.9876190476190476, \"none_n\": 350, \"none_faithful\": 1.0, \"none_invalid\": 0, \"none_valid_changed\": 0}}, \"counts\": {\"triggered\": 246, \"compile_invalid\": 0, \"compile_unusable\": 11, \"candidates\": 9091, \"semantic_checks\": 9942, \"edited\": 208}, \"repaired_minus_original\": {\"delta\": 0.15142857142857144, \"ci95\": [0.11285714285714285, 0.19142857142857142], \"groups\": 350, \"wins\": 119, \"losses\": 13, \"note\": \"Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty\"}, \"repaired_minus_placebo\": {\"delta\": 0.1442857142857143, \"ci95\": [0.11285714285714285, 0.17714285714285713], \"groups\": 350, \"wins\": 102, \"losses\": 1, \"note\": \"Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty\"}}}\n{\"test_struct_ho\": {\"arms\": {\"original\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.14285714285714285, \"safe\": 0.15714285714285714, \"valid\": 0.5514285714285714, \"none_n\": 350, \"none_faithful\": 0.9771428571428571, \"none_invalid\": 8, \"none_valid_changed\": 0}, \"repaired\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.27285714285714285, \"safe\": 0.30714285714285716, \"valid\": 0.5514285714285714, \"none_n\": 350, \"none_faithful\": 0.9771428571428571, \"none_invalid\": 8, \"none_valid_changed\": 0}, \"placebo\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.15428571428571428, \"safe\": 0.17142857142857143, \"valid\": 0.5514285714285714, \"none_n\": 350, \"none_faithful\": 0.9771428571428571, \"none_invalid\": 8, \"none_valid_changed\": 0}, \"symbolic\": {\"n\": 1050, \"constrained_n\": 700, \"faithful\": 0.9585714285714285, \"safe\": 0.9628571428571429, \"valid\": 0.9895238095238095, \"none_n\": 350, \"none_faithful\": 1.0, \"none_invalid\": 0, \"none_valid_changed\": 0}}, \"counts\": {\"triggered\": 125, \"compile_invalid\": 0, \"compile_unusable\": 9, \"candidates\": 6812, \"semantic_checks\": 7390, \"edited\": 106}, \"repaired_minus_original\": {\"delta\": 0.13, \"ci95\": [0.1, 0.16142857142857142], \"groups\": 350, \"wins\": 91, \"losses\": 0, \"note\": \"Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty\"}, \"repaired_minus_placebo\": {\"delta\": 0.11857142857142858, \"ci95\": [0.09, 0.14857142857142858], \"groups\": 350, \"wins\": 83, \"losses\": 0, \"note\": \"Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty\"}}}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "source_sha256": {
+    "run_e1_v6.py": "ba4b97173f8a9378263d9529b2b3442a94f794d86cbb311f2ddba44f8296ade7",
+    "eval_exec_v6.py": "11634c349b095b5d8905726fd771e52a59476a8fb71cbd3d0d490b302d89eefc",
+    "eval_exec.py": "ac766ad6d5ad15c7ee18749b7a7cd2d1c601c00bb451e14eb8eccb27b3462b51",
+    "dataset_v5_spec.py": "53111df8ae305c16fa58f620046f936980ae8113d064db86c1f6d7d0e9b6d15d",
+    "run_v6_relay.py": "15b0e353ad46f2c19b9532bd3ddda9db8d37cdc4545a7cc56b9e3e7fde7b9c14"
+  }
+}
