@@ -597,3 +597,13 @@ qwen-max 十示例对照三子集各 900、1050、1050 条。服务器 CPU 从�
 - 五套研究技能均已安装并经结构校验；索引research_skills_index.md。通过工具更新原每小时任务consdag-2，保留ACTIVE、原线程和间隔，固定可信数据空间并同步最新正负证据及独立验证要求；没有新增重复任务。
 - 02:04:09只读快照：原30小时队列status=running，active为4B seed44，GPU87%、26956/32760MiB，固定规划器等待器PID228433存活、waiting_for_original_queue。未改运行中code-v2或冻结协议，未新增训练。专项测试7/7通过。
 - 完整结果：history_and_edit_impact_readout_20261126.md、trusted_space_family_audit_20261126.md。新机制仍待独立验证，不宣称CCF-B录用或新颖性已成立。
+
+### 2026-11-26 02:15 CST — 局部契约有效性受控探针
+
+保持可信数据空间。先登记partial_contract_probe_protocol_20261126.md，再在新服务器隔离目录partial-contract-20261126-v1生成并运行5机制骨架×E/I/N×0/2/3损坏视角，共45条件。只有受控编译记录，无自然模型输出；不将E/I复制或条件数当独立任务。全程0模型/API调用、单线程nice15、120秒上限，实际符号探针0.0395秒，不含模型成本。
+
+新增5项契约测试通过且逐项内存变异均被捕获，旧7项通过。下载inputs/per_condition/summary三项SHA与服务器匹配，运行清单保存协议及源码SHA。逐条保留能恢复3种正确修复候选；保留unknown后有限补全仅放行1种、其余仍需复核。全部视角损坏时丢弃unknown会放行2种违规提案；一致错误N仍导致多余编辑。因此停止将“逐条保留＋unknown”直接升为②，定位为接口修正和必要基线，不继续调人工例子的规则。
+
+ORSMT p3/6原文已覆盖逐条源契约及unresolved保留undecided；MetaAct类型契约、合取和组合回放不能省略。本项目whole-record实现缺陷不等于其他论文固有缺陷。原文粒度记录partial_contract_granularity.md；未复现官方代码。
+
+02:14:55只读快照：v6 4B seed44继续running、GPU85%、26956/32760MiB，固定规划器仍waiting_for_original_queue。未改code-v2/原队列/预算，下一项为独立自然错误及同预算语义复核，当前未启动。详细读数partial_contract_probe_readout_20261126.md。
