@@ -390,19 +390,24 @@ E3 在 0.6B、bf16、seed42 上依次完成四个 9,000-step 消融；每臂使�
 
 ---
 
-### 5.7 v6 扩展：1.7B 三种子
+### 5.7 v6 扩展：1.7B 三种子与完整DeepSeek对照
 
 v6 的1.7B三种子已完成；4B尚未完成三seed，因此本节单列扩展结果，保持v5主表和架构实验版本不变。v6采用自己的数据和fail-closed评分，不与v5直接计算提升。以下为受约束E/I行faithful的三seed均值±样本标准差（%），由逐条成功数计算；任务组bootstrap条件于固定seed，不是训练seed总体置信区间。
 
-| dev | tpl_ho | tool_ho | struct_ho | composition_ho |
-|---:|---:|---:|---:|---:|
-| 98.61 ± 2.41 | 93.86 ± 4.68 | 96.67 ± 4.00 | 91.10 ± 10.04 | 97.67 ± 4.04 |
+| 模型 | dev | tpl_ho | tool_ho | struct_ho | composition_ho |
+|---|---:|---:|---:|---:|---:|
+| 1.7B SFT，三seed | 98.61 ± 2.41 | 93.86 ± 4.68 | 96.67 ± 4.00 | 91.10 ± 10.04 | 97.67 ± 4.04 |
+| DeepSeek十示例，单次完整配置 | 98.00 | 99.57 | 97.00 | 94.71 | 99.86 |
 
-三个1.7B seed在dev和composition_ho上相对同底座零样本的配对区间下界均为正，支持该尺寸的训练收益；总体H1仍等待4B。结构留出三seed为93.29/99.86/80.14%，不能声称稳定泛化。按登记规则，tool减struct的区间[3.95,7.19]pp对应H3 `inconclusive`；v6强PE缓存尚未齐全，H2仍pending。
+三个1.7B seed在dev和composition_ho上相对同底座零样本的配对区间下界均为正，支持该尺寸的训练收益；总体H1仍等待4B。结构留出三seed为93.29/99.86/80.14%，不能声称稳定泛化。按登记规则，tool减struct的区间[3.95,7.19]pp对应H3 `inconclusive`。
+
+v6 DeepSeek十示例的5,100条完整缓存通过逐请求及产物核验后，1.7B三seed均值减DeepSeek的组配对95%区间依次为[−0.56,+1.83]、[−7.33,−4.19]、[−1.76,+1.19]、[−5.81,−1.48]、[−2.95,−1.48]pp。dev/tool/composition满足−3pp条件非劣效门槛，tpl/struct不满足，因此跨切分H2仍未成立。composition下界精确为−2.95238pp，只是窄幅满足；区间固定三个观测seed，不建立种子总体稳定性。qwen-max两臂因账户欠费未完成，不纳入该对照。
 
 行为与记录质量继续分离。在同一E/I分母上，tool/struct严格记录正确率三seed均值分别56.05%/53.43%；每个seed存在大量执行成功但记录有错的样本。tpl_ho的N broad alarm为8.29/13.14/2.00%，两个seed超过5%。这些结果支持双轴诊断需求，不证明scope等未被消费者使用的字段具有执行增益，也不建立人类语义可恢复性。seed44产物哈希及全部224个适配器张量的有限性检查通过，不能将其低分归为NaN失败并排除。
 
 来源与分母见`reports/v6_1p7b_three_seed_readout_20261125.md`及`outputs/submission/followup_20261125/{main_3seed,result_3seed}.json`。冻结汇总器先舍入每run后计算得到tool均值96.66%，逐条计数为96.6667%；仅有0.01pp显示差异，冻结分析器未修改。
+
+强模型也呈现两轴差异：DeepSeek在composition_ho上faithful为699/700（99.86%），严格记录正确仅527/700（75.29%），有172条执行成功但记录错误。它的整体N报警各切分均低于5%，但tool_ho的permission子型为9/150=6%，超过预登记H4门槛；子型可重叠，不能加总。该门槛失败是模型诊断，不能当成金标语义已被证伪。完整读数见`reports/v6_deepseek_readout_20261125.md`，冻结分析与整数复核分别为`outputs/submission/followup_20261125/main_after_deepseek.json`及`v6_pe_deepseek_integer_audit.json`。记录差异仍须结合未被消费字段这一实现限制解释，不构成这些字段的执行必要性证明。
 
 ## 6 负结果：奖励侧信用分配未检出稳定效应
 

@@ -1,0 +1,3564 @@
+{
+  "analysis_version": "v6-audit-20261124",
+  "data_dir": "/root/ConsDagV6Frozen/data/processed_v6",
+  "subsets": [
+    "dev",
+    "test_tpl_ho",
+    "test_tool_ho",
+    "test_struct_ho",
+    "test_composition_ho"
+  ],
+  "human_validation_status": "pending",
+  "data_sha256": {
+    "train": "f909353cb7bbe34e28615cb373b01af00ab57435da42f0af32a0afd1801ce601",
+    "dev": "dded8d43239a88ae656a8b925107abd2749e88c1534654c4885d1cf8208183d5",
+    "test_tpl_ho": "152c232c5df243160ad31fc4d02ed6e2d697ee612199b0ea5d9a2f43943a26c7",
+    "test_tool_ho": "34e70cb0463fcf0b9a06fad431345fefc4752a2dc369bc9f62a4201dfc170543",
+    "test_struct_ho": "b4b7be414d4a37e6825eef5bd842590df5a8a2508e540dd5e929f8b94f9e4ffd",
+    "test_composition_ho": "928109d6c59613d27084a70af34dc8c68645072e2d9830666297f5e20b7f2428"
+  },
+  "arms": {
+    "Qwen3-0.6B-v6-trained": {
+      "observed_runs": [],
+      "excluded_runs": [
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-0.6B-v6-seed42",
+          "reason": "missing_completion_provenance_or_metrics"
+        },
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-0.6B-v6-seed43",
+          "reason": "missing_completion_provenance_or_metrics"
+        },
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-0.6B-v6-seed44",
+          "reason": "missing_completion_provenance_or_metrics"
+        }
+      ],
+      "splits": {},
+      "required_seeds": [
+        42,
+        43,
+        44
+      ],
+      "observed_seeds": [],
+      "required_seeds_complete": false
+    },
+    "Qwen3-1.7B-v6-trained": {
+      "observed_runs": [
+        "Qwen3-1.7B-v6-seed42",
+        "Qwen3-1.7B-v6-seed43",
+        "Qwen3-1.7B-v6-seed44"
+      ],
+      "excluded_runs": [],
+      "splits": {
+        "dev": {
+          "per_run": [
+            {
+              "records": 900,
+              "constraint_strict_f1": 1.0,
+              "constraint_core_f1": 1.0,
+              "record_exact_match": 1.0,
+              "record_exact_match_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 1.0,
+              "faithful_success": 1.0,
+              "safe_success_constrained": 1.0,
+              "faithful_success_constrained": 1.0,
+              "faithful_success_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 300,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 108,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 113,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 109,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 126,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 900,
+              "constraint_strict_f1": 1.0,
+              "constraint_core_f1": 1.0,
+              "record_exact_match": 1.0,
+              "record_exact_match_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 1.0,
+              "faithful_success": 1.0,
+              "safe_success_constrained": 1.0,
+              "faithful_success_constrained": 1.0,
+              "faithful_success_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 300,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 108,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 113,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 109,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 126,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 900,
+              "constraint_strict_f1": 0.9576510446075663,
+              "constraint_core_f1": 0.9576510446075663,
+              "record_exact_match": 0.9588888888888889,
+              "record_exact_match_by_variant": {
+                "explicit": 0.9166666666666666,
+                "implicit": 0.96,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 0.9870283018867925,
+              "json_parse_rate": 0.9844444444444445,
+              "safe_success": 0.9756,
+              "faithful_success": 0.9722,
+              "safe_success_constrained": 0.9633,
+              "faithful_success_constrained": 0.9583,
+              "faithful_success_by_variant": {
+                "explicit": 0.94,
+                "implicit": 0.9767,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 300,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 108,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 113,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 109,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 126,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.9859,
+            "sample_sd": 0.0245
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.9859,
+            "sample_sd": 0.0245
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.9863,
+            "sample_sd": 0.0237
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.9957,
+            "sample_sd": 0.0075
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.9878,
+            "sample_sd": 0.0212
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.9861,
+            "sample_sd": 0.0241
+          }
+        },
+        "test_tpl_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.9528392685274302,
+              "constraint_core_f1": 0.9672762271414822,
+              "record_exact_match": 0.9228571428571428,
+              "record_exact_match_by_variant": {
+                "explicit": 0.8771428571428571,
+                "implicit": 0.9742857142857143,
+                "none": 0.9171428571428571
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 0.9743,
+              "faithful_success": 0.939,
+              "safe_success_constrained": 0.9614,
+              "faithful_success_constrained": 0.95,
+              "faithful_success_by_variant": {
+                "explicit": 0.92,
+                "implicit": 0.98,
+                "none": 0.9171
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 29,
+                "query_state_error": 29,
+                "any_contract_alarm": 29,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0829,
+                  "query_state_error": 0.0829,
+                  "any_contract_alarm": 0.0829
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 139,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 14,
+                  "query_state_error": 14,
+                  "any_contract_alarm": 14,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1007,
+                    "query_state_error": 0.1007,
+                    "any_contract_alarm": 0.1007
+                  }
+                },
+                "permission": {
+                  "n": 136,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 11,
+                  "query_state_error": 11,
+                  "any_contract_alarm": 11,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0809,
+                    "query_state_error": 0.0809,
+                    "any_contract_alarm": 0.0809
+                  }
+                },
+                "revoked": {
+                  "n": 148,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 24,
+                  "query_state_error": 24,
+                  "any_contract_alarm": 24,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1622,
+                    "query_state_error": 0.1622,
+                    "any_contract_alarm": 0.1622
+                  }
+                },
+                "waiver": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 8,
+                  "query_state_error": 8,
+                  "any_contract_alarm": 8,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0516,
+                    "query_state_error": 0.0516,
+                    "any_contract_alarm": 0.0516
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.9532798489853704,
+              "constraint_core_f1": 0.9636621047663992,
+              "record_exact_match": 0.9266666666666666,
+              "record_exact_match_by_variant": {
+                "explicit": 0.9457142857142857,
+                "implicit": 0.9657142857142857,
+                "none": 0.8685714285714285
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 0.9895,
+              "faithful_success": 0.9419,
+              "safe_success_constrained": 0.9843,
+              "faithful_success_constrained": 0.9786,
+              "faithful_success_by_variant": {
+                "explicit": 0.9829,
+                "implicit": 0.9743,
+                "none": 0.8686
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 46,
+                "query_state_error": 46,
+                "any_contract_alarm": 46,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.1314,
+                  "query_state_error": 0.1314,
+                  "any_contract_alarm": 0.1314
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 139,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 20,
+                  "query_state_error": 20,
+                  "any_contract_alarm": 20,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1439,
+                    "query_state_error": 0.1439,
+                    "any_contract_alarm": 0.1439
+                  }
+                },
+                "permission": {
+                  "n": 136,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 15,
+                  "query_state_error": 15,
+                  "any_contract_alarm": 15,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1103,
+                    "query_state_error": 0.1103,
+                    "any_contract_alarm": 0.1103
+                  }
+                },
+                "revoked": {
+                  "n": 148,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 30,
+                  "query_state_error": 30,
+                  "any_contract_alarm": 30,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.2027,
+                    "query_state_error": 0.2027,
+                    "any_contract_alarm": 0.2027
+                  }
+                },
+                "waiver": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 19,
+                  "query_state_error": 19,
+                  "any_contract_alarm": 19,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1226,
+                    "query_state_error": 0.1226,
+                    "any_contract_alarm": 0.1226
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.8932882665379044,
+              "constraint_core_f1": 0.9193626267503622,
+              "record_exact_match": 0.8714285714285714,
+              "record_exact_match_by_variant": {
+                "explicit": 0.7657142857142857,
+                "implicit": 0.8685714285714285,
+                "none": 0.98
+              },
+              "evidence_exact_rate": 0.9902702702702703,
+              "json_parse_rate": 0.9847619047619047,
+              "safe_success": 0.9343,
+              "faithful_success": 0.9181,
+              "safe_success_constrained": 0.9043,
+              "faithful_success_constrained": 0.8871,
+              "faithful_success_by_variant": {
+                "explicit": 0.8629,
+                "implicit": 0.9114,
+                "none": 0.98
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 1,
+                "nonempty_constraints": 6,
+                "query_state_error": 6,
+                "any_contract_alarm": 7,
+                "rates": {
+                  "parse_failure": 0.0029,
+                  "nonempty_constraints": 0.0171,
+                  "query_state_error": 0.0171,
+                  "any_contract_alarm": 0.02
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 139,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 4,
+                  "query_state_error": 4,
+                  "any_contract_alarm": 4,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0288,
+                    "query_state_error": 0.0288,
+                    "any_contract_alarm": 0.0288
+                  }
+                },
+                "permission": {
+                  "n": 136,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 2,
+                  "query_state_error": 2,
+                  "any_contract_alarm": 2,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0147,
+                    "query_state_error": 0.0147,
+                    "any_contract_alarm": 0.0147
+                  }
+                },
+                "revoked": {
+                  "n": 148,
+                  "parse_failure": 1,
+                  "nonempty_constraints": 5,
+                  "query_state_error": 5,
+                  "any_contract_alarm": 6,
+                  "rates": {
+                    "parse_failure": 0.0068,
+                    "nonempty_constraints": 0.0338,
+                    "query_state_error": 0.0338,
+                    "any_contract_alarm": 0.0405
+                  }
+                },
+                "waiver": {
+                  "n": 155,
+                  "parse_failure": 1,
+                  "nonempty_constraints": 1,
+                  "query_state_error": 1,
+                  "any_contract_alarm": 2,
+                  "rates": {
+                    "parse_failure": 0.0065,
+                    "nonempty_constraints": 0.0065,
+                    "query_state_error": 0.0065,
+                    "any_contract_alarm": 0.0129
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.9331,
+            "sample_sd": 0.0345
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.9501,
+            "sample_sd": 0.0267
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.907,
+            "sample_sd": 0.0309
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.9968,
+            "sample_sd": 0.0056
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.95,
+            "sample_sd": 0.0412
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.9386,
+            "sample_sd": 0.0468
+          }
+        },
+        "test_tool_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.6451292246520874,
+              "constraint_core_f1": 0.9870775347912525,
+              "record_exact_match": 0.6980952380952381,
+              "record_exact_match_by_variant": {
+                "explicit": 0.5657142857142857,
+                "implicit": 0.5285714285714286,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 0.9876,
+              "faithful_success": 0.9876,
+              "safe_success_constrained": 0.9814,
+              "faithful_success_constrained": 0.9814,
+              "faithful_success_by_variant": {
+                "explicit": 0.9971,
+                "implicit": 0.9657,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 137,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 150,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 134,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 131,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.7365805168986084,
+              "constraint_core_f1": 0.9980119284294234,
+              "record_exact_match": 0.7714285714285715,
+              "record_exact_match_by_variant": {
+                "explicit": 0.6514285714285715,
+                "implicit": 0.6628571428571428,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 0.9981,
+              "faithful_success": 0.9981,
+              "safe_success_constrained": 0.9971,
+              "faithful_success_constrained": 0.9971,
+              "faithful_success_by_variant": {
+                "explicit": 0.9971,
+                "implicit": 0.9971,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 137,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 150,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 134,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 131,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.5659809332664325,
+              "constraint_core_f1": 0.9011540391369794,
+              "record_exact_match": 0.6514285714285715,
+              "record_exact_match_by_variant": {
+                "explicit": 0.44571428571428573,
+                "implicit": 0.5085714285714286,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 0.9911347517730497,
+              "json_parse_rate": 0.9809523809523809,
+              "safe_success": 0.9476,
+              "faithful_success": 0.9476,
+              "safe_success_constrained": 0.9214,
+              "faithful_success_constrained": 0.9214,
+              "faithful_success_by_variant": {
+                "explicit": 0.8943,
+                "implicit": 0.9486,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 137,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 150,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 134,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 131,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.6492,
+            "sample_sd": 0.0854
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.9621,
+            "sample_sd": 0.053
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.707,
+            "sample_sd": 0.0605
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.997,
+            "sample_sd": 0.0051
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.9666,
+            "sample_sd": 0.04
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.9666,
+            "sample_sd": 0.04
+          }
+        },
+        "test_struct_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.7366515837104073,
+              "constraint_core_f1": 0.9556561085972851,
+              "record_exact_match": 0.7466666666666667,
+              "record_exact_match_by_variant": {
+                "explicit": 0.6257142857142857,
+                "implicit": 0.6142857142857143,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 0.9990476190476191,
+              "safe_success": 0.9552,
+              "faithful_success": 0.9552,
+              "safe_success_constrained": 0.9329,
+              "faithful_success_constrained": 0.9329,
+              "faithful_success_by_variant": {
+                "explicit": 0.9343,
+                "implicit": 0.9314,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 142,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 140,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.7025316455696202,
+              "constraint_core_f1": 0.9773960216998192,
+              "record_exact_match": 0.7095238095238096,
+              "record_exact_match_by_variant": {
+                "explicit": 0.5628571428571428,
+                "implicit": 0.5657142857142857,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 0.999,
+              "faithful_success": 0.999,
+              "safe_success_constrained": 0.9986,
+              "faithful_success_constrained": 0.9986,
+              "faithful_success_by_variant": {
+                "explicit": 1.0,
+                "implicit": 0.9971,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 142,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 140,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.5515345854328905,
+              "constraint_core_f1": 0.8309665597801191,
+              "record_exact_match": 0.6123809523809524,
+              "record_exact_match_by_variant": {
+                "explicit": 0.41714285714285715,
+                "implicit": 0.42,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 0.9850498338870431,
+              "json_parse_rate": 0.9723809523809523,
+              "safe_success": 0.8686,
+              "faithful_success": 0.8676,
+              "safe_success_constrained": 0.8029,
+              "faithful_success_constrained": 0.8014,
+              "faithful_success_by_variant": {
+                "explicit": 0.7829,
+                "implicit": 0.82,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 155,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 142,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 140,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.6636,
+            "sample_sd": 0.0985
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.9213,
+            "sample_sd": 0.079
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.6895,
+            "sample_sd": 0.0693
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.995,
+            "sample_sd": 0.0086
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.9115,
+            "sample_sd": 0.0996
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.911,
+            "sample_sd": 0.1004
+          }
+        },
+        "test_composition_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 1.0,
+              "constraint_core_f1": 1.0,
+              "record_exact_match": 1.0,
+              "record_exact_match_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 1.0,
+              "faithful_success": 1.0,
+              "safe_success_constrained": 1.0,
+              "faithful_success_constrained": 1.0,
+              "faithful_success_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 183,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 176,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 178,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 164,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 1.0,
+              "constraint_core_f1": 1.0,
+              "record_exact_match": 1.0,
+              "record_exact_match_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 1.0,
+              "json_parse_rate": 1.0,
+              "safe_success": 1.0,
+              "faithful_success": 1.0,
+              "safe_success_constrained": 1.0,
+              "faithful_success_constrained": 1.0,
+              "faithful_success_by_variant": {
+                "explicit": 1.0,
+                "implicit": 1.0,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 183,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 176,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 178,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 164,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            },
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.9510439164866811,
+              "constraint_core_f1": 0.9510439164866811,
+              "record_exact_match": 0.9228571428571428,
+              "record_exact_match_by_variant": {
+                "explicit": 0.8257142857142857,
+                "implicit": 0.9428571428571428,
+                "none": 1.0
+              },
+              "evidence_exact_rate": 0.9969719909159728,
+              "json_parse_rate": 0.9666666666666667,
+              "safe_success": 0.9543,
+              "faithful_success": 0.9533,
+              "safe_success_constrained": 0.9314,
+              "faithful_success_constrained": 0.93,
+              "faithful_success_by_variant": {
+                "explicit": 0.9,
+                "implicit": 0.96,
+                "none": 1.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 0,
+                "nonempty_constraints": 0,
+                "query_state_error": 0,
+                "any_contract_alarm": 0,
+                "rates": {
+                  "parse_failure": 0.0,
+                  "nonempty_constraints": 0.0,
+                  "query_state_error": 0.0,
+                  "any_contract_alarm": 0.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 183,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "permission": {
+                  "n": 176,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "revoked": {
+                  "n": 178,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                },
+                "waiver": {
+                  "n": 164,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 0,
+                  "query_state_error": 0,
+                  "any_contract_alarm": 0,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.0,
+                    "query_state_error": 0.0,
+                    "any_contract_alarm": 0.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.9837,
+            "sample_sd": 0.0283
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.9837,
+            "sample_sd": 0.0283
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.9743,
+            "sample_sd": 0.0445
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.999,
+            "sample_sd": 0.0017
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.9771,
+            "sample_sd": 0.0396
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.9767,
+            "sample_sd": 0.0404
+          }
+        }
+      },
+      "required_seeds": [
+        42,
+        43,
+        44
+      ],
+      "observed_seeds": [
+        42,
+        43,
+        44
+      ],
+      "required_seeds_complete": true
+    },
+    "Qwen3-4B-v6-trained": {
+      "observed_runs": [],
+      "excluded_runs": [
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-4B-v6-seed42",
+          "reason": "missing_completion_provenance_or_metrics"
+        },
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-4B-v6-seed43",
+          "reason": "missing_completion_provenance_or_metrics"
+        },
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-4B-v6-seed44",
+          "reason": "missing_completion_provenance_or_metrics"
+        }
+      ],
+      "splits": {},
+      "required_seeds": [
+        42,
+        43,
+        44
+      ],
+      "observed_seeds": [],
+      "required_seeds_complete": false
+    },
+    "Qwen3-0.6B-v6-zero": {
+      "observed_runs": [],
+      "excluded_runs": [
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-0.6B-v6-seed42",
+          "reason": "missing_completion_provenance_or_metrics"
+        }
+      ],
+      "splits": {},
+      "required_seeds": [
+        42
+      ],
+      "baseline_complete": false
+    },
+    "Qwen3-1.7B-v6-zero": {
+      "observed_runs": [
+        "Qwen3-1.7B-v6-seed42"
+      ],
+      "excluded_runs": [],
+      "splits": {
+        "dev": {
+          "per_run": [
+            {
+              "records": 900,
+              "constraint_strict_f1": 0.08426395939086294,
+              "constraint_core_f1": 0.23451776649746192,
+              "record_exact_match": 0.024444444444444446,
+              "record_exact_match_by_variant": {
+                "explicit": 0.06666666666666667,
+                "implicit": 0.0,
+                "none": 0.006666666666666667
+              },
+              "evidence_exact_rate": 0.4819277108433735,
+              "json_parse_rate": 0.9766666666666667,
+              "safe_success": 0.4389,
+              "faithful_success": 0.15,
+              "safe_success_constrained": 0.2283,
+              "faithful_success_constrained": 0.2217,
+              "faithful_success_by_variant": {
+                "explicit": 0.3833,
+                "implicit": 0.06,
+                "none": 0.0067
+              },
+              "n_errors": {
+                "n": 300,
+                "parse_failure": 8,
+                "nonempty_constraints": 107,
+                "query_state_error": 290,
+                "any_contract_alarm": 298,
+                "rates": {
+                  "parse_failure": 0.0267,
+                  "nonempty_constraints": 0.3567,
+                  "query_state_error": 0.9667,
+                  "any_contract_alarm": 0.9933
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 108,
+                  "parse_failure": 3,
+                  "nonempty_constraints": 34,
+                  "query_state_error": 104,
+                  "any_contract_alarm": 107,
+                  "rates": {
+                    "parse_failure": 0.0278,
+                    "nonempty_constraints": 0.3148,
+                    "query_state_error": 0.963,
+                    "any_contract_alarm": 0.9907
+                  }
+                },
+                "permission": {
+                  "n": 113,
+                  "parse_failure": 8,
+                  "nonempty_constraints": 57,
+                  "query_state_error": 105,
+                  "any_contract_alarm": 113,
+                  "rates": {
+                    "parse_failure": 0.0708,
+                    "nonempty_constraints": 0.5044,
+                    "query_state_error": 0.9292,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "revoked": {
+                  "n": 109,
+                  "parse_failure": 1,
+                  "nonempty_constraints": 38,
+                  "query_state_error": 107,
+                  "any_contract_alarm": 108,
+                  "rates": {
+                    "parse_failure": 0.0092,
+                    "nonempty_constraints": 0.3486,
+                    "query_state_error": 0.9817,
+                    "any_contract_alarm": 0.9908
+                  }
+                },
+                "waiver": {
+                  "n": 126,
+                  "parse_failure": 4,
+                  "nonempty_constraints": 46,
+                  "query_state_error": 122,
+                  "any_contract_alarm": 126,
+                  "rates": {
+                    "parse_failure": 0.0317,
+                    "nonempty_constraints": 0.3651,
+                    "query_state_error": 0.9683,
+                    "any_contract_alarm": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.0843,
+            "sample_sd": null
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.2345,
+            "sample_sd": null
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.0244,
+            "sample_sd": null
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.4819,
+            "sample_sd": null
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.2283,
+            "sample_sd": null
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.2217,
+            "sample_sd": null
+          }
+        },
+        "test_tpl_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.06841844323252355,
+              "constraint_core_f1": 0.21219633118492812,
+              "record_exact_match": 0.02,
+              "record_exact_match_by_variant": {
+                "explicit": 0.04857142857142857,
+                "implicit": 0.0,
+                "none": 0.011428571428571429
+              },
+              "evidence_exact_rate": 0.5942028985507246,
+              "json_parse_rate": 0.9761904761904762,
+              "safe_success": 0.4486,
+              "faithful_success": 0.1229,
+              "safe_success_constrained": 0.1986,
+              "faithful_success_constrained": 0.1786,
+              "faithful_success_by_variant": {
+                "explicit": 0.3314,
+                "implicit": 0.0257,
+                "none": 0.0114
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 3,
+                "nonempty_constraints": 71,
+                "query_state_error": 343,
+                "any_contract_alarm": 346,
+                "rates": {
+                  "parse_failure": 0.0086,
+                  "nonempty_constraints": 0.2029,
+                  "query_state_error": 0.98,
+                  "any_contract_alarm": 0.9886
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 139,
+                  "parse_failure": 2,
+                  "nonempty_constraints": 30,
+                  "query_state_error": 137,
+                  "any_contract_alarm": 139,
+                  "rates": {
+                    "parse_failure": 0.0144,
+                    "nonempty_constraints": 0.2158,
+                    "query_state_error": 0.9856,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "permission": {
+                  "n": 136,
+                  "parse_failure": 2,
+                  "nonempty_constraints": 40,
+                  "query_state_error": 134,
+                  "any_contract_alarm": 136,
+                  "rates": {
+                    "parse_failure": 0.0147,
+                    "nonempty_constraints": 0.2941,
+                    "query_state_error": 0.9853,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "revoked": {
+                  "n": 148,
+                  "parse_failure": 1,
+                  "nonempty_constraints": 26,
+                  "query_state_error": 145,
+                  "any_contract_alarm": 146,
+                  "rates": {
+                    "parse_failure": 0.0068,
+                    "nonempty_constraints": 0.1757,
+                    "query_state_error": 0.9797,
+                    "any_contract_alarm": 0.9865
+                  }
+                },
+                "waiver": {
+                  "n": 155,
+                  "parse_failure": 1,
+                  "nonempty_constraints": 25,
+                  "query_state_error": 151,
+                  "any_contract_alarm": 152,
+                  "rates": {
+                    "parse_failure": 0.0065,
+                    "nonempty_constraints": 0.1613,
+                    "query_state_error": 0.9742,
+                    "any_contract_alarm": 0.9806
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.0684,
+            "sample_sd": null
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.2122,
+            "sample_sd": null
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.02,
+            "sample_sd": null
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.5942,
+            "sample_sd": null
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.1986,
+            "sample_sd": null
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.1786,
+            "sample_sd": null
+          }
+        },
+        "test_tool_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.06659267480577137,
+              "constraint_core_f1": 0.1853496115427303,
+              "record_exact_match": 0.012380952380952381,
+              "record_exact_match_by_variant": {
+                "explicit": 0.02857142857142857,
+                "implicit": 0.0,
+                "none": 0.008571428571428572
+              },
+              "evidence_exact_rate": 0.4,
+              "json_parse_rate": 0.9742857142857143,
+              "safe_success": 0.4019,
+              "faithful_success": 0.0895,
+              "safe_success_constrained": 0.1414,
+              "faithful_success_constrained": 0.13,
+              "faithful_success_by_variant": {
+                "explicit": 0.2429,
+                "implicit": 0.0171,
+                "none": 0.0086
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 3,
+                "nonempty_constraints": 64,
+                "query_state_error": 344,
+                "any_contract_alarm": 347,
+                "rates": {
+                  "parse_failure": 0.0086,
+                  "nonempty_constraints": 0.1829,
+                  "query_state_error": 0.9829,
+                  "any_contract_alarm": 0.9914
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 137,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 19,
+                  "query_state_error": 135,
+                  "any_contract_alarm": 135,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1387,
+                    "query_state_error": 0.9854,
+                    "any_contract_alarm": 0.9854
+                  }
+                },
+                "permission": {
+                  "n": 150,
+                  "parse_failure": 2,
+                  "nonempty_constraints": 43,
+                  "query_state_error": 148,
+                  "any_contract_alarm": 150,
+                  "rates": {
+                    "parse_failure": 0.0133,
+                    "nonempty_constraints": 0.2867,
+                    "query_state_error": 0.9867,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "revoked": {
+                  "n": 134,
+                  "parse_failure": 0,
+                  "nonempty_constraints": 22,
+                  "query_state_error": 133,
+                  "any_contract_alarm": 133,
+                  "rates": {
+                    "parse_failure": 0.0,
+                    "nonempty_constraints": 0.1642,
+                    "query_state_error": 0.9925,
+                    "any_contract_alarm": 0.9925
+                  }
+                },
+                "waiver": {
+                  "n": 131,
+                  "parse_failure": 2,
+                  "nonempty_constraints": 32,
+                  "query_state_error": 129,
+                  "any_contract_alarm": 131,
+                  "rates": {
+                    "parse_failure": 0.0153,
+                    "nonempty_constraints": 0.2443,
+                    "query_state_error": 0.9847,
+                    "any_contract_alarm": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.0666,
+            "sample_sd": null
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.1853,
+            "sample_sd": null
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.0124,
+            "sample_sd": null
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.4,
+            "sample_sd": null
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.1414,
+            "sample_sd": null
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.13,
+            "sample_sd": null
+          }
+        },
+        "test_struct_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.0636482939632546,
+              "constraint_core_f1": 0.1889763779527559,
+              "record_exact_match": 0.01619047619047619,
+              "record_exact_match_by_variant": {
+                "explicit": 0.04857142857142857,
+                "implicit": 0.0,
+                "none": 0.0
+              },
+              "evidence_exact_rate": 0.8144329896907216,
+              "json_parse_rate": 0.920952380952381,
+              "safe_success": 0.461,
+              "faithful_success": 0.1629,
+              "safe_success_constrained": 0.2943,
+              "faithful_success_constrained": 0.2443,
+              "faithful_success_by_variant": {
+                "explicit": 0.3943,
+                "implicit": 0.0943,
+                "none": 0.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 32,
+                "nonempty_constraints": 212,
+                "query_state_error": 318,
+                "any_contract_alarm": 350,
+                "rates": {
+                  "parse_failure": 0.0914,
+                  "nonempty_constraints": 0.6057,
+                  "query_state_error": 0.9086,
+                  "any_contract_alarm": 1.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 155,
+                  "parse_failure": 12,
+                  "nonempty_constraints": 84,
+                  "query_state_error": 143,
+                  "any_contract_alarm": 155,
+                  "rates": {
+                    "parse_failure": 0.0774,
+                    "nonempty_constraints": 0.5419,
+                    "query_state_error": 0.9226,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "permission": {
+                  "n": 155,
+                  "parse_failure": 17,
+                  "nonempty_constraints": 109,
+                  "query_state_error": 138,
+                  "any_contract_alarm": 155,
+                  "rates": {
+                    "parse_failure": 0.1097,
+                    "nonempty_constraints": 0.7032,
+                    "query_state_error": 0.8903,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "revoked": {
+                  "n": 142,
+                  "parse_failure": 11,
+                  "nonempty_constraints": 101,
+                  "query_state_error": 131,
+                  "any_contract_alarm": 142,
+                  "rates": {
+                    "parse_failure": 0.0775,
+                    "nonempty_constraints": 0.7113,
+                    "query_state_error": 0.9225,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "waiver": {
+                  "n": 140,
+                  "parse_failure": 22,
+                  "nonempty_constraints": 85,
+                  "query_state_error": 118,
+                  "any_contract_alarm": 140,
+                  "rates": {
+                    "parse_failure": 0.1571,
+                    "nonempty_constraints": 0.6071,
+                    "query_state_error": 0.8429,
+                    "any_contract_alarm": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.0636,
+            "sample_sd": null
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.189,
+            "sample_sd": null
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.0162,
+            "sample_sd": null
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.8144,
+            "sample_sd": null
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.2943,
+            "sample_sd": null
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.2443,
+            "sample_sd": null
+          }
+        },
+        "test_composition_ho": {
+          "per_run": [
+            {
+              "records": 1050,
+              "constraint_strict_f1": 0.0006387735547748323,
+              "constraint_core_f1": 0.12392206962631747,
+              "record_exact_match": 0.0,
+              "record_exact_match_by_variant": {
+                "explicit": 0.0,
+                "implicit": 0.0,
+                "none": 0.0
+              },
+              "evidence_exact_rate": 0.0,
+              "json_parse_rate": 0.9238095238095239,
+              "safe_success": 0.3686,
+              "faithful_success": 0.0629,
+              "safe_success_constrained": 0.0986,
+              "faithful_success_constrained": 0.0943,
+              "faithful_success_by_variant": {
+                "explicit": 0.1457,
+                "implicit": 0.0429,
+                "none": 0.0
+              },
+              "n_errors": {
+                "n": 350,
+                "parse_failure": 9,
+                "nonempty_constraints": 128,
+                "query_state_error": 341,
+                "any_contract_alarm": 350,
+                "rates": {
+                  "parse_failure": 0.0257,
+                  "nonempty_constraints": 0.3657,
+                  "query_state_error": 0.9743,
+                  "any_contract_alarm": 1.0
+                }
+              },
+              "n_errors_by_subtype": {
+                "other_party": {
+                  "n": 183,
+                  "parse_failure": 7,
+                  "nonempty_constraints": 49,
+                  "query_state_error": 176,
+                  "any_contract_alarm": 183,
+                  "rates": {
+                    "parse_failure": 0.0383,
+                    "nonempty_constraints": 0.2678,
+                    "query_state_error": 0.9617,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "permission": {
+                  "n": 176,
+                  "parse_failure": 4,
+                  "nonempty_constraints": 89,
+                  "query_state_error": 172,
+                  "any_contract_alarm": 176,
+                  "rates": {
+                    "parse_failure": 0.0227,
+                    "nonempty_constraints": 0.5057,
+                    "query_state_error": 0.9773,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "revoked": {
+                  "n": 178,
+                  "parse_failure": 5,
+                  "nonempty_constraints": 59,
+                  "query_state_error": 173,
+                  "any_contract_alarm": 178,
+                  "rates": {
+                    "parse_failure": 0.0281,
+                    "nonempty_constraints": 0.3315,
+                    "query_state_error": 0.9719,
+                    "any_contract_alarm": 1.0
+                  }
+                },
+                "waiver": {
+                  "n": 164,
+                  "parse_failure": 5,
+                  "nonempty_constraints": 57,
+                  "query_state_error": 159,
+                  "any_contract_alarm": 164,
+                  "rates": {
+                    "parse_failure": 0.0305,
+                    "nonempty_constraints": 0.3476,
+                    "query_state_error": 0.9695,
+                    "any_contract_alarm": 1.0
+                  }
+                }
+              }
+            }
+          ],
+          "aggregate_status": "complete",
+          "constraint_strict_f1_mean_sd": {
+            "mean": 0.0006,
+            "sample_sd": null
+          },
+          "constraint_core_f1_mean_sd": {
+            "mean": 0.1239,
+            "sample_sd": null
+          },
+          "record_exact_match_mean_sd": {
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "evidence_exact_rate_mean_sd": {
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "safe_success_constrained_mean_sd": {
+            "mean": 0.0986,
+            "sample_sd": null
+          },
+          "faithful_success_constrained_mean_sd": {
+            "mean": 0.0943,
+            "sample_sd": null
+          }
+        }
+      },
+      "required_seeds": [
+        42
+      ],
+      "baseline_complete": true
+    },
+    "Qwen3-4B-v6-zero": {
+      "observed_runs": [],
+      "excluded_runs": [
+        {
+          "run": "/root/ConsDagV6Frozen/outputs/e1_v6/Qwen3-4B-v6-seed42",
+          "reason": "missing_completion_provenance_or_metrics"
+        }
+      ],
+      "splits": {},
+      "required_seeds": [
+        42
+      ],
+      "baseline_complete": false
+    },
+    "PE-deepseek-v4-pro-0813-few": {
+      "observed_runs": [
+        "deepseek-v4-pro-0813-few"
+      ],
+      "splits": {
+        "dev": {
+          "records": 900,
+          "constraint_strict_f1": 0.9128724002248454,
+          "constraint_core_f1": 0.955593029792018,
+          "record_exact_match": 0.9111111111111111,
+          "record_exact_match_by_variant": {
+            "explicit": 0.9033333333333333,
+            "implicit": 0.8533333333333334,
+            "none": 0.9766666666666667
+          },
+          "evidence_exact_rate": 1.0,
+          "json_parse_rate": 1.0,
+          "safe_success": 0.9867,
+          "faithful_success": 0.9789,
+          "safe_success_constrained": 0.98,
+          "faithful_success_constrained": 0.98,
+          "faithful_success_by_variant": {
+            "explicit": 0.9767,
+            "implicit": 0.9833,
+            "none": 0.9767
+          },
+          "n_errors": {
+            "n": 300,
+            "parse_failure": 0,
+            "nonempty_constraints": 7,
+            "query_state_error": 7,
+            "any_contract_alarm": 7,
+            "rates": {
+              "parse_failure": 0.0,
+              "nonempty_constraints": 0.0233,
+              "query_state_error": 0.0233,
+              "any_contract_alarm": 0.0233
+            }
+          },
+          "n_errors_by_subtype": {
+            "other_party": {
+              "n": 108,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0185,
+                "query_state_error": 0.0185,
+                "any_contract_alarm": 0.0185
+              }
+            },
+            "permission": {
+              "n": 113,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0177,
+                "query_state_error": 0.0177,
+                "any_contract_alarm": 0.0177
+              }
+            },
+            "revoked": {
+              "n": 109,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0459,
+                "query_state_error": 0.0459,
+                "any_contract_alarm": 0.0459
+              }
+            },
+            "waiver": {
+              "n": 126,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_tpl_ho": {
+          "records": 1050,
+          "constraint_strict_f1": 0.9406614785992218,
+          "constraint_core_f1": 0.9640077821011673,
+          "record_exact_match": 0.9438095238095238,
+          "record_exact_match_by_variant": {
+            "explicit": 0.8942857142857142,
+            "implicit": 0.9371428571428572,
+            "none": 1.0
+          },
+          "evidence_exact_rate": 1.0,
+          "json_parse_rate": 1.0,
+          "safe_success": 0.9971,
+          "faithful_success": 0.9971,
+          "safe_success_constrained": 0.9957,
+          "faithful_success_constrained": 0.9957,
+          "faithful_success_by_variant": {
+            "explicit": 0.9943,
+            "implicit": 0.9971,
+            "none": 1.0
+          },
+          "n_errors": {
+            "n": 350,
+            "parse_failure": 0,
+            "nonempty_constraints": 0,
+            "query_state_error": 0,
+            "any_contract_alarm": 0,
+            "rates": {
+              "parse_failure": 0.0,
+              "nonempty_constraints": 0.0,
+              "query_state_error": 0.0,
+              "any_contract_alarm": 0.0
+            }
+          },
+          "n_errors_by_subtype": {
+            "other_party": {
+              "n": 139,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            },
+            "permission": {
+              "n": 136,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            },
+            "revoked": {
+              "n": 148,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            },
+            "waiver": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_tool_ho": {
+          "records": 1050,
+          "constraint_strict_f1": 0.8740740740740741,
+          "constraint_core_f1": 0.9165432098765433,
+          "record_exact_match": 0.8761904761904762,
+          "record_exact_match_by_variant": {
+            "explicit": 0.8742857142857143,
+            "implicit": 0.7857142857142857,
+            "none": 0.9685714285714285
+          },
+          "evidence_exact_rate": 1.0,
+          "json_parse_rate": 1.0,
+          "safe_success": 0.981,
+          "faithful_success": 0.9695,
+          "safe_success_constrained": 0.9714,
+          "faithful_success_constrained": 0.97,
+          "faithful_success_by_variant": {
+            "explicit": 0.9629,
+            "implicit": 0.9771,
+            "none": 0.9686
+          },
+          "n_errors": {
+            "n": 350,
+            "parse_failure": 0,
+            "nonempty_constraints": 11,
+            "query_state_error": 11,
+            "any_contract_alarm": 11,
+            "rates": {
+              "parse_failure": 0.0,
+              "nonempty_constraints": 0.0314,
+              "query_state_error": 0.0314,
+              "any_contract_alarm": 0.0314
+            }
+          },
+          "n_errors_by_subtype": {
+            "other_party": {
+              "n": 137,
+              "parse_failure": 0,
+              "nonempty_constraints": 1,
+              "query_state_error": 1,
+              "any_contract_alarm": 1,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0073,
+                "query_state_error": 0.0073,
+                "any_contract_alarm": 0.0073
+              }
+            },
+            "permission": {
+              "n": 150,
+              "parse_failure": 0,
+              "nonempty_constraints": 9,
+              "query_state_error": 9,
+              "any_contract_alarm": 9,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.06,
+                "query_state_error": 0.06,
+                "any_contract_alarm": 0.06
+              }
+            },
+            "revoked": {
+              "n": 134,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0373,
+                "query_state_error": 0.0373,
+                "any_contract_alarm": 0.0373
+              }
+            },
+            "waiver": {
+              "n": 131,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_struct_ho": {
+          "records": 1050,
+          "constraint_strict_f1": 0.8633093525179856,
+          "constraint_core_f1": 0.9019784172661871,
+          "record_exact_match": 0.8571428571428571,
+          "record_exact_match_by_variant": {
+            "explicit": 0.8171428571428572,
+            "implicit": 0.7714285714285715,
+            "none": 0.9828571428571429
+          },
+          "evidence_exact_rate": 1.0,
+          "json_parse_rate": 1.0,
+          "safe_success": 0.9686,
+          "faithful_success": 0.959,
+          "safe_success_constrained": 0.9529,
+          "faithful_success_constrained": 0.9471,
+          "faithful_success_by_variant": {
+            "explicit": 0.9229,
+            "implicit": 0.9714,
+            "none": 0.9829
+          },
+          "n_errors": {
+            "n": 350,
+            "parse_failure": 0,
+            "nonempty_constraints": 6,
+            "query_state_error": 6,
+            "any_contract_alarm": 6,
+            "rates": {
+              "parse_failure": 0.0,
+              "nonempty_constraints": 0.0171,
+              "query_state_error": 0.0171,
+              "any_contract_alarm": 0.0171
+            }
+          },
+          "n_errors_by_subtype": {
+            "other_party": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 3,
+              "query_state_error": 3,
+              "any_contract_alarm": 3,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0194,
+                "query_state_error": 0.0194,
+                "any_contract_alarm": 0.0194
+              }
+            },
+            "permission": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0323,
+                "query_state_error": 0.0323,
+                "any_contract_alarm": 0.0323
+              }
+            },
+            "revoked": {
+              "n": 142,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0141,
+                "query_state_error": 0.0141,
+                "any_contract_alarm": 0.0141
+              }
+            },
+            "waiver": {
+              "n": 140,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_composition_ho": {
+          "records": 1050,
+          "constraint_strict_f1": 0.8733096085409253,
+          "constraint_core_f1": 0.9103202846975089,
+          "record_exact_match": 0.8285714285714286,
+          "record_exact_match_by_variant": {
+            "explicit": 0.6942857142857143,
+            "implicit": 0.8114285714285714,
+            "none": 0.98
+          },
+          "evidence_exact_rate": 1.0,
+          "json_parse_rate": 1.0,
+          "safe_success": 0.999,
+          "faithful_success": 0.9924,
+          "safe_success_constrained": 0.9986,
+          "faithful_success_constrained": 0.9986,
+          "faithful_success_by_variant": {
+            "explicit": 0.9971,
+            "implicit": 1.0,
+            "none": 0.98
+          },
+          "n_errors": {
+            "n": 350,
+            "parse_failure": 0,
+            "nonempty_constraints": 7,
+            "query_state_error": 7,
+            "any_contract_alarm": 7,
+            "rates": {
+              "parse_failure": 0.0,
+              "nonempty_constraints": 0.02,
+              "query_state_error": 0.02,
+              "any_contract_alarm": 0.02
+            }
+          },
+          "n_errors_by_subtype": {
+            "other_party": {
+              "n": 183,
+              "parse_failure": 0,
+              "nonempty_constraints": 3,
+              "query_state_error": 3,
+              "any_contract_alarm": 3,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0164,
+                "query_state_error": 0.0164,
+                "any_contract_alarm": 0.0164
+              }
+            },
+            "permission": {
+              "n": 176,
+              "parse_failure": 0,
+              "nonempty_constraints": 4,
+              "query_state_error": 4,
+              "any_contract_alarm": 4,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0227,
+                "query_state_error": 0.0227,
+                "any_contract_alarm": 0.0227
+              }
+            },
+            "revoked": {
+              "n": 178,
+              "parse_failure": 0,
+              "nonempty_constraints": 7,
+              "query_state_error": 7,
+              "any_contract_alarm": 7,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0393,
+                "query_state_error": 0.0393,
+                "any_contract_alarm": 0.0393
+              }
+            },
+            "waiver": {
+              "n": 164,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0122,
+                "query_state_error": 0.0122,
+                "any_contract_alarm": 0.0122
+              }
+            }
+          }
+        }
+      }
+    },
+    "PE-qwen-max-zero": {
+      "observed_runs": [],
+      "status": "missing_pe_completion",
+      "splits": {}
+    },
+    "PE-qwen-max-few": {
+      "observed_runs": [],
+      "status": "missing_pe_config",
+      "splits": {}
+    }
+  },
+  "decisions": {
+    "H1_training_gain": {
+      "0.6B": {
+        "dev": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_tpl_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_tool_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_struct_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_composition_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        }
+      },
+      "1.7B": {
+        "dev": {
+          "status": "supported",
+          "required_seeds_complete": true,
+          "baseline_complete": true,
+          "all_seed_ci_lower_bounds_positive": true,
+          "all_seed_points_positive": true,
+          "per_seed_comparisons": [
+            {
+              "seed": 42,
+              "subset": "dev",
+              "groups": 300,
+              "difference_a_minus_b": 0.7783,
+              "paired_group_bootstrap_ci95": [
+                0.7466666666666667,
+                0.8083333333333333
+              ],
+              "per_a_run_differences": [
+                0.7783
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 43,
+              "subset": "dev",
+              "groups": 300,
+              "difference_a_minus_b": 0.7783,
+              "paired_group_bootstrap_ci95": [
+                0.7466666666666667,
+                0.8083333333333333
+              ],
+              "per_a_run_differences": [
+                0.7783
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 44,
+              "subset": "dev",
+              "groups": 300,
+              "difference_a_minus_b": 0.7367,
+              "paired_group_bootstrap_ci95": [
+                0.7033333333333334,
+                0.77
+              ],
+              "per_a_run_differences": [
+                0.7367
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            }
+          ]
+        },
+        "test_tpl_ho": {
+          "status": "supported",
+          "required_seeds_complete": true,
+          "baseline_complete": true,
+          "all_seed_ci_lower_bounds_positive": true,
+          "all_seed_points_positive": true,
+          "per_seed_comparisons": [
+            {
+              "seed": 42,
+              "subset": "test_tpl_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.7714,
+              "paired_group_bootstrap_ci95": [
+                0.74,
+                0.8028571428571428
+              ],
+              "per_a_run_differences": [
+                0.7714
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 43,
+              "subset": "test_tpl_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.8,
+              "paired_group_bootstrap_ci95": [
+                0.7685714285714286,
+                0.83
+              ],
+              "per_a_run_differences": [
+                0.8
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 44,
+              "subset": "test_tpl_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.7086,
+              "paired_group_bootstrap_ci95": [
+                0.6714285714285714,
+                0.7442857142857143
+              ],
+              "per_a_run_differences": [
+                0.7086
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            }
+          ]
+        },
+        "test_tool_ho": {
+          "status": "supported",
+          "required_seeds_complete": true,
+          "baseline_complete": true,
+          "all_seed_ci_lower_bounds_positive": true,
+          "all_seed_points_positive": true,
+          "per_seed_comparisons": [
+            {
+              "seed": 42,
+              "subset": "test_tool_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.8514,
+              "paired_group_bootstrap_ci95": [
+                0.8257142857142857,
+                0.8757142857142857
+              ],
+              "per_a_run_differences": [
+                0.8514
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 43,
+              "subset": "test_tool_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.8671,
+              "paired_group_bootstrap_ci95": [
+                0.8428571428571429,
+                0.8914285714285715
+              ],
+              "per_a_run_differences": [
+                0.8671
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 44,
+              "subset": "test_tool_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.7914,
+              "paired_group_bootstrap_ci95": [
+                0.76,
+                0.8228571428571428
+              ],
+              "per_a_run_differences": [
+                0.7914
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            }
+          ]
+        },
+        "test_struct_ho": {
+          "status": "supported",
+          "required_seeds_complete": true,
+          "baseline_complete": true,
+          "all_seed_ci_lower_bounds_positive": true,
+          "all_seed_points_positive": true,
+          "per_seed_comparisons": [
+            {
+              "seed": 42,
+              "subset": "test_struct_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.6886,
+              "paired_group_bootstrap_ci95": [
+                0.65,
+                0.7257142857142858
+              ],
+              "per_a_run_differences": [
+                0.6886
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 43,
+              "subset": "test_struct_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.7543,
+              "paired_group_bootstrap_ci95": [
+                0.7228571428571429,
+                0.7842857142857143
+              ],
+              "per_a_run_differences": [
+                0.7543
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 44,
+              "subset": "test_struct_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.5571,
+              "paired_group_bootstrap_ci95": [
+                0.5157142857142857,
+                0.5985714285714285
+              ],
+              "per_a_run_differences": [
+                0.5571
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            }
+          ]
+        },
+        "test_composition_ho": {
+          "status": "supported",
+          "required_seeds_complete": true,
+          "baseline_complete": true,
+          "all_seed_ci_lower_bounds_positive": true,
+          "all_seed_points_positive": true,
+          "per_seed_comparisons": [
+            {
+              "seed": 42,
+              "subset": "test_composition_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.9057,
+              "paired_group_bootstrap_ci95": [
+                0.8828571428571429,
+                0.9271428571428572
+              ],
+              "per_a_run_differences": [
+                0.9057
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 43,
+              "subset": "test_composition_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.9057,
+              "paired_group_bootstrap_ci95": [
+                0.8828571428571429,
+                0.9271428571428572
+              ],
+              "per_a_run_differences": [
+                0.9057
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            },
+            {
+              "seed": 44,
+              "subset": "test_composition_ho",
+              "groups": 350,
+              "difference_a_minus_b": 0.8357,
+              "paired_group_bootstrap_ci95": [
+                0.8057142857142857,
+                0.8642857142857143
+              ],
+              "per_a_run_differences": [
+                0.8357
+              ],
+              "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+            }
+          ]
+        }
+      },
+      "4B": {
+        "dev": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_tpl_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_tool_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_struct_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        },
+        "test_composition_ho": {
+          "status": "pending_required_seeds_or_baseline",
+          "required_seeds_complete": false,
+          "baseline_complete": false,
+          "all_seed_ci_lower_bounds_positive": false,
+          "all_seed_points_positive": false,
+          "per_seed_comparisons": []
+        }
+      }
+    },
+    "H2_pe_noninferiority": {
+      "0.6B": {
+        "dev": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_tpl_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_tool_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_struct_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_composition_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        }
+      },
+      "1.7B": {
+        "dev": {
+          "required_margin": -0.03,
+          "status": "noninferior",
+          "noninferior": true,
+          "comparison": {
+            "subset": "dev",
+            "groups": 300,
+            "difference_a_minus_b": 0.0061,
+            "paired_group_bootstrap_ci95": [
+              -0.00555555555555556,
+              0.01833333333333333
+            ],
+            "per_a_run_differences": [
+              0.02,
+              0.02,
+              -0.0217
+            ],
+            "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+          }
+        },
+        "test_tpl_ho": {
+          "required_margin": -0.03,
+          "status": "not_established",
+          "noninferior": false,
+          "comparison": {
+            "subset": "test_tpl_ho",
+            "groups": 350,
+            "difference_a_minus_b": -0.0571,
+            "paired_group_bootstrap_ci95": [
+              -0.07333333333333335,
+              -0.04190476190476192
+            ],
+            "per_a_run_differences": [
+              -0.0457,
+              -0.0171,
+              -0.1086
+            ],
+            "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+          }
+        },
+        "test_tool_ho": {
+          "required_margin": -0.03,
+          "status": "noninferior",
+          "noninferior": true,
+          "comparison": {
+            "subset": "test_tool_ho",
+            "groups": 350,
+            "difference_a_minus_b": -0.0033,
+            "paired_group_bootstrap_ci95": [
+              -0.01761904761904763,
+              0.011904761904761895
+            ],
+            "per_a_run_differences": [
+              0.0114,
+              0.0271,
+              -0.0486
+            ],
+            "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+          }
+        },
+        "test_struct_ho": {
+          "required_margin": -0.03,
+          "status": "not_established",
+          "noninferior": false,
+          "comparison": {
+            "subset": "test_struct_ho",
+            "groups": 350,
+            "difference_a_minus_b": -0.0362,
+            "paired_group_bootstrap_ci95": [
+              -0.058095238095238116,
+              -0.014761904761904783
+            ],
+            "per_a_run_differences": [
+              -0.0143,
+              0.0514,
+              -0.1457
+            ],
+            "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+          }
+        },
+        "test_composition_ho": {
+          "required_margin": -0.03,
+          "status": "noninferior",
+          "noninferior": true,
+          "comparison": {
+            "subset": "test_composition_ho",
+            "groups": 350,
+            "difference_a_minus_b": -0.0219,
+            "paired_group_bootstrap_ci95": [
+              -0.029523809523809535,
+              -0.014761904761904768
+            ],
+            "per_a_run_differences": [
+              0.0014,
+              0.0014,
+              -0.0686
+            ],
+            "uncertainty": "paired task-group bootstrap conditional on observed model seeds"
+          }
+        }
+      },
+      "4B": {
+        "dev": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_tpl_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_tool_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_struct_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        },
+        "test_composition_ho": {
+          "required_margin": -0.03,
+          "status": "pending_required_seeds",
+          "noninferior": false,
+          "comparison": null
+        }
+      }
+    },
+    "H3_struct_transfer": {
+      "Qwen3-0.6B-v6-trained": {
+        "status": "pending_required_seeds"
+      },
+      "Qwen3-1.7B-v6-trained": {
+        "difference_tool_ho_minus_struct_ho": 0.0557,
+        "ci95": [
+          0.03952380952380952,
+          0.07190476190476192
+        ],
+        "tool_groups": 350,
+        "struct_groups": 350,
+        "verdict": "inconclusive",
+        "interpretation": "association across independent cohorts; structure split is a compound shift, not a causal intervention"
+      },
+      "Qwen3-4B-v6-trained": {
+        "status": "pending_required_seeds"
+      }
+    },
+    "H4_n_diagnostic": {
+      "diagnostic_arm": "PE-deepseek-v4-pro-0813-few",
+      "threshold": 0.05,
+      "interpretation": "model diagnostic only; this gate does not establish gold-label validity",
+      "status": "complete",
+      "by_split": {
+        "dev": {
+          "other_party": {
+            "alarm": 0.0185,
+            "status": "below_threshold",
+            "counts": {
+              "n": 108,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0185,
+                "query_state_error": 0.0185,
+                "any_contract_alarm": 0.0185
+              }
+            }
+          },
+          "permission": {
+            "alarm": 0.0177,
+            "status": "below_threshold",
+            "counts": {
+              "n": 113,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0177,
+                "query_state_error": 0.0177,
+                "any_contract_alarm": 0.0177
+              }
+            }
+          },
+          "revoked": {
+            "alarm": 0.0459,
+            "status": "below_threshold",
+            "counts": {
+              "n": 109,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0459,
+                "query_state_error": 0.0459,
+                "any_contract_alarm": 0.0459
+              }
+            }
+          },
+          "waiver": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 126,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_tpl_ho": {
+          "other_party": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 139,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          },
+          "permission": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 136,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          },
+          "revoked": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 148,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          },
+          "waiver": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_tool_ho": {
+          "other_party": {
+            "alarm": 0.0073,
+            "status": "below_threshold",
+            "counts": {
+              "n": 137,
+              "parse_failure": 0,
+              "nonempty_constraints": 1,
+              "query_state_error": 1,
+              "any_contract_alarm": 1,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0073,
+                "query_state_error": 0.0073,
+                "any_contract_alarm": 0.0073
+              }
+            }
+          },
+          "permission": {
+            "alarm": 0.06,
+            "status": "threshold_exceeded",
+            "counts": {
+              "n": 150,
+              "parse_failure": 0,
+              "nonempty_constraints": 9,
+              "query_state_error": 9,
+              "any_contract_alarm": 9,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.06,
+                "query_state_error": 0.06,
+                "any_contract_alarm": 0.06
+              }
+            }
+          },
+          "revoked": {
+            "alarm": 0.0373,
+            "status": "below_threshold",
+            "counts": {
+              "n": 134,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0373,
+                "query_state_error": 0.0373,
+                "any_contract_alarm": 0.0373
+              }
+            }
+          },
+          "waiver": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 131,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_struct_ho": {
+          "other_party": {
+            "alarm": 0.0194,
+            "status": "below_threshold",
+            "counts": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 3,
+              "query_state_error": 3,
+              "any_contract_alarm": 3,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0194,
+                "query_state_error": 0.0194,
+                "any_contract_alarm": 0.0194
+              }
+            }
+          },
+          "permission": {
+            "alarm": 0.0323,
+            "status": "below_threshold",
+            "counts": {
+              "n": 155,
+              "parse_failure": 0,
+              "nonempty_constraints": 5,
+              "query_state_error": 5,
+              "any_contract_alarm": 5,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0323,
+                "query_state_error": 0.0323,
+                "any_contract_alarm": 0.0323
+              }
+            }
+          },
+          "revoked": {
+            "alarm": 0.0141,
+            "status": "below_threshold",
+            "counts": {
+              "n": 142,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0141,
+                "query_state_error": 0.0141,
+                "any_contract_alarm": 0.0141
+              }
+            }
+          },
+          "waiver": {
+            "alarm": 0.0,
+            "status": "below_threshold",
+            "counts": {
+              "n": 140,
+              "parse_failure": 0,
+              "nonempty_constraints": 0,
+              "query_state_error": 0,
+              "any_contract_alarm": 0,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0,
+                "query_state_error": 0.0,
+                "any_contract_alarm": 0.0
+              }
+            }
+          }
+        },
+        "test_composition_ho": {
+          "other_party": {
+            "alarm": 0.0164,
+            "status": "below_threshold",
+            "counts": {
+              "n": 183,
+              "parse_failure": 0,
+              "nonempty_constraints": 3,
+              "query_state_error": 3,
+              "any_contract_alarm": 3,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0164,
+                "query_state_error": 0.0164,
+                "any_contract_alarm": 0.0164
+              }
+            }
+          },
+          "permission": {
+            "alarm": 0.0227,
+            "status": "below_threshold",
+            "counts": {
+              "n": 176,
+              "parse_failure": 0,
+              "nonempty_constraints": 4,
+              "query_state_error": 4,
+              "any_contract_alarm": 4,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0227,
+                "query_state_error": 0.0227,
+                "any_contract_alarm": 0.0227
+              }
+            }
+          },
+          "revoked": {
+            "alarm": 0.0393,
+            "status": "below_threshold",
+            "counts": {
+              "n": 178,
+              "parse_failure": 0,
+              "nonempty_constraints": 7,
+              "query_state_error": 7,
+              "any_contract_alarm": 7,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0393,
+                "query_state_error": 0.0393,
+                "any_contract_alarm": 0.0393
+              }
+            }
+          },
+          "waiver": {
+            "alarm": 0.0122,
+            "status": "below_threshold",
+            "counts": {
+              "n": 164,
+              "parse_failure": 0,
+              "nonempty_constraints": 2,
+              "query_state_error": 2,
+              "any_contract_alarm": 2,
+              "rates": {
+                "parse_failure": 0.0,
+                "nonempty_constraints": 0.0122,
+                "query_state_error": 0.0122,
+                "any_contract_alarm": 0.0122
+              }
+            }
+          }
+        }
+      }
+    },
+    "H1_confirmatory_status": "pending_required_seeds_or_baseline"
+  },
+  "notes": [
+    "Confirmatory trained aggregates are emitted only for complete seed triplets; zero-shot baselines use the deterministic seed-42 cache.",
+    "H1 uses a separate paired task-group bootstrap interval for each trained seed; intervals are conditional on the observed seeds.",
+    "H3 compares independent named cohorts and does not establish a causal structure effect.",
+    "H4 is a fixed DeepSeek PE model diagnostic and does not establish N gold-label validity.",
+    "The strict F1, core F1, record exactness, evidence exactness, safe behavior and faithful behavior are separate metrics.",
+    "Synthetic witness verification does not substitute for a blind human recoverability audit."
+  ]
+}

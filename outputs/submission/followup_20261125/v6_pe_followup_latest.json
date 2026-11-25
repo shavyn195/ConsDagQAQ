@@ -1,0 +1,65 @@
+{
+  "utc": "2026-11-25T10:48:04.548990+00:00",
+  "gpu": "97 %, 21480 MiB, 32760 MiB",
+  "queue_status": "running",
+  "active": {
+    "model": "Qwen3-4B",
+    "seed": 42,
+    "started_at": "2026-11-25T07:16:10.868617+00:00",
+    "reserved_seconds": 78470.50320710521
+  },
+  "latest_loss": {
+    "optimizer_step": 7400,
+    "loss": 4.768370942542788e-08,
+    "elapsed_s": 12570.7
+  },
+  "loss_records": 75,
+  "nonfinite_count": 0,
+  "pe_state": {
+    "schema_version": 1,
+    "status": "failed",
+    "pid": 216853,
+    "project_root": "/root/ConsDagV6Frozen",
+    "credential_source": "inherited environment",
+    "gpu_use": false,
+    "arms": [
+      {
+        "model": "deepseek-v4-pro-0813",
+        "style": "few",
+        "status": "complete",
+        "workers": 8,
+        "started_at": "2026-11-25T09:37:21.053485+00:00",
+        "exit_code": 0,
+        "elapsed_seconds": 3587.536
+      },
+      {
+        "model": "qwen-max",
+        "style": "zero",
+        "status": "failed",
+        "workers": 8,
+        "started_at": "2026-11-25T10:37:08.848246+00:00",
+        "exit_code": 1,
+        "elapsed_seconds": 294.124
+      }
+    ],
+    "updated_at": "2026-11-25T10:42:02.973207+00:00"
+  },
+  "pe_cache_counts": {
+    "deepseek-v4-pro-0813-few": {
+      "complete": true,
+      "rows": {
+        "dev.jsonl": 900,
+        "test_tpl_ho.jsonl": 1050,
+        "test_tool_ho.jsonl": 1050,
+        "test_struct_ho.jsonl": 1050,
+        "test_composition_ho.jsonl": 1050
+      }
+    },
+    "qwen-max-zero": {
+      "complete": false,
+      "rows": {
+        "dev.jsonl": 346
+      }
+    }
+  }
+}
