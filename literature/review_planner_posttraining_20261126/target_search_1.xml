@@ -1,0 +1,625 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/b3BEw2xM0L8t41GnawcBSbFQ2p8</id>
+  <title>arXiv Query: search_query=(all:"planning" AND (all:"multi-reward" OR all:"process reward" OR all:"verifiable rewards") ) AND submittedDate:"202609010000 TO 202611262359"&amp;id_list=&amp;start=0&amp;max_results=35</title>
+  <updated>2026-11-26T03:23:17Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:%22planning%22+AND+(all:%22multi-reward%22+OR+(all:%22process+reward%22+OR+all:%22verifiable+rewards%22)))+AND+submittedDate:%22202609010000+TO+202611262359%22&amp;start=0&amp;max_results=35&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>35</opensearch:itemsPerPage>
+  <opensearch:totalResults>12</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29309v1</id>
+    <title>Counting Symbols on Technical Drawings: A Benchmark and Verified Rewards for MLLMs</title>
+    <updated>2026-11-22T08:14:07Z</updated>
+    <link href="https://arxiv.org/abs/2611.29309v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29309v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Today's MLLMs can count objects in natural images. However, when asking them how many bolt holes appear in a mechanical drawing or how many nitrogen atoms are in a chemical structure, they often struggle. Counting in technical drawings remains challenging, as objects can be small, densely packed, or even implied by drawing conventions. To study this problem, we introduce CountDrawBench, a benchmark including floor plans, electrical schematics, mechanical drawings, and molecular structures, with 1,574 counting questions and instance-level annotations where available. Besides evaluation, we introduce Code-Verified RL, a reinforcement learning framework that teaches MLLMs to count with executable feedback. Our method combines three complementary rewards: a count reward that checks the final answer, an instance-matching reward that verifies object locations, and a zoom-based reward that checks counting consistency across local image regions. All three are integrated into a unified GRPO objective. Extensive experiments reveal that even leading MLLMs struggle on CountDrawBench, with the best evaluated model achieving only 59.3% accuracy. Our method improves Qwen3.5-9B from 49.3% to 54.3% accuracy, outperforming all evaluated open-source baselines. These results establish CountDrawBench as a challenging testbed for technical drawing understanding and demonstrate the value of code-verified rewards in these tasks. Code and data will be released upon acceptance.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-22T08:14:07Z</published>
+    <arxiv:comment>15 pages, 8 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Junxian Li</name>
+    </author>
+    <author>
+      <name>Ruixuan Yang</name>
+    </author>
+    <author>
+      <name>Zhenhua Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.10224v2</id>
+    <title>Jais 3: Introducing Arabic-centric Agentic AI</title>
+    <updated>2026-11-12T10:15:44Z</updated>
+    <link href="https://arxiv.org/abs/2611.10224v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.10224v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present Jais 3, a fleet of six open, Arabic-centric agentic language models ranging from 0.9B to 375B parameters. Jais 3 is built to complete tasks for Arabic speakers, not only to answer questions in plain text: it is trained to plan multi-step tasks, call tools and Model Context Protocol (MCP) servers, operate a terminal, search the web, and read, edit, and produce PDF, spreadsheet, and presentation files, while communicating with the user in Arabic. Instead of pretraining from scratch, we adapt each model of the fully open K2 Horizon fleet to Arabic through continual pretraining, followed by supervised fine-tuning (SFT), final token preference optimization (FTPO), and reinforcement learning with verifiable rewards (RLVR). We combine natural Arabic text with translated, transliterated, and synthetic Arabic, and replay the base model's own training data to keep its reasoning, agentic, and English abilities. Jais 3 covers Modern Standard Arabic and the major regional dialects, follows instructions with Arabic-specific constraints, and inherits the 512K-token context window of K2 Horizon (all models except the 0.9B). To our knowledge, its 375B model is the largest open Arabic-centric language model to date. For evaluation, we revisit how Arabic models are assessed, moving to fully generative evaluation on audited Arabic benchmarks. Across model sizes, Jais 3 matches or outperforms open-weight models of comparable size on Arabic and agentic benchmarks, with particularly strong agentic capabilities and Arabic instruction following, and far fewer hallucinations. We release the weights and the checkpoints from every training stage of all six models, together with samples of the training data, the data recipes and training configurations, the training logs, the audited benchmarks, and the evaluation code.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-06T21:11:05Z</published>
+    <arxiv:comment>113 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Team IFM</name>
+    </author>
+    <author>
+      <name>Haonan Li</name>
+    </author>
+    <author>
+      <name>Hadi Abdine</name>
+    </author>
+    <author>
+      <name>Nikhil Ranjan</name>
+    </author>
+    <author>
+      <name>Mohamed Anwar</name>
+    </author>
+    <author>
+      <name>Ahmad Chamma</name>
+    </author>
+    <author>
+      <name>Amr Mohamed</name>
+    </author>
+    <author>
+      <name>Ahmed Frikha</name>
+    </author>
+    <author>
+      <name>Dani Bouch</name>
+    </author>
+    <author>
+      <name>Maaz Maqsood</name>
+    </author>
+    <author>
+      <name>George Ibrahim</name>
+    </author>
+    <author>
+      <name>Mostafa Awad</name>
+    </author>
+    <author>
+      <name>Nurkhan Laiyk</name>
+    </author>
+    <author>
+      <name>Hasan Iqbal</name>
+    </author>
+    <author>
+      <name>Abhishek Maiti</name>
+    </author>
+    <author>
+      <name>Bilal Bouardi</name>
+    </author>
+    <author>
+      <name>Shivam Chauhan</name>
+    </author>
+    <author>
+      <name>Ahmer Tabassum</name>
+    </author>
+    <author>
+      <name>Owais Aijaz</name>
+    </author>
+    <author>
+      <name>Omar Arbi</name>
+    </author>
+    <author>
+      <name>Neha Sengupta</name>
+    </author>
+    <author>
+      <name>Aaryamonvikram Singh</name>
+    </author>
+    <author>
+      <name>Abdelhakim Freihat</name>
+    </author>
+    <author>
+      <name>Sarath Chandran</name>
+    </author>
+    <author>
+      <name>Rahul Pal</name>
+    </author>
+    <author>
+      <name>Mohammed Bellam</name>
+    </author>
+    <author>
+      <name>Sajid Siddiki</name>
+    </author>
+    <author>
+      <name>Sarah AlBarri</name>
+    </author>
+    <author>
+      <name>Debopriyo Banerjee</name>
+    </author>
+    <author>
+      <name>Ali El Filali</name>
+    </author>
+    <author>
+      <name>Samta Kamboj</name>
+    </author>
+    <author>
+      <name>Rifo Genadi</name>
+    </author>
+    <author>
+      <name>Ahmed Attia</name>
+    </author>
+    <author>
+      <name>Go Inoue</name>
+    </author>
+    <author>
+      <name>Shuonan Dong</name>
+    </author>
+    <author>
+      <name>Amine Khelif Khelif</name>
+    </author>
+    <author>
+      <name>Evan Dufraisse</name>
+    </author>
+    <author>
+      <name>Florian Valade</name>
+    </author>
+    <author>
+      <name>Tapas Sen</name>
+    </author>
+    <author>
+      <name>Guowei He</name>
+    </author>
+    <author>
+      <name>Sunil Sahu</name>
+    </author>
+    <author>
+      <name>Onkar Pandit</name>
+    </author>
+    <author>
+      <name>Kareem Magdy</name>
+    </author>
+    <author>
+      <name>Sheikh Khalid bin Khalifa Al Nahyan</name>
+    </author>
+    <author>
+      <name>Samujjwal Ghosh</name>
+    </author>
+    <author>
+      <name>Zainul Abedien Ahmed Quraishi</name>
+    </author>
+    <author>
+      <name>Larry Murray</name>
+    </author>
+    <author>
+      <name>Avraham Sheinin</name>
+    </author>
+    <author>
+      <name>Natalia Vassilieva</name>
+    </author>
+    <author>
+      <name>Preslav Nakov</name>
+    </author>
+    <author>
+      <name>Guokan Shang</name>
+    </author>
+    <author>
+      <name>Xuguang Hector Ren</name>
+    </author>
+    <author>
+      <name>Zhengzhong Liu</name>
+    </author>
+    <author>
+      <name>Eric Xing</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.06518v2</id>
+    <title>EmoReward: Self-Evolving Reward Calibration for Emotional Video Generation RL</title>
+    <updated>2026-11-17T10:09:11Z</updated>
+    <link href="https://arxiv.org/abs/2611.06518v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.06518v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Group Relative Policy Optimization (GRPO) has advanced generative model post-training in verifiable domains such as code and mathematics, but evaluating video quality, especially emotional expression, often depends on subjective aesthetics and has no uniquely correct target. Existing approaches typically rely on fixed rewards for visual quality, motion quality, and text alignment that poorly capture emotional intent and can invite reward hacking, while RLHF is difficult to scale and subject to individual aesthetic differences that complicate the calibration of facial, body motion, and chromatic cues across narrative contexts. We introduce EmoReward, a new self-evolving training mechanism that distills evidence reliability from reward traces collected during an actual training run to adaptively guide multi-reward weight allocation in subsequent training by determining which emotional evidence to trust and how much to weight it. EmoReward first plans specific grounding cues from the emotional prompt to guide evaluation, then uses heterogeneous signal primitives to score the generated video during the act stage. Reflective Reward Gating calibrates their contributions through instance-level gates for phase, face confidence, conflict, and subtlety, then renormalizes weights over the active set to produce the sample's fused reward. RewardMemory then estimates each primitive's reliability from rollout scores and outcomes within each emotional regime in the finished training run, then fixes bounded multipliers that calibrate fusion weights in the next training run without updating reward models. Experiments on HunyuanVideo 1.5 show improvements across multiple RL algorithms and compare EmoReward with other agentic reward methods under SAGE-GRPO. Ablations and transfer experiments on SD 3.5 and FLUX further support adaptive reward calibration for visual generation.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-04T13:43:09Z</published>
+    <arxiv:comment>30 pages, 15 figures, webpage: https://emoreward-project.github.io/</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Mingzhe Zheng</name>
+    </author>
+    <author>
+      <name>Yue Wu</name>
+    </author>
+    <author>
+      <name>Jing Tan</name>
+    </author>
+    <author>
+      <name>Chang Zou</name>
+    </author>
+    <author>
+      <name>Dengyang Jiang</name>
+    </author>
+    <author>
+      <name>Zeyue Tian</name>
+    </author>
+    <author>
+      <name>Xuanhua He</name>
+    </author>
+    <author>
+      <name>Ryan Xu</name>
+    </author>
+    <author>
+      <name>Yunyang Ge</name>
+    </author>
+    <author>
+      <name>Sihui Ji</name>
+    </author>
+    <author>
+      <name>Yunlong Lin</name>
+    </author>
+    <author>
+      <name>Kaihang Pan</name>
+    </author>
+    <author>
+      <name>Hongru Yan</name>
+    </author>
+    <author>
+      <name>Sixiang Chen</name>
+    </author>
+    <author>
+      <name>Dianyi Wang</name>
+    </author>
+    <author>
+      <name>Julian Zhang</name>
+    </author>
+    <author>
+      <name>Weijie Kong</name>
+    </author>
+    <author>
+      <name>Changlin Li</name>
+    </author>
+    <author>
+      <name>Lanqing Guo</name>
+    </author>
+    <author>
+      <name>Zhao Zhong</name>
+    </author>
+    <author>
+      <name>Qifeng Chen</name>
+    </author>
+    <author>
+      <name>Harry Yang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.35497v1</id>
+    <title>When Fine-Grained Credit Assignment Helps and Hurts: Multimodal Agentic Reinforcement Learning through Video Editing</title>
+    <updated>2026-10-26T14:25:40Z</updated>
+    <link href="https://arxiv.org/abs/2610.35497v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.35497v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) has shown promise for training multimodal agents to reason and use tools. However, it remains unclear when fine-grained credit assignment improves learning and when it fails to improve task performance. Video editing provides a useful testbed for this question, combining multimodal perception, long-horizon planning, and tool use with delayed outcome feedback. We construct four movie-trailer editing task types---Content Selection, Narrative Sequencing, Rough Cut, and Fine Cut---that reflect real-world editing workflows and span different levels of task complexity and interaction horizon. Decaying process rewards provides the largest benefit on Fine Cut, with a 45.4% relative gain over outcome-only GRPO on tasks averaging more than 60 turns under outcome-only GRPO. On the three shorter-horizon task types averaging 30--40 turns under the same baseline, outcome-only GRPO remains competitive, with decaying process rewards yielding at most a 10.4% relative gain. Process rewards from an LLM judge initially improve tool use and encourage visual inspection. As training progresses, however, GRPO+PRM with a fixed process-reward weight increasingly exhibits excessive reasoning and redundant tool calls: process rewards continue to rise while task completion rates and outcome scores decline. Decaying the process-reward weight to zero mitigates this reward-hacking behavior while preserving the early gains. Despite dense token-level supervision, on-policy self-distillation (OPSD) yields little improvement or substantial degradation and is highly sensitive to the choice of privileged information. Our analysis reveals differences in teacher--student disagreement and gradient magnitudes, and suggests possible dilution of informative signals over long trajectories.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T14:25:40Z</published>
+    <arxiv:comment>48 pages. Project page: https://leizhao7.github.io/videoedit/</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Lei Zhao</name>
+    </author>
+    <author>
+      <name>Zongheng Cao</name>
+    </author>
+    <author>
+      <name>Xinyu Hu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.35385v2</id>
+    <title>EmbodiedLab: Beyond Manipulation, Benchmarking Embodied Agents That Act to Know</title>
+    <updated>2026-11-18T10:48:48Z</updated>
+    <link href="https://arxiv.org/abs/2610.35385v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.35385v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Physical action not only changes the state of an environment but is also the way to know its hidden properties: what cannot be seen must be inferred from the feedback to the change. As embodied agents advance from executing procedures to pursuing goals, success depends on properties neither given nor visible, so they must act to know. Existing benchmarks separate changing from knowing: manipulation benchmarks give the target state, so nothing has to be found out, whereas exploration and discovery benchmarks let the agent find out by looking or querying, so nothing physical has to be changed. Quantitative science experiments offer a natural testbed: the properties sought are new in every instance, appear only in instrument readings under conditions the agent sets up, and can be checked exactly. We introduce EmbodiedLab, a simulated laboratory of 35 such experiments. Given only a goal, the agent must decide what to measure, operate the apparatus with a robot arm, read instruments through cameras and judge when its readings suffice. Its 30 determination tasks specify what to find out, whereas its 5 optimization tasks ask only for the best result the apparatus allows. With native control, the strongest of seven frontier agents succeeds on 41.4% of the tasks. Ablations reveal two bottlenecks: contact-rich manipulation, where ground-truth depth and motion planning change the success rate by at most 10 points, whereas executing every operation for the agent on five of the tasks raises it from at most 20% to at least 70%, so what an agent can know is bounded by how reliably it acts; and closed-loop experimental rigor, where with manipulation supplied, agents fail to gather sufficient readings or read instruments accurately, and most optimization runs stop at one design. Beyond evaluation, EmbodiedLab offers a resamplable environment with verifiable rewards for training embodied agents.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T13:06:33Z</published>
+    <arxiv:comment>Technical report. 23 pages, 9 figures, 15 tables. Project page: https://hexafuture.ai/benchmarks/embodiedlab/ Code: https://github.com/HexaFuture/EmbodiedLab</arxiv:comment>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Hongcheng Gao</name>
+    </author>
+    <author>
+      <name>Zelin Zheng</name>
+    </author>
+    <author>
+      <name>Alex Zhou</name>
+    </author>
+    <author>
+      <name>Jay Zhu</name>
+    </author>
+    <author>
+      <name>Shijia Ge</name>
+    </author>
+    <author>
+      <name>Yazhe Wang</name>
+    </author>
+    <author>
+      <name>Xiping Li</name>
+    </author>
+    <author>
+      <name>Jianshu Zeng</name>
+    </author>
+    <author>
+      <name>Di Wu</name>
+    </author>
+    <author>
+      <name>Xuan Shangguan</name>
+    </author>
+    <author>
+      <name>Yexing Wan</name>
+    </author>
+    <author>
+      <name>Lingyu He</name>
+    </author>
+    <author>
+      <name>Yongli Wang</name>
+    </author>
+    <author>
+      <name>Xiaohan Yu</name>
+    </author>
+    <author>
+      <name>Zhiqi Jia</name>
+    </author>
+    <author>
+      <name>Yue Liu</name>
+    </author>
+    <author>
+      <name>Bryan Hooi</name>
+    </author>
+    <author>
+      <name>Yinpeng Dong</name>
+    </author>
+    <author>
+      <name>Wentao Zhang</name>
+    </author>
+    <author>
+      <name>Sihang Wu</name>
+    </author>
+    <author>
+      <name>Xiao He</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.17426v1</id>
+    <title>Reinforcement Learning In Partially Verifiable Environments for Colon Cancer Treatment Planning</title>
+    <updated>2026-10-12T21:39:21Z</updated>
+    <link href="https://arxiv.org/abs/2610.17426v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.17426v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Clinical decision-making is a sequential process of information collection, clinical inference, and forecasting under partial observability, often without a uniquely correct treatment decision. Large language models (LLMs) have demonstrated strong medical question-answering capabilities but extending these advances to clinical reasoning remains challenging because many clinical tasks are only partially verifiable. Recent clinical reinforcement learning (RL) work has therefore largely focused on diagnostic endpoints, where correctness can be more directly verified. Oncology treatment decision making is a particularly challenging instance of this problem that extends beyond medical question-answering in which multiple decision trajectories can be clinically defensible for the same partially observed patient state. We formulate oncology treatment planning as an interactive RL problem under partial observability and construct patient-specific, process-aware rewards from decision processes observed in real world clinical records. The agent must learn to sequentially acquire information from a structured patient representation before committing to a first-line treatment recommendation, and is evaluated on information gathering, treatment selection, and reasoning alignment. Using GRPO and GDPO to optimize Llama-3.1-8B-Instruct within this environment, RL substantially improves the base policy beyond frontier model capabilities. The GDPO-trained policy increases Mean@3 scalar clinical reward by $79.60\%$ over base Llama and exceeds GPT-5.2 by $18.82\%$ under the same interactive environment, while reducing query count during training. Overall, our results show that patient-specific, partially verifiable rewards can provide an effective learning signal for interactive clinical RL when both the patient state and the underlying clinical decision process are only partially observed.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-12T21:39:21Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Li-Ching Chen</name>
+    </author>
+    <author>
+      <name>Andrés Franco Valiente</name>
+    </author>
+    <author>
+      <name>Yuta Ishiyama</name>
+    </author>
+    <author>
+      <name>Zachary R. Chalmers</name>
+    </author>
+    <author>
+      <name>William Chen</name>
+    </author>
+    <author>
+      <name>Kelsey Natsuhara</name>
+    </author>
+    <author>
+      <name>Taema Brinjikji</name>
+    </author>
+    <author>
+      <name>Madhumita Sushil</name>
+    </author>
+    <author>
+      <name>Travis Zack</name>
+    </author>
+    <author>
+      <name>Julian C. Hong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.03458v1</id>
+    <title>A Near-Zero Monitor Readout Is Not Evidence of Behavioral Control</title>
+    <updated>2026-10-02T15:33:56Z</updated>
+    <link href="https://arxiv.org/abs/2610.03458v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.03458v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Post-training with verifiable rewards can induce reward hacking, motivating the use of monitors within the training objective rather than solely for offline auditing. We show that a low monitor readout does not identify whether such an intervention controls behavior. In a code-generation environment whose dominant exploit is available at the start of the reasoning trace, we train policies against three monitors that pass the same offline gate: an in-domain activation probe and two penalties conditioned on how early the policy commits to its own final answer. The probe score is at its numerical floor from the first recorded training step, and the trained-score median is zero for every prefix-trained run at the endpoint. These readouts estimate different quantities, and we do not compare their scales; within each monitor family, however, low values do not establish behavioral control. Within one fixed configuration, prefix-trained runs with the same zero-median trained score range, by seed alone, from a mixed regime with a low hacking share to near-pure reward hacking. All probe runs reach the hacking regime, but their floor-level readout reflects a mismatch between the position where the probe was validated and the position where it was read during training, not a second instance of this ambiguity. Text-level analysis identifies a prefix failure mode: generic planning and filler shells postpone the exploit past the cut without eliminating it from the final output. Low measured commitment therefore does not distinguish a low hacking share from delayed commitment to the exploit. Offline discrimination and low monitor-aligned readouts are insufficient evidence of behavioral control; an out-of-band behavioral check is required. We characterize the endpoint readout, not its evolution. Code is available at https://github.com/zhezhou1106/spoof-cost.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-02T15:33:56Z</published>
+    <arxiv:comment>17 pages, 2 figures, 10 tables. Accepted as a poster at the NeurIPS 2026 Workshop on Foundations of LLM Post-Training in Changing Environments (FLLMPT)</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Zhe Zhou</name>
+    </author>
+    <author>
+      <name>Tianhua Tao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.00991v2</id>
+    <title>Adapter Thickets: Splitting an RLVR Budget Beats Concentrating It</title>
+    <updated>2026-10-02T01:56:54Z</updated>
+    <link href="https://arxiv.org/abs/2610.00991v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.00991v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Majority voting over sampled completions is the workhorse of test-time scaling, and reinforcement learning with verifiable rewards (RLVR) is the workhorse for making each completion better. The standard pipeline composes the two: train one policy with RLVR, then sample it many times and vote. We show that this composition is lossy. A vote can only overturn mistakes that its voters do not share, and RLVR sharpens a policy so that its samples increasingly make the same mistakes. With every method drawing exactly $160$ completions per problem, training a single LoRA adapter on the full RLVR budget raises single-sample accuracy on every model we test ($1.5$B-$8$B). Yet on three of four models it leaves the majority vote below that of the untrained base model, by up to $4.8$ points. The damage builds during training: voter errors grow steadily more correlated, and the majority vote accuracy peaks early before falling by up to $7.0$ points. The cause is concentration, not RLVR itself. We split the same data and training budget across $K$ LoRA adapters, each trained on its own random disjoint shard, and call the result an adapter thicket. Thickets out-vote the fully trained adapter in all $16$ (model, $K$) settings, and for $K{\geq}4$ they stay within $0.8$ points of the base model or above it. A single adapter stopped early, at a thicket member's step count, is a strong control that matches thickets for small $K$. For $K{\geq}8$, thickets keep more of RLVR's single-sample gain and out-vote this control in six of eight settings. The cost of concentration also grows with the number of votes: from $16$ to $160$ votes, the thicket's lead over the fully trained adapter widens from $1.3$ to $3.3$ points. When the plan is to sample and vote, an RLVR budget is better spent broad than deep.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-01T03:25:40Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jonathan Williams</name>
+    </author>
+    <author>
+      <name>Esin Tureci</name>
+    </author>
+    <author>
+      <name>Karthik R. Narasimhan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.34990v1</id>
+    <title>MaPP: A Unified Marginalized Posterior-Predictive Framework for Data-Efficient RLVR</title>
+    <updated>2026-09-28T12:01:56Z</updated>
+    <link href="https://arxiv.org/abs/2609.34990v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.34990v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning with verifiable rewards (RLVR) improves the reasoning capabilities of large language models but incurs substantial costs from rollouts and policy updates. Online prompt selection improves efficiency by using per-prompt Bayesian posteriors to predict difficulty and prioritize informative prompts. However, existing methods overlook how reliably learning signals are extracted from sampled responses. In GRPO, a response's advantage depends on both its own outcome and the randomly sampled outcomes of its peers through group normalization. Our theoretical and experimental analyses show that uncertainty in group composition introduces composition noise, a non-vanishing variance component that imposes an irreducible lower bound on gradient estimation error and impairs downstream prompt selection. We propose MaPP (Marginalized Posterior-Predictive), a unified framework for data-efficient RLVR that denoises response-level advantage estimation and improves prompt selection using a shared Beta posterior. For each response, MaPP replaces the standard group-relative advantage with a composition-invariant intrinsic advantage through closed-form Beta-Binomial marginalization. The resulting posterior-predictive estimator has an error that provably diminishes as the posterior concentrates. Using the same posterior, MaPP derives an uncertainty-aware prompt selection score to improve data efficiency without additional rollout cost. Experiments on mathematics, planning, and visual geometry across five model backbones show that MaPP consistently outperforms GRPO and strong selection baselines, achieving up to +2.45 average accuracy improvement over the strongest baseline under the same rollout budget and setting a new state of the art.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-28T12:01:56Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yangyang Ren</name>
+    </author>
+    <author>
+      <name>Haodong Zhu</name>
+    </author>
+    <author>
+      <name>Sheng Xu</name>
+    </author>
+    <author>
+      <name>Yanjing Li</name>
+    </author>
+    <author>
+      <name>Nikolai Yu. Zolotykh</name>
+    </author>
+    <author>
+      <name>Wentao Zhang</name>
+    </author>
+    <author>
+      <name>Baochang Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.12533v1</id>
+    <title>Earth-Agent-Pro: Towards Real-World Full-Chain Earth Observation with Agents</title>
+    <updated>2026-09-11T07:41:36Z</updated>
+    <link href="https://arxiv.org/abs/2609.12533v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.12533v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Real-world Earth observation (EO) agents must translate high-level scientific questions into executable workflows to acquire observations, prepare data, perform domain computations, and derive conclusions from runtime evidence. Existing EO agents typically start from supplied observations, while benchmarks typically provide prepared inputs or candidate answers, leaving full-chain open-world EO execution largely untested. We present Earth-Agent-Pro, an execution-adaptive Plan-and-Execute framework using expert-authored skills to constrain planning and runtime tool use. Workflow-centered structured memory records planned steps, accepted evidence, and their dependencies, enabling repair of only the affected workflow suffix when runtime evidence invalidates a step. Separate large language model adapters use sequence-level supervised fine-tuning for planner workflow composition and node-level group relative policy optimization with locally verifiable rewards for executor tool-argument grounding. Earth-Bench-Pro instantiates 248 expert-curated task cores as 744 questions under three matched regimes. Its 248 Open-World Execution questions span RGB imagery, spectral observations, and remote sensing products, pairing high-level requests with runtime data requirements, executable trajectories, and open-ended answers grounded in execution evidence. With a shared GPT-5 backbone, Earth-Agent-Pro achieves 66.13% LLM-as-Judge accuracy, exceeding ReAct by 20.95 points in this metric and 24.44 points in Tools-In-Order. Joint adapter tuning raises Qwen3.5-9B LLM-as-Judge accuracy from 38.31% to 50.00%, an 11.69-point gain over the untuned configuration. Planning-only evaluation and execution with the reference workflow show that the adapters improve workflow composition and argument grounding, respectively. Code and datasets will be released soon.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-11T07:41:36Z</published>
+    <arxiv:comment>18 pages, 8 figures. The code and datasets of this work will be released soon</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Zhutao Lv</name>
+    </author>
+    <author>
+      <name>Chenhao Dang</name>
+    </author>
+    <author>
+      <name>Yi Feng</name>
+    </author>
+    <author>
+      <name>Yanpei Gong</name>
+    </author>
+    <author>
+      <name>Xiaolei Wang</name>
+    </author>
+    <author>
+      <name>Junyan Ye</name>
+    </author>
+    <author>
+      <name>Conghui He</name>
+    </author>
+    <author>
+      <name>Weijia Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.09764v1</id>
+    <title>SocialRL: Refining LLMs' Social Intelligence through Multi-turn Reinforcement Learning and Reward Design</title>
+    <updated>2026-09-09T06:06:34Z</updated>
+    <link href="https://arxiv.org/abs/2609.09764v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.09764v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Social intelligence enables agents to read social context, infer intent, and adapt over sustained dialogue. As language models become autonomous collaborators, it is central to building effective and trustworthy human-AI interaction. Existing reinforcement learning methods optimize single-turn utterances and sparse outcome rewards, producing short-sighted policies that struggle to manage goal-relationship tensions across multi-turn interactions. We propose SocialRL, a multi-turn reinforcement learning framework addressing both challenges. First, we apply multi-turn reinforcement learning using PPO that propagates delayed outcome rewards back to each turn, enabling long-horizon planning. Second, we design six process reward dimensions capturing the goal-relationship trade-off, including goal advancement, relational attunement, contextual coherence, etc. A reward model dynamically generates fine-grained scoring criteria for each dimension, while a stage-aware weight schedule prioritizes relationship-building in early turns, goal advancement mid-way, and balanced closure late. Across multiple social-dialogue benchmarks, SocialRL improves Goal Achievement by an average of 9.2 percentage points over the corresponding Base models. These results demonstrate the effectiveness of SocialRL across synthetic and real social scenes, as well as standard and challenging social scenarios.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-09T06:06:34Z</published>
+    <arxiv:comment>30pages 2figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Jianing Wang</name>
+    </author>
+    <author>
+      <name>Xintao Wang</name>
+    </author>
+    <author>
+      <name>Aili Chen</name>
+    </author>
+    <author>
+      <name>Jie Shi</name>
+    </author>
+    <author>
+      <name>Hongcheng Guo</name>
+    </author>
+    <author>
+      <name>Jun Gao</name>
+    </author>
+    <author>
+      <name>Wenxuan Zhao</name>
+    </author>
+    <author>
+      <name>Chengkun Lang</name>
+    </author>
+    <author>
+      <name>Yuanli Guo</name>
+    </author>
+    <author>
+      <name>Yanghua Xiao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.03338v1</id>
+    <title>SciLENS: RL-Driven Autonomous Agents for Scientific Localized Evidence Navigation and Synthesis</title>
+    <updated>2026-09-03T03:54:43Z</updated>
+    <link href="https://arxiv.org/abs/2609.03338v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.03338v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Scientific literature synthesis agents increasingly rely on proprietary online services, limiting reproducibility, privacy, and offline deployment. To address this challenge, we introduce SciLENS Scientific Localized Evidence Navigation and Synthesis), a fully local autonomous agent framework operating on a dual-tier infrastructure indexing approximately 12 million academic records. SciLENS pioneers the integration of structural visualization as an actionable tool within the reasoning loop, enabling the agent to compress complex citation topologies into validated data-driven charts and thereby mitigate context exhaustion during macro-level synthesis. To train the agent without human annotation, we develop an automated data synthesis pipeline that extracts multi-hop subgraphs from a citation knowledge graph, verified by cross-model consensus among 20 frontier models. The agent is subsequently aligned through a reverse-decomposition rubric strategy that provides fine-grained process rewards for early planning and strict evidence grounding. Evaluations across six scientific benchmarks encompassing standard QA, citation accuracy, factual reasoning, and structural synthesis demonstrate that SciLENS significantly outperforms open-source baselines and achieves performance comparable to GPT-5.2 and Gemini-3.0-pro. Our source code and data are released at https://github.com/LQgdwind/SciLENS.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-03T03:54:43Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Leqi Zheng</name>
+    </author>
+    <author>
+      <name>Jinbo Su</name>
+    </author>
+    <author>
+      <name>Yuying Li</name>
+    </author>
+    <author>
+      <name>Chaokun Wang</name>
+    </author>
+    <author>
+      <name>Weiping Wang</name>
+    </author>
+    <author>
+      <name>Haitao Li</name>
+    </author>
+    <author>
+      <name>Jiajun Zhang</name>
+    </author>
+    <author>
+      <name>Shannan Yan</name>
+    </author>
+    <author>
+      <name>Zhaolu Kang</name>
+    </author>
+    <author>
+      <name>Rong Fu</name>
+    </author>
+    <author>
+      <name>Jie Wu</name>
+    </author>
+    <author>
+      <name>Fang Niu</name>
+    </author>
+    <author>
+      <name>Hang Zhang</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,22 @@
+{
+  "experiment": "trusted-space-qwen3-4b-planner-constraint-reward-signal",
+  "status": "exploratory_inference_only_no_policy_update",
+  "model": "Qwen3-4B",
+  "precision": "bf16",
+  "groups": 8,
+  "samples_per_prompt": 4,
+  "arms": ["raw_request", "predicted_contract"],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_new_tokens": 384,
+  "seed": 261126,
+  "selection_salt": "planner-reward-signal-20261126:",
+  "exclude_fixed_planner_groups": 48,
+  "active_seconds_cap": 1800,
+  "maximum_model_calls": 192,
+  "compiler": "Cached frozen v6 Qwen3-4B seed42 dev raw outputs; no gold in model inputs; compiler cost excluded and explicitly not an end-to-end cost comparison.",
+  "launch_gate": "Original frozen v6 queue and fixed-planner code-v2 complete successfully; same GPU lock and idle check; never preempt either job.",
+  "hypothesis": "Within one frozen planner policy, hard-gated constant rewards can hide differences between verifiable constraint outcomes; compare raw vs predicted-contract conditioning, not different training seeds as a GRPO group.",
+  "decision": "Report complete G=4 groups, all partial/invalid calls and all costs. If no constant-scalar/variable-constraint groups appear, this pilot does not support that motivation. A positive count motivates an independent larger probe, not an effectiveness or novelty claim.",
+  "scope": "New hash-selected dev groups disjoint from the fixed-planner pilot; existing synthetic domain, not independent external validation. No training, threshold fitting, test-set selection or repair."
+}

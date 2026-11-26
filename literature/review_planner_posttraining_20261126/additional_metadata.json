@@ -1,0 +1,71 @@
+[
+  {
+    "id": "http://arxiv.org/abs/2611.31185v1",
+    "title": "CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting",
+    "published": "2026-11-23T18:38:53Z",
+    "updated": "2026-11-23T18:38:53Z",
+    "summary": "Reinforcement learning (RL) improves large language model search agents by up to 32 exact-match (EM) points over their pre-RL initializations, yet overall accuracy gains do not identify which underlying functional capabilities improve or interact during training. We introduce CO-GRAFT, a reward-agnostic interventional attribution framework in which an RL-trained agent and its pre-RL initialization jointly generate a single trajectory under closed-loop execution with live retrieval. Each policy controls a mutually exclusive subset of four functional roles: intermediate reasoning, search-or-answer decision, search query generation, and final answer extraction. Evaluating all 2^4=16 role assignments without modifying weights or retraining defines a cooperative game whose Shapley values decompose the total RL gain across roles, while M\"obius interaction terms distinguish standalone role improvements from multi-role coupling. Applying CO-GRAFT to Search-R1 agents across Qwen2.5 and Llama-3.2 models (spanning two sizes, base and instruction-tuned initializations, GRPO and PPO optimizers, and NQ and HotpotQA datasets), we show that query generation never exceeds 15% of the total gain; instead, gains are governed by pre-RL answer validity, search retention, model scale, and fixed task-level search budgets, shifting credit from reasoning toward answer extraction in larger or well-formatted answer response checkpoints while smaller base models rely on reasoning--decision coupling.",
+    "authors": [
+      "Ramraj Chandradevan",
+      "Sayontan Ghosh",
+      "Vinoth Selvendran"
+    ]
+  },
+  {
+    "id": "http://arxiv.org/abs/2602.05863v4",
+    "title": "Constrained Group Relative Policy Optimization",
+    "published": "2026-02-05T16:44:23Z",
+    "updated": "2026-09-02T16:10:42Z",
+    "summary": "Group Relative Policy Optimization (GRPO) remains the dominant critic-free approach for fine-tuning LLMs and VLMs, but its compatibility with constrained policy optimization (e.g. for safety-critical domains) has not been carefully examined. In this work, we introduce Constrained GRPO, a Lagrangian-based extension of GRPO for constrained policy optimization. We show that the standard practice of scalarizing rewards before normalization introduces a critical Lagrangian-specific failure mode: GRPO's within-group normalization makes constrained optimization highly sensitive to how multi-component learning signals are aggregated. We show that scalarizing rewards before normalization introduces shared-denominator coupling, so that changing one multiplier alters not only the emphasis on its corresponding constraint, but also the relative weighting of the reward and other constraints. We address this with a simple but crucial modification: scalarizing standardized advantages rather than rewards. This yields a better-conditioned update by addressing the coupling induced by reward scalarization, resulting in better-behaved multiplier dynamics and more stable constraint enforcement in practice. Empirically, across a controlled gridworld, a real-world autonomous driving benchmark, and a mathematical reasoning task, Constrained GRPO consistently achieves better adherence to specified constraints while maintaining or improving task performance.",
+    "authors": [
+      "Roger Girgis",
+      "Rodrigue de Schaetzen",
+      "Luke Rowe",
+      "Azalée Robitaille",
+      "Christopher Pal",
+      "Liam Paull"
+    ]
+  },
+  {
+    "id": "http://arxiv.org/abs/2610.00328v2",
+    "title": "ContractRL: Shielded Group-Relative Policy Optimization for Auditable Tool-Call Repair",
+    "published": "2026-09-29T08:38:26Z",
+    "updated": "2026-10-16T12:23:26Z",
+    "summary": "Structured tool calls often fail after only a small number of fields violate a schema or an execution contract. Regenerating the complete object enlarges the action surface and makes repeated repair difficult to audit. We introduce ContractRL, a contract-constrained sequential repair protocol that models verifier-guided JSON repair as a bounded decision process. At each step the policy observes the candidate, typed verifier feedback, JSON Pointer, immutable repair history, and remaining budget; a contract-derived action mask filters malformed or prohibited RFC-6902 operations before a deterministic validator performs the transition. We specify a contract-constrained group-relative objective for patch, retry, and abstention decisions while keeping canonical targets and semantic labels outside the online state until trace freeze. Under identical verifier information, ContractRL attains 0.9362 semantic success with 34.4 generated tokens, compared with 0.9076 and 44.9 tokens for Patch-SFT and 0.9148 and 137.2 tokens for full regeneration over 192 cases per seed and five seeds. Policy optimization improves semantic success from 0.9186 for supervised ContractRL to 0.9375. A separate three-seed paired evaluation against Patch-SFT yields a semantic difference of +0.0396 (95% CI $[+0.0137,+0.0662], p=0.0039$). Feedback, action-mask, budget, and schema-shift analyses connect these gains to localized correction, while adversarial and multi-turn evaluations characterize the remaining failure modes.",
+    "authors": [
+      "Miaobo Hu",
+      "Shuhao Hu",
+      "Xiaobo Guo",
+      "Xin Wang",
+      "Bokun Wang",
+      "Yina Sa",
+      "Daren Zha"
+    ]
+  },
+  {
+    "id": "http://arxiv.org/abs/2610.35497v1",
+    "title": "When Fine-Grained Credit Assignment Helps and Hurts: Multimodal Agentic Reinforcement Learning through Video Editing",
+    "published": "2026-10-26T14:25:40Z",
+    "updated": "2026-10-26T14:25:40Z",
+    "summary": "Reinforcement learning (RL) has shown promise for training multimodal agents to reason and use tools. However, it remains unclear when fine-grained credit assignment improves learning and when it fails to improve task performance. Video editing provides a useful testbed for this question, combining multimodal perception, long-horizon planning, and tool use with delayed outcome feedback. We construct four movie-trailer editing task types---Content Selection, Narrative Sequencing, Rough Cut, and Fine Cut---that reflect real-world editing workflows and span different levels of task complexity and interaction horizon. Decaying process rewards provides the largest benefit on Fine Cut, with a 45.4% relative gain over outcome-only GRPO on tasks averaging more than 60 turns under outcome-only GRPO. On the three shorter-horizon task types averaging 30--40 turns under the same baseline, outcome-only GRPO remains competitive, with decaying process rewards yielding at most a 10.4% relative gain. Process rewards from an LLM judge initially improve tool use and encourage visual inspection. As training progresses, however, GRPO+PRM with a fixed process-reward weight increasingly exhibits excessive reasoning and redundant tool calls: process rewards continue to rise while task completion rates and outcome scores decline. Decaying the process-reward weight to zero mitigates this reward-hacking behavior while preserving the early gains. Despite dense token-level supervision, on-policy self-distillation (OPSD) yields little improvement or substantial degradation and is highly sensitive to the choice of privileged information. Our analysis reveals differences in teacher--student disagreement and gradient magnitudes, and suggests possible dilution of informative signals over long trajectories.",
+    "authors": [
+      "Lei Zhao",
+      "Zongheng Cao",
+      "Xinyu Hu"
+    ]
+  },
+  {
+    "id": "http://arxiv.org/abs/2609.38889v1",
+    "title": "VERA: Verifiable Feasibility Representations with Counterfactual Credit for Constrained Multi-Agent Control",
+    "published": "2026-09-30T03:37:29Z",
+    "updated": "2026-09-30T03:37:29Z",
+    "summary": "Constrained multi-agent control requires more than predicting rewarding actions: an action can cease to be executable as contact windows, shared capacity, and deadlines change. We introduce VERA, a centralized-training, decentralized-execution framework that separates feasibility estimation from credit assignment. Each actor predicts a five-dimensional verifiable feasibility representation (VFR). After an action is proposed, exact action-conditioned margins available only during training supervise that representation, while a counterfactual group-relative advantage (CGRA) ranks candidate representation-action pairs. Execution uses one actor pass and no privileged state. In a dynamic space-air-ground integrated network (SAGIN), VERA obtains 55.33% +/- 3.60% success with 0.45% +/- 0.81% coverage violation, within 1.33 percentage points of a privileged-mask reference. With rewards matched over ten paired seeds, VERA improves success over the strongest baseline by 8.74 percentage points (p=0.023) and reduces violation by 52.19 percentage points (p=5.7e-8). A ten-seed 4-by-2 factorial attributes a 14.16-16.48 percentage-point gain to CGRA across handcrafted, learned, random, and latent representations; evaluation on seven unseen topologies preserves a 24.33-30.02 percentage-point advantage over multi-agent proximal policy optimization. From 10 to 40 users, success remains 50.1-53.8%, and VFR adds only 0.026 ms to a central processing unit (CPU) actor step. Cross-domain tests further identify the governing condition: counterfactual credit succeeds when candidate scores respect shared constraints and fails under incompatible reward geometries. These results establish action-conditioned feasibility as an auditable training interface and counterfactual credit as a geometry-dependent optimization mechanism.",
+    "authors": [
+      "Bo Yin",
+      "Dongbo Li",
+      "Hongkai Chen",
+      "Jie Liu",
+      "Guoliang Xing"
+    ]
+  }
+]

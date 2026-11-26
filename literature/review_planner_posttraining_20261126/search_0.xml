@@ -1,0 +1,1530 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/hP10pFduT1qbx2e112jHYKB+g34</id>
+  <title>arXiv Query: search_query=(all:GRPO AND (all:constraint OR all:planning OR all:multi-objective OR all:credit) ) AND submittedDate:"202607010000 TO 202611262359"&amp;id_list=&amp;start=0&amp;max_results=45</title>
+  <updated>2026-11-26T03:20:30Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:GRPO+AND+(all:constraint+OR+(all:planning+OR+(all:multi-objective+OR+all:credit))))+AND+submittedDate:%22202607010000+TO+202611262359%22&amp;start=0&amp;max_results=45&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>45</opensearch:itemsPerPage>
+  <opensearch:totalResults>350</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.33937v1</id>
+    <title>InstructTTS-OPD: On-Policy Distillation for Multi-Objective Instruction-Following TTS</title>
+    <updated>2026-11-25T07:56:16Z</updated>
+    <link href="https://arxiv.org/abs/2611.33937v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.33937v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Instruction-following text-to-speech (Instruct-TTS) renders a target transcript in the manner described by a free-form natural-language instruction, and a good rendition must succeed on three fronts at once: following the instruction, pronouncing the transcript correctly, and sounding natural. Reinforcement learning has become the standard way to post-train such generative models toward human preferences, and TTS systems increasingly adopt it. When the three objectives are optimized together under a single scalar reward, typically with group relative policy optimization (GRPO), training tends to be unstable: the objectives compete, and the shared update drifts toward whichever one is easiest to improve, producing a seesaw among them. We instead adapt on-policy distillation (OPD), which fuses several single-objective teachers by matching their velocity fields on the student's own rollouts. Realizing this for Instruct-TTS first calls for a sound reward on each axis, which we analyze carefully: a distilled Qwen-Omni proxy for the costly Gemini judge, dialect-free data for the WER reward, and DNSMOS in place of the language-biased UTMOS. We then train three single-objective teachers with GRPO and fuse them with OPD, routing each rollout to the instruction-following or WER teacher by its data domain and letting every rollout additionally follow the MOS teacher for quality. This lets instruction following and intelligibility improve together without a trade-off, but the quality target conflicts with instruction following, so following it additively reintroduces the seesaw. We therefore propose conflict-aware velocity fusion, which projects the quality target off the direction that opposes the primary objective before fusing, and show that it markedly reduces the instruction-following/quality trade-off. The fused model improves over scalar-reward GRPO on all three objectives at once.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.AS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-25T07:56:16Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Haitao Li</name>
+    </author>
+    <author>
+      <name>Tian Tan</name>
+    </author>
+    <author>
+      <name>Yuguang Yang</name>
+    </author>
+    <author>
+      <name>Guanrou Yang</name>
+    </author>
+    <author>
+      <name>Wenhao Guan</name>
+    </author>
+    <author>
+      <name>Chenglin Li</name>
+    </author>
+    <author>
+      <name>Shan Yang</name>
+    </author>
+    <author>
+      <name>Xie Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.33777v1</id>
+    <title>Agentic Reinforcement Learning with Immediate and Prospective Credit Assignment for Medical Visual Reasoning</title>
+    <updated>2026-11-25T05:01:45Z</updated>
+    <link href="https://arxiv.org/abs/2611.33777v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.33777v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Medical visual question answering (VQA) requires acquiring useful evidence and deciding where to look next. Yet final-answer rewards do not reveal which observations support answering or guide subsequent inspection. We introduce MedPACT, an agentic reinforcement learning framework that learns selective observation policies through immediate answer support and prospective guidance. Our content-controlled estimator compares next actions induced by real and matched alternative observations under a shared real-observation history, isolating how observed content improves subsequent decisions. We combine both forms of credit within GRPO, assigning observation credit to the corresponding tool-call tokens alongside trajectory-level outcome supervision. MedPACT uses a single vision-language model and image-question-answer supervision, with credit estimation confined to training. Experiments with 4B and 8B backbones on six medical VQA benchmarks demonstrate improved accuracy, strong out-of-distribution generalization, and substantially lower inference costs. Case studies further illustrate how MedPACT avoids repeated observations and uses acquired evidence to guide subsequent inspection, demonstrating real-world practice potential.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-25T05:01:45Z</published>
+    <arxiv:comment>version 1 for arxiv</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Yuqi Cheng</name>
+    </author>
+    <author>
+      <name>Rui Meng</name>
+    </author>
+    <author>
+      <name>Yijin Li</name>
+    </author>
+    <author>
+      <name>Chandra Sekhar Reddy Edula</name>
+    </author>
+    <author>
+      <name>Xiuwei Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.32687v1</id>
+    <title>Are We Rewarding the Wrong Module? Module-Specific Policy Optimization for Multimodal Reinforcement Learning</title>
+    <updated>2026-11-24T14:25:49Z</updated>
+    <link href="https://arxiv.org/abs/2611.32687v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.32687v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning with verifiable rewards (RLVR) based on Group Relative Policy Optimization (GRPO) has been widely adopted to enhance the multimodal reasoning of multimodal large language models (MLLMs). However, existing methods share a common limitation of Module-Level Credit Entanglement, in which the vision encoder, projector, and LLM modules are jointly optimized using the same advantage signals even when perceptual correctness and final-answer correctness differ. To address this limitation, we propose Module-Specific Policy Optimization (MSPO), a framework that separates perceptual and outcome-based learning signals across model modules. Specifically, MSPO uses responses to perception checklists comprising auxiliary questions about visual information to derive an advantage for training the vision encoder. From these responses, MSPO computes the Confidence-aware Perception Reward (CaPR), using a perception sign obtained by thresholding checklist accuracy to determine reward direction and posterior confidence from a Beta distribution over latent perception accuracy to scale reward magnitude. We then derive the vision advantage through group-relative normalization of CaPR and scale it using main-task success rates. This advantage guides updates to the vision encoder, while the projector and LLM retain outcome-based GRPO updates. Extensive experiments on seven mathematical and general reasoning benchmarks demonstrate that MSPO outperforms existing RL-tuned models on average at both the 3B and 7B scales.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T14:25:49Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>HuiSeong Cho</name>
+    </author>
+    <author>
+      <name>Jun Yeong Park</name>
+    </author>
+    <author>
+      <name>Yu Rang Park</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.32125v1</id>
+    <title>LARF: Learning-aligned Reasoning Framework for Search Relevance</title>
+    <updated>2026-11-24T07:41:25Z</updated>
+    <link href="https://arxiv.org/abs/2611.32125v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.32125v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Query-document relevance estimation is a core component of AI-native search systems, where a model must assess whether retrieved documents satisfy users' information needs under complex, multi-dimensional criteria. However, directly applying large language models (LLMs) to this task remains challenging because conventional supervised fine-tuning (SFT) provides limited supervision for domain-specific judgment rationales, while standard trajectory-level reinforcement learning (RL) objectives do not explicitly enforce margin separation among adjacent ordinal relevance labels. Moreover, although such reasoning can be useful during training, chain-of-thought (CoT) reasoning is impractical for latency-sensitive online ranking. These challenges make it difficult to resolve ambiguous decision boundaries. We propose a three-stage framework LARF (Learning-Aligned Reasoning Framework for Search Relevance): it first performs cold-start SFT on strategically selected samples with multi-agent guided CoT rationales, then applies discriminative GRPO with attribute-wise, list-wise, and rule-consistency rewards together with a margin loss on the terminal relevance token, and finally distills the teacher into a dual-head student whose classification heads are retained for non-autoregressive inference. On a human-annotated web search relevance benchmark with approximately 300K training and 16K test instances, LARF-8B improves six-class classification accuracy by 5.78 percentage points and NDCG by 5.05 points, while the classification-only serving path reduces inference latency by 82.9\%. These results indicate that aligning structured reasoning, terminal decision optimization, and classification-head distillation can provide an effective accuracy--efficiency trade-off for industrial search relevance modeling.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T07:41:25Z</published>
+    <arxiv:comment>Accepted by WSDM 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Tian Tang</name>
+    </author>
+    <author>
+      <name>Guo Chen</name>
+    </author>
+    <author>
+      <name>Reed Li</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Yu Lu</name>
+    </author>
+    <author>
+      <name>Haijin Liang</name>
+    </author>
+    <author>
+      <name>Haibo Shi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.32037v1</id>
+    <title>Online Environment Repair for Coding Agents</title>
+    <updated>2026-11-24T06:21:42Z</updated>
+    <link href="https://arxiv.org/abs/2611.32037v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.32037v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Programmatic verifiers provide scalable reward signals for training coding agents with reinforcement learning, yet subtle harness defects and incomplete unit tests allow policies to earn full credit without solving the intended task. Existing training-time defenses intervene either by penalizing suspicious outputs or by filtering flagged tasks and rollouts. However, output penalties leave the underlying verifier exploitable, driving policies to disguise shortcuts under reasoning monitors or zeroing out valid solutions under detector false positives, whereas task and rollout filtering discards or mutes the hardest problems where shortcuts emerge earliest. Pre-training verifier hardening repairs the environment directly, but misses vulnerability classes that surface only as the policy improves during reinforcement learning. In this paper, we propose online environment repair, which leaves triggering rollout rewards unchanged to remove hiding incentives and asynchronously patches exploited environments during training. Candidate repairs triggered by execution invariants or differential fuzzing are deployed only after passing three automated validation gates that block the exploit while preserving valid solutions, canceling detector false positives and enabling structural propagation across repositories without scaffold labels or reference solutions. Across 20 controlled GRPO experiments on heterogeneous software-engineering repositories, online environment repair reduces cumulative reward hacking from 36.9% to 0.06% and improves held-out Pass@8 from 21.7% to 46.7%, consistently outperforming reward-penalty, rollout-filtering, and static-hardening baselines while eliminating zero-shot exploitation on unseen loophole classes.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T06:21:42Z</published>
+    <arxiv:comment>15 pages, 7 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sheng Lu</name>
+    </author>
+    <author>
+      <name>Rui Mao</name>
+    </author>
+    <author>
+      <name>Zewei Chen</name>
+    </author>
+    <author>
+      <name>Chihua Ying</name>
+    </author>
+    <author>
+      <name>Beiduo Chen</name>
+    </author>
+    <author>
+      <name>Dingxin Hu</name>
+    </author>
+    <author>
+      <name>Tinghao Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.32013v1</id>
+    <title>To Critic Or Not To Critic</title>
+    <updated>2026-11-24T05:58:02Z</updated>
+    <link href="https://arxiv.org/abs/2611.32013v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.32013v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As large language models tackle longer and more complex tasks, understanding when a critic improves the efficiency of reinforcement learning (RL) becomes increasingly important. Proximal Policy Optimization (PPO) trains a critic to reduce variance and provide fine-grained credit assignment, while Group Relative Policy Optimization (GRPO) drops the critic and avoids the bias of bootstrapping from the critic's value estimates. Although recent critic-based methods have reported strong performance relative to GRPO, it remains unclear when each approach is preferable. We argue that there is no universal answer; instead, the choice depends on several interacting factors, including batch size, critic reliance, and task complexity. We study the bias-variance tradeoff in terms of gradient direction, measuring how closely each method's gradient estimates align with the true policy gradient as batch size grows. Under a shared actor objective, we compare GRPO with PPO in control tasks, short-horizon math, and long-horizon terminal agents. Across more than 1,200 training runs, including 96 with LLMs, we find that PPO generally leads at small batch sizes, while GRPO often overtakes heavily bootstrapped PPO and reaches parity with lightly bootstrapped PPO at larger batches. At longer horizons and in more complex domains, GRPO needs larger batches to catch up to PPO's performance. Accounting for training compute, critics pay off at small budgets, but their returns diminish at larger budgets.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T05:58:02Z</published>
+    <arxiv:comment>33 pages, 12 figures, 7 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jason Wei</name>
+    </author>
+    <author>
+      <name>George Pu</name>
+    </author>
+    <author>
+      <name>Jingxuan Fan</name>
+    </author>
+    <author>
+      <name>Yuan Emily Xue</name>
+    </author>
+    <author>
+      <name>Yuan Christy Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.31895v1</id>
+    <title>Loupe: Reinforcing Knowledge-Intensive Video Generation Agents</title>
+    <updated>2026-11-24T03:55:04Z</updated>
+    <link href="https://arxiv.org/abs/2611.31895v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.31895v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Knowledge-intensive video generation remains challenging because prompts often omit the facts, appearances, and temporal relationships required for accurate generation. While search-based workflows can retrieve missing evidence, manually designed strategies limit adaptive planning, and conventional training suffers from costly video-level feedback and coarse trajectory-level credit assignment. In this paper, we present Loupe, a video generation agent that retrieves and verifies textual and visual evidence to construct evidence-grounded temporal video prompts with reference images. We further introduce Rubric-Based Credit (RBC), which leverages prompt-specific factual, visual, and temporal requirements to evaluate intermediate search and planning decisions before video rendering. Building on RBC, RBC-SFT reweights assistant-token learning by step quality, while RBC-GRPO incorporates step-level credits alongside a final planning reward, without rendering videos during RL. To address the lack of dedicated search-oriented evaluation, we construct Search-VBench, which contains 150 held-out prompts across seven categories. Experiments show that Loupe improves all four evaluation dimensions across three video generators, raising the overall score of MiniMax-H3 from 32.80 to 70.67 and outperforming an untrained search workflow. Ablation experiments show that full RBC training outperforms standard SFT followed by trajectory-level GRPO by 5.27 points. Human evaluations and results on Sci-VBench and KIVI-Bench further demonstrate improved generation quality, scientific grounding, factual precision, and helpfulness. Our project page is available at https://zengkaiya.github.io/Loupe/.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T03:55:04Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Kai Zeng</name>
+    </author>
+    <author>
+      <name>Ruichuan An</name>
+    </author>
+    <author>
+      <name>Zhen Fang</name>
+    </author>
+    <author>
+      <name>Xi Fang</name>
+    </author>
+    <author>
+      <name>Han Lyu</name>
+    </author>
+    <author>
+      <name>Moran Li</name>
+    </author>
+    <author>
+      <name>Yingchen Yu</name>
+    </author>
+    <author>
+      <name>Yifan Dai</name>
+    </author>
+    <author>
+      <name>Bohan Zeng</name>
+    </author>
+    <author>
+      <name>Quanqing Xu</name>
+    </author>
+    <author>
+      <name>Zhengzhou Zhu</name>
+    </author>
+    <author>
+      <name>Wentao Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.31185v1</id>
+    <title>CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting</title>
+    <updated>2026-11-23T18:38:53Z</updated>
+    <link href="https://arxiv.org/abs/2611.31185v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.31185v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) improves large language model search agents by up to 32 exact-match (EM) points over their pre-RL initializations, yet overall accuracy gains do not identify which underlying functional capabilities improve or interact during training. We introduce CO-GRAFT, a reward-agnostic interventional attribution framework in which an RL-trained agent and its pre-RL initialization jointly generate a single trajectory under closed-loop execution with live retrieval. Each policy controls a mutually exclusive subset of four functional roles: intermediate reasoning, search-or-answer decision, search query generation, and final answer extraction. Evaluating all 2^4=16 role assignments without modifying weights or retraining defines a cooperative game whose Shapley values decompose the total RL gain across roles, while M"obius interaction terms distinguish standalone role improvements from multi-role coupling. Applying CO-GRAFT to Search-R1 agents across Qwen2.5 and Llama-3.2 models (spanning two sizes, base and instruction-tuned initializations, GRPO and PPO optimizers, and NQ and HotpotQA datasets), we show that query generation never exceeds 15% of the total gain; instead, gains are governed by pre-RL answer validity, search retention, model scale, and fixed task-level search budgets, shifting credit from reasoning toward answer extraction in larger or well-formatted answer response checkpoints while smaller base models rely on reasoning--decision coupling.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T18:38:53Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Ramraj Chandradevan</name>
+    </author>
+    <author>
+      <name>Sayontan Ghosh</name>
+    </author>
+    <author>
+      <name>Vinoth Selvendran</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.30881v1</id>
+    <title>AnchorCredit: Output-Anchored Credit Assignment for Structured Generation with Multiple Verifiable Rewards</title>
+    <updated>2026-11-23T15:48:19Z</updated>
+    <link href="https://arxiv.org/abs/2611.30881v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.30881v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In Reinforcement Learning with Verifiable Rewards (RLVR), Group Relative Policy Optimization (GRPO) and related methods typically compute group-relative advantages from response rewards and broadcast the same advantage to every generated token in a response to guide policy updates. However, we identify a systematic problem of cross-component credit misassignment in tasks with multiple verifiable results, such as joint multi-attribute prediction: low rewards for some components can penalize a well-performing component and its associated reasoning. To address this problem, we propose AnchorCredit. The method uses the policy model's attention from output anchors to preceding reasoning sentences to estimate sentence-component associations and assign component-specific advantages to the relevant reasoning, without additional relevance annotations or a separate relevance discriminator. To support the study of credit assignment with multiple verifiable rewards, we construct ProductAttr, a benchmark of 7,200 real product image-text samples. Experiments show that AnchorCredit outperforms existing baselines on this benchmark. Experiments on the public Nutrition5k dataset further support the method's effectiveness in this setting.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T15:48:19Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Gen Li</name>
+    </author>
+    <author>
+      <name>Pengyang Xie</name>
+    </author>
+    <author>
+      <name>Xiao Xiao</name>
+    </author>
+    <author>
+      <name>Chuanzhi Tong</name>
+    </author>
+    <author>
+      <name>Ziyang Ji</name>
+    </author>
+    <author>
+      <name>Zhigang Xu</name>
+    </author>
+    <author>
+      <name>Huiwen Bai</name>
+    </author>
+    <author>
+      <name>Zihao Xing</name>
+    </author>
+    <author>
+      <name>Yanxiang Zhou</name>
+    </author>
+    <author>
+      <name>Yifei Yuan</name>
+    </author>
+    <author>
+      <name>Xiaoqing Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.30559v1</id>
+    <title>Learning What to Change: State-Verified Reinforcement Learning for Educational Agents</title>
+    <updated>2026-11-23T12:04:31Z</updated>
+    <link href="https://arxiv.org/abs/2611.30559v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.30559v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Persistent tutoring agents do more than answer questions: they manage course files, practice records, and learner profiles that govern future lessons. In such stateful settings, knowing what to teach does not guarantee knowing what to change. We identify a pervasive failure mode, content-state decoupling, where agents deliver pedagogically sound responses while silently corrupting workspace state through unwarranted updates, missed prerequisites, or unintended side effects. Text-level judges overlook these state errors, whereas isolated tool-call checks break down because whether a write action is valid depends jointly on the learner request, prior state, and execution order. We propose State-Verified Reinforcement Learning, which supervises online policy optimization directly through verifiable workspace transitions. Within isolated sandboxes that snapshot state around every tool call, a deterministic verifier audits tool effects, workflow ordering, and native auto-sync side effects, pairing graded partial credit with a hard gate that zeroes episode reward upon any critical violation. Whenever no critical violation occurs, an evidence-grounded judge scores actual saved artifacts rather than agent claims. We pair 1,000 verifiable training instances with an independently authored, human-reviewed evaluation benchmark of 60 tasks spanning 11 educational categories and 16 native tools. After online GRPO training, Qwen3.8-27B raises category-weighted strict success on our benchmark from 51.47% to 80.74% (+29.27 points), cutting content-pass-only execution failures from 45.6% to 13.7% and required state-check failures from 63 to 1 across 180 trials. The resulting policy outperforms seven reference baselines by over 20 points while reducing output tokens by 17-39% across seven of eight external benchmarks without regressing on general reasoning or tool use.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T12:04:31Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Shengyao Wang</name>
+    </author>
+    <author>
+      <name>Siyuan Su</name>
+    </author>
+    <author>
+      <name>Siyu Song</name>
+    </author>
+    <author>
+      <name>Mengsong Wu</name>
+    </author>
+    <author>
+      <name>Yiming Luo</name>
+    </author>
+    <author>
+      <name>Wenbo Wu</name>
+    </author>
+    <author>
+      <name>Hao Hao</name>
+    </author>
+    <author>
+      <name>Aimin Zhou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29975v1</id>
+    <title>Aligning Judge Models to Be Logically Consistent Multi-Rule Interpreters</title>
+    <updated>2026-11-23T03:41:03Z</updated>
+    <link href="https://arxiv.org/abs/2611.29975v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29975v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Technical governance of AI models will soon require them to reason over and follow thousands of rules from different jurisdictions. However, as we show in this work, presenting an entire ruleset to a judge model---rather than asking it to judge one rule at a time---changes the way the model interprets the requirements, making it reach conclusions that conflict with its rule-by-rule judgments. We call this challenge multi-rule inconsistency and find that models are more lenient when judging rules embedded within the full ruleset than when judging rules separately. For example, we find that when a safety-critical rule prohibiting a model from pursuing objectives other than those it was given appears in a larger ruleset, all tested judge models are less likely to deem it violated. We examine several methods for reducing inconsistency, including prompting, consistency training using GRPO, and iterative rule refinement. As in human statutory interpretation, surrounding rules shape how a rule is interpreted. Unlike the legal setting, however, these interactions are currently happening implicitly inside the judge model's reasoning. We argue that multi-rule interactions must be measured and handled explicitly by ruleset designers to prevent undetected shifts in interpretation from causing downstream alignment failures.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T03:41:03Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Michel Liao</name>
+    </author>
+    <author>
+      <name>Nimra Nadeem</name>
+    </author>
+    <author>
+      <name>Luxi He</name>
+    </author>
+    <author>
+      <name>Peter Henderson</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29969v1</id>
+    <title>CARE-3D: Reinforcement Learning for Evidence Grounded Agentic Reasoning in Situated 3D Scenes</title>
+    <updated>2026-11-23T03:36:02Z</updated>
+    <link href="https://arxiv.org/abs/2611.29969v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29969v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Situated 3D reasoning requires embodied agents to interpret objects, scene geometry, and viewpoint dependent spatial relations. Existing methods learn grounded interactions from supervised traces, but largely imitate prescribed evidence acquisition patterns rather than optimizing the support that the returned evidence provides for the correct answer. Moreover, outcome rewards provide limited credit for intermediate tool choices and may leave infrequent tools underexplored. An effective agent should instead adaptively decide what to ground, which tool to invoke, and how to assess the utility of returned evidence. To this end, this paper presents CARE-3D, a reinforcement post-training framework for adaptive grounded reasoning. Supervised fine-tuning (SFT) on grounding instructions first establishes valid interactions, after which Group Relative Policy Optimization (GRPO) optimizes the agent while keeping the 3D grounding module frozen. CARE-3D combines Counterfactual Attribution of Returned Evidence for evidence sensitive credit assignment, and Group Coverage Sampling to preserve tool coverage. Experiments on MSQA and Beacon3D show consistent gains over SFT and GRPO using only answer and format rewards, especially in spatial reasoning and grounding answer coherence. Our code is available at \href{https://github.com/xiaoqian-UQ/CARE-3D}{CARE-3D}.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T03:36:02Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Xiaoqian Hu</name>
+    </author>
+    <author>
+      <name>Ruihong Qiu</name>
+    </author>
+    <author>
+      <name>Yanran Tang</name>
+    </author>
+    <author>
+      <name>Sen Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29936v1</id>
+    <title>SAEPO: Sparse-Autoencoder-Guided Credit Assignment for Policy Optimization</title>
+    <updated>2026-11-23T02:54:19Z</updated>
+    <link href="https://arxiv.org/abs/2611.29936v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29936v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement Learning with Verifiable Rewards (RLVR) has demonstrated strong performance in improving large language model (LLM) reasoning, yet its credit-assignment signal remains coarse. Outcome verifiers provide scalable supervision by judging whether a completed response is correct, but they do not directly indicate which intermediate reasoning tokens contribute to success or failure. As a result, policy optimization can be inefficient, especially when training base models directly from sparse outcome feedback. In this paper, we introduce SAEPO, a Sparse AutoEncoder-guided token-level credit assignment method for outcome-supervised Policy Optimization. Rather than treating correctness only as a rollout-level (sequence-level) signal, SAEPO uses a pretrained sparse autoencoder (SAE) to build token-level semantic representations within reasoning trajectories; it scores each token based on the SAE concepts (e.g., penalizing wrong "final-answer" tokens but rewarding correct "reasoning-process" tokens), learned in an unsupervised manner, to achieve fine-grained credit assignment. SAEPO is a plug-in advantage-shaping module compatible with various policy optimization algorithms. We instantiate SAEPO with both GRPO and GSPO, covering token-ratio and sequence-ratio policy-gradient objectives, and evaluate SAEPO across three LLM backbones on six math and two code benchmarks. Empirical results show that SAEPO improves both the math and code benchmark averages over the matched baselines, with gains of up to 6.63% and 5.57%, respectively. On Qwen3-1.7B-Base, training curves also show faster early accuracy growth. Feature and token-level analyses suggest that the SAE-derived signal favors question-relevant concepts and reasoning tokens.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-23T02:54:19Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yusong Zhao</name>
+    </author>
+    <author>
+      <name>Zihao Zhao</name>
+    </author>
+    <author>
+      <name>Zirui Zhang</name>
+    </author>
+    <author>
+      <name>Tunyu Zhang</name>
+    </author>
+    <author>
+      <name>Ziyan Wang</name>
+    </author>
+    <author>
+      <name>Yi Wang</name>
+    </author>
+    <author>
+      <name>Chengzhi Mao</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29795v1</id>
+    <title>Dimension Is Free, Horizon Is Not: When Evolution Strategies Rival Policy Gradients for LLM Fine-Tuning</title>
+    <updated>2026-11-22T21:54:42Z</updated>
+    <link href="https://arxiv.org/abs/2611.29795v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29795v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Policy gradient (PG) methods such as GRPO dominate LLM fine-tuning, yet recent work showed that Evolution Strategies (ES) also scale to fine-tuning models with billions of parameters. Which method needs fewer samples, and on which tasks, remains unclear. We view the two methods as estimators of the same gradient that differ in where they explore. Because ES perturbs parameters, its noise grows with the number of parameters, and because PG samples actions, its noise grows with the number of generated tokens. Only noise along the directions that change the reward slows learning. The cost of ES then depends on the effective dimension, the number of independent skills a task requires rather than its parameter count, while the cost of PG depends on the effective horizon, which counts only the tokens that share both credit and weights with the reward-carrying ones. We train both methods on a synthetic task where the number of skills and the effective horizon can be varied separately. PG is cheaper when the horizon is short, ES becomes cheaper once it is long enough, and this crossover moves to longer horizons as the number of skills grows. We then measure the effective horizons of 20 NLP, math reasoning, and agentic tasks and compare the two methods with Qwen2.5-7B. PG leads on short-horizon tasks, the two tie on the moderate-horizon math ones, and no task has a horizon in the regime where the theory predicts an ES advantage. Terminal-Bench has a far longer horizon. There, in a preliminary comparison with Qwen3.5-4B, ES without any credit assignment reaches a higher success rate than the PG checkpoint released with Tmax, as the theory predicts. ES should thus have the advantage on long-horizon tasks with few independent skills and a nonvanishing reward signal. Current benchmarks are only at the onset of this regime, so ES should become more competitive as agentic tasks grow longer.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-22T21:54:42Z</published>
+    <arxiv:comment>31 pages, 11 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Qiyao Liang</name>
+    </author>
+    <author>
+      <name>Kajetan Schweighofer</name>
+    </author>
+    <author>
+      <name>Xin Qiu</name>
+    </author>
+    <author>
+      <name>Risto Miikkulainen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29309v1</id>
+    <title>Counting Symbols on Technical Drawings: A Benchmark and Verified Rewards for MLLMs</title>
+    <updated>2026-11-22T08:14:07Z</updated>
+    <link href="https://arxiv.org/abs/2611.29309v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29309v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Today's MLLMs can count objects in natural images. However, when asking them how many bolt holes appear in a mechanical drawing or how many nitrogen atoms are in a chemical structure, they often struggle. Counting in technical drawings remains challenging, as objects can be small, densely packed, or even implied by drawing conventions. To study this problem, we introduce CountDrawBench, a benchmark including floor plans, electrical schematics, mechanical drawings, and molecular structures, with 1,574 counting questions and instance-level annotations where available. Besides evaluation, we introduce Code-Verified RL, a reinforcement learning framework that teaches MLLMs to count with executable feedback. Our method combines three complementary rewards: a count reward that checks the final answer, an instance-matching reward that verifies object locations, and a zoom-based reward that checks counting consistency across local image regions. All three are integrated into a unified GRPO objective. Extensive experiments reveal that even leading MLLMs struggle on CountDrawBench, with the best evaluated model achieving only 59.3% accuracy. Our method improves Qwen3.5-9B from 49.3% to 54.3% accuracy, outperforming all evaluated open-source baselines. These results establish CountDrawBench as a challenging testbed for technical drawing understanding and demonstrate the value of code-verified rewards in these tasks. Code and data will be released upon acceptance.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-22T08:14:07Z</published>
+    <arxiv:comment>15 pages, 8 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Junxian Li</name>
+    </author>
+    <author>
+      <name>Ruixuan Yang</name>
+    </author>
+    <author>
+      <name>Zhenhua Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.29142v1</id>
+    <title>RAVEC: Reward-Aligned Visual Evidence Correction</title>
+    <updated>2026-11-22T01:50:20Z</updated>
+    <link href="https://arxiv.org/abs/2611.29142v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.29142v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning with verifiable rewards improves multimodal reasoning, but response-level feedback provides limited guidance on which intermediate decisions to correct. Visual interventions reveal sensitivity to image content, yet this sensitivity alone does not establish reward alignment or support across questions. We introduce RAVEC (Reward-Aligned Visual Evidence Correction), which selects visual corrections using local and cross-question reward support and jointly determines their strengths within each response. Paired Visual Evidence Contrast (PVEC) compares predictions from an exponential moving average teacher at the same sampled response prefix under the original image and a version with its annotated evidence region suppressed, yielding signed correction directions. Credit-Risk Allocation (CRA) screens these directions using local reward alignment and reward support from other questions, excluding all responses to the source question. It then solves a response-level budgeted allocation problem, assigning additional cost to directions that locally reduce predictive entropy. The resulting signed visual loss augments Group Relative Policy Optimization (GRPO) during training. Inference uses only the original image and question. Across ten multimodal benchmarks, RAVEC achieves the highest average accuracy among the compared methods with both 3B and 7B Qwen2.5-VL-Instruct models, outperforming GRPO by 2.67 and 1.39 percentage points, respectively. Component ablations support the combined design of evidence alignment, credit qualification, and risk-aware allocation. The project is available at https://yangjj007.github.io/ravec/.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-22T01:50:20Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Junjie Yang</name>
+    </author>
+    <author>
+      <name>Rui Qian</name>
+    </author>
+    <author>
+      <name>Xutao Mao</name>
+    </author>
+    <author>
+      <name>Yuhe Wu</name>
+    </author>
+    <author>
+      <name>Mingda Zhang</name>
+    </author>
+    <author>
+      <name>Jiaxuan Luo</name>
+    </author>
+    <author>
+      <name>Yang Tan</name>
+    </author>
+    <author>
+      <name>Qiang Huang</name>
+    </author>
+    <author>
+      <name>Zhisheng Chen</name>
+    </author>
+    <author>
+      <name>Yanfeng Li</name>
+    </author>
+    <author>
+      <name>Dawen Tian</name>
+    </author>
+    <author>
+      <name>Changmiao Wang</name>
+    </author>
+    <author>
+      <name>Tao Tan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.28502v1</id>
+    <title>Shoonya: Zero-Socket In-Process Small Language Models for Graph Databases with Schema-Epoch KV Caching, Live Catalog Logit Masking, and Verifier-Advantage Distillation</title>
+    <updated>2026-11-21T02:36:49Z</updated>
+    <link href="https://arxiv.org/abs/2611.28502v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.28502v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Coupling a property-graph database to an external language-model server imposes a three-part socket tax: serialization overhead dwarfing microsecond graph reads, repeated prefill of verbose schemas, and blind decoding divorced from the live catalog and multi-version concurrency control (MVCC) engine. We present Shoonya, from-scratch commercially clean (0.0% non-commercial or share-alike data) tri-modal (Python, Rust, OpenCypher) small language models (16.8M to 1.07B parameters) co-designed with shoonya-infer, a zero-dependency pure-Rust runtime embedded inside the samyama-graph-enterprise address space. Direct GraphStore references unlock three database-native primitives: (1) an epoch-invalidated SchemaPrefixCache over a copy-on-write PagedKvArena accelerating warm CPU time-to-first-token by 4.91x--13.68x with O(1) DDL invalidation; (2) a 36 us columnar catalog and source-span logit mask enforcing valid ontology identifiers and verbatim spans; and (3) a sub-65 us read-only MVCC gate serving Tier-0 queries inside 389.8 MiB INT8 RSS (59.8--67.9 tok/s) with 0.0% hallucination leak. Rank-factorized tied embeddings (-74.5% vocabulary weights), atomic indentation tokens (0/421 indentation errors), 4:1 grouped-query attention with 2:1 cross-layer KV sharing (-93.75% INT8 KV memory), Warmup-Stable-Decay training, KnOTS SVD merging, Step-GRPO, and Rust Jacobi SVD governance keep 100% of layers heavy-tailed ($α\in [1.88, 2.20]$). Finally, we synthesize nine lessons across v0.1--v1.0, resolving a Reverse-Token-Density Distillation Trap via teacher scaling and zero-VRAM Verifier-Advantage-Gated Knowledge Distillation (AdvKD), recovering +13.61 MBPP points (33.07%) while reaching 100% validity on enrichment, grounded extraction, and tool planning.</summary>
+    <category term="cs.DB" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-21T02:36:49Z</published>
+    <arxiv:comment>16 pages, 4 figures, 4 tables. Open weights (Apache-2.0), shard provenance manifests, and Rust Jacobi SVD spectral certificates: https://huggingface.co/VaidhyaMegha/Shoonya</arxiv:comment>
+    <arxiv:primary_category term="cs.DB"/>
+    <author>
+      <name>Madhulatha Mandarapu</name>
+    </author>
+    <author>
+      <name>Sandeep Kunkunuru</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.27348v1</id>
+    <title>Breaking the Long Horizon: Short-Horizon Process Supervision for Long-Form Generation in LLMs</title>
+    <updated>2026-11-20T09:21:42Z</updated>
+    <link href="https://arxiv.org/abs/2611.27348v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.27348v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-form generation is increasingly important for agentic LLM systems, yet current reinforcement learning methods typically optimize an entire document with a single outcome-level reward. This delayed and coarse-grained supervision makes it difficult to localize errors and assign credit across semantically distinct parts of the output. To address this, we propose a short-horizon framework that reformulates long-form generation through semantic decomposition into segment-level decisions. Each segment is generated with prefix-conditioned context, allowing cross-segment coherence to be preserved while keeping supervision local. The generated segments are then scored with rubric-based rewards for adherence, coherence, and relevance, enabling explicit local supervision at the segment level. These local rewards are used to compute step-wise advantages, yielding localized policy updates. To isolate the effect of supervision granularity, we instantiate both outcome-level supervision and our short-horizon process reward method (SH-PRM) under the same GRPO framework. Across multiple LLMs and two long-form generation benchmarks, SH-PRM consistently outperforms outcome-level supervision and strong inference-time baselines under the same optimizer and comparable budgets. Further analyses suggest that these gains primarily arise from improved credit assignment. Overall, our results suggest that aligning supervision granularity with the semantic structure of long-form generation is an effective design principle for long-form LLM training.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-20T09:21:42Z</published>
+    <arxiv:comment>Submitted to AAAI 2027. 17 pages, 8 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Heyang Xu</name>
+    </author>
+    <author>
+      <name>HanWen Hao</name>
+    </author>
+    <author>
+      <name>Qianren Mao</name>
+    </author>
+    <author>
+      <name>Zhuo Liu</name>
+    </author>
+    <author>
+      <name>Qili Zhang</name>
+    </author>
+    <author>
+      <name>Sheng Yang</name>
+    </author>
+    <author>
+      <name>Jianxin Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.27068v1</id>
+    <title>Decision Models Are General-Purpose Process Reward Models</title>
+    <updated>2026-11-20T03:36:18Z</updated>
+    <link href="https://arxiv.org/abs/2611.27068v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.27068v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) from verifiable outcomes gives a language agent one reward per episode: every step is credited alike, and nothing about the task is learned when all rollouts fail. The last mile, step-level credit, usually requires step labels, a learned critic, costly LLM judges or hand-written rules. We introduce DM-PRM, which turns a general-purpose decision model -- one answering yes/no questions with probabilities -- into a general-purpose process reward model (PRM), zero-shot: no step labels, no fine-tuning, no critic. DM-PRM asks one question per step and adds the standardised answers to the advantage. It plugs into any policy-gradient method; one model, with one question text per environment, serves household tasks, web shopping and multiple RL methods. With Qwen2.5-1.5B it lifts GRPO by over twenty points on ALFWorld and over ten on WebShop, overtakes GiGPO on ALFWorld and learns in far fewer iterations; it also improves GiGPO and GraphGPO on both benchmarks and reaches the highest success of our comparison, ahead of critic-based PPO and of state-of-the-art GiGPO, HGPO and GraphGPO. Its scores locate useful steps in failed rollouts, and trained agents drop idle actions and explore instead of circling. DM-PRM shows that step credit need not be learned: it can be asked for.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-20T03:36:18Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Jiajun Fan</name>
+    </author>
+    <author>
+      <name>Qinglong Zheng</name>
+    </author>
+    <author>
+      <name>Ziwen Wang</name>
+    </author>
+    <author>
+      <name>Bangji Yang</name>
+    </author>
+    <author>
+      <name>Neil He</name>
+    </author>
+    <author>
+      <name>Ruihan Guo</name>
+    </author>
+    <author>
+      <name>Chaoran Cheng</name>
+    </author>
+    <author>
+      <name>Ge Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.26787v1</id>
+    <title>Spatial Query Execution as Verifiable Rewards for Multi-step Spatial Reasoning</title>
+    <updated>2026-11-19T20:24:30Z</updated>
+    <link href="https://arxiv.org/abs/2611.26787v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.26787v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large vision-language models (LVLMs) remain unreliable on spatial reasoning problems that require composing grounded relations across multiple objects. Yet, scaling reasoning supervision is challenging since human-annotated visual datasets often rely on fixed relational annotations and coarse object localization, making it difficult to obtain precise intermediate reasoning states across diverse spatial configurations and complexities. We introduce FARON (Fully Automated Reasoning Over spatial relatioNs), a framework that executes spatial queries to provide both execution-grounded reasoning supervision and verifiable outcome rewards. Rather than relying on existing annotated data, FARON constructs synthetic 2D and 3D scenes with explicit geometries, enabling configurable object arrangements, spatial relations, and multi-step compositions. Deterministic query execution yields intermediate sets and final answers, providing precise supervision without manual relation annotation. Our pipeline converts intermediate states into natural-language reasoning traces for supervised fine-tuning (SFT), while the execution-derived answers provide verifiable rewards for reinforcement learning with verifiable rewards (RLVR). Controlled experiments show that trace-based SFT improves multi-step spatial reasoning over final-answer supervision and that subsequent group relative policy optimization (GRPO) provides further gains. The resulting models also demonstrate transfer across external spatial reasoning benchmarks and multiple LVLM backbones without benchmark-specific fine-tuning. These results show the potential of using spatial query execution as a unified, flexible source of reasoning supervision and verifiable outcome rewards for multimodal spatial reasoning.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-19T20:24:30Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Jiyoon Pyo</name>
+    </author>
+    <author>
+      <name>Dongwon Jung</name>
+    </author>
+    <author>
+      <name>Zekun Li</name>
+    </author>
+    <author>
+      <name>Nayeon Kim</name>
+    </author>
+    <author>
+      <name>Muhao Chen</name>
+    </author>
+    <author>
+      <name>Yao-Yi Chiang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.26333v1</id>
+    <title>OceanCoder: A Verification-Guided Large Language Model for Automated Simulation Modelling in Ocean Engineering</title>
+    <updated>2026-11-19T16:13:20Z</updated>
+    <link href="https://arxiv.org/abs/2611.26333v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.26333v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Numerical simulation is important in ocean engineering, but model construction requires expert knowledge. Large language models support automated modelling, but code syntax and successful execution alone do not establish whether generated models and results meet engineering requirements. We present OceanCoder, a Qwen3-8B-based large language model for automated simulation modelling in ocean engineering. To address specialised programming requirements and scarce training data, we develop an extensible data construction pipeline producing 12,000 verified supervised fine-tuning (SFT) examples across 12 engineering task categories. A three-layer verification framework checks model inputs against engineering parameters and task constraints, verifies completion of required simulation analyses, and assesses the engineering plausibility of computed outputs. Its outcomes provide graded rewards for group relative policy optimisation (GRPO), guiding the model towards engineering task completion. We also construct the first benchmark for automated modelling in ocean engineering, covering out-of-distribution tasks and real-world engineering cases. Experiments and ablation studies demonstrate the effectiveness of the data pipeline, verification framework and reward design. OceanCoder outperforms both base models and the closed-source comparison, with Pass@1 increasing from 0% for the base model to 46.77% after SFT and 51.43% after GRPO. These results support engineering verification as a training signal for automated simulation modelling.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-19T16:13:20Z</published>
+    <arxiv:comment>22 pages, 11 figures, including appendices</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Can Xue</name>
+    </author>
+    <author>
+      <name>Changhong He</name>
+    </author>
+    <author>
+      <name>Ziyi Sun</name>
+    </author>
+    <author>
+      <name>Anliang Ge</name>
+    </author>
+    <author>
+      <name>Shimin Yu</name>
+    </author>
+    <author>
+      <name>Bingchen Liang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.26313v1</id>
+    <title>Actor-Predictor Architecture for Reinforcement Learning with Formal Specification Objectives</title>
+    <updated>2026-11-19T16:03:02Z</updated>
+    <link href="https://arxiv.org/abs/2611.26313v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.26313v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>One fundamental challenge in reinforcement learning (RL) is enforcing temporal safety constraints, such as satisfying formal specifications. Existing methods often transform logic formulas into automata for state augmentation and reward shaping. However, this approach assumes that automaton construction is both feasible and tractable, which limits its applicability to small specifications and linear temporal logic (LTL). This paper proposes Actor-Predictor, a framework that learns a surrogate representation of logic progress without explicitly constructing an automaton. The predictor continuously estimates whether a partial trajectory will satisfy the formal specification in a later step, and its learned features are provided as auxiliary inputs to the actor, which is then optimized using GRPO and RWR. We show theoretically that, under sufficient predictive accuracy, the learned representation is equivalent to the automaton state. Experiments on grid world and robotic tasks in Isaac Lab demonstrate that Actor-Predictor outperforms automaton-based baselines on LTL-constrained tasks. It also performs well on non-regular formal specifications, such as $(a^n b^n)$, for which finite-automaton-based approaches are not applicable.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-19T16:03:02Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Josef Brozovich</name>
+    </author>
+    <author>
+      <name>Qining Zhang</name>
+    </author>
+    <author>
+      <name>Lei Ying</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.23996v1</id>
+    <title>ReSynth: Constructing Synthetic Supervision for Multi-Image Understanding</title>
+    <updated>2026-11-18T07:44:43Z</updated>
+    <link href="https://arxiv.org/abs/2611.23996v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.23996v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>People often understand the world by comparing different views of it. Vision-language models (VLMs), however, receive these views as separate images and still struggle to relate them. One problem is data. Training on these tasks requires groups of images with a known relationship: the same object from different viewpoints, or the same scene before and after a change. Such examples are hard to collect at scale from existing photo collections. We introduce ReSynth, which turns single-image perception and controllable image generation into cross-image relational supervision. Localized editing produces before-and-after pairs, viewpoint generation produces multiple views of the same instance, and verified scene contents support comparisons of counts and attributes. ReSynth combines Qwen3-VL-8B's captioning, grounding, and counting capabilities with Qwen-Image-2.1's generation and editing capabilities. It verifies single-image facts such as object counts and attributes, then combines these facts to construct multi-image QA. Using GRPO on approximately 440K ReSynth questions, with no real images during training, Qwen2.5-VL-7B and Qwen3-VL-8B improve by 17.73 and 6.10 average points on BLINK, MUIRBench, and VLM2-Bench, while single-image performance is broadly preserved on Qwen2.5-VL-7B and improves across all four evaluated benchmarks on Qwen3-VL-8B. Notably, this supervision enables the 8B perception model itself to outperform Qwen3-VL-235B on BLINK and MUIRBench.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-18T07:44:43Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Yilin Wang</name>
+    </author>
+    <author>
+      <name>Xin Yu</name>
+    </author>
+    <author>
+      <name>Xinyi Guo</name>
+    </author>
+    <author>
+      <name>Xiangxi Zheng</name>
+    </author>
+    <author>
+      <name>Dongxing Mao</name>
+    </author>
+    <author>
+      <name>Linjie Li</name>
+    </author>
+    <author>
+      <name>Zhengyuan Yang</name>
+    </author>
+    <author>
+      <name>Alex Jinpeng Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.23824v1</id>
+    <title>Evidence-Based Credit Assignment for Search-Augmented Language Models</title>
+    <updated>2026-11-18T04:24:51Z</updated>
+    <link href="https://arxiv.org/abs/2611.23824v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.23824v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning from terminal answer rewards enables search-augmented language models to interleave reasoning and retrieval without step-level annotations, yet outcome supervision assigns identical credit to every search in a trajectory regardless of whether it retrieved useful information. This limitation is especially severe when all sampled rollouts for a question fail, collapsing group-centered outcome advantages to zero even when trajectories gather markedly different evidence. We present Evidence-based Credit Assignment (ECA), which augments terminal outcome rewards with a training-only auxiliary signal measuring how retrieved documents improve the likelihood of a reference answer. Rather than scoring the full dialogue prefix, ECA queries a frozen snapshot of the current policy under an evidence-only prompt containing solely the question and the deduplicated documents observed so far, isolating the utility of retrieved passages from surface variations in generated thoughts or search queries. Within this framework, we compare two return formulations, ECA-Step (which accumulates step-clipped potential increments) and ECA-Horizon (which preserves the telescoping horizon gain in potential), paired with cross-fold group normalization, novelty gating, and search-local token assignment. Across seven Search QA benchmarks, ECA-Horizon improves strict macro exact match over an outcome-only GRPO baseline by 1.03 and 4.80 percentage points on Qwen2.5-3B- and 7B-Instruct, respectively, outperforming both RLOO and GiGPO. Zero-shot evaluation on MultiHop-RAG further demonstrates strong transfer to multi-hop inference queries.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-18T04:24:51Z</published>
+    <arxiv:comment>16 pages, 4 figures. Includes supplementary material</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Wen Wang</name>
+    </author>
+    <author>
+      <name>Jindong Wang</name>
+    </author>
+    <author>
+      <name>Jiahua Bao</name>
+    </author>
+    <author>
+      <name>Tu Yongsiqi</name>
+    </author>
+    <author>
+      <name>Yihao Liu</name>
+    </author>
+    <author>
+      <name>Junwei He</name>
+    </author>
+    <author>
+      <name>Wenkui Fan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.23633v1</id>
+    <title>Option-GRPO: Hierarchical RL Against AI Slop in Code Generation for Unseen SDKs</title>
+    <updated>2026-11-17T23:52:34Z</updated>
+    <link href="https://arxiv.org/abs/2611.23633v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.23633v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models increasingly produce AI slop in generated code: verbose, redundant, non-idiomatic implementations that pass functional checks but bloat codebases. The problem compounds on SDKs released after the model's training cutoff, where the model has neither idiomatic priors nor compositional understanding. We present Option-GRPO, a hierarchical reinforcement learning framework that adapts a code LLM to an unseen SDK from its source code alone, without human-written usage examples or test cases, and that explicitly optimizes for both functional correctness and code elegance. Our key insight is that SDK source code contains compositional structure that defines a hierarchy of reusable code patterns (code options) which simultaneously serve as the building blocks of a curriculum and the action space for efficient policy optimization. We show that code options induce a valid semi-Markov decision process, give conditional bounds under which shorter option description length implies more concise and, in expectation, more API-efficient programs, and analyze under stated assumptions how the option hierarchy improves credit assignment by a factor of $\sqrt{T/K}$. Using Group Relative Policy Optimization (GRPO) with execution-based rewards at each curriculum level, Option-GRPO discovers SDK idioms, composes them into patterns, and assembles patterns into complete programs. Experiments on 12 unseen SDKs with a 32B-parameter base model demonstrate 61.4% pass@1, outperforming flat GRPO by 8.7 points, ExploraCoder by 11.2 points, and ReCode by 6.3 points. Option-GRPO produces solutions that use 34.7% fewer API calls and are 27% shorter than flat-GRPO outputs while maintaining higher correctness, directly attacking the slop problem.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-17T23:52:34Z</published>
+    <arxiv:comment>Accepted to Findings of EACL 2027. 27 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Prashank Kadam</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.22627v1</id>
+    <title>Beyond Mimicry: Constrained Exploration with GRPO for Joint Multi-Talker ASR and Diarization under Unknown Speaker Counts</title>
+    <updated>2026-11-17T11:45:26Z</updated>
+    <link href="https://arxiv.org/abs/2611.22627v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.22627v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Joint multi-talker ASR with speaker attribution and timestamps is particularly challenging when the speaker count is unknown and the output must follow a strict structure. We observe that Supervised Fine-Tuning (SFT)-only alignment of SpeechLLMs is brittle under dense overlaps, often leading to burst hallucinations and malformed speaker/timestamp tags. We propose a unified two-stage generative framework: (i) CoT-augmented SFT that infers the global speaker count before transcription, and (ii) GRPO-based constrained exploration guided by a Multi-dimensional Constraint-Aware Reward (MCAR) that directly optimizes permutation-invariant accuracy while enforcing counting, temporal, and structural constraints. On Libri3Mix and a Dynamic-Mix (2+3) set (speaker count unknown at test time), our model achieves 14.52%/9.24% cpWER and 1.95%/1.12% WDER, respectively, with GRPO yielding a 35%/54% relative cpWER reduction over SFT+CoT.</summary>
+    <category term="cs.SD" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-17T11:45:26Z</published>
+    <arxiv:comment>5 pages, Interspeech 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.SD"/>
+    <arxiv:journal_ref>Proc. Interspeech 2026, pp. 4587-4591</arxiv:journal_ref>
+    <author>
+      <name>Yunrui Cai</name>
+    </author>
+    <author>
+      <name>Dingdong Wang</name>
+    </author>
+    <author>
+      <name>Lingwei Meng</name>
+    </author>
+    <author>
+      <name>Xixin Wu</name>
+    </author>
+    <author>
+      <name>Zhiyong Wu</name>
+    </author>
+    <author>
+      <name>Helen Meng</name>
+    </author>
+    <arxiv:doi>10.21437/Interspeech.2026-2297</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.21437/Interspeech.2026-2297" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.22503v2</id>
+    <title>From Relevance to Utility: Rubric Alignment in Yuanbao Search</title>
+    <updated>2026-11-20T08:52:04Z</updated>
+    <link href="https://arxiv.org/abs/2611.22503v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.22503v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic search demands that a search engine move beyond per document relevance ranking to assemble document sets optimized for downstream LLM reasoning. Prior work addresses this either by improving individual pipeline stages in isolation or by applying RL based selection on top of relevance trained upstream modules, leaving the full stack unaligned to utility for reasoning. We propose rubric aligned search, a framework that unifies the traditional search pipeline under a single supervision surface. For each query, we derive a rubric from coarse to fine, specifying weighted positive criteria that the document set must satisfy and negative criteria that it must avoid. From this rubric we derive two training signals. First, a lightweight labeler distills rubric grounded judgments into per document utility labels, which supervise a contrastive dual encoder for retrieval and a multi task ranker trained with four rubric aligned scoring heads. Second, a rubric conditioned evaluator produces a set level reward that drives a dual branch RL selector, combining GRPO with best rollout distillation to resolve credit assignment in subset optimization. Deployed in Yuanbao Search, the pipeline improves end to end answer quality by 8.52% over the online production baseline.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-17T10:00:05Z</published>
+    <arxiv:comment>10 pages, 5 figures, 5 tables, accepted at KDD 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Yu Lu</name>
+    </author>
+    <author>
+      <name>Lixin Zou</name>
+    </author>
+    <author>
+      <name>Yangqi Chen</name>
+    </author>
+    <author>
+      <name>Hui Xu</name>
+    </author>
+    <author>
+      <name>Qiaolin Xia</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Qianwen Ma</name>
+    </author>
+    <author>
+      <name>Reed Li</name>
+    </author>
+    <author>
+      <name>Shuang Zeng</name>
+    </author>
+    <author>
+      <name>Haijin Liang</name>
+    </author>
+    <author>
+      <name>Haibo Shi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.22418v1</id>
+    <title>CutAgent: Creative-Gene-Driven Planning and Experience-Guided Self-Refinement for High-CTR E-commerce Advertising Video Creation</title>
+    <updated>2026-11-17T08:54:39Z</updated>
+    <link href="https://arxiv.org/abs/2611.22418v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.22418v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>E-commerce advertising video creation requires both high-level creative planning and reliable multi-modal production. However, existing methods often map product attributes directly to scripts or editing decisions without explicitly modeling advertising strategies, narrative structures, and production styles. They also have limited ability to reuse past production failures. To address these limitations, we propose $\textbf{CutAgent}$, a dual-agent framework that formulates advertising video creation as a Plan--Execute--Self-Evolve process. CutAgent comprises two collaborative agents, $\textbf{GeneAgent}$ and $\textbf{VideoAgent}$, connected by a structured creative gene that bridges product understanding and video production. GeneAgent maps multi-modal product inputs---textual attributes together with product images---to creative genes that specify narrative units and production rules. To train GeneAgent, we construct $\textbf{CutAgent-70K}$ with approximately 70K samples of product attributes/images, reverse-extracted creative genes, cleaned clip pools, and real-world CTR, and apply high-CTR supervised fine-tuning followed by CTR-guided GRPO. Guided by the generated gene, VideoAgent retrieves category-then-gene failure--correction experiences from a long-term memory as constraints for shot-script planning, then coordinates material retrieval, narration, subtitles, music, and timeline rendering. Independently, a reflection loop diagnoses quality defects, revises deficient production decisions, and writes verified corrections back to memory for later retrieval. Experiments on $\textbf{CutAgent-Eval}$ show that CutAgent outperforms representative baselines in e-commerce advertising video creation, achieving the highest online CTR of $\textbf{2.21\%}$.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-17T08:54:39Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Xuyue Huang</name>
+    </author>
+    <author>
+      <name>Guanbo Huang</name>
+    </author>
+    <author>
+      <name>Jiasong Feng</name>
+    </author>
+    <author>
+      <name>Run Ling</name>
+    </author>
+    <author>
+      <name>Ao Ma</name>
+    </author>
+    <author>
+      <name>Xi Zhao</name>
+    </author>
+    <author>
+      <name>Yaoyu Li</name>
+    </author>
+    <author>
+      <name>Jie Gao</name>
+    </author>
+    <author>
+      <name>Ke Cao</name>
+    </author>
+    <author>
+      <name>Wei Feng</name>
+    </author>
+    <author>
+      <name>Zhanjie Zhang</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Jinghe Hu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.18140v1</id>
+    <title>Large Language Model-Empowered Intelligent Agent for Adaptive Fast-Charging Control of Lithium-Ion Batteries</title>
+    <updated>2026-11-13T13:11:04Z</updated>
+    <link href="https://arxiv.org/abs/2611.18140v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.18140v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Fast charging of lithium-ion batteries is a multi-objective control problem that requires reducing charging time and sustaining high energy throughput while suppressing accelerated degradation and safety-critical electrochemical reactions. Conventional protocols are easy to implement but have limited ability to adapt to variations in battery chemistry, operating conditions, and aging state. Model-based optimization and conventional data-driven control often require accurate models, costly iterative search, or task-specific policies. We develop a large language model (LLM)-empowered intelligent agent for adaptive battery fast-charging control. In this closed-loop framework, the agent interprets structured battery states, generates executable charging actions, observes the resulting battery response, and continuously adjusts subsequent decisions. We construct a large-scale simulation corpus with PyBaMM across five battery chemistries and 11 parameter sets and convert the resulting state-action-response trajectories into structured process data for agent training. Our two-stage strategy combines supervised fine-tuning (SFT) and Group Relative Policy Optimization (GRPO). SFT establishes battery-control semantics and feasible decision priors from simulation-derived demonstrations. GRPO aligns the agent with a multi-objective control objective covering energy throughput, degradation mitigation, and operational constraints. Closed-loop simulations show that, under matched energy-throughput requirements, the agent achieves longer cycling life than conventional charging baselines and optimization-based strategies across heterogeneous battery configurations. This study provides a simulation-grounded proof of concept for using LLM agents as sequential decision makers in battery management and takes a step toward language-model-enabled control of physical energy systems.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-13T13:11:04Z</published>
+    <arxiv:comment>9 pages, 5 figures, 6 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Joey Chan</name>
+    </author>
+    <author>
+      <name>Haoyu Pan</name>
+    </author>
+    <author>
+      <name>Zhen Chen</name>
+    </author>
+    <author>
+      <name>ErShun Pan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17167v1</id>
+    <title>Actor, Judge, or Teacher? Understanding Decision Models in Long-Horizon Agents</title>
+    <updated>2026-11-12T17:42:46Z</updated>
+    <link href="https://arxiv.org/abs/2611.17167v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17167v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Decision models answer a question with a typed output, such as a choice among options with a probability for each, so one model can choose an agent's actions, evaluate actions already taken, or score every action to teach a policy with reinforcement learning. Prior work has studied them mainly as actors, judging their usefulness by how well they act. We ask whether a decision model that acts poorly can still teach well. We compare three decision models and three general LLMs as actors and judges on ALFWorld, and use JEV as a teacher on ALFWorld and WebShop. As actors, all six models are pulled away from a subgoal that must come first by an easier one. As judges that see the whole trajectory, the same models credit the steps toward that subgoal, and asking whether each action helped, rather than whether the task will succeed, separates useful from useless actions. As a teacher, JEV raises a Qwen2.5-1.5B policy over GRPO from 72.8% to 82.9% success on ALFWorld and from 56.8% to 71.4% on WebShop. These results suggest that a poor actor can still teach well, because judging an action after the episode ends reveals the consequences that acting must anticipate. Code is available at https://github.com/ZJU-REAL/decision-agents.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T17:42:46Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Haochen Liu</name>
+    </author>
+    <author>
+      <name>Qianhao Zhu</name>
+    </author>
+    <author>
+      <name>Zixuan Wang</name>
+    </author>
+    <author>
+      <name>Dingming Li</name>
+    </author>
+    <author>
+      <name>Tongbo Chen</name>
+    </author>
+    <author>
+      <name>Peng Qiu</name>
+    </author>
+    <author>
+      <name>Yingqi Qu</name>
+    </author>
+    <author>
+      <name>Weiming Lu</name>
+    </author>
+    <author>
+      <name>Jun Xiao</name>
+    </author>
+    <author>
+      <name>Yongliang Shen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.17163v1</id>
+    <title>UAV-Flow++: A Unified Suite for Benchmarking and Learning Language-Guided UAV Flight</title>
+    <updated>2026-11-12T17:39:43Z</updated>
+    <link href="https://arxiv.org/abs/2611.17163v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.17163v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Language-guided UAV navigation has largely focused on long-horizon route planning, leaving short-range, object-relative flight maneuvers underexplored. To address this gap, we formulate Flying-on-a-Word (Flow), a task requiring a UAV to convert concise natural-language instruction, egocentric visual observation, and current state dynamics into continuous flight actions. Flow encompasses both primitive motion commands and complex object-interactive behaviors, assessing motion intent comprehension and spatial context grounding. To enable policy learning and closed-loop evaluation, we introduce UAV-Flow, a comprehensive dataset comprising 30,692 expert-piloted real-world trajectories across eight distinct motion categories, alongside 10,109 simulation trajectories in the UAV-Flow-Sim environment equipped with task-specific completion criteria. Furthermore, we develop FlowVLA, which undergoes imitation pretraining on mixed real-sim demonstrations and online post-training via Tail-Aware GRPO (TGRPO). By leveraging group reward distributions, TGRPO effectively reinforces high-reward action sequences. Evaluated on 273 held-out UAV-Flow-Sim episodes, pretrained FlowVLA achieves a mean success rate of 75.58%, outperforming the strongest baseline by 6.72 percentage points, which TGRPO post-training further elevates to 93.16% with superior sample efficiency. Physical UAV experiments demonstrate robust execution of object-relative commands in both indoor and outdoor real-world scenes. Together, Flow establishes a novel benchmark and learning framework for language-conditioned flight maneuvers.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T17:39:43Z</published>
+    <arxiv:comment>22 pages, 10 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Donglin Yang</name>
+    </author>
+    <author>
+      <name>Xiangyu Wang</name>
+    </author>
+    <author>
+      <name>Yantong Zhong</name>
+    </author>
+    <author>
+      <name>Wenhao Zheng</name>
+    </author>
+    <author>
+      <name>Zihan Ding</name>
+    </author>
+    <author>
+      <name>Yue Liao</name>
+    </author>
+    <author>
+      <name>Hongsheng Li</name>
+    </author>
+    <author>
+      <name>Ke Xu</name>
+    </author>
+    <author>
+      <name>Si Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.16816v1</id>
+    <title>Outcome-Mass Alignment: Controlling Length-Dependent Trajectory Influence in Multi-Turn LLM Agent Reinforcement Learning</title>
+    <updated>2026-11-12T13:52:12Z</updated>
+    <link href="https://arxiv.org/abs/2611.16816v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.16816v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>To keep long interaction contexts tractable, stepwise group-relative training for multi-turn LLM agents materializes each source trajectory into multiple response rows and valid tokens. This expansion creates an outer-accounting problem distinct from within-trajectory credit assignment: row-based outcome statistics can count one episode outcome multiple times, while token-level reduction can assign unequal aggregate objective mass across trajectories. We term these effects outcome-statistics multiplicity and objective-mass imbalance. We introduce Outcome-Mass Alignment (OMA), a two-component method that makes both accounting choices explicit. Outcome Alignment computes outcome statistics over unique source trajectories, while Mass Alignment controls aggregate objective mass after within-trajectory aggregation of optimizer-native token objectives. Neither redesigns the base optimizer's credit assignment, importance ratios, or clipping. Across matched ALFWorld GRPO comparisons at two model scales, where failed trajectories typically expand much more than successful ones, OMA improves matched-horizon endpoint success by 7.0-9.4 percentage points. Ordinary WebShop exhibits weak or reversed expansion-outcome coupling and correspondingly mixed effects, whereas in a success-oriented WebShop setting, WebShop-SOL, OMA improves success nAUC from 0.399 to 0.511. Component ablations and GiGPO and GSPO comparisons further support component separability and cross-optimizer compatibility. These results show that trajectory expansion always defines an implicit weighting rule, but its practical effect depends on how expansion couples to outcomes and optimizer-native updates.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T13:52:12Z</published>
+    <arxiv:comment>18 pages, 6 figures, including appendices</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Dawei Zhang</name>
+    </author>
+    <author>
+      <name>Yubin Huangfu</name>
+    </author>
+    <author>
+      <name>Jessica Fan</name>
+    </author>
+    <author>
+      <name>Boyu Wei</name>
+    </author>
+    <author>
+      <name>Likang Wu</name>
+    </author>
+    <author>
+      <name>Hongke Zhao</name>
+    </author>
+    <author>
+      <name>Ming He</name>
+    </author>
+    <author>
+      <name>Zhu Teng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.16628v1</id>
+    <title>Safety as a Budget: Calibrating the Control Channel of Constrained GRPO for Vision-Language Models</title>
+    <updated>2026-11-12T11:00:14Z</updated>
+    <link href="https://arxiv.org/abs/2611.16628v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.16628v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning can teach vision-language models (VLMs) to decline harmful image-text requests, but how safe the result becomes is set indirectly, through reward weights found by trial runs. Stating safety as budgets on the rate of harmful assistance and the rate of over-refusal, enforced by Lagrange multipliers inside GRPO with an off-the-shelf scorer as the cost, is the natural fix, and it fails twice. The multiplier compares the scorer's mean with the budget, and scorers built for ranking get the mean wrong: a fixed-point analysis shows that the mean bias, not the budget, then decides whether the multiplier settles, saturates or switches off. And standard GRPO standardizes the penalized reward within each group, which cancels the multiplier before it reaches the gradient. Two-channel constrained GRPO repairs both: the base reward keeps the raw score for the within-group comparison, the penalty and the constraint estimate pass through a monotone map fitted on judge-labeled training responses, and the advantage keeps the multiplier. On a Qwen3-VL-2B policy with a training-free readout of an open 4B model as the scorer, held-out harm on 1,037 adversarial prompts falls from 8.9% under standard GRPO to 4.8%, lower in every seed, where the uncalibrated budget gives 7.6%; over-refusal stays at most 2% on 400 benign queries and MMBench is unchanged. The gain is largest where the intent sits in the image (10.1% -&gt; 5.1%) and grows on the unseen HADES benchmark (28.9% -&gt; 12.8%). Order-preserving distortions of the scores reproduce each predicted controller state in every seed, and the results hold under a map fitted on another judge's labels, an image-reading judge and a human audit.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T11:00:14Z</published>
+    <arxiv:comment>10 pages, 5 figures, 5 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Bo Han</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.16206v1</id>
+    <title>Turning Multi-Agent Communication into Token-Level Credit with On Policy Self Distillation</title>
+    <updated>2026-11-12T02:57:08Z</updated>
+    <link href="https://arxiv.org/abs/2611.16206v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.16206v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning improves problem solving in large language model multi-agent systems. Existing approaches overlook communication knowledge or compress it into scalar rewards, leaving coarse credit with little guidance on which decisions each agent should reinforce or revise. OPSD4MAS converts future communication into fine-grained token-level credit through On Policy Self Distillation (OPSD). An external model extracts facts and assesses their trajectory relations for coarse-grained filtering, followed by fine-grained leave-one-out filtering of target-token influence against agent-wise outcome advantages. The fact-conditioned policy supplies token-level credit, combined with GRPO through a linearly annealed joint objective. Our method improves mathematical pass@4 over GRPO by up to 20.00 percentage points. Ablations support complete filtering, while frozen-history injection diagnostics support fact utility. Together, these results support combining agent-level outcome guidance with communication-derived token-level credit. Code is available at https://github.com/Camel-Prince/OPSD4MAS.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-12T02:57:08Z</published>
+    <arxiv:comment>14pages,4 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Zixu Wang</name>
+    </author>
+    <author>
+      <name>Yu Zhao</name>
+    </author>
+    <author>
+      <name>Xing Zheng</name>
+    </author>
+    <author>
+      <name>Bingbing Xu</name>
+    </author>
+    <author>
+      <name>Tian Xueyun</name>
+    </author>
+    <author>
+      <name>JiaTang Luo</name>
+    </author>
+    <author>
+      <name>Weiqiang Wang</name>
+    </author>
+    <author>
+      <name>Bowen Song</name>
+    </author>
+    <author>
+      <name>Huawei Shen</name>
+    </author>
+    <author>
+      <name>Xueqi Cheng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.15426v1</id>
+    <title>SimRec: Learning to Search, Ask, and Recommend from Simulated Interaction</title>
+    <updated>2026-11-11T12:53:52Z</updated>
+    <link href="https://arxiv.org/abs/2611.15426v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.15426v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM-based recommendation agents can search catalogs, inspect products, ask users, and revise rejected recommendations. However, these behaviors are often governed by hand-designed workflows, while existing training methods optimize isolated components such as query rewriting or list ranking rather than the interaction policy as a whole. We present SimRec, a reinforcement learning framework that trains the full interaction policy of a tool-integrated recommendation agent. SimRec introduces two components. A task-anchored user simulator provides feedback on every recommendation: conditioned on the current task need rather than on user profile, and it can be an external LLM or the recommender itself under self-play. A task-aligned reward optimizes the whole trajectory with GRPO, crediting natural retrieval quality and valid tool use alongside the final hit, with training-only target injection to handle sparse hits over large catalogs. On ESCI and Amazon C4, SimRec improves the NDCG@100 of a Qwen3-4B agent from 32.23% to 35.42% and from 22.94% to 24.72%}, outperforming training-free agents on far larger backbones and task-aligned baselines on NDCG. Analysis shows that the trained agent verifies candidates, uses preferences, and recovers from rejected recommendations far more often than its untrained counterpart. Our code is available at https://github.com/ZJU-REAL/SimRec .</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-11T12:53:52Z</published>
+    <arxiv:comment>19 pages,5 figures,16 tables. Code: https://github.com/ZJU-REAL/SimRec</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yaxin Zhang</name>
+    </author>
+    <author>
+      <name>Xingyu Wu</name>
+    </author>
+    <author>
+      <name>Yuchen Yan</name>
+    </author>
+    <author>
+      <name>Yuqin Dai</name>
+    </author>
+    <author>
+      <name>Hong Zhao</name>
+    </author>
+    <author>
+      <name>Lixing Shen</name>
+    </author>
+    <author>
+      <name>Zhan Chen</name>
+    </author>
+    <author>
+      <name>Jian Shao</name>
+    </author>
+    <author>
+      <name>Yongliang Shen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.15404v1</id>
+    <title>Is the Importance Ratio Necessary for Stable Reinforcement Learning in LLMs?</title>
+    <updated>2026-11-11T12:31:55Z</updated>
+    <link href="https://arxiv.org/abs/2611.15404v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.15404v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) has become central to post-training large language models (LLMs). However, popular RL methods like GRPO incur non-negligible overhead by computing both old-policy and current-policy likelihoods to form importance sampling ratios. In this work, we propose Likelihood-Gated Policy Optimization (LGPO), which enforces a soft trust region constraint via likelihood-based gating, eliminating the need to compute old-policy likelihoods. Empirically, we show that removing the importance sampling correction term does not harm training stability, whereas removing the trust region mechanism can lead to collapse. Moreover, ratio-based clipping can fail in fully on-policy training: the importance ratio stays at 1, so the ratio-based trust region constraint never activates. Under standard training settings where GRPO is stable, LGPO achieves comparable training stability and peak performance while reducing training time by ~18% on average relative to a standard implementation that recomputes old-policy likelihoods. In fully on-policy training, where GRPO fails, LGPO remains stable, enabling more efficient and robust LLM RL post-training across training regimes.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-11T12:31:55Z</published>
+    <arxiv:comment>21 pages, 11 figures, 5 tables. Accepted at NeurIPS 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Shuibai Zhang</name>
+    </author>
+    <author>
+      <name>Junhyuck Kim</name>
+    </author>
+    <author>
+      <name>Gyeongman Kim</name>
+    </author>
+    <author>
+      <name>Jaewoong Cho</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.14015v1</id>
+    <title>Margin-Guided Token Credit for Reinforcement Learning with Verifiable Rewards</title>
+    <updated>2026-11-10T12:51:43Z</updated>
+    <link href="https://arxiv.org/abs/2611.14015v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.14015v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In reinforcement learning with verifiable rewards, a language model is rewarded for a correct final answer, and GRPO passes that reward to every token of the solution in equal measure. We instead place the credit where the model hesitated, in a method we call MCPO (Margin-Credit Policy Optimization). We measure hesitation by the top-2 margin $M=p_1-p_2$ of the policy's next-token distribution, map it to a score with two fixed thresholds, and spread each solution's advantage over its tokens so that the mean stays unchanged. The margin is read from a forward pass the trainer already performs, so the method needs no extra model evaluation and no batch statistics. We train MiniCPM5-2B-Base with LoRA for 200 steps on 2,048 DAPO-Math problems and evaluate on six competition-math benchmarks. MCPO beats an unmodified GRPO baseline for all five data seeds, by 6.55 points of macro avg@32 on average (95\% CI $[4.1, 9.0]$), and a Qwen3-4B-Base replication improves for all three seeds ($+4.75$). The gain is largest on problems that GRPO solves only some of the time and grows with $k$ in pass@$k$, reaching 13.8 points at pass@32. MCPO models also write two to three times longer answers, and runs that write longer score higher; our experiments do not separate the two effects.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-10T12:51:43Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Chi Liu</name>
+    </author>
+    <author>
+      <name>Xin Chen</name>
+    </author>
+    <author>
+      <name>Yuchuan Weng</name>
+    </author>
+    <author>
+      <name>Srinivasan Manoharan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.13560v1</id>
+    <title>Are Dense Rewards Worth Their Tokens in GRPO?</title>
+    <updated>2026-11-10T04:25:22Z</updated>
+    <link href="https://arxiv.org/abs/2611.13560v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.13560v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>RLVR trains language models to reason by rewarding correct final answers. A widely used algorithm, group-relative policy optimization (GRPO), gives every token of a solution the same credit, so dense process rewards have been proposed to credit intermediate steps, for example with a Monte-Carlo reward that scores each step by sampling continuations from it. Comparing such a reward with GRPO per training update, or vetting it with a gradient test on a single batch, leaves out what it costs: in our setting, the continuations alone take 91% of all generated tokens. We introduce a matched-compute protocol that gives every training intervention the same budget, measured in generated tokens and training GPU-hours, and tests it in preregistered studies with controls for side effects. Across 1,668 runs on six models, matching compute reverses the ranking. On Qwen2.5-1.5B, the Monte-Carlo reward leads standard GRPO per update, yet ends 14.3 percentage points lower at equal tokens and 7.8 points lower at equal training time, and none of four dense-reward variants outperforms GRPO even with as much training time. A per-token gradient test orders these rewards as training does but overestimates each by one to two points, as much as the gains it is meant to detect. In contrast, training on the prompts whose predicted success is nearest 1/2 improves accuracy at matched compute, by 1.7 points on Qwen3-0.6B and 0.8 on Qwen2.5-1.5B. These gains replicate on fresh seeds and unseen problems, and a simple rule, that the candidate prompts are predicted to fail more often than not, predicted where they appear in five of six preregistered tests. Both gains come early in training, and standard GRPO with twice the initial learning rate comes within half a point of them. We argue that training interventions should be validated at matched compute, which overturns some apparent gains and confirms others.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-10T04:25:22Z</published>
+    <arxiv:comment>59 pages (10 pages of main text), 18 figures, 27 tables. Code: https://github.com/vicky157/grpo-validation</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Vikash Singh</name>
+    </author>
+    <author>
+      <name>Weicong Chen</name>
+    </author>
+    <author>
+      <name>Debargha Ganguly</name>
+    </author>
+    <author>
+      <name>Yanyan Zhang</name>
+    </author>
+    <author>
+      <name>Mohsen Hariri</name>
+    </author>
+    <author>
+      <name>Sreehari Sankar</name>
+    </author>
+    <author>
+      <name>Wang Yang</name>
+    </author>
+    <author>
+      <name>Chaoda Song</name>
+    </author>
+    <author>
+      <name>Alexander Nemecek</name>
+    </author>
+    <author>
+      <name>Osama Zafar</name>
+    </author>
+    <author>
+      <name>Yuting Shao</name>
+    </author>
+    <author>
+      <name>Kai Ye</name>
+    </author>
+    <author>
+      <name>Biyao Zhang</name>
+    </author>
+    <author>
+      <name>Xinpeng Li</name>
+    </author>
+    <author>
+      <name>Shouren Wang</name>
+    </author>
+    <author>
+      <name>Erman Ayday</name>
+    </author>
+    <author>
+      <name>Jing Ma</name>
+    </author>
+    <author>
+      <name>Sanmukh Rao Kuppannagari</name>
+    </author>
+    <author>
+      <name>Vipin Chaudhary</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.12886v1</id>
+    <title>Reframe: Observation-Aligned Multi-Teacher On-Policy Distillation for Agentic Visual Reasoning</title>
+    <updated>2026-11-09T18:59:54Z</updated>
+    <link href="https://arxiv.org/abs/2611.12886v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.12886v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic reinforcement learning (RL) and multi-teacher on-policy distillation (MOPD) offer complementary routes to post-training. For visual agents, however, tool use presents two related challenges. Models may overlook useful tool-returned observations, while poorly grounded actions can limit the evidence available for subsequent distillation. We introduce Reframe, a post-training framework that treats the observation state, rather than only the output distribution, as an object of alignment. First, Ground-Drop-GRPO (GD-GRPO) trains spatial and temporal specialists with evidence-aware rewards and stochastic removal of the original visual input, encouraging them to acquire grounded evidence and use the returned observations. Second, Observation-Gated-MOPD (OG-MOPD) replaces deficient tool actions with canonical ones mid-rollout and resumes distillation from the repaired observation. The two stages complement each other, as learning to rely on tool-returned observations can help the policy benefit from observation repair. Neither stage requires a task-specific SFT cold start. Extensive experiments over 14 image and video benchmarks demonstrate that Reframe outperforms both Mix-RL and vanilla MOPD. Ablation results show that GD-GRPO increases observation dependence and tool gain compared with outcome-based GRPO.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T18:59:54Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Haozhi Yuan</name>
+    </author>
+    <author>
+      <name>Handong Li</name>
+    </author>
+    <author>
+      <name>Yifan Zhang</name>
+    </author>
+    <author>
+      <name>Qianshan Wei</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.12587v1</id>
+    <title>AgentOPSD: Turn-Level Credit Assignment via Recursive Belief Revision</title>
+    <updated>2026-11-09T15:40:43Z</updated>
+    <link href="https://arxiv.org/abs/2611.12587v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.12587v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning with verifiable rewards ordinarily spreads a single advantage over a whole trajectory, a granularity too coarse to isolate the few decisions on which success in a long, multi-turn interaction actually turns. Privileged self-distillation supplies denser supervision, but it leaves unanswered how a set of local teacher-student discrepancies should be converted into credit along a sequence. We introduce AgentOPSD, a critic-free scheme that assigns credit recursively, one interaction turn at a time. Inside a turn, the token-level log-probability gaps between a skill-conditioned self-teacher and the student are summed, and that sum acts as evidence in a recursive Bayesian update carried out in log-odds space; the resulting revisions reallocate the outcome-derived advantage across turns through a multiplier that is bounded and preserves its sign. With Qwen2.5-3B and Qwen2.5-7B as policy backbones on ALFWorld, the method improves consistently on GRPO and on self-distillation baselines, and attains 89.1% success at the 7B scale. Ablations attribute the gain to aggregating evidence at turn boundaries and to making the belief revision depend on history, rather than to the local gap by itself.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T15:40:43Z</published>
+    <arxiv:comment>Preprint. 6 figures, 2 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yizhuo Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.12180v2</id>
+    <title>TS-GEAR: Taobao Shangou GEnerative Ad Retrieval</title>
+    <updated>2026-11-20T04:14:10Z</updated>
+    <link href="https://arxiv.org/abs/2611.12180v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.12180v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>On-demand delivery platforms such as DoorDash and Uber Eats impose a constraint absent in traditional e-commerce: merchants beyond the user's delivery range are invalid candidates rather than merely low-ranked. Generative retrieval has recently shown strong potential in large-scale retrieval systems. Adapting it to this setting, however, poses three challenges. First, existing semantic IDs encode geography only as a soft signal, so reachability can only rely on a non-differentiable post-generation hard truncation. Second, user preferences vary substantially across both regions and queries, so aggregating historical behaviors without conditioning on geography and the current query yields biased interest estimates. Third, the retrieved candidate set is evaluated by its collective value, yet autoregressive training scores each sequence independently, with no set-level signal to discourage redundant near-duplicates. To address the challenges, we propose TS-GEAR, a unified generative retrieval framework for on-demand delivery: (1) Geo-Semantic ID splits merchant identifiers into geographic prefixes and semantic suffixes, making reachability a prediction target rather than a post-hoc filter; (2) Query-Geo Target Attention aggregates historical behaviors using the real-time query and location as dual targets, while encoding each behavior's own location into its attention key; (3) GMPO (Group Marginal Policy Optimization) rewrites advantages using a deduplicated group reward and marginal advantage within GRPO, avoiding auxiliary diversity objectives. Deployed online with a lightweight 0.1B backbone, TS-GEAR serves over 150 million queries per day in the search advertising pipeline of Taobao Shangou, consistently outperforming state-of-the-art generative retrieval methods on both HitRate and geographic validity, and achieving 3.8% gains in ad impressions and 4.2% in ad revenue.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T10:30:44Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Guofeng Tong</name>
+    </author>
+    <author>
+      <name>Xu Zhang</name>
+    </author>
+    <author>
+      <name>Guangliang Yu</name>
+    </author>
+    <author>
+      <name>Haiqiang Wang</name>
+    </author>
+    <author>
+      <name>Guannan Cong</name>
+    </author>
+    <author>
+      <name>Xing Guo</name>
+    </author>
+    <author>
+      <name>Yang Zhou</name>
+    </author>
+    <author>
+      <name>Jingjing Duan</name>
+    </author>
+    <author>
+      <name>Shuang Li</name>
+    </author>
+    <author>
+      <name>Feng Shi</name>
+    </author>
+    <author>
+      <name>Hualei Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.12125v2</id>
+    <title>CARE-PO: Controllable Tool-Call Efficiency for LLM Agents</title>
+    <updated>2026-11-12T04:22:06Z</updated>
+    <link href="https://arxiv.org/abs/2611.12125v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.12125v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>External tool calls are a major running cost of an LLM agent, while its training objectives align almost exclusively with task completion. In a step-level diagnosis of Qwen3.5 trajectories at two model sizes on GAIA, a long-horizon tool-use benchmark, we find that most contain removable calls, at a similar rate at both sizes. Some methods add an efficiency reward to the objective to reduce the call count, but introduce problems of their own: the anchor they price calls against is computed from the policy's own rollouts (e.g., the group's shortest correct rollout) and so moves with the policy; training can drift toward a collapsed policy that issues no tool call at all, a degeneracy seen in published reports and in our 27B baseline; and a training run delivers a single operating point, so the user cannot trade efficiency against capability. We present CARE-PO (Controllable Anchored Relative Efficiency Policy Optimization) to mitigate these problems. The efficiency reward prices calls against a reference budget anchored to the task's own difficulty and fixed before training. Injecting a successful trajectory from the training data into each online GRPO rollout group and charging for evidence a trajectory never gathers ease the drift toward a collapsed call count. Shaping the cost curve by an effort tag in the prompt yields an efficiency and a capability operating point from a single training run. On GAIA, five of the six operating points across three model sizes improve on their base model in success rate and call count at once. On four held-out multi-hop benchmarks the result is size-dependent: at 27B and 4B success rate is held or raised at a lower call count, while at 9B both operating points trade success rate for fewer calls. The call count remains well above zero throughout training at all three sizes.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T09:41:37Z</published>
+    <arxiv:comment>Under review at ICLR 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Xiaoyang Ye</name>
+    </author>
+    <author>
+      <name>Xiao Yao</name>
+    </author>
+    <author>
+      <name>Hairui Zhu</name>
+    </author>
+    <author>
+      <name>Yiying Yang</name>
+    </author>
+    <author>
+      <name>Bei Gan</name>
+    </author>
+    <author>
+      <name>Jinliang Lu</name>
+    </author>
+    <author>
+      <name>Tengjin Weng</name>
+    </author>
+    <author>
+      <name>Yuan Yao</name>
+    </author>
+    <author>
+      <name>Wenhao Jiang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.11771v1</id>
+    <title>ARMOR: Adaptive Curriculum Meta-Learning for Noise-Robust RAG Reasoning</title>
+    <updated>2026-11-09T02:22:48Z</updated>
+    <link href="https://arxiv.org/abs/2611.11771v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.11771v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Retrieval-Augmented Generation (RAG) systems have demonstrated remarkable effectiveness in mitigating hallucinations by incorporating external knowledge. However, the retrieval process inevitably introduces noise, posing significant challenges to RAG robustness. Fundamentally, noise robustness is a composite competency encompassing noise identification, retrieval filtering, and robust reasoning. Unfortunately, existing methods often fail to capture this holistic nature, typically restricted to single-dimensional enhancements or hampered by noise-induced optimization interference. To address these limitations, we decompose RAG robustness into three sub-tasks: knowledge boundary perception, retrieval verification, and robust reasoning. Accordingly, we propose ARMOR, an Adaptive Curriculum Meta-Learning for Noise Robust RAG Reasoning. Inspired by the teaching process, ARMOR introduces an adaptive task scheduler as a teacher to curate training plans according to the absolute learning progress of RAG generators (Student). Distinct from GRPO, ARMOR utilizes inter-group advantage estimation during learning to effectively mitigate mode collapse caused by limited output spaces. Experiments on three complex reasoning datasets (2WikiMultiHopQA, MusiQue, and HotPotQA) indicate that ARMOR achieves synergistic improvements in retrieval noise robustness, significantly outperforming baselines in output quality.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T02:22:48Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yan Wang</name>
+    </author>
+    <author>
+      <name>Yuxin Zhang</name>
+    </author>
+    <author>
+      <name>Shenyu Zhang</name>
+    </author>
+    <author>
+      <name>Yongrui Chen</name>
+    </author>
+    <author>
+      <name>Sheng Bi</name>
+    </author>
+    <author>
+      <name>Guilin Qi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.11330v1</id>
+    <title>When Credit Turns Against Tools: Transition-Aware Credit Assignment in Agentic Reinforcement Learning</title>
+    <updated>2026-11-08T12:11:17Z</updated>
+    <link href="https://arxiv.org/abs/2611.11330v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.11330v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic reinforcement learning with verifiable rewards trains language models through multi-turn tool interactions, yet their reasoning performance and tool-calling ability can decline during training. We trace this degradation to three coupled mechanisms: (1) tool-token imbalance produces negative overall tool credit when incorrect trajectories contain more tool tokens per turn than correct ones; (2) aggregation amplification can further strengthen this negative signal as token-mean aggregation gives longer incorrect trajectories greater weight in policy updates; and (3) failure-driven retries prolong trajectories as models tend to call tools again after execution errors, extending potential negative credit to recovery attempts. To counter this suppression, we propose Transition-Aware Credit Assignment (TACA), which targets the transition from reasoning to tool use through supervision of both call initiation and generation. Specifically, TACA uses Advantage Projection to enforce a nonnegative mean advantage on tool-call tokens within each prompt group through a minimal uniform shift. Additionally, TACA guides tool-use decisions with Decision Contrast, comparing rewards for tool-assisted and direct answers to the same prompt. Through Supervised Replay, it reinforces tool-call generation using calls from previously sampled correct trajectories. Across models and tasks, TACA improves performance and sustains more reliable tool interaction during training, raising mean accuracy over MT-GRPO on six reasoning benchmarks by 4.61 percentage points for Qwen2.5-1.5B and 3.61 for Qwen2.5-3B. Our code is available at https://github.com/tmlr-group/TACA.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-08T12:11:17Z</published>
+    <arxiv:comment>Accepted at NeurIPS 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Xiangyu Lu</name>
+    </author>
+    <author>
+      <name>Zhanke Zhou</name>
+    </author>
+    <author>
+      <name>Jiazhe Ning</name>
+    </author>
+    <author>
+      <name>Chentao Cao</name>
+    </author>
+    <author>
+      <name>Jiangchao Yao</name>
+    </author>
+    <author>
+      <name>Bo Han</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.10162v1</id>
+    <title>M5-TTS: A Mini-Scale Multilingual and Multi-Dialect Text-to-Speech Language Model with Multi-Token Prediction</title>
+    <updated>2026-11-06T19:32:16Z</updated>
+    <link href="https://arxiv.org/abs/2611.10162v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.10162v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present M5-TTS, a compact text-to-speech system supporting multilingual and Chinese multidialect synthesis, zero-shot voice cloning, speaker-specific multilingual generation, and CPU streaming. Its 50M-parameter language model, excluding the speech codec, combines a temporal backbone with a local multi-token prediction module over 16 codebooks. GRPO post-training combines global speaker-similarity and pause feedback with a token-level CER process advantage. Character-level error comparisons provide local feedback, with negative credit propagated backward within a clause and projected onto audio-token positions. M5-TTS achieves 1.37% CER on Seed-ZH and 2.91% WER on Seed-EN, corresponding to relative error reductions of 62.2% and 35.3% over MOSS-TTS-Nano with half the language-model parameters. It also achieves lower content error rates in five of six evaluated MiniMax languages, while difficult Chinese inputs remain a limitation. On four Intel Xeon Gold 6530 cores, it achieves a real-time factor of 0.653 and a warm first-chunk latency of 225ms. A 10-listener evaluation gives M5-TTS higher speaker-similarity and intelligibility ratings than MOSS-TTS-Nano, with a lower naturalness rating. We will release training, post-training, and inference code, together with voice-cloning and speaker-specific checkpoints, to support reproducible research on compact speech generation for on-device voice interaction.</summary>
+    <category term="eess.AS" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SD" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-06T19:32:16Z</published>
+    <arxiv:comment>16 pages,3 figures</arxiv:comment>
+    <arxiv:primary_category term="eess.AS"/>
+    <author>
+      <name>Wenhao Li</name>
+    </author>
+    <author>
+      <name>Jingbin Hu</name>
+    </author>
+    <author>
+      <name>Shengming Ling</name>
+    </author>
+    <author>
+      <name>Xiaming Ren</name>
+    </author>
+    <author>
+      <name>Haoyu Zhang</name>
+    </author>
+    <author>
+      <name>Jinrui Liang</name>
+    </author>
+    <author>
+      <name>Hanke Xie</name>
+    </author>
+    <author>
+      <name>Qirui Zhan</name>
+    </author>
+    <author>
+      <name>Guobin Ma</name>
+    </author>
+    <author>
+      <name>Huakang Chen</name>
+    </author>
+    <author>
+      <name>Chunbo Hao</name>
+    </author>
+    <author>
+      <name>Jianguo Zheng</name>
+    </author>
+    <author>
+      <name>Wenkang Hou</name>
+    </author>
+    <author>
+      <name>Dake Guo</name>
+    </author>
+    <author>
+      <name>Yuepeng Jiang</name>
+    </author>
+    <author>
+      <name>Linhan Ma</name>
+    </author>
+    <author>
+      <name>Yunxiang Chen</name>
+    </author>
+    <author>
+      <name>Houdun Liu</name>
+    </author>
+    <author>
+      <name>Su Feng</name>
+    </author>
+    <author>
+      <name>Chuang Ding</name>
+    </author>
+    <author>
+      <name>Pengcheng Zhu</name>
+    </author>
+    <author>
+      <name>Liumeng Xue</name>
+    </author>
+    <author>
+      <name>Lei Xie</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,1346 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/UVN9MVEVruR7JoXsaijLOSlBXU0</id>
+  <title>arXiv Query: search_query=(all:"reinforcement learning" AND (all:"reward decomposition" OR all:"constraint satisfaction" OR all:"multi-dimensional") ) AND submittedDate:"202607010000 TO 202611262359"&amp;id_list=&amp;start=0&amp;max_results=45</title>
+  <updated>2026-11-26T03:20:32Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:%22reinforcement+learning%22+AND+(all:%22reward+decomposition%22+OR+(all:%22constraint+satisfaction%22+OR+all:%22multi-dimensional%22)))+AND+submittedDate:%22202607010000+TO+202611262359%22&amp;start=0&amp;max_results=45&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>45</opensearch:itemsPerPage>
+  <opensearch:totalResults>55</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.32125v1</id>
+    <title>LARF: Learning-aligned Reasoning Framework for Search Relevance</title>
+    <updated>2026-11-24T07:41:25Z</updated>
+    <link href="https://arxiv.org/abs/2611.32125v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.32125v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Query-document relevance estimation is a core component of AI-native search systems, where a model must assess whether retrieved documents satisfy users' information needs under complex, multi-dimensional criteria. However, directly applying large language models (LLMs) to this task remains challenging because conventional supervised fine-tuning (SFT) provides limited supervision for domain-specific judgment rationales, while standard trajectory-level reinforcement learning (RL) objectives do not explicitly enforce margin separation among adjacent ordinal relevance labels. Moreover, although such reasoning can be useful during training, chain-of-thought (CoT) reasoning is impractical for latency-sensitive online ranking. These challenges make it difficult to resolve ambiguous decision boundaries. We propose a three-stage framework LARF (Learning-Aligned Reasoning Framework for Search Relevance): it first performs cold-start SFT on strategically selected samples with multi-agent guided CoT rationales, then applies discriminative GRPO with attribute-wise, list-wise, and rule-consistency rewards together with a margin loss on the terminal relevance token, and finally distills the teacher into a dual-head student whose classification heads are retained for non-autoregressive inference. On a human-annotated web search relevance benchmark with approximately 300K training and 16K test instances, LARF-8B improves six-class classification accuracy by 5.78 percentage points and NDCG by 5.05 points, while the classification-only serving path reduces inference latency by 82.9\%. These results indicate that aligning structured reasoning, terminal decision optimization, and classification-head distillation can provide an effective accuracy--efficiency trade-off for industrial search relevance modeling.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-24T07:41:25Z</published>
+    <arxiv:comment>Accepted by WSDM 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Tian Tang</name>
+    </author>
+    <author>
+      <name>Guo Chen</name>
+    </author>
+    <author>
+      <name>Reed Li</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Yu Lu</name>
+    </author>
+    <author>
+      <name>Haijin Liang</name>
+    </author>
+    <author>
+      <name>Haibo Shi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.12053v1</id>
+    <title>BECON: Belief-Conditioned Constrained Multi-Objective Reinforcement Learning under Drifting Preferences and Budgets</title>
+    <updated>2026-11-09T08:30:22Z</updated>
+    <link href="https://arxiv.org/abs/2611.12053v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.12053v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Constrained preference-conditioned MORL typically assumes full task observability, treating preferences and safety budgets as stationary task signals. In real-world deployment, however, these signals are often unreliable proxies: intent may drift, safety tolerances may shift with context, and exposed descriptors may be noisy, delayed, or incomplete. We therefore formulate constrained preference-conditioned MORL as a partially observed task-specification problem, where the agent must navigate a fundamental conflict between unreliable external signals and latent interaction dynamics. We propose \textbf{BECON}, a belief-conditioned framework for constrained MORL with drifting preferences and budgets, which infers latent task context from recent histories to estimate preferences and safety budgets. These estimates are fused with the exposed task signal via uncertainty-dependent gates, enabling the policy to defer to observations under high epistemic uncertainty while correcting them when history is informative. The fused context jointly conditions preference optimization and context-adaptive constraint enforcement. Experiments on diverse multi-objective control tasks demonstrate that BECON consistently improves over state-of-the-art MORL baselines, achieving stronger robustness and constraint satisfaction under task drift.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-09T08:30:22Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Bui Trong Duc</name>
+    </author>
+    <author>
+      <name>Huynh Thi Thanh Binh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.09401v1</id>
+    <title>PhyCAD: Physics-Aware Text-to-CAD Generation via Hierarchical Reinforcement Learning</title>
+    <updated>2026-11-06T12:35:41Z</updated>
+    <link href="https://arxiv.org/abs/2611.09401v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.09401v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Language-driven computer-aided design (CAD) generation enables the creation of editable parametric models from text, yet geometric correctness alone does not ensure physical feasibility. We present PhyCAD, a framework for physics-aware Text-to-CAD generation that trains language models to produce executable CadQuery programs under geometric and physical constraints. To support this setting, we construct a Text-to-CAD dataset that links parametric CAD models with geometric specifications, loading conditions, and physical constraints. We further develop an automated CAD--CAE verifier that combines program execution, geometric checks, and finite element analysis to provide feedback for model training. A key learning challenge is to prioritize joint satisfaction of geometric and physical constraints while retaining informative feedback on partial progress. A flat aggregation of heterogeneous rewards can obscure this priority, allowing improvements in individual criteria to compensate for unmet design requirements. We therefore introduce a Hierarchical Balanced Advantage for Group Relative Policy Optimization, grouping candidates into levels according to their verification status and combining between-level progress with objective-wise peer ranking within each level. This formulation preserves cross-level priority in the training signal while providing fine-grained feedback for satisfying constraints and improving feasible designs. Experiments across multiple language models show that PhyCAD consistently improves joint geometric and physical constraint satisfaction. These results demonstrate the value of verifiable engineering feedback for advancing language-driven CAD generation beyond geometric reconstruction toward physics-aware design.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-06T12:35:41Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yuxin Cui</name>
+    </author>
+    <author>
+      <name>Weijie Zheng</name>
+    </author>
+    <author>
+      <name>Zhengyang Li</name>
+    </author>
+    <author>
+      <name>Han Wang</name>
+    </author>
+    <author>
+      <name>Wenjie Feng</name>
+    </author>
+    <author>
+      <name>Qiyu Kang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.09207v1</id>
+    <title>RPEG: Training Reasoning Language Models Scalably and Cost-Effectively</title>
+    <updated>2026-11-06T09:28:49Z</updated>
+    <link href="https://arxiv.org/abs/2611.09207v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.09207v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) is now central to training Reasoning Language Models (RLMs), but RLM pipelines are difficult to scale and costly to run because each RL step couples multiple large models, heterogeneous stages, cross-step state, and complex asynchronous dependencies. Existing systems typically optimize only parts of this design space. We address this complexity by jointly optimizing the pipeline structure as well as its execution using a novel data-centric graph intermediate representation called RLM Pipeline Execution Graph (RPEG). RPEG exposes structural choices such as bounded asynchrony and actor-critic sharing together with execution optimizations such as stage fusion, fine-grained scheduling, and multi-dimensional model parallelism. It is coupled with a comprehensive analytical performance model for RLM training, jointly capturing compute, communication, memory, and hierarchical rack-, node-, and GPU-level effects. Across systems with up to 256 GH200 GPUs, our distributed runtime engine implementing RPEG improves performance by up to 2x over ReaL and reduces step latency by up to 2.48x over verl, while increasing hardware utilization by up to 30%. Overall, RPEG provides a graph-driven foundation for next-generation training pipelines for frontier reasoning LLMs.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-06T09:28:49Z</published>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Maciej Besta</name>
+    </author>
+    <author>
+      <name>Leonard Schmidt</name>
+    </author>
+    <author>
+      <name>Pierre Pang</name>
+    </author>
+    <author>
+      <name>Patrik Okanovic</name>
+    </author>
+    <author>
+      <name>Robert Gerstenberger</name>
+    </author>
+    <author>
+      <name>Torsten Hoefler</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.40257v1</id>
+    <title>Learned Terminal Costs for Short-Horizon Model Predictive Control of Autonomous Trucks in Interactive Highway Traffic</title>
+    <updated>2026-10-29T15:23:51Z</updated>
+    <link href="https://arxiv.org/abs/2610.40257v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.40257v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Autonomous highway driving for heavy-duty trucks is a challenging control problem. The greater mass, dimensions and intricate dynamics increase the requirements for cooperation from surrounding traffic in critical maneuvers, requiring a careful balance between safety constraints and efficient long-horizon decision making. Model Predictive Control (MPC) provides rigorous constraint satisfaction but relies on terminal cost which can limit its effectiveness at short, computationally affordable horizons. Reinforcement Learning (RL) captures long-term driving behavior but offers no constraint guarantees and tends toward overly conservative policies when trained under sparse collision penalties. In this paper, we propose a hybrid MPC and RL framework for highway driving in autonomous trucks, where a finite-horizon MPC, solved via dynamic programming, uses a pre-trained RL model for terminal cost estimation. We evaluate the framework in a simulation environment with reactive surrounding traffic and compare it against pure MPC with zero terminal cost, rollout with terminal cost estimation using a base policy, and pure RL. Results show that the hybrid approach achieves zero collisions with the lowest cost of any configuration.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-29T15:23:51Z</published>
+    <arxiv:comment>13 pages, 2 figures, 8 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Hooman Hamze</name>
+    </author>
+    <author>
+      <name>Benjamin Houshmand</name>
+    </author>
+    <author>
+      <name>Deepthi Pathare</name>
+    </author>
+    <author>
+      <name>Erik Börve</name>
+    </author>
+    <author>
+      <name>Morteza Haghir Chehreghani</name>
+    </author>
+    <author>
+      <name>Nikolce Murgovski</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.40256v1</id>
+    <title>When Requirements Interact: Scaling Long-Horizon Coding via Interdependent Specifications</title>
+    <updated>2026-10-29T15:22:49Z</updated>
+    <link href="https://arxiv.org/abs/2610.40256v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.40256v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>To succeed in real-world long-horizon software development, coding agents must satisfy multi-dimensional task specifications, such as interface compatibility and error handling, and do so without breaking existing dependencies. However, current works lack specification in both quantity and diversity, often emphasizing primary goals while ignoring complex constraints. Synthesizing tasks to bridge this gap presents two challenges: naively adding specifications risks reducing tasks to trivial checklists rather than compelling joint reasoning, and verifying these subtle interactions risks overlooking hidden flaws or rejecting valid alternatives. To address these challenges, we introduce CodeSpecWeave, a framework for synthesizing tasks with rich, interdependent specifications. Grounded in real developer seeds, a synthesis agent iteratively develops both coupled task requirements and executable tests, while a review agent audits solution trajectories from multiple models to guarantee test reliability. Using this pipeline, we construct 4,670 training tasks across 2,865 repositories. Applying Reinforcement learning on these tasks significantly improves performance over the base model on DeepSWE-v1.1, largely outperforming existing baselines. Furthermore, we curate CodeSpecWeave-Bench, a rigorous benchmark comprising 100 tasks and 1,044 specifications, which clearly separates frontier models and reveals significant headroom in handling interdependent engineering constraints.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-29T15:22:49Z</published>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Yishuo Cai</name>
+    </author>
+    <author>
+      <name>Minzheng Wang</name>
+    </author>
+    <author>
+      <name>Liang Zhao</name>
+    </author>
+    <author>
+      <name>Linghao Zhang</name>
+    </author>
+    <author>
+      <name>Lei Li</name>
+    </author>
+    <author>
+      <name>Shicheng Li</name>
+    </author>
+    <author>
+      <name>Xu Sun</name>
+    </author>
+    <author>
+      <name>Fuli Luo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.36838v2</id>
+    <title>MVRCap: Towards Comprehensive Video Captioning via Hierarchical Multi-Dimensional Verifiable Rewards</title>
+    <updated>2026-11-07T15:49:48Z</updated>
+    <link href="https://arxiv.org/abs/2610.36838v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.36838v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Despite significant progress, current models struggle to generate comprehensive video captions, constrained primarily by coarse-grained supervision, which often fails to capture spatial-temporal dynamics and the underlying logical intent. To address this issue, we introduce MVRCap, a novel framework that reformulates video captioning as a reinforcement learning task steered by structured verification. Central to our approach is a Fine-Grained Verifiable Reward mechanism, serving as dense supervision to enforce rigorous visual-semantic alignment. Specifically, we construct this reward system anchored by three complementary pillars: a Hierarchical Concept Coverage Reward utilizing our newly constructed MVRCap-QA dataset to ensure multi-dimensional completeness and semantic depth, a Factuality Verification Reward to enhance factual consistency, and a Conciseness Constraint to maximize semantic density. Furthermore, we curate the high-quality MVRCap-SFT dataset, providing structured annotations across six key dimensions, to serve as a robust foundational initialization for the RL policy in this training pipeline. Extensive experiments demonstrate that MVRCap achieves state-of-the-art performance on authoritative benchmarks including VDC, CAPability, and VC4VG.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-27T08:37:07Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Weihuang Lin</name>
+    </author>
+    <author>
+      <name>Xianing Chen</name>
+    </author>
+    <author>
+      <name>Zhibin Wang</name>
+    </author>
+    <author>
+      <name>Congzhi Zhang</name>
+    </author>
+    <author>
+      <name>Yiwei Ma</name>
+    </author>
+    <author>
+      <name>Jiayi Ji</name>
+    </author>
+    <author>
+      <name>Miao Chen</name>
+    </author>
+    <author>
+      <name>Jun Song</name>
+    </author>
+    <author>
+      <name> YuCheng</name>
+    </author>
+    <author>
+      <name>Bo Zheng</name>
+    </author>
+    <author>
+      <name>Xiaoshuai Sun</name>
+    </author>
+    <author>
+      <name>Rongrong Ji</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.35813v1</id>
+    <title>World Model for Energy Efficiency Maximization in Dynamic Metasurface Antennas</title>
+    <updated>2026-10-26T17:42:58Z</updated>
+    <link href="https://arxiv.org/abs/2610.35813v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.35813v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Dynamic metasurface antennas (DMAs) have emerged as a promising technology for realizing large-scale antenna arrays in next-generation wireless networks owing to their ability to enable dense and energy-efficient antenna architectures. However, jointly optimizing digital beamforming and DMA element weights under time-varying channel conditions remains challenging due to their coupled effects on the received signal and interference powers. We formulate this problem to maximize time-averaged energy efficiency (EE) under time-varying channel conditions, subject to transmit power constraints, Lorentzian phase limitations, and minimum rate requirements. To enable long-term planning and improve sample efficiency compared with model-free reinforcement learning, we develop a world model framework that learns latent system dynamics from interactions with the environment and jointly optimizes digital beamforming and DMA element weights through imagined trajectories. Furthermore, we incorporate feasibility-preserving action mappings and safety cost signals to ensure constraint satisfaction during policy learning. Simulation results demonstrate that the proposed framework improves the time-averaged EE by approximately 20% compared with the deep Q-network baseline, while achieving higher sample efficiency and more reliable constraint satisfaction.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T17:42:58Z</published>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Abdolrasoul Sakhaei Gharagezlou</name>
+    </author>
+    <author>
+      <name>Mehdi Monemi</name>
+    </author>
+    <author>
+      <name>Matti Latva-aho</name>
+    </author>
+    <author>
+      <name>Mehdi Rasti</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.34701v1</id>
+    <title>Movable-Element Multi-Functional RIS-Assisted Hybrid RSMA-NOMA: A Constrained Hybrid Reinforcement Learning Approach</title>
+    <updated>2026-10-26T01:46:27Z</updated>
+    <link href="https://arxiv.org/abs/2610.34701v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.34701v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In this work, we propose a movable-element (ME) multi-functional reconfigurable intelligent surface (MF-RIS) architecture, termed MM-RIS, which integrates element mobility with adaptive signal reflection, transmission, amplification, and energy harvesting (EH) to enhance communication flexibility and energy self-sustainability. A hybrid rate-splitting multiple access (RSMA) and non-orthogonal multiple access (NOMA) transmission scheme is further designed to improve spectral efficiency. We formulate an energy efficiency (EE) maximization problem by jointly optimizing transmit beamforming, power and rate allocation, MM-RIS configurations, panel deployment, and ME positions. To address the resulting non-convex mixed continuous-discrete optimization problem, we propose constrained hybrid deep reinforcement learning with federated transformer and parametrized sharing (CRAFTS). CRAFTS integrates multi-agent proximal policy optimization (MAPPO) and multi-agent deep Q-networks (MADQN) through bi-directional parametrized sharing to handle continuous and discrete actions, respectively. Moreover, a transformer-based architecture and federated learning (FL) are incorporated to enhance state representation and distributed knowledge sharing, whilst a Lagrangian-based adaptive penalty mechanism facilitates the constraint satisfaction. Simulation results have demonstrated that the proposed MM-RIS architecture and CRAFTS framework substantially improve EE and constraint satisfaction compared to the benchmarks in the open literature. Moreover, the results validate the benefits of spatially reconfigurable MM-RIS, hybrid RSMA-NOMA transmissions, and intelligent collaborative learning, highlighting the potential of the proposed framework for energy-efficient and adaptive next-generation wireless networks.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T01:46:27Z</published>
+    <arxiv:comment>Accepted by IEEE TCOM</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Li-Hsiang Shen</name>
+    </author>
+    <author>
+      <name>Chi-Te Kuo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.33480v1</id>
+    <title>MDPO: Multi-constraint Dexterous Policy Optimization with Reinforcement Learning</title>
+    <updated>2026-10-24T06:09:14Z</updated>
+    <link href="https://arxiv.org/abs/2610.33480v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.33480v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Dexterous manipulation requires high-dimensional control policies to accomplish complex contact-rich tasks while simultaneously satisfying multiple safety requirements, such as joint limits, unsafe finger configurations, arm collisions, and unstable object interactions. Constrained reinforcement learning (RL) provides a principled framework for incorporating these requirements into dexterous manipulation policy learning. However, existing constrained RL methods for dexterous manipulation primarily focus on cumulative cost constraints and struggle to simultaneously handle multiple heterogeneous constraints during dexterous policy learning. In this work, we propose Multi-constraint Dexterous Policy Optimization (MDPO) for safe dexterous manipulation. We first formulate dexterous manipulation as a multi-constraint policy optimization problem involving both cumulative cost constraints and state-wise cost constraints. Based on this formulation, we integrate multi-constraint projection into the dexterous manipulation policy optimization process. Specifically, we employ constraint-specific policy projections to map the intermediate policy that maximizes task performance onto the feasible regions defined by the cumulative cost constraint and the state-wise cost constraint. Extensive experiments on ReDMan, including safe joint control, finger safety, and grasping tasks, demonstrate that MDPO achieves superior constraint satisfaction while maintaining competitive task performance compared with the baselines. Our code is available at this link.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-24T06:09:14Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Ao Zhou</name>
+    </author>
+    <author>
+      <name>Zongyou Yu</name>
+    </author>
+    <author>
+      <name>Ke Wu</name>
+    </author>
+    <author>
+      <name>Tao Xu</name>
+    </author>
+    <author>
+      <name>Junqiao Zhao</name>
+    </author>
+    <author>
+      <name>Wenchao Ding</name>
+    </author>
+    <author>
+      <name>Alois Knoll</name>
+    </author>
+    <author>
+      <name>Guang Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.31617v1</id>
+    <title>DiffDreamer: Coupling World Models with Differentiable Simulation for Agile Quadrotor Control</title>
+    <updated>2026-10-22T17:41:13Z</updated>
+    <link href="https://arxiv.org/abs/2610.31617v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.31617v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Tasks such as quadrotor dynamic-gate racing require agents to anticipate external motion while maintaining precise high-frequency control. World-model-based reinforcement learning provides a natural solution by learning latent dynamics for future imagination, yet it often entangles environmental evolution and the robot's own dynamics in a single learned rollout, where model bias can affect policy optimization efficiency. We propose DiffDreamer, a differentiable reinforcement learning framework that tightly couples a learned world model with differentiable simulation for actor optimization. In one optimization step, the learned world model propagates latent states that capture external dynamics and history-dependent features, while the differentiable simulator propagates the robot's explicit physical state. We further decompose the actor objective into a critic-driven pathway for non-differentiable task rewards and a simulator-driven pathway for differentiable motion rewards. Experiments on aggressive tracking and dynamic-gate racing show that DiffDreamer improves training convergence over the model-free, model-based, and differentiable-RL baselines, and final performance over these baselines and classical planning and control methods. Additional experiments assess reward decomposition and the odometry-conditioned relative-state representation through ablations. We also provide proof-of-concept real-world flight experiments for validation.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-22T17:41:13Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Fanxing Li</name>
+    </author>
+    <author>
+      <name>Yuxiang Huang</name>
+    </author>
+    <author>
+      <name>Shengyang Wang</name>
+    </author>
+    <author>
+      <name>Fangyu Sun</name>
+    </author>
+    <author>
+      <name>Shuyu Wu</name>
+    </author>
+    <author>
+      <name>Tianbao Zhang</name>
+    </author>
+    <author>
+      <name>Dexin Zuo</name>
+    </author>
+    <author>
+      <name>Yan Yufei</name>
+    </author>
+    <author>
+      <name>Danping Zou</name>
+    </author>
+    <author>
+      <name>Wenxian Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.29534v2</id>
+    <title>Safe World Model for Joint Trajectory and Beamforming Design of Mobile Base Stations</title>
+    <updated>2026-10-29T10:07:39Z</updated>
+    <link href="https://arxiv.org/abs/2610.29534v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.29534v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Mobile base stations (MBSs), including aerial and ground-based platforms, provide flexible wireless coverage through adaptive positioning. However, jointly optimizing their trajectories and digital beamforming is challenging because movement changes channel conditions and interference, while beamforming determines the resulting signal and interference powers. These coupled decisions also account for how current movements affect future positions and communication performance under mobility and safety constraints. We formulate this problem as a constrained Markov decision process that maximizes the time-averaged sum signal-to-interference-plus-noise ratio (SINR), subject to mobility, obstacle region avoidance, and transmit-power constraints. To support long-term planning and reduce the extensive environment interactions required by model-free reinforcement learning, we develop a SafeDreamer-based world model framework that learns latent system dynamics from experience and optimizes a joint trajectory and beamforming policy through imagined trajectories. Feasibility-preserving action mappings and safety cost signals incorporate operational constraints into policy learning. Simulation results demonstrate that the proposed framework achieves higher time-averaged sum SINR than the proximal policy optimization and deep Q-network baselines, while exhibiting improved sample efficiency and more reliable constraint satisfaction.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-21T10:23:56Z</published>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Abdolrasoul Sakhaei Gharagezlou</name>
+    </author>
+    <author>
+      <name>Zeinab Askari Donbeh</name>
+    </author>
+    <author>
+      <name>Mehdi Monemi</name>
+    </author>
+    <author>
+      <name>Matti Latva-aho</name>
+    </author>
+    <author>
+      <name>Mehdi Rasti</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.25748v1</id>
+    <title>MAPS: A Multi-Agent Personalized Script-Driven Video Advertising System Enhanced by Reinforcement Learning</title>
+    <updated>2026-10-19T04:00:27Z</updated>
+    <link href="https://arxiv.org/abs/2610.25748v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.25748v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>With the rapid growth of online video consumption, video advertising has become a dominant component of digital advertising. Most personalized video advertising systems follow a retrieval-based paradigm, which matches ad content with user preferences in a feature space and recommends the most similar candidates. However, since the candidate creatives are pre-produced, this paradigm limits the granularity of personalization and leads to performance disparities across diverse user groups. To address this limitation, we propose a multi-agent personalized script-driven video advertising system (MAPS). We design four collaborative agents that form a closed-loop pipeline of user profile modeling, script generation, video synthesis, and feedback-driven iterative refinement. To train the Scripter Agent, we develop a reinforcement learning framework equipped with a multi-dimensional reward function, which steers the agent toward producing scripts that simultaneously align with user content preferences and target product information. Extensive offline experiments on representative datasets demonstrate that our approach achieves encouraging performance in generating and integrating personalized creatives. Online A/B experiments in a specific scenario in the Kuaishou advertising system show that MAPS improves CTR by 2.87%, CVR by 2.74%, and ARPU by 9.85% over the generative baseline.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-19T04:00:27Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Zhongyu Wang</name>
+    </author>
+    <author>
+      <name>Chen Zuo</name>
+    </author>
+    <author>
+      <name>Qingxuan Sun</name>
+    </author>
+    <author>
+      <name>Jiayang Qiao</name>
+    </author>
+    <author>
+      <name>Qiuhao Qian</name>
+    </author>
+    <author>
+      <name>Songyan Cui</name>
+    </author>
+    <author>
+      <name>Guocheng Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.19525v1</id>
+    <title>Diagnosing and Correcting Reward Hacking in Verifiable Instruction Following</title>
+    <updated>2026-10-14T03:42:59Z</updated>
+    <link href="https://arxiv.org/abs/2610.19525v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.19525v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Verifiable instruction-following benchmarks emphasize output-constraint satisfaction but can overlook whether responses meaningfully answer the underlying request, creating an evaluation blind spot. We show that frontier models can receive full credit for responses with little substantive answer content. Using the same verifier-based criterion as a training reward can induce reward hacking, as publicly released checkpoints exhibit higher constraint satisfaction but lower response quality after reinforcement learning with verifiable rewards. To address this reward hacking, we introduce CALIF, a lightweight method that augments verifier rewards with a calibrated likelihood-based bonus to preserve response quality. CALIF evaluates response likelihood under the request alone using the existing frozen reference policy, requiring no additional judge or learned reward model. Across models ranging from 1.7B to 8B in reasoning and non-reasoning modes, CALIF improves constraint satisfaction on IFBench while maintaining response quality near or above pre-RL levels. It also outperforms corresponding base policies in 40 of 45 model-metric comparisons across three rubric-based instruction-following benchmarks, demonstrating gains beyond training verifiers.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-14T03:42:59Z</published>
+    <arxiv:comment>15 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sangyeon Yoon</name>
+    </author>
+    <author>
+      <name>Wooseok Seo</name>
+    </author>
+    <author>
+      <name>Hamish Ivison</name>
+    </author>
+    <author>
+      <name>Hyesoo Hong</name>
+    </author>
+    <author>
+      <name>Donghoon Kim</name>
+    </author>
+    <author>
+      <name>Wonjun Kang</name>
+    </author>
+    <author>
+      <name>Albert No</name>
+    </author>
+    <author>
+      <name>Jaehyung Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.15097v1</id>
+    <title>Anchors Enhance Controllability and Reasoning of Diffusion Language Models</title>
+    <updated>2026-10-10T18:14:59Z</updated>
+    <link href="https://arxiv.org/abs/2610.15097v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.15097v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Diffusion language models (DLMs) offer new opportunities for controllable text generation. However, their controllability, defined as the ability to satisfy task constraints while preserving their original capabilities, remains underexplored. DLMs' bidirectional attention allows control tokens to guide generation from arbitrary positions in the output sequence, but effective guidance depends on the compatibility between their content and placement. To this end, we propose AnchorDLM, a framework in which an anchor generator produces an anchor consisting of a short output fragment and its position for each query. The anchor is placed as control tokens at the specified position to initialize the output sequence of a frozen DLM and guide subsequent denoising. We train the anchor generator with reinforcement learning (RL) to jointly optimize anchor content and placement, using rewards computed from the DLM's generated outputs based on answer correctness and constraint satisfaction. Moreover, through the lens of discrete flow matching (DFM), we interpret anchor placement as helping to reshape the initial velocity field that guides generation. Experiments on code generation and mathematical reasoning across five DLM backbones show that AnchorDLM improves controllability and further yields gains in reasoning performance across diverse benchmarks.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-10T18:14:59Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Feiyu Qu</name>
+    </author>
+    <author>
+      <name>Zheng Huang</name>
+    </author>
+    <author>
+      <name>Andrea Zanette</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.11739v1</id>
+    <title>Distributed Constrained Resource Management in 6G Networks: A Scalable Hybrid Model-Learning Framework</title>
+    <updated>2026-10-08T11:32:08Z</updated>
+    <link href="https://arxiv.org/abs/2610.11739v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.11739v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Radio Resource Management (RRM) is a fundamental challenge in 6G wireless networks, particularly under dynamic user demands, inter-cell interference, and heterogeneous QoS constraints. Centralized optimization solutions are often infeasible in practice due to the lack of system-wide state information, dynamic conditions, and signaling delays, making distributed learning-based approaches attractive. However, conventional multi-agent reinforcement learning (MARL) struggles with scalability and constraint satisfaction in such highly dynamic environments. We introduce a scalable two-phase hybrid learning framework to address the RRM challenges where orthogonal-frequency division multiplexing (OFDM) domain knowledge is explicitly incorporated into the MARL pipeline. In our proposed two-phase learning framework, the first phase allocates a minimum resource to satisfy users' QoS requirements based on channel statistics, avoiding the inefficiencies of training policies under hard QoS constraints. Subsequently, a multiagent system is employed in the second phase to optimally allocate the remaining resources for system throughput maximization. By exploiting the structural interference information, we propose a scalable MARL algorithm which decomposes the original learning problem into smaller subproblems that can be handled independently, thereby avoiding exponential growth of the action space without compromising performance. Extensive simulations in realistic scenarios with 50MHz bandwidth and different numerologies show that our method significantly outperforms existing optimization and learning baselines, offering up to 40% throughput improvement, and 100% constraint satisfaction with minimal resource usage.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-08T11:32:08Z</published>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Thang X. Vu</name>
+    </author>
+    <author>
+      <name>Cuong Le</name>
+    </author>
+    <author>
+      <name>Symeon Chatzinotas</name>
+    </author>
+    <author>
+      <name>Bjorn Ottersten</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.06244v1</id>
+    <title>Constrained Goal-directed Planar Graph Generation with Grammar-based Reinforcement Learning</title>
+    <updated>2026-10-05T12:45:06Z</updated>
+    <link href="https://arxiv.org/abs/2610.06244v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.06244v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Planar graphs are central to applications across science and engineering, yet existing generators provide limited support for goal-directed generation under hard structural and geometric feasibility constraints. We propose a dataset-free method for generating planar graph embeddings by combining parametric graph grammars with safe reinforcement learning to optimize generic task-specific objectives while satisfying constraints during construction. We formulate the generation process as a constrained Markov decision process, where the graph grammar defines the state and action spaces. We further introduce an action projection that maps sampled actions toward state-dependent safe sets, improving constraint satisfaction during training. In contrast to classical graph generators and deep generative models, which typically offer limited goal-directed control or rely on weak constraint satisfaction, our method constructs feasible planar graph embeddings directly during generation. We also introduce a benchmark suite for constrained and goal-directed planar graph generation, together with classical and deep generative baselines. Across all benchmark tasks, our method consistently outperforms baselines while satisfying the formulated constraints.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-05T12:45:06Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Nicolas Hochuli</name>
+    </author>
+    <author>
+      <name>Lorenzo Miele</name>
+    </author>
+    <author>
+      <name>Kristina Shea</name>
+    </author>
+    <author>
+      <name>Tino Stankovic</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.00954v1</id>
+    <title>Beyond Leaderboards: Tokenomics of Agentic Small Language Model Ensembles</title>
+    <updated>2026-10-01T02:37:56Z</updated>
+    <link href="https://arxiv.org/abs/2610.00954v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.00954v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As large language models (LLMs) move from standalone assistants into agentic workflows, evaluation must extend beyond scalar leaderboard accuracy to account for operational reliability, cost, latency, and token efficiency. We use an agentic ensemble of small language models (SLMs) with an SLM-judge-mediated feedback loop as a case study for such beyond-leaderboard evaluation. On the 541-prompt IFEval benchmark, the best ensemble achieves 97.34% strict prompt accuracy, exceeding the strongest standalone LLM baseline, gpt-5.4, by 5.81 percentage points while operating in a lower-cost regime. We then analyze the tokenomics and operational behavior behind this gain, including cost per sample, token composition, useful-output goodput, feedback-loop recovery, latency decomposition, and performance across instruction categories and constraint counts. Our results show that agentic SLM ensembles can trade additional test-time tokens and orchestration overhead for improved instruction-following fidelity, motivating multi-dimensional evaluation protocols for future agentic AI systems.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-01T02:37:56Z</published>
+    <arxiv:comment>8 pages, 9 figures, Presented at ACM CAIS 2026 Workshop RLEval: Methods and Reinforcement Learning Environments for Evaluating AI Agents. Resubmission of permitted appeal, Ticket #MOD-104177</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Alexei N. Skurikhin</name>
+    </author>
+    <author>
+      <name>Emily M. Taylor</name>
+    </author>
+    <author>
+      <name>Nathan A. DeBardeleben</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.33742v1</id>
+    <title>DuraS2ST: Chain-of-Thought and Reinforcement Learning for Duration-Aligned Speech-to-Speech Translation</title>
+    <updated>2026-09-27T16:42:53Z</updated>
+    <link href="https://arxiv.org/abs/2609.33742v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.33742v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Speech-to-speech translation (S2ST) in time-sensitive applications such as video dubbing requires not only semantic fidelity and speaker preservation, but also strict duration consistency to avoid audio-visual misalignment. However, existing S2ST systems largely generate target speech without explicit temporal planning, making duration control an unresolved challenge. We introduce DuraS2ST, a duration-aligned reasoning framework that enables a single speech language model to first generate an explicit chain-of-thought (CoT) for planning target wording and phonetic length, and then synthesize the corresponding speech tokens. To support this paradigm, we construct DuraSet-440K, a high-quality duration-aligned CoT corpus for supervised initialization. We further optimize the model with multi-modal multi-dimensional reinforcement learning, using a Duration Margin Reward to balance translation quality and duration consistency, and Modality-Aware Reward Attribution to assign rewards to appropriate token spans. Experiments on CVSS-T show that DuraS2ST achieves a strong balance between translation quality and duration consistency, outperforming competitive open-source and commercial baselines. Project page: https://github.com/Mia11939/DuraS2ST.</summary>
+    <category term="cs.SD" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.AS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-27T16:42:53Z</published>
+    <arxiv:comment>Accepted to EMNLP 2026 (Main Conference)</arxiv:comment>
+    <arxiv:primary_category term="cs.SD"/>
+    <author>
+      <name>Yayue Deng</name>
+    </author>
+    <author>
+      <name>Dingdong Wang</name>
+    </author>
+    <author>
+      <name>Yuxuan Hu</name>
+    </author>
+    <author>
+      <name>Jinyu Li</name>
+    </author>
+    <author>
+      <name>Yanqing Liu</name>
+    </author>
+    <author>
+      <name>Yuanyuan Wang</name>
+    </author>
+    <author>
+      <name>Weidong Chen</name>
+    </author>
+    <author>
+      <name>Helen M. Meng</name>
+    </author>
+    <author>
+      <name>Shujie Liu</name>
+    </author>
+    <author>
+      <name>Xixin Wu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.32933v1</id>
+    <title>Last-Iterate Guarantees for Online Reinforcement Learning in Structured Constrained MDPs</title>
+    <updated>2026-09-26T20:45:54Z</updated>
+    <link href="https://arxiv.org/abs/2609.32933v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.32933v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In safety-critical applications, deployment uses a single policy, whose performance and constraint satisfaction should hold directly rather than only for an average or mixture of training policies. This motivates last-iterate guarantees in constrained reinforcement learning. Recent progress has established such guarantees in exact-gradient or tabular online settings, yet scalable results for structured large-state problems remain open. We develop a general, statistically efficient framework for last-iterate convergence in structured Constrained MDPs (CMDPs). Our analysis separates contraction of the regularised primal-dual dynamics from actor approximation and statistical errors in policy evaluation under online exploration. This enables model-free on- and off-policy learning with structured function approximation: optimistic policy evaluation avoids explicit transition-model construction, while a compact parametric actor avoids maintaining mixtures or histories of past policies. We instantiate the framework for linear CMDPs and general function approximation, obtaining representation-dependent complexity and improved target-accuracy dependence over prior optimistic regularised primal-dual analyses. We further validate the stabilising effect predicted by our theory on a synthetic linear CMDP: the regularised method exhibits stable last-iterate behaviour, whereas its unregularised counterpart shows larger oscillations.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-26T20:45:54Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Nam Phuong Tran</name>
+    </author>
+    <author>
+      <name>Trinh Ha Mai Huynh</name>
+    </author>
+    <author>
+      <name>Tuyen Pham Le</name>
+    </author>
+    <author>
+      <name>Van-Truong Nguyen</name>
+    </author>
+    <author>
+      <name>Quan Nguyen</name>
+    </author>
+    <author>
+      <name>Long Tran-Thanh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.29319v1</id>
+    <title>Safe Learning-Based Adaptive Augmentation Control for Fixed-Wing UAV under Uncertainty</title>
+    <updated>2026-09-24T09:57:47Z</updated>
+    <link href="https://arxiv.org/abs/2609.29319v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.29319v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper presents a learning-based adaptive augmentation control concept inspired by the adaptation mechanisms of conventional adaptive control, while not being restricted to their specific parametric adaptation structures. In contrast to augmenting a reinforcement learning (RL) baseline controller with classical adaptive control to account for the simulation-to-reality gap, the proposed approach uses RL-based adaptive augmentation to address the limitations of conventional adaptive control. Domain randomization combined with observation stacking is employed to train the RL-based augmentation to compensate for matched uncertainties in a fixed-wing aircraft system. To ensure constraint satisfaction during operation, a safety filter is incorporated into the control architecture. Based on the concept of pseudo control hedging (PCH), we propose a modified reference model that avoids undesirable interactions between the RL-based augmentation and the safety filter. To reduce the conservatism of the safety filter, we additionally incorporate a disturbance observer. The proposed approach is evaluated on a fixed-wing aircraft model subject to uncertainties.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-24T09:57:47Z</published>
+    <arxiv:comment>Submitted to American Control Conference (ACC) 2027</arxiv:comment>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Leon Raguse</name>
+    </author>
+    <author>
+      <name>Lennart Kracke</name>
+    </author>
+    <author>
+      <name>Mayank Shekhar Jha</name>
+    </author>
+    <author>
+      <name>Johannes Autenrieb</name>
+    </author>
+    <author>
+      <name>Mark Spiller</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.24552v1</id>
+    <title>Smoothness as a Constraint for Stable Humanoid Locomotion</title>
+    <updated>2026-09-21T13:19:00Z</updated>
+    <link href="https://arxiv.org/abs/2609.24552v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.24552v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Embodied AI systems, particularly humanoid robots deployed in real world scenarios require whole-body control policies that are both task-responsive and physically smooth. However, smoothness is not uniform across the body: lower body must remain sufficiently reactive, while the upper body must be tightly regulated to preserve stability. Existing reinforcement learning approaches typically impose smoothness through auxiliary terms in the reward function, which compete with task objectives, treating the body as uniform and provide no direct control over the physical quantities responsible for smooth behavior. We introduce DeCap (Decoupled Constraint-aware policy), a constrained reinforcement learning algorithm that decouples whole-body smoothness into separate upper- and lower-body constraint groups, each formulates smoothness as explicit constraints on physical motion limits. To improve constraint satisfaction near feasibility boundaries, DeCap incorporates a bounded barrier penalty that activates proactively as limits are approached and remains bounded at the constraint limit. On real-world humanoid whole-body control task, DeCap reduces upper-body action rate by 2.50x and acceleration by 2.18x relative to reward-based smoothness policies, while also improving lower-body smoothness and reducing transient motion. We demonstrate that a fixed set of smoothness constraints transfers across diverse terrains, alleviating the need of extensive reward tuning.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-21T13:19:00Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Utsav Panchal</name>
+    </author>
+    <author>
+      <name>Denis Kleyko</name>
+    </author>
+    <author>
+      <name>Unal Artan</name>
+    </author>
+    <author>
+      <name>Amy Loutfi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.24480v1</id>
+    <title>Fathom-Vaidya: Advancing Medical Reasoning with Rubric-Based Rewards</title>
+    <updated>2026-09-21T12:19:50Z</updated>
+    <link href="https://arxiv.org/abs/2609.24480v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.24480v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Deploying Large Language Models (LLMs) in healthcare requires robust performance across two complementary dimensions - diagnostic reasoning: the convergent, evidence-driven task of inferring a patient's condition from clinical data to produce a diagnosis, and clinical healthcare reasoning: the broader, navigational judgment required to communicate, plan, and adapt across multi-turn clinical interactions where a single correct answer may not exist. Recent benchmarks such as HealthBench and MedXpertQA reveal persistent weaknesses in both areas, exposing failures in complex diagnostic scenarios and limitations in contextual, patient-centered dialogue. We introduce a sequential training framework that targets these facets using synthetic data and rubric-based reinforcement learning. First, we improve diagnostic reasoning using MedBullets-derived questions with rule- and rubric-guided Reinforcement Learning (RL). We then shift to clinical reasoning by generating 5.3k synthetic multi-turn scenarios, each paired with multi-dimensional rubrics to comprehensively assess the response. This approach yields over 10% improvement on MedXpertQA, and our 30B model achieves 50.1% accuracy on HealthBench-Hard, surpassing proprietary baselines including GPT-5 (thinking). Our results show that targeted synthetic datasets and rubric-based training can systematically improve both diagnostic and interactive clinical reasoning in medical LLMs.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-21T12:19:50Z</published>
+    <arxiv:comment>18 pages, 5 Figures, Correspondence to kunal.singh@fractal.ai</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Kalash Shah</name>
+    </author>
+    <author>
+      <name>Kunal Singh</name>
+    </author>
+    <author>
+      <name>Snehan J</name>
+    </author>
+    <author>
+      <name>Shreyas Singh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.23457v4</id>
+    <title>RLVR$^{2}$: Reinforcement Learning with Verifiable Rubric-based Ranking</title>
+    <updated>2026-11-24T07:56:08Z</updated>
+    <link href="https://arxiv.org/abs/2609.23457v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.23457v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement Learning with Verifiable Rewards (RLVR) is expanding from tasks with well-defined correctness signals, such as mathematics and code, toward multifaceted quality requirements specified by multi-dimensional rubrics. Since policy optimization consumes one scalar per rollout, rubric-based pipelines must map multiple criterion scores into a scalar reward. This aggregation is often treated as score scaling, but it implicitly determines how quality dimensions trade off during training. The prevailing practice, normalizing each criterion and taking a linear combination, assumes that cardinal score differences are comparable across criteria and that gains on one criterion compensate for failures on another; both assumptions are unreliable when criteria are semantically heterogeneous. We propose Reinforcement Learning with Verifiable Rubric-based Ranking (RLVR$^2$), a verifiable ranking paradigm for rubric-based RLVR. For each criterion, RLVR$^2$ converts rubric scores into criterion-specific within-group ordinal outcomes, recovers a latent utility from the resulting comparison matrix, and merges these utilities into one training signal. By retaining only within-group ordering and discarding raw score magnitudes, RLVR$^2$ avoids calibrating heterogeneous rubric scales. It further supports objective-preserving attribute adjustment: auxiliary attributes that correlate with observed rankings but are not training objectives can enter the estimation without expanding the rubric or rewarding them directly. Across three model scales and 16 benchmarks, RLVR$^2$ consistently outperforms representative rubric-based baselines, achieving the best overall performance on most benchmarks at every scale. Analysis shows it controls systematic effects tied to reasoning efficiency and response formatting while preserving the quality objective.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-20T08:34:28Z</published>
+    <arxiv:comment>Preprint</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Hao Li</name>
+    </author>
+    <author>
+      <name>Zhengkun Zhang</name>
+    </author>
+    <author>
+      <name>Gangqiang Hu</name>
+    </author>
+    <author>
+      <name>Zhen Zhang</name>
+    </author>
+    <author>
+      <name>Yude Gao</name>
+    </author>
+    <author>
+      <name>Dai Dai</name>
+    </author>
+    <author>
+      <name>Jing Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.22584v1</id>
+    <title>Augmenting PID Control with Deep Reinforcement Learning: A Hybrid Approach to the Industrial Benchmark</title>
+    <updated>2026-09-18T21:07:56Z</updated>
+    <link href="https://arxiv.org/abs/2609.22584v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.22584v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As industrial processes grow in complexity, traditional Proportional-Integral-Derivative (PID) controllers are often insufficient for handling their non-linear, multi-input dynamics. We propose using advanced Deep Reinforcement Learning (DRL) to prove its advantages in these complex environments. To do this, we rely on the Industrial Benchmark (IB). The IB is a realistic simulation that tests DRL algorithms against the key challenges of industrial applications: high-dimensional state spaces, delayed effects, and conflicting multi-criterial objectives. This testbed highlights DRL's core trade-off: while its final policies can often be unstable, its unique strength is the ability to autonomously discover optimal, non-obvious policies in multi-dimensional spaces where simple controllers fail. In this paper, we propose a novel hybrid PID-RL controller that leverages DRL's discovery capability while ensuring Reliability. After developing a multi-objective reward function to make DRL viable, we use a twin-delayed deep deterministic (TD3) agent as a discovery tool to find the optimal, non-obvious settings for the IB's 'Gain' and 'Shift' parameters. By feeding these discovered parameters to a simple, tuned PID controller, our hybrid model successfully combines all three characteristics: it achieves the optimal Performance and Efficiency of the best DRL agent with the Reliability of a classical controller. This work demonstrates a practical methodology for using DRL to augment, rather than replace, trusted industrial control systems.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-18T21:07:56Z</published>
+    <arxiv:comment>Published in: 2026 7th International Conference on Artificial Intelligence, Robotics, and Control (AIRC)</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name> Zhengyang</name>
+      <arxiv:affiliation>Cissy</arxiv:affiliation>
+    </author>
+    <author>
+      <name> Gu</name>
+    </author>
+    <author>
+      <name>Joseph E. Hernandez</name>
+    </author>
+    <author>
+      <name>John Burtenshaw</name>
+    </author>
+    <author>
+      <name>Sean Scott</name>
+    </author>
+    <author>
+      <name>Thomas Cook</name>
+    </author>
+    <author>
+      <name>Chris Couch</name>
+    </author>
+    <arxiv:doi>10.1109/AIRC69745.2026.11631341</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1109/AIRC69745.2026.11631341" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.20124v1</id>
+    <title>Multi-Dimensional Prosody Judgment For Live Streaming Speech Synthesis</title>
+    <updated>2026-09-17T12:20:48Z</updated>
+    <link href="https://arxiv.org/abs/2609.20124v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.20124v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Evaluating live streaming speech synthesis (TTS) requires assessing fine-grained, highly expressive prosody such as emotion, intonation, and energy which traditional MOS predictors fail to capture. While proprietary Large Language Models (LLMs) like Gemini can evaluate these aspects, they are too costly for massive inference and reinforcement learning feedback. To address this, we first introduce Live-ProsodyJudge (LPJ), a cost-effective pairwise evaluator distilled from Gemini into Qwen3-Omni. However, we identify a critical flaw in standard multi-dimensional evaluation: verdict coupling. The judge tends to lazily align all individual dimension scores with its overall preference, collapsing a rich multi-dimensional rubric into a single preference bit. To resolve this, we further propose Decoupled-Live-ProsodyJudge (D-LPJ). D-LPJ eliminates the overall verdict target to prevent blind following, masks uncertain pair-dimensions during Supervised Fine-Tuning(SFT), and introduces a novel span-local GRPO strategy that applies normalized advantages strictly to their corresponding rationale spans. Evaluated on highly curated human-annotated test sets, 10 sample balanced-order LPJ achieves higher point accuracy than a single Gemini call, while D-LPJ successfully produces independent,decoupled dimension judgments. Furthermore, in a Best-of-8 TTS candidate selection tournament, the LPJ-selected utterance falls within the human top-3 in 85.29% of high-confidence cases, demonstrating its efficacy for fine-grained TTS preference optimization.</summary>
+    <category term="cs.SD" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-17T12:20:48Z</published>
+    <arxiv:primary_category term="cs.SD"/>
+    <author>
+      <name>Zifan Guan</name>
+    </author>
+    <author>
+      <name>Longyu Lu</name>
+    </author>
+    <author>
+      <name>Junan Zhang</name>
+    </author>
+    <author>
+      <name>Zhizheng Wu</name>
+    </author>
+    <author>
+      <name>Meiguang Jin</name>
+    </author>
+    <author>
+      <name>Junfeng Ma</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.14968v1</id>
+    <title>HiGFRL: Hierarchical Graph Fusion-Driven Reinforcement Learning for Dependency-Aware Task Scheduling in Heterogeneous Cloud</title>
+    <updated>2026-09-14T03:21:40Z</updated>
+    <link href="https://arxiv.org/abs/2609.14968v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.14968v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Online scheduling of dependency-aware tasks in heterogeneous cloud clusters is a fundamental yet challenging problem due to the complex interplay between DAG topologies and multi-dimensional resource constraints. While DRL has shown promise, existing GNN-based approaches often struggle to efficiently model high-order topological dependencies and suffer from loose coupling between task and resource states, leading to myopic scheduling decisions. To address these limitations, we propose HiGFRL, a Hierarchical Graph Fusion-Driven Reinforcement Learning framework. HiGFRL constructs a novel three-level state representation comprising a Static Hypergraph, a Dynamic Global Graph, and a Local Bipartite Graph to explicitly model the interplay between task dependencies and real-time cluster dynamics. Specifically, we design a fusion-driven dual-network architecture to optimize RL decision-making, where a Context Fusion Allocator integrates local bipartite matching features with fused global context to execute precise task-to-node allocation, and a Global State Evaluator leverages the global dynamic graph representation to accurately estimate expected long-term cumulative reward. Furthermore, we incorporate a topology-prior-guided hybrid reward mechanism that distills static topological priors into the learning process to accelerate convergence. Extensive experiments using real-world Alibaba cluster traces demonstrate that HiGFRL significantly outperforms heuristics and DRL baselines. Specifically, in challenging large-scale high-load scenarios, HiGFRL reduces the Makespan by up to 32.55%, and optimizes the average task flow time and average task wait time by 13.58% and 13.79%, respectively. Experimental results confirm that HiGFRL not only significantly improves cluster throughput but also ensures superior QoS by substantially reducing queuing delays. Code Release:https://github.com/igeng/HiGFRL.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-14T03:21:40Z</published>
+    <arxiv:comment>16 pages, 13 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Tiangang Li</name>
+    </author>
+    <author>
+      <name>Shi Ying</name>
+    </author>
+    <author>
+      <name>Xiangbo Tian</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.14067v1</id>
+    <title>Fixed-Time Resilient Integral Reinforcement Learning for Input-Constrained Unknown Nonlinear Systems Under FDI Attacks and Disturbances: A Data-Driven Admissible Warm Start</title>
+    <updated>2026-09-12T17:32:42Z</updated>
+    <link href="https://arxiv.org/abs/2609.14067v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.14067v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper develops a resilient learning controller for unknown nonlinear systems operating under actuator limits, false-data-injection attacks, and external disturbances. The key idea is to learn a saturated secure policy directly from finite trajectory data while guaranteeing that both the learning error and the closed-loop state converge to compact neighborhoods within a uniform fixed time independent of initial conditions. An integral formulation removes the unknown drift from the implementable learning law, while stored informative data sustain learning after online excitation fades. To mitigate the closed-loop sensitivity to arbitrary critic initialization, pre-deployment data, which may also be reused from the replay stack, are lifted through a finite-dimensional Koopman representation to construct a stabilizing initial policy, whose inverse saturated-policy map provides a data-driven critic-weight warm start. The resulting controller preserves input constraints by construction and guarantees practical fixed-time robustness under persistent attacks and disturbances. The proposed learning and initialization architecture is further verified through a two-link robot stabilization example, where the results demonstrate rapid state recovery, bounded critic learning, reliable actuator-constraint satisfaction, and improved closed-loop behavior under informed critic initialization.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-12T17:32:42Z</published>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Tien Dat Vu</name>
+    </author>
+    <author>
+      <name>Minh Doan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.31644v1</id>
+    <title>MaD-RL: Matching Distributions for Calibrating LLMs with Reinforcement Learning</title>
+    <updated>2026-09-12T11:12:59Z</updated>
+    <link href="https://arxiv.org/abs/2609.31644v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.31644v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) is widely used in language-model post-training to maximize rewards assigned to individual model outputs, such as scores from binary verifiers or reward models trained on human feedback. However, applications such as synthetic-data generation, fairness-related constraint satisfaction, and policy exploration require controlling the distribution of outputs across model generations rather than only maximizing expected reward. We propose a general RL-based framework for \textit{Distribution Matching} allowing matching the distribution of a latent categorical attribute of model outputs to a specified target distribution. Empirically, we demonstrate that dominant post-training recipes such as Group Relative Policy Optimization (GRPO) reduce output diversity by concentrating policy probability towards a single mode. Entropy regularization and sampling temperature can improve the spread of the distribution but have constrained effectiveness, limited to apply only in token space and toward uniform distributions. We show that prior work in this area is a specific case of Distribution Matching involving the $L_2$ divergence. We then propose reward functions for other divergences such as KL and Jensen-Shannon and motivate them with theoretical justification. Finally, we demonstrate the effectiveness of our approach on a set of experiments involving mathematical reasoning and programming.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-12T11:12:59Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sourabh Kulkarni</name>
+    </author>
+    <author>
+      <name>Ksheeraj Sai Vepuri</name>
+    </author>
+    <author>
+      <name>Basar Demir</name>
+    </author>
+    <author>
+      <name>Jason Bohrer</name>
+    </author>
+    <author>
+      <name>Emily Shen</name>
+    </author>
+    <author>
+      <name>Jianfa Chen</name>
+    </author>
+    <author>
+      <name>Nan Jiang</name>
+    </author>
+    <author>
+      <name>Ankit Jain</name>
+    </author>
+    <author>
+      <name>Harihar Subramanyam</name>
+    </author>
+    <author>
+      <name>Mannat Singh</name>
+    </author>
+    <author>
+      <name>Chirag Nagpal</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.22258v1</id>
+    <title>RS-Claw-Evolution: Environment-Feedback-Driven Evolution for Lightweight Remote Sensing Agents in Long-Horizon Tasks</title>
+    <updated>2026-09-06T10:16:33Z</updated>
+    <link href="https://arxiv.org/abs/2609.22258v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.22258v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language model-driven remote sensing (RS) agents offer a promising approach to automating geospatial analysis. However, lightweight RS agents based on compact language models struggle with multi-step interactive tasks due to loss of long-horizon states, inefficient environmental feedback utilization, and sparse optimization signals. We propose RS-Claw-Evolution, an environment-feedback-driven framework that progressively improves lightweight agents through three stages. Interaction evolution uses executable code to control observations, maintain intermediate states, and reduce context redundancy. Experience evolution combines failure-aware trajectory generation with error-turn masking to learn from informative failure-recovery experiences without imitating faulty actions. Decision evolution uses reinforcement learning with multi-dimensional environment rewards and turn-level advantage protection to optimize tool-use behaviors and improve credit assignment in long sequences. On Earth-Bench, the optimized Qwen3-4B-based agent achieves 65.9% accuracy in Autonomous Planning mode, outperforming the untrained Qwen3-32B baseline (43.8%) and DeepSeek-V3.1 (60.8%), while approaching GPT-5 (71.6%). These results demonstrate that learning from environmental feedback can improve lightweight agents and narrow their performance gap with larger models in long-horizon RS tasks.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-06T10:16:33Z</published>
+    <arxiv:comment>30 pages, 5 figures, including supplementary material</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Kai Ouyang</name>
+    </author>
+    <author>
+      <name>Dongyang Hou</name>
+    </author>
+    <author>
+      <name>Liangtian Liu</name>
+    </author>
+    <author>
+      <name>Zeyuan Wang</name>
+    </author>
+    <author>
+      <name>Ziyu Li</name>
+    </author>
+    <author>
+      <name>Chengfu Liu</name>
+    </author>
+    <author>
+      <name>Zichao Tang</name>
+    </author>
+    <author>
+      <name>Xuezhi Cui</name>
+    </author>
+    <author>
+      <name>Shengwu Ouyang</name>
+    </author>
+    <author>
+      <name>Wentao Yang</name>
+    </author>
+    <author>
+      <name>Hanwen Yu</name>
+    </author>
+    <author>
+      <name>Haifeng Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.02366v1</id>
+    <title>NE-R1: Enhancing Named Entity Recognition Model via Reinforcement Learning</title>
+    <updated>2026-09-02T09:37:16Z</updated>
+    <link href="https://arxiv.org/abs/2609.02366v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.02366v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Named Entity Recognition (NER) has achieved substantial progress since the advent of large language models (LLMs). Nevertheless, the recognition of long-tail and domain-specific entities remains challenging due to the deficiency in parametric knowledge. Retrieval-augmented generation (RAG) offers a promising remedy by injecting external knowledge, but it also introduces noise and unnecessary cost when dealing with familiar cases. In this paper, we propose NE-R1, a novel framework for adaptive retrieval-augmented NER. We design a "retrieval-on-demand" mechanism for NER. Then we integrate it into models by a two-stage training method: (1) multi-task instruction tuning initialization; (2) end-to-end RL optimization with CoT. To achieve reasonable selection between parameterized and external knowledge, we design a multi-dimensional reward considering both accuracy and retrieval benefit. NE-R1 achieves state-of-the-art performance on various benchmarks, with an average F1 score gain of 2.52% in in-domain evaluation and 1.18% in zero-shot cross-domain evaluation.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-02T09:37:16Z</published>
+    <arxiv:comment>EMNLP2026</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Meixuan Chen</name>
+    </author>
+    <author>
+      <name>Hehan Li</name>
+    </author>
+    <author>
+      <name>Ruizhi Zhao</name>
+    </author>
+    <author>
+      <name>Xin Lu</name>
+    </author>
+    <author>
+      <name>peizhi xu</name>
+    </author>
+    <author>
+      <name>Liwei Qian</name>
+    </author>
+    <author>
+      <name>LI Meifang</name>
+    </author>
+    <author>
+      <name>shuanglong li</name>
+    </author>
+    <author>
+      <name>Hanmeng Liu</name>
+    </author>
+    <author>
+      <name>Xin Pei</name>
+    </author>
+    <author>
+      <name>Yanbiao Ma</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.29804v1</id>
+    <title>Beyond Global Realism: Virtual Try-On Evaluation and Optimization with Dimension-wise Garment Fidelity Assessment</title>
+    <updated>2026-08-30T14:08:40Z</updated>
+    <link href="https://arxiv.org/abs/2608.29804v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.29804v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Virtual try-on (VTON) requires not only realistic generation but also faithful preservation of garment characteristics. However, existing evaluation metrics such as PSNR, SSIM, KID and FID struggle to measure the consistency between the generated and reference garments, particularly in capturing the multi-dimensional characteristics of garment fidelity. To address this, we propose DAT: a Dimension-wise Assessment framework for virtual Try-on, which decomposes garment consistency into seven interpretable dimensions: silhouette, color, neckline and sleeve shape, major decoration and structure, material texture, fine-detail fidelity, and logo preservation, each formulated as a discrete attribute-level prediction task. To train this specialized assessment model, we adopt a two-stage learning paradigm comprising large-scale weak supervision on 50K samples, followed by refinement on 10K higher-quality annotations obtained via multi-model voting. Furthermore, we employ weighted cross-entropy loss to mitigate the severe label imbalance inherent across evaluation dimensions. Beyond its role as an evaluation framework, the assessment model can be integrated into reinforcement learning optimization of Qwen-Image-Edit for VTON, where dimension-wise rewards are adaptively aggregated to emphasize under-optimized aspects during training. Experimental results show that our method (8B parameters) achieves state-of-the-art performance in terms of balanced accuracy, SROCC, and PLCC, outperforming strong proprietary models such as Gemini-3.1, Qwen3.7-plus, and GPT-5.5, while also serving as an effective optimization signal for reward-guided VTON generation</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-30T14:08:40Z</published>
+    <arxiv:comment>12 pages, 6 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Kaidong Zhang</name>
+    </author>
+    <author>
+      <name>Yukang Ding</name>
+    </author>
+    <author>
+      <name>Xiaoyu Liu</name>
+    </author>
+    <author>
+      <name>Ying Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.29444v1</id>
+    <title>RL-based Network Slice Embedding over Space Division Multiplexed Elastic Optical Networks</title>
+    <updated>2026-08-29T21:15:37Z</updated>
+    <link href="https://arxiv.org/abs/2608.29444v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.29444v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Network slicing over space-division-multiplexed elastic optical networks (SDM-EONs) requires jointly managing spectrum, spatial cores, and compute resources, a coupling that many existing studies ignore by treating compute placement independently from routing and spectrum decisions. This disconnect can cause the spectrum to be allocated along a path, only for the request to fail due to insufficient compute resources along the path, or may result in compute resources being allocated without consideration for spectrum resource availability on the path between compute nodes. We propose a path-constrained reinforcement learning framework that addresses compute node selection and RMCSA, being aware of both resources, restricting the RL agent's action space to nodes along $k$-shortest paths between request endpoints. Training incorporates reward shaping to improve robustness under high load. We propose PPO-Full (Proximal Policy Optimization-Full), which jointly selects compute nodes and routing paths via a multi-dimensional action space, against distance-based heuristics, a greedy baseline, and a decoupled VONE-DRL baseline on a 24-node USNET topology under hotspot traffic conditions. Results demonstrate consistent improvements in acceptance rate over all baselines at high load, with gains becoming more pronounced as traffic intensity increases.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-29T21:15:37Z</published>
+    <arxiv:comment>6 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Divya Khanure</name>
+    </author>
+    <author>
+      <name>Riti Gour†</name>
+    </author>
+    <author>
+      <name>Congzhou Li</name>
+    </author>
+    <author>
+      <name>Jason P. Jue</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.29356v1</id>
+    <title>Plant-Inspired AI: Plants as Inspiration for Novel Problem Formulations, and Two Case Studies</title>
+    <updated>2026-08-29T16:26:42Z</updated>
+    <link href="https://arxiv.org/abs/2608.29356v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.29356v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Artificial Intelligence (AI) has long been inspired by studies of biological intelligence. Reinforcement learning, for instance, drew inspiration from studies involving animal learning and is now a powerful paradigm for solving many real-world problems. Recently, plant biologists have uncovered a wide range of complex behaviors in plants that enable them to flexibly adapt to variable environments. Here, we argue that such behavior can motivate new AI frameworks encompassing a range of problems overlooked by existing problem-solving frameworks such as supervised learning, tree search, and constraint satisfaction. We illustrate this idea with two examples of intelligent problem-solving in plants: (1) leaf mimicry in Boquila trifoliolata, a vine capable of altering its leaves' morphology to resemble those of multiple host trees simultaneously; and (2) coordinated root-shoot growth, wherein plants allocate resources across organ systems exploring distinct environments. While leaf mimicry is highly specific to Boquila, coordination of root-shoot growth is shared across most plants. For both examples, we capture underlying computational principles and identify problems fitting these frameworks that are currently unaddressed by AI. Finally, we outline preliminary task formulations and discuss how these formulations may be applied to non-plant problems.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-29T16:26:42Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Deepayan Sanyal</name>
+    </author>
+    <author>
+      <name>Joel Michelson</name>
+    </author>
+    <author>
+      <name>Carla E. Cao</name>
+    </author>
+    <author>
+      <name>Adam B. Roddy</name>
+    </author>
+    <author>
+      <name>Maithilee Kunda</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.27893v1</id>
+    <title>CommerceVibe: Learning to Design E-Commerce Creatives as Executable Visual Code via Dual-Feedback Reinforcement Learning</title>
+    <updated>2026-08-28T03:57:20Z</updated>
+    <link href="https://arxiv.org/abs/2608.27893v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.27893v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>High-quality e-commerce creatives are essential for presenting products and conveying marketing messages. Recent diffusion models enable scalable creative generation and produce visually compelling images, but their flattened raster outputs often contain distorted text and inconsistent product details, requiring refinement before deployment. Moreover, without explicit structure, the resulting creatives are difficult to edit and reuse, while complex design requirements remain challenging to encode as verifiable training signals. To address these challenges, we present CommerceVibe, which represents creatives as executable visual code and formulates generation as conditional HTML/CSS program synthesis. Given product images, design requirements, and product information, it produces renderable, editable, and reusable creatives. We further introduce dual-feedback reinforcement learning, in which rule-based feedback evaluates rendered programs for text readability, product visibility, and layout validity, while visual feedback from a vision-language model (VLM) assesses rendered creatives against input specifications across six perceptual and commercial dimensions. Together, these complementary feedback signals improve both constraint satisfaction and perception-dependent quality. We perform supervised fine-tuning (SFT) of Qwen3.5-9B on over 28,000 e-commerce examples, followed by dual-feedback reinforcement learning. On a 1,300-case benchmark, the optimized CommerceVibe model achieves a weighted score of 94.0/100, compared with 87.3 for the SFT-only variant, and outperforms strong external models. Blind evaluations by five e-commerce design experts further validate these improvements. CommerceVibe supports controllable, editable, and scalable e-commerce creative production.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-28T03:57:20Z</published>
+    <arxiv:comment>20 pages, 13 figures, 12 tables; includes supplementary material</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Yajiao Xu</name>
+    </author>
+    <author>
+      <name>Jin Zhang</name>
+    </author>
+    <author>
+      <name>Jiangbo Ai</name>
+    </author>
+    <author>
+      <name>Tao Jiang</name>
+    </author>
+    <author>
+      <name>Mo Xu</name>
+    </author>
+    <author>
+      <name>Lina Huang</name>
+    </author>
+    <author>
+      <name>Chengfu Huo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.26896v1</id>
+    <title>AI agents in Algorithmic Electricity Markets: On the Emergence of Tacit Collusion</title>
+    <updated>2026-08-27T09:51:48Z</updated>
+    <link href="https://arxiv.org/abs/2608.26896v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.26896v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As electricity market participants increasingly adopt learning-based agents for their bidding strategies, electricity markets are becoming algorithmic. Evidence from algorithmic markets in other domains shows that tacit collusion can arise purely through independent learning. Moreover, electricity markets are typically oligopolistic and feature repeated interaction among a small number of participants, making them structurally susceptible to non-competitive behavior. In the face of these observations, this paper investigates the hypothesis that tacit collusion may emerge in electricity markets where participants' actions are controlled by autonomous learning-based algorithms. We model strategic bidding as a repeated game with imperfect public monitoring, and model the participants' emergent behavior using multi-agent reinforcement learning. We propose a multi-dimensional set of criteria (going beyond profit comparisons against Nash equilibria) to assess whether the resulting behavior constitutes tacit collusion. Our experimental results showcase that such a danger is realistic for electricity markets: there are cases where agents do learn to sustain supra-competitive outcomes that are supportive of tacit collusion indicators, even though the agents were never instructed to collude.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-27T09:51:48Z</published>
+    <arxiv:comment>10 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Jakub Seredyński</name>
+    </author>
+    <author>
+      <name>Georgios Tsaousoglou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.27508v1</id>
+    <title>WM-R1: Training GUI Agents to Reason and leverage World Models with Reinforcement Learning</title>
+    <updated>2026-08-27T07:09:28Z</updated>
+    <link href="https://arxiv.org/abs/2608.27508v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.27508v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>GUI agents trained with reinforcement learning (RL) have showcased strong environment learning capabilities on mobile platforms. However, RL typically demands extensive real-environment interactions, leading to high resource costs and instability, especially in GUI scenarios. To address these, we propose WM-R1, the first reinforcement learning framework that trains mobile GUI agents with world models instead of real environments. Specifically, world models serve as the source of state transitions during all rollouts, replacing the real Android environment within the training loop. WM-R1 also embeds world models directly into the thinking process, enabling agents to reason about the consequences of candidate actions before committing to the final action. Crucially, WM-R1 eliminates the need for real-environment interaction, supports massively parallelized and step-level granularized trajectory generation grounded in world models, and introduces a multi-dimensional rule-based reward that jointly optimizes task success, trajectory efficiency, and world model utilization. For efficient training, we curate a high-quality dataset of 2000 challenging tasks. Experiments on Android mobile benchmarks demonstrate that WM-R1-trained agents significantly outperform GRPO-only baselines and inference-time simulation methods. Code is available at https://github.com/genalyu/WM-R1 .</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-27T07:09:28Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yu Han</name>
+    </author>
+    <author>
+      <name>Tianwen Qian</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.17235v2</id>
+    <title>Safe Deep Reinforcement Learning for Energy-Efficient HVAC Control in Multi-Zone Residential Buildings</title>
+    <updated>2026-08-21T18:16:19Z</updated>
+    <link href="https://arxiv.org/abs/2608.17235v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.17235v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>HVAC systems represent a major share of building energy consumption. Traditional control strategies are limited in coordinating energy-comfort tradeoffs across multiple zones simultaneously. Reinforcement learning (RL) offers adaptive, data-driven control that optimizes performance over time. However, deploying learned neural network controllers in safety-critical building systems remains challenging due to lack of formal safety guarantees. We propose a safety-certified deep RL framework for multi-zone residential HVAC control. Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC) agents are trained in an EnergyPlus/Sinergym simulation to minimize energy consumption while maintaining thermal comfort. Post-training safety certification is performed on the PPO policy using Lipschitz-based forward invariance analysis, building on existing tools for the computation of Lipschitz constants for neural networks, to guarantee constraint satisfaction. Both agents are evaluated over an annual simulation cycle in an eight-zone variable refrigerant flow (VRF) testbed. The PPO agent achieves 67\% comfort violation reduction compared to rule-based control, while the SAC agent achieves 27.6\% energy savings. The PPO policy satisfies formal safety certification with a margin of $2.003^\circ$C. These results demonstrate the feasibility of combining reinforcement learning with post-training safety verification for multi-zone building control.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-18T00:49:04Z</published>
+    <arxiv:comment>6 pages, 5 figures. Accepted to IEEE Conference on Control Technology and Applications (CCTA) 2026</arxiv:comment>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Oussama Ziadi</name>
+    </author>
+    <author>
+      <name>Abdelilah Rochd</name>
+    </author>
+    <author>
+      <name>Samir Idrissi Kaitouni</name>
+    </author>
+    <author>
+      <name>Mohamed Oualid Mghazli</name>
+    </author>
+    <author>
+      <name>Adnane Saoud</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.16326v1</id>
+    <title>KC-BFPRL: Knowledge-Guided Multi-UAV Collaboration for Grassland Restoration via Bilevel Formerpointer-Based Reinforcement Learning</title>
+    <updated>2026-08-17T09:30:48Z</updated>
+    <link href="https://arxiv.org/abs/2608.16326v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.16326v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-unmanned aerial vehicle (UAV) systems provide scalable service platforms for large-scale environmental tasks, such as grassland ecosystem restoration. However, coordinating fleet operations requires solving the restoration area maximization problem (RAMP). This non-linear combinatorial optimization challenge is complicated by payload-dependent energy dynamics and heterogeneous ecological degradation. We propose a novel knowledge-guided collaborative bilevel formerpointer reinforcement learning framework (KC-BFPRL) to address this complexity. Using a hierarchical paradigm, KC-BFPRL decomposes RAMP into global task allocation and local restoration planning, with the latter further divided into upper-level trajectory planning and lower-level restoration area allocation. Our specialized architecture pairs featuring a Transformer-based encoder that fuses static environmental features with dynamic UAV states, and a Pointer Network decoder trained via a robust actor-critic framework. By embedding ecological priority rules and heuristic logic, KC-BFPRL achieves a structured warm-start, solving the RL cold-start problem while ensuring strict constraint satisfaction. Extensive experiments demonstrate that KC-BFPRL consistently outperforms state-of-the-art baselines, achieving superior objective values and efficiency. It maintains a $0.00\%$ optimality gap in the most complex scenarios U8-R160 and operates nearly three times faster than MAPDP, validating its robustness, scalability, and real-time applicability for large-scale automated ecological restoration.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-17T09:30:48Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Dongbin Jiao</name>
+    </author>
+    <author>
+      <name>Xianyi Wang</name>
+    </author>
+    <author>
+      <name>Yuchen Yuan</name>
+    </author>
+    <author>
+      <name>Weibo Yang</name>
+    </author>
+    <author>
+      <name>Peng Yang</name>
+    </author>
+    <author>
+      <name>Peng Zhao</name>
+    </author>
+    <author>
+      <name>Zhanhuan Shang</name>
+    </author>
+    <author>
+      <name>Shi Yan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.15977v1</id>
+    <title>DER Allocation without Load Prediction via Reinforcement Learning</title>
+    <updated>2026-08-17T00:06:58Z</updated>
+    <link href="https://arxiv.org/abs/2608.15977v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.15977v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The growing variability of renewable generation increases the need for fast and flexible grid-balancing mechanisms. Existing frameworks for distributed energy resource aggregations (DERAs) rely on short-term forecasts of net demand, making their performance highly sensitive to prediction errors. In this paper we present a forecast-free reinforcement learning (RL) framework for DERA allocation that learns optimal policies directly from operational data. We model the DERA dynamics as a deterministic linear system and the exogenous net load as a feature-based linear Markov process, capturing short-range temporal dependencies without explicit forecasting. We derive a closed-form expression for the optimal policy, which is learned through a least-squares value iteration (LSVI) algorithm using data collected across episodes. The proposed framework preserves the interpretability and constraint satisfaction of DER model while adapting to stochastic demand variations through data-driven updates. Numerical experiments on real California Independent System Operator (CAISO) net-demand data demonstrate that the learned controller achieves high tracking accuracy and stable regulation across heterogeneous DER aggregators without requiring any demand prediction.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-17T00:06:58Z</published>
+    <arxiv:comment>5 pages. Presented at the 2026 IEEE Power &amp; Energy Society General Meeting (PES GM)</arxiv:comment>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Abed AlRahman Al Makdah</name>
+    </author>
+    <author>
+      <name>Aravind Ramana</name>
+    </author>
+    <author>
+      <name>Shaofeng Zou</name>
+    </author>
+    <author>
+      <name>Oliver Kosut</name>
+    </author>
+    <author>
+      <name>Lalitha Sankar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.03833v1</id>
+    <title>History Matters: Meta-policy Delegation with Heterogeneous Multi-agent Reinforcement Learning</title>
+    <updated>2026-08-04T15:39:40Z</updated>
+    <link href="https://arxiv.org/abs/2608.03833v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.03833v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>AI agents are expected to play an increasingly important role in future decision-making systems. In this paper, we consider collaborative systems composed of heterogeneous multi-agent systems (MAS), where their members have different capabilities and operating costs. We study how agents can delegate tasks to one another so that certain research tasks can be completed effectively under resource-constrained scenarios. We first develop a multi-agent reinforcement learning-based (MARL) delegation training that enables agents to make sequential delegation decisions while minimizing the total execution cost. We then extend this approach to MARL with prescribed delegation topologies. Furthermore, we introduce two new frameworks for collaboration and delegation in multi-agent systems. The first framework proposes that an agent's policy depends not only on the current state of the underlying Markov decision process but also on the interaction history, including previous joint actions. This history-dependent formulation can improve coordination even in fully observable environments, where conventional MARL methods typically restrict policies to depend only on the current state. The second framework proposes a novel, potentially multi-dimensional monetary mechanism to facilitate the collaboration and delegation for MAS.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-04T15:39:40Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Ziqing Lu</name>
+    </author>
+    <author>
+      <name>Avinash Reddy Mudireddy</name>
+    </author>
+    <author>
+      <name>Sarra Alqahtani</name>
+    </author>
+    <author>
+      <name>Weiyu Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.03409v1</id>
+    <title>Hierarchical Constrained Reinforcement Learning with Dynamic Boundary for Spatio-Temporal Vehicle-to-Grid Scheduling</title>
+    <updated>2026-08-04T10:04:08Z</updated>
+    <link href="https://arxiv.org/abs/2608.03409v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.03409v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The rapid proliferation of Electric Vehicles (EVs) introduces significant spatio-temporal uncertainties into power grids, while Vehicle-to-Grid (V2G) technology offers critical flexibility through bidirectional power flow. However, integrating large-scale EVs into the Optimal Power Flow framework presents substantial challenges due to computational bottlenecks arising from solver complexity and coupled spatio-temporal constraints. Existing Reinforcement Learning (RL) methods often struggle to balance strict constraint satisfaction with scalability in highly dynamic EV fleet environments. To address these challenges, this paper proposes a Hierarchical Policy for Constrained Reinforcement Learning (HPC-RL) framework for spatially and temporally coupled V2G scheduling. The framework adopts a two-layer architecture: the upper level utilizes a RL algorithm based on the Generalized Reduced Gradient method to strictly enforce spatial grid-level hard constraints; the lower level implements a novel dynamic boundary strategy to compute real-time feasible charging power bounds for individual EVs, thereby ensuring the satisfaction of temporal charging demands. This integrated design not only enables the simultaneous handling of spatially and temporally coupled constraints during the RL optimization process but also significantly enhances generalization capabilities for large-scale fleets through hierarchical decoupling. Extensive experiments on IEEE 14, 30, and modified 141-bus systems demonstrate that HPC-RL outperforms Model Predictive Control and state-of-the-art safe RL baselines across all metrics. The proposed method achieves near-optimal scheduling strategies and drastically reduces online computation time in large-scale scenarios from hours to minutes, while maintaining a near-zero constraint violation rate and nearly 100\% charging demand satisfaction.</summary>
+    <category term="cs.CE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-04T10:04:08Z</published>
+    <arxiv:comment>WAICA 2026 Best Student Paper Award Runner-Up</arxiv:comment>
+    <arxiv:primary_category term="cs.CE"/>
+    <author>
+      <name>Haoyu Yan</name>
+    </author>
+    <author>
+      <name>Shutong Ding</name>
+    </author>
+    <author>
+      <name>Jiebao Zhang</name>
+    </author>
+    <author>
+      <name>Xi Yao</name>
+    </author>
+    <author>
+      <name>Yu Liu</name>
+    </author>
+    <author>
+      <name>Haoyu Wang</name>
+    </author>
+    <author>
+      <name>Chenchi Luo</name>
+    </author>
+    <author>
+      <name>Ye Shi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.00494v1</id>
+    <title>TaPR: Test-Aware Policy Refinement for Feedback-Conditioned Code Generation</title>
+    <updated>2026-08-01T07:35:06Z</updated>
+    <link href="https://arxiv.org/abs/2608.00494v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.00494v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-turn code agents rely on execution feedback to repair incorrect programs, yet standard reinforcement learning paradigms optimize and evaluate policy performance primarily using single-shot outcome rewards. This misalignment conflates initial code generation with feedback-driven refinement, discards granular execution signals across intermediate turns, and fails to evaluate whether the policy actually acquires self-repair capabilities. We propose Test-aware Policy Refinement (TaPR), a framework that transforms execution feedback into a dense per-turn test-pass-ratio reward under a consistent multi-turn interaction protocol. Across six models on 219 code-generation problems from LiveCodeBench, TaPR improves the pooled three-turn success rate (Pass@3) by 2.44 percentage points. In the predefined 7B/8B high-headroom slice, pooled accuracy increases from 30.25% to 33.56% (+3.31 pp), with 42 improvements and 13 regressions in paired trials. On a matched Qwen3-8B ablation, the dense reward supplies nonzero feedback in all of the first ten steps and reaches a higher Hard-subset peak than outcome-only GRPO within the tested budget, although GRPO nearly matches pooled Pass@3 by step 300. Our primary contribution is a reward-decomposition framework and a turn-aware evaluation protocol that decouple first-shot generation quality from multi-turn repair competence.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-01T07:35:06Z</published>
+    <arxiv:comment>9 pages, 3 figures, 3 tables. Aofan Liu and Jingxiang Meng contributed equally; Fangxin Liu and Yongbiao Chen are corresponding authors</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Aofan Liu</name>
+    </author>
+    <author>
+      <name>Jingxiang Meng</name>
+    </author>
+    <author>
+      <name>Fangxin Liu</name>
+    </author>
+    <author>
+      <name>Yongbiao Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.29025v2</id>
+    <title>Evaluation-Verification Reward for Consistent Multi-Reference Image Editing</title>
+    <updated>2026-08-05T10:28:47Z</updated>
+    <link href="https://arxiv.org/abs/2607.29025v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.29025v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>While recent image editing models have made rapid progress, multi-reference editing remains challenging, particularly in maintaining visual consistency across references and ensuring overall visual harmony. Reinforcement learning has proven highly effective for text-to-image generation and single-image editing, but its extension to multi-reference editing is hindered by the absence of suitable reward models that capture multi-image relational constraints. Moreover, naively using multimodal large language models(MLLMs) as zero-shot evaluators faces a key tension between hallucination-prone long-form reasoning and the limited deductive power of short-form judgments. We address these issues with a Multi-dimensional Evaluation-Verification Reward(EVR). EVR decomposes evaluation into distinct visual criteria; for each criterion, an MLLM Evaluator generates multiple candidate hypotheses, and a Verifier grounds each claim in concrete visual evidence to accept or reject it, producing reliable and fine-grained reward signals. Together with a scalable data pipeline, our method enables RL fine-tuning of off-the-shelf editors without architectural changes. Extensive experiments show substantial gains over the base Qwen-Image-Edit, improving consistency and harmony to match or surpass NanoBanana.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-31T04:54:20Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Yingmao Miao</name>
+    </author>
+    <author>
+      <name>Pengfei Zhang</name>
+    </author>
+    <author>
+      <name>Xiaochen Lv</name>
+    </author>
+    <author>
+      <name>Meng Yu</name>
+    </author>
+    <author>
+      <name>Lei Sun</name>
+    </author>
+    <author>
+      <name>Xiangxiang Chu</name>
+    </author>
+    <author>
+      <name>Chao Shen</name>
+    </author>
+    <author>
+      <name>Chenhao Lin</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.27968v1</id>
+    <title>Beyond Binary Rewards: A Comparative Study of Reward Design for Reinforcement Unlearning</title>
+    <updated>2026-07-30T10:15:59Z</updated>
+    <link href="https://arxiv.org/abs/2607.27968v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.27968v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Machine unlearning seeks to selectively remove specific knowledge from trained language models without full retraining, a growing necessity under privacy regulations such as GDPR and the EU AI Act. Recent work has reformulated unlearning as a Reinforcement Learning with Verifiable Rewards (RLVR) problem, where models are optimized against verifiable rewards computed directly from their outputs. However, existing methods rely on sparse binary rewards that provide minimal learning signal, indicating only whether forbidden content was avoided, and limiting convergence speed. In this paper, we study how reward design affects unlearning efficiency within the Reinforcement Unlearning (RUL) framework. We introduce a principled reward decomposition framework that decouples verifiability from sparsity, and propose two new reward functions: an exponential reward that provides graded penalties based on the count of forbidden-concept occurrences, and a PageRank inspired reward that weights penalties by semantic importance. We conduct experiments on the Real World Knowledge Unlearning (RWKU) benchmark, demonstrating that both rewards consistently outperform the binary setting, while reaching similar forgetting performance up to $3\times$ faster and preserving general model utility. Our results show that reward design is a key driver of unlearning efficiency offering a practical path toward scalable and efficient machine unlearning.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-30T10:15:59Z</published>
+    <arxiv:comment>Accepted to WIPE-OUT 2 @ ECML-PKDD 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Efstratios Zaradoukas</name>
+    </author>
+    <author>
+      <name>Davide Gabrielli</name>
+    </author>
+    <author>
+      <name>Bardh Prenkaj</name>
+    </author>
+    <author>
+      <name>Gjergji Kasneci</name>
+    </author>
+  </entry>
+</feed>
