@@ -1,0 +1,109 @@
+{
+  "official_results_unchanged": true,
+  "source_sha256": {
+    "calls.jsonl": "f50923d959dd0eef97c1dec2c91fbdadb5aebe338938ef63895f24a3af03d44e",
+    "decisions.jsonl": "a7a20410f4b5ae390e76d1f9a7072fd59fac05623b3dcb6a53da7d56afe2d411",
+    "protocol.json": "2a1f9a7ba326877ba8a514ee0aa2b4131d8bc1422c8e5ceaa884585244b786ce",
+    "results.json": "a32a6c476a0c30c359bd600c5f2653f2eea6e8fecc4274bac71a45b03f8eec53",
+    "completion.json": "dcadfa0e3b483e7ddb245f9d114d3ac7ab95661575cd27fc3a0e42cebaa76b9c"
+  },
+  "known_good_structural_controls": 144,
+  "actual_parser_body_sha256": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+  "actual_parser_replayed_calls": 576,
+  "counts": {
+    "direct": {
+      "n": 144,
+      "cap_hit": 5,
+      "format:object_array": 139,
+      "structure:Exactly one tool per stage is required": 47,
+      "structure:All finish tools are required": 56,
+      "structure:valid_after_diagnostic_normalization": 27,
+      "structure:Duplicate tools are outside the v5 edit domain": 2,
+      "format:no_parseable_array": 5,
+      "structure:not_applicable": 5,
+      "structure:no_unambiguous_roles": 6,
+      "structure:Incomplete plan is outside the v5 edit domain": 1
+    },
+    "generic": {
+      "n": 144,
+      "cap_hit": 10,
+      "format:no_parseable_array": 9,
+      "structure:not_applicable": 9,
+      "format:object_array": 134,
+      "structure:All finish tools are required": 56,
+      "structure:no_unambiguous_roles": 48,
+      "structure:valid_after_diagnostic_normalization": 29,
+      "format:other_array": 1,
+      "structure:Exactly one tool per stage is required": 2
+    },
+    "pe": {
+      "n": 144,
+      "cap_hit": 11,
+      "format:object_array": 132,
+      "structure:Exactly one tool per stage is required": 33,
+      "structure:no_unambiguous_roles": 54,
+      "structure:All finish tools are required": 27,
+      "structure:valid_after_diagnostic_normalization": 15,
+      "structure:unknown_tool": 3,
+      "format:no_parseable_array": 12,
+      "structure:not_applicable": 12
+    },
+    "sft": {
+      "n": 144,
+      "cap_hit": 0,
+      "format:object_array": 144,
+      "structure:Exactly one tool per stage is required": 51,
+      "structure:All finish tools are required": 53,
+      "structure:no_unambiguous_roles": 18,
+      "structure:valid_after_diagnostic_normalization": 19,
+      "structure:Incomplete plan is outside the v5 edit domain": 3
+    }
+  },
+  "diagnostic_normalization_only": {
+    "direct": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.03125,
+      "safe": 0.03125,
+      "valid": 0.1875,
+      "none_n": 48,
+      "none_faithful": 0.0625,
+      "none_invalid": 37,
+      "none_valid_changed": 8
+    },
+    "generic": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.03125,
+      "safe": 0.041666666666666664,
+      "valid": 0.2013888888888889,
+      "none_n": 48,
+      "none_faithful": 0.10416666666666667,
+      "none_invalid": 38,
+      "none_valid_changed": 5
+    },
+    "pe": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.020833333333333332,
+      "safe": 0.020833333333333332,
+      "valid": 0.10416666666666667,
+      "none_n": 48,
+      "none_faithful": 0.020833333333333332,
+      "none_invalid": 43,
+      "none_valid_changed": 4
+    },
+    "sft": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.020833333333333332,
+      "safe": 0.020833333333333332,
+      "valid": 0.13194444444444445,
+      "none_n": 48,
+      "none_faithful": 0.0625,
+      "none_invalid": 41,
+      "none_valid_changed": 4
+    }
+  },
+  "interpretation": "All official neural scores are zero. Role/object normalization is post-hoc diagnostic, never a replacement primary score or proof of parser effectiveness."
+}

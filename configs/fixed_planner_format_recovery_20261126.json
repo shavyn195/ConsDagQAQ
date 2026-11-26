@@ -1,0 +1,18 @@
+{
+  "experiment": "trusted-space-qwen3-4b-explicit-plan-format-recovery",
+  "model": "Qwen3-4B",
+  "groups": 48,
+  "smoke_groups": 2,
+  "arms": ["direct", "generic", "pe", "sft", "oracle_core"],
+  "max_new_tokens": 384,
+  "active_seconds_cap": 3600,
+  "smoke_min_string_arrays_per_arm": 5,
+  "smoke_min_valid_direct_and_oracle": 3,
+  "fixed": "/root/consdag_audits/local-planning-20261126/gpu-fixed-planner",
+  "dependency": "/root/consdag_audits/planner-structure-controls-20261126-v1/results",
+  "hypothesis": "An explicit string-array output contract can remove the observed universal object-array mismatch. Test basic structural capability before interpreting parser effects.",
+  "change": "Only the second-stage planner output-format instruction changes; all four real arms reuse their exact original first-stage outputs and same frozen planner weights. Oracle is diagnostic only.",
+  "budget": "At most 720 new planner calls / one GPU hour, including 30-call smoke. Reused compiler/summary costs are counted in reconstructed pipeline costs separately from new compute.",
+  "decision": "First two groups in the pre-existing fixed panel, not outcome-selected. Require >=5/6 string arrays in each arm AND >=3/6 strict valid plans in both direct and oracle before automatic expansion. No criterion uses SFT superiority. If smoke fails, preserve outputs, do not run the remaining 46 groups; next establish one common planning-format SFT starting point on train only.",
+  "interpretation": "Exploratory dev recovery after observing failure, not preregistered confirmation. Do not replace original all-zero results or normalize the primary output schema post hoc."
+}
