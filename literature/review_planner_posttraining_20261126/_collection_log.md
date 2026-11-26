@@ -9,7 +9,7 @@ Official arXiv query XML and parsed metadata are retained in this directory. Ret
 | Safety as a Budget: Calibrating the Control Channel of Constrained GRPO for Vision-Language Models | 2611.16628v1 | 10 | All pages, including technical appendices |
 | Policy Optimization With Multiple Verifiers via Pareto Rankings | 2611.19064v1 | 46 | p5 mostly read; one output truncated; remaining pages unread |
 | Are We Rewarding the Wrong Module? Module-Specific Policy Optimization for Multimodal Reinforcement Learning | 2611.32687v1 | 25 | All pages, including technical appendices |
-| CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting | 2611.31185v1 | 14 | abstract only |
+| CO-GRAFT: Attributing Reinforcement Learning Gains in Search Agents via Role-Level Policy Grafting | 2611.31185v1 | 14 | All pages, including technical appendices; completed in follow-up |
 | When Fine-Grained Credit Assignment Helps and Hurts: Multimodal Agentic Reinforcement Learning through Video Editing | 2610.35497v1 | 48 | abstract only |
 | VERA: Verifiable Feasibility Representations with Counterfactual Credit for Constrained Multi-Agent Control | 2609.38889v1 | 23 | All pages, including technical appendices |
 
@@ -18,3 +18,5 @@ Full-text comparison notes: deep_reading.md. Research proposal: ../../reports/pl
 Additional metadata-only candidates: Constrained GRPO 2602.05863v4 (updated 2026-09-02), ContractRL 2610.00328v2 (updated 2026-10-16). Do not treat metadata screening as a full reading or paper replication.
 
 Web search tool returned empty output earlier in this turn; usable evidence came from archived official API responses and downloaded PDFs. No invented web citations.
+
+2026-11-26 follow-up: CO-GRAFT full reading completed; total six fully read papers/116 pages. Abstract/main-text Query share bound (15%) conflicts with two Table 1 entries (16%); retained in notes. Cross-module attribution is proposed as an inherited analysis, not a new learning method.
