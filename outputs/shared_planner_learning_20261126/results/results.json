@@ -1,0 +1,276 @@
+{
+  "status": "complete",
+  "training": {
+    "status": "complete",
+    "steps": 96,
+    "planned_steps": 96,
+    "examples_seen": 384,
+    "trainable_parameters": 11796480,
+    "tokens": {
+      "prompt": 423044,
+      "completion": 11005
+    },
+    "elapsed_seconds": 182.65293146762997,
+    "peak_memory_bytes": 11150965760,
+    "adapter_sha256": {
+      "README.md": "bdb3f34762eabdb13e5d292d7d751e0e1a99b230fae744c06e119b927ce790fa",
+      "adapter_model.safetensors": "80d6376aa071cf53ffab2c6dede83eccab2b9bd6eaca272776605dfaa0b190af",
+      "adapter_config.json": "3b568734b91892b187c11b90ff63c14d9f921a9bc94078278bd13279b0be6970",
+      "chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "tokenizer_config.json": "2e3bd3cb5055f7a903a54e7062b2fd14d21b70f4174c3ffcd9fc81ec50a25631",
+      "tokenizer.json": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+    }
+  },
+  "load_seconds": 4.677205410785973,
+  "smoke_gate": {
+    "passed": true,
+    "counts": {
+      "direct": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "generic": {
+        "n": 6,
+        "strings": 6,
+        "valid": 5
+      },
+      "pe": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "sft": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "oracle_core": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      }
+    },
+    "criterion": "Format and structural validity only; never parser superiority"
+  },
+  "complete_ein_groups": 48,
+  "calls": 720,
+  "elapsed_seconds": 1067.901329449378,
+  "arms": {
+    "direct": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.15625,
+      "safe": 0.15625,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "generic": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.125,
+      "safe": 0.125,
+      "valid": 0.9722222222222222,
+      "none_n": 48,
+      "none_faithful": 0.8541666666666666,
+      "none_invalid": 2,
+      "none_valid_changed": 5
+    },
+    "pe": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.15625,
+      "safe": 0.15625,
+      "valid": 0.9930555555555556,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "sft": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.16666666666666666,
+      "safe": 0.16666666666666666,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "oracle_core": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.125,
+      "safe": 0.125,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    }
+  },
+  "paired": {
+    "generic": {
+      "delta": -0.03125,
+      "ci95": [
+        -0.125,
+        0.052083333333333336
+      ],
+      "groups": 48,
+      "wins": 5,
+      "losses": 8,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "pe": {
+      "delta": 0.0,
+      "ci95": [
+        -0.08333333333333333,
+        0.08333333333333333
+      ],
+      "groups": 48,
+      "wins": 6,
+      "losses": 6,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "sft": {
+      "delta": 0.010416666666666666,
+      "ci95": [
+        -0.0625,
+        0.07291666666666667
+      ],
+      "groups": 48,
+      "wins": 5,
+      "losses": 4,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "oracle_core": {
+      "delta": -0.03125,
+      "ci95": [
+        -0.07291666666666667,
+        0.010416666666666666
+      ],
+      "groups": 48,
+      "wins": 1,
+      "losses": 4,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    }
+  },
+  "sft_minus_generic": {
+    "delta": 0.041666666666666664,
+    "ci95": [
+      -0.041666666666666664,
+      0.125
+    ],
+    "groups": 48,
+    "wins": 9,
+    "losses": 5,
+    "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+  },
+  "cost": {
+    "direct": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 158874,
+        "output_tokens": 4053,
+        "seconds": 211.7926830947399
+      },
+      "reused_cost": {
+        "calls": 0,
+        "prompt_tokens": 0,
+        "output_tokens": 0,
+        "seconds": 0
+      },
+      "pipeline_cost": {
+        "calls": 144,
+        "prompt_tokens": 158874,
+        "output_tokens": 4053,
+        "seconds": 211.7926830947399
+      }
+    },
+    "generic": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 213444,
+        "output_tokens": 4067,
+        "seconds": 215.22144176159054
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 144906,
+        "output_tokens": 51710,
+        "seconds": 1617.778736853972
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 358350,
+        "output_tokens": 55777,
+        "seconds": 1833.0001786155626
+      }
+    },
+    "pe": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 188857,
+        "output_tokens": 4076,
+        "seconds": 213.00469117611647
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 104022,
+        "output_tokens": 27236,
+        "seconds": 853.1082340683788
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 292879,
+        "output_tokens": 31312,
+        "seconds": 1066.1129252444953
+      }
+    },
+    "sft": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 171536,
+        "output_tokens": 4076,
+        "seconds": 212.71565677970648
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 104022,
+        "output_tokens": 9926,
+        "seconds": 468.3911955039948
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 275558,
+        "output_tokens": 14002,
+        "seconds": 681.1068522837013
+      }
+    },
+    "oracle_core": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 166772,
+        "output_tokens": 4068,
+        "seconds": 211.56105690449476
+      },
+      "reused_cost": {
+        "calls": 0,
+        "prompt_tokens": 0,
+        "output_tokens": 0,
+        "seconds": 0
+      },
+      "pipeline_cost": {
+        "calls": 144,
+        "prompt_tokens": 166772,
+        "output_tokens": 4068,
+        "seconds": 211.56105690449476
+      }
+    }
+  },
+  "total_elapsed_seconds": 1250.662630232051
+}

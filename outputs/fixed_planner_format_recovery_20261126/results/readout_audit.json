@@ -1,0 +1,483 @@
+{
+  "records_replayed": 720,
+  "parser_sha256": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+  "source_receipt": {
+    "calls.jsonl": "74a05acb321ed379e823a13941e5288298c2e5438de519c4ba26b4f33da55ad9",
+    "completion.json": "21bea8b2f7f5f76a5b75ab20deecb39b6cd6eb018dcd93db7216631485c2ca3f",
+    "decisions.jsonl": "7558ea5e292f91cc50f92ab70230076d93e14a7f4d026099557e065b9bea790f",
+    "protocol.json": "62327b87632d2220eb5cd8db64dc3b4fc4ff9afc79623fbc37ede0940832a3b5",
+    "results.json": "b1a71e3895e4c9fa08584d955e4556412a7d035f73c950d67b62192e98e0e2fd",
+    "smoke_gate.json": "fe88c9db5ece923910e4d3267b3c3519ccb23f16a50e1839cafccf5842d7683e",
+    "waiter_state.json": "3b5d9f2617fdcb5ae44011522e4d789c0fe3632075655f130192b6b7679d79b0"
+  },
+  "arms": {
+    "direct": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.052083333333333336,
+      "safe": 0.052083333333333336,
+      "valid": 0.75,
+      "none_n": 48,
+      "none_faithful": 0.6458333333333334,
+      "none_invalid": 6,
+      "none_valid_changed": 11
+    },
+    "generic": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.07291666666666667,
+      "safe": 0.09375,
+      "valid": 0.7708333333333334,
+      "none_n": 48,
+      "none_faithful": 0.6041666666666666,
+      "none_invalid": 10,
+      "none_valid_changed": 9
+    },
+    "pe": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.08333333333333333,
+      "safe": 0.08333333333333333,
+      "valid": 0.7430555555555556,
+      "none_n": 48,
+      "none_faithful": 0.5833333333333334,
+      "none_invalid": 11,
+      "none_valid_changed": 9
+    },
+    "sft": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.052083333333333336,
+      "safe": 0.052083333333333336,
+      "valid": 0.7152777777777778,
+      "none_n": 48,
+      "none_faithful": 0.625,
+      "none_invalid": 7,
+      "none_valid_changed": 11
+    },
+    "oracle_core": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.041666666666666664,
+      "safe": 0.041666666666666664,
+      "valid": 0.7083333333333334,
+      "none_n": 48,
+      "none_faithful": 0.5833333333333334,
+      "none_invalid": 8,
+      "none_valid_changed": 12
+    }
+  },
+  "breakdown": {
+    "direct": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 27,
+        "safe_success": 5,
+        "faithful_success": 5,
+        "default_unchanged": 15
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 41,
+        "safe_success": 5,
+        "faithful_success": 5,
+        "default_unchanged": 29
+      },
+      "structural_errors": {
+        "Exactly one tool per stage is required": 15,
+        "All finish tools are required": 18,
+        "Duplicate tools are outside the v5 edit domain": 1,
+        "unknown_tool": 2
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 39,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 32
+      },
+      "type=order": {
+        "valid_plan_constraints": 29,
+        "violated": 19
+      },
+      "none": {
+        "n": 48,
+        "planned": 42,
+        "safe_success": 42,
+        "faithful_success": 31,
+        "default_unchanged": 31
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 42,
+        "safe_success": 42,
+        "faithful_success": 31,
+        "default_unchanged": 31
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 11,
+        "violated": 9
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 19,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 17
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 28,
+        "violated": 28
+      },
+      "type=budget": {
+        "valid_plan_constraints": 13,
+        "violated": 13
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 16,
+        "violated": 16
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 1
+      }
+    },
+    "generic": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 37,
+        "safe_success": 8,
+        "faithful_success": 6,
+        "default_unchanged": 18
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 42,
+        "safe_success": 8,
+        "faithful_success": 7,
+        "default_unchanged": 26
+      },
+      "type=order": {
+        "valid_plan_constraints": 40,
+        "violated": 25
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 36,
+        "safe_success": 1,
+        "faithful_success": 1,
+        "default_unchanged": 22
+      },
+      "none": {
+        "n": 48,
+        "planned": 38,
+        "safe_success": 38,
+        "faithful_success": 29,
+        "default_unchanged": 29
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 38,
+        "safe_success": 38,
+        "faithful_success": 29,
+        "default_unchanged": 29
+      },
+      "structural_errors": {
+        "Exactly one tool per stage is required": 9,
+        "All finish tools are required": 20,
+        "unknown_tool": 4
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 26,
+        "safe_success": 1,
+        "faithful_success": 0,
+        "default_unchanged": 12
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 27,
+        "violated": 26
+      },
+      "type=budget": {
+        "valid_plan_constraints": 12,
+        "violated": 9
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 17,
+        "violated": 16
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 13,
+        "violated": 10
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 5,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 2
+      }
+    },
+    "pe": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 33,
+        "safe_success": 7,
+        "faithful_success": 7,
+        "default_unchanged": 13
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 43,
+        "safe_success": 8,
+        "faithful_success": 8,
+        "default_unchanged": 27
+      },
+      "type=order": {
+        "valid_plan_constraints": 35,
+        "violated": 20
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 37,
+        "safe_success": 1,
+        "faithful_success": 1,
+        "default_unchanged": 26
+      },
+      "none": {
+        "n": 48,
+        "planned": 37,
+        "safe_success": 37,
+        "faithful_success": 28,
+        "default_unchanged": 28
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 37,
+        "safe_success": 37,
+        "faithful_success": 28,
+        "default_unchanged": 28
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 12,
+        "violated": 10
+      },
+      "structural_errors": {
+        "All finish tools are required": 23,
+        "Exactly one tool per stage is required": 11,
+        "valid_after_diagnostic_normalization": 1,
+        "unknown_tool": 2
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 21,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 11
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 26,
+        "violated": 26
+      },
+      "type=budget": {
+        "valid_plan_constraints": 14,
+        "violated": 14
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 16,
+        "violated": 16
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 1
+      }
+    },
+    "sft": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 30,
+        "safe_success": 5,
+        "faithful_success": 5,
+        "default_unchanged": 15
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 42,
+        "safe_success": 5,
+        "faithful_success": 5,
+        "default_unchanged": 30
+      },
+      "structural_errors": {
+        "Exactly one tool per stage is required": 23,
+        "All finish tools are required": 18
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 32,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 21
+      },
+      "type=order": {
+        "valid_plan_constraints": 26,
+        "violated": 13
+      },
+      "none": {
+        "n": 48,
+        "planned": 41,
+        "safe_success": 41,
+        "faithful_success": 30,
+        "default_unchanged": 30
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 41,
+        "safe_success": 41,
+        "faithful_success": 30,
+        "default_unchanged": 30
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 14,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 6
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 28,
+        "violated": 28
+      },
+      "type=budget": {
+        "valid_plan_constraints": 11,
+        "violated": 11
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 10,
+        "violated": 8
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 0
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 13,
+        "violated": 13
+      }
+    },
+    "oracle_core": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 29,
+        "safe_success": 4,
+        "faithful_success": 4,
+        "default_unchanged": 15
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 40,
+        "safe_success": 4,
+        "faithful_success": 4,
+        "default_unchanged": 29
+      },
+      "structural_errors": {
+        "Exactly one tool per stage is required": 21,
+        "All finish tools are required": 20,
+        "unknown_tool": 1
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 33,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 25
+      },
+      "type=order": {
+        "valid_plan_constraints": 25,
+        "violated": 17
+      },
+      "none": {
+        "n": 48,
+        "planned": 40,
+        "safe_success": 40,
+        "faithful_success": 28,
+        "default_unchanged": 28
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 40,
+        "safe_success": 40,
+        "faithful_success": 28,
+        "default_unchanged": 28
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 17,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 10
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 28,
+        "violated": 28
+      },
+      "type=budget": {
+        "valid_plan_constraints": 12,
+        "violated": 12
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 15,
+        "violated": 15
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 9,
+        "violated": 7
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 5,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 1
+      }
+    }
+  },
+  "prior_core_interface_matches": {
+    "n": 144,
+    "identical_predicted_oracle_prompts": 144
+  },
+  "note": "Existing recovered decisions only; no new model inference or repaired scoring. Type denominators are constraints among structurally valid plans, not all tasks."
+}

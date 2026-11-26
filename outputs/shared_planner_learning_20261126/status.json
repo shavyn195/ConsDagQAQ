@@ -1,0 +1,86 @@
+{
+  "utc": "2026-11-26T08:12:23.415403+00:00",
+  "launch.json": {
+    "pid": 252633,
+    "args": [
+      "/root/miniconda3/bin/python",
+      "/root/consdag_audits/shared-planner-learning-20261126-v2/scripts/research_followup/wait_shared_planner_sft.py",
+      "--root",
+      "/root/ConsDagV6Frozen",
+      "--out",
+      "/root/consdag_audits/shared-planner-learning-20261126-v2/results",
+      "--config",
+      "/root/consdag_audits/shared-planner-learning-20261126-v2/configs/shared_planner_learning_20261126.json"
+    ]
+  },
+  "results/waiter_state.json": {
+    "status": "complete",
+    "pid": 252633,
+    "utc": "2026-11-26T08:04:11.718222+00:00",
+    "exit_code": 0,
+    "completion": {
+      "status": "complete",
+      "results_sha256": "2e2c35f62cd4d574753c26f1e54e331051e8256bab41151d2a655499adc61037"
+    }
+  },
+  "results/completion.json": {
+    "status": "complete",
+    "results_sha256": "2e2c35f62cd4d574753c26f1e54e331051e8256bab41151d2a655499adc61037"
+  },
+  "results/smoke_gate.json": {
+    "passed": true,
+    "counts": {
+      "direct": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "generic": {
+        "n": 6,
+        "strings": 6,
+        "valid": 5
+      },
+      "pe": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "sft": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      },
+      "oracle_core": {
+        "n": 6,
+        "strings": 6,
+        "valid": 6
+      }
+    },
+    "criterion": "Format and structural validity only; never parser superiority"
+  },
+  "results/training.json": {
+    "status": "complete",
+    "steps": 96,
+    "planned_steps": 96,
+    "examples_seen": 384,
+    "trainable_parameters": 11796480,
+    "tokens": {
+      "prompt": 423044,
+      "completion": 11005
+    },
+    "elapsed_seconds": 182.65293146762997,
+    "peak_memory_bytes": 11150965760,
+    "adapter_sha256": {
+      "README.md": "bdb3f34762eabdb13e5d292d7d751e0e1a99b230fae744c06e119b927ce790fa",
+      "adapter_model.safetensors": "80d6376aa071cf53ffab2c6dede83eccab2b9bd6eaca272776605dfaa0b190af",
+      "adapter_config.json": "3b568734b91892b187c11b90ff63c14d9f921a9bc94078278bd13279b0be6970",
+      "chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+      "tokenizer_config.json": "2e3bd3cb5055f7a903a54e7062b2fd14d21b70f4174c3ffcd9fc81ec50a25631",
+      "tokenizer.json": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+    }
+  },
+  "calls.jsonl": 720,
+  "train_steps.jsonl": 96,
+  "log_tail": "l_rows_reached\": 121, \"calls\": 605}\n{\"eval_rows_reached\": 122, \"calls\": 610}\n{\"eval_rows_reached\": 123, \"calls\": 615}\n{\"eval_rows_reached\": 124, \"calls\": 620}\n{\"eval_rows_reached\": 125, \"calls\": 625}\n{\"eval_rows_reached\": 126, \"calls\": 630}\n{\"eval_rows_reached\": 127, \"calls\": 635}\n{\"eval_rows_reached\": 128, \"calls\": 640}\n{\"eval_rows_reached\": 129, \"calls\": 645}\n{\"eval_rows_reached\": 130, \"calls\": 650}\n{\"eval_rows_reached\": 131, \"calls\": 655}\n{\"eval_rows_reached\": 132, \"calls\": 660}\n{\"eval_rows_reached\": 133, \"calls\": 665}\n{\"eval_rows_reached\": 134, \"calls\": 670}\n{\"eval_rows_reached\": 135, \"calls\": 675}\n{\"eval_rows_reached\": 136, \"calls\": 680}\n{\"eval_rows_reached\": 137, \"calls\": 685}\n{\"eval_rows_reached\": 138, \"calls\": 690}\n{\"eval_rows_reached\": 139, \"calls\": 695}\n{\"eval_rows_reached\": 140, \"calls\": 700}\n{\"eval_rows_reached\": 141, \"calls\": 705}\n{\"eval_rows_reached\": 142, \"calls\": 710}\n{\"eval_rows_reached\": 143, \"calls\": 715}\n{\"eval_rows_reached\": 144, \"calls\": 720}\n{\"status\": \"complete\", \"pid\": 252633, \"utc\": \"2026-11-26T08:04:11.718222+00:00\", \"exit_code\": 0, \"completion\": {\"status\": \"complete\", \"results_sha256\": \"2e2c35f62cd4d574753c26f1e54e331051e8256bab41151d2a655499adc61037\"}}\n",
+  "gpu": "2026/11/26 16:12:25.108, 39 %, 8488 MiB\n"
+}

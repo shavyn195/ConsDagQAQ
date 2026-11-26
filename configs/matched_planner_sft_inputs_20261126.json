@@ -1,0 +1,46 @@
+{
+  "experiment": "matched-planner-SFT-inputs",
+  "model": "Qwen3-4B",
+  "seed": 42,
+  "train_groups": 32,
+  "train_selection_salt": "matched-planner-sft-inputs-train-20261126:",
+  "epochs": 1,
+  "learning_rate": 0.0002,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "gradient_accumulation_steps": 4,
+  "max_seq_len": 2048,
+  "weight_decay": 0.01,
+  "gradient_checkpointing": true,
+  "train_seconds_cap": 600,
+  "eval_seconds_cap": 1200,
+  "active_seconds_cap": 4800,
+  "groups": 48,
+  "max_new_tokens": 384,
+  "fixed": "/root/consdag_audits/local-planning-20261126/gpu-fixed-planner",
+  "dependency": "/root/consdag_audits/planner-learning-signal-20261126-v2/results",
+  "hypothesis": "With identical additional supervised targets and parent checkpoint, does training the planner to consume predicted constraints improve compared with raw-only training? Cross-evaluate both input forms for each trained model.",
+  "target": "Identical verified gold witness/default plans; raw compiler predictions are input only, never the target truth.",
+  "comparison": "32 new complete train groups excluding all parent training groups, same order/seed/one epoch/24 optimizer steps per arm; raw/contract 2x2 evaluation on the same 48 dev groups.",
+  "budget": "96 compiler calls, two 24-update SFT arms, 576 planner calls. Compiler cap 15 minutes; train 10 minutes per arm; eval 20 minutes per arm; outer 80 minutes. Report total generation and training costs, not equal-compute claims.",
+  "interpretation": "Exploratory single seed and small continuation; inherited architecture not a novelty claim. GRPO axis remains pending. No selection using auxiliary superiority.",
+  "accepted_dependency_statuses": [
+    "complete"
+  ],
+  "worker": "matched_planner_sft.py",
+  "parent": "/root/consdag_audits/shared-planner-learning-20261126-v2/results",
+  "initial_planner_adapter": "/root/consdag_audits/shared-planner-learning-20261126-v2/results/adapter",
+  "expected_parent_config_sha256": "f7cad78075572adf590b03dde35ea313a65b7c98bd7a482f54356a8a02fa4b02",
+  "training_inputs": [
+    "raw",
+    "contract"
+  ],
+  "compile_seconds_cap": 900
+}

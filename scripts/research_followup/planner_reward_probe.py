@@ -40,12 +40,12 @@ def outcome_vector(row, candidate):
                 constraint_passes=passes, valid=True)
 
 
-def summarize_groups(records, size):
+def summarize_groups(records, size, arms=('raw_request', 'predicted_contract')):
     grouped = defaultdict(list)
     for record in records:
         grouped[(record['sample_id'], record['arm'])].append(record)
     output = {}
-    for arm in ('raw_request', 'predicted_contract'):
+    for arm in arms:
         complete = [rs for (sid, a), rs in grouped.items() if a == arm and len(rs) == size]
         if any(len({r['draw'] for r in rs}) != size for rs in complete):
             raise ValueError('Duplicate draw in a rollout group')

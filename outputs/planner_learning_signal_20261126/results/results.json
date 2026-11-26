@@ -1,0 +1,1990 @@
+{
+  "status": "complete",
+  "calls": 384,
+  "groups": {
+    "base_raw": {
+      "complete_prompt_groups": 24,
+      "partial_prompt_groups": 0,
+      "all_zero_groups": 14,
+      "constant_scalar_groups": 23,
+      "constant_scalar_variable_components": 1,
+      "constant_scalar_variable_constraints_all_valid": 0,
+      "invalid_calls": 26,
+      "safe_calls": 37
+    },
+    "base_contract": {
+      "complete_prompt_groups": 24,
+      "partial_prompt_groups": 0,
+      "all_zero_groups": 15,
+      "constant_scalar_groups": 21,
+      "constant_scalar_variable_components": 3,
+      "constant_scalar_variable_constraints_all_valid": 0,
+      "invalid_calls": 33,
+      "safe_calls": 31
+    },
+    "sft_raw": {
+      "complete_prompt_groups": 24,
+      "partial_prompt_groups": 0,
+      "all_zero_groups": 11,
+      "constant_scalar_groups": 20,
+      "constant_scalar_variable_components": 4,
+      "constant_scalar_variable_constraints_all_valid": 4,
+      "invalid_calls": 0,
+      "safe_calls": 43
+    },
+    "sft_contract": {
+      "complete_prompt_groups": 24,
+      "partial_prompt_groups": 0,
+      "all_zero_groups": 10,
+      "constant_scalar_groups": 19,
+      "constant_scalar_variable_components": 5,
+      "constant_scalar_variable_constraints_all_valid": 5,
+      "invalid_calls": 0,
+      "safe_calls": 45
+    }
+  },
+  "comparison_signal": {
+    "arms": {
+      "base_contract": {
+        "complete_prompt_groups": 24,
+        "all_valid_constrained_groups": 8,
+        "available_groups": {
+          "all_pass_varies": 0,
+          "pass_rate_varies": 0,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": 0
+        },
+        "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+      },
+      "base_raw": {
+        "complete_prompt_groups": 24,
+        "all_valid_constrained_groups": 10,
+        "available_groups": {
+          "all_pass_varies": 0,
+          "pass_rate_varies": 0,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": 0
+        },
+        "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+      },
+      "sft_contract": {
+        "complete_prompt_groups": 24,
+        "all_valid_constrained_groups": 16,
+        "available_groups": {
+          "all_pass_varies": 5,
+          "pass_rate_varies": 9,
+          "dominance_edges": 9,
+          "variable_but_no_dominance": 1
+        },
+        "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+      },
+      "sft_raw": {
+        "complete_prompt_groups": 24,
+        "all_valid_constrained_groups": 16,
+        "available_groups": {
+          "all_pass_varies": 4,
+          "pass_rate_varies": 8,
+          "dominance_edges": 8,
+          "variable_but_no_dominance": 0
+        },
+        "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+      }
+    },
+    "cases": [
+      {
+        "sample_id": "dev-00097-E",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-E",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00097-I",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-I",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00097-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00097-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00097-N",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00097-N",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00281-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00281-E",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00281-E",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00281-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00281-I",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00281-I",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00281-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00281-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00281-N",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00281-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00281-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00281-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00094-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00094-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00094-E",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00094-E",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00094-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00094-I",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00094-I",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00094-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00094-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00094-N",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00094-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00094-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00168-E",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00168-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00168-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": true,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": true,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00168-E",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00168-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00168-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 3,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00168-I",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00168-I",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00168-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00168-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00168-N",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00168-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00014-E",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-E",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-I",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00014-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00014-I",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": false,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00014-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00014-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00014-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00014-N",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00130-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-E",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-E",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-I",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-I",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00130-N",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00130-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00130-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00130-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00057-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-E",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-E",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-I",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-I",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00057-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00057-N",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00057-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00057-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00290-E",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00290-E",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 4,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00290-E",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00290-E",
+        "arm": "base_raw",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00290-I",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00290-I",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 2,
+          "all_pass_varies": true,
+          "pass_rate_varies": true,
+          "dominance_edges": 3,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        }
+      },
+      {
+        "sample_id": "dev-00290-I",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00290-I",
+        "arm": "base_contract",
+        "all_valid": false,
+        "constrained": true,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        },
+        "constraints_only": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": true
+        }
+      },
+      {
+        "sample_id": "dev-00290-N",
+        "arm": "sft_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00290-N",
+        "arm": "base_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00290-N",
+        "arm": "base_contract",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      },
+      {
+        "sample_id": "dev-00290-N",
+        "arm": "sft_raw",
+        "all_valid": true,
+        "constrained": false,
+        "full_components": {
+          "distinct_vectors": 1,
+          "all_pass_varies": false,
+          "pass_rate_varies": false,
+          "dominance_edges": 0,
+          "variable_but_no_dominance": false,
+          "all_zero_vectors": false
+        },
+        "constraints_only": null
+      }
+    ]
+  },
+  "load_seconds": 3.6960552213713527,
+  "elapsed_seconds": 491.1062459498644,
+  "prompt_tokens": 444232,
+  "output_tokens": 10676,
+  "planner_seconds": 486.61172619182616,
+  "scope": "Same prompt panel, output contract and draw seeds; different frozen policies. No optimizer update. Cached compiler cost excluded. Not a POLPO or GRPO reproduction."
+}

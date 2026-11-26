@@ -1,0 +1,523 @@
+{
+  "records_replayed": 720,
+  "parser_sha256": "182d76a52022d71275be13dba7e704efc1a8fb4056ca143a7340fce296db9b60",
+  "source_receipt": {
+    "protocol.json": "10e97ea4d65d1b41c360ce7c45bba8ddb52f9a34b7bf6d44f8f7b00ae3296591",
+    "waiter_state.json": "61041427305ba8d2a6de3c24408048384f3e40c7392652cc31dbc612bbd9771e",
+    "train_steps.jsonl": "168c8d3be2a2b44cb1d62ac93a81d870850251f246b834c1d821ced08a667dcd",
+    "training.json": "ebe67a014743c25b753dfcea8092062a2da050dd63b02b2865bd6a94fe9388af",
+    "calls.jsonl": "7cde0f31b64e1a19fc629649f446a0571d579ff3ca5793c955d0a614e6d3af17",
+    "decisions.jsonl": "bcbec57821da50917820b191263520a7e454f57e8602e650b14fb68706388b52",
+    "smoke_gate.json": "06c4d1d3265e92547b90f81be7e0d471c1083f134a9f6dc9020b5a7e00588f69",
+    "results.json": "2e2c35f62cd4d574753c26f1e54e331051e8256bab41151d2a655499adc61037",
+    "completion.json": "0a2ca9463e0d9671c906d439250165aeae1389ecfc1883d9ac91e7ad9a399787"
+  },
+  "arms": {
+    "direct": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.15625,
+      "safe": 0.15625,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "generic": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.125,
+      "safe": 0.125,
+      "valid": 0.9722222222222222,
+      "none_n": 48,
+      "none_faithful": 0.8541666666666666,
+      "none_invalid": 2,
+      "none_valid_changed": 5
+    },
+    "pe": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.15625,
+      "safe": 0.15625,
+      "valid": 0.9930555555555556,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "sft": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.16666666666666666,
+      "safe": 0.16666666666666666,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    },
+    "oracle_core": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.125,
+      "safe": 0.125,
+      "valid": 1.0,
+      "none_n": 48,
+      "none_faithful": 0.9583333333333334,
+      "none_invalid": 0,
+      "none_valid_changed": 2
+    }
+  },
+  "breakdown": {
+    "direct": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 12,
+        "faithful_success": 12,
+        "default_unchanged": 28
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 56,
+        "safe_success": 14,
+        "faithful_success": 14,
+        "default_unchanged": 36
+      },
+      "type=order": {
+        "valid_plan_constraints": 48,
+        "violated": 32
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 3,
+        "faithful_success": 3,
+        "default_unchanged": 37
+      },
+      "none": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 18,
+        "violated": 10
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 34,
+        "safe_success": 1,
+        "faithful_success": 1,
+        "default_unchanged": 26
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 38,
+        "violated": 38
+      },
+      "type=budget": {
+        "valid_plan_constraints": 18,
+        "violated": 16
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 20,
+        "violated": 20
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 3
+      }
+    },
+    "generic": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 10,
+        "faithful_success": 10,
+        "default_unchanged": 25
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 55,
+        "safe_success": 12,
+        "faithful_success": 12,
+        "default_unchanged": 35
+      },
+      "type=order": {
+        "valid_plan_constraints": 48,
+        "violated": 32
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 46,
+        "safe_success": 2,
+        "faithful_success": 2,
+        "default_unchanged": 32
+      },
+      "none": {
+        "n": 48,
+        "planned": 46,
+        "safe_success": 46,
+        "faithful_success": 41,
+        "default_unchanged": 41
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 46,
+        "safe_success": 46,
+        "faithful_success": 41,
+        "default_unchanged": 41
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 17,
+        "violated": 12
+      },
+      "structural_errors": {
+        "All finish tools are required": 2,
+        "Exactly one tool per stage is required": 2
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 33,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 18
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 37,
+        "violated": 34
+      },
+      "type=budget": {
+        "valid_plan_constraints": 17,
+        "violated": 14
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 20,
+        "violated": 20
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 4
+      }
+    },
+    "pe": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 47,
+        "safe_success": 9,
+        "faithful_success": 9,
+        "default_unchanged": 30
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 55,
+        "safe_success": 15,
+        "faithful_success": 15,
+        "default_unchanged": 37
+      },
+      "type=order": {
+        "valid_plan_constraints": 47,
+        "violated": 29
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 6,
+        "faithful_success": 6,
+        "default_unchanged": 38
+      },
+      "none": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 18,
+        "violated": 12
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 34,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 27
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 38,
+        "violated": 38
+      },
+      "type=budget": {
+        "valid_plan_constraints": 18,
+        "violated": 18
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 20,
+        "violated": 20
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 4
+      },
+      "structural_errors": {
+        "unknown_tool": 1
+      }
+    },
+    "sft": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 12,
+        "faithful_success": 12,
+        "default_unchanged": 26
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 56,
+        "safe_success": 16,
+        "faithful_success": 16,
+        "default_unchanged": 37
+      },
+      "type=order": {
+        "valid_plan_constraints": 48,
+        "violated": 26
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 4,
+        "faithful_success": 4,
+        "default_unchanged": 38
+      },
+      "none": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 18,
+        "violated": 12
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 34,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 24
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 38,
+        "violated": 38
+      },
+      "type=budget": {
+        "valid_plan_constraints": 18,
+        "violated": 18
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 20,
+        "violated": 20
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 3
+      }
+    },
+    "oracle_core": {
+      "all": {
+        "n": 144,
+        "string_array": 144,
+        "cap_hits": 0
+      },
+      "explicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 9,
+        "faithful_success": 9,
+        "default_unchanged": 27
+      },
+      "constraints=1": {
+        "n": 56,
+        "planned": 56,
+        "safe_success": 12,
+        "faithful_success": 12,
+        "default_unchanged": 38
+      },
+      "type=order": {
+        "valid_plan_constraints": 48,
+        "violated": 31
+      },
+      "implicit": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 3,
+        "faithful_success": 3,
+        "default_unchanged": 37
+      },
+      "none": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "constraints=0": {
+        "n": 48,
+        "planned": 48,
+        "safe_success": 48,
+        "faithful_success": 46,
+        "default_unchanged": 46
+      },
+      "type=tool_auth": {
+        "valid_plan_constraints": 18,
+        "violated": 14
+      },
+      "constraints=2": {
+        "n": 34,
+        "planned": 34,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 23
+      },
+      "type=deadline": {
+        "valid_plan_constraints": 38,
+        "violated": 38
+      },
+      "type=budget": {
+        "valid_plan_constraints": 18,
+        "violated": 14
+      },
+      "type=privacy": {
+        "valid_plan_constraints": 20,
+        "violated": 20
+      },
+      "constraints=3": {
+        "n": 6,
+        "planned": 6,
+        "safe_success": 0,
+        "faithful_success": 0,
+        "default_unchanged": 3
+      }
+    }
+  },
+  "same_arm_after_minus_before": {
+    "direct": {
+      "delta": 0.10416666666666667,
+      "ci95": [
+        0.03125,
+        0.1875
+      ],
+      "groups": 48,
+      "wins": 11,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "generic": {
+      "delta": 0.052083333333333336,
+      "ci95": [
+        -0.020833333333333332,
+        0.125
+      ],
+      "groups": 48,
+      "wins": 7,
+      "losses": 2,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "pe": {
+      "delta": 0.07291666666666667,
+      "ci95": [
+        0.0,
+        0.15625
+      ],
+      "groups": 48,
+      "wins": 9,
+      "losses": 2,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "sft": {
+      "delta": 0.11458333333333333,
+      "ci95": [
+        0.03125,
+        0.19791666666666666
+      ],
+      "groups": 48,
+      "wins": 12,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "oracle_core": {
+      "delta": 0.08333333333333333,
+      "ci95": [
+        0.020833333333333332,
+        0.15625
+      ],
+      "groups": 48,
+      "wins": 9,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    }
+  },
+  "prior_core_interface_matches": {
+    "n": 144,
+    "identical_predicted_oracle_prompts": 144
+  },
+  "note": "Existing recovered decisions only; no new model inference or repaired scoring. Type denominators are constraints among structurally valid plans, not all tasks."
+}

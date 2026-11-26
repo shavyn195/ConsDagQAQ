@@ -1,0 +1,49 @@
+{
+  "experiment": "trusted-space-shared-planner-learning-v2",
+  "model": "Qwen3-4B",
+  "seed": 42,
+  "train_groups": 128,
+  "train_selection_salt": "shared-planner-sft-train-20261126:",
+  "epochs": 1,
+  "learning_rate": 0.0002,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "gradient_accumulation_steps": 4,
+  "max_seq_len": 2048,
+  "weight_decay": 0.01,
+  "gradient_checkpointing": true,
+  "train_seconds_cap": 1800,
+  "eval_seconds_cap": 3600,
+  "active_seconds_cap": 5500,
+  "groups": 48,
+  "smoke_groups": 2,
+  "arms": [
+    "direct",
+    "generic",
+    "pe",
+    "sft",
+    "oracle_core"
+  ],
+  "max_new_tokens": 384,
+  "smoke_min_string_arrays_per_arm": 5,
+  "smoke_min_valid_direct_and_oracle": 3,
+  "fixed": "/root/consdag_audits/local-planning-20261126/gpu-fixed-planner",
+  "dependency": "/root/consdag_audits/fixed-planner-format-recovery-20261126-v1/results",
+  "launch_condition": "New exploratory run registered after the complete prompt-only diagnostic. V1 correctly skipped and remains preserved. Start only after the exact completed diagnostic and a free exclusive GPU lock.",
+  "hypothesis": "After explicit formatting repairs the syntactic floor, one shared train-only semantic planner initialization may enable useful constraint consumption. Parser utility remains an empirical question; no positive-result launch or checkpoint selection.",
+  "target": "Verified minimal witness plans for E/I, default plans for N. This teaches task semantics as well as format; do not describe it as pure format supervision.",
+  "comparison": "All evaluation arms share the identical final planner adapter. Same saved first-stage calls, same output instruction, same panel and decoding. No evaluation-based checkpoint selection.",
+  "budget": "One epoch on 384 rows, exactly 96 optimizer steps if complete. Stop at 30-minute training cap and preserve partial checkpoint; do not evaluate an incomplete training run as the registered final model. Evaluation first 30-call gate, then at most 720 calls/one hour.",
+  "interpretation": "Exploratory recovery on previously exposed dev. A shared direct-input-trained planner may favor direct input; this is a controlled initialization, not a claim that auxiliary representations received matched training. Later input-by-training factorial comparisons are still required.",
+  "accepted_dependency_statuses": [
+    "complete"
+  ],
+  "dependency_results_sha256": "b1a71e3895e4c9fa08584d955e4556412a7d035f73c950d67b62192e98e0e2fd"
+}

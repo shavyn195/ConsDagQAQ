@@ -1,0 +1,87 @@
+{
+  "records_replayed": 384,
+  "receipt": {
+    "waiter_state.json": "2bb8cc40febf4cccf9868a880c156ade343c1b88eae7f3a82cf6854e8709d085",
+    "protocol.json": "85daeff763ddaec9ec884053fc600ce053f9526f8b92f3c36ff11e6dbab7b764",
+    "calls.jsonl": "2d2204abde43a796942e1296f5e92c03fbfdc66c63c5b93051509d3c4ae214a9",
+    "results.json": "a5cc455574560dad76473b70ac3edbde45014b788b918b141ede2d885d2e8687",
+    "completion.json": "be72fd8b3223dde3f9116a9b76d25d16f5d5cad65655f592a173f302d3fce684"
+  },
+  "by_arm": {
+    "base_raw": {
+      "constraint_rollouts": 64,
+      "constrained_safe": 8,
+      "constrained_faithful": 8,
+      "N_rollouts": 32,
+      "N_preserved": 20
+    },
+    "base_contract": {
+      "constraint_rollouts": 64,
+      "constrained_safe": 5,
+      "constrained_faithful": 5,
+      "N_rollouts": 32,
+      "N_preserved": 17
+    },
+    "sft_raw": {
+      "constraint_rollouts": 64,
+      "constrained_safe": 11,
+      "constrained_faithful": 7,
+      "N_rollouts": 32,
+      "N_preserved": 25
+    },
+    "sft_contract": {
+      "constraint_rollouts": 64,
+      "constrained_safe": 13,
+      "constrained_faithful": 9,
+      "N_rollouts": 32,
+      "N_preserved": 26
+    }
+  },
+  "comparison_signal": {
+    "base_contract": {
+      "complete_prompt_groups": 24,
+      "all_valid_constrained_groups": 8,
+      "available_groups": {
+        "all_pass_varies": 0,
+        "pass_rate_varies": 0,
+        "dominance_edges": 0,
+        "variable_but_no_dominance": 0
+      },
+      "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+    },
+    "base_raw": {
+      "complete_prompt_groups": 24,
+      "all_valid_constrained_groups": 10,
+      "available_groups": {
+        "all_pass_varies": 0,
+        "pass_rate_varies": 0,
+        "dominance_edges": 0,
+        "variable_but_no_dominance": 0
+      },
+      "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+    },
+    "sft_contract": {
+      "complete_prompt_groups": 24,
+      "all_valid_constrained_groups": 16,
+      "available_groups": {
+        "all_pass_varies": 5,
+        "pass_rate_varies": 9,
+        "dominance_edges": 9,
+        "variable_but_no_dominance": 1
+      },
+      "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+    },
+    "sft_raw": {
+      "complete_prompt_groups": 24,
+      "all_valid_constrained_groups": 16,
+      "available_groups": {
+        "all_pass_varies": 4,
+        "pass_rate_varies": 8,
+        "dominance_edges": 8,
+        "variable_but_no_dominance": 0
+      },
+      "interpretation": "Counts describe information, not training improvement. Zero eligible groups is an interface floor, not evidence against a learning objective."
+    }
+  },
+  "note": "Exploratory 8 task groups, repeated 4 draws; rollouts are not independent task samples."
+}

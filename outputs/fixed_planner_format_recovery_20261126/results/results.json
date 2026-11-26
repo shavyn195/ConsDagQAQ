@@ -1,0 +1,254 @@
+{
+  "status": "complete",
+  "smoke_gate": {
+    "passed": true,
+    "counts": {
+      "direct": {
+        "n": 6,
+        "strings": 6,
+        "valid": 4
+      },
+      "generic": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      },
+      "pe": {
+        "n": 6,
+        "strings": 6,
+        "valid": 4
+      },
+      "sft": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      },
+      "oracle_core": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      }
+    },
+    "criterion": "Format and structural validity only; never parser superiority"
+  },
+  "complete_ein_groups": 48,
+  "arms": {
+    "direct": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.052083333333333336,
+      "safe": 0.052083333333333336,
+      "valid": 0.75,
+      "none_n": 48,
+      "none_faithful": 0.6458333333333334,
+      "none_invalid": 6,
+      "none_valid_changed": 11
+    },
+    "generic": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.07291666666666667,
+      "safe": 0.09375,
+      "valid": 0.7708333333333334,
+      "none_n": 48,
+      "none_faithful": 0.6041666666666666,
+      "none_invalid": 10,
+      "none_valid_changed": 9
+    },
+    "pe": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.08333333333333333,
+      "safe": 0.08333333333333333,
+      "valid": 0.7430555555555556,
+      "none_n": 48,
+      "none_faithful": 0.5833333333333334,
+      "none_invalid": 11,
+      "none_valid_changed": 9
+    },
+    "sft": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.052083333333333336,
+      "safe": 0.052083333333333336,
+      "valid": 0.7152777777777778,
+      "none_n": 48,
+      "none_faithful": 0.625,
+      "none_invalid": 7,
+      "none_valid_changed": 11
+    },
+    "oracle_core": {
+      "n": 144,
+      "constrained_n": 96,
+      "faithful": 0.041666666666666664,
+      "safe": 0.041666666666666664,
+      "valid": 0.7083333333333334,
+      "none_n": 48,
+      "none_faithful": 0.5833333333333334,
+      "none_invalid": 8,
+      "none_valid_changed": 12
+    }
+  },
+  "paired": {
+    "generic": {
+      "delta": 0.020833333333333332,
+      "ci95": [
+        -0.020833333333333332,
+        0.0625
+      ],
+      "groups": 48,
+      "wins": 3,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "pe": {
+      "delta": 0.03125,
+      "ci95": [
+        0.0,
+        0.07291666666666667
+      ],
+      "groups": 48,
+      "wins": 3,
+      "losses": 0,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "sft": {
+      "delta": 0.0,
+      "ci95": [
+        -0.03125,
+        0.03125
+      ],
+      "groups": 48,
+      "wins": 1,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    },
+    "oracle_core": {
+      "delta": -0.010416666666666666,
+      "ci95": [
+        -0.03125,
+        0.0
+      ],
+      "groups": 48,
+      "wins": 0,
+      "losses": 1,
+      "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+    }
+  },
+  "sft_minus_generic": {
+    "delta": -0.020833333333333332,
+    "ci95": [
+      -0.052083333333333336,
+      0.0
+    ],
+    "groups": 48,
+    "wins": 0,
+    "losses": 2,
+    "note": "Pointwise exploratory task-group bootstrap; fixed model weights, not seed uncertainty"
+  },
+  "load_seconds": 3.7781389532610774,
+  "elapsed_seconds": 737.146490175277,
+  "calls": 720,
+  "cost": {
+    "direct": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 158874,
+        "output_tokens": 3979,
+        "seconds": 142.93611159548163
+      },
+      "reused_cost": {
+        "calls": 0,
+        "prompt_tokens": 0,
+        "output_tokens": 0,
+        "seconds": 0
+      },
+      "pipeline_cost": {
+        "calls": 144,
+        "prompt_tokens": 158874,
+        "output_tokens": 3979,
+        "seconds": 142.93611159548163
+      }
+    },
+    "generic": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 213444,
+        "output_tokens": 4030,
+        "seconds": 149.82430963404477
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 144906,
+        "output_tokens": 51710,
+        "seconds": 1617.778736853972
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 358350,
+        "output_tokens": 55740,
+        "seconds": 1767.6030464880168
+      }
+    },
+    "pe": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 188857,
+        "output_tokens": 4052,
+        "seconds": 148.64842470828444
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 104022,
+        "output_tokens": 27236,
+        "seconds": 853.1082340683788
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 292879,
+        "output_tokens": 31288,
+        "seconds": 1001.7566587766632
+      }
+    },
+    "sft": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 171536,
+        "output_tokens": 4006,
+        "seconds": 144.63269239477813
+      },
+      "reused_cost": {
+        "calls": 144,
+        "prompt_tokens": 104022,
+        "output_tokens": 9926,
+        "seconds": 468.3911955039948
+      },
+      "pipeline_cost": {
+        "calls": 288,
+        "prompt_tokens": 275558,
+        "output_tokens": 13932,
+        "seconds": 613.023887898773
+      }
+    },
+    "oracle_core": {
+      "new_cost": {
+        "calls": 144,
+        "prompt_tokens": 166772,
+        "output_tokens": 3993,
+        "seconds": 144.13551387004554
+      },
+      "reused_cost": {
+        "calls": 0,
+        "prompt_tokens": 0,
+        "output_tokens": 0,
+        "seconds": 0
+      },
+      "pipeline_cost": {
+        "calls": 144,
+        "prompt_tokens": 166772,
+        "output_tokens": 3993,
+        "seconds": 144.13551387004554
+      }
+    }
+  }
+}

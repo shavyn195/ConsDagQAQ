@@ -1,5 +1,5 @@
 {
-  "utc": "2026-11-26T06:27:40.442096+00:00",
+  "utc": "2026-11-26T07:28:40.385544+00:00",
   "launch.json": {
     "pid": 250237,
     "args": [
@@ -14,13 +14,51 @@
     ]
   },
   "results/waiter_state.json": {
-    "status": "waiting_for_structural_supplement",
+    "status": "complete",
     "pid": 250237,
-    "utc": "2026-11-26T06:12:25.257886+00:00"
+    "utc": "2026-11-26T07:10:30.823398+00:00",
+    "exit_code": 0,
+    "completion": {
+      "status": "complete",
+      "results_sha256": "b1a71e3895e4c9fa08584d955e4556412a7d035f73c950d67b62192e98e0e2fd"
+    }
   },
-  "results/completion.json": null,
-  "results/smoke_gate.json": null,
-  "calls": 0,
-  "log_tail": "{\"status\": \"waiting_for_structural_supplement\", \"pid\": 250237, \"utc\": \"2026-11-26T06:12:25.257886+00:00\"}\n",
-  "gpu": "2026/11/26 14:27:42.094, 50 %, 8474 MiB\n"
+  "results/completion.json": {
+    "status": "complete",
+    "results_sha256": "b1a71e3895e4c9fa08584d955e4556412a7d035f73c950d67b62192e98e0e2fd"
+  },
+  "results/smoke_gate.json": {
+    "passed": true,
+    "counts": {
+      "direct": {
+        "n": 6,
+        "strings": 6,
+        "valid": 4
+      },
+      "generic": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      },
+      "pe": {
+        "n": 6,
+        "strings": 6,
+        "valid": 4
+      },
+      "sft": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      },
+      "oracle_core": {
+        "n": 6,
+        "strings": 6,
+        "valid": 3
+      }
+    },
+    "criterion": "Format and structural validity only; never parser superiority"
+  },
+  "calls": 720,
+  "log_tail": "4}\n{\"rows_reached\": 138, \"calls\": 690, \"elapsed_s\": 710.7326253168285}\n{\"rows_reached\": 139, \"calls\": 695, \"elapsed_s\": 714.6145781995729}\n{\"rows_reached\": 140, \"calls\": 700, \"elapsed_s\": 718.4160319399089}\n{\"rows_reached\": 141, \"calls\": 705, \"elapsed_s\": 722.6074833860621}\n{\"rows_reached\": 142, \"calls\": 710, \"elapsed_s\": 727.3738018488511}\n{\"rows_reached\": 143, \"calls\": 715, \"elapsed_s\": 732.1935173058882}\n{\"rows_reached\": 144, \"calls\": 720, \"elapsed_s\": 737.1177213080227}\n{\"status\": \"complete\", \"pid\": 250237, \"utc\": \"2026-11-26T07:10:30.823398+00:00\", \"exit_code\": 0, \"completion\": {\"status\": \"complete\", \"results_sha256\": \"b1a71e3895e4c9fa08584d955e4556412a7d035f73c950d67b62192e98e0e2fd\"}}\n",
+  "gpu": "2026/11/26 15:28:42.075, 0 %, 1 MiB\n"
 }

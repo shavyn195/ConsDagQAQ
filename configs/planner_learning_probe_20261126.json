@@ -1,0 +1,33 @@
+{
+  "experiment": "shared-planner-SFT-by-contract-G4-diagnostic",
+  "status": "exploratory_inference_only_no_policy_update",
+  "model": "Qwen3-4B",
+  "precision": "bf16",
+  "groups": 8,
+  "samples_per_prompt": 4,
+  "arms": [
+    "base_raw",
+    "base_contract",
+    "sft_raw",
+    "sft_contract"
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_new_tokens": 384,
+  "seed": 261126,
+  "selection_salt": "planner-reward-signal-20261126:",
+  "exclude_fixed_planner_groups": 48,
+  "active_seconds_cap": 1800,
+  "maximum_model_calls": 384,
+  "compiler": "Cached frozen v6 Qwen3-4B seed42 dev raw outputs; no gold in model inputs; compiler cost excluded and explicitly not an end-to-end cost comparison.",
+  "launch_gate": "Only after shared-planner-learning-v2 training AND evaluation complete, with verified final adapter, shared GPU lock and idle check. Never accept a partial adapter.",
+  "hypothesis": "At matched frozen policy and prompt panel, measure scalar/Pareto learning-signal availability before and after shared SFT, with and without the same cached predicted contract.",
+  "decision": "Report complete G=4 groups, all partial/invalid calls and all costs. If no constant-scalar/variable-constraint groups appear, this pilot does not support that motivation. A positive count motivates an independent larger probe, not an effectiveness or novelty claim.",
+  "scope": "Exploratory already-exposed dev diagnostic; no optimization. Preserves G4, original diagnostic selection salt, seeds and decoding; only prompt contract and trained-policy factor are new. Not independent confirmation.",
+  "worker": "planner_learning_probe.py",
+  "dependency": "/root/consdag_audits/shared-planner-learning-20261126-v2/results",
+  "accepted_dependency_statuses": [
+    "complete"
+  ],
+  "expected_training_config_sha256": "f7cad78075572adf590b03dde35ea313a65b7c98bd7a482f54356a8a02fa4b02"
+}
