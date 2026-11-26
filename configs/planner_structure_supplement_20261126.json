@@ -1,0 +1,14 @@
+{
+  "experiment": "trusted-space-qwen3-4b-planner-interface-controls",
+  "model": "Qwen3-4B",
+  "groups": 48,
+  "arms": ["discarded_pe", "predicted_core", "oracle_core"],
+  "max_new_tokens": 384,
+  "active_seconds_cap": 3600,
+  "previous": "/root/consdag_audits/local-planning-20261126/gpu-fixed-planner",
+  "reward_probe": "/root/consdag_audits/planner-reward-signal-20261126-v1/results",
+  "hypothesis": "At a fixed base planner, isolate extra-call compute from auxiliary content; compare the full predicted compiler record with its type+params projection, and compare predicted vs gold using the identical core envelope.",
+  "cost_contract": "Reuse and account the exact frozen first-stage calls. Report newly incurred GPU time separately from reconstructed pipeline cost. The discarded-PE control is a greedy reproducibility/budget sanity control, not an extra reasoning opportunity. Oracle has privileged labels and is diagnostic only.",
+  "selection": "Same pre-existing 48 dev E/I/N groups as fixed-planner-v1; no selection by observed success. No heldout tuning. Incomplete E/I/N groups are excluded from paired estimates but all calls and failures remain reported.",
+  "decision": "Parser value needs SFT vs direct AND generic decomposition, with N preservation and costs. Predicted-core vs full-record tests representation only. Oracle-core vs predicted-core diagnoses compiler error; oracle-core failure diagnoses planner/interface limits. No arm alone proves necessity or novelty."
+}
