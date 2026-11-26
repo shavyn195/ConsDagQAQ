@@ -1,0 +1,946 @@
+{
+  "coverage": {
+    "continuation_train": {
+      "rows": 96,
+      "constrained_rows": 64,
+      "instances": {
+        "privacy": 22,
+        "order": 30,
+        "deadline": 12,
+        "tool_auth": 18,
+        "budget": 16
+      }
+    },
+    "shared_initial_train": {
+      "rows": 384,
+      "constrained_rows": 256,
+      "instances": {
+        "order": 100,
+        "tool_auth": 54,
+        "budget": 82,
+        "privacy": 72,
+        "deadline": 76
+      }
+    },
+    "dev": {
+      "rows": 144,
+      "constrained_rows": 96,
+      "instances": {
+        "order": 48,
+        "tool_auth": 18,
+        "deadline": 38,
+        "budget": 18,
+        "privacy": 20
+      }
+    }
+  },
+  "counts": {
+    "deadline_failed_valid": 35,
+    "some_one_edit_fixes_all": 23,
+    "some_one_edit_fixes_deadline": 28,
+    "some_one_edit_reduces_time": 35,
+    "time_reduction_without_new_violations": 35,
+    "some_one_edit_reaches_faithful": 19
+  },
+  "cases": [
+    {
+      "sample_id": "dev-00031-E",
+      "variant": "explicit",
+      "group_id": "dev-00031",
+      "constraint_types": [
+        "deadline",
+        "budget"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "call_external_api",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 360,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00031-I",
+      "variant": "implicit",
+      "group_id": "dev-00031",
+      "constraint_types": [
+        "deadline",
+        "budget"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 455,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00011-E",
+      "variant": "explicit",
+      "group_id": "dev-00011",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "run_production_mode",
+        "generate_analysis_report",
+        "cross_check_data_quality",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 420,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00011-I",
+      "variant": "implicit",
+      "group_id": "dev-00011",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "anonymize_sensitive_fields",
+        "run_production_mode",
+        "generate_analysis_report",
+        "cross_check_data_quality",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 485,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 31,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00134-E",
+      "variant": "explicit",
+      "group_id": "dev-00134",
+      "constraint_types": [
+        "deadline",
+        "privacy",
+        "order"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "anonymize_sensitive_fields",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 340,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 39,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00134-I",
+      "variant": "implicit",
+      "group_id": "dev-00134",
+      "constraint_types": [
+        "deadline",
+        "privacy",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "anonymize_sensitive_fields",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 445,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 39,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00237-I",
+      "variant": "implicit",
+      "group_id": "dev-00237",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 460,
+      "limit_minutes": 420,
+      "valid_one_edit_candidates": 38,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00007-E",
+      "variant": "explicit",
+      "group_id": "dev-00007",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 460,
+      "limit_minutes": 180,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00007-I",
+      "variant": "implicit",
+      "group_id": "dev-00007",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 460,
+      "limit_minutes": 180,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00026-E",
+      "variant": "explicit",
+      "group_id": "dev-00026",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "minutes": 500,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 46,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00026-I",
+      "variant": "implicit",
+      "group_id": "dev-00026",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "call_external_api",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "minutes": 500,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 46,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00214-I",
+      "variant": "implicit",
+      "group_id": "dev-00214",
+      "constraint_types": [
+        "deadline",
+        "budget",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "minutes": 475,
+      "limit_minutes": 360,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00317-E",
+      "variant": "explicit",
+      "group_id": "dev-00317",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "minutes": 375,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00317-I",
+      "variant": "implicit",
+      "group_id": "dev-00317",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "deliver_report_to_team"
+      ],
+      "minutes": 375,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00299-E",
+      "variant": "explicit",
+      "group_id": "dev-00299",
+      "constraint_types": [
+        "budget",
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 600,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 38,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00299-I",
+      "variant": "implicit",
+      "group_id": "dev-00299",
+      "constraint_types": [
+        "budget",
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 600,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 38,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00163-E",
+      "variant": "explicit",
+      "group_id": "dev-00163",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "call_external_api",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 370,
+      "limit_minutes": 360,
+      "valid_one_edit_candidates": 29,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00163-I",
+      "variant": "implicit",
+      "group_id": "dev-00163",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 400,
+      "limit_minutes": 360,
+      "valid_one_edit_candidates": 29,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00177-E",
+      "variant": "explicit",
+      "group_id": "dev-00177",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files"
+      ],
+      "minutes": 490,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 41,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00177-I",
+      "variant": "implicit",
+      "group_id": "dev-00177",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "archive_project_files"
+      ],
+      "minutes": 490,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 41,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00192-E",
+      "variant": "explicit",
+      "group_id": "dev-00192",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 395,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00192-I",
+      "variant": "implicit",
+      "group_id": "dev-00192",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 395,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00261-E",
+      "variant": "explicit",
+      "group_id": "dev-00261",
+      "constraint_types": [
+        "order",
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "execute_sandbox_job",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 725,
+      "limit_minutes": 420,
+      "valid_one_edit_candidates": 46,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00261-I",
+      "variant": "implicit",
+      "group_id": "dev-00261",
+      "constraint_types": [
+        "order",
+        "deadline"
+      ],
+      "original_plan": [
+        "request_data_access",
+        "mount_data_into_sandbox",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "deliver_report_to_team",
+        "notify_stakeholders"
+      ],
+      "minutes": 565,
+      "limit_minutes": 420,
+      "valid_one_edit_candidates": 46,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00022-E",
+      "variant": "explicit",
+      "group_id": "dev-00022",
+      "constraint_types": [
+        "deadline",
+        "privacy"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "anonymize_sensitive_fields",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 280,
+      "limit_minutes": 180,
+      "valid_one_edit_candidates": 27,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00022-I",
+      "variant": "implicit",
+      "group_id": "dev-00022",
+      "constraint_types": [
+        "deadline",
+        "privacy"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "anonymize_sensitive_fields",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 280,
+      "limit_minutes": 180,
+      "valid_one_edit_candidates": 27,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": false,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00131-E",
+      "variant": "explicit",
+      "group_id": "dev-00131",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 390,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00131-I",
+      "variant": "implicit",
+      "group_id": "dev-00131",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "purchase_data_asset",
+        "upload_data_asset",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 310,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00077-E",
+      "variant": "explicit",
+      "group_id": "dev-00077",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 325,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 33,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00077-I",
+      "variant": "implicit",
+      "group_id": "dev-00077",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "purchase_data_asset",
+        "run_production_mode",
+        "aggregate_dataset_stats",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 260,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 33,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00318-E",
+      "variant": "explicit",
+      "group_id": "dev-00318",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "minutes": 480,
+      "limit_minutes": 420,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00034-E",
+      "variant": "explicit",
+      "group_id": "dev-00034",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "archive_project_files",
+        "notify_stakeholders"
+      ],
+      "minutes": 260,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00034-I",
+      "variant": "implicit",
+      "group_id": "dev-00034",
+      "constraint_types": [
+        "deadline",
+        "order"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "upload_data_asset",
+        "run_production_mode",
+        "generate_analysis_report",
+        "notify_stakeholders",
+        "archive_project_files"
+      ],
+      "minutes": 260,
+      "limit_minutes": 240,
+      "valid_one_edit_candidates": 34,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": false,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": false
+    },
+    {
+      "sample_id": "dev-00123-E",
+      "variant": "explicit",
+      "group_id": "dev-00123",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "minutes": 410,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    },
+    {
+      "sample_id": "dev-00123-I",
+      "variant": "implicit",
+      "group_id": "dev-00123",
+      "constraint_types": [
+        "deadline"
+      ],
+      "original_plan": [
+        "download_raw_file",
+        "execute_sandbox_job",
+        "generate_analysis_report",
+        "archive_project_files",
+        "deliver_report_to_team"
+      ],
+      "minutes": 410,
+      "limit_minutes": 300,
+      "valid_one_edit_candidates": 35,
+      "deadline_failed_valid": true,
+      "some_one_edit_fixes_all": true,
+      "some_one_edit_fixes_deadline": true,
+      "some_one_edit_reduces_time": true,
+      "time_reduction_without_new_violations": true,
+      "some_one_edit_reaches_faithful": true
+    }
+  ],
+  "source_decisions_sha256": "81d11e60c95457ab0b1050a74917cc1e086b65e68a3ea55a0175f9a1149f6c5f",
+  "scope": "Oracle-label offline diagnostic of exposed dev errors. Existing one_edits neighborhood only; not a new repair algorithm, no changed model score, absence in this neighborhood is not a global impossibility proof."
+}
