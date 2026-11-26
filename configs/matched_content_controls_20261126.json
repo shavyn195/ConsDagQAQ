@@ -1,0 +1,48 @@
+{
+  "experiment": "matched-generic-PE-planner-SFT-controls",
+  "model": "Qwen3-4B",
+  "seed": 42,
+  "train_groups": 32,
+  "train_selection_salt": "matched-planner-sft-inputs-train-20261126:",
+  "epochs": 1,
+  "learning_rate": 0.0002,
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "gradient_accumulation_steps": 4,
+  "max_seq_len": 2048,
+  "weight_decay": 0.01,
+  "gradient_checkpointing": true,
+  "train_seconds_cap": 300,
+  "eval_seconds_cap": 1200,
+  "active_seconds_cap": 5400,
+  "groups": 48,
+  "max_new_tokens": 384,
+  "fixed": "/root/consdag_audits/local-planning-20261126/gpu-fixed-planner",
+  "dependency": "/root/consdag_audits/raw-contract-planner-grpo-20261126-v1/results",
+  "hypothesis": "After matching planner training to auxiliary inputs, does a learned constraint compiler outperform generic decomposition and PE compiler inputs?",
+  "target": "Identical verified gold witness/default plans; raw compiler predictions are input only, never the target truth.",
+  "comparison": "Same parent, 96 tasks/targets/order/seed/24 SFT updates; each generic/PE-trained planner evaluated on raw, own auxiliary and same predicted SFT-contract input.",
+  "budget": "192 base first-stage calls, two24-step SFT arms,864 greedy planning calls. First stage30min,train5min per arm,eval20min per arm,outer90min.",
+  "interpretation": "Complements completed raw/contract matched SFT. No new mechanism claim; retain capped first-stage output and report unequal token/compute cost.",
+  "accepted_dependency_statuses": [
+    "complete"
+  ],
+  "worker": "matched_content_controls.py",
+  "parent": "/root/consdag_audits/shared-planner-learning-20261126-v2/results",
+  "initial_planner_adapter": "/root/consdag_audits/shared-planner-learning-20261126-v2/results/adapter",
+  "expected_parent_config_sha256": "f7cad78075572adf590b03dde35ea313a65b7c98bd7a482f54356a8a02fa4b02",
+  "training_inputs": [
+    "generic",
+    "pe"
+  ],
+  "compile_seconds_cap": 1800,
+  "matched": "/root/consdag_audits/matched-planner-sft-inputs-20261126-v1/results",
+  "expected_matched_config_sha256": "ce5a25552dffa7a3115f9cd7d823e250a4a94855b95f6d76340976943222703a"
+}
