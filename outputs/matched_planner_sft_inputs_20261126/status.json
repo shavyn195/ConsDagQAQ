@@ -1,5 +1,5 @@
 {
-  "utc": "2026-11-26T08:18:33.766736+00:00",
+  "utc": "2026-11-26T08:46:02.120070+00:00",
   "launch.json": {
     "pid": 253601,
     "args": [
@@ -14,27 +14,74 @@
     ]
   },
   "results/waiter_state.json": {
-    "status": "running",
+    "status": "complete",
     "pid": 253601,
-    "utc": "2026-11-26T08:15:01.719751+00:00",
-    "child_pid": 253612
-  },
-  "results/completion.json": null,
-  "results/smoke_gate.json": null,
-  "results/training.json": null,
-  "calls.jsonl": 0,
-  "train_steps.jsonl": 0,
-  "compiler_calls.jsonl": 51,
-  "subruns": {
-    "raw_sft": {
-      "steps": 0,
-      "training": null
-    },
-    "contract_sft": {
-      "steps": 0,
-      "training": null
+    "utc": "2026-11-26T08:37:56.464277+00:00",
+    "exit_code": 0,
+    "completion": {
+      "status": "complete",
+      "results_sha256": "7dd2b726a3552dfc6bfb051f98887e9536f698f9d648d00cec147421fe9ae838"
     }
   },
-  "log_tail": "total\": 96}\n{\"compiler_calls\": 19, \"total\": 96}\n{\"compiler_calls\": 20, \"total\": 96}\n{\"compiler_calls\": 21, \"total\": 96}\n{\"compiler_calls\": 22, \"total\": 96}\n{\"compiler_calls\": 23, \"total\": 96}\n{\"compiler_calls\": 24, \"total\": 96}\n{\"compiler_calls\": 25, \"total\": 96}\n{\"compiler_calls\": 26, \"total\": 96}\n{\"compiler_calls\": 27, \"total\": 96}\n{\"compiler_calls\": 28, \"total\": 96}\n{\"compiler_calls\": 29, \"total\": 96}\n{\"compiler_calls\": 30, \"total\": 96}\n{\"compiler_calls\": 31, \"total\": 96}\n{\"compiler_calls\": 32, \"total\": 96}\n{\"compiler_calls\": 33, \"total\": 96}\n{\"compiler_calls\": 34, \"total\": 96}\n{\"compiler_calls\": 35, \"total\": 96}\n{\"compiler_calls\": 36, \"total\": 96}\n{\"compiler_calls\": 37, \"total\": 96}\n{\"compiler_calls\": 38, \"total\": 96}\n{\"compiler_calls\": 39, \"total\": 96}\n{\"compiler_calls\": 40, \"total\": 96}\n{\"compiler_calls\": 41, \"total\": 96}\n{\"compiler_calls\": 42, \"total\": 96}\n{\"compiler_calls\": 43, \"total\": 96}\n{\"compiler_calls\": 44, \"total\": 96}\n{\"compiler_calls\": 45, \"total\": 96}\n{\"compiler_calls\": 46, \"total\": 96}\n{\"compiler_calls\": 47, \"total\": 96}\n{\"compiler_calls\": 48, \"total\": 96}\n{\"compiler_calls\": 49, \"total\": 96}\n{\"compiler_calls\": 50, \"total\": 96}\n{\"compiler_calls\": 51, \"total\": 96}\n",
-  "gpu": "2026/11/26 16:18:35.419, 40 %, 8336 MiB\n"
+  "results/completion.json": {
+    "status": "complete",
+    "results_sha256": "7dd2b726a3552dfc6bfb051f98887e9536f698f9d648d00cec147421fe9ae838"
+  },
+  "results/smoke_gate.json": null,
+  "results/training.json": null,
+  "calls.jsonl": 576,
+  "train_steps.jsonl": 0,
+  "compiler_calls.jsonl": 96,
+  "subruns": {
+    "raw_sft": {
+      "steps": 24,
+      "training": {
+        "status": "complete",
+        "steps": 24,
+        "planned_steps": 24,
+        "examples_seen": 96,
+        "trainable_parameters": 11796480,
+        "tokens": {
+          "prompt": 105443,
+          "completion": 2786
+        },
+        "elapsed_seconds": 48.133880296722054,
+        "peak_memory_bytes": 11048598016,
+        "adapter_sha256": {
+          "README.md": "bdb3f34762eabdb13e5d292d7d751e0e1a99b230fae744c06e119b927ce790fa",
+          "adapter_model.safetensors": "7a5ff3250d74768958a4b25b055cd30df2e8e0e34a0846a991bc0c07805ddca8",
+          "adapter_config.json": "2a0b3c52e38897a38b59e3f0587fcb16fddd0931109870f859b4d965725c8975",
+          "chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+          "tokenizer_config.json": "2e3bd3cb5055f7a903a54e7062b2fd14d21b70f4174c3ffcd9fc81ec50a25631",
+          "tokenizer.json": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+        }
+      }
+    },
+    "contract_sft": {
+      "steps": 24,
+      "training": {
+        "status": "complete",
+        "steps": 24,
+        "planned_steps": 24,
+        "examples_seen": 96,
+        "trainable_parameters": 11796480,
+        "tokens": {
+          "prompt": 114407,
+          "completion": 2786
+        },
+        "elapsed_seconds": 50.80206998065114,
+        "peak_memory_bytes": 11480345600,
+        "adapter_sha256": {
+          "README.md": "bdb3f34762eabdb13e5d292d7d751e0e1a99b230fae744c06e119b927ce790fa",
+          "adapter_model.safetensors": "4f6b9993b819f2cf92c40459b32ef38a2a766de6e7a76b11f0e90c51a73343d6",
+          "adapter_config.json": "2a0b3c52e38897a38b59e3f0587fcb16fddd0931109870f859b4d965725c8975",
+          "chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+          "tokenizer_config.json": "2e3bd3cb5055f7a903a54e7062b2fd14d21b70f4174c3ffcd9fc81ec50a25631",
+          "tokenizer.json": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+        }
+      }
+    }
+  },
+  "log_tail": " \"contract\", \"eval_rows\": 128, \"total_calls\": 544}\n{\"arm\": \"contract\", \"eval_rows\": 129, \"total_calls\": 546}\n{\"arm\": \"contract\", \"eval_rows\": 130, \"total_calls\": 548}\n{\"arm\": \"contract\", \"eval_rows\": 131, \"total_calls\": 550}\n{\"arm\": \"contract\", \"eval_rows\": 132, \"total_calls\": 552}\n{\"arm\": \"contract\", \"eval_rows\": 133, \"total_calls\": 554}\n{\"arm\": \"contract\", \"eval_rows\": 134, \"total_calls\": 556}\n{\"arm\": \"contract\", \"eval_rows\": 135, \"total_calls\": 558}\n{\"arm\": \"contract\", \"eval_rows\": 136, \"total_calls\": 560}\n{\"arm\": \"contract\", \"eval_rows\": 137, \"total_calls\": 562}\n{\"arm\": \"contract\", \"eval_rows\": 138, \"total_calls\": 564}\n{\"arm\": \"contract\", \"eval_rows\": 139, \"total_calls\": 566}\n{\"arm\": \"contract\", \"eval_rows\": 140, \"total_calls\": 568}\n{\"arm\": \"contract\", \"eval_rows\": 141, \"total_calls\": 570}\n{\"arm\": \"contract\", \"eval_rows\": 142, \"total_calls\": 572}\n{\"arm\": \"contract\", \"eval_rows\": 143, \"total_calls\": 574}\n{\"arm\": \"contract\", \"eval_rows\": 144, \"total_calls\": 576}\n{\"status\": \"complete\", \"pid\": 253601, \"utc\": \"2026-11-26T08:37:56.464277+00:00\", \"exit_code\": 0, \"completion\": {\"status\": \"complete\", \"results_sha256\": \"7dd2b726a3552dfc6bfb051f98887e9536f698f9d648d00cec147421fe9ae838\"}}\n",
+  "gpu": "2026/11/26 16:46:03.766, 100 %, 13008 MiB\n"
 }

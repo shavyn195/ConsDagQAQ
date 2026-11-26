@@ -1,0 +1,64 @@
+{
+  "utc": "2026-11-26T08:53:48.048139+00:00",
+  "launch.json": {
+    "pid": 254356,
+    "args": [
+      "/root/miniconda3/bin/python",
+      "/root/consdag_audits/raw-contract-planner-grpo-20261126-v1/scripts/research_followup/wait_shared_planner_sft.py",
+      "--root",
+      "/root/ConsDagV6Frozen",
+      "--out",
+      "/root/consdag_audits/raw-contract-planner-grpo-20261126-v1/results",
+      "--config",
+      "/root/consdag_audits/raw-contract-planner-grpo-20261126-v1/configs/matched_planner_grpo_20261126.json"
+    ]
+  },
+  "results/waiter_state.json": {
+    "status": "running",
+    "pid": 254356,
+    "utc": "2026-11-26T08:42:10.016432+00:00",
+    "child_pid": 254368
+  },
+  "results/completion.json": null,
+  "eval_calls": 24,
+  "subruns": {
+    "raw_grpo": {
+      "train_steps.jsonl": 24,
+      "rollouts.jsonl": 384,
+      "training": {
+        "status": "complete",
+        "steps": 24,
+        "rollouts": 384,
+        "variable_reward_groups": 55,
+        "zero_reward_groups": 36,
+        "reward_sum": 126.0,
+        "sample_prompt_tokens": 421772,
+        "sample_completion_tokens": 10531,
+        "backward_completion_tokens": 21062,
+        "sampling_seconds": 190.2846815707162,
+        "old_reference_seconds": 104.47798832505941,
+        "update_seconds": 338.2432526862249,
+        "planned_steps": 24,
+        "trainable_parameters": 11796480,
+        "elapsed_seconds": 634.8379901070148,
+        "peak_memory_bytes": 9372297728,
+        "reference_unchanged": true,
+        "adapter_sha256": {
+          "README.md": "bdb3f34762eabdb13e5d292d7d751e0e1a99b230fae744c06e119b927ce790fa",
+          "chat_template.jinja": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+          "tokenizer_config.json": "2e3bd3cb5055f7a903a54e7062b2fd14d21b70f4174c3ffcd9fc81ec50a25631",
+          "tokenizer.json": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+          "policy/adapter_model.safetensors": "72b5c0776da3ba63b9768624407bdf7a07b977b95de8f754d0c2ea3f6d027169",
+          "policy/adapter_config.json": "3b568734b91892b187c11b90ff63c14d9f921a9bc94078278bd13279b0be6970"
+        }
+      }
+    },
+    "contract_grpo": {
+      "train_steps.jsonl": 0,
+      "rollouts.jsonl": 0,
+      "training": null
+    }
+  },
+  "log_tail": "4, \"reward\": 0.40625, \"kl\": 0.002087321148792398, \"ratio_delta\": 0.11480242013931274}\n{\"input\": \"raw\", \"grpo_step\": 15, \"reward\": 0.28125, \"kl\": 0.0030200394949133624, \"ratio_delta\": 0.0}\n{\"input\": \"raw\", \"grpo_step\": 16, \"reward\": 0.28125, \"kl\": 0.0034229334223709884, \"ratio_delta\": 0.20830392837524414}\n{\"input\": \"raw\", \"grpo_step\": 17, \"reward\": 0.34375, \"kl\": 0.0022444060346060724, \"ratio_delta\": 0.0}\n{\"input\": \"raw\", \"grpo_step\": 18, \"reward\": 0.34375, \"kl\": 0.002468992737362896, \"ratio_delta\": 0.20247036218643188}\n{\"input\": \"raw\", \"grpo_step\": 19, \"reward\": 0.40625, \"kl\": 0.003472709859124734, \"ratio_delta\": 0.0}\n{\"input\": \"raw\", \"grpo_step\": 20, \"reward\": 0.40625, \"kl\": 0.004416396418491786, \"ratio_delta\": 0.20826464891433716}\n{\"input\": \"raw\", \"grpo_step\": 21, \"reward\": 0.40625, \"kl\": 0.006512184568066459, \"ratio_delta\": 0.0}\n{\"input\": \"raw\", \"grpo_step\": 22, \"reward\": 0.40625, \"kl\": 0.007928581533747092, \"ratio_delta\": 0.29644161462783813}\n{\"input\": \"raw\", \"grpo_step\": 23, \"reward\": 0.4375, \"kl\": 0.002797153162646282, \"ratio_delta\": 0.0}\n{\"input\": \"raw\", \"grpo_step\": 24, \"reward\": 0.4375, \"kl\": 0.002994585116084636, \"ratio_delta\": 0.11236613988876343}\n{\"input\": \"raw\", \"eval_rows\": 1, \"total_calls\": 2}\n{\"input\": \"raw\", \"eval_rows\": 2, \"total_calls\": 4}\n{\"input\": \"raw\", \"eval_rows\": 3, \"total_calls\": 6}\n{\"input\": \"raw\", \"eval_rows\": 4, \"total_calls\": 8}\n{\"input\": \"raw\", \"eval_rows\": 5, \"total_calls\": 10}\n{\"input\": \"raw\", \"eval_rows\": 6, \"total_calls\": 12}\n{\"input\": \"raw\", \"eval_rows\": 7, \"total_calls\": 14}\n{\"input\": \"raw\", \"eval_rows\": 8, \"total_calls\": 16}\n{\"input\": \"raw\", \"eval_rows\": 9, \"total_calls\": 18}\n{\"input\": \"raw\", \"eval_rows\": 10, \"total_calls\": 20}\n{\"input\": \"raw\", \"eval_rows\": 11, \"total_calls\": 22}\n{\"input\": \"raw\", \"eval_rows\": 12, \"total_calls\": 24}\n",
+  "gpu": "2026/11/26 16:53:49.768, 38 %, 13008 MiB\n"
+}
