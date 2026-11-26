@@ -1,0 +1,23 @@
+{
+  "experiment": "trusted-space-natural-binding-review-output-envelope-qwen3-4b-cpu",
+  "model": "Qwen3-4B",
+  "adapter": null,
+  "device": "cpu",
+  "precision": "float32",
+  "threads": 8,
+  "max_new_tokens": 512,
+  "do_sample": false,
+  "thinking": false,
+  "active_seconds_cap": 5400,
+  "process_timeout_seconds": 5700,
+  "expected_rows": 18,
+  "maximum_model_calls": 54,
+  "arms": ["invalid_fields", "full_binding", "fresh_compile"],
+  "panel": "Unchanged six historical task groups, all E/I/N siblings, unchanged fixed hash order and seed44 raw drafts.",
+  "only_prompt_change": "Reuse the format smoke's identical output-envelope instruction for all three arms; no changes based on semantic outcomes.",
+  "hypothesis": "Once format confusion is removed, full binding review may fix valid-but-wrong roles beyond invalid-field-only repair; fresh compilation may already suffice.",
+  "launch_gate": "The one-row format smoke must return three parsed contract outputs within its frozen budget; do not select prompts using faithful outcomes.",
+  "budget_reason": "Original CPU probe used 30 minutes, completed 15 calls with heavy context-copy truncation. Allow 90 minutes for up to 54 calls with unchanged 512-token per-call cap. Stop on budget, preserve all calls.",
+  "comparison_rule": "Compare arms on identical attempted three-arm rows and report deadline truncation. Keep costs for every call including incomplete rows. No comparison of different prompts as a causal method result.",
+  "scope": "Exposed historical-error diagnostic, not independent confirmation or official paper reproduction. All earlier failures preserved."
+}

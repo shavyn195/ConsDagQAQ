@@ -1,0 +1,46 @@
+{
+  "observed_utc": "2026-11-26T01:26:05.823326+00:00",
+  "launch.json": {
+    "pid": 241477,
+    "args": [
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=30s",
+      "1980s",
+      "nice",
+      "-n",
+      "15",
+      "env",
+      "CUDA_VISIBLE_DEVICES=",
+      "OMP_NUM_THREADS=8",
+      "MKL_NUM_THREADS=8",
+      "OPENBLAS_NUM_THREADS=1",
+      "/root/miniconda3/bin/python",
+      "/root/consdag_audits/contract-review-4b-cpu-20261126-v1/scripts/research_followup/review_contracts.py",
+      "--source",
+      "/root/ConsDagV5",
+      "--history",
+      "/root/consdag_audits/local-planning-20261126/cpu-heldout",
+      "--cases",
+      "/root/consdag_audits/contract-review-4b-cpu-20261126-v1/outputs/natural_privacy_loss_audit_20261126/cases.jsonl",
+      "--model",
+      "/root/ConsDagV6Frozen/models/Qwen3-4B",
+      "--protocol",
+      "/root/consdag_audits/contract-review-4b-cpu-20261126-v1/configs/contract_review_cpu_20261126.json",
+      "--out",
+      "/root/consdag_audits/contract-review-4b-cpu-20261126-v1/results"
+    ]
+  },
+  "results/state.json": {
+    "status": "budget_exhausted",
+    "pid": 241478,
+    "calls": 15
+  },
+  "results/completion.json": {
+    "status": "budget_exhausted",
+    "results_sha256": "5aa420967d5a1b074923f15106f32f0a64fe003830b0080474fffac9e5ddbb85"
+  },
+  "completed_calls": 15,
+  "log_tail": "ded\", \"seconds\": 4.227767687290907, \"rows\": 18, \"calls\": 54}\n{\"sample_id\": \"test_struct_ho-00070-E\", \"arm\": \"invalid_fields\", \"output_tokens\": 512, \"seconds\": 181.64303207583725, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-E\", \"arm\": \"full_binding\", \"output_tokens\": 512, \"seconds\": 169.70284849777818, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-E\", \"arm\": \"fresh_compile\", \"output_tokens\": 210, \"seconds\": 86.33033299911767, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-I\", \"arm\": \"full_binding\", \"output_tokens\": 512, \"seconds\": 175.26156604662538, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-I\", \"arm\": \"fresh_compile\", \"output_tokens\": 231, \"seconds\": 91.95532153826207, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-I\", \"arm\": \"invalid_fields\", \"output_tokens\": 512, \"seconds\": 171.66197119373828, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-N\", \"arm\": \"fresh_compile\", \"output_tokens\": 204, \"seconds\": 76.9058499969542, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-N\", \"arm\": \"invalid_fields\", \"output_tokens\": 512, \"seconds\": 169.51278730854392, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_struct_ho-00070-N\", \"arm\": \"full_binding\", \"output_tokens\": 512, \"seconds\": 172.3439914714545, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-E\", \"arm\": \"invalid_fields\", \"output_tokens\": 512, \"seconds\": 172.04162985552102, \"cap_hit\": true, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-E\", \"arm\": \"full_binding\", \"output_tokens\": 206, \"seconds\": 74.72473079059273, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-E\", \"arm\": \"fresh_compile\", \"output_tokens\": 216, \"seconds\": 74.64583794679493, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-I\", \"arm\": \"full_binding\", \"output_tokens\": 224, \"seconds\": 78.15222390089184, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-I\", \"arm\": \"fresh_compile\", \"output_tokens\": 224, \"seconds\": 82.0187115650624, \"cap_hit\": false, \"deadline_hit\": false}\n{\"sample_id\": \"test_tool_ho-00261-I\", \"arm\": \"invalid_fields\", \"output_tokens\": 1, \"seconds\": 21.582975876517594, \"cap_hit\": false, \"deadline_hit\": true}\n{\"status\": \"budget_exhausted\", \"paired_rows\": 5, \"calls\": 15, \"elapsed_seconds\": 1802.8469495996833}\n",
+  "process": ""
+}

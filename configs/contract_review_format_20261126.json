@@ -1,0 +1,21 @@
+{
+  "experiment": "trusted-space-review-output-envelope-smoke",
+  "model": "Qwen3-4B",
+  "adapter": null,
+  "device": "cpu",
+  "precision": "float32",
+  "threads": 8,
+  "max_new_tokens": 512,
+  "do_sample": false,
+  "thinking": false,
+  "active_seconds_cap": 720,
+  "process_timeout_seconds": 900,
+  "expected_rows": 1,
+  "maximum_model_calls": 3,
+  "arms": ["invalid_fields", "full_binding", "fresh_compile"],
+  "panel": "First row of the unchanged fixed hash order from the six historical task groups.",
+  "only_change": "All arms receive the same final output-envelope reminder and system instruction. Task, draft, model and token cap unchanged.",
+  "hypothesis": "Explicit output-envelope instructions prevent copying the public task object.",
+  "criterion": "Count valid parsed contracts across all three arms; semantic scores are diagnostic only and never select the prompt.",
+  "scope": "Implementation-format smoke after observed context-copy failure. Not a novelty, task-superiority or independent evaluation result."
+}
